@@ -6,7 +6,7 @@ namespace Flux
   // <para>This is the order in which .NET yield elements using the IEnumerate interface of such an array.</para>
   // <see href="https://en.wikipedia.org/wiki/Row-_and_column-major_order"/>
   // </summary>
-  public enum ArrayDimension
+  public enum ArrayDimensionLabel
   {
     // <summary>
     // <para>The row is represented as dimension 0.</para>

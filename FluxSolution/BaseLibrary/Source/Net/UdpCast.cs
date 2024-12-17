@@ -100,8 +100,40 @@ namespace Flux.Net
       Socket?.Dispose();
     }
 
+    //private static byte[] BuildMessage(string type, object value)
+    //{
+    //  var propertyString = $"{type}{UnicodeSymbolForInformationSeparator.SymbolForUnitSeparator.ToSeparatorString()}{value}";
+
+    //  return System.Text.UnicodeEncoding.UTF32.GetBytes(propertyString);
+    //}
+
+    //private static (string type, object value) ParseMessage(byte[] bytes)
+    //{
+    //  try
+    //  {
+    //    var propertyString = System.Text.UnicodeEncoding.UTF32.GetString(bytes);
+    //    return (propertyString, string.Empty);
+    //    var property = propertyString.Split(UnicodeSymbolForInformationSeparator.SymbolForUnitSeparator.ToSeparatorString());
+
+    //    return (property[0], property[1]);
+    //  }
+    //  catch (System.Exception ex)
+    //  {
+    //    return ("Exception", ex.Message);
+    //  }
+    //}
+
     public static void ConsoleChat(System.Net.IPEndPoint multicastAddress)
     {
+      var guid = System.Guid.NewGuid();
+      var name = "Rob";
+
+      var id = $"{{{name}&{guid}}}";
+
+      var localIp = new System.Net.IPEndPoint(Flux.Locale.LocalIPv4Address, multicastAddress.Port);
+
+      System.Console.WriteLine();
+
       System.Console.OutputEncoding = System.Text.Encoding.Unicode;
 
       System.Console.WriteLine("Enter line to send (empty line will terminate program):");
@@ -110,13 +142,44 @@ namespace Flux.Net
 
       uc.DataReceived += Uc_DataReceived;
 
+      TransmitMsg("Appeared");
+
       while (System.Console.ReadLine() is string line && line.Length > 0)
-        uc.SendData(System.Text.UnicodeEncoding.UTF32.GetBytes(line));
+        TransmitMsg(line);
+
+      TransmitMsg("Disappered");
 
       uc.DataReceived -= Uc_DataReceived;
 
-      static void Uc_DataReceived(object? sender, Flux.Net.UdpCastDataReceivedEventArgs e)
-        => System.Console.WriteLine($"{System.Text.UnicodeEncoding.UTF32.GetString(e.Bytes)} ({e.Remote})");
+      void Uc_DataReceived(object? sender, Flux.Net.UdpCastDataReceivedEventArgs e)
+      {
+        var (g, n, t) = ReceiveMsg(e.Bytes);
+
+        if (t.StartsWith("Appeared") || t.StartsWith("Ping+"))
+          TransmitMsg("Present");
+
+        System.Console.WriteLine($"Received \"{t}\" [Remote = {e.Remote}] ({(localIp.Equals(e.Remote) ? "HostSame" : "HostOther")}, {(g.Equals(guid) && n.Equals(name) ? "ClientSame" : "ClientOther")})");
+      }
+
+      void TransmitMsg(string text)
+      {
+        var packet = new string[] { guid.ToString(), name, text };
+
+        var s = string.Join(UnicodeSymbolForInformationSeparator.SymbolForUnitSeparator.ToSeparatorString(), packet);
+
+        var bytes = System.Text.UnicodeEncoding.UTF32.GetBytes(s);
+
+        uc.SendData(bytes);
+      }
+
+      (System.Guid guid, string name, string text) ReceiveMsg(byte[] bytes)
+      {
+        var s = System.Text.UnicodeEncoding.UTF32.GetString(bytes);
+
+        var packet = s.Split(UnicodeSymbolForInformationSeparator.SymbolForUnitSeparator.ToSeparatorString());
+
+        return (System.Guid.Parse(packet[0]), packet[1], packet[2]);
+      }
     }
   }
 }

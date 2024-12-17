@@ -73,12 +73,12 @@ namespace Collections.Generic
     }
 
     [TestMethod]
-    public void ExtremaIndices()
+    public void GetExtremum()
     {
-      var (elementMin, indexMin, elementMax, indexMax) = integers.GetExtremum(v => v);
+      var (minIndex, minItem, minValue, maxIndex, maxItem, maxValue) = integers.GetExtremum(v => v);
 
-      Assert.AreEqual(5, indexMax);
-      Assert.AreEqual(0, indexMin);
+      Assert.AreEqual(5, maxIndex);
+      Assert.AreEqual(0, minIndex);
     }
 
     //[TestMethod]

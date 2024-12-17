@@ -15,7 +15,7 @@ namespace Flux
     /// <param name="proper"></param>
     /// <param name="comparer"></param>
     /// <returns></returns>
-    public static (int TowardZeroIndex, TSource? TowardZeroItem, TValue? TowardZeroValue, int AwayFromIndex, TSource? AwayFromItem, TValue? AwayFromValue) GetInfimumAndSupremum<TSource, TValue>(this System.ReadOnlySpan<TSource> source, TValue referenceValue, System.Func<TSource, TValue> valueSelector, bool proper, System.Collections.Generic.IComparer<TValue>? comparer = null)
+    public static (int TowardZeroIndex, TSource? TowardZeroItem, TValue? TowardZeroValue, int AwayFromZeroIndex, TSource? AwayFromZeroItem, TValue? AwayFromZeroValue) GetInfimumAndSupremum<TSource, TValue>(this System.ReadOnlySpan<TSource> source, TValue referenceValue, System.Func<TSource, TValue> valueSelector, bool proper, System.Collections.Generic.IComparer<TValue>? comparer = null)
     {
       System.ArgumentNullException.ThrowIfNull(valueSelector);
 

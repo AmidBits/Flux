@@ -65,6 +65,9 @@ namespace Flux
       .Where(uai => uai.Address.IsIPv4() && !System.Net.IPAddress.IsLoopback(uai.Address))
       .ToArray();
 
+    public static System.Net.IPAddress LessLikelyLocalIPv4Address
+      => LocalIPv4UnicastAdresses().RandomOrValue(default).Item?.Address ?? default!;
+
     /// <summary>
     /// <para>The most likely local IPv4 address.</para>
     /// </summary>
@@ -166,6 +169,12 @@ namespace Flux
     [System.Runtime.Versioning.SupportedOSPlatform("linux")]
     [System.Runtime.Versioning.SupportedOSPlatform("windows")]
     public static int ProcessorAffinityCount => System.Numerics.BitOperations.PopCount((ulong)System.Diagnostics.Process.GetCurrentProcess().ProcessorAffinity);
+
+    /// <summary>
+    /// <para>Gets the public IP address.</para>
+    /// </summary>
+    public static System.Net.IPAddress PublicIp
+        => PublicIpAddress.TryGetIPAddress(out var ip) ? ip : System.Net.IPAddress.None;
 
     ///// <summary>
     ///// <para>Gets the process-architecture of the currently running process.</para>

@@ -6,6 +6,7 @@ namespace Flux
     /// <exception cref="System.ArgumentNullException"/>
     public static (int TowardZeroIndex, TSource? TowardZeroItem, TValue? TowardZeroValue, int AwayFromZeroIndex, TSource? AwayFromZeroItem, TValue? AwayFromValue) GetInfimumAndSupremum<TSource, TValue>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, TValue> valueSelector, TValue referenceValue, bool proper, System.Collections.Generic.IComparer<TValue>? comparer = null)
     {
+      System.ArgumentNullException.ThrowIfNull(source);
       System.ArgumentNullException.ThrowIfNull(valueSelector);
 
       comparer ??= System.Collections.Generic.Comparer<TValue>.Default;
@@ -20,7 +21,7 @@ namespace Flux
 
       var index = 0;
 
-      foreach (var item in source.ThrowOnNullOrEmpty())
+      foreach (var item in source)
       {
         var value = valueSelector(item);
 

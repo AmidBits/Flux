@@ -2,103 +2,56 @@ namespace Flux
 {
   public static partial class Fx
   {
-    /// <summary>Locate the minimum/maximum elements and indices, as evaluated by the <paramref name="valueSelector"/>, in <paramref name="source"/>. Uses the specified <paramref name="comparer"/> (default if null).</summary>
-    /// <exception cref="System.ArgumentNullException"/>
-    public static (TSource minItem, int minIndex, TSource maxItem, int maxIndex) GetExtremum<TSource, TValue>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, TValue> valueSelector, System.Collections.Generic.IComparer<TValue>? comparer = null)
+    /// <summary>
+    /// <para>Locate the minimum/maximum elements and indices, as evaluated by the <paramref name="valueSelector"/>, in <paramref name="source"/>. Uses the specified <paramref name="comparer"/> (default if null).</para>
+    /// </summary>
+    /// <typeparam name="TSource"></typeparam>
+    /// <typeparam name="TValue"></typeparam>
+    /// <param name="source"></param>
+    /// <param name="valueSelector"></param>
+    /// <param name="comparer"></param>
+    /// <returns></returns>
+    /// <exception cref="System.ArgumentNullException"></exception>
+    /// <exception cref="System.ArgumentException"></exception>
+    public static (int MinIndex, TSource? MinItem, TValue? MinValue, int MaxIndex, TSource? MaxItem, TValue? MaxValue) GetExtremum<TSource, TValue>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, TValue> valueSelector, System.Collections.Generic.IComparer<TValue>? comparer = null)
     {
+      System.ArgumentNullException.ThrowIfNull(source);
       System.ArgumentNullException.ThrowIfNull(valueSelector);
 
       comparer ??= System.Collections.Generic.Comparer<TValue>.Default;
 
-      using var e = source.ThrowOnNull().GetEnumerator();
+      var minIndex = -1;
+      var minItem = default(TSource);
+      var minValue = default(TValue);
 
-      if (e.MoveNext())
-      {
-        var value = valueSelector(e.Current);
-
-        var minIndex = 0;
-        var minItem = e.Current;
-        var minValue = value;
-
-        var maxIndex = 0;
-        var maxItem = e.Current;
-        var maxValue = value;
-
-        for (var index = 1; e.MoveNext(); index++)
-        {
-          value = valueSelector(e.Current);
-
-          if (comparer.Compare(value, minValue) < 0)
-          {
-            minIndex = index;
-            minItem = e.Current;
-            minValue = value;
-          }
-
-          if (comparer.Compare(value, maxValue) > 0)
-          {
-            maxIndex = index;
-            maxItem = e.Current;
-            maxValue = value;
-          }
-        }
-
-        return (minItem, minIndex, maxItem, maxIndex);
-      }
-      else throw new System.ArgumentException(@"The sequence is empty.", nameof(source));
-    }
-
-    public static (int minIndex, TSource? minItem, int maxIndex, TSource? maxItem) GetExtremum2<TSource, TValue>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, TValue> valueSelector, System.Collections.Generic.IComparer<TValue>? comparer = null)
-    {
-      System.ArgumentNullException.ThrowIfNull(valueSelector);
-
-      comparer ??= System.Collections.Generic.Comparer<TValue>.Default;
+      var maxIndex = -1;
+      var maxItem = default(TSource);
+      var maxValue = default(TValue);
 
       var index = 0;
 
-      var minIndex = -1;
-      TSource? minItem = default;
-      TValue? minValue = default;
-
-      var maxIndex = -1;
-      TSource? maxItem = default;
-      TValue? maxValue = default;
-
-      foreach (var item in source.ThrowOnNullOrEmpty())
+      foreach (var item in source)
       {
         var value = valueSelector(item);
 
-        if (index == 0)
+        if (minIndex < 0 || comparer.Compare(value, minValue) < 0)
         {
-          minIndex = 0;
+          minIndex = index;
           minItem = item;
           minValue = value;
+        }
 
-          maxIndex = 0;
+        if (maxIndex < 0 || comparer.Compare(value, maxValue) > 0)
+        {
+          maxIndex = index;
           maxItem = item;
           maxValue = value;
-        }
-        else
-        {
-          if (comparer.Compare(value, minValue) < 0)
-          {
-            minIndex = index;
-            minItem = item;
-            minValue = value;
-          }
-
-          if (comparer.Compare(value, maxValue) > 0)
-          {
-            maxIndex = index;
-            maxItem = item;
-            maxValue = value;
-          }
         }
 
         index++;
       }
 
-      return (minIndex, minItem, maxIndex, maxItem);
+      return (minIndex, minItem, minValue, maxIndex, maxItem, maxValue);
     }
   }
 }

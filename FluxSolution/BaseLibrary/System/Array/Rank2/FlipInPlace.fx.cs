@@ -37,7 +37,7 @@ namespace Flux
     /// <summary>
     /// <para>Flip the order of the strands, in-place, along the specified <paramref name="dimension"/> in <paramref name="source"/>.</para>
     /// </summary>
-    /// <remarks>An array is arbitrary in terms of e.g. rows and columns. We simply adopt a view based on <see cref="Flux.ArrayDimension" /> (i.e. 0 = row, and 1 = column).</remarks>
-    public static void FlipInPlace<T>(this T[,] source, ArrayDimension dimension) => source.FlipInPlace((int)dimension);
+    /// <remarks>An array is arbitrary in terms of e.g. rows and columns. We simply adopt a view based on <see cref="Flux.ArrayDimensionLabel" /> (i.e. 0 = row, and 1 = column).</remarks>
+    public static void FlipInPlace<T>(this T[,] source, ArrayDimensionLabel dimension) => source.FlipInPlace((int)dimension);
   }
 }

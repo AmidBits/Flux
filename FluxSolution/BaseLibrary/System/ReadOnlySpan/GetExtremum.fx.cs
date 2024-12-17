@@ -12,7 +12,7 @@ namespace Flux
     /// <param name="valueSelector"></param>
     /// <param name="comparer"></param>
     /// <returns></returns>
-    public static (int MinimumIndex, TSource? MinimumItem, TValue? MinimumValue, int MaximumIndex, TSource? MaximumItem, TValue? MaximumValue) GetExtremum<TSource, TValue>(this System.ReadOnlySpan<TSource> source, System.Func<TSource, TValue> valueSelector, System.Collections.Generic.IComparer<TValue>? comparer = null)
+    public static (int MinIndex, TSource? MinItem, TValue? MinValue, int MaxIndex, TSource? MaxItem, TValue? MaxValue) GetExtremum<TSource, TValue>(this System.ReadOnlySpan<TSource> source, System.Func<TSource, TValue> valueSelector, System.Collections.Generic.IComparer<TValue>? comparer = null)
     {
       System.ArgumentNullException.ThrowIfNull(valueSelector);
 

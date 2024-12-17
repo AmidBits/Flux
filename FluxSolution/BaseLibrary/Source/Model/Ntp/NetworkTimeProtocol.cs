@@ -1,146 +1,261 @@
 ﻿namespace Flux.Net
 {
-  /// <summary></summary>
-  /// <see href="https://en.wikipedia.org/wiki/Network_Time_Protocol"/>
+  /// <summary>
+  /// <para></para>
+  /// <para><see href="https://en.wikipedia.org/wiki/Network_Time_Protocol"/></para>
+  /// <para><see href="https://datatracker.ietf.org/doc/html/rfc5905"/></para>
+  /// </summary>
   public sealed class NetworkTimeProtocol
   {
-    // private const ulong m_ntpTimestampDelta = 2208988800UL;
+    public static System.DateTime PrimeEpoch { get; } = new System.DateTime(1900, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
 
     /// <summary>Default DNS entries of NTP server hosts.</summary>
-    public static System.Collections.Generic.IReadOnlyList<string> DefaultNtpHosts
-      => new System.Collections.Generic.List<string> { @"pool.ntp.org", @"time.nist.gov", @"time-a.nist.gov", @"time-b.nist.gov" };
+    public static System.Collections.Generic.IReadOnlyList<string> Hosts { get; } = [@"pool.ntp.org", @"time.nist.gov", @"time-a.nist.gov", @"time-b.nist.gov"];
 
     /// <summary>The 48 byte NTP data structure.</summary>
     private readonly byte[] m_data = new byte[48];
 
-    public NtpLeapIndicator LeapIndicator
-      => (NtpLeapIndicator)(m_data[0] >> 6);
-    public int VersionNumber
-      => (m_data[0] >> 3) & 0b00000111;
-    public NtpMode Mode
-      => (NtpMode)(m_data[0] & 0b00000111);
-    public byte StratumLevel
-      => m_data[1];
-    public byte MaximumPollInterval
-      => m_data[2];
-    public byte Precision
-      => m_data[3];
-    [System.CLSCompliant(false)]
-    public uint RootDelay
-      => m_data.ReadUInt32(4, Endianess.BigEndian);// BitConverter.BigEndian.ToUInt32(m_data, 4);
-    //=> (uint)m_data[4] << 24 | (uint)m_data[5] << 16 | (uint)m_data[6] << 8 | m_data[7];
-    [System.CLSCompliant(false)]
-    public uint RootDispersion
-      => m_data.ReadUInt32(8, Endianess.BigEndian);// BitConverter.BigEndian.ToUInt32(m_data, 8);
-    //=> (uint)m_data[8] << 24 | (uint)m_data[9] << 16 | (uint)m_data[10] << 8 | m_data[11];
-    [System.CLSCompliant(false)]
-    public uint ReferenceClockIdentifier
-      => m_data.ReadUInt32(12, Endianess.BigEndian);// BitConverter.BigEndian.ToUInt32(m_data, 12);
-    //=> (uint)m_data[12] << 24 | (uint)m_data[13] << 16 | (uint)m_data[14] << 8 | m_data[15];
-    [System.CLSCompliant(false)]
-    public uint ReferenceTimestampSeconds
-      => m_data.ReadUInt32(16, Endianess.BigEndian);// BitConverter.BigEndian.ToUInt32(m_data, 16);
-    //=> (uint)m_data[16] << 24 | (uint)m_data[17] << 16 | (uint)m_data[18] << 8 | m_data[19];
-    [System.CLSCompliant(false)]
-    public uint ReferenceTimestampFraction
-      => m_data.ReadUInt32(20, Endianess.BigEndian);// BitConverter.BigEndian.ToUInt32(m_data, 20);
-    //=> (uint)m_data[20] << 24 | (uint)m_data[21] << 16 | (uint)m_data[22] << 8 | m_data[23];
-    [System.CLSCompliant(false)]
-    public uint OriginateTimestampSeconds
-      => m_data.ReadUInt32(24, Endianess.BigEndian);// BitConverter.BigEndian.ToUInt32(m_data, 24);
-    //=> (uint)m_data[24] << 24 | (uint)m_data[25] << 16 | (uint)m_data[26] << 8 | m_data[27];
-    [System.CLSCompliant(false)]
-    public uint OriginateTimestampFraction
-      => m_data.ReadUInt32(28, Endianess.BigEndian);// BitConverter.BigEndian.ToUInt32(m_data, 28);
-    //=> (uint)m_data[28] << 24 | (uint)m_data[29] << 16 | (uint)m_data[30] << 8 | m_data[31];
-    [System.CLSCompliant(false)]
-    public uint ReceiveTimestampSeconds
-      => m_data.ReadUInt32(32, Endianess.BigEndian);// BitConverter.BigEndian.ToUInt32(m_data, 32);
-    //=> (uint)m_data[32] << 24 | (uint)m_data[33] << 16 | (uint)m_data[34] << 8 | m_data[35];
-    [System.CLSCompliant(false)]
-    public uint ReceiveTimestampFraction
-      => m_data.ReadUInt32(36, Endianess.BigEndian);// BitConverter.BigEndian.ToUInt32(m_data, 36);
-    //=> (uint)m_data[36] << 24 | (uint)m_data[37] << 16 | (uint)m_data[38] << 8 | m_data[39];
-    [System.CLSCompliant(false)]
-    public uint TransmitTimestampSeconds
-      => m_data.ReadUInt32(40, Endianess.BigEndian);// BitConverter.BigEndian.ToUInt32(m_data, 40);
-    //=> (uint)m_data[40] << 24 | (uint)m_data[41] << 16 | (uint)m_data[42] << 8 | m_data[43];
-    [System.CLSCompliant(false)]
-    public uint TransmitTimestampFraction
-      => m_data.ReadUInt32(44, Endianess.BigEndian);// BitConverter.BigEndian.ToUInt32(m_data, 44);
-    //=> (uint)m_data[44] << 24 | (uint)m_data[45] << 16 | (uint)m_data[46] << 8 | m_data[47];
+    private readonly System.DateTime m_clientTransmitTimestampUtc;
+    private readonly System.DateTime m_clientReceiveTimestampUtc;
 
-    //public System.TimeSpan ReferenceTimestamp => new System.TimeSpan(0, 0, 0, (int)ReferenceTimestampSeconds, (int)ReferenceTimestampFraction);
-    //public System.TimeSpan OriginateTimestamp => new System.TimeSpan(0, 0, 0, (int)OriginateTimestampSeconds, (int)OriginateTimestampFraction);
-    //public System.TimeSpan ReceiveTimestamp => new System.TimeSpan(0, 0, 0, (int)ReceiveTimestampSeconds, (int)ReceiveTimestampFraction);
-    //public System.TimeSpan TransmitTimestamp => new System.TimeSpan(0, 0, 0, (int)TransmitTimestampSeconds, (int)TransmitTimestampFraction);
+    private readonly string m_host;
 
-    //public System.TimeSpan GetOffset()
-    //  => ((OriginateTimestamp - ReferenceTimestamp) + (ReceiveTimestamp - TransmitTimestamp)) / 2;
-    //public System.TimeSpan GetDelay()
-    //  => (TransmitTimestamp - ReferenceTimestamp) - (ReceiveTimestamp - OriginateTimestamp);
-
-    public System.DateTime TransmittedDateTimeLocal
-      => TransmittedDateTimeUtc.ToLocalTime();
-    public System.DateTime TransmittedDateTimeUtc
-      => new System.DateTime(1900, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc).AddSeconds(TransmitTimestampSeconds).AddMilliseconds(TransmitTimestampFraction * 1000UL / 0x100000000UL);
-
-    public System.DateTime Request(string ntpHost)
+    private NetworkTimeProtocol(byte[] data, System.DateTime clientTransmitTimestampUtc, System.DateTime clientReceiveTimestampUtc, string host)
     {
-      Reset();
+      m_data = data;
+
+      m_clientTransmitTimestampUtc = clientTransmitTimestampUtc;
+      m_clientReceiveTimestampUtc = clientReceiveTimestampUtc;
+
+      m_host = host;
+    }
+
+    /// <summary>
+    /// <para>The client transmission time (UTC).</para>
+    /// </summary>
+    public System.DateTime ClientTransmitTimestampUtc => m_clientTransmitTimestampUtc;
+
+    /// <summary>
+    /// <para>The client reception time (UTC).</para>
+    /// </summary>
+    public System.DateTime ClientReceiveTimestampUtc => m_clientReceiveTimestampUtc;
+
+    /// <summary>
+    /// <para>Time offset is positive or negative (client time > server time) difference in absolute time between the two clocks.</para>
+    /// <para><see href="https://en.wikipedia.org/wiki/Network_Time_Protocol#Clock_synchronization_algorithm"/></para>
+    /// </summary>
+    public System.TimeSpan ComputedTimeOffset => ((ReceiveTimestampUtc - ClientTransmitTimestampUtc) + (TransmitTimestampUtc - ClientReceiveTimestampUtc)) / 2;
+
+    /// <summary>
+    /// <para>The round-trip delay, a.k.a. RTT or RTD.</para>
+    /// <para><see href="https://en.wikipedia.org/wiki/Network_Time_Protocol#Clock_synchronization_algorithm"/></para>
+    /// <para><see href="https://en.wikipedia.org/wiki/Round-trip_delay"/></para>
+    /// </summary>
+    public System.TimeSpan ComputedRoundTripDelay => (ClientReceiveTimestampUtc - ClientTransmitTimestampUtc) - (TransmitTimestampUtc - ReceiveTimestampUtc);
+
+    /// <summary>
+    /// <para>The data received from the host server.</para>
+    /// </summary>
+    public System.Collections.Generic.IReadOnlyList<byte> Data => m_data;
+
+    /// <summary>
+    /// <para>The host server that supplied the data.</para>
+    /// </summary>
+    public string Host => m_host;
+
+    /// <summary>
+    /// <para>LI Leap Indicator (leap): 2-bit integer warning of an impending leap second to be inserted or deleted in the last minute of the current month with values defined in Figure 9 (<see cref="NtpLeapIndicator"/>).</para>
+    /// </summary>
+    public NtpLeapIndicator LeapIndicator => (NtpLeapIndicator)(m_data[0] >> 6);
+
+    /// <summary>
+    /// <para>VN Version Number (version): 3-bit integer representing the NTP version number, currently 4.</para>
+    /// </summary>
+    public int VersionNumber => (m_data[0] >> 3) & 0b00000111;
+
+    /// <summary>
+    /// <para>Mode (mode): 3-bit integer representing the mode, with values defined in Figure 10 (<see cref="NtpMode"/>).</para>
+    /// </summary>
+    public NtpMode Mode => (NtpMode)(m_data[0] & 0b00000111);
+
+    /// <summary>
+    /// <para>Stratum (stratum): 8-bit integer representing the stratum, with values defined in Figure 11 (<see cref="NtpStratum"/>).</para>
+    /// </summary>
+    public NtpStratum Stratum => Ntp.GetStratum(m_data[1]);
+
+    /// <summary>
+    /// <para>Poll: 8-bit signed integer representing the maximum interval between successive messages, in log2 seconds. Suggested default limits for minimum and maximum poll intervals are 6 and 10, respectively.</para>
+    /// </summary>
+    public byte Poll => m_data[2];
+
+    /// <summary>
+    /// <para>Precision: 8-bit signed integer representing the precision of the system clock, in log2 seconds.For instance, a value of -18 corresponds to a precision of about one microsecond. The precision can be determined when the service first starts up as the minimum time of several iterations to read the system clock.</para>
+    /// </summary>
+    public byte Precision => m_data[3];
+
+    /// <summary>
+    /// <para>Root Delay (rootdelay): Total round-trip delay to the reference clock, in NTP short format.</para>
+    /// </summary>
+    public System.TimeSpan RootDelay => ConvertNtpShortFormatToTimeSpan(RootDelaySeconds, RootDelayFraction);
+    [System.CLSCompliant(false)] public ushort RootDelaySeconds => m_data.ReadUInt16(4, Endianess.BigEndian);
+    [System.CLSCompliant(false)] public ushort RootDelayFraction => m_data.ReadUInt16(6, Endianess.BigEndian);
+
+    /// <summary>
+    /// <para>Root Dispersion (rootdisp): Total dispersion to the reference clock, in NTP short format.</para>
+    /// </summary>
+    public System.TimeSpan RootDispersion => ConvertNtpShortFormatToTimeSpan(RootDispersionSeconds, RootDispersionFraction);
+    [System.CLSCompliant(false)] public ushort RootDispersionSeconds => m_data.ReadUInt16(8, Endianess.BigEndian);
+    [System.CLSCompliant(false)] public ushort RootDispersionFraction => m_data.ReadUInt16(10, Endianess.BigEndian);
+
+    /// <summary>
+    /// <para>Reference ID (refid): 32-bit code identifying the particular server or reference clock. The interpretation depends on the value in the stratum field.</para>
+    /// </summary>
+    [System.CLSCompliant(false)] public uint ReferenceID => m_data.ReadUInt32(12, Endianess.BigEndian);
+
+    /// <summary>
+    /// <para>For packet stratum 0 (unspecified or invalid), this is a four-character ASCII [RFC1345] string, called the "kiss code", used for debugging and monitoring purposes.</para>
+    /// <para>For stratum 1 (reference clock), this is a four-octet, left-justified, zero-padded ASCII string assigned to the reference clock. The authoritative list of Reference Identifiers is maintained by IANA; however, any string beginning with the ASCII character "X" is reserved for unregistered experimentation and development.</para>
+    /// <para>Above stratum 1 (secondary servers and clients): this is the reference identifier of the server and can be used to detect timing loops.</para>
+    /// </summary>
+    public string KissCode => System.Text.Encoding.ASCII.GetString(m_data.AsSpan(12, 4));
+
+    /// <summary>
+    /// <para>Reference Timestamp (UTC): Time when the system clock was last set or corrected, in NTP timestamp format.</para>
+    /// </summary>
+    public System.DateTime ReferenceTimestampUtc => ConvertNtpTimestampFormatToDateTime(ReferenceTimestampSeconds, ReferenceTimestampFraction);
+    [System.CLSCompliant(false)] public uint ReferenceTimestampSeconds => m_data.ReadUInt32(16, Endianess.BigEndian);
+    [System.CLSCompliant(false)] public uint ReferenceTimestampFraction => m_data.ReadUInt32(20, Endianess.BigEndian);
+
+    /// <summary>
+    /// <para>Origin Timestamp (UTC): Time at the client when the request departed for the server, in NTP timestamp format.</para>
+    /// </summary>
+    public System.DateTime OriginTimestampUtc => ConvertNtpTimestampFormatToDateTime(OriginTimestampSeconds, OriginTimestampFraction);
+    [System.CLSCompliant(false)] public uint OriginTimestampSeconds => m_data.ReadUInt32(24, Endianess.BigEndian);
+    [System.CLSCompliant(false)] public uint OriginTimestampFraction => m_data.ReadUInt32(28, Endianess.BigEndian);
+
+    /// <summary>
+    /// <para>Receive Timestamp (UTC): Time at the server when the request arrived from the client, in NTP timestamp format.</para>
+    /// </summary>
+    public System.DateTime ReceiveTimestampUtc => ConvertNtpTimestampFormatToDateTime(ReceiveTimestampSeconds, ReceiveTimestampFraction);
+    [System.CLSCompliant(false)] public uint ReceiveTimestampSeconds => m_data.ReadUInt32(32, Endianess.BigEndian);
+    [System.CLSCompliant(false)] public uint ReceiveTimestampFraction => m_data.ReadUInt32(36, Endianess.BigEndian);
+
+    /// <summary>
+    /// <para>Transmit Timestamp (UTC): Time at the server when the response left for the client, in NTP timestamp format.</para>
+    /// </summary>
+    public System.DateTime TransmitTimestampUtc => ConvertNtpTimestampFormatToDateTime(TransmitTimestampSeconds, TransmitTimestampFraction);
+    [System.CLSCompliant(false)] public uint TransmitTimestampSeconds => m_data.ReadUInt32(40, Endianess.BigEndian);
+    [System.CLSCompliant(false)] public uint TransmitTimestampFraction => m_data.ReadUInt32(44, Endianess.BigEndian);
+
+    #region Static methods
+
+    #region Conversion methods
+
+    [System.CLSCompliant(false)]
+    public static System.TimeSpan ConvertNtpShortFormatToTimeSpan(ushort seconds, ushort fraction)
+      => System.TimeSpan.FromSeconds(seconds + fraction.ToDecimalFraction(10));
+
+    [System.CLSCompliant(false)]
+    public static System.DateTime ConvertNtpTimestampFormatToDateTime(uint seconds, uint fraction)
+      => NetworkTimeProtocol.PrimeEpoch.AddSeconds(seconds + fraction.ToDecimalFraction(10));
+
+    #endregion // Conversion methods
+
+    public static byte[] GetBytes(string host, out System.DateTime clientTransmission, out System.DateTime clientReception)
+    {
+      var bytes = new byte[48];
+
+      bytes[0] = 0x1B;
 
       using (var socket = new System.Net.Sockets.Socket(System.Net.Sockets.AddressFamily.InterNetwork, System.Net.Sockets.SocketType.Dgram, System.Net.Sockets.ProtocolType.Udp))
       {
-        socket.Connect(ntpHost, 123);
-        socket.Send(m_data);
-        socket.Receive(m_data);
-      }
+        socket.Connect(host, 123);
 
-      return TransmittedDateTimeLocal;
-    }
-    public System.DateTime Request()
-    {
-      foreach (string ntpHost in DefaultNtpHosts)
-      {
-        try { return Request(ntpHost); }
-        catch { }
-      }
+        clientTransmission = System.DateTime.UtcNow;
 
-      throw new System.Exception($"Unable to reach any (tried {DefaultNtpHosts.Count}) NTP servers.");
+        socket.Send(bytes);
+        socket.Receive(bytes);
+
+        clientReception = System.DateTime.UtcNow;
+      };
+
+      return bytes;
     }
 
-    private void Reset()
-    {
-      System.Array.Clear(m_data);
-
-      m_data[0] = 0x1B;
-    }
-
-    public bool TryRequest(string ntpHost, out System.DateTime result)
+    public static bool TryGet(string host, out byte[] bytes, out System.DateTime clientTransmission, out System.DateTime clientReception)
     {
       try
       {
-        result = Request(ntpHost);
+        bytes = GetBytes(host, out clientTransmission, out clientReception);
         return true;
       }
-      catch
-      {
-        result = new System.DateTime();
-        return false;
-      }
+      catch { }
+
+      bytes = default!;
+      clientTransmission = System.DateTime.MinValue;
+      clientReception = System.DateTime.MaxValue;
+      return false;
     }
-    public bool TryRequest(out System.DateTime result)
+
+    public static bool TryGet(out byte[] bytes, out System.DateTime clientTransmission, out System.DateTime clientReception, out string host)
     {
-      try
+      (bytes, clientTransmission, clientReception, host) = Hosts.AsParallel().Select(static host => TryGet(host, out byte[] bytes, out System.DateTime clientTransmission, out System.DateTime clientReception) ? (bytes, clientTransmission, clientReception, host) : (bytes: null!, clientTransmission: System.DateTime.MinValue, clientReception: System.DateTime.MaxValue, string.Empty)).FirstOrDefault(data => data.bytes != null);
+
+      return bytes != null;
+    }
+
+    //public static bool TryGetLocalDateTime(string host, out System.DateTime ldt)
+    //{
+    //  if (TryGetNetworkTimeProtocol(host, out var ntp))
+    //  {
+    //    ldt = ntp.TransmittedDateTimeLocal;
+    //    return true;
+    //  }
+    //  else
+    //  {
+    //    ldt = default;
+    //    return false;
+    //  }
+    //}
+
+    //public static bool TryGetLocalDateTime(out System.DateTime ldt)
+    //{
+    //  if (TryGetNetworkTimeProtocol(out var ntp))
+    //  {
+    //    ldt = ntp.TransmittedDateTimeLocal;
+    //    return true;
+    //  }
+    //  else
+    //  {
+    //    ldt = default;
+    //    return false;
+    //  }
+    //}
+
+    public static bool TryGetNetworkTimeProtocol(string host, out NetworkTimeProtocol ntp)
+    {
+      if (TryGet(host, out var bytes, out var clientTransmission, out var clientReception))
       {
-        result = Request();
+        ntp = new(bytes, clientTransmission, clientReception, host);
         return true;
       }
-      catch
-      {
-        result = new System.DateTime();
-        return false;
-      }
+
+      ntp = default!;
+      return false;
     }
+
+    public static bool TryGetNetworkTimeProtocol(out NetworkTimeProtocol ntp)
+    {
+      if (TryGet(out var bytes, out var clientTransmission, out var clientReception, out var host))
+      {
+        ntp = new(bytes, clientTransmission, clientReception, host);
+        return true;
+      }
+
+      ntp = default!;
+      return false;
+    }
+
+    #endregion // Static methods
   }
 }

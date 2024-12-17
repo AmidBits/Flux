@@ -9,7 +9,7 @@
     Client = 0b011,
     Server = 0b100,
     Broadcast = 0b101,
-    ReservedForNtpControlMessage = 0b110,
+    NtpControlMessage = 0b110,
     ReservedForPrivateUse = 0b111,
   }
 }

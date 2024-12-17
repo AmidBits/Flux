@@ -2,15 +2,18 @@
 {
   public static partial class Fx
   {
-    public static TValue FastDigitCount<TValue, TRadix>(this TValue value, TRadix radix)
+    public static TValue FastDigitCount<TValue, TRadix>(this TValue value, TRadix radix, out System.Numerics.BigInteger pow)
       where TValue : System.Numerics.IBinaryInteger<TValue>
       where TRadix : System.Numerics.IBinaryInteger<TRadix>
     {
-      var fil = value.FastIntegerLog(radix, UniversalRounding.WholeAwayFromZero, out var _);
+      var v = System.Numerics.BigInteger.CreateChecked(value);
+      var r = System.Numerics.BigInteger.CreateChecked(radix);
 
-      var fip = TValue.CreateChecked(radix).FastIntegerPow(fil, UniversalRounding.HalfTowardZero, out var _);
+      var fil = v.FastIntegerLog(r, UniversalRounding.WholeAwayFromZero, out var _);
 
-      return (value == fip) ? fil + TValue.One : fil;
+      pow = r.FastIntegerPow(fil, UniversalRounding.HalfTowardZero, out var _);
+
+      return TValue.CreateChecked(v == pow ? fil + System.Numerics.BigInteger.One : fil);
     }
   }
 }

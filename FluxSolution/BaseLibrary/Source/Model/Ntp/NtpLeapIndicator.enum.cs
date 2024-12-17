@@ -6,6 +6,6 @@
     NoWarning = 0b00,
     LastMinuteHas61Seconds = 0b01,
     LastMinuteHas59Seconds = 0b10,
-    ClockNotSynchronized = 0x11,
+    UnknownOrClockUnsynchronized = 0x11,
   }
 }
