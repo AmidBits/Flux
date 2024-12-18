@@ -97,20 +97,20 @@
     /// <para>Root Delay (rootdelay): Total round-trip delay to the reference clock, in NTP short format.</para>
     /// </summary>
     public System.TimeSpan RootDelay => ConvertNtpShortFormatToTimeSpan(RootDelaySeconds, RootDelayFraction);
-    [System.CLSCompliant(false)] public ushort RootDelaySeconds => m_data.ReadUInt16(4, Endianess.BigEndian);
-    [System.CLSCompliant(false)] public ushort RootDelayFraction => m_data.ReadUInt16(6, Endianess.BigEndian);
+    [System.CLSCompliant(false)] public ushort RootDelaySeconds => m_data.AsReadOnlySpan(4).ReadUInt16(Endianess.BigEndian);
+    [System.CLSCompliant(false)] public ushort RootDelayFraction => m_data.AsReadOnlySpan(6).ReadUInt16(Endianess.BigEndian);
 
     /// <summary>
     /// <para>Root Dispersion (rootdisp): Total dispersion to the reference clock, in NTP short format.</para>
     /// </summary>
     public System.TimeSpan RootDispersion => ConvertNtpShortFormatToTimeSpan(RootDispersionSeconds, RootDispersionFraction);
-    [System.CLSCompliant(false)] public ushort RootDispersionSeconds => m_data.ReadUInt16(8, Endianess.BigEndian);
-    [System.CLSCompliant(false)] public ushort RootDispersionFraction => m_data.ReadUInt16(10, Endianess.BigEndian);
+    [System.CLSCompliant(false)] public ushort RootDispersionSeconds => m_data.AsReadOnlySpan(8).ReadUInt16(Endianess.BigEndian);
+    [System.CLSCompliant(false)] public ushort RootDispersionFraction => m_data.AsReadOnlySpan(10).ReadUInt16(Endianess.BigEndian);
 
     /// <summary>
     /// <para>Reference ID (refid): 32-bit code identifying the particular server or reference clock. The interpretation depends on the value in the stratum field.</para>
     /// </summary>
-    [System.CLSCompliant(false)] public uint ReferenceID => m_data.ReadUInt32(12, Endianess.BigEndian);
+    [System.CLSCompliant(false)] public uint ReferenceID => m_data.AsReadOnlySpan(12).ReadUInt32(Endianess.BigEndian);
 
     /// <summary>
     /// <para>For packet stratum 0 (unspecified or invalid), this is a four-character ASCII [RFC1345] string, called the "kiss code", used for debugging and monitoring purposes.</para>
@@ -123,29 +123,29 @@
     /// <para>Reference Timestamp (UTC): Time when the system clock was last set or corrected, in NTP timestamp format.</para>
     /// </summary>
     public System.DateTime ReferenceTimestampUtc => ConvertNtpTimestampFormatToDateTime(ReferenceTimestampSeconds, ReferenceTimestampFraction);
-    [System.CLSCompliant(false)] public uint ReferenceTimestampSeconds => m_data.ReadUInt32(16, Endianess.BigEndian);
-    [System.CLSCompliant(false)] public uint ReferenceTimestampFraction => m_data.ReadUInt32(20, Endianess.BigEndian);
+    [System.CLSCompliant(false)] public uint ReferenceTimestampSeconds => m_data.AsReadOnlySpan(16).ReadUInt32(Endianess.BigEndian);
+    [System.CLSCompliant(false)] public uint ReferenceTimestampFraction => m_data.AsReadOnlySpan(20).ReadUInt32(Endianess.BigEndian);
 
     /// <summary>
     /// <para>Origin Timestamp (UTC): Time at the client when the request departed for the server, in NTP timestamp format.</para>
     /// </summary>
     public System.DateTime OriginTimestampUtc => ConvertNtpTimestampFormatToDateTime(OriginTimestampSeconds, OriginTimestampFraction);
-    [System.CLSCompliant(false)] public uint OriginTimestampSeconds => m_data.ReadUInt32(24, Endianess.BigEndian);
-    [System.CLSCompliant(false)] public uint OriginTimestampFraction => m_data.ReadUInt32(28, Endianess.BigEndian);
+    [System.CLSCompliant(false)] public uint OriginTimestampSeconds => m_data.AsReadOnlySpan(24).ReadUInt32(Endianess.BigEndian);
+    [System.CLSCompliant(false)] public uint OriginTimestampFraction => m_data.AsReadOnlySpan(28).ReadUInt32(Endianess.BigEndian);
 
     /// <summary>
     /// <para>Receive Timestamp (UTC): Time at the server when the request arrived from the client, in NTP timestamp format.</para>
     /// </summary>
     public System.DateTime ReceiveTimestampUtc => ConvertNtpTimestampFormatToDateTime(ReceiveTimestampSeconds, ReceiveTimestampFraction);
-    [System.CLSCompliant(false)] public uint ReceiveTimestampSeconds => m_data.ReadUInt32(32, Endianess.BigEndian);
-    [System.CLSCompliant(false)] public uint ReceiveTimestampFraction => m_data.ReadUInt32(36, Endianess.BigEndian);
+    [System.CLSCompliant(false)] public uint ReceiveTimestampSeconds => m_data.AsReadOnlySpan(32).ReadUInt32(Endianess.BigEndian);
+    [System.CLSCompliant(false)] public uint ReceiveTimestampFraction => m_data.AsReadOnlySpan(36).ReadUInt32(Endianess.BigEndian);
 
     /// <summary>
     /// <para>Transmit Timestamp (UTC): Time at the server when the response left for the client, in NTP timestamp format.</para>
     /// </summary>
     public System.DateTime TransmitTimestampUtc => ConvertNtpTimestampFormatToDateTime(TransmitTimestampSeconds, TransmitTimestampFraction);
-    [System.CLSCompliant(false)] public uint TransmitTimestampSeconds => m_data.ReadUInt32(40, Endianess.BigEndian);
-    [System.CLSCompliant(false)] public uint TransmitTimestampFraction => m_data.ReadUInt32(44, Endianess.BigEndian);
+    [System.CLSCompliant(false)] public uint TransmitTimestampSeconds => m_data.AsReadOnlySpan(40).ReadUInt32(Endianess.BigEndian);
+    [System.CLSCompliant(false)] public uint TransmitTimestampFraction => m_data.AsReadOnlySpan(44).ReadUInt32(Endianess.BigEndian);
 
     #region Static methods
 

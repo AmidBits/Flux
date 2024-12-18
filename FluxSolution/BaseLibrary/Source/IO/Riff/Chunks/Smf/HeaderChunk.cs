@@ -10,9 +10,9 @@ namespace Flux.Riff.Smf
   {
     public const string ID = @"MThd";
 
-    public Format Format { get => (Format)m_buffer.ReadUInt16(8, Endianess.BigEndian); set => ((ushort)value).WriteBytes(m_buffer, 8, Endianess.BigEndian); }
-    [System.CLSCompliant(false)] public ushort Tracks { get => m_buffer.ReadUInt16(10, Endianess.BigEndian); set { value.WriteBytes(m_buffer, 10, Endianess.BigEndian); } }
-    public short Division { get => m_buffer.ReadInt16(12, Endianess.BigEndian); set { value.WriteBytes(m_buffer, 12, Endianess.BigEndian); } }
+    public Format Format { get => (Format)m_buffer.AsReadOnlySpan(8).ReadUInt16(Endianess.BigEndian); set => ((ushort)value).WriteBytes(m_buffer.AsSpan(8), Endianess.BigEndian); }
+    [System.CLSCompliant(false)] public ushort Tracks { get => m_buffer.AsReadOnlySpan(10).ReadUInt16(Endianess.BigEndian); set { value.WriteBytes(m_buffer.AsSpan(10), Endianess.BigEndian); } }
+    public short Division { get => m_buffer.AsReadOnlySpan(12).ReadInt16(Endianess.BigEndian); set { value.WriteBytes(m_buffer.AsSpan(12), Endianess.BigEndian); } }
 
     public string NextChunkPreview => System.Text.Encoding.ASCII.GetString(m_buffer, 14, 4);
 

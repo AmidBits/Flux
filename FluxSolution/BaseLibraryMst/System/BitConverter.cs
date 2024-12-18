@@ -11,7 +11,7 @@ namespace SystemFx
     {
       byte[] expected = new byte[] { 1 };
       byte[] actual = new byte[expected.Length];
-      true.WriteBytes(actual, 0, Endianess.BigEndian);
+      true.WriteByte(actual);
       CollectionAssert.AreEqual(expected, actual);
     }
 
@@ -20,7 +20,7 @@ namespace SystemFx
     {
       byte[] expected = new byte[] { 0, 1 };
       byte[] actual = new byte[expected.Length];
-      ((char)1).WriteBytes(actual, 0, Flux.Endianess.BigEndian);
+      ((char)1).WriteBytes(actual, Flux.Endianess.BigEndian);
       CollectionAssert.AreEqual(expected, actual);
     }
 
@@ -29,7 +29,7 @@ namespace SystemFx
     {
       byte[] expected = new byte[] { 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
       byte[] actual = new byte[expected.Length];
-      System.Decimal.One.WriteBytes(actual, 0, Flux.Endianess.BigEndian);
+      System.Decimal.One.WriteBytes(actual, Flux.Endianess.BigEndian);
       CollectionAssert.AreEqual(expected, actual);
     }
 
@@ -38,7 +38,7 @@ namespace SystemFx
     {
       byte[] expected = new byte[] { 63, 240, 0, 0, 0, 0, 0, 0 };
       byte[] actual = new byte[expected.Length];
-      1D.WriteBytes(actual, 0, Endianess.BigEndian);
+      1D.WriteBytes(actual, Endianess.BigEndian);
       CollectionAssert.AreEqual(expected, actual);
     }
 
@@ -47,7 +47,7 @@ namespace SystemFx
     {
       byte[] expected = new byte[] { 63, 128, 0, 0 };
       byte[] actual = new byte[expected.Length];
-      1F.WriteBytes(actual, 0, Endianess.BigEndian);
+      1F.WriteBytes(actual, Endianess.BigEndian);
       CollectionAssert.AreEqual(expected, actual);
     }
 
@@ -56,7 +56,7 @@ namespace SystemFx
     {
       byte[] expected = new byte[] { 0, 1 };
       byte[] actual = new byte[expected.Length];
-      ((short)1).WriteBytes(actual, 0, Endianess.BigEndian);
+      ((short)1).WriteBytes(actual, Endianess.BigEndian);
       CollectionAssert.AreEqual(expected, actual);
     }
 
@@ -65,7 +65,7 @@ namespace SystemFx
     {
       byte[] expected = new byte[] { 0, 0, 0, 1 };
       byte[] actual = new byte[expected.Length];
-      1.WriteBytes(actual, 0, Endianess.BigEndian);
+      1.WriteBytes(actual, Endianess.BigEndian);
       CollectionAssert.AreEqual(expected, actual);
     }
 
@@ -74,7 +74,7 @@ namespace SystemFx
     {
       byte[] expected = new byte[] { 0, 0, 0, 0, 0, 0, 0, 1 };
       byte[] actual = new byte[expected.Length];
-      1L.WriteBytes(actual, 0, Endianess.BigEndian);
+      1L.WriteBytes(actual, Endianess.BigEndian);
       CollectionAssert.AreEqual(expected, actual);
     }
 
@@ -83,7 +83,7 @@ namespace SystemFx
     {
       byte[] expected = new byte[] { 0, 1 };
       byte[] actual = new byte[expected.Length];
-      ((ushort)1).WriteBytes(actual, 0, Endianess.BigEndian);
+      ((ushort)1).WriteBytes(actual, Endianess.BigEndian);
       CollectionAssert.AreEqual(expected, actual);
     }
 
@@ -92,7 +92,7 @@ namespace SystemFx
     {
       byte[] expected = new byte[] { 0, 0, 0, 1 };
       byte[] actual = new byte[expected.Length];
-      1U.WriteBytes(actual, 0, Endianess.BigEndian);
+      1U.WriteBytes(actual, Endianess.BigEndian);
       CollectionAssert.AreEqual(expected, actual);
     }
 
@@ -101,7 +101,7 @@ namespace SystemFx
     {
       byte[] expected = new byte[] { 0, 0, 0, 0, 0, 0, 0, 1 };
       byte[] actual = new byte[expected.Length];
-      1UL.WriteBytes(actual, 0, Endianess.BigEndian);
+      1UL.WriteBytes(actual, Endianess.BigEndian);
       CollectionAssert.AreEqual(expected, actual);
     }
 
@@ -110,7 +110,7 @@ namespace SystemFx
     {
       byte[] expected = new byte[] { 1 };
       byte[] actual = new byte[expected.Length];
-      true.WriteBytes(actual, 0, Endianess.LittleEndian);
+      true.WriteByte(actual);
       CollectionAssert.AreEqual(expected, actual);
     }
 
@@ -119,7 +119,7 @@ namespace SystemFx
     {
       byte[] expected = new byte[] { 1, 0 };
       byte[] actual = new byte[expected.Length];
-      ((char)1).WriteBytes(actual, 0, Endianess.LittleEndian);
+      ((char)1).WriteBytes(actual, Endianess.LittleEndian);
       CollectionAssert.AreEqual(expected, actual);
     }
 
@@ -128,7 +128,7 @@ namespace SystemFx
     {
       byte[] expected = new byte[] { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
       byte[] actual = new byte[expected.Length];
-      1M.WriteBytes(actual, 0, Endianess.LittleEndian);
+      1M.WriteBytes(actual, Endianess.LittleEndian);
       CollectionAssert.AreEqual(expected, actual);
     }
 
@@ -137,7 +137,7 @@ namespace SystemFx
     {
       byte[] expected = new byte[] { 0, 0, 0, 0, 0, 0, 240, 63 };
       byte[] actual = new byte[expected.Length];
-      1D.WriteBytes(actual, 0, Endianess.LittleEndian);
+      1D.WriteBytes(actual, Endianess.LittleEndian);
       CollectionAssert.AreEqual(expected, actual);
     }
 
@@ -146,7 +146,7 @@ namespace SystemFx
     {
       byte[] expected = new byte[] { 0, 0, 128, 63 };
       byte[] actual = new byte[expected.Length];
-      1F.WriteBytes(actual, 0, Endianess.LittleEndian);
+      1F.WriteBytes(actual, Endianess.LittleEndian);
       CollectionAssert.AreEqual(expected, actual);
     }
 
@@ -155,7 +155,7 @@ namespace SystemFx
     {
       byte[] expected = new byte[] { 1, 0 };
       byte[] actual = new byte[expected.Length];
-      ((short)1).WriteBytes(actual, 0, Endianess.LittleEndian);
+      ((short)1).WriteBytes(actual, Endianess.LittleEndian);
       CollectionAssert.AreEqual(expected, actual);
     }
 
@@ -164,7 +164,7 @@ namespace SystemFx
     {
       byte[] expected = new byte[] { 1, 0, 0, 0 };
       byte[] actual = new byte[expected.Length];
-      1.WriteBytes(actual, 0, Endianess.LittleEndian);
+      1.WriteBytes(actual, Endianess.LittleEndian);
       CollectionAssert.AreEqual(expected, actual);
     }
 
@@ -173,7 +173,7 @@ namespace SystemFx
     {
       byte[] expected = new byte[] { 1, 0, 0, 0, 0, 0, 0, 0 };
       byte[] actual = new byte[expected.Length];
-      1L.WriteBytes(actual, 0, Endianess.LittleEndian);
+      1L.WriteBytes(actual, Endianess.LittleEndian);
       CollectionAssert.AreEqual(expected, actual);
     }
 
@@ -182,7 +182,7 @@ namespace SystemFx
     {
       byte[] expected = new byte[] { 1, 0 };
       byte[] actual = new byte[expected.Length];
-      ((ushort)1).WriteBytes(actual, 0, Endianess.LittleEndian);
+      ((ushort)1).WriteBytes(actual, Endianess.LittleEndian);
       CollectionAssert.AreEqual(expected, actual);
     }
 
@@ -191,7 +191,7 @@ namespace SystemFx
     {
       byte[] expected = new byte[] { 1, 0, 0, 0 };
       byte[] actual = new byte[expected.Length];
-      1U.WriteBytes(actual, 0, Endianess.LittleEndian);
+      1U.WriteBytes(actual, Endianess.LittleEndian);
       CollectionAssert.AreEqual(expected, actual);
     }
 
@@ -200,7 +200,7 @@ namespace SystemFx
     {
       byte[] expected = new byte[] { 1, 0, 0, 0, 0, 0, 0, 0 };
       byte[] actual = new byte[expected.Length];
-      1UL.WriteBytes(actual, 0, Endianess.LittleEndian);
+      1UL.WriteBytes(actual, Endianess.LittleEndian);
       CollectionAssert.AreEqual(expected, actual);
     }
 
@@ -208,7 +208,7 @@ namespace SystemFx
     public void BigEndianReadBoolean()
     {
       bool expected = true;
-      bool actual = new byte[] { 1 }.ReadBoolean(0, Endianess.BigEndian);
+      bool actual = new byte[] { 1 }.AsReadOnlySpan().ReadBoolean(Endianess.BigEndian);
       Assert.AreEqual(expected, actual);
     }
 
@@ -216,7 +216,7 @@ namespace SystemFx
     public void BigEndianReadChar()
     {
       var expected = (char)1;
-      var actual = new byte[] { 0, 1 }.ReadChar(0, Endianess.BigEndian);
+      var actual = new byte[] { 0, 1 }.AsReadOnlySpan().ReadChar(Endianess.BigEndian);
       Assert.AreEqual(expected, actual);
     }
 
@@ -224,7 +224,7 @@ namespace SystemFx
     public void BigEndianReadDecimal()
     {
       var expected = (decimal)1;
-      var actual = new byte[] { 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }.ReadDecimal(0, Endianess.BigEndian);
+      var actual = new byte[] { 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }.AsReadOnlySpan().ReadDecimal(Endianess.BigEndian);
       Assert.AreEqual(expected, actual);
     }
 
@@ -232,7 +232,7 @@ namespace SystemFx
     public void BigEndianReadDouble()
     {
       var expected = (double)1;
-      var actual = new byte[] { 63, 240, 0, 0, 0, 0, 0, 0 }.ReadDouble(0, Endianess.BigEndian);
+      var actual = new byte[] { 63, 240, 0, 0, 0, 0, 0, 0 }.AsReadOnlySpan().ReadDouble(Endianess.BigEndian);
       Assert.AreEqual(expected, actual);
     }
 
@@ -240,7 +240,7 @@ namespace SystemFx
     public void BigEndianReadFloat()
     {
       var expected = (float)1;
-      var actual = new byte[] { 63, 128, 0, 0 }.ReadSingle(0, Endianess.BigEndian);
+      var actual = new byte[] { 63, 128, 0, 0 }.AsReadOnlySpan().ReadSingle(Endianess.BigEndian);
       Assert.AreEqual(expected, actual);
     }
 
@@ -248,7 +248,7 @@ namespace SystemFx
     public void BigEndianReadInt16()
     {
       var expected = (short)1;
-      var actual = new byte[] { 0, 1 }.ReadInt16(0, Endianess.BigEndian);
+      var actual = new byte[] { 0, 1 }.AsReadOnlySpan().ReadInt16(Endianess.BigEndian);
       Assert.AreEqual(expected, actual);
     }
 
@@ -256,7 +256,7 @@ namespace SystemFx
     public void BigEndianReadInt32()
     {
       var expected = (int)1;
-      var actual = new byte[] { 0, 0, 0, 1 }.ReadInt32(0, Endianess.BigEndian);
+      var actual = new byte[] { 0, 0, 0, 1 }.AsReadOnlySpan().ReadInt32(Endianess.BigEndian);
       Assert.AreEqual(expected, actual);
     }
 
@@ -264,7 +264,7 @@ namespace SystemFx
     public void BigEndianReadInt64()
     {
       var expected = (long)1;
-      var actual = new byte[] { 0, 0, 0, 0, 0, 0, 0, 1 }.ReadInt64(0, Endianess.BigEndian);
+      var actual = new byte[] { 0, 0, 0, 0, 0, 0, 0, 1 }.AsReadOnlySpan().ReadInt64(Endianess.BigEndian);
       Assert.AreEqual(expected, actual);
     }
 
@@ -272,7 +272,7 @@ namespace SystemFx
     public void BigEndianReadUInt16()
     {
       var expected = (ushort)1;
-      var actual = new byte[] { 0, 1 }.ReadUInt16(0, Endianess.BigEndian);
+      var actual = new byte[] { 0, 1 }.AsReadOnlySpan().ReadUInt16(Endianess.BigEndian);
       Assert.AreEqual(expected, actual);
     }
 
@@ -280,7 +280,7 @@ namespace SystemFx
     public void BigEndianReadUInt32()
     {
       var expected = (uint)1;
-      var actual = new byte[] { 0, 0, 0, 1 }.ReadUInt32(0, Endianess.BigEndian);
+      var actual = new byte[] { 0, 0, 0, 1 }.AsReadOnlySpan().ReadUInt32(Endianess.BigEndian);
       Assert.AreEqual(expected, actual);
     }
 
@@ -288,7 +288,7 @@ namespace SystemFx
     public void BigEndianReadUInt64()
     {
       var expected = (ulong)1;
-      var actual = new byte[] { 0, 0, 0, 0, 0, 0, 0, 1 }.ReadUInt64(0, Endianess.BigEndian);
+      var actual = new byte[] { 0, 0, 0, 0, 0, 0, 0, 1 }.AsReadOnlySpan().ReadUInt64(Endianess.BigEndian);
       Assert.AreEqual(expected, actual);
     }
 
@@ -296,7 +296,7 @@ namespace SystemFx
     public void LittleEndianReadBoolean()
     {
       bool expected = true;
-      bool actual = new byte[] { 1 }.ReadBoolean(0, Endianess.LittleEndian);
+      bool actual = new byte[] { 1 }.AsReadOnlySpan().ReadBoolean(Endianess.LittleEndian);
       Assert.AreEqual(expected, actual);
     }
 
@@ -304,7 +304,7 @@ namespace SystemFx
     public void LittleEndianReadChar()
     {
       var expected = (char)1;
-      var actual = new byte[] { 1, 0 }.ReadChar(0, Endianess.LittleEndian);
+      var actual = new byte[] { 1, 0 }.AsReadOnlySpan().ReadChar(Endianess.LittleEndian);
       Assert.AreEqual(expected, actual);
     }
 
@@ -312,7 +312,7 @@ namespace SystemFx
     public void LittleEndianReadDecimal()
     {
       var expected = (decimal)1;
-      var actual = new byte[] { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }.ReadDecimal(0, Endianess.LittleEndian);
+      var actual = new byte[] { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }.AsReadOnlySpan().ReadDecimal(Endianess.LittleEndian);
       Assert.AreEqual(expected, actual);
     }
 
@@ -320,7 +320,7 @@ namespace SystemFx
     public void LittleEndianReadDouble()
     {
       var expected = (double)1;
-      var actual = new byte[] { 0, 0, 0, 0, 0, 0, 240, 63 }.ReadDouble(0, Endianess.LittleEndian);
+      var actual = new byte[] { 0, 0, 0, 0, 0, 0, 240, 63 }.AsReadOnlySpan().ReadDouble(Endianess.LittleEndian);
       Assert.AreEqual(expected, actual);
     }
 
@@ -328,7 +328,7 @@ namespace SystemFx
     public void LittleEndianReadFloat()
     {
       var expected = (float)1;
-      var actual = new byte[] { 0, 0, 128, 63 }.ReadSingle(0, Endianess.LittleEndian);
+      var actual = new byte[] { 0, 0, 128, 63 }.AsReadOnlySpan().ReadSingle(Endianess.LittleEndian);
       Assert.AreEqual(expected, actual);
     }
 
@@ -336,7 +336,7 @@ namespace SystemFx
     public void LittleEndianReadInt16()
     {
       var expected = (short)1;
-      var actual = new byte[] { 1, 0 }.ReadInt16(0, Endianess.LittleEndian);
+      var actual = new byte[] { 1, 0 }.AsReadOnlySpan().ReadInt16(Endianess.LittleEndian);
       Assert.AreEqual(expected, actual);
     }
 
@@ -344,7 +344,7 @@ namespace SystemFx
     public void LittleEndianReadInt32()
     {
       var expected = (int)1;
-      var actual = new byte[] { 1, 0, 0, 0 }.ReadInt32(0, Endianess.LittleEndian);
+      var actual = new byte[] { 1, 0, 0, 0 }.AsReadOnlySpan().ReadInt32(Endianess.LittleEndian);
       Assert.AreEqual(expected, actual);
     }
 
@@ -352,7 +352,7 @@ namespace SystemFx
     public void LittleEndianReadInt64()
     {
       var expected = (long)1;
-      var actual = new byte[] { 1, 0, 0, 0, 0, 0, 0, 0 }.ReadInt64(0, Endianess.LittleEndian);
+      var actual = new byte[] { 1, 0, 0, 0, 0, 0, 0, 0 }.AsReadOnlySpan().ReadInt64(Endianess.LittleEndian);
       Assert.AreEqual(expected, actual);
     }
 
@@ -360,7 +360,7 @@ namespace SystemFx
     public void LittleEndianReadUInt16()
     {
       var expected = (ushort)1;
-      var actual = new byte[] { 1, 0 }.ReadUInt16(0, Endianess.LittleEndian);
+      var actual = new byte[] { 1, 0 }.AsReadOnlySpan().ReadUInt16(Endianess.LittleEndian);
       Assert.AreEqual(expected, actual);
     }
 
@@ -368,7 +368,7 @@ namespace SystemFx
     public void LittleEndianReadUInt32()
     {
       var expected = (uint)1;
-      var actual = new byte[] { 1, 0, 0, 0 }.ReadUInt16(0, Endianess.LittleEndian);
+      var actual = new byte[] { 1, 0, 0, 0 }.AsReadOnlySpan().ReadUInt16(Endianess.LittleEndian);
       Assert.AreEqual(expected, actual);
     }
 
@@ -376,7 +376,7 @@ namespace SystemFx
     public void LittleEndianReadUInt64()
     {
       var expected = (ulong)1;
-      var actual = new byte[] { 1, 0, 0, 0, 0, 0, 0, 0 }.ReadUInt16(0, Endianess.LittleEndian);
+      var actual = new byte[] { 1, 0, 0, 0, 0, 0, 0, 0 }.AsReadOnlySpan().ReadUInt16(Endianess.LittleEndian);
       Assert.AreEqual(expected, actual);
     }
   }

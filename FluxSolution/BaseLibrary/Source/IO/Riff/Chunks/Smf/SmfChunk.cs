@@ -14,7 +14,7 @@ namespace Flux.Riff.Smf
     /// <summary>
     /// <para>The chunk size for Smf uses BigEndian as opposed to the riff's.</para>
     /// </summary>
-    override public int ChunkSize { get => m_buffer.ReadInt32(4, Endianess.BigEndian); set { value.WriteBytes(m_buffer, 4, Endianess.BigEndian); } }
+    override public int ChunkSize { get => m_buffer.AsReadOnlySpan(4).ReadInt32(Endianess.BigEndian); set { value.WriteBytes(m_buffer.AsSpan(4), Endianess.BigEndian); } }
 
     public System.Span<byte> ChunkData => m_buffer.AsSpan().Slice(8);
 

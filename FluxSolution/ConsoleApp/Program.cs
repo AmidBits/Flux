@@ -42,23 +42,23 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
-      var x = Flux.Locale.LocalIPv4Address.GetAddressBytes().ReadUInt32(0, Endianess.LittleEndian);
+      var x = Flux.Locale.LocalIPv4Address.GetAddressBytes().AsReadOnlySpan().ReadUInt32(Endianess.LittleEndian);
 
       var pip = Flux.Locale.LocalIPv4Address;
 
       var pips = pip.GetAddressBytes();
 
-      var pips32 = pips.ReadUInt32(0, Endianess.LittleEndian);
+      var pips32 = pips.AsReadOnlySpan().ReadUInt32(Endianess.LittleEndian);
 
       var guid = System.Guid.NewGuid();
 
       var bytes = guid.ToByteArray();
 
-      var first = bytes.ReadUInt32(0, Endianess.LittleEndian);
-      var second = bytes.ReadUInt16(4, Endianess.LittleEndian);
-      var third = bytes.ReadUInt16(6, Endianess.LittleEndian);
-      var fourth = bytes.ReadUInt16(8, Endianess.BigEndian);
-      var fifth = (ulong)bytes.ReadUInt32(10, Endianess.BigEndian) << 16 | (ulong)bytes.ReadUInt16(14, Endianess.BigEndian);
+      var first = bytes.AsReadOnlySpan().ReadUInt32(Endianess.LittleEndian);
+      var second = bytes.AsReadOnlySpan(4).ReadUInt16(Endianess.LittleEndian);
+      var third = bytes.AsReadOnlySpan(6).ReadUInt16(Endianess.LittleEndian);
+      var fourth = bytes.AsReadOnlySpan(8).ReadUInt16(Endianess.BigEndian);
+      var fifth = (ulong)bytes.AsReadOnlySpan(10).ReadUInt32(Endianess.BigEndian) << 16 | (ulong)bytes.AsReadOnlySpan(14).ReadUInt16(Endianess.BigEndian);
 
       //Flux.Net.UdpCast.ConsoleChat(Flux.Net.UdpCast.MulticastTestEndPoint);
 
