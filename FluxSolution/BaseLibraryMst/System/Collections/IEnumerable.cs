@@ -44,9 +44,9 @@ namespace Collections.Generic
     }
 
     [TestMethod]
-    public void CountEqualAtStart()
+    public void CommonPrefixLength()
     {
-      Assert.AreEqual(4, integers.CountEqualAtStart(new int[] { 17, 17, 19, 23 }));
+      Assert.AreEqual(4, integers.CommonPrefixLength(new int[] { 17, 17, 19, 23 }));
     }
 
     [TestMethod]
@@ -119,15 +119,15 @@ namespace Collections.Generic
     }
 
     [TestMethod]
-    public void SequenceContentEqualOrderBy()
+    public void OrderedSequenceEqual()
     {
       var a = new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
       var b = new int[] { 9, 8, 7, 6, 5, 4, 3, 2, 1 };
       var c = new int[] { 1, 9, 2, 8, 3, 7, 4, 6, 5 };
 
-      Assert.IsTrue(a.SequenceEqualWithOrderBy(b, v => v));
-      Assert.IsTrue(a.SequenceEqualWithOrderBy(c, v => v));
-      Assert.IsTrue(b.SequenceEqualWithOrderBy(c, v => v));
+      Assert.IsTrue(a.OrderedSequenceEqual(b, v => v));
+      Assert.IsTrue(a.OrderedSequenceEqual(c, v => v));
+      Assert.IsTrue(b.OrderedSequenceEqual(c, v => v));
     }
 
     [TestMethod]
@@ -137,9 +137,9 @@ namespace Collections.Generic
       var b = new int[] { 9, 8, 7, 6, 5, 4, 3, 2, 1 };
       var c = new int[] { 1, 9, 2, 8, 3, 7, 4, 6, 5 };
 
-      Assert.IsTrue(a.SequenceEqualHashCodesByXor(b));
-      Assert.IsTrue(a.SequenceEqualHashCodesByXor(c));
-      Assert.IsTrue(b.SequenceEqualHashCodesByXor(c));
+      Assert.IsTrue(a.SequenceHashCodeByXor() == b.SequenceHashCodeByXor());
+      Assert.IsTrue(a.SequenceHashCodeByXor() == c.SequenceHashCodeByXor());
+      Assert.IsTrue(b.SequenceHashCodeByXor() == c.SequenceHashCodeByXor());
     }
 
     [TestMethod]
@@ -163,7 +163,7 @@ namespace Collections.Generic
     [TestMethod]
     public void StartsWith()
     {
-      Assert.IsTrue(integers.StartsWith(new int[] { 17, 17, 19 }));
+      Assert.IsTrue(integers.IsCommonPrefix(new int[] { 17, 17, 19 }));
     }
 
     [TestMethod]

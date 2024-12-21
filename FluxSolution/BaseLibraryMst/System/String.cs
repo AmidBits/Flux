@@ -21,7 +21,7 @@ namespace SystemFx
     [TestMethod]
     public void CountEqualAtStart()
     {
-      Assert.AreEqual(14, s1.CountEqualAtStart(s2));
+      Assert.AreEqual(14, s1.AsSpan().CommonPrefixLength(s2));
     }
 
     [TestMethod]

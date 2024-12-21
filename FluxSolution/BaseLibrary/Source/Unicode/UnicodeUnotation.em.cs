@@ -23,10 +23,12 @@ namespace Flux
       => RegexParseUnicodeUnotation().Matches(text).Where(m => m.Success).Select(m => (m.Value, new System.Text.Rune(int.Parse(m.Value.AsSpan().Slice(2, m.Value.Length - 2), System.Globalization.NumberStyles.Number)), m.Index, m.Length));
 
     /// <summary>Convert the character to the string representation format "U+XXXX" (at least 4 hex characters, more if needed).</summary>
-    public static string ToUnicodeUnotationString(this char character) => $"U+{(int)character:X4}";
+    public static string ToUnicodeUnotationString(this char character)
+      => $"U+{(int)character:X4}";
 
     /// <summary>Convert the Unicode codepoint to the string representation format "U+XXXX" (at least 4 hex characters, more if needed).</summary>
-    public static string ToUnicodeUnotationString(this System.Text.Rune rune) => $"U+{rune.Value:X4}";
+    public static string ToUnicodeUnotationString(this System.Text.Rune rune)
+      => $"U+{rune.Value:X4}";
 
     /// <summary>
     /// <para>Attempts to search for all Unicode u-notation in <paramref name="text"/>.</para>

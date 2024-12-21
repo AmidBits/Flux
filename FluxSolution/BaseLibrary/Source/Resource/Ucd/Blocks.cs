@@ -10,17 +10,13 @@ namespace Flux.Resources.Ucd
   public sealed partial class Blocks
     : ITabularDataAcquirable
   {
+    [System.Text.RegularExpressions.GeneratedRegex(@"(\.\.|; )", System.Text.RegularExpressions.RegexOptions.ExplicitCapture)]
+    private static partial System.Text.RegularExpressions.Regex SplitRegex();
+
     public static readonly System.Uri Local = new(@"file://\Resources\Ucd\Blocks.txt");
     public static readonly System.Uri Origin = new(@"https://www.unicode.org/Public/UCD/latest/ucd/Blocks.txt");
 
     public System.Uri Uri { get; private set; } = Local;
-
-#if NET7_0_OR_GREATER
-    [System.Text.RegularExpressions.GeneratedRegex(@"(\.\.|; )", System.Text.RegularExpressions.RegexOptions.ExplicitCapture)]
-    private static partial System.Text.RegularExpressions.Regex SplitRegex();
-#else
-        private static System.Text.RegularExpressions.Regex SplitRegex() => new(@"(\.\.|; )");
-#endif
 
     /// <summary>Returns the UCD Blocks information.</summary>
     public static System.Collections.Generic.IEnumerable<string[]> GetData(System.Uri uri)

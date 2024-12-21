@@ -37,33 +37,105 @@ namespace ConsoleApp
 
     #endregion // Presets
 
+    private static void TripletGenerator()
+    {
+
+      var reWhitespace = new System.Text.RegularExpressions.Regex(@"\s+");
+
+      var ttwts = Flux.Resources.ProjectGutenberg.TenThousandWonderfulThings.GetData(Flux.Resources.ProjectGutenberg.TenThousandWonderfulThings.Local);
+
+      var dict3 = new System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>>();
+
+      foreach (var ttwt in ttwts)
+      {
+        var title = ttwt[0];
+        var text = ttwt[1];
+
+        foreach (var triplet in reWhitespace.Split(text).PartitionTuple3(0, (a, b, c, i) => (a, b, c)))
+        {
+          var firstandsecond = $"{triplet.Item1} {triplet.Item2}";
+          var third = $"{triplet.Item3}";
+
+          if (dict3.TryGetValue(firstandsecond, out var threes))
+            threes.Add(third);
+          else
+          {
+            threes = new System.Collections.Generic.List<string>();
+            threes.Add(third);
+            dict3[firstandsecond] = threes;
+          }
+
+        }
+      }
+
+      var textlist = new System.Collections.Generic.List<string>();
+
+
+      for (var i = 0; i < 300; i++)
+      {
+
+        if (textlist.Count == 0 || ($"{textlist[^2]} {textlist[^1]}" is var last && last.EndsWith('.')))
+        {
+          textlist.AddRange(reWhitespace.Split(dict3.Keys.Where(two => char.IsUpper(two[0])).Random()));
+
+          last = $"{textlist[^2]} {textlist[^1]}";
+        }
+
+        try
+        {
+          var next = dict3[last].Random();
+
+          textlist.Add(next);
+        }
+        catch
+        {
+          break;
+        }
+      }
+
+      System.Console.WriteLine(string.Join(" ", textlist));
+
+    }
+
     private static void TimedMain(string[] _)
     {
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
-      var x = Flux.Locale.LocalIPv4Address.GetAddressBytes().AsReadOnlySpan().ReadUInt32(Endianess.LittleEndian);
+      var x = System.Globalization.UnicodeCategory.PrivateUse.ToUnicodeCategoryMajor();
 
-      var pip = Flux.Locale.LocalIPv4Address;
+      var us = "This function contains a unicode character pi (\u03a0)";
 
-      var pips = pip.GetAddressBytes();
+      var usrune = us.ToAsciiWithCsEscapeSequence();
 
-      var pips32 = pips.AsReadOnlySpan().ReadUInt32(Endianess.LittleEndian);
+      //var ip = Flux.Locale.PublicIp;
 
-      var guid = System.Guid.NewGuid();
+      //var bi = ip.ToBigInteger();
 
-      var bytes = guid.ToByteArray();
+      //var ipa = bi.ToIPAddress();
 
-      var first = bytes.AsReadOnlySpan().ReadUInt32(Endianess.LittleEndian);
-      var second = bytes.AsReadOnlySpan(4).ReadUInt16(Endianess.LittleEndian);
-      var third = bytes.AsReadOnlySpan(6).ReadUInt16(Endianess.LittleEndian);
-      var fourth = bytes.AsReadOnlySpan(8).ReadUInt16(Endianess.BigEndian);
-      var fifth = (ulong)bytes.AsReadOnlySpan(10).ReadUInt32(Endianess.BigEndian) << 16 | (ulong)bytes.AsReadOnlySpan(14).ReadUInt16(Endianess.BigEndian);
+      //var x = Flux.Locale.LocalIPv4Address.GetAddressBytes().AsReadOnlySpan().ReadUInt32(Endianess.LittleEndian);
 
-      //Flux.Net.UdpCast.ConsoleChat(Flux.Net.UdpCast.MulticastTestEndPoint);
+      //var pip = Flux.Locale.LocalIPv4Address;
 
-      Flux.Net.NetworkTimeProtocol.TryGetNetworkTimeProtocol(out var ntp);
-      var y = ntp.ReferenceTimestampUtc;
+      //var pips = pip.GetAddressBytes();
+
+      //var pips32 = pips.AsReadOnlySpan().ReadUInt32(Endianess.LittleEndian);
+
+      //var guid = System.Guid.NewGuid();
+
+      //var bytes = guid.ToByteArray();
+
+      //var first = bytes.AsReadOnlySpan().ReadUInt32(Endianess.LittleEndian);
+      //var second = bytes.AsReadOnlySpan(4).ReadUInt16(Endianess.LittleEndian);
+      //var third = bytes.AsReadOnlySpan(6).ReadUInt16(Endianess.LittleEndian);
+      //var fourth = bytes.AsReadOnlySpan(8).ReadUInt16(Endianess.BigEndian);
+      //var fifth = (ulong)bytes.AsReadOnlySpan(10).ReadUInt32(Endianess.BigEndian) << 16 | (ulong)bytes.AsReadOnlySpan(14).ReadUInt16(Endianess.BigEndian);
+
+      ////Flux.Net.UdpCast.ConsoleChat(Flux.Net.UdpCast.MulticastTestEndPoint);
+
+      //Flux.Net.NetworkTimeProtocol.TryGetNetworkTimeProtocol(out var ntp);
+      //var y = ntp.ReferenceTimestampUtc;
     }
 
     #region Eliza example

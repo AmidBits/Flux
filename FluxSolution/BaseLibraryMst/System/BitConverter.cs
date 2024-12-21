@@ -208,7 +208,7 @@ namespace SystemFx
     public void BigEndianReadBoolean()
     {
       bool expected = true;
-      bool actual = new byte[] { 1 }.AsReadOnlySpan().ReadBoolean(Endianess.BigEndian);
+      bool actual = new byte[] { 1 }.AsReadOnlySpan().ReadBoolean();
       Assert.AreEqual(expected, actual);
     }
 
@@ -296,7 +296,7 @@ namespace SystemFx
     public void LittleEndianReadBoolean()
     {
       bool expected = true;
-      bool actual = new byte[] { 1 }.AsReadOnlySpan().ReadBoolean(Endianess.LittleEndian);
+      bool actual = new byte[] { 1 }.AsReadOnlySpan().ReadBoolean();
       Assert.AreEqual(expected, actual);
     }
 

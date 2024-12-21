@@ -496,12 +496,8 @@
         };
       }
 
-#if NET7_0_OR_GREATER
       [System.Text.RegularExpressions.GeneratedRegex(@"(?<Degrees>\d+(\.\d+)?)[^0-9\.]*(?<Minutes>\d+(\.\d+)?)?[^0-9\.]*(?<Seconds>\d+(\.\d+)?)?[^ENWS]*(?<Direction>[ENWS])?")]
       private static partial System.Text.RegularExpressions.Regex ParseDmsRegex();
-#else
-              private static System.Text.RegularExpressions.Regex ParseDmsRegex() => new(@"(?<Degrees>\d+(\.\d+)?)[^0-9\.]*(?<Minutes>\d+(\.\d+)?)?[^0-9\.]*(?<Seconds>\d+(\.\d+)?)?[^ENWS]*(?<Direction>[ENWS])?");
-#endif
 
       public static Angle ParseDms(string degreesMinutesSeconds)
       {

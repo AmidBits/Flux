@@ -3,7 +3,7 @@ namespace Flux
   public static partial class Unicode
   {
     /// <summary>Returns a readonly list with the names and corresponding <see cref="System.Text.Unicode.UnicodeRange"/> objects.</summary>
-    private static System.Collections.Generic.Dictionary<System.Text.Unicode.UnicodeRange, string> GetUnicodeRangeAndNames()
+    private static System.Collections.Generic.Dictionary<System.Text.Unicode.UnicodeRange, string> GetUnicodeRanges()
     {
       var dictionary = new System.Collections.Generic.Dictionary<System.Text.Unicode.UnicodeRange, string>();
 
@@ -15,7 +15,7 @@ namespace Flux
     }
 
     /// <summary>Creates a new sequence with all runes in the <paramref name="unicodeRange"/>.</summary>
-    public static System.Collections.Generic.List<System.Text.Rune> GetRunes(this System.Text.Unicode.UnicodeRange unicodeRange)
+    public static System.Collections.Generic.List<System.Text.Rune> GetRunesInUnicodeRange(this System.Text.Unicode.UnicodeRange unicodeRange)
     {
       var list = new System.Collections.Generic.List<System.Text.Rune>();
 
@@ -27,16 +27,11 @@ namespace Flux
     }
 
     /// <summary>Locates the Unicode range and block name of the <paramref name="character"/>.</summary>
-    public static System.Collections.Generic.KeyValuePair<System.Text.Unicode.UnicodeRange, string> FindUnicodeRange(this System.Char character) => FindUnicodeRange((System.Text.Rune)character);
+    public static System.Collections.Generic.KeyValuePair<System.Text.Unicode.UnicodeRange, string> FindUnicodeRange(this System.Char character)
+      => FindUnicodeRange((System.Text.Rune)character);
 
     /// <summary>Locates the Unicode range and block name of the <paramref name="rune"/>.</summary>
     public static System.Collections.Generic.KeyValuePair<System.Text.Unicode.UnicodeRange, string> FindUnicodeRange(this System.Text.Rune rune)
-    {
-      foreach (var kvp in GetUnicodeRangeAndNames())
-        if (rune.Value >= kvp.Key.FirstCodePoint && rune.Value < (kvp.Key.FirstCodePoint + kvp.Key.Length))
-          return kvp;
-
-      return new(System.Text.Unicode.UnicodeRanges.None, nameof(System.Text.Unicode.UnicodeRanges.None));
-    }
+      => GetUnicodeRanges().FirstOrValue(new(System.Text.Unicode.UnicodeRanges.None, nameof(System.Text.Unicode.UnicodeRanges.None)), (e, i) => rune.Value >= e.Key.FirstCodePoint && rune.Value < (e.Key.FirstCodePoint + e.Key.Length)).Item;
   }
 }

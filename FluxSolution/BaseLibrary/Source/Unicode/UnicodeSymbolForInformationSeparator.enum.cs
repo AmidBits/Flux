@@ -7,14 +7,16 @@
     /// </summary>
     /// <param name="separator"></param>
     /// <returns></returns>
-    public static char GetSeparatorChar(this UnicodeSymbolForInformationSeparator separator) => (char)(int)separator;
+    public static char GetSeparatorChar(this UnicodeSymbolForInformationSeparator separator)
+      => (char)(int)separator;
 
     /// <summary>
     /// <para></para>
     /// </summary>
     /// <param name="separator"></param>
     /// <returns></returns>
-    public static string ToSeparatorString(this UnicodeSymbolForInformationSeparator separator) => separator.GetSeparatorChar().ToString();
+    public static string ToSeparatorString(this UnicodeSymbolForInformationSeparator separator)
+      => separator.GetSeparatorChar().ToString();
 
     /// <summary>
     /// <para>Gets the "<c>Information Separator ..</c>" (control character) of <paramref name="separator"/>.</para>

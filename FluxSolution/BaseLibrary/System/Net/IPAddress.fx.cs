@@ -14,6 +14,7 @@ namespace Flux
       System.ArgumentNullException.ThrowIfNull(source);
 
       var bytes = source.GetAddressBytes();
+
       var words = new short[bytes.Length / 2];
 
       for (var index = 0; index < bytes.Length; index += 2)
@@ -50,7 +51,7 @@ namespace Flux
     /// <param name="subnetMask"></param>
     /// <returns></returns>
     /// <exception cref="System.ArgumentException"></exception>
-    public static System.Net.IPAddress GetNetworkAddress(this System.Net.IPAddress source, System.Net.IPAddress subnetMask)
+    public static System.Net.IPAddress GetNetworkAddressIPv4(this System.Net.IPAddress source, System.Net.IPAddress subnetMask)
     {
       System.ArgumentNullException.ThrowIfNull(source);
       System.ArgumentNullException.ThrowIfNull(subnetMask);
@@ -64,34 +65,6 @@ namespace Flux
       for (var i = 0; i < networkAddress.Length; i++)
         networkAddress[i] = (byte)(sourceBytes[i] & (subnetMaskBytes[i]));
       return new System.Net.IPAddress(networkAddress);
-    }
-
-    /// <summary>
-    /// <para>The lower 64 bits identify the address of the interface or node, and is derived from the actual physical or MAC address using IEEE’s Extended Unique Identifier (EUI-64) format.</para>
-    /// </summary>
-    /// <param name="source"></param>
-    /// <returns></returns>
-    /// <exception cref="System.ArgumentNullException"></exception>
-    /// <exception cref="System.InvalidOperationException"></exception>
-    public static long Get64BitsLowerIPv6(this System.Net.IPAddress source)
-    {
-      System.ArgumentNullException.ThrowIfNull(source);
-
-      return source.AddressFamily == System.Net.Sockets.AddressFamily.InterNetworkV6 ? unchecked((long)(source.ToBigInteger() & 0xFFFFFFFFFFFFFFFF)) : throw new System.InvalidOperationException();
-    }
-
-    /// <summary>
-    /// <para>The upper 64 bits is split into 2 blocks of 48 and 16 bits respectively, where the lower 16 bits are used for subnets on an internal networks, and are controlled by a network administrator.</para>
-    /// </summary>
-    /// <param name="source"></param>
-    /// <returns></returns>
-    /// <exception cref="System.ArgumentNullException"></exception>
-    /// <exception cref="System.InvalidOperationException"></exception>
-    public static long Get64BitsUpperIPv6(this System.Net.IPAddress source)
-    {
-      System.ArgumentNullException.ThrowIfNull(source);
-
-      return source.AddressFamily == System.Net.Sockets.AddressFamily.InterNetworkV6 ? unchecked((long)((source.ToBigInteger() >> 64) & 0xFFFFFFFFFFFFFFFF)) : throw new System.InvalidOperationException();
     }
 
     /// <summary>
@@ -146,13 +119,13 @@ namespace Flux
     /// <para>Indicates whether two addresses are in the same subnet.</para>
     /// <para><see href="https://blogs.msdn.microsoft.com/knom/2008/12/31/ip-address-calculations-with-c-subnetmasks-networks/"/></para>
     /// </summary>
-    public static bool InSameSubnet(this System.Net.IPAddress source, System.Net.IPAddress other, System.Net.IPAddress subnetMask)
+    public static bool InSameSubnetIPv4(this System.Net.IPAddress source, System.Net.IPAddress other, System.Net.IPAddress subnetMask)
     {
       System.ArgumentNullException.ThrowIfNull(source);
       System.ArgumentNullException.ThrowIfNull(other);
       System.ArgumentNullException.ThrowIfNull(subnetMask);
 
-      return source.GetNetworkAddress(subnetMask).Equals(other.GetNetworkAddress(subnetMask));
+      return source.GetNetworkAddressIPv4(subnetMask).Equals(other.GetNetworkAddressIPv4(subnetMask));
     }
 
     /// <summary>
@@ -160,14 +133,12 @@ namespace Flux
     /// </summary>
     /// <param name="source"></param>
     /// <returns></returns>
+    /// <exception cref="System.ArgumentNullException"></exception>
     public static System.Numerics.BigInteger ToBigInteger(this System.Net.IPAddress source)
     {
       System.ArgumentNullException.ThrowIfNull(source);
 
-      var addressBytes = source.GetAddressBytes();
-      System.Array.Reverse(addressBytes);
-
-      return addressBytes.ToBigInteger();
+      return source.GetAddressBytes().AsReadOnlySpan().ReadUInt128(Endianess.LittleEndian);
     }
 
     /// <summary>
@@ -175,21 +146,17 @@ namespace Flux
     /// </summary>
     /// <param name="source"></param>
     /// <returns></returns>
+    /// <exception cref="System.ArgumentNullException"></exception>
     /// <exception cref="System.ArgumentOutOfRangeException"></exception>
     public static System.Net.IPAddress ToIPAddress(this System.Numerics.BigInteger source)
     {
       System.ArgumentNullException.ThrowIfNull(source);
 
-      var maxValueIPv6 = System.Numerics.BigInteger.Parse(@"340282366920938463463374607431768211456", System.Globalization.NumberStyles.Integer, System.Globalization.CultureInfo.CurrentCulture);
+      var bytes = new byte[source >= 0 && source <= System.UInt64.MaxValue ? 4 : source > System.UInt64.MaxValue && source <= System.UInt128.MaxValue ? 16 : throw new System.ArgumentOutOfRangeException(nameof(source))];
 
-      if (source < 0 || source > maxValueIPv6) throw new System.ArgumentOutOfRangeException(nameof(source));
+      System.UInt128.CreateChecked(source).WriteBytes(bytes, Endianess.LittleEndian);
 
-      var byteArray = source.ToByteArrayEx(out var _);
-      if (byteArray.Length < 4)
-        System.Array.Resize(ref byteArray, 4);
-      System.Array.Reverse(byteArray);
-
-      return new System.Net.IPAddress(byteArray);
+      return new System.Net.IPAddress(bytes);
     }
   }
 }

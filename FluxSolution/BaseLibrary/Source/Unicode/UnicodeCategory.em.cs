@@ -2,28 +2,32 @@ namespace Flux
 {
   public static partial class Unicode
   {
-    public static System.Collections.Generic.IEnumerable<char> GetRunes(this System.Globalization.UnicodeCategory unicodeCategory)
+    /// <summary>
+    /// <para>Creates a new sequence with all runes in a <see cref="System.Globalization.UnicodeCategory"/>.</para>
+    /// </summary>
+    /// <param name="unicodeCategory"></param>
+    /// <returns></returns>
+    public static System.Collections.Generic.List<System.Text.Rune> GetRunesInUnicodeCategory(this System.Globalization.UnicodeCategory unicodeCategory)
     {
+      var list = new System.Collections.Generic.List<System.Text.Rune>();
+
       for (var i = 0; i <= 0x10FFFF; i++)
-        if (System.Text.Rune.IsValid(i))
-          if (System.Globalization.CharUnicodeInfo.GetUnicodeCategory(i) == unicodeCategory)
-            yield return (char)i;
+        if (System.Text.Rune.IsValid(i) && new System.Text.Rune(i) is var rune)
+          if (System.Text.Rune.GetUnicodeCategory(rune) == unicodeCategory)
+            list.Add(rune);
+
+      return list;
     }
 
     /// <summary>Translates a <see cref="System.Globalization.UnicodeCategory"/> enum value (<paramref name="unicodeCategory"/>) into a <see cref="UnicodeCategoryMajor"/> enum value.</summary>
     /// <example>var allCharactersByCategoryMajorLabel = Unicode.GetUnicodeCategoryCharacters().GroupBy(kv => kv.Key.ToCategoryMajorLabel()).ToDictionary(g => g.Key, g => g.SelectMany(kv => kv.Value).ToList());</example>
+
     public static UnicodeCategoryMajor ToUnicodeCategoryMajor(this System.Globalization.UnicodeCategory unicodeCategory)
-      => unicodeCategory switch
-      {
-        System.Globalization.UnicodeCategory.LowercaseLetter or System.Globalization.UnicodeCategory.ModifierLetter or System.Globalization.UnicodeCategory.OtherLetter or System.Globalization.UnicodeCategory.TitlecaseLetter or System.Globalization.UnicodeCategory.UppercaseLetter => UnicodeCategoryMajor.Letter,
-        System.Globalization.UnicodeCategory.SpacingCombiningMark or System.Globalization.UnicodeCategory.EnclosingMark or System.Globalization.UnicodeCategory.NonSpacingMark => UnicodeCategoryMajor.Mark,
-        System.Globalization.UnicodeCategory.DecimalDigitNumber or System.Globalization.UnicodeCategory.LetterNumber or System.Globalization.UnicodeCategory.OtherNumber => UnicodeCategoryMajor.Number,
-        System.Globalization.UnicodeCategory.ConnectorPunctuation or System.Globalization.UnicodeCategory.DashPunctuation or System.Globalization.UnicodeCategory.ClosePunctuation or System.Globalization.UnicodeCategory.FinalQuotePunctuation or System.Globalization.UnicodeCategory.InitialQuotePunctuation or System.Globalization.UnicodeCategory.OtherPunctuation or System.Globalization.UnicodeCategory.OpenPunctuation => UnicodeCategoryMajor.Punctuation,
-        System.Globalization.UnicodeCategory.CurrencySymbol or System.Globalization.UnicodeCategory.ModifierSymbol or System.Globalization.UnicodeCategory.MathSymbol or System.Globalization.UnicodeCategory.OtherSymbol => UnicodeCategoryMajor.Symbol,
-        System.Globalization.UnicodeCategory.LineSeparator or System.Globalization.UnicodeCategory.ParagraphSeparator or System.Globalization.UnicodeCategory.SpaceSeparator => UnicodeCategoryMajor.Separator,
-        System.Globalization.UnicodeCategory.Control or System.Globalization.UnicodeCategory.Format or System.Globalization.UnicodeCategory.OtherNotAssigned or System.Globalization.UnicodeCategory.PrivateUse or System.Globalization.UnicodeCategory.Surrogate => UnicodeCategoryMajor.Other,
-        _ => throw new System.ArgumentOutOfRangeException(nameof(unicodeCategory)),
-      };
+    {
+      var unicodeCategoryName = unicodeCategory.ToString();
+
+      return System.Enum.GetValues<UnicodeCategoryMajor>().FirstOrValue(UnicodeCategoryMajor.Other, (ucm, i) => unicodeCategoryName.EndsWith(ucm.ToString())).Item;
+    }
 
     /// <summary>Translates a <see cref="System.Globalization.UnicodeCategory"/> enum value (<paramref name="unicodeCategory"/>) into a <see cref="UnicodeCategoryMajorMinor"/> enum value.</summary>
     public static UnicodeCategoryMajorMinor ToUnicodeCategoryMajorMinor(this System.Globalization.UnicodeCategory unicodeCategory) => (UnicodeCategoryMajorMinor)unicodeCategory;

@@ -2,12 +2,8 @@ namespace Flux
 {
   public static partial class Fx
   {
-#if NET7_0_OR_GREATER
     [System.Text.RegularExpressions.GeneratedRegex(@"^(?'letter'\p{L})+\p{L}?(?:\k'letter'(?'-letter'))+(?(letter)(?!))$")]
     public static partial System.Text.RegularExpressions.Regex PalindromeRegex();
-#else
-    private static System.Text.RegularExpressions.Regex PalindromeRegex() => new(@"^(?'letter'\p{L})+\p{L}?(?:\k'letter'(?'-letter'))+(?(letter)(?!))$");
-#endif
 
     /// <summary>Matches palindromes of any length.</summary>
     /// <see href="https://www.regular-expressions.info/balancing.html"/>

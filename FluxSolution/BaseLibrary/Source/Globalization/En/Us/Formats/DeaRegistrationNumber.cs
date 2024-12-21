@@ -5,12 +5,8 @@ namespace Flux.Globalization.En.Us
   /// <see href="https://en.wikipedia.org/wiki/DEA_number"/>
   public partial record struct DeaRegistrationNumber
   {
-#if NET7_0_OR_GREATER
     [System.Text.RegularExpressions.GeneratedRegex(@"(?<RegistrantType>[ABCDEFGHJKLMPRSTUX])(?<RegistrantLastNameOr9>[A-Z9])(?<Digits>[0-9]{6})(?<Checksum>[0-9])(\-(?<AffixedID>.+))?", System.Text.RegularExpressions.RegexOptions.Compiled)]
     private static partial System.Text.RegularExpressions.Regex MatchingRegex();
-#else
-    private static System.Text.RegularExpressions.Regex MatchingRegex() => new(@"(?<RegistrantType>[ABCDEFGHJKLMPRSTUX])(?<RegistrantLastNameOr9>[A-Z9])(?<Digits>[0-9]{6})(?<Checksum>[0-9])(\-(?<AffixedID>.+))?");
-#endif
 
     ///// <summary>A DEA number (DEA Registration Number) is an identifier assigned to a health care provider (such as a physician, optometrist, dentist, or veterinarian) by the United States Drug Enforcement Administration allowing them to write prescriptions for controlled substances.</summary>
     ///// <see href="https://en.wikipedia.org/wiki/DEA_number"/>

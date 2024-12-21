@@ -38,25 +38,35 @@ namespace Flux
     };
 
     /// <summary>Determines whether the <paramref name="source"/> is a latin diacritical stroke, and outputs the <paramref name="replacementChar"/>.</summary>
-    public static bool IsUnicodeLatinStroke(this char source, out char replacementChar) => source != (replacementChar = ReplaceUnicodeLatinStroke(source));
+    public static bool IsUnicodeLatinStroke(this char source, out char replacement)
+      => LatinStrokes.TryGetValue(source, out replacement);
 
     /// <summary>Determines whether the character is a latin diacritical stroke.</summary>
-    public static bool IsUnicodeLatinStroke(this System.Text.Rune source, out System.Text.Rune replacementRune) => source != (replacementRune = ReplaceUnicodeLatinStroke(source));
+    public static bool IsUnicodeLatinStroke(this System.Text.Rune source, out System.Text.Rune replacement)
+    {
+      var iuls = LatinStrokes.TryGetValue((char)source.Value, out var replacementChar);
+
+      replacement = iuls ? (System.Text.Rune)replacementChar : source;
+
+      return iuls;
+    }
 
     /// <summary>Replaces a character with diacritical latin stroke with the closest 'plain' character, i.e. a character without a diacritic is returned in its place. Characters without latin strokes are returned as-is.</summary>
     /// <remarks>These are characters that are not (necessarily) identified in .NET.</remarks>
-    public static char ReplaceUnicodeLatinStroke(this char source) => LatinStrokes.TryGetValue(source, out var replacement) ? replacement : source;
+    public static char ReplaceUnicodeLatinStroke(this char source, out bool replaced)
+      => (replaced = LatinStrokes.TryGetValue(source, out var replacement)) ? replacement : source;
 
     /// <summary>Replaces a character with diacritical latin stroke with the closest 'plain' character, i.e. a character without a diacritic is returned in its place. Characters without latin strokes are returned as-is.</summary>
     /// <remarks>These are characters that are not (necessarily) identified in .NET.</remarks>
-    public static System.Text.Rune ReplaceUnicodeLatinStroke(this System.Text.Rune source) => (System.Text.Rune)ReplaceUnicodeLatinStroke((char)source.Value);
+    public static System.Text.Rune ReplaceUnicodeLatinStroke(this System.Text.Rune source, out bool replaced)
+      => (replaced = LatinStrokes.TryGetValue((char)source.Value, out var replacement)) ? (System.Text.Rune)replacement : source;
 
     /// <summary>In-place replacement of diacritical latin strokes which are not covered by the normalization forms in NET. Can be done in-place because the diacritical latin stroke characters and their replacements are all exactly a single char.</summary>
     public static System.Span<char> ReplaceUnicodeLatinStrokes(this System.Span<char> source)
     {
       for (var index = 0; index < source.Length; index++)
-        if (IsUnicodeLatinStroke(source[index], out var rc))
-          source[index] = rc;
+        if (LatinStrokes.TryGetValue(source[index], out var replacement))
+          source[index] = replacement;
 
       return source;
     }
@@ -65,8 +75,8 @@ namespace Flux
     public static System.Span<System.Text.Rune> ReplaceUnicodeLatinStrokes(this System.Span<System.Text.Rune> source)
     {
       for (var index = 0; index < source.Length; index++)
-        if (IsUnicodeLatinStroke(source[index], out var rc))
-          source[index] = rc;
+        if (LatinStrokes.TryGetValue((char)(source[index].Value), out var replacement))
+          source[index] = (System.Text.Rune)replacement;
 
       return source;
     }
@@ -77,8 +87,8 @@ namespace Flux
       System.ArgumentNullException.ThrowIfNull(source);
 
       for (var index = source.Length - 1; index >= 0; index--)
-        if (IsUnicodeLatinStroke(source[index], out var rc))
-          source[index] = rc;
+        if (LatinStrokes.TryGetValue(source[index], out var replacement))
+          source[index] = replacement;
 
       return source;
     }

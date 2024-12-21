@@ -1,5 +1,3 @@
-using System.Linq;
-
 namespace Flux.Services
 {
   public sealed class FileLog

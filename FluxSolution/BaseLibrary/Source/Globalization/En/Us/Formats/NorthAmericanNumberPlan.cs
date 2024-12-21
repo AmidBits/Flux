@@ -4,12 +4,8 @@ namespace Flux.Globalization.En.Us
   /// <see href="https://en.wikipedia.org/wiki/North_American_Numbering_Plan"/>
   public partial record struct NorthAmericanNumberingPlan
   {
-#if NET7_0_OR_GREATER
     [System.Text.RegularExpressions.GeneratedRegex(@"(?<!\d)(?<CC>1)?[\s\-\.]*?(?<NPA>[2-9][0-9]{2})?[\s\-\.]*?(?<NXX>[2-9][0-9]{2})[\s\-\.]*?(?<XXXX>[0-9]{4})(?!\d)", System.Text.RegularExpressions.RegexOptions.Compiled)]
     private static partial System.Text.RegularExpressions.Regex MatchingRegex();
-#else
-    private static System.Text.RegularExpressions.Regex MatchingRegex() => new(@"(?<!\d)(?<CC>1)?[\s\-\.]*?(?<NPA>[2-9][0-9]{2})?[\s\-\.]*?(?<NXX>[2-9][0-9]{2})[\s\-\.]*?(?<XXXX>[0-9]{4})(?!\d)");
-#endif
 
     public string CC { get; private set; }
     public string NPA { get; private set; }

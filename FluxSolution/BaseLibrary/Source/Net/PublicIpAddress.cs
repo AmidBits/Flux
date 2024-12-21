@@ -2,9 +2,9 @@ namespace Flux
 {
   public static class PublicIpAddress
   {
-    public static System.Collections.Generic.IReadOnlyList<System.Uri> Hosts { get; } = [new System.Uri("https://api.ipify.org"), new System.Uri("https://ipinfo.io/ip"), new System.Uri("https://checkip.amazonaws.com")];
+    public static System.Collections.Generic.IReadOnlyList<string> Hosts { get; } = ["https://api.ipify.org", "https://ipinfo.io/ip", "https://checkip.amazonaws.com"];
 
-    public static bool TryGetIPAddress(System.Uri host, out System.Net.IPAddress result)
+    public static bool TryGetIPAddress(string host, out System.Net.IPAddress result)
     {
       try
       {

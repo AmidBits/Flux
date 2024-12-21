@@ -17,19 +17,11 @@ namespace Flux.Net
   public sealed partial class UdpCast
     : Disposable
   {
-#if NET7_0_OR_GREATER
     [System.Text.RegularExpressions.GeneratedRegex(@"255\.255\.255\.255")]
     private static partial System.Text.RegularExpressions.Regex BroadcastRegex();
-#else
-    private static System.Text.RegularExpressions.Regex BroadcastRegex() => new(@"255\.255\.255\.255");
-#endif
 
-#if NET7_0_OR_GREATER
     [System.Text.RegularExpressions.GeneratedRegex(@"2(?:2[4-9]|3\d)(?:\.(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]\d?|0)){3}")]
     private static partial System.Text.RegularExpressions.Regex MulticastRegex();
-#else
-    private static System.Text.RegularExpressions.Regex MulticastRegex() => new(@"2(?:2[4-9]|3\d)(?:\.(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]\d?|0)){3}");
-#endif
 
     private static readonly System.Threading.Mutex mutex = new();
     //private static readonly System.Text.RegularExpressions.Regex m_regexMulticast = new(@"2(?:2[4-9]|3\d)(?:\.(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]\d?|0)){3}");

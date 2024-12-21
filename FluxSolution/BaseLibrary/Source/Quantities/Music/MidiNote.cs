@@ -111,12 +111,8 @@ namespace Flux.Quantities
     /// <returns></returns>
     public static string GetSymbolSharpString(bool preferUnicode = false) => preferUnicode ? "\u266F" : "#";
 
-#if NET7_0_OR_GREATER
     [System.Text.RegularExpressions.GeneratedRegex(@"^([^0-9\-]+)([\-0-9]+)$")]
     private static partial System.Text.RegularExpressions.Regex ScientificPitchNotationRegex();
-#else
-    private static System.Text.RegularExpressions.Regex ScientificPitchNotationRegex() => new(@"^([^0-9\-]+)([\-0-9]+)$");
-#endif
 
     /// <summary>
     /// <para>Parse the specified SPN string into a MIDI note.</para>

@@ -5,6 +5,9 @@ namespace Flux
     [System.Text.RegularExpressions.GeneratedRegex(@"(?<Prefix>\\u|\\x)(?<Number>[0-9a-f]{1,8})", System.Text.RegularExpressions.RegexOptions.IgnoreCase)]
     private static partial System.Text.RegularExpressions.Regex RegexParseCsEscapeSequence();
 
+    public static string ToAsciiWithCsEscapeSequence(this string text)
+      => string.Concat(text.EnumerateRunes().Select(r => r.Value <= System.Byte.MaxValue ? char.ConvertFromUtf32(r.Value) : $"\\u{r.Value:X4}"));
+
     /// <summary>
     /// <para>Replace all C# escape sequences with the result of the <paramref name="replaceSelector"/>.</para>
     /// </summary>
@@ -30,13 +33,7 @@ namespace Flux
     /// <returns></returns>
     /// <exception cref="NotImplementedException"></exception>
     public static string ToCsEscapeSequenceString(this char character, CsEscapeSequence format)
-      => format switch
-      {
-        CsEscapeSequence.UTF16 => $@"\u{(int)character:X4}",
-        CsEscapeSequence.UTF32 => $@"\U{(int)character:X8}",
-        CsEscapeSequence.Variable => $@"\x{(int)character:X2}",
-        _ => throw new NotImplementedException(),
-      };
+      => ((System.Text.Rune)character).ToCsEscapeSequenceString(format);
 
     /// <summary>
     /// <para>Convert the <paramref name="rune"/> (Unicode codepoint) to a C# escape sequence, i.e. "\uhhhh" (four hex characters, for UTF-16 size), "\U00HHHHHH" (eight hex characters, for UTF-32 size), or "\x[H][H][H][H].</para>

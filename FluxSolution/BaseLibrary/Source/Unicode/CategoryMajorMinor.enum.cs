@@ -4,7 +4,7 @@ namespace Flux
   {
     /// <summary>Parses two characters as representing Unicode category major and minor.</summary>
     public static UnicodeCategoryMajorMinor ParseUnicodeCategoryMajorMinor(this char unicodeCategoryMajor, char unicodeCategoryMinor)
-      => ((UnicodeCategoryMajorMinor)System.Enum.Parse(typeof(UnicodeCategoryMajorMinor), $"{unicodeCategoryMajor}{unicodeCategoryMinor}", true));
+      => ((UnicodeCategoryMajorMinor)System.Enum.Parse<UnicodeCategoryMajorMinor>($"{unicodeCategoryMajor}{unicodeCategoryMinor}", true));
 
     /// <summary>Tries to parse the beginning of a string as Unicode category major and minor.</summary>
     public static bool TryParseUnicodeCategoryMajorMinor(this char unicodeCategoryMajor, char unicodeCategoryMinor, out UnicodeCategoryMajorMinor result)

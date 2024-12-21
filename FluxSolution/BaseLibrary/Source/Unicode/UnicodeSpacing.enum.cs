@@ -2,9 +2,11 @@
 {
   public static partial class Unicode
   {
-    public static string ToSpacingString(this UnicodeSpacing spacing) => spacing == UnicodeSpacing.None ? string.Empty : ((char)(int)spacing).ToString();
+    public static string ToSpacingString(this UnicodeSpacing spacing)
+      => spacing == UnicodeSpacing.None ? string.Empty : ((char)(int)spacing).ToString();
 
-    public static bool TryGetSpacingChar(this UnicodeSpacing spacing, out char spaceChar) => (spaceChar = (char)(int)spacing) != '\0';
+    public static bool TryGetSpacingChar(this UnicodeSpacing spacing, out char spaceChar)
+      => (spaceChar = (char)(int)spacing) != '\0';
   }
 
   /// <summary>
