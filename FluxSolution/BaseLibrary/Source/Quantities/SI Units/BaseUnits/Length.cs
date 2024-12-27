@@ -5,31 +5,34 @@ namespace Flux.Quantities
     /// <summary>This is the default unit for <see cref="Length"/>.</summary>
     Meter,
     /// <summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Astronomical_unit"/>
+    /// <see href="https://en.wikipedia.org/wiki/Astronomical_unit"/>
     /// </summary>
     AstronomicalUnit,
     /// <summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Fathom"/>
+    /// <see href="https://en.wikipedia.org/wiki/Fathom"/>
     /// </summary>
-    InternationalFathom,
+    Fathom,
     Foot,
     Inch,
-    InternationalMile,
     /// <summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Nautical_mile"/>
+    /// <see href="https://en.wikipedia.org/wiki/Mile"/>
+    /// </summary>
+    Mile,
+    /// <summary>
+    /// <see href="https://en.wikipedia.org/wiki/Nautical_mile"/>
     /// </summary>
     NauticalMile,
     /// <summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Parsec"/>
+    /// <see href="https://en.wikipedia.org/wiki/Parsec"/>
     /// </summary>
     Parsec,
     /// <summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Twip"/>
+    /// <see href="https://en.wikipedia.org/wiki/Twip"/>
     /// </summary>
     Twip,
     Yard,
     /// <summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Angstrom"/>
+    /// <see href="https://en.wikipedia.org/wiki/Angstrom"/>
     /// </summary>
     Ångström,
   }
@@ -249,8 +252,8 @@ namespace Flux.Quantities
         LengthUnit.AstronomicalUnit => 149597870700,
         LengthUnit.Foot => 0.3048,
         LengthUnit.Inch => 0.0254,
-        LengthUnit.InternationalFathom => 1.8288,
-        LengthUnit.InternationalMile => 1609.344,
+        LengthUnit.Fathom => 1.8288,
+        LengthUnit.Mile => 1609.344,
         LengthUnit.NauticalMile => 1852,
         LengthUnit.Parsec => 30856775814913672,
         LengthUnit.Twip => 1 / 1.7639E-5,
@@ -267,10 +270,10 @@ namespace Flux.Quantities
        LengthUnit.Meter => "m",
 
        LengthUnit.AstronomicalUnit => preferUnicode ? "\u3373" : "au",
-       LengthUnit.InternationalFathom => "ftm",
+       LengthUnit.Fathom => "ftm",
        LengthUnit.Foot => "ft",
        LengthUnit.Inch => preferUnicode ? "\u33CC" : "in",
-       LengthUnit.InternationalMile => "mi",
+       LengthUnit.Mile => "mi",
        LengthUnit.NauticalMile => "nmi", // There is no single internationally agreed symbol. Others used are "N", "NM", "nmi" and "nm".
        LengthUnit.Parsec => preferUnicode ? "\u3376" : "pc",
        LengthUnit.Twip => "twip",
@@ -283,7 +286,11 @@ namespace Flux.Quantities
     public double GetUnitValue(LengthUnit unit) => ConvertToUnit(unit, m_value);
 
     public string ToUnitString(LengthUnit unit = LengthUnit.Meter, string? format = null, System.IFormatProvider? formatProvider = null, bool fullName = false)
-      => GetUnitValue(unit).ToString(format, formatProvider) + UnicodeSpacing.Space.ToSpacingString() + (fullName ? GetUnitName(unit, GetUnitValue(unit).IsConsideredPlural()) : GetUnitSymbol(unit, false));
+    {
+      var value = GetUnitValue(unit);
+
+      return value.ToString(format, formatProvider) + UnicodeSpacing.Space.ToSpacingString() + (fullName ? GetUnitName(unit, value.IsConsideredPlural()) : GetUnitSymbol(unit, false));
+    }
 
     #endregion // IUnitValueQuantifiable<>
 

@@ -1,7 +1,5 @@
 ﻿namespace Flux
 {
-  // Unconditional specialty rounding.
-
   public static partial class Fx
   {
     /// <summary>
@@ -13,12 +11,12 @@
     /// <param name="powOfTowardsZero">Outputs the power-of-<paramref name="radix"/> of that is closer to zero.</param>
     /// <param name="powOfAwayFromZero">Outputs the power-of-<paramref name="radix"/> of that is farther from zero.</param>
     /// <returns>The nearest two power-of-<paramref name="radix"/> as out parameters and the the nearest of those two is returned.</returns>
-    public static TNumber RoundToPowOf<TNumber, TRadix>(this TNumber number, TRadix radix, bool unequal, UniversalRounding mode, out TNumber powOfTowardsZero, out TNumber powOfAwayFromZero)
+    public static TNumber PowOf<TNumber, TRadix>(this TNumber number, TRadix radix, bool unequal, UniversalRounding mode, out TNumber powOfTowardsZero, out TNumber powOfAwayFromZero)
       where TNumber : System.Numerics.INumber<TNumber>
       where TRadix : System.Numerics.IBinaryInteger<TRadix>
     {
-      powOfTowardsZero = number.RoundToPowOfTowardZero(radix, unequal);
-      powOfAwayFromZero = number.RoundToPowOfAwayFromZero(radix, unequal);
+      powOfTowardsZero = number.PowOfTowardZero(radix, unequal);
+      powOfAwayFromZero = number.PowOfAwayFromZero(radix, unequal);
 
       return number.RoundToNearest(mode, powOfTowardsZero, powOfAwayFromZero);
     }
@@ -32,7 +30,7 @@
     /// <param name="radix"></param>
     /// <param name="unequal"></param>
     /// <returns></returns>
-    public static TNumber RoundToPowOfAwayFromZero<TNumber, TRadix>(this TNumber number, TRadix radix, bool unequal = false)
+    public static TNumber PowOfAwayFromZero<TNumber, TRadix>(this TNumber number, TRadix radix, bool unequal = false)
       where TNumber : System.Numerics.INumber<TNumber>
       where TRadix : System.Numerics.IBinaryInteger<TRadix>
       => TNumber.CreateChecked(Quantities.Radix.AssertMember(radix)) is var r && TNumber.IsZero(number)
@@ -48,7 +46,7 @@
     /// <param name="radix"></param>
     /// <param name="unequal"></param>
     /// <returns></returns>
-    public static TNumber RoundToPowOfTowardZero<TNumber, TRadix>(this TNumber number, TRadix radix, bool unequal = false)
+    public static TNumber PowOfTowardZero<TNumber, TRadix>(this TNumber number, TRadix radix, bool unequal = false)
       where TNumber : System.Numerics.INumber<TNumber>
       where TRadix : System.Numerics.IBinaryInteger<TRadix>
       => TNumber.CreateChecked(Quantities.Radix.AssertMember(radix)) is var r && TNumber.IsZero(number)

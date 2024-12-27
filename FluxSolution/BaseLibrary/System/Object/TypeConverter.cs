@@ -1,11 +1,11 @@
 namespace Flux
 {
-  public static partial class Convert
+  public static partial class Fx
   {
     /// <summary>Complement the built-in TypeConverter system.</summary>
     /// <see href="https://docs.microsoft.com/en-us/dotnet/api/system.componentmodel.typeconverter"/>
     /// <remarks>This is the method used in the static property <see cref="m_typeConverterOfT"/>.</remarks>
-    public static T? TypeConverter<T>(object value, System.Globalization.CultureInfo? culture = null)
+    public static T? TypeConverter<T>(this object value, System.Globalization.CultureInfo? culture = null)
     {
       System.ArgumentNullException.ThrowIfNull(value);
 
@@ -30,7 +30,7 @@ namespace Flux
       throw new System.NotSupportedException(@"No type converter found.");
     }
     /// <summary>Complement the built-in TypeConverter system using the Try paradigm.</summary>
-    public static bool TryTypeConverter<T>(object value, out T? result, System.Globalization.CultureInfo? culture = null)
+    public static bool TryTypeConverter<T>(this object value, out T? result, System.Globalization.CultureInfo? culture = null)
     {
       try
       {
@@ -46,7 +46,7 @@ namespace Flux
     private static readonly System.Reflection.MethodInfo m_typeConverterOfT = System.Linq.Enumerable.Single(typeof(Convert).GetMethods(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static), mi => mi.IsGenericMethod && mi.Name.Equals(nameof(TypeConverter), System.StringComparison.Ordinal) && mi.GetParameters().Length == 2);
 
     /// <summary>Complement the built-in TypeConverter system.</summary>
-    public static object TypeConverter(object value, System.Globalization.CultureInfo? culture, params System.Type[] conversionSequence)
+    public static object TypeConverter(this object value, System.Globalization.CultureInfo? culture, params System.Type[] conversionSequence)
     {
       var parameters = new object[] { value ?? throw new System.ArgumentNullException(nameof(value)), culture! };
 
@@ -62,7 +62,7 @@ namespace Flux
       return result!;
     }
     /// <summary>Complement the built-in TypeConverterfunctionality with a sequential conversion chain using the Try paradigm.</summary>
-    public static bool TryTypeConverter(object value, out object result, System.Globalization.CultureInfo? culture, params System.Type[] conversionSequence)
+    public static bool TryTypeConverter(this object value, out object result, System.Globalization.CultureInfo? culture, params System.Type[] conversionSequence)
     {
       try
       {

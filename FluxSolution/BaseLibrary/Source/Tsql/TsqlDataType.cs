@@ -55,6 +55,7 @@ namespace Flux.Data
       => ansi ? Name.Wrap('"', '"') : Name.Wrap('[', ']');
 
     #region Static members
+
     public static bool IsDataTypeName(string text)
       => Fx.GetFieldInfos(typeof(TsqlDataType)).Where(fi => fi.IsConstant()).Select(fi => fi.GetValue(null)).Where(v => v is string).Contains(text);
 
@@ -313,11 +314,9 @@ namespace Flux.Data
       _ => throw new System.ArgumentOutOfRangeException(nameof(tsqlDataTypeName))
     };
 
-    #endregion Static members
+    #endregion // Static members
 
-    #region Object overrides
     public override readonly string ToString() => $"{GetType().Name} {{ Name = {Name} }}";
-    #endregion Object overrides
   }
 }
 

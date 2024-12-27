@@ -1,5 +1,3 @@
-using System.Linq;
-
 namespace Flux.Data
 {
   public static partial class ExtensionMethods
@@ -171,8 +169,6 @@ namespace Flux.Data
     }
     #endregion Static methods
 
-    #region Object overrides
     public readonly override string ToString() => $"{GetType().Name} {{ Name = {QualifiedNameQuoted(4)} }}";
-    #endregion Object overrides
   }
 }

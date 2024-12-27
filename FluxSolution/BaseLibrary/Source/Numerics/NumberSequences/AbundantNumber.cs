@@ -10,7 +10,7 @@ namespace Flux
     /// <returns></returns>
     public static System.Collections.Generic.IEnumerable<(TSelf Number, TSelf Sum)> GetAbundantNumbers<TSelf>()
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      => Flux.Iteration.LoopCustom<TSelf>(() => TSelf.CreateChecked(3), (e, i) => true, (e, i) => e + TSelf.One).AsParallel().AsOrdered().Select(n => (n, sum: n.Factors(false).Sum() - n)).Where(x => x.sum > x.n);
+      => TSelf.CreateChecked(3).LoopCustom<TSelf>((e, i) => true, (e, i) => e + TSelf.One).AsParallel().AsOrdered().Select(n => (n, sum: n.Factors(false).Sum() - n)).Where(x => x.sum > x.n);
     //=> Enumerable.Loop(() => (System.Numerics.BigInteger)3, e => true, e => e + 1, e => e).AsParallel().AsOrdered().Select(n => (n, sum: NumberSequences.Factors.GetSumOfDivisors(n) - n)).Where(x => x.sum > x.n);
 
     /// <summary>

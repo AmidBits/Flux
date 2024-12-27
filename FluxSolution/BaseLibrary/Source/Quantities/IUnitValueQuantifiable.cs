@@ -4,15 +4,23 @@
 
   public static partial class Em
   {
-    public static System.Collections.Generic.Dictionary<TUnit, string> ToStringsOfAllUnits<TValue, TUnit>(this IUnitValueQuantifiable<TValue, TUnit> source, string? format = null, System.IFormatProvider? formatProvider = null, bool preferUnicode = false, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool useFullName = false)
-      where TValue : System.Numerics.INumber<TValue> // struct, System.IEquatable<TValue>, System.IComparable<TValue>
+    public static System.Collections.Generic.Dictionary<TUnit, TValue> GetUnitValueAll<TValue, TUnit>(this IUnitValueQuantifiable<TValue, TUnit> source)
+      where TValue : System.IEquatable<TValue>
+      where TUnit : System.Enum
+    {
+      var d = new System.Collections.Generic.Dictionary<TUnit, TValue>();
+      foreach (TUnit unit in System.Enum.GetValues(typeof(TUnit)))
+        d.Add(unit, source.GetUnitValue(unit));
+      return d;
+    }
+
+    public static System.Collections.Generic.Dictionary<TUnit, string> ToUnitStringAll<TValue, TUnit>(this IUnitValueQuantifiable<TValue, TUnit> source, string? format = null, System.IFormatProvider? formatProvider = null, bool preferUnicode = false, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool useFullName = false)
+      where TValue : System.IEquatable<TValue>
       where TUnit : System.Enum
     {
       var d = new System.Collections.Generic.Dictionary<TUnit, string>();
-
       foreach (TUnit unit in System.Enum.GetValues(typeof(TUnit)))
-        d.Add(unit, source.ToUnitString(unit, format, formatProvider, false));
-
+        d.Add(unit, source.ToUnitString(unit, format, formatProvider, useFullName));
       return d;
     }
   }

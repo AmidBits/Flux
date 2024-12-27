@@ -3,7 +3,7 @@ namespace Flux
   public static partial class Unicode
   {
     /// <summary>Returns a readonly list with the names and corresponding <see cref="System.Text.Unicode.UnicodeRange"/> objects.</summary>
-    private static System.Collections.Generic.Dictionary<System.Text.Unicode.UnicodeRange, string> GetUnicodeRanges()
+    private static System.Collections.Generic.Dictionary<System.Text.Unicode.UnicodeRange, string> GetAllUnicodeRanges()
     {
       var dictionary = new System.Collections.Generic.Dictionary<System.Text.Unicode.UnicodeRange, string>();
 
@@ -32,6 +32,6 @@ namespace Flux
 
     /// <summary>Locates the Unicode range and block name of the <paramref name="rune"/>.</summary>
     public static System.Collections.Generic.KeyValuePair<System.Text.Unicode.UnicodeRange, string> FindUnicodeRange(this System.Text.Rune rune)
-      => GetUnicodeRanges().FirstOrValue(new(System.Text.Unicode.UnicodeRanges.None, nameof(System.Text.Unicode.UnicodeRanges.None)), (e, i) => rune.Value >= e.Key.FirstCodePoint && rune.Value < (e.Key.FirstCodePoint + e.Key.Length)).Item;
+      => GetAllUnicodeRanges().FirstOrValue(new(System.Text.Unicode.UnicodeRanges.None, nameof(System.Text.Unicode.UnicodeRanges.None)), (e, i) => rune.Value >= e.Key.FirstCodePoint && rune.Value < (e.Key.FirstCodePoint + e.Key.Length)).Item;
   }
 }

@@ -39,7 +39,6 @@ namespace ConsoleApp
 
     private static void TripletGenerator()
     {
-
       var reWhitespace = new System.Text.RegularExpressions.Regex(@"\s+");
 
       var ttwts = Flux.Resources.ProjectGutenberg.TenThousandWonderfulThings.GetData(Flux.Resources.ProjectGutenberg.TenThousandWonderfulThings.Local);
@@ -101,6 +100,9 @@ namespace ConsoleApp
     {
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
+
+      var l = new Flux.Quantities.Length(1, LengthUnit.Parsec);
+      System.Console.WriteLine(string.Join(System.Environment.NewLine, l.ToUnitStringAll()));
 
       var x = System.Globalization.UnicodeCategory.PrivateUse.ToUnicodeCategoryMajor();
 

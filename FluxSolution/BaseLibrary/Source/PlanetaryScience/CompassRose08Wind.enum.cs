@@ -12,13 +12,13 @@ namespace Flux
   /// <see href="https://en.wikipedia.org/wiki/Points_of_the_compass#8-wind_compass_rose"/>
   public enum CompassRose08Wind
   {
-    N = CompassRose16Wind.N,
-    NE = CompassRose16Wind.NE,
-    E = CompassRose16Wind.E,
-    SE = CompassRose16Wind.SE,
-    S = CompassRose16Wind.S,
-    SW = CompassRose16Wind.SW,
-    W = CompassRose16Wind.W,
-    NW = CompassRose16Wind.NW
+    N = CompassRose32Wind.N,
+    NE = CompassRose32Wind.NE,
+    E = CompassRose32Wind.E,
+    SE = CompassRose32Wind.SE,
+    S = CompassRose32Wind.S,
+    SW = CompassRose32Wind.SW,
+    W = CompassRose32Wind.W,
+    NW = CompassRose32Wind.NW
   }
 }

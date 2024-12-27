@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Convert
+  public static partial class Fx
   {
     /// <summary>Complement the built-in System.IConvertible functionality using the Try paradigm.</summary>
     [System.CLSCompliant(false)]

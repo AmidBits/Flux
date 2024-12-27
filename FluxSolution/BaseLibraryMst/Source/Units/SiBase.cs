@@ -32,7 +32,7 @@ namespace Units
       Assert.AreEqual(1.0936132983377078, u.GetUnitValue(Flux.Quantities.LengthUnit.Yard));
       Assert.AreEqual(1, u.GetUnitValue(Flux.Quantities.LengthUnit.Meter));
       Assert.AreEqual(0.0005399568034557236, u.GetUnitValue(Flux.Quantities.LengthUnit.NauticalMile));
-      Assert.AreEqual(0.0006213711922373339, u.GetUnitValue(Flux.Quantities.LengthUnit.InternationalMile));
+      Assert.AreEqual(0.0006213711922373339, u.GetUnitValue(Flux.Quantities.LengthUnit.Mile));
     }
 
     [TestMethod]

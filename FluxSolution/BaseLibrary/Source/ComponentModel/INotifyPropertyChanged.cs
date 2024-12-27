@@ -1,6 +1,3 @@
-using System.Linq;
-using System.Reflection;
-
 namespace Flux
 {
   /// <summary>Base implementation of System.ComponentModel.INotifyPropertyChanged.</summary>

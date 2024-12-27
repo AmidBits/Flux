@@ -2,11 +2,15 @@ namespace Flux
 {
   public static partial class Unicode
   {
-    /// <summary>Parses two characters as representing Unicode category major and minor.</summary>
+    /// <summary>
+    /// <para>Parses two characters as representing Unicode category <paramref name="unicodeCategoryMajor"/> and <paramref name="unicodeCategoryMinor"/>.</para>
+    /// </summary>
     public static UnicodeCategoryMajorMinor ParseUnicodeCategoryMajorMinor(this char unicodeCategoryMajor, char unicodeCategoryMinor)
       => ((UnicodeCategoryMajorMinor)System.Enum.Parse<UnicodeCategoryMajorMinor>($"{unicodeCategoryMajor}{unicodeCategoryMinor}", true));
 
-    /// <summary>Tries to parse the beginning of a string as Unicode category major and minor.</summary>
+    /// <summary>
+    /// <para>Attempts to parse the beginning of a string as Unicode category <paramref name="unicodeCategoryMajor"/> and <paramref name="unicodeCategoryMinor"/>.</para>
+    /// </summary>
     public static bool TryParseUnicodeCategoryMajorMinor(this char unicodeCategoryMajor, char unicodeCategoryMinor, out UnicodeCategoryMajorMinor result)
     {
       try
@@ -20,13 +24,24 @@ namespace Flux
       return false;
     }
 
-    /// <summary>Translates a <see cref="UnicodeCategoryMajorMinor"/> enum value (<paramref name="unicodeCategoryMajorMinor"/>) into a <see cref="System.Globalization.UnicodeCategory"/> enum value.</summary>
+    /// <summary>
+    /// <para>Translates a <paramref name="unicodeCategoryMajorMinor"/> enum value into a <see cref="UnicodeCategoryMajor"/> enum value.</para>
+    /// </summary>
+    /// <example>var allCharactersByCategoryMajorLabel = Unicode.GetUnicodeCategoryCharacters().GroupBy(kv => kv.Key.ToCategoryMajorLabel()).ToDictionary(g => g.Key, g => g.SelectMany(kv => kv.Value).ToList());</example>
+    public static UnicodeCategoryMajor ToUnicodeCategoryMajor(this UnicodeCategoryMajorMinor unicodeCategoryMajorMinor)
+      => ((System.Globalization.UnicodeCategory)unicodeCategoryMajorMinor).ToUnicodeCategoryMajor();
+
+    /// <summary>
+    /// <para>Translates a <paramref name="unicodeCategoryMajorMinor"/> enum value into a <see cref="System.Globalization.UnicodeCategory"/> enum value.</para>
+    /// </summary>
     public static System.Globalization.UnicodeCategory ToUnicodeCategory(this UnicodeCategoryMajorMinor unicodeCategoryMajorMinor)
       => (System.Globalization.UnicodeCategory)unicodeCategoryMajorMinor;
   }
 
-  /// <summary>This is a directly correlated enum of System.Globalization.UnicodeCategory to ease translation to the abbreviated two character code for the major and minor parts of the System.Globalization.UnicodeCategory enum values.</summary>
-  /// <example>var allCharactersByCategoryMajorMinorCode = Flux.Unicode.GetUnicodeCategoryCharacters().GroupBy(kv => kv.Key.ToCategoryMajorMinorCode()).ToDictionary(g => g.Key, g => g.SelectMany(kv => kv.Value).ToList());</example>
+  /// <summary>
+  /// <para>This is a directly correlated enum of System.Globalization.UnicodeCategory to ease translation to the abbreviated two character code for the major and minor parts of the System.Globalization.UnicodeCategory enum values.</para>
+  /// <code><example>var allCharactersByCategoryMajorMinorCode = Flux.Unicode.GetUnicodeCategoryCharacters().GroupBy(kv => kv.Key.ToCategoryMajorMinorCode()).ToDictionary(g => g.Key, g => g.SelectMany(kv => kv.Value).ToList());</example></code>
+  /// </summary>
   public enum UnicodeCategoryMajorMinor
   {
     Ll = System.Globalization.UnicodeCategory.LowercaseLetter,

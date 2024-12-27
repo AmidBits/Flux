@@ -2,7 +2,7 @@ namespace Flux
 {
   public static partial class Fx
   {
-    public static string ToXsdString(this System.TimeSpan source)
+    public static string ToXsdDurationString(this System.TimeSpan source)
     {
       var sb = new System.Text.StringBuilder();
 

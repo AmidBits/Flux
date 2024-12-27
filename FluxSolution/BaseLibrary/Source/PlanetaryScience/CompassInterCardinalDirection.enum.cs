@@ -13,9 +13,9 @@ namespace Flux
   /// <seealso cref="https://en.wikipedia.org/wiki/Points_of_the_compass"/>
   public enum CompassInterCardinalDirection
   {
-    NE = CompassRose08Wind.NE,
-    SE = CompassRose08Wind.SE,
-    SW = CompassRose08Wind.SW,
-    NW = CompassRose08Wind.NW
+    NE = CompassRose32Wind.NE,
+    SE = CompassRose32Wind.SE,
+    SW = CompassRose32Wind.SW,
+    NW = CompassRose32Wind.NW
   }
 }

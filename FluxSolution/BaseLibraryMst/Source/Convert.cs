@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Flux;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Static
 {
@@ -10,15 +11,15 @@ namespace Static
     {
       var c = 'A';
 
-      Assert.AreEqual(65, Flux.Convert.ChangeType(c, null, typeof(int)));
-      Assert.AreEqual(65D, Flux.Convert.ChangeType(c, null, typeof(int), typeof(double)));
+      Assert.AreEqual(65, c.ChangeType(null, typeof(int)));
+      Assert.AreEqual(65D, c.ChangeType(null, typeof(int), typeof(double)));
     }
 
     [TestMethod]
     public void Em_Convert_TypeConverter()
     {
       var expected = "5/30/1967";
-      var actual = Flux.Convert.TypeConverter<string>(System.DateTime.Parse(expected), null);
+      var actual = System.DateTime.Parse(expected).TypeConverter<string>(null);
 
       Assert.AreEqual(expected, actual);
     }

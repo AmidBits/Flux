@@ -20,10 +20,10 @@
       Arcsecond,
       Degree,
       Gradian,
-      /// <summary>This is the NATO angle of mils.</summary>
-      NatoMil,
       /// <summary>This is sometimes also refered to as a 'mil'.</summary>
       Milliradian,
+      /// <summary>This is the NATO angle of mils.</summary>
+      NatoMil,
       Turn,
       /// <summary>This is the Warsaw pact angle of mils.</summary>
       WarsawPactMil,

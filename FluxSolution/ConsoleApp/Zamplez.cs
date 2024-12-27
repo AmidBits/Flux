@@ -299,10 +299,10 @@ namespace ConsoleApp
       //var mAwayFromZeropf = value.MultipleOfAwayFromZero(multiple, false);
       //var mAwayFromZeropt = value.MultipleOfAwayFromZero(multiple, true);
 
-      var rtmo = value.RoundToMultipleOf(multiple, true, Flux.UniversalRounding.WholeAwayFromZero, out var mTowardsZero, out var mAwayFromZero);
+      var rtmo = value.MultipleOf(multiple, true, Flux.UniversalRounding.WholeAwayFromZero, out var mTowardsZero, out var mAwayFromZero);
 
-      var rtpTowardsZero = value.RoundToPowOfTowardZero(radix, true);
-      var rtpAwayFromZero = value.RoundToPowOfAwayFromZero(radix, true);
+      var rtpTowardsZero = value.PowOfTowardZero(radix, true);
+      var rtpAwayFromZero = value.PowOfAwayFromZero(radix, true);
       var rtp = value.RoundToNearest(Flux.UniversalRounding.WholeAwayFromZero, rtpTowardsZero, rtpAwayFromZero);
       //var rtp = Flux.Quantities.Radix.PowOf(value, radix, true, Flux.RoundingMode.AwayFromZero, out var rtpTowardsZero, out var rtpAwayFromZero);
 

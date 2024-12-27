@@ -5,6 +5,7 @@
   /// <see href="https://en.wikipedia.org/wiki/Body_relative_direction"/>
   /// </summary>
   /// <remarks><see cref="EgocentricCoordinateAxes"/> represents the most common ones, i.e. the ones from <see cref="EgocentricCoordinateAxisX"/>, <see cref="EgocentricCoordinateAxisY"/> and <see cref="EgocentricCoordinateAxisZ"/>. They form three pairs of orthogonal axes.</remarks>
+  [System.Flags]
   public enum EgocentricCoordinateAxes
   {
     Left = EgocentricCoordinateAxisX.Left,
