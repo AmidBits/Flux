@@ -39,11 +39,11 @@ namespace Flux
       System.ArgumentNullException.ThrowIfNull(e);
 
       if (e.OldItems != null)
-        foreach (T item in System.Linq.Enumerable.Cast<T>(e.OldItems))
+        foreach (T item in e.OldItems.Cast<T>())
           item.PropertyChanged -= OnItemPropertyChanged;
 
       if (e.NewItems != null)
-        foreach (T item in System.Linq.Enumerable.Cast<T>(e.NewItems))
+        foreach (T item in e.NewItems.Cast<T>())
           item.PropertyChanged += OnItemPropertyChanged;
 
       if (!m_suppressOnCollectionChanged)

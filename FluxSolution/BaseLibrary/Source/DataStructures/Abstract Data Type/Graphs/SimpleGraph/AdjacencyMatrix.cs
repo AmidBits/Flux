@@ -343,7 +343,7 @@
     {
       var sb = new System.Text.StringBuilder();
 
-      sb.AppendLine($"{GetType().Name} {{ Vertices = {Count}, Edges = {System.Linq.Enumerable.Count(GetEdges())} }}");
+      sb.AppendLine($"{GetType().Name} {{ Vertices = {Count}, Edges = {GetEdges().Count()} }}");
 
       sb.AppendLine();
 

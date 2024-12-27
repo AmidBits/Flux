@@ -19,7 +19,7 @@ namespace Flux
 
       var ihs = new System.Collections.Generic.HashSet<T>(source.Intersect(ths));
 
-      return System.Linq.Enumerable.Concat(source.Except(ihs), ths.Except(ihs));
+      return source.Except(ihs).Concat(ths.Except(ihs));
     }
   }
 }

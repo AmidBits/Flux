@@ -6,7 +6,7 @@ namespace Flux
     {
       System.ArgumentNullException.ThrowIfNull(source);
 
-      var distinct = System.Linq.Enumerable.ToList(System.Linq.Enumerable.Distinct(source));
+      var distinct = source.Distinct().ToList();
 
       var distinctCount = distinct.Count;
 

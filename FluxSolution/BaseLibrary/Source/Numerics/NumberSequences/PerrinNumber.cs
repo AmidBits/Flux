@@ -11,7 +11,7 @@ namespace Flux
     /// <returns></returns>
     public static TSelf GetPerrinNumber<TSelf>(TSelf index)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      => System.Linq.Enumerable.First(System.Linq.Enumerable.Where(GetPerrinNumbers<TSelf>(), (e, i) => TSelf.CreateChecked(i) == index));
+      => GetPerrinNumbers<TSelf>().Where((e, i) => TSelf.CreateChecked(i) == index).First();
 
     /// <summary>
     /// <para>Creates an indefinite sequence of Perrin numbers.</para>

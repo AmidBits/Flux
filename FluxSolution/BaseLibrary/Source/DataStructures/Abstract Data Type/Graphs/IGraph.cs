@@ -45,22 +45,22 @@ namespace Flux
     /// <see href="https://www.geeksforgeeks.org/dijkstras-shortest-path-algorithm-greedy-algo-7/"/>
     public static System.Collections.Generic.IEnumerable<(int destination, double distance)> GetDijkstraShortestPathTree<TVertexValue, TEdgeValue>(this DataStructure.IGraph<TVertexValue, TEdgeValue> source, int origin, System.Func<TEdgeValue, double> distanceSelector)
     {
-      var vertices = System.Linq.Enumerable.ToList(source.GetVertices().Select(vt => vt.x));
+      var vertices = source.GetVertices().Select(vt => vt.x).ToList();
 
-      var distances = System.Linq.Enumerable.ToDictionary(vertices, v => v, v => v.Equals(origin) ? 0 : double.PositiveInfinity);
+      var distances = vertices.ToDictionary(v => v, v => v.Equals(origin) ? 0 : double.PositiveInfinity);
 
-      var edges = System.Linq.Enumerable.ToList(source.GetEdges()); // Cache edges, because we need it while there are available distances.
+      var edges = source.GetEdges().ToList(); // Cache edges, because we need it while there are available distances.
 
       while (distances.Count != 0) // As long as there are nodes available.
       {
-        var shortest = System.Linq.Enumerable.First(System.Linq.Enumerable.OrderBy(distances, v => v.Value)); // Get the node with the shortest distance.
+        var shortest = distances.OrderBy(v => v.Value).First(); // Get the node with the shortest distance.
 
         if (shortest.Value < double.PositiveInfinity) // If the distance to the node is less than infinity, it was reachable so it should be returned.
           yield return (shortest.Key, shortest.Value);
 
         distances.Remove(shortest.Key); // This node is now final, so remove it.
 
-        foreach (var (x, y, v) in System.Linq.Enumerable.Where(edges, e => e.x.Equals(shortest.Key))) // Updates all nodes reachable from the vertex.
+        foreach (var (x, y, v) in edges.Where(e => e.x.Equals(shortest.Key))) // Updates all nodes reachable from the vertex.
         {
           if (distances.TryGetValue(y, out var distanceToEdgeTarget))
           {

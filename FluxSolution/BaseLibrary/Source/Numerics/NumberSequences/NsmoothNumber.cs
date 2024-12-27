@@ -13,7 +13,7 @@ namespace Flux.NumberSequences
     private readonly System.Collections.Generic.IReadOnlyList<System.Numerics.BigInteger> m_primeNumbers; // Needs to be converted to BitArray instead.
 
     public NsmoothNumber(System.Numerics.BigInteger n)
-      => m_primeNumbers = System.Linq.Enumerable.ToList(System.Linq.Enumerable.TakeWhile(NumberSequence.GetAscendingPrimes(System.Numerics.BigInteger.CreateChecked(2)), p => p <= n));
+      => m_primeNumbers = NumberSequence.GetAscendingPrimes(System.Numerics.BigInteger.CreateChecked(2)).TakeWhile(p => p <= n).ToList();
 
     /// <summary>Creates a new sequence of n-smooth numbers.</summary>
     /// <see href="https://en.wikipedia.org/wiki/Smooth_number"/>
