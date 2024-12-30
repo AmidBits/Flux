@@ -40,7 +40,7 @@ namespace Flux.Data
     {
       m_parts = new string[4] { serverName.TsqlUnenquote(), databaseName.TsqlUnenquote(), schemaName.TsqlUnenquote(), objectName.TsqlUnenquote() };
 
-      ApplicationName = AssemblyInfo.Entry.Product ?? $"{System.Environment.UserDomainName}\\{System.Environment.UserName}";
+      ApplicationName = new AssemblyInfo(System.Reflection.Assembly.GetEntryAssembly() ?? throw new System.InvalidOperationException()).Product ?? $"{System.Environment.UserDomainName}\\{System.Environment.UserName}";
       WorkstationID = System.Environment.MachineName;
     }
 

@@ -197,8 +197,7 @@ namespace Flux.Quantities
         _ => throw new System.NotImplementedException()
       };
 
-    public static string GetUnitName(VolumeUnit unit, bool preferPlural)
-      => unit.ToString().ConvertUnitNameToPlural(preferPlural);
+    public static string GetUnitName(VolumeUnit unit, bool preferPlural) => unit.ToString().ToPluralUnitName(preferPlural);
 
     public static string GetUnitSymbol(VolumeUnit unit, bool preferUnicode)
       => unit switch

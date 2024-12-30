@@ -18,6 +18,11 @@ namespace Flux
     }
 
     /// <summary>
+    /// <para>The Flux assembly.</para>
+    /// </summary>
+    public static System.Reflection.Assembly Assembly => typeof(Locale).Assembly;
+
+    /// <summary>
     /// <para>Gets the version of the common language runtime (CLR).</para>
     /// </summary>
     /// <remarks>The information is derived from <see cref="System.Environment.Version"/>.</remarks>
@@ -68,12 +73,23 @@ namespace Flux
     public static System.Net.IPAddress LessLikelyLocalIPv4Address
       => LocalIPv4UnicastAdresses().RandomOrValue(default).Item?.Address ?? default!;
 
+    public static System.Net.IPAddress[] LocalIPv4Addresses
+      => LocalIPv4UnicastAdresses()
+      .Select(ua => ua.Address)
+      .ToArray();
+
+    /// <summary>
+    /// <para>Gets the NETBIOS name of this local computer.</para>
+    /// </summary>
+    /// <remarks>This information is from <see cref="System.Environment.MachineName"/>.</remarks>
+    public static string MachineName { get; } = System.Environment.MachineName;
+
     /// <summary>
     /// <para>The most likely local IPv4 address.</para>
     /// </summary>
     /// <remarks>This functionality is supported on "windows" platforms.</remarks>
     [System.Runtime.Versioning.SupportedOSPlatform("windows")]
-    public static System.Net.IPAddress LocalIPv4Address
+    public static System.Net.IPAddress MoreLikelyLocalIPv4Address
     {
       get
       {
@@ -104,22 +120,16 @@ namespace Flux
       }
     }
 
-    /// <summary>
-    /// <para>An array of likely local IPv4 addresses.</para>
-    /// </summary>
-    /// <remarks>This functionality is unsupported on "macOS" and "OSX" platforms.</remarks>
-    [System.Runtime.Versioning.UnsupportedOSPlatform("macOS")]
-    [System.Runtime.Versioning.UnsupportedOSPlatform("OSX")]
-    public static System.Net.IPAddress[] LocalIPv4Addresses
-      => LocalIPv4UnicastAdresses()
-      .Select(ua => ua.Address)
-      .ToArray();
-
-    /// <summary>
-    /// <para>Gets the NETBIOS name of this local computer.</para>
-    /// </summary>
-    /// <remarks>This information is from <see cref="System.Environment.MachineName"/>.</remarks>
-    public static string MachineName { get; } = System.Environment.MachineName;
+    ///// <summary>
+    ///// <para>An array of likely local IPv4 addresses.</para>
+    ///// </summary>
+    ///// <remarks>This functionality is unsupported on "macOS" and "OSX" platforms.</remarks>
+    //[System.Runtime.Versioning.UnsupportedOSPlatform("macOS")]
+    //[System.Runtime.Versioning.UnsupportedOSPlatform("OSX")]
+    //public static System.Net.IPAddress[] MoreLikelyLocalIPv4Addresses
+    //  => LocalIPv4UnicastAdresses()
+    //  .Select(ua => ua.Address)
+    //  .ToArray();
 
     /// <summary>
     /// <para>Gets the computer domain-name and host-name of the local computer.</para>

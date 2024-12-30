@@ -88,7 +88,7 @@ namespace Flux.Quantities
         _ => throw new System.NotImplementedException()
       };
 
-    public static string GetUnitName(RelativeHumidityUnit unit, bool preferPlural) => unit.ToString().ConvertUnitNameToPlural(preferPlural);
+    public static string GetUnitName(RelativeHumidityUnit unit, bool preferPlural) => unit.ToString().ToPluralUnitName(preferPlural);
 
     public static string GetUnitSymbol(RelativeHumidityUnit unit, bool preferUnicode)
       => unit switch

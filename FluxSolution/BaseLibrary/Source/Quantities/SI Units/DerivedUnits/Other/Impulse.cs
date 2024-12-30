@@ -96,7 +96,7 @@ namespace Flux.Quantities
         _ => throw new System.NotImplementedException()
       };
 
-    public static string GetUnitName(ImpulseUnit unit, bool preferPlural) => unit.ToString().ConvertUnitNameToPlural(preferPlural);
+    public static string GetUnitName(ImpulseUnit unit, bool preferPlural) => unit.ToString().ToPluralUnitName(preferPlural);
 
     public static string GetUnitSymbol(ImpulseUnit unit, bool preferUnicode)
       => unit switch

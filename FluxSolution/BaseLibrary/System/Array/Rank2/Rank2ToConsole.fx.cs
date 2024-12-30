@@ -33,9 +33,9 @@ namespace Flux
 
       #endregion // MaxWidths
 
-      var verticalString = options.VerticalSeparator == '\0' ? null : string.Join(options.HorizontalSeparator, maxWidths.Select(width => new string(options.VerticalSeparator, width)));
+      var verticalString = options.VerticalSeparator is null ? null : string.Join(options.HorizontalSeparator, maxWidths.Select(width => options.VerticalSeparator.ToStringBuilder().PadRight(width, options.VerticalSeparator)));
 
-      var horizontalFormat = string.Join(options.HorizontalSeparator == '\0' ? null : options.HorizontalSeparator.ToString(), maxWidths.Select((width, index) => $"{{{index},-{width}}}")); // Build format in advance since all rows have the same number of columns.
+      var horizontalFormat = string.Join(options.HorizontalSeparator is null ? null : options.HorizontalSeparator.ToString(), maxWidths.Select((width, index) => $"{{{index},-{width}}}")); // Build format in advance since all rows have the same number of columns.
 
       for (var r = 0; r < length0; r++) // Consider row as dimension 0.
       {

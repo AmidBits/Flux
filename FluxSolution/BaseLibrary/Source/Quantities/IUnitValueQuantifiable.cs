@@ -14,6 +14,46 @@
       return d;
     }
 
+    public static string ToPluralUnitName(this string source, bool preferPlural)
+    {
+      if (!preferPlural) return source; // Do not want plural.
+
+      if (source.IndexOf("Per", StringComparison.InvariantCulture) is var index && index > 0)
+        return ConvertUnitNameToPlural(source.Substring(0, index)) + source.Substring(index); // Replace the (singular assumed) unit before the "Per" with a plural version.
+
+      return ConvertUnitNameToPlural(source);
+
+      static string ConvertUnitNameToPlural(string unitName)
+      {
+        if (
+          unitName.Equals("Celsius")
+          || unitName.Equals("Fahrenheit")
+          || unitName.Equals("Siemens")
+        )
+          return unitName; // Skip changes to the ones above.
+
+        if (
+          unitName.Equals("Foot")
+        )
+          return "Feet";
+
+        if (unitName.EndsWith("x")
+          || unitName.Equals("Inch")
+        )
+          return unitName + "es";
+
+        if (
+          unitName.EndsWith("y")
+        )
+          return unitName + "ies";
+
+        if (!unitName.EndsWith("s"))
+          return unitName + "s";
+
+        return unitName;
+      }
+    }
+
     public static System.Collections.Generic.Dictionary<TUnit, string> ToUnitStringAll<TValue, TUnit>(this IUnitValueQuantifiable<TValue, TUnit> source, string? format = null, System.IFormatProvider? formatProvider = null, bool preferUnicode = false, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool useFullName = false)
       where TValue : System.IEquatable<TValue>
       where TUnit : System.Enum
@@ -79,7 +119,7 @@
     /// <param name="unit"></param>
     /// <param name="preferPlural">Whether to use plural of the name, if applicable.</param>
     /// <returns>The name for the <paramref name="unit"/>.</returns>
-    static virtual string GetUnitName(TUnit unit, bool preferPlural) => unit.ToString().ConvertUnitNameToPlural(preferPlural);
+    static virtual string GetUnitName(TUnit unit, bool preferPlural) => unit.ToString().ToPluralUnitName(preferPlural);
 
     /// <summary>
     /// <para>Gets the symbol representing the specified <paramref name="unit"/> and whether to <paramref name="preferUnicode"/>.</para>

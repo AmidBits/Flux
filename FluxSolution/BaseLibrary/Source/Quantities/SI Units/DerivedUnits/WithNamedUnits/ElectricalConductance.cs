@@ -95,7 +95,7 @@ namespace Flux.Quantities
         _ => throw new System.NotImplementedException()
       };
 
-    public static string GetUnitName(ElectricalConductanceUnit unit, bool preferPlural) => unit.ToString().ConvertUnitNameToPlural(preferPlural);
+    public static string GetUnitName(ElectricalConductanceUnit unit, bool preferPlural) => unit.ToString().ToPluralUnitName(preferPlural);
 
     public static string GetUnitSymbol(ElectricalConductanceUnit unit, bool preferUnicode)
       => unit switch

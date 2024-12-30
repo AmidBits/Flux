@@ -734,7 +734,7 @@ namespace ConsoleApp
 
         var rulesCompiled = rules.CompileRules<User>();
 
-        var cfo = ConsoleFormatOptions.Default with { VerticalSeparator = ',' };
+        var cfo = ConsoleFormatOptions.Default;// with { VerticalSeparator = "-" };
 
         System.Console.WriteLine($"{user1}, {rulesCompiled.EvaluateRules(user1).ToConsole(k => k.ToString(), v => v.ToString(), cfo)}");
         System.Console.WriteLine($"{user2}, {rulesCompiled.EvaluateRules(user2).ToConsole(k => k.ToString(), v => v.ToString(), cfo)}");

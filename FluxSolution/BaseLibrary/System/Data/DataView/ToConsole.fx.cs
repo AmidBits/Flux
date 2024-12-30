@@ -35,7 +35,7 @@ namespace Flux
 
       var sb = new System.Text.StringBuilder();
 
-      var horizontalSeparatorString = options.HorizontalSeparator == '\0' ? null : options.HorizontalSeparator.ToString();
+      var horizontalSeparatorString = options.HorizontalSeparator is null ? null : options.HorizontalSeparator.ToString();
 
       #region MaxWidths
 
@@ -57,7 +57,7 @@ namespace Flux
 
       #endregion // MaxWidths
 
-      var verticalLine = options.VerticalSeparator == '\0' ? null : string.Join(horizontalSeparatorString, maxWidths.Select(width => new string(options.VerticalSeparator, width)));
+      var verticalLine = options.VerticalSeparator is null ? null : string.Join(horizontalSeparatorString, maxWidths.Select(width => options.VerticalSeparator.ToStringBuilder().PadRight(width, options.VerticalSeparator)));
 
       var horizontalLineFormat = string.Join(horizontalSeparatorString, maxWidths.Select((width, index) => $"{{{index},-{width}}}"));
 

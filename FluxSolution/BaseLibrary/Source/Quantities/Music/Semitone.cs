@@ -74,7 +74,7 @@ namespace Flux.Quantities
     public int CompareTo(Semitone other) => m_value.CompareTo(other.m_value);
 
     // IFormattable
-    public string ToString(string? format, System.IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider) + " semitone".ConvertUnitNameToPlural(m_value != 1);
+    public string ToString(string? format, System.IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider) + " semitone".ToPluralUnitName(m_value != 1);
 
     #region IValueQuantifiable<>
 

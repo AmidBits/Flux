@@ -2,13 +2,6 @@ namespace Flux
 {
   public record class AssemblyInfo
   {
-    public static AssemblyInfo Calling
-      => new(System.Reflection.Assembly.GetCallingAssembly());
-    public static AssemblyInfo Entry
-      => new(System.Reflection.Assembly.GetEntryAssembly() ?? throw new System.InvalidOperationException());
-    public static AssemblyInfo Executing
-      => new(System.Reflection.Assembly.GetExecutingAssembly());
-
     public static AssemblyInfo Flux
       => new(typeof(AssemblyInfo).Assembly);
 

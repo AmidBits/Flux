@@ -122,7 +122,7 @@ namespace Flux.Net
 
       var id = $"{{{name}&{guid}}}";
 
-      var localIp = new System.Net.IPEndPoint(Flux.Locale.LocalIPv4Address, multicastAddress.Port);
+      var localIp = new System.Net.IPEndPoint(Flux.Locale.MoreLikelyLocalIPv4Address, multicastAddress.Port);
 
       System.Console.WriteLine();
 

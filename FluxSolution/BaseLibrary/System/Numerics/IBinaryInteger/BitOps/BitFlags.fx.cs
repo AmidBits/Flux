@@ -15,7 +15,7 @@ namespace Flux
 
     /// <summary>
     /// <para>Returns whether <paramref name="value"/> carries the MSB (of bit-count, not bit-length).</para>
-    /// <para>E.g. if <typeparamref name="TNumber"/> is signed integer, and <see cref="BitFlagCarryMsb{TValue}(TValue)"/> returns true, the <paramref name="value"/> is negative, otherwise positive.</para>
+    /// <para>E.g. if <paramref name="value"/> is a signed integer, and <see cref="BitFlagCarryMsb{TValue}(TValue)"/> returns true, the <paramref name="value"/> is negative, otherwise positive.</para>
     /// </summary>
     /// <typeparam name="TNumber"></typeparam>
     /// <param name="value"></param>

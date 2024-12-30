@@ -626,7 +626,7 @@
           _ => throw new System.NotImplementedException()
         };
 
-      public static string GetUnitName(AngleUnit unit, bool preferPlural) => unit.ToString().ConvertUnitNameToPlural(preferPlural);
+      public static string GetUnitName(AngleUnit unit, bool preferPlural) => unit.ToString().ToPluralUnitName(preferPlural);
 
       public static string GetUnitSymbol(AngleUnit unit, bool preferUnicode)
         => unit switch

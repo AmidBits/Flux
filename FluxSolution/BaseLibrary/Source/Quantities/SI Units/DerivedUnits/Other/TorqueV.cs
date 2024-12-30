@@ -79,7 +79,7 @@ namespace Flux.Quantities
 
     public static System.Runtime.Intrinsics.Vector256<double> GetUnitFactor(TorqueUnit unit) => System.Runtime.Intrinsics.Vector256.Create(Torque.GetUnitFactor(unit));
 
-    public static string GetUnitName(TorqueUnit unit, bool preferPlural) => unit.ToString().ConvertUnitNameToPlural(preferPlural);
+    public static string GetUnitName(TorqueUnit unit, bool preferPlural) => unit.ToString().ToPluralUnitName(preferPlural);
 
     public static string GetUnitSymbol(TorqueUnit unit, bool preferUnicode) => Torque.GetUnitSymbol(unit, preferUnicode);
 

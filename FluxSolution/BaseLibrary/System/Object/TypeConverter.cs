@@ -13,14 +13,14 @@ namespace Flux
 
       try
       {
-        if (System.ComponentModel.TypeDescriptor.GetConverter(value) is var valueConverter && valueConverter != null && valueConverter.CanConvertTo(typeof(T)))
+        if (System.ComponentModel.TypeDescriptor.GetConverter(value) is var valueConverter && valueConverter is not null && valueConverter.CanConvertTo(typeof(T)))
           return (T?)valueConverter.ConvertTo(null, culture, value, typeof(T));
       }
       catch (System.Exception ex) { exceptions.Add(ex); }
 
       try
       {
-        if (System.ComponentModel.TypeDescriptor.GetConverter(typeof(T)) is var typeConverter && typeConverter != null && typeConverter.CanConvertFrom(value.GetType()))
+        if (System.ComponentModel.TypeDescriptor.GetConverter(typeof(T)) is var typeConverter && typeConverter is not null && typeConverter.CanConvertFrom(value.GetType()))
           return (T?)typeConverter.ConvertFrom(null, culture, value);
       }
       catch (System.Exception ex) { exceptions.Add(ex); }
@@ -29,6 +29,7 @@ namespace Flux
 
       throw new System.NotSupportedException(@"No type converter found.");
     }
+
     /// <summary>Complement the built-in TypeConverter system using the Try paradigm.</summary>
     public static bool TryTypeConverter<T>(this object value, out T? result, System.Globalization.CultureInfo? culture = null)
     {

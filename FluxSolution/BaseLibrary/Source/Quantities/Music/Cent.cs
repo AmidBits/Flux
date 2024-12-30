@@ -66,7 +66,7 @@ namespace Flux.Quantities
     public int CompareTo(object? other) => other is not null && other is Cent o ? CompareTo(o) : -1;
 
     // IFormattable
-    public string ToString(string? format, System.IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider) + " cent".ConvertUnitNameToPlural(m_value != 1);
+    public string ToString(string? format, System.IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider) + " cent".ToPluralUnitName(m_value != 1);
 
     #region IValueQuantifiable<>
 

@@ -6,8 +6,8 @@ namespace Flux
     /// <para>The binomial coefficients are the positive integers that occur as coefficients in the binomial theorem. Commonly, a binomial coefficient is indexed by a pair of integers "n >= k >= 0".</para>
     /// <para><also href="https://en.wikipedia.org/wiki/Binomial_coefficient"/></para>
     /// <para><seealso href="https://en.wikipedia.org/wiki/Binomial_coefficient#In_programming_languages"/></para>
-    /// </summary>
     /// <remarks>Also known as "nCk", i.e. "<paramref name="n"/> choose <paramref name="k"/>", because there are nCk ways to choose an (unordered) subset of <paramref name="k"/> elements from a fixed set of <paramref name="n"/> elements.</remarks>
+    /// </summary>
     /// <typeparam name="TNumber"></typeparam>
     /// <param name="n">Greater than or equal to <paramref name="k"/>.</param>
     /// <param name="k">Greater than or equal to 0.</param>

@@ -79,7 +79,7 @@ namespace Flux.Quantities
 
     public static System.Runtime.Intrinsics.Vector256<double> GetUnitFactor(MagneticFluxStrengthUnit unit) => System.Runtime.Intrinsics.Vector256.Create(MagneticFluxStrength.GetUnitFactor(unit));
 
-    public static string GetUnitName(MagneticFluxStrengthUnit unit, bool preferPlural) => unit.ToString().ConvertUnitNameToPlural(preferPlural);
+    public static string GetUnitName(MagneticFluxStrengthUnit unit, bool preferPlural) => unit.ToString().ToPluralUnitName(preferPlural);
 
     public static string GetUnitSymbol(MagneticFluxStrengthUnit unit, bool preferUnicode) => MagneticFluxStrength.GetUnitSymbol(unit, preferUnicode);
 

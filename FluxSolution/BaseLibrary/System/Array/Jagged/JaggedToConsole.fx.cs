@@ -34,7 +34,7 @@ namespace Flux
 
       #endregion // MaxWidths
 
-      var verticalString = options.VerticalSeparator == '\0' ? null : string.Join(options.HorizontalSeparator, maxWidths.Select(width => new string(options.VerticalSeparator, width)));
+      var verticalString = options.VerticalSeparator is null ? null : string.Join(options.HorizontalSeparator, maxWidths.Select(width => options.VerticalSeparator.ToStringBuilder().PadRight(width, options.VerticalSeparator)));
 
       for (var r = 0; r < length0; r++) // Consider row as dimension 0.
       {
@@ -46,7 +46,7 @@ namespace Flux
             sb.AppendLine(verticalString);
         }
 
-        var horizontalFormat = string.Join(options.HorizontalSeparator == '\0' ? null : options.HorizontalSeparator.ToString(), maxWidths.Take(source[r].Length).Select((width, index) => $"{{{index},-{width}}}")); // Build format for each horizontal since each can be different.
+        var horizontalFormat = string.Join(options.HorizontalSeparator is null ? null : options.HorizontalSeparator.ToString(), maxWidths.Take(source[r].Length).Select((width, index) => $"{{{index},-{width}}}")); // Build format for each horizontal since each can be different.
         var horizontalValues = source[r].Select((o, oi) => (new System.Text.StringBuilder($"{o}") is var sb && options.CenterContent ? sb.PadEven(maxWidths[oi], ' ', ' ') : sb).ToString()).ToArray();
 
         sb.Append(string.Format(null, horizontalFormat, horizontalValues));

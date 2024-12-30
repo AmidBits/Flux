@@ -102,8 +102,7 @@ namespace Flux.Quantities
         _ => throw new System.NotImplementedException()
       };
 
-    public static string GetUnitName(AreaDensityUnit unit, bool preferPlural)
-      => unit.ToString().ConvertUnitNameToPlural(preferPlural);
+    public static string GetUnitName(AreaDensityUnit unit, bool preferPlural) => unit.ToString().ToPluralUnitName(preferPlural);
 
     public static string GetUnitSymbol(AreaDensityUnit unit, bool preferUnicode)
       => unit switch

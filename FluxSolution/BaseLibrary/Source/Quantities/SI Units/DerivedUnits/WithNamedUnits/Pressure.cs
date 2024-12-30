@@ -106,7 +106,7 @@ namespace Flux.Quantities
       => unit switch
       {
         PressureUnit.Psi => unit.ToString(), // No plural for these "useFullName".
-        _ => unit.ToString().ConvertUnitNameToPlural(preferPlural)
+        _ => unit.ToString().ToPluralUnitName(preferPlural)
       };
 
     public static string GetUnitSymbol(PressureUnit unit, bool preferUnicode)
