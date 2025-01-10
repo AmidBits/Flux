@@ -55,7 +55,7 @@ namespace LoggerApp
         var bytesToRead = System.Math.Min(bufferSize, bytesRemaining);
 
         fs.Position = sourcePosition;
-        fs.Read(buffer, 0, bytesToRead);
+        var bytesRead = fs.Read(buffer, 0, bytesToRead);
 
         fs.Position = targetPosition;
         fs.Write(buffer, 0, bytesToRead);

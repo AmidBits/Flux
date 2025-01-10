@@ -12,7 +12,7 @@ namespace Flux
     {
       System.ArgumentNullException.ThrowIfNull(source);
 
-      return source.GetName(index) is var name && string.IsNullOrWhiteSpace(name) ? index.ToOrdinalColumnName() : name;
+      return source.GetName(index) is var name && string.IsNullOrWhiteSpace(name) ? index.ToSingleOrdinalColumnName() : name;
     }
 
     /// <summary>

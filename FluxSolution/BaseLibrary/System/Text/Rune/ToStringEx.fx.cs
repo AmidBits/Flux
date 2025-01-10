@@ -6,7 +6,7 @@ namespace Flux
     {
       var uc = System.Text.Rune.GetUnicodeCategory(source);
 
-      return $"\"{source}\" {uc.ToUnicodeCategoryMajorMinor()} ({uc.ToUnicodeCategoryMajor()}, {uc.ToUnicodeCategoryMinorFriendlyString()}) {source.ToUnicodeUnotationString()} {source.ToCsEscapeSequenceString(CsEscapeSequence.Variable)}";
+      return $"\"{source}\" {uc.ToUnicodeCategoryMajorMinor()} ({uc.ToUnicodeCategoryMajor()}, {uc.ToUnicodeCategoryMinorFriendlyString()}) {source.UnicodeUnotationEncode()} {source.CsEscapeEncode(CsEscapeOption.Variable)}";
     }
   }
 }

@@ -1,6 +1,332 @@
 namespace Flux
 {
-  public record struct SpanBuilder<T>
+  public ref struct SpanMaker<T>
+  //: System.Collections.Generic.IReadOnlyCollection<T>
+  {
+    private const int DefaultBufferSize = 2;
+
+    private T[] m_array;
+
+    private int m_head; // Start of buffer data.
+    private int m_tail; // End of buffer data.
+
+    private SpanMaker(T[] array, int head, int tail)
+    {
+      m_array = array;
+
+      m_head = head;
+      m_tail = tail;
+    }
+
+    private SpanMaker(int capacity)
+    {
+      m_array = capacity >= 1 ? System.Buffers.ArrayPool<T>.Shared.Rent(int.Max(capacity, DefaultBufferSize).Pow2AwayFromZero(false)) : System.Array.Empty<T>();
+
+      m_head = m_array.Length / 2;
+      m_tail = m_array.Length / 2;
+    }
+
+    public SpanMaker() : this(DefaultBufferSize) { }
+
+    public SpanMaker(System.ReadOnlySpan<T> span)
+      : this(span.Length + DefaultBufferSize)
+    {
+      span.CopyTo(m_array.AsSpan().Slice(m_head, span.Length));
+    }
+
+    /// <summary>
+    /// <para>Gets the element at the specified index in the <see cref="SpanMaker{T}"/>.</para>
+    /// </summary>
+    /// <param name="index"></param>
+    /// <returns></returns>
+    /// <exception cref="System.ArgumentOutOfRangeException"></exception>
+    public T this[int index]
+    {
+      get => (index >= 0 && index <= Count) ? m_array[m_head + index] : throw new System.ArgumentOutOfRangeException(nameof(index));
+      set => m_array[m_head + index] = (index >= 0 && index <= Count) ? value : throw new System.ArgumentOutOfRangeException(nameof(index));
+    }
+
+    /// <summary>
+    /// <para>Gets the number of elements in the <see cref="SpanMaker{T}"/>.</para>
+    /// </summary>
+    public int Count
+      => m_tail - m_head;
+
+    /// <summary>
+    /// <para>The capacity on the append side of the <see cref="SpanMaker{T}"/>.</para>
+    /// </summary>
+    private int FreeAppend => m_array.Length - m_tail;
+
+    /// <summary>
+    /// <para>The capacity on the prepend side of the <see cref="SpanMaker{T}"/>.</para>
+    /// </summary>
+    private int FreePrepend => m_head;
+
+    /// <summary>Append <paramref name="value"/>, <paramref name="count"/> times.</summary>
+    public SpanMaker<T> Append(T value, int count = 1)
+    {
+      var (array, head, tail) = EnsureCapacityAppend(count);
+
+      System.Array.Fill(array, value, tail - count, count);
+
+      return new(array, head, tail);
+    }
+
+    /// <summary>Append <paramref name="collection"/>, <paramref name="count"/> times.</summary>
+    public SpanMaker<T> Append(System.Collections.Generic.ICollection<T> collection, int count = 1)
+    {
+      var totalAppend = collection.Count * count;
+
+      var (array, head, tail) = EnsureCapacityAppend(totalAppend);
+
+      var index = tail - totalAppend;
+
+      while (count-- > 0)
+      {
+        collection.CopyTo(array, index);
+
+        index += collection.Count;
+      }
+
+      return new(array, head, tail);
+    }
+
+    /// <summary>Append <paramref name="span"/>, <paramref name="count"/> times.</summary>
+    public SpanMaker<T> Append(System.ReadOnlySpan<T> span, int count = 1)
+    {
+      var totalAppend = span.Length * count;
+
+      var (array, head, tail) = EnsureCapacityAppend(totalAppend);
+
+      var index = tail - totalAppend;
+
+      while (count-- > 0)
+      {
+        span.CopyTo(array.AsSpan().Slice(index, span.Length));
+
+        index += span.Length;
+      }
+
+      return new(array, head, tail);
+    }
+
+    /// <summary>Creates a non-allocating <see cref="System.ReadOnlySpan{T}"/> of the elements in the <see cref="SpanMaker{T}"/>.</summary>
+    public System.ReadOnlySpan<T> AsReadOnlySpan()
+      => new(m_array, m_head, m_tail - m_head);
+
+    /// <summary>Creates a non-allocating <see cref="System.Span{T}"/> of the elements in the <see cref="SpanMaker{T}"/>. This provides partial direct access into the underlying array storage for the SpanBuilder.</summary>
+    /// <remarks>Use with caution!</remarks>
+    public System.Span<T> AsSpan()
+      => new(m_array, m_head, m_tail - m_head);
+
+    public void Clear()
+    {
+      System.Array.Clear(m_array);
+
+      m_head = m_array.Length / 2;
+      m_tail = m_array.Length / 2;
+    }
+
+    private (T[] array, int head, int tail) EnsureCapacityAppend(int needAppend)
+    {
+      var array = m_array;
+      var head = m_head;
+      var tail = m_tail;
+
+      if (FreeAppend > needAppend) // There is already room to prepend.
+        return (array, head, tail + needAppend);
+      else if (FreePrepend + FreeAppend > needAppend) // There is room, if current data is moved.
+      {
+        var offset = (needAppend - FreeAppend);
+        System.Array.Copy(array, head, array, head - offset, Count);
+        return (array, head - offset, m_array.Length);
+      }
+
+      var totalSize = FreePrepend + Count + needAppend + FreeAppend;
+
+      array = System.Buffers.ArrayPool<T>.Shared.Rent(int.Max(totalSize, DefaultBufferSize).Pow2AwayFromZero(true));
+
+      head = FreePrepend;
+      tail = FreePrepend + Count + needAppend;
+
+      System.Array.Copy(m_array, m_head, array, head, Count); // Copy old content.
+
+      return (array, head, tail);
+    }
+
+    private (T[] array, int head, int tail) EnsureCapacityInsert(int indexInsert, int needInsert)
+    {
+      var array = m_array;
+      var head = m_head;
+      var tail = m_tail;
+
+      var indexArray = head + indexInsert;
+
+      if (FreePrepend > needInsert) // Available on prepend side.
+      {
+        var newHead = head - needInsert;
+
+        System.Array.Copy(array, head, array, newHead, indexInsert);
+
+        return (array, newHead, tail);
+      }
+      else if (FreeAppend > needInsert) // Available on append side.
+      {
+        var startInsert = head + indexInsert;
+
+        System.Array.Copy(array, startInsert, array, startInsert + needInsert, needInsert);
+
+        return (array, head, tail + needInsert);
+      }
+      else if (FreePrepend + FreeAppend > needInsert) // Available overall.
+      {
+        System.Array.Copy(m_array, m_head, array, 0, indexInsert);
+        System.Array.Copy(m_array, m_head + indexInsert, array, m_head + indexInsert + (indexInsert + needInsert - indexArray), Count - indexInsert);
+
+        return (array, 0, tail + needInsert - FreePrepend);
+      }
+
+      var totalSize = FreePrepend + Count + FreeAppend + needInsert;
+
+      array = System.Buffers.ArrayPool<T>.Shared.Rent(int.Max(totalSize, DefaultBufferSize).Pow2AwayFromZero(true));
+
+      head = FreePrepend;
+      tail = head + Count + needInsert;
+
+      System.Array.Copy(m_array, m_head, array, head, indexInsert);
+      System.Array.Copy(m_array, m_head + indexInsert, array, tail - (Count - indexInsert), Count - indexInsert);
+
+      return (array, head, tail);
+    }
+
+    private (T[] array, int head, int tail) EnsureCapacityPrepend(int needPrepend)
+    {
+      var array = m_array;
+      var head = m_head;
+      var tail = m_tail;
+
+      if (needPrepend < FreePrepend) // There is already room to prepend.
+        return (array, head - needPrepend, tail);
+      else if (needPrepend < FreePrepend + FreeAppend) // There is room, if current data is moved.
+      {
+        var offset = (needPrepend - FreePrepend);
+        System.Array.Copy(array, head, array, head + offset, Count);
+        return (array, 0, tail + offset);
+      }
+
+      var totalSize = FreePrepend + needPrepend + Count + FreeAppend;
+
+      array = System.Buffers.ArrayPool<T>.Shared.Rent(int.Max(totalSize, DefaultBufferSize).Pow2AwayFromZero(true));
+
+      head = FreePrepend;
+      tail = head + needPrepend + Count;
+
+      System.Array.Copy(m_array, m_head, array, head + needPrepend, Count); // Copy old content.
+
+      return (array, head, tail);
+    }
+
+    /// <summary>Insert <paramref name="count"/> of <paramref name="value"/> starting at <paramref name="index"/>.</summary>
+    public SpanMaker<T> Insert(int index, T value, int count = 1)
+    {
+      var (array, head, tail) = EnsureCapacityInsert(index, count);
+
+      System.Array.Fill(array, value, index + head, count);
+
+      return new(array, head, tail);
+    }
+
+    /// <summary>Insert <paramref name="count"/> of <paramref name="collection"/> starting at <paramref name="index"/>.</summary>
+    public SpanMaker<T> Insert(int index, System.Collections.Generic.ICollection<T> collection, int count = 1)
+    {
+      var totalInsert = collection.Count * count;
+
+      var (array, head, tail) = EnsureCapacityInsert(index, totalInsert);
+
+      index += head;
+
+      while (count-- > 0)
+      {
+        collection.CopyTo(array, index);
+
+        index += collection.Count;
+      }
+
+      return new(array, head, tail);
+    }
+
+    /// <summary>Insert <paramref name="count"/> of <paramref name="span"/> starting at <paramref name="index"/>.</summary>
+    public SpanMaker<T> Insert(int index, System.ReadOnlySpan<T> span, int count = 1)
+    {
+      var totalInsert = span.Length * count;
+
+      var (array, head, tail) = EnsureCapacityInsert(index, totalInsert);
+
+      while (count-- > 0)
+      {
+        span.CopyTo(array.AsSpan().Slice(head + index, span.Length));
+
+        index += span.Length;
+      }
+
+      return new(array, head, tail);
+    }
+
+    public SpanMaker<T> Insert(int index, SpanMaker<T> spanGlue, int count) => Insert(index, spanGlue.AsReadOnlySpan(), count);
+
+    /// <summary>Prepend <paramref name="value"/>, <paramref name="count"/> times.</summary>
+    public SpanMaker<T> Prepend(T value, int count = 1)
+    {
+      var (array, head, tail) = EnsureCapacityPrepend(count);
+
+      while (count-- > 0)
+        array[head + count] = value;
+
+      return new(array, head, tail);
+    }
+
+    /// <summary>Prepend <paramref name="collection"/>, <paramref name="count"/> times.</summary>
+    public SpanMaker<T> Prepend(System.Collections.Generic.ICollection<T> collection, int count = 1)
+    {
+      var (array, head, tail) = EnsureCapacityPrepend(collection.Count * count);
+
+      var index = head;
+
+      while (count-- > 0)
+      {
+        collection.CopyTo(array, index);
+
+        index += collection.Count;
+      }
+
+      return new(array, head, tail);
+    }
+
+    /// <summary>Prepend <paramref name="span"/>, <paramref name="count"/> times.</summary>
+    public SpanMaker<T> Prepend(System.ReadOnlySpan<T> span, int count = 1)
+    {
+      var (array, head, tail) = EnsureCapacityPrepend(span.Length * count);
+
+      var index = head;
+
+      while (count-- > 0)
+      {
+        span.CopyTo(array.AsSpan().Slice(index, span.Length));
+
+        index += span.Length;
+      }
+
+      return new(array, head, tail);
+    }
+
+    public override string ToString()
+      => AsReadOnlySpan().ToString();
+
+    //public System.Collections.Generic.IEnumerator<T> GetEnumerator() => AsReadOnlySpan().ToArray().AsEnumerable().GetEnumerator();
+    //System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => GetEnumerator();
+  }
+
+  public ref struct SpanBuilder<T>
   {
     private const int DefaultBufferSize = 64;
 
@@ -13,16 +339,16 @@ namespace Flux
 
     private SpanBuilder(int capacity)
     {
-      m_array = capacity >= 1 ? System.Buffers.ArrayPool<T>.Shared.Rent(capacity.Pow2AwayFromZero(false)) : System.Array.Empty<T>();
+      m_array = capacity >= 1 ? System.Buffers.ArrayPool<T>.Shared.Rent(int.Max(capacity, DefaultBufferSize).Pow2AwayFromZero(false)) : System.Array.Empty<T>();
 
       m_head = m_array.Length / 2;
       m_tail = m_array.Length / 2;
     }
     public SpanBuilder() : this(DefaultBufferSize) { }
 
-    public SpanBuilder(T value, int count = 1) : this() => Append(value, count);
-    public SpanBuilder(System.Collections.Generic.ICollection<T> collection, int count = 1) : this(collection.Count * count) => Append(collection, count);
-    public SpanBuilder(System.ReadOnlySpan<T> readOnlySpan, int count = 1) : this(0) => Append(readOnlySpan, count);
+    public SpanBuilder(T value) : this() => Append(value, 1);
+    public SpanBuilder(System.Collections.Generic.ICollection<T> collection) : this(collection.Count) => Append(collection, 1);
+    public SpanBuilder(System.ReadOnlySpan<T> readOnlySpan) : this(0) => Append(readOnlySpan, 1);
 
     /// <summary>Gets or sets the item at the specified item position in this instance.</summary>
     public T this[int index]
@@ -299,15 +625,15 @@ namespace Flux
     }
 
     /// <summary>Repeats the values in the builder <paramref name="count"/> times.</summary>
-    public SpanBuilder<T> InsertEvery(T insert, int interval, Coordinates.EgocentricCoordinateAxisX alignment = Coordinates.EgocentricCoordinateAxisX.Left)
+    public SpanBuilder<T> InsertEvery(T insert, int interval, Coordinates.EgocentricCoordinateAxisLR alignment = Coordinates.EgocentricCoordinateAxisLR.Left)
     {
       switch (alignment)
       {
-        case Coordinates.EgocentricCoordinateAxisX.Left:
+        case Coordinates.EgocentricCoordinateAxisLR.Left:
           for (var index = interval; index < Length; index += interval + 1)
             Insert(index, insert, 1);
           break;
-        case Coordinates.EgocentricCoordinateAxisX.Right:
+        case Coordinates.EgocentricCoordinateAxisLR.Right:
           for (var index = Length - interval; index >= 0; index -= interval)
             Insert(index, insert, 1);
           break;

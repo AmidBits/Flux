@@ -1,38 +1,33 @@
-namespace Flux.Resources.Scowl
+namespace Flux
 {
-  /// <summary>The records from 2Of12Full word list.</summary>
-  /// <see href="https://github.com/en-wl/wordlist"/>
-  // Download URL: https://github.com/en-wl/wordlist/raw/master/alt12dicts/2of12full.txt
-  /// <seealso cref="http://wordlist.aspell.net/"/>
-  /// <seealso cref="https://github.com/en-wl/wordlist/blob/master/"/>
-  public sealed partial class TwoOfTwelveFull
-    : ITabularDataAcquirable
+  public static partial class Resource
   {
+    #region SCOWL TwoOfTwelveFull
+
     [System.Text.RegularExpressions.GeneratedRegexAttribute(@"(?<=[\-0-9]+[:#&=]?)\s+", System.Text.RegularExpressions.RegexOptions.Compiled)]
-    private static partial System.Text.RegularExpressions.Regex SplitRegex();
+    private static partial System.Text.RegularExpressions.Regex RegexScowlTwoOfTwelveFull();
 
-    public static readonly System.Uri Local = new(@"file://\Resources\Scowl\2of12full.txt");
-    public static readonly System.Uri Origin = new(@"https://raw.githubusercontent.com/en-wl/wordlist/master/alt12dicts/2of12full.txt");
-
-    public System.Uri Uri { get; private set; } = Local;
-
-    /// <summary>Returns two of twelve full data. No field names.</summary>
-    public static System.Collections.Generic.IEnumerable<string[]> GetData(System.Uri uri)
+    /// <summary>
+    /// <para>The records from 2Of12Full word list.</para>
+    /// <para><see href="https://github.com/en-wl/wordlist"/></para>
+    /// <para><seealso cref="http://wordlist.aspell.net/"/></para>
+    /// <para><seealso cref="https://github.com/en-wl/wordlist/blob/master/"/></para>
+    /// <para>Local: <see href="file://\Resources\Scowl\2of12full.txt"/></para>
+    /// <para>Remote: <see href="https://github.com/en-wl/wordlist/raw/master/alt12dicts/2of12full.txt"/></para>
+    /// </summary>
+    /// <param name="file"></param>
+    /// <returns></returns>
+    public static System.Collections.Generic.IEnumerable<string[]> GetScowlTwoOfTwelveFull(string file = @"file://\Resources\Scowl\2of12full.txt")
     {
-      using var stream = uri.GetStream();
+      yield return new string[] { "DictionaryCount", "NonVariant", "Variant", "NonAmerican", "SecondClass", "Word" };
+
+      using var stream = new System.Uri(file).GetStream();
       using var reader = new System.IO.StreamReader(stream, System.Text.Encoding.UTF8);
 
-      foreach (var fields in reader.ReadLines(s => s.Length > 0, s => SplitRegex().Split(s.Trim())))
+      foreach (var fields in reader.ReadLines(s => s.Length > 0, s => RegexScowlTwoOfTwelveFull().Split(s.Trim())))
         yield return fields;
     }
 
-    #region Implemented interfaces
-
-    public string[] FieldNames => new string[] { "DictionaryCount", "NonVariant", "Variant", "NonAmerican", "SecondClass", "Word" };
-    public System.Type[] FieldTypes => FieldNames.Select(s => typeof(string)).ToArray();
-
-    public System.Collections.Generic.IEnumerable<object[]> GetFieldValues() => GetData(Uri);
-
-    #endregion // Implemented interfaces
+    #endregion // SCOWL TwoOfTwelveFull
   }
 }

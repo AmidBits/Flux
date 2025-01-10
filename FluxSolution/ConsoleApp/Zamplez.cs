@@ -653,35 +653,35 @@ namespace ConsoleApp
     /// <summary>Run the coordinate systems zample.</summary>
     public static void RunResource()
     {
-      System.Console.WriteLine();
+      System.Console.WriteLine("Under RE-construction");
       System.Console.WriteLine(nameof(RunResource));
       System.Console.WriteLine();
 
-      var tdas = new ITabularDataAcquirable[]
-      {
-        new Flux.Resources.Census.CountiesAllData(),
-        new Flux.Resources.ProjectGutenberg.SynonymsAndAntonymsSamuelFallows(),
-        new Flux.Resources.ProjectGutenberg.TableOfContents(),
-        new Flux.Resources.ProjectGutenberg.TenThousandWonderfulThings(),
-        new Flux.Resources.ProjectGutenberg.WebstersUnabridgedDictionary(),
-        new Flux.Resources.Scowl.TwoOfTwelveFull(),
-        new Flux.Resources.Scrape.ZipCodes(),
-        new Flux.Resources.Ucd.UnicodeData(),
-        new Flux.Resources.Ucd.Blocks(),
-        new Flux.Resources.W3c.NamedCharacterReferences(),
-        new Flux.Resources.DotNet.FxSequence(System.TimeZoneInfo.GetSystemTimeZones()),
-      };
+      //var tdas = new ITabularDataAcquirable[]
+      //{
+      //  new Flux.Resources.Census.CountiesAllData(),
+      //  new Flux.Resources.ProjectGutenberg.SynonymsAndAntonymsSamuelFallows(),
+      //  new Flux.Resources.ProjectGutenberg.TableOfContents(),
+      //  new Flux.Resources.ProjectGutenberg.TenThousandWonderfulThings(),
+      //  new Flux.Resources.ProjectGutenberg.WebstersUnabridgedDictionary(),
+      //  new Flux.Resources.Scowl.TwoOfTwelveFull(),
+      //  new Flux.Resources.Scrape.ZipCodes(),
+      //  new Flux.Resources.Ucd.UnicodeData(),
+      //  new Flux.Resources.Ucd.Blocks(),
+      //  new Flux.Resources.W3c.NamedCharacterReferences(),
+      //  new Flux.Resources.DotNet.FxSequence(System.TimeZoneInfo.GetSystemTimeZones()),
+      //};
 
-      foreach (var tda in tdas)
-      {
-        var fn = tda.FieldNames;
-        var ft = tda.FieldTypes;
-        var fv = tda.GetFieldValues();
-        var dr = new Flux.Data.EnumerableTabularDataReader(fv, fn);
-        var dt = dr.ToDataTable(tda.GetType().Name);
+      //foreach (var tda in tdas)
+      //{
+      //  var fn = tda.FieldNames;
+      //  var ft = tda.FieldTypes;
+      //  var fv = tda.GetFieldValues();
+      //  var dr = new Flux.Data.EnumerableTabularDataReader(fv, fn);
+      //  var dt = dr.ToDataTable(tda.GetType().Name);
 
-        System.Console.WriteLine($"'{dt.TableName}' with {dt.Columns.Count} columns ({(ft.Distinct().Count() is var types ? types : types)} {(types > 1 ? "types" : "type")}) and {dt.Rows.Count} rows.");
-      }
+      //  System.Console.WriteLine($"'{dt.TableName}' with {dt.Columns.Count} columns ({(ft.Distinct().Count() is var types ? types : types)} {(types > 1 ? "types" : "type")}) and {dt.Rows.Count} rows.");
+      //}
     }
 
     #endregion

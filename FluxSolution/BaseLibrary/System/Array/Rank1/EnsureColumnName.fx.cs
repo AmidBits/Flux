@@ -15,7 +15,7 @@ namespace Flux
         ? throw new System.IndexOutOfRangeException(nameof(index))
         : index < source.Length && source[index] is var value && !string.IsNullOrWhiteSpace(value)
         ? source[index]
-        : index.ToOrdinalColumnName();
+        : index.ToSingleOrdinalColumnName();
     }
 
     public static int GetCompositeHashCode<T>(this T[] source)

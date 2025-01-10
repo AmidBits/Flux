@@ -4,7 +4,7 @@
   /// <para>A text element represents a grapheme cluster, which consists of multiple Unicode code points.</para>
   /// <para><see href="https://learn.microsoft.com/en-us/dotnet/standard/base-types/character-encoding-introduction#grapheme-clusters"/></para>
   /// </summary>
-  public record class TextElement
+  public readonly record struct TextElement
   {
     private readonly char[] m_chars;
 

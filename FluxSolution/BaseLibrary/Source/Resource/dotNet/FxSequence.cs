@@ -1,23 +1,27 @@
-namespace Flux.Resources.DotNet
+namespace Flux
 {
-  /// <summary>.NET time zones.</summary>
-  public sealed class FxSequence
-      : ITabularDataAcquirable
+  public static partial class Resource
   {
-    private readonly System.Collections.IEnumerable m_enumerable;
+    #region .NET Sequence
 
-    public FxSequence(System.Collections.IEnumerable enumerable) => m_enumerable = enumerable;
+    public static System.Collections.Generic.IEnumerable<object[]> GetDotNetSequence(this System.Collections.IEnumerable enumerable)
+    {
+      using var e = enumerable.Cast<object>().GetEnumerator();
 
-    public static System.Collections.Generic.IEnumerable<object[]> GetData(System.Collections.IEnumerable enumerable)
-      => enumerable.Cast<object>().Select(o => Fx.GetPropertyInfos(o).Select(pi => pi.GetValue(o)!).ToArray());
+      if (e.MoveNext())
+      {
+        var pis = e.Current.GetPropertyInfos();
 
-    #region Implemented interfaces
+        yield return pis.Select(pi => pi.Name).ToArray(); // Return column names once.
 
-    public string[] FieldNames => Fx.GetPropertyInfos(GetData(m_enumerable).First()).Select(pi => pi.Name).ToArray();
-    public System.Type[] FieldTypes => Fx.GetPropertyInfos(GetData(m_enumerable).First()).Select(pi => pi.PropertyType).ToArray();
+        do
+        {
+          yield return pis.Select((pi, i) => pi.GetValue(e.Current)!).ToArray();
+        }
+        while (e.MoveNext());
+      }
+    }
 
-    public System.Collections.Generic.IEnumerable<object[]> GetFieldValues() => GetData(m_enumerable);
-
-    #endregion // Implemented interfaces
+    #endregion // .NET Sequence
   }
 }

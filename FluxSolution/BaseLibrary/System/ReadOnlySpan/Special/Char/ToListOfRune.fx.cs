@@ -13,5 +13,13 @@ namespace Flux
 
       return list;
     }
+
+    public static Flux.SpanBuilder<System.Text.Rune> ToSpanBuilderOfRune(this System.ReadOnlySpan<char> source)
+    {
+      var sb = new Flux.SpanBuilder<System.Text.Rune>();
+      foreach (var rune in source.EnumerateRunes())
+        sb.Append(rune, 1);
+      return sb;
+    }
   }
 }

@@ -1,5 +1,3 @@
-using System.ComponentModel.DataAnnotations;
-
 namespace Flux
 {
   public static partial class Em

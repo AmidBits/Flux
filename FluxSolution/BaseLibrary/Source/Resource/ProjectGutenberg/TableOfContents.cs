@@ -1,37 +1,33 @@
-namespace Flux.Resources.ProjectGutenberg
+namespace Flux
 {
-  /// <summary>Get all the book title/author and number available in the Gutenberg project (from gutenberg.com</summary>
-  public sealed partial class TableOfContents
-    : ITabularDataAcquirable
+  public static partial class Resource
   {
-    public static readonly System.Uri Local = new(@"file://\Resources\ProjectGutenberg\GUTINDEX.ALL");
-    public static readonly System.Uri Origin = new(@"http://www.gutenberg.org/dirs/GUTINDEX.ALL");
-
-    public System.Uri Uri { get; private set; } = Local;
+    #region Gutenberg TableOfContents
 
     [System.Text.RegularExpressions.GeneratedRegexAttribute(@"^[\p{L}\p{N}\p{Zs}\p{P}]+\s{2,}\d+$", System.Text.RegularExpressions.RegexOptions.Compiled)]
-    private static partial System.Text.RegularExpressions.Regex MatchRegex();
+    private static partial System.Text.RegularExpressions.Regex RegexGutenbergTableOfContentsMatch();
 
     [System.Text.RegularExpressions.GeneratedRegexAttribute(@"(?<=^.+)\s{2,}(?=\d+$)", System.Text.RegularExpressions.RegexOptions.Compiled)]
-    private static partial System.Text.RegularExpressions.Regex SplitRegex();
+    private static partial System.Text.RegularExpressions.Regex RegexGutenbergTableOfContentsSplit();
 
-    /// <summary>Returns project Gutenberg's table of contents data. No field names.</summary>
-    public static System.Collections.Generic.IEnumerable<string[]> GetData(System.Uri uri)
+    /// <summary>
+    /// <para>Get all the book title/author and number available in the Gutenberg project (from gutenberg.com</para>
+    /// <para>Local: <see href="file://\Resources\ProjectGutenberg\GUTINDEX.ALL"/></para>
+    /// <para>Remote: <see href="http://www.gutenberg.org/dirs/GUTINDEX.ALL"/></para>
+    /// </summary>
+    /// <param name="file"></param>
+    /// <returns></returns>
+    public static System.Collections.Generic.IEnumerable<string[]> GetGutenbergTableOfContents(string file = @"file://\Resources\ProjectGutenberg\GUTINDEX.ALL")
     {
-      using var stream = uri.GetStream();
+      yield return new string[] { "Ebook", "Number" };
+
+      using var stream = new System.Uri(file).GetStream();
       using var reader = new System.IO.StreamReader(stream, System.Text.Encoding.UTF8);
 
-      foreach (var fields in reader.ReadLines(s => s.Length == 78 && MatchRegex().IsMatch(s), SplitRegex().Split))
+      foreach (var fields in reader.ReadLines(s => s.Length == 78 && RegexGutenbergTableOfContentsMatch().IsMatch(s), RegexGutenbergTableOfContentsSplit().Split))
         yield return fields;
     }
 
-    #region Implemented interfaces
-
-    public string[] FieldNames => new string[] { "Ebook", "Number" };
-    public Type[] FieldTypes => FieldNames.Select(s => typeof(string)).ToArray();
-
-    public System.Collections.Generic.IEnumerable<object[]> GetFieldValues() => GetData(Uri);
-
-    #endregion // Implemented interfaces
+    #endregion // Gutenberg TableOfContents
   }
 }

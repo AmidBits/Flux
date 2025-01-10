@@ -46,7 +46,7 @@ namespace Flux
             sb.AppendLine(verticalString);
         }
 
-        var horizontalFormat = string.Join(options.HorizontalSeparator is null ? null : options.HorizontalSeparator.ToString(), maxWidths.Take(source[r].Length).Select((width, index) => $"{{{index},-{width}}}")); // Build format for each horizontal since each can be different.
+        var horizontalFormat = string.Join(options.HorizontalSeparator?.ToString(), maxWidths.Take(source[r].Length).Select((width, index) => $"{{{index},-{width}}}")); // Build format for each horizontal since each can be different.
         var horizontalValues = source[r].Select((o, oi) => (new System.Text.StringBuilder($"{o}") is var sb && options.CenterContent ? sb.PadEven(maxWidths[oi], ' ', ' ') : sb).ToString()).ToArray();
 
         sb.Append(string.Format(null, horizontalFormat, horizontalValues));

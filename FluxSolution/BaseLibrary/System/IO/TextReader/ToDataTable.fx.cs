@@ -23,7 +23,7 @@ namespace Flux
       {
         if (dataTable.Columns.Count < array.Length)
           for (var i = dataTable.Columns.Count; i < array.Length; i++)
-            dataTable.Columns.Add(i.ToOrdinalColumnName());
+            dataTable.Columns.Add(i.ToSingleOrdinalColumnName());
 
         dataTable.Rows.Add(array);
       }

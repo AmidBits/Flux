@@ -4,8 +4,8 @@
   /// <para>Body relative directions (a.k.a. egocentric-coordinates) are geometrical orientations relative to a body, such as a human person's.</para>
   /// <see href="https://en.wikipedia.org/wiki/Body_relative_direction"/>
   /// </summary>
-  /// <remarks><see cref="EgocentricCoordinateAxisY"/> represent the y-axis, i.e. <see cref="EgocentricCoordinateAxisY.Forward"/>/<see cref="EgocentricCoordinateAxisY.Backward"/>.</remarks>
-  public enum EgocentricCoordinateAxisY
+  /// <remarks><see cref="EgocentricCoordinateAxisFB"/> represent the y-axis, i.e. <see cref="EgocentricCoordinateAxisFB.Forward"/>/<see cref="EgocentricCoordinateAxisFB.Backward"/>.</remarks>
+  public enum EgocentricCoordinateAxisFB
   {
     /// <summary>
     /// <para>In the direction in front (proper ahead) of some reference.</para>

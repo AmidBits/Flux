@@ -123,14 +123,14 @@ namespace Flux
     /// <summary>
     /// <para>Converts a <paramref name="value"/> to a binary (base 2) string based on <paramref name="minLength"/> and an <paramref name="alphabet"/> (<see cref="Base64Alphabet"/> if null).</para>
     /// </summary>
-    /// <typeparam name="TValue"></typeparam>
+    /// <typeparam name="TNumber"></typeparam>
     /// <param name="value"></param>
     /// <param name="minLength"></param>
     /// <param name="alphabet"></param>
     /// <returns></returns>
     /// <exception cref="System.ArgumentOutOfRangeException"></exception>
-    public static System.ReadOnlySpan<char> ToBinaryString<TValue>(this TValue value, int minLength = 1, char[]? alphabet = null)
-      where TValue : System.Numerics.IBinaryInteger<TValue>
+    public static System.ReadOnlySpan<char> ToBinaryString<TNumber>(this TNumber value, int minLength = 1, char[]? alphabet = null)
+      where TNumber : System.Numerics.IBinaryInteger<TNumber>
     {
       if (minLength <= 0) minLength = value.GetBitCount();
 
@@ -138,13 +138,13 @@ namespace Flux
 
       if (alphabet.Length < 2) throw new System.ArgumentOutOfRangeException(nameof(alphabet));
 
-      var abs = TValue.Abs(value);
+      var abs = TNumber.Abs(value);
 
       var indices = new System.Collections.Generic.List<int>();
 
       for (var bitIndex = int.Min(int.Max(abs.GetBitLength(), minLength), abs.GetBitCount()) - 1; bitIndex >= 0; bitIndex--)
       {
-        var bitValue = int.CreateChecked((abs >>> bitIndex) & TValue.One);
+        var bitValue = int.CreateChecked((abs >>> bitIndex) & TNumber.One);
 
         if (bitValue > 0 || indices.Count > 0 || bitIndex < minLength)
           indices.Add(bitValue);
@@ -158,15 +158,15 @@ namespace Flux
     /// <summary>
     /// <para>Converts a <paramref name="value"/> to a decimal (base 10) string based on <paramref name="minLength"/>, <paramref name="negativeSymbol"/> and an <paramref name="alphabet"/> (<see cref="Base64Alphabet"/> if null).</para>
     /// </summary>
-    /// <typeparam name="TValue"></typeparam>
+    /// <typeparam name="TNumber"></typeparam>
     /// <param name="value"></param>
     /// <param name="minLength"></param>
     /// <param name="negativeSymbol"></param>
     /// <param name="alphabet"></param>
     /// <returns></returns>
     /// <exception cref="System.ArgumentOutOfRangeException"></exception>
-    public static System.ReadOnlySpan<char> ToDecimalString<TValue>(this TValue value, int minLength = 1, char negativeSymbol = '\u002D', char[]? alphabet = null)
-      where TValue : System.Numerics.IBinaryInteger<TValue>
+    public static System.ReadOnlySpan<char> ToDecimalString<TNumber>(this TNumber value, int minLength = 1, char negativeSymbol = '\u002D', char[]? alphabet = null)
+      where TNumber : System.Numerics.IBinaryInteger<TNumber>
     {
       if (minLength <= 0) minLength = value.GetBitCount().MaxDigitCountOfBitLength(10, value.IsSignedNumber());
 
@@ -174,7 +174,7 @@ namespace Flux
 
       if (alphabet.Length < 10) throw new System.ArgumentOutOfRangeException(nameof(alphabet));
 
-      var abs = TValue.Abs(value);
+      var abs = TNumber.Abs(value);
 
       abs.TryConvertNumberToPositionalNotationIndices(10, out var indices);
 
@@ -183,7 +183,7 @@ namespace Flux
 
       TryTransposePositionalNotationIndicesToSymbols(indices, alphabet, out System.Collections.Generic.List<char> symbols);
 
-      if (TValue.IsNegative(value))
+      if (TNumber.IsNegative(value))
         symbols.Insert(0, negativeSymbol); // If the value is negative AND base-2 (radix) is 10 (decimal)...
 
       return symbols.AsSpan();
@@ -192,14 +192,14 @@ namespace Flux
     /// <summary>
     /// <para>Converts a <paramref name="value"/> to a hexadecimal (base 16) string based on <paramref name="minLength"/> and an <paramref name="alphabet"/> (<see cref="Base64Alphabet"/> if null).</para>
     /// </summary>
-    /// <typeparam name="TValue"></typeparam>
+    /// <typeparam name="TNumber"></typeparam>
     /// <param name="value"></param>
     /// <param name="minLength"></param>
     /// <param name="alphabet"></param>
     /// <returns></returns>
     /// <exception cref="System.ArgumentOutOfRangeException"></exception>
-    public static System.ReadOnlySpan<char> ToHexadecimalString<TValue>(this TValue value, int minLength = 1, char[]? alphabet = null)
-      where TValue : System.Numerics.IBinaryInteger<TValue>
+    public static System.ReadOnlySpan<char> ToHexadecimalString<TNumber>(this TNumber value, int minLength = 1, char[]? alphabet = null)
+      where TNumber : System.Numerics.IBinaryInteger<TNumber>
     {
       if (minLength <= 0) minLength = value.GetBitCount().MaxDigitCountOfBitLength(16, value.IsSignedNumber());
 
@@ -211,7 +211,7 @@ namespace Flux
 
       for (var nibbleIndex = (value.GetByteCount() << 1) - 1; nibbleIndex >= 0; nibbleIndex--)
       {
-        var nibbleValue = int.CreateChecked((value >>> (nibbleIndex << 2)) & TValue.CreateChecked(0xF));
+        var nibbleValue = int.CreateChecked((value >>> (nibbleIndex << 2)) & TNumber.CreateChecked(0xF));
 
         if (nibbleValue > 0 || indices.Count > 0 || nibbleIndex < minLength)
           indices.Add(nibbleValue);
@@ -225,14 +225,14 @@ namespace Flux
     /// <summary>
     /// <para>Converts a <paramref name="value"/> to a octal (base 8) string based on <paramref name="minLength"/> and an <paramref name="alphabet"/> (<see cref="Base64Alphabet"/> if null).</para>
     /// </summary>
-    /// <typeparam name="TValue"></typeparam>
+    /// <typeparam name="TNumber"></typeparam>
     /// <param name="value"></param>
     /// <param name="minLength"></param>
     /// <param name="alphabet"></param>
     /// <returns></returns>
     /// <exception cref="System.ArgumentOutOfRangeException"></exception>
-    public static System.ReadOnlySpan<char> ToOctalString<TValue>(this TValue value, int minLength = 1, char[]? alphabet = null)
-      where TValue : System.Numerics.IBinaryInteger<TValue>
+    public static System.ReadOnlySpan<char> ToOctalString<TNumber>(this TNumber value, int minLength = 1, char[]? alphabet = null)
+      where TNumber : System.Numerics.IBinaryInteger<TNumber>
     {
       if (minLength <= 0) minLength = value.GetBitCount().MaxDigitCountOfBitLength(8, value.IsSignedNumber());
 
@@ -253,7 +253,7 @@ namespace Flux
     /// <summary>
     /// <para>Converts a <paramref name="value"/> to text based on <paramref name="radix"/>, <paramref name="minLength"/> and an <paramref name="alphabet"/> (<see cref="Base64Alphabet"/> if null).</para>
     /// </summary>
-    /// <typeparam name="TValue"></typeparam>
+    /// <typeparam name="TNumber"></typeparam>
     /// <typeparam name="TRadix"></typeparam>
     /// <param name="value"></param>
     /// <param name="radix"></param>
@@ -261,8 +261,8 @@ namespace Flux
     /// <param name="alphabet"></param>
     /// <returns></returns>
     /// <exception cref="System.ArgumentOutOfRangeException"></exception>
-    public static System.ReadOnlySpan<char> ToRadixString<TValue, TRadix>(this TValue value, TRadix radix, int minLength = 1, char[]? alphabet = null)
-      where TValue : System.Numerics.IBinaryInteger<TValue>
+    public static System.ReadOnlySpan<char> ToRadixString<TNumber, TRadix>(this TNumber value, TRadix radix, int minLength = 1, char[]? alphabet = null)
+      where TNumber : System.Numerics.IBinaryInteger<TNumber>
       where TRadix : System.Numerics.IBinaryInteger<TRadix>
     {
       var rdx = int.CreateChecked(Quantities.Radix.AssertMember(radix));

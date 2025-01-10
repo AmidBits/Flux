@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Immutable;
+using System.Data;
 using System.Linq;
 using System.Net.WebSockets;
 using System.Numerics;
@@ -41,7 +42,7 @@ namespace ConsoleApp
     {
       var reWhitespace = new System.Text.RegularExpressions.Regex(@"\s+");
 
-      var ttwts = Flux.Resources.ProjectGutenberg.TenThousandWonderfulThings.GetData(Flux.Resources.ProjectGutenberg.TenThousandWonderfulThings.Local);
+      var ttwts = Flux.Resource.GetGutenbergTenThousandWonderfulThings();
 
       var dict3 = new System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>>();
 
@@ -101,6 +102,78 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
+      var dt = Flux.Resource.CreateGutenbergTenThousandWonderfulThings();
+
+      var sg0 = new Flux.SpanMaker<char>();
+      var sg1 = sg0.Append("Robert Hugo", 1);
+      //var sg1b = sg1.Append("Hugo", 1);
+      //var sg2 = sg1.Insert(6, '.', 9);
+      var sg2 = sg1.Insert(6, " A", 2);
+      //var sg2 = sg1.Insert(6, " & ", 3);
+      var str = sg2.AsReadOnlySpan().ToString();
+
+      var uss = @"\u00E7\U0001F47D\x0E7";
+
+      var ussd = uss.AsSpan().CsEscapeDecode().ToString();
+      var usse = ussd.AsSpan().CsEscapeEncode(CsEscapeOption.Variable).ToString();
+
+      var vme = Flux.Unicode.RegexParseCsEscape().EnumerateMatches(uss);
+
+      foreach (var vm in vme)
+        System.Console.WriteLine($"{vm.Index}, {vm.Length} = {uss.Substring(vm.Index, vm.Length)}");
+
+      var hg = "Hello Günter";
+      var e1 = hg.AsSpan().HtmlEncode().ToString();
+      var e2 = e1.AsSpan().UriEncode().ToString();
+      var d1 = e2.AsSpan().UriDecode().ToString();
+      var d2 = d1.AsSpan().HtmlDecode().ToString();
+
+      var testString = "つれづれなるまゝに、日暮らし、硯にむかひて、心にうつりゆくよしなし事を、そこはかとなく書きつくれば、あやしうこそものぐるほしけれ。";
+      var testRunes = testString.AsSpan().ToListOfRune().AsSpan();
+
+      var htmlencode = testString.AsSpan().HtmlEncode(true).ToString();
+
+      var urlencode = htmlencode.AsSpan().UriEncode().ToString();
+
+      var urldecode = urlencode.AsSpan().UriDecode().ToString();
+
+      var htmldecode = urldecode.AsSpan().HtmlDecode().ToString();
+
+
+      var basicLatin = Flux.Unicode.GetRunesInUnicodeRange(System.Text.Unicode.UnicodeRanges.BasicLatin);
+      //basicLatin.Remove((System.Text.Rune)'L');
+      //basicLatin.Remove((System.Text.Rune)'l');
+      //basicLatin.Remove((System.Text.Rune)'R');
+      //basicLatin.Remove((System.Text.Rune)'r');
+
+      var sb = new System.Text.StringBuilder();
+      for (var i = 0; i < 3; i++)
+      {
+        sb.Append(basicLatin.Where(r => r.IsConsonantOf() && ((i == 0 && System.Text.Rune.IsUpper(r)) || (i > 0 && System.Text.Rune.IsLower(r)))).Random());
+        sb.Append(basicLatin.Where(r => r.IsVowelOf() && System.Text.Rune.IsLower(r)).Random());
+      }
+      var s = sb.ToString();
+
+      var w3cEntities = Flux.Resource.GetDotNetSequence(System.TimeZoneInfo.GetSystemTimeZones()).ToDataTable(true);// "Test", (e, e2) => e.Length.ToNumberOfOrdinalColumnNames(), (e, e2) => e.Select(o => o.GetType()).ToArray(), (e, i) => e);
+
+      var dto = System.DateTimeOffset.Now;
+
+      var bytes = new byte[16];
+
+      dto.WriteBytes(bytes, Endianess.LittleEndian);
+
+      var read = bytes.AsReadOnlySpan().ReadDateTimeOffset(Endianess.LittleEndian);
+
+
+      var zc = Flux.Resource.GetScrapeZipCodeDatabase().ToDataTable(true, "ZipCodes");
+      zc.Columns[6].DataType = typeof(double);
+      var wud = Flux.Resource.GetGutenbergWebstersUnabridgedDictionary().ToDataTable(true, "WebstersUnabridgeDictionary");
+      var mddc = (99).DigitCount(10);
+      var saasf = Flux.Resource.GetGutenbergSynonymsAndAntonymsBySamuelFallows().ToDataTable(false, "SynonymsAndAntonymsSamuelFallows");
+
+
+
+
       var test = System.Globalization.CultureInfo.CurrentCulture.TextInfo.ListSeparator;
 
       var l = new Flux.Quantities.Length(1, LengthUnit.Parsec);
@@ -110,7 +183,7 @@ namespace ConsoleApp
 
       var us = "This function contains a unicode character pi (\u03a0)";
 
-      var usrune = us.ToAsciiWithCsEscapeSequence();
+      var usrune = us.AsSpan().CsEscapeEncode(CsEscapeOption.Variable);
 
       //var ip = Flux.Locale.PublicIp;
 

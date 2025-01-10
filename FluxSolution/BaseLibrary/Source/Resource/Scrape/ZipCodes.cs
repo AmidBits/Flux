@@ -1,42 +1,26 @@
-using Flux;
-namespace Flux.Resources.Scrape
+namespace Flux
 {
-  /// <summary>A free zip code file.</summary>
-  /// <see cref="http://federalgovernmentzipcodes.us/"/>
-  // Download URL: http://federalgovernmentzipcodes.us/free-zipcode-database.csv
-  public sealed class ZipCodes
-    : ITabularDataAcquirable
+  public static partial class Resource
   {
-    public static readonly System.Uri Local = new(@"file://\Resources\Scrape\free-zipcode-database.csv");
-    public static readonly System.Uri Origin = new(@"http://federalgovernmentzipcodes.us/free-zipcode-database.csv");
+    #region Scrape ZipCode
 
-    public System.Uri Uri { get; private set; } = Local;
-
-    /// <summary>Returns zip codes with the first line being field names.</summary>
-    public static System.Collections.Generic.IEnumerable<string[]> GetData(System.Uri uri)
+    /// <summary>
+    /// <para>A free zip code file.</para>
+    /// <para><see href="http://federalgovernmentzipcodes.us/"/></para>
+    /// <para>Remote: <see href="http://federalgovernmentzipcodes.us/free-zipcode-database.csv"/></para>
+    /// <para>Local: <see href="file://\Resources\Scrape\free-zipcode-database.csv"/></para>
+    /// </summary>
+    /// <param name="file"></param>
+    /// <returns></returns>
+    public static System.Collections.Generic.IEnumerable<string[]> GetScrapeZipCodeDatabase(string file = @"file://\Resources\Scrape\free-zipcode-database.csv")
     {
-      using var stream = uri.GetStream();
+      using var stream = new System.Uri(file).GetStream();
       using var reader = new StreamReader(stream);
 
       foreach (var fields in reader.ReadCsv())
         yield return fields;
     }
 
-    #region Implemented interfaces
-
-    private string[]? m_fieldNames = null;
-    public string[] FieldNames => m_fieldNames ??= GetData(Uri).First().ToArray();
-
-    private System.Type[]? m_fieldTypes = null;
-    public System.Type[] FieldTypes => m_fieldTypes ??= FieldNames.Select((e, i) => i switch
-    {
-      0 or 16 or 17 or 18 => typeof(int),
-      6 or 7 or 8 or 9 or 10 => typeof(double),
-      _ => typeof(string),
-    }).ToArray();
-
-    public System.Collections.Generic.IEnumerable<object[]> GetFieldValues() => GetData(Uri).Skip(1);
-
-    #endregion // Implemented interfaces
+    #endregion // Scrape ZipCode
   }
 }

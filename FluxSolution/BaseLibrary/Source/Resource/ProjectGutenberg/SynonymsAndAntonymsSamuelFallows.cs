@@ -1,20 +1,24 @@
-namespace Flux.Resources.ProjectGutenberg
+namespace Flux
 {
-  /// <summary>A Complete Dictionary of Synonyms and Antonyms by Samuel Fallows (Acdsasf).</summary>
-  /// <remarks>Returns keywords, synonyms and antonyms.</summary>
-  /// <see cref="http://www.gutenberg.org/ebooks/51155"/>
-  public sealed class SynonymsAndAntonymsSamuelFallows
-    : ITabularDataAcquirable
+  public static partial class Resource
   {
-    public static readonly System.Uri Local = new(@"file://\Resources\ProjectGutenberg\51155-0.txt");
-    public static readonly System.Uri Origin = new(@"http://www.gutenberg.org/files/51155/51155-0.txt");
+    #region Gutenberg SynonymsAndAntonymsSamuelFallows
 
-    public System.Uri Uri { get; private set; } = Local;
+    [System.Text.RegularExpressions.GeneratedRegexAttribute(@".(?=>key:|syn:|ant:)", System.Text.RegularExpressions.RegexOptions.Compiled | System.Text.RegularExpressions.RegexOptions.IgnoreCase)]
+    private static partial System.Text.RegularExpressions.Regex RegexGutenbergSynonymsAndAntonymsBySamuelFallows();
 
-    /// <summary>Returns project Gutenberg's Synonyms and antonyms by Samuel Fallows data. No field names.</summary>
-    public static System.Collections.Generic.IEnumerable<string[]> GetData(System.Uri uri)
+    /// <summary>
+    /// <para>A Complete Dictionary of Synonyms and Antonyms by Samuel Fallows (Acdsasf).</para>
+    /// <para><remarks>Returns keywords, synonyms and antonyms.</remarks></para>
+    /// <para><see href="http://www.gutenberg.org/ebooks/51155"/></para>
+    /// <para>Remote: <see href="http://www.gutenberg.org/files/51155/51155-0.txt"/></para>
+    /// <para>Local: <see href="file://\Resources\ProjectGutenberg\51155-0.txt"/></para>
+    /// </summary>
+    /// <param name="uri"></param>
+    /// <returns></returns>
+    public static System.Collections.Generic.IEnumerable<string[]> GetGutenbergSynonymsAndAntonymsBySamuelFallows(string file = @"file://\Resources\ProjectGutenberg\51155-0.txt")
     {
-      var reSection = new System.Text.RegularExpressions.Regex(@"(?<=(KEY:|SYN:|ANT:))\s", System.Text.RegularExpressions.RegexOptions.Compiled | System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+      yield return new string[] { "Keywords", "Synonyms", "Antonyms" };
 
       foreach (var item in EnumerateArrays().Select(a => new string[] { string.Join(@",", a[0]), string.Join(@",", a[1]), string.Join(@",", a[2]) }))
         yield return item;
@@ -23,7 +27,7 @@ namespace Flux.Resources.ProjectGutenberg
       {
         var lines = new System.Text.StringBuilder();
 
-        using var stream = uri.GetStream();
+        using var stream = new System.Uri(file).GetStream();
         using var reader = new System.IO.StreamReader(stream, System.Text.Encoding.UTF8);
 
         foreach (var line in reader.ReadLines(s => s.Length > 0, s => s))
@@ -35,7 +39,7 @@ namespace Flux.Resources.ProjectGutenberg
               var dictionary = new System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>>();
 
               System.Array.ForEach(
-                System.Text.RegularExpressions.Regex.Split(lines.RemoveAll(null, '.').ToLower().ToString(), @".(?=>key:|syn:|ant:)", System.Text.RegularExpressions.RegexOptions.IgnoreCase),
+                RegexGutenbergSynonymsAndAntonymsBySamuelFallows().Split(lines.RemoveAll(null, '.').ToLower().ToString()),
                 s =>
                 {
                   var array = s.Split(':');
@@ -70,13 +74,6 @@ namespace Flux.Resources.ProjectGutenberg
       }
     }
 
-    #region Implemented interfaces
-
-    public string[] FieldNames => new string[] { "Keywords", "Synonyms", "Antonyms" };
-    public Type[] FieldTypes => FieldNames.Select(s => typeof(string)).ToArray();
-
-    public System.Collections.Generic.IEnumerable<object[]> GetFieldValues() => GetData(Uri);
-
-    #endregion // Implemented interfaces
+    #endregion // Gutenberg SynonymsAndAntonymsSamuelFallows
   }
 }

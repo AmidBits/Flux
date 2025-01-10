@@ -1,19 +1,19 @@
-namespace Flux.Resources.ProjectGutenberg
+namespace Flux
 {
-  public sealed class TenThousandWonderfulThings
-    : ITabularDataAcquirable
+  public static partial class Resource
   {
-    public static readonly System.Uri Local = new(@"file://\Resources\ProjectGutenberg\pg45849.txt");
-    public static readonly System.Uri Origin = new(@"http://www.gutenberg.org/ebooks/45849.txt.utf-8");
+    #region Gutenberg TenthousandWonderfulThings
 
-    public System.Uri Uri { get; private set; } = Local;
+    [System.Text.RegularExpressions.GeneratedRegexAttribute("(?<!\\s+)\r\n(?!\\s+)", System.Text.RegularExpressions.RegexOptions.Compiled)]
+    private static partial System.Text.RegularExpressions.Regex RegexGutenbergTenThousandWonderfulThings();
 
-    /// <summary>Returns project Gutenberg's Ten thousand wonderful things data. No field names.</summary>
-    public static System.Collections.Generic.IEnumerable<string[]> GetData(System.Uri uri)
+    public static System.Collections.Generic.IEnumerable<string[]> GetGutenbergTenThousandWonderfulThings(string file = @"file://\Resources\ProjectGutenberg\pg45849.txt")
     {
-      var reTitle = new System.Text.RegularExpressions.Regex(@"^[\!\-\:\;\'\""\,\.\? A-Z0-9]+$", System.Text.RegularExpressions.RegexOptions.Compiled);
+      yield return new string[] { "Title", "Text" };
 
-      using var stream = uri.GetStream();
+      //var reTitle = new System.Text.RegularExpressions.Regex(@"^[\!\-\:\;\'\""\,\.\? A-Z0-9]+$", System.Text.RegularExpressions.RegexOptions.Compiled);
+
+      using var stream = new System.Uri(file).GetStream();
       using var reader = new System.IO.StreamReader(stream, System.Text.Encoding.UTF8);
 
       using var e = reader.ReadLines(s => true, s => s).GetEnumerator();
@@ -33,7 +33,8 @@ namespace Flux.Resources.ProjectGutenberg
         {
           var text = entry.ToString().Trim();
 
-          text = System.Text.RegularExpressions.Regex.Replace(text, "(?<!\\s+)\r\n(?!\\s+)", " ");
+          text = RegexGutenbergTenThousandWonderfulThings().Replace(text, " ");
+          //text = System.Text.RegularExpressions.Regex.Replace(text, "(?<!\\s+)\r\n(?!\\s+)", " ");
 
           var index = text.IndexOf("\r\n\r\n", System.StringComparison.Ordinal);
 
@@ -46,13 +47,9 @@ namespace Flux.Resources.ProjectGutenberg
       }
     }
 
-    #region Implemented interfaces
+    public static System.Data.DataTable CreateGutenbergTenThousandWonderfulThings()
+      => GetGutenbergTenThousandWonderfulThings().ToDataTable(true, "TenThousandWonderfulThings");
 
-    public string[] FieldNames => new string[] { "Title", "Text" };
-    public System.Type[] FieldTypes => FieldNames.Select(s => typeof(string)).ToArray();
-
-    public System.Collections.Generic.IEnumerable<object[]> GetFieldValues() => GetData(Uri);
-
-    #endregion // Implemented interfaces
+    #endregion // Gutenberg TenthousandWonderfulThings
   }
 }

@@ -150,8 +150,6 @@ namespace Flux
     /// <exception cref="System.ArgumentOutOfRangeException"></exception>
     public static System.Net.IPAddress ToIPAddress(this System.Numerics.BigInteger source)
     {
-      System.ArgumentNullException.ThrowIfNull(source);
-
       var bytes = new byte[source >= 0 && source <= System.UInt64.MaxValue ? 4 : source > System.UInt64.MaxValue && source <= System.UInt128.MaxValue ? 16 : throw new System.ArgumentOutOfRangeException(nameof(source))];
 
       System.UInt128.CreateChecked(source).WriteBytes(bytes, Endianess.LittleEndian);

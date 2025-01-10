@@ -35,7 +35,7 @@ namespace Flux
 
       var sb = new System.Text.StringBuilder();
 
-      var horizontalSeparatorString = options.HorizontalSeparator is null ? null : options.HorizontalSeparator.ToString();
+      var horizontalSeparatorString = options.HorizontalSeparator?.ToString();
 
       #region MaxWidths
 
