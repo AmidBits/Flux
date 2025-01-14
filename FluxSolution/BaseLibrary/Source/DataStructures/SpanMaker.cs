@@ -92,9 +92,11 @@ namespace Flux
     public SpanMaker(params System.ReadOnlySpan<T> span)
       : this(span.Length + DefaultBufferSize)
     {
+      m_head = m_array.Length / 2 - span.Length / 2;
+
       span.CopyTo(m_array.AsSpan().Slice(m_head, span.Length));
 
-      m_tail = span.Length;
+      m_tail = m_head + span.Length;
     }
 
 #else
@@ -273,7 +275,7 @@ namespace Flux
       {
         var offset = (needAppend - FreeAppend);
         System.Array.Copy(array, head, array, head - offset, Count);
-        return (array, head - offset, m_array.Length);
+        return (array, head - offset, head + needAppend);
       }
 
       var totalSize = FreePrepend + Count + needAppend + FreeAppend;
@@ -587,22 +589,36 @@ namespace Flux
     /// <summary>Pad evenly on both sides to the specified width by the specified <paramref name="paddingLeft"/> and <paramref name="paddingRight"/> respectively.</summary>
     public SpanMaker<T> PadEven(int totalWidth, System.ReadOnlySpan<T> paddingLeft, System.ReadOnlySpan<T> paddingRight, bool leftBias = true)
     {
-      if (totalWidth > Count)
-      {
-        var quotient = System.Math.DivRem(totalWidth - Count, 2, out var remainder);
+      var sm = this;
 
-        PadLeft(Count + (leftBias && remainder > 0 ? quotient + 1 : quotient), paddingLeft);
-        PadRight(totalWidth, paddingRight);
+      if (totalWidth > sm.Count)
+      {
+        var quotient = System.Math.DivRem(totalWidth - sm.Count, 2, out var remainder);
+
+        sm = sm.PadLeft(sm.Count + (leftBias && remainder > 0 ? quotient + 1 : quotient), paddingLeft);
+        sm = sm.PadRight(totalWidth, paddingRight);
       }
 
-      return this;
+      return sm;
     }
 
     /// <summary>Pads this <see cref="SpanMaker{T}"/> on the left with the specified padding string.</summary>
-    public SpanMaker<T> PadLeft(int totalWidth, params System.ReadOnlySpan<T> padding) => Prepend((totalWidth - Count) / padding.Length + 1, padding).Remove(0, Count - totalWidth);
+    public SpanMaker<T> PadLeft(int totalWidth, params System.ReadOnlySpan<T> padding)
+    {
+      var sm = this;
+      sm = Prepend((totalWidth - sm.Count) / padding.Length + 1, padding);
+      sm = sm.Remove(0, sm.Count - totalWidth);
+      return sm;
+    }
 
     /// <summary>Pads this <see cref="SpanMaker{T}"/> on the right with the specified padding string.</summary>
-    public SpanMaker<T> PadRight(int totalWidth, params System.ReadOnlySpan<T> padding) => Append((totalWidth - Count) / padding.Length + 1, padding).Remove(totalWidth);
+    public SpanMaker<T> PadRight(int totalWidth, params System.ReadOnlySpan<T> padding)
+    {
+      var sm = this;
+      sm = sm.Append((totalWidth - sm.Count) / padding.Length + 1, padding);
+      sm = sm.Remove(totalWidth);
+      return sm;
+    }
 
 #else
 
@@ -781,7 +797,7 @@ namespace Flux
       // Direct code modifications, checks needed.
       => index < 0 || index >= Count
       ? throw new System.ArgumentOutOfRangeException(nameof(index))
-      : new(m_array, m_head, m_tail - (m_head + index));
+      : new(m_array, m_head, m_head + index);
 
     public SpanMaker<T> RemoveAll(System.Func<T, bool> predicate)
     {
@@ -817,20 +833,7 @@ namespace Flux
       : new(m_array, m_head, m_tail - count);
 
     public SpanMaker<T> Repeat(int count)
-    {
-      var length = m_tail - m_head;
-
-      var (array, head, tail) = EnsureCapacityAppend(length * count);
-
-      while (count-- > 0)
-      {
-        System.Array.Copy(m_array, m_head, array, tail, length);
-
-        tail += length;
-      }
-
-      return new(array, head, tail);
-    }
+      => Append(3, AsReadOnlySpan().ToArray().AsReadOnlySpan());
 
 #if NET9_0_OR_GREATER
 

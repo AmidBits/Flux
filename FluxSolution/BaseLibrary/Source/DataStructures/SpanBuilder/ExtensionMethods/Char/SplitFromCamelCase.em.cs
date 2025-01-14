@@ -7,21 +7,25 @@ namespace Flux
     {
       culture ??= System.Globalization.CultureInfo.InvariantCulture;
 
-      for (var index = source.Count - 1; index >= 0; index--)
+      var sm = source;
+
+      for (var index = sm.Count - 1; index >= 0; index--)
       {
-        var left = index > 0 ? source[index - 1] : default;
-        var current = source[index];
-        var right = index < source.Count - 1 ? source[index + 1] : default;
+        var left = index > 0 ? sm[index - 1] : default;
+        var current = sm[index];
+        var right = index < sm.Count - 1 ? sm[index + 1] : default;
 
         if (char.IsUpper(current))
         {
           if (char.IsLower(right))
-            source[index] = char.ToLower(current, culture);
+            sm[index] = char.ToLower(current, culture);
 
           if (index > 0 && (char.IsLower(left) || char.IsLower(right)))
-            source.Insert(index, 1, separator);
+            sm = sm.Insert(index, 1, separator);
         }
       }
+
+      source = sm;
     }
   }
 }

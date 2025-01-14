@@ -11,15 +11,17 @@ namespace Flux
 
       var wasDigit = false;
 
-      for (var index = source.Count - 1; index >= 0; index--)
+      var sm = source;
+
+      for (var index = sm.Count - 1; index >= 0; index--)
       {
-        var c = source[index];
+        var c = sm[index];
 
         var isDigit = char.IsDigit(c);
 
         if (isDigit && !wasDigit)
         {
-          var isBetweenTenAndTwenty = index > 0 && source[index - 1] == '1';
+          var isBetweenTenAndTwenty = index > 0 && sm[index - 1] == '1';
 
           var suffix = c switch
           {
@@ -29,12 +31,14 @@ namespace Flux
             _ => @"th"
           };
 
-          if (predicate(source.AsReadOnlySpan()[..(index + 1)].ToString(), suffix, source.AsReadOnlySpan()[(index + 1)..].ToString()))
-            source.Insert(index + 1, 1, suffix.AsSpan());
+          if (predicate(sm.AsReadOnlySpan()[..(index + 1)].ToString(), suffix, sm.AsReadOnlySpan()[(index + 1)..].ToString()))
+            sm = sm.Insert(index + 1, 1, suffix.AsSpan());
         }
 
         wasDigit = isDigit;
       }
+
+      source = sm;
     }
   }
 }
