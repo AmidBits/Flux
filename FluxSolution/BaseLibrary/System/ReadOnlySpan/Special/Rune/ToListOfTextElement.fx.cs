@@ -16,12 +16,12 @@ namespace Flux
       return list;
     }
 
-    public static Flux.SpanBuilder<Text.TextElement> ToSpanBuilderOfTextElement(this System.ReadOnlySpan<System.Text.Rune> source)
+    public static Flux.SpanMaker<Text.TextElement> ToSpanMakerOfTextElement(this System.ReadOnlySpan<System.Text.Rune> source)
     {
       var si = new System.Globalization.StringInfo(source.ToListOfChar().AsSpan().ToString());
-      var sb = new Flux.SpanBuilder<Text.TextElement>();
+      var sb = new Flux.SpanMaker<Text.TextElement>();
       for (var index = 0; index < si.LengthInTextElements; index++)
-        sb.Append(new Text.TextElement(si.SubstringByTextElements(index, 1)), 1);
+        sb.Append(1, new Text.TextElement(si.SubstringByTextElements(index, 1)));
       return sb;
     }
   }

@@ -14,6 +14,7 @@ using Flux;
 using Flux.DataStructure.UnionFind;
 using Flux.Quantities;
 using Flux.Text;
+using Microsoft.VisualBasic;
 
 // C# Interactive commands:
 // #r "System.Runtime"
@@ -102,15 +103,16 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
-      var dt = Flux.Resource.CreateGutenbergTenThousandWonderfulThings();
 
       var sg0 = new Flux.SpanMaker<char>();
-      var sg1 = sg0.Append("Robert Hugo", 1);
-      //var sg1b = sg1.Append("Hugo", 1);
-      //var sg2 = sg1.Insert(6, '.', 9);
-      var sg2 = sg1.Insert(6, " A", 2);
-      //var sg2 = sg1.Insert(6, " & ", 3);
-      var str = sg2.AsReadOnlySpan().ToString();
+
+      var txt = "SuperHumoungusInsertsWhereAnyCharacterOfOorRisPresentWithoutAnyReservationsAsFarAsIknow.";
+
+      var sg1 = sg0.Append(1, "Robert").Append(1, "Hugo").Insert(6, 1, '-').Prepend(1, "Lars").Insert(4, 1, '-').Replace(c => c == '-', 11, "*");
+      var sg2 = sg1.NormalizeAdjacent(1, null, '*').Replace(c => c == '*', 1, " ").Prepend(29, '^').Append(29, '^').TrimLeft(c => c == '^').TrimRight(c => c == '^');
+      var sg3 = sg2.Reverse(5, 6).Remove(4, 7).Replace("[or]", 1, txt);
+      var sg4 = sg3.Remove(txt);
+      var str = sg4.AsReadOnlySpan().ToString();
 
       var uss = @"\u00E7\U0001F47D\x0E7";
 

@@ -2,6 +2,7 @@ namespace Flux
 {
   public static partial class Fx
   {
+
     /// <summary>Creates a new list of <see cref="System.Text.Rune"/> from the <paramref name="source"/>.</summary>
     /// <remarks>A <see cref="System.Collections.Generic.List{T}"/> can be non-allocatingly converted (i.e. casted) to <see cref="System.Span{T}"/>.</remarks>
     public static System.Collections.Generic.List<System.Text.Rune> ToListOfRune(this System.ReadOnlySpan<Text.TextElement> source)
@@ -14,12 +15,13 @@ namespace Flux
       return list;
     }
 
-    public static Flux.SpanBuilder<System.Text.Rune> ToSpanBuilderOfRune(this System.ReadOnlySpan<Text.TextElement> source)
+    public static Flux.SpanMaker<System.Text.Rune> ToSpanMakerOfRune(this System.ReadOnlySpan<Text.TextElement> source)
     {
-      var sb = new Flux.SpanBuilder<System.Text.Rune>();
+      var sb = new Flux.SpanMaker<System.Text.Rune>();
       for (var index = 0; index < source.Length; index++)
-        sb.Append(source[index].AsReadOnlySpanOfChar.ToListOfRune(), 1);
+        sb.Append(1, source[index].AsReadOnlySpanOfChar.ToListOfRune());
       return sb;
     }
+
   }
 }

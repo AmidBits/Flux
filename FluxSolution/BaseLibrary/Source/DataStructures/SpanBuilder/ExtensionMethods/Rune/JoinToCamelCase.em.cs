@@ -3,11 +3,11 @@ namespace Flux
   public static partial class Fx
   {
     /// <summary>Makes CamelCase of words separated by the specified predicate. The first character</summary>
-    public static void JoinToCamelCase(this ref SpanBuilder<System.Text.Rune> source, System.Text.Rune separator, System.Globalization.CultureInfo? culture = null)
+    public static void JoinToCamelCase(this ref SpanMaker<System.Text.Rune> source, System.Text.Rune separator, System.Globalization.CultureInfo? culture = null)
     {
       culture ??= System.Globalization.CultureInfo.CurrentCulture;
 
-      for (var index = 0; index < source.Length; index++)
+      for (var index = 0; index < source.Count; index++)
         if (index == 0 || source[index] == separator)
         {
           if (index == 0)
@@ -16,7 +16,7 @@ namespace Flux
           while (source[index] == separator)
             source.Remove(index, 1);
 
-          if (index > 0 && index < source.Length)
+          if (index > 0 && index < source.Count)
             source[index] = System.Text.Rune.ToUpper(source[index], culture);
         }
     }

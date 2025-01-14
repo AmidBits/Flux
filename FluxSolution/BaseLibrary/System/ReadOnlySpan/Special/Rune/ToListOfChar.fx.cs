@@ -14,11 +14,11 @@ namespace Flux
       return list;
     }
 
-    public static Flux.SpanBuilder<char> ToSpanBuilderOfChar(this System.ReadOnlySpan<System.Text.Rune> source)
+    public static Flux.SpanMaker<char> ToSpanMakerOfChar(this System.ReadOnlySpan<System.Text.Rune> source)
     {
-      var sb = new Flux.SpanBuilder<char>();
+      var sb = new Flux.SpanMaker<char>();
       for (var index = 0; index < source.Length; index++)
-        sb.Append(source[index].ToString(), 1);
+        sb.Append(1, source[index].ToString());
       return sb;
     }
   }
