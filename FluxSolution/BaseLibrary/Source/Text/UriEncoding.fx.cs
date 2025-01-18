@@ -93,9 +93,9 @@ namespace Flux
     /// <param name="source"></param>
     /// <param name="replacementSelector"></param>
     /// <returns></returns>
-    public static System.Text.StringBuilder UriDecode(this System.ReadOnlySpan<char> source)
+    public static SpanMaker<char> UriDecode(this System.ReadOnlySpan<char> source)
     {
-      var sb = new System.Text.StringBuilder();
+      var sm = new SpanMaker<char>();
 
       var evm = RegexUriEncodingMatch().EnumerateMatches(source);
 
@@ -108,9 +108,9 @@ namespace Flux
         if (lastEnd != vm.Index)
         {
           if (listBytes.Count > 0)
-            ParseBytes();
+            ParseBytes(ref sm);
 
-          sb.Append(source.Slice(lastEnd, vm.Index - lastEnd));
+          sm.Append(source.Slice(lastEnd, vm.Index - lastEnd));
         }
 
         var b = int.Parse(source.Slice(vm.Index + 1, vm.Length - 1), System.Globalization.NumberStyles.HexNumber);
@@ -121,14 +121,14 @@ namespace Flux
       }
 
       if (listBytes.Count > 0)
-        ParseBytes();
+        ParseBytes(ref sm);
 
       if (lastEnd < source.Length)
-        sb.Append(source.Slice(lastEnd));
+        sm.Append(source.Slice(lastEnd));
 
-      return sb;
+      return sm;
 
-      void ParseBytes()
+      void ParseBytes(ref SpanMaker<char> sm)
       {
         var spanBytes = listBytes.AsSpan();
 
@@ -136,7 +136,7 @@ namespace Flux
         {
           System.Text.Rune.DecodeFromUtf8(spanBytes.Slice(index), out var rune, out var bytesConsumed);
 
-          sb.Append(rune.ToString());
+          sm.Append(rune.ToString());
 
           index += bytesConsumed;
         }
@@ -205,17 +205,17 @@ namespace Flux
     /// <param name="replacementSelector"></param>
     /// <param name="skipUriUnreserved"></param>
     /// <returns></returns>
-    public static System.Text.StringBuilder UriEncode(this System.ReadOnlySpan<char> source)
+    public static SpanMaker<char> UriEncode(this System.ReadOnlySpan<char> source)
     {
-      var sb = new System.Text.StringBuilder();
+      var sm = new SpanMaker<char>();
 
       var byteBuffer = System.Buffers.ArrayPool<byte>.Shared.Rent(Utf8MaxEncodedSequenceLength);
       var charBuffer = System.Buffers.ArrayPool<char>.Shared.Rent(Utf8MaxEncodedSequenceLength * UriPercentEncodedOctetLength);
 
       foreach (var rune in source.EnumerateRunes())
-        sb.Append(rune.IsUriUnreserved() ? rune.ToString() : rune.UriEncode(byteBuffer, charBuffer));
+        sm = sm.Append(rune.IsUriUnreserved() ? rune.ToString() : rune.UriEncode(byteBuffer, charBuffer));
 
-      return sb;
+      return sm;
     }
   }
 }

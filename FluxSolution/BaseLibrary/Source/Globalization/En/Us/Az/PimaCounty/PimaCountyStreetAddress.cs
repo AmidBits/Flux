@@ -114,9 +114,9 @@ namespace Flux.Globalization.En.Us.Az.PimaCounty
 
     public override string? ToString()
     {
-      var sb = new System.Text.StringBuilder($"{Number} {Direction} {Intersection} {Name} {Type} {Unit}");
-      sb.NormalizeAll(' ', char.IsWhiteSpace);
-      return sb.ToString();
+      var sm = new SpanMaker<char>($"{Number} {Direction} {Intersection} {Name} {Type} {Unit}");
+      sm.NormalizeAll(char.IsWhiteSpace, ' ');
+      return sm.ToString();
     }
   }
 }

@@ -74,7 +74,7 @@ namespace Flux
 
       if (e.MoveNext() is var movedNext && movedNext)
       {
-        var columnNames = hasColumnNames ? e.Current : e.Current.Length.ToNumberOfOrdinalColumnNames();
+        var columnNames = hasColumnNames ? e.Current : e.Current.Length.ToMultipleOrdinalColumnNames();
         var columnTypes = columnNames.Select(cn => typeof(object)).ToArray();
 
         if (hasColumnNames)

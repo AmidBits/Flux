@@ -17,10 +17,10 @@ namespace Flux
 
     public static Flux.SpanMaker<System.Text.Rune> ToSpanMakerOfRune(this System.ReadOnlySpan<Text.TextElement> source)
     {
-      var sb = new Flux.SpanMaker<System.Text.Rune>();
+      var sm = new Flux.SpanMaker<System.Text.Rune>();
       for (var index = 0; index < source.Length; index++)
-        sb.Append(1, source[index].AsReadOnlySpanOfChar.ToListOfRune());
-      return sb;
+        sm = sm.Append(1, source[index].AsReadOnlySpanOfChar.ToListOfRune());
+      return sm;
     }
 
   }

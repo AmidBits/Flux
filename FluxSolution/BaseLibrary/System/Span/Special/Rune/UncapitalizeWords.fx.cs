@@ -15,9 +15,9 @@ namespace Flux
 
         if (!System.Text.Rune.IsUpper(r)) continue; // If, r is not upper-case, advance.
 
-        if ((index > 0) && !System.Text.Rune.IsWhiteSpace(source[index - 1])) continue; // If, (ensure previous) previous is not white-space, advance.
+        if (index > 0 && !System.Text.Rune.IsWhiteSpace(source[index - 1])) continue; // If, (ensure left char exists) left is not white-space, advance.
 
-        if ((index < maxIndex) && !System.Text.Rune.IsLower(source[index + 1])) continue; // If, (ensure next) next is not lower-case, advance.
+        if (index < maxIndex && !System.Text.Rune.IsLower(source[index + 1])) continue; // If, (ensure right char exists) right is not lower-case, advance.
 
         source[index] = System.Text.Rune.ToLower(r, culture);
       }

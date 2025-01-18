@@ -559,7 +559,7 @@ namespace ConsoleApp
           bst = bst.Add(r, r.ToEnglishCardinalNumeralCompoundString());
       }
 
-      System.Console.WriteLine(bst.ToConsoleBlock());
+      System.Console.WriteLine(bst.ToConsoleBlock().ToString());
 
       var counter = 0;
       foreach (var item in bst.TraverseDfsInOrder())
@@ -736,9 +736,9 @@ namespace ConsoleApp
 
         var cfo = ConsoleFormatOptions.Default;// with { VerticalSeparator = "-" };
 
-        System.Console.WriteLine($"{user1}, {rulesCompiled.EvaluateRules(user1).ToConsole(k => k.ToString(), v => v.ToString(), cfo)}");
-        System.Console.WriteLine($"{user2}, {rulesCompiled.EvaluateRules(user2).ToConsole(k => k.ToString(), v => v.ToString(), cfo)}");
-        System.Console.WriteLine($"{user3}, {rulesCompiled.EvaluateRules(user3).ToConsole(k => k.ToString(), v => v.ToString(), cfo)}");
+        System.Console.WriteLine($"{user1}, {rulesCompiled.EvaluateRules(user1).ToConsole(k => k.ToString(), v => v.ToString(), cfo).ToString()}");
+        System.Console.WriteLine($"{user2}, {rulesCompiled.EvaluateRules(user2).ToConsole(k => k.ToString(), v => v.ToString(), cfo).ToString()}");
+        System.Console.WriteLine($"{user3}, {rulesCompiled.EvaluateRules(user3).ToConsole(k => k.ToString(), v => v.ToString(), cfo).ToString()}");
       }
     }
 

@@ -39,16 +39,16 @@ namespace Flux
       {
         calendar ??= GetConversionCalendar();
 
-        var sb = new System.Text.StringBuilder();
+        var sm = new SpanMaker<char>();
 
         if (indicateOutOfRangeCalendar)
         {
           if (calendar.Value.Contains(m_value) is var ic && !ic)
-            sb.Append("Proleptic ");
+            sm = sm.Append("Proleptic ");
 
           if (!ic || calendar != GetConversionCalendar())
           {
-            sb.Append(calendar switch
+            sm = sm.Append(calendar switch
             {
               TemporalCalendar.GregorianCalendar => "Gregorian Calendar, ",
               TemporalCalendar.JulianCalendar => "Julian Calendar, ",
@@ -57,25 +57,25 @@ namespace Flux
           }
         }
 
-        sb.Append(DayOfWeek);
-        sb.Append(StringOps.CommaSpace);
+        sm = sm.Append(DayOfWeek.ToString());
+        sm = sm.Append(StringOps.CommaSpace);
 
         var (year, month, day) = GetParts(calendar); // Add 0.5 to the julian date value for date strings, because of the 12 noon convention in a Julian Date.
 
-        sb.Append(System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(month));
-        sb.Append(' ');
-        sb.Append(day);
-        sb.Append(StringOps.CommaSpace);
-        sb.Append(year);
+        sm = sm.Append(System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(month));
+        sm = sm.Append(' ');
+        sm = sm.Append(day);
+        sm = sm.Append(StringOps.CommaSpace);
+        sm = sm.Append(year);
 
         if (year <= 0 && calendar == TemporalCalendar.GregorianCalendar)
         {
-          sb.Append(@" or ");
-          sb.Append(System.Math.Abs(year) + 1);
-          sb.Append(@" BCE");
+          sm = sm.Append(@" or ");
+          sm = sm.Append(System.Math.Abs(year) + 1);
+          sm = sm.Append(@" BCE");
         }
 
-        return sb.ToString();
+        return sm.ToString();
       }
 
       /// <summary>Creates a new <see cref="JulianDate"/> from this instance.</summary>

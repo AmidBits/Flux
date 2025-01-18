@@ -15,13 +15,13 @@ namespace Flux
           var c2 = source[++index];
 
           if (!char.IsLowSurrogate(c2))
-            throw new System.InvalidOperationException(@"Missing low surrogate (required after high surrogate).");
+            throw new System.InvalidOperationException(@"Missing low surrogate (orphan high surrogate found).");
 
           yield return new System.Text.Rune(c1, c2);
         }
         else if (char.IsLowSurrogate(c1))
-          throw new System.InvalidOperationException(@"Unexpected low surrogate (only allowed after high surrogate).");
-        else
+          throw new System.InvalidOperationException(@"Unexpected low surrogate.");
+        else // Yield char as rune.
           yield return new System.Text.Rune(c1);
       }
     }

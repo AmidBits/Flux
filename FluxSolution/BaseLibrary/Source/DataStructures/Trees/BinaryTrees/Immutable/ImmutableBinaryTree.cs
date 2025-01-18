@@ -96,7 +96,7 @@ namespace Flux.DataStructure.Immutable
 
       #endregion // IBinaryTree<TValue>
 
-      public override string ToString() => $"{GetType().Name}{System.Environment.NewLine}{this.ToConsoleBlock()}";
+      public override string ToString() => $"{GetType().Name}{System.Environment.NewLine}{this.ToConsoleBlock().ToString()}";
     }
   }
 }

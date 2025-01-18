@@ -15,7 +15,10 @@ function Build-Playlist([string]$playlistName, [string[]]$directories, [string]$
     $fileInfos = ($directories | ForEach-Object { $directory = [System.IO.DirectoryInfo][System.IO.Path]::Combine($base, $_); $directory.EnumerateFiles($filter, [System.IO.SearchOption]::AllDirectories) } | Sort-Object { $_.FullName })
 
     foreach($fileInfo in $fileInfos) {
-        $m3u8.WriteLine([System.IO.Path]::GetRelativePath([System.IO.Path]::Combine($base, "Playlists"), $fileInfo.FullName).Replace("\", "/").Replace(' ', "%20"))
+        $filePath = [System.IO.Path]::GetRelativePath([System.IO.Path]::Combine($base, "Playlists"), $fileInfo.FullName)
+        $filePath = $filePath.Replace("\", "/")
+        #$filePath = $filePath.Replace(' ', "%20")
+        $m3u8.WriteLine($filePath)
     }
 
     $m3u8.Close()
@@ -36,6 +39,8 @@ Build-Playlist "Lustans Lakejer" ("Tracks\Collections\Lustans Lakejer")
 Build-Playlist "Wipeout" ("Tracks\Collections\CoLD SToRAGE", "Tracks\Collections\Wip3out")
 Build-Playlist "Yazoo" ("Tracks\Collections\Yazoo", "Tracks\Collections\Yaz")
 Build-Playlist "Yello" ("Tracks\Collections\Yello")
+
+Build-Playlist "Personal Jesus" ("Tracks\Collections", "Tracks\Miscellaneous") "*Personal Jesus*.mp3"
 
 Build-Playlist "Art Of War (Sun Tzu)" ("Books\Sun Tzu\Art of War")
 Build-Playlist "Letting Go Of God (Julia Sweeney)" ("Books\Julia Sweeney\Letting Go Of God")

@@ -12,26 +12,27 @@ namespace Flux.Text.PhoneticAlgorithm
 
     public string EncodePhoneticAlgorithm(System.ReadOnlySpan<char> name)
     {
-      var refinedSoundex = new System.Text.StringBuilder(20);
+      var refinedSoundex = new SpanMaker<char>(20);
 
       var previousCode = '\0';
 
       for (var index = 0; index < name.Length; index++)
         if (char.ToUpper(name[index]) is var c && c >= 'A' && c <= 'Z')
         {
-          if (refinedSoundex.Length == 0) refinedSoundex.Append(c);
+          if (refinedSoundex.Length == 0)
+            refinedSoundex = refinedSoundex.Append(c);
 
           var letterCode = LetterCodeMap[c - 'A'];
 
           if (letterCode != previousCode)
           {
-            refinedSoundex.Append(letterCode);
+            refinedSoundex = refinedSoundex.Append(letterCode);
 
             previousCode = letterCode;
           }
         }
 
-      return refinedSoundex.ToString(0, System.Math.Min(MaxCodeLength, refinedSoundex.Length));
+      return refinedSoundex.AsReadOnlySpan().Slice(0, System.Math.Min(MaxCodeLength, refinedSoundex.Length)).ToString();
     }
   }
 }

@@ -21,11 +21,11 @@ namespace Flux.Riff
 
     public override string ToString()
     {
-      var sb = new System.Text.StringBuilder();
+      var sm = new SpanMaker<char>();
 
-      sb.Append($"{GetType().Name} {{ \"{ChunkID}\" (8+{ChunkSize} bytes) \"{FormType}\" }}");
+      sm = sm.Append($"{GetType().Name} {{ \"{ChunkID}\" (8+{ChunkSize} bytes) \"{FormType}\" }}");
 
-      return sb.ToString();
+      return sm.ToString();
     }
   }
 }

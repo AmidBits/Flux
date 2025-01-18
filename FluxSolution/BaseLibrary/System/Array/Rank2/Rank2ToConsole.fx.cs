@@ -6,13 +6,13 @@ namespace Flux
     /// <para>Returns the two-dimensional array as a new sequence of grid-like formatted strings, that can be printed in the console.</para>
     /// </summary>
     /// <remarks>Since an array is arbitrary in terms of e.g. rows and columns, we just adopt a this view, so we'll consider dimension 0 as the row dimension and dimension 1 as the column dimension.</remarks>
-    public static System.Text.StringBuilder Rank2ToConsole<T>(this T[,] source, ConsoleFormatOptions? options = null)
+    public static SpanMaker<char> Rank2ToConsole<T>(this T[,] source, ConsoleFormatOptions? options = null)
     {
       source.AssertRank(2);
 
       options ??= ConsoleFormatOptions.Default;
 
-      var sb = new System.Text.StringBuilder();
+      var sm = new SpanMaker<char>();
 
       var length0 = source.GetLength(0);
       var length1 = source.GetLength(1);
@@ -33,7 +33,7 @@ namespace Flux
 
       #endregion // MaxWidths
 
-      var verticalString = options.VerticalSeparator is null ? null : string.Join(options.HorizontalSeparator, maxWidths.Select(width => options.VerticalSeparator.ToStringBuilder().PadRight(width, options.VerticalSeparator)));
+      var verticalString = options.VerticalSeparator is null ? null : string.Join(options.HorizontalSeparator, maxWidths.Select(width => options.VerticalSeparator.ToSpanMaker().PadRight(width, options.VerticalSeparator).ToString()));
 
       var horizontalFormat = string.Join(options.HorizontalSeparator?.ToString(), maxWidths.Select((width, index) => $"{{{index},-{width}}}")); // Build format in advance since all rows have the same number of columns.
 
@@ -41,18 +41,18 @@ namespace Flux
       {
         if (r > 0)
         {
-          sb.AppendLine();
+          sm = sm.AppendLine();
 
           if (!string.IsNullOrEmpty(verticalString) && r > 0)
-            sb.AppendLine(verticalString);
+            sm = sm.AppendLine(1, verticalString);
         }
 
-        var horizontalValues = System.Linq.Enumerable.Range(0, length1).Select(ci => (new System.Text.StringBuilder($"{source[r, ci]}") is var sb && options.CenterContent ? sb.PadEven(maxWidths[ci], ' ', ' ') : sb).ToString()).ToArray();
+        var horizontalValues = System.Linq.Enumerable.Range(0, length1).Select(ci => (new SpanMaker<char>($"{source[r, ci]}") is var sb && options.CenterContent ? sb.PadEven(maxWidths[ci], ' ', ' ') : sb).ToString()).ToArray();
 
-        sb.Append(string.Format(null, horizontalFormat, horizontalValues));
+        sm = sm.Append(string.Format(null, horizontalFormat, horizontalValues));
       }
 
-      return sb;
+      return sm;
     }
   }
 }

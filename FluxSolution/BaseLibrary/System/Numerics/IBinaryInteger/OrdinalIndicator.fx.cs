@@ -9,9 +9,9 @@ namespace Flux
     public static string GetOrdinalIndicatorSuffix<TNumber>(this TNumber value)
       where TNumber : System.Numerics.IBinaryInteger<TNumber>
     {
-      var twoDigit = int.CreateChecked(TNumber.Abs(value) % TNumber.CreateChecked(100));
+      var twoDigits = int.CreateChecked(TNumber.Abs(value) % TNumber.CreateChecked(100));
 
-      var oneDigit = twoDigit is >= 11 and <= 13 ? 0 : twoDigit % 10;
+      var oneDigit = twoDigits is >= 11 and <= 13 ? 0 : twoDigits % 10;
 
       if (oneDigit == 1)
         return "st";

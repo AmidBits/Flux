@@ -61,7 +61,7 @@ namespace Flux
 
       var adjustedValue = source.ConvertTo(value, MetricPrefix.Unprefixed);
 
-      var (InfimumIndex, InfimumItem, InfimumValue, SupremumIndex, SupremumItem, SupremumValue) = metricPrefixes.AsReadOnlySpan().GetInfimumAndSupremum(adjustedValue, e => T.CopySign(T.Pow(T.CreateChecked(10), T.Abs(T.CreateChecked((int)e))), T.CreateChecked((int)e)), proper);
+      var (InfimumIndex, InfimumItem, InfimumValue, SupremumIndex, SupremumItem, SupremumValue) = metricPrefixes.AsReadOnlySpan().InfimumAndSupremum(adjustedValue, e => T.CopySign(T.Pow(T.CreateChecked(10), T.Abs(T.CreateChecked((int)e))), T.CreateChecked((int)e)), proper);
 
       var ltValue = MetricPrefix.Unprefixed.ConvertTo(value, InfimumItem);
       var gtValue = MetricPrefix.Unprefixed.ConvertTo(value, SupremumItem);
@@ -120,26 +120,26 @@ namespace Flux
 
       if (number == 0) return "0";
 
-      var sb = new System.Text.StringBuilder();
+      var sm = new SpanMaker<char>();
 
       var engineeringExponent = double.Floor(double.Log10(double.Abs(number)) / 3) * 3;
 
       var numberScaled = number * double.Pow(10, -(int)engineeringExponent);
 
-      sb.Append(numberScaled.ToString(format, formatProvider));
+      sm = sm.Append(numberScaled.ToString(format, formatProvider));
 
       var engineeringSymbol = ((MetricPrefix)engineeringExponent).GetMetricPrefixSymbol(false);
 
       if (engineeringSymbol.Length > 0)
       {
-        sb.Append(spacing.ToSpacingString());
-        sb.Append(engineeringSymbol);
+        sm = sm.Append(spacing.ToSpacingString());
+        sm = sm.Append(engineeringSymbol);
 
         if (unit is not null)
-          sb.Append(unit);
+          sm = sm.Append(unit);
       }
 
-      return sb.ToString();
+      return sm.ToString();
     }
 
     //public static string GetNumberWithUnitPrefix(this double number, int power = 1)

@@ -2,15 +2,15 @@ namespace Flux
 {
   public static partial class Fx
   {
-    /// <summary>Indicates whether the source is wrapped in the specified characters. E.g. in SQL brackets, or parenthesis.</summary>
+    /// <summary>Indicates whether the source is wrapped in the specified characters. E.g. brackets, or parenthesis.</summary>
     public static bool IsWrapped(this System.Text.StringBuilder source, char left, char right)
       => source is not null && source.Length >= 2 && source[0] == left && source[^1] == right;
 
-    /// <summary>Remove the specified wrapping characters from the source, if they exist. E.g. SQL brackets, or parenthesis.</summary>
+    /// <summary>Remove the specified wrapping characters from the source, if they exist. E.g. brackets, or parenthesis.</summary>
     public static System.Text.StringBuilder Unwrap(this System.Text.StringBuilder source, char left, char right)
       => source is not null && IsWrapped(source, left, right) ? source.Remove(0, 1).Remove(source.Length - 1, 1) : (source ?? throw new System.ArgumentNullException(nameof(source)));
 
-    /// <summary>Add the specified wrap characters to the source. E.g. in SQL brackets, or parenthesis.</summary>
+    /// <summary>Add the specified wrap characters to the source. E.g. brackets, or parenthesis.</summary>
     public static System.Text.StringBuilder Wrap(this System.Text.StringBuilder source, char left, char right)
       => (source ?? throw new System.ArgumentNullException(nameof(source))).Insert(0, left).Append(right);
 

@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net.WebSockets;
 using System.Numerics;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Runtime.Intrinsics;
 using System.Security.Cryptography;
 using System.Text.RegularExpressions;
@@ -103,16 +104,37 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
+      var bin = (123).ToBinaryString(8);
+      var oct = (123).ToOctalString(8);
+      var dec = (123).ToDecimalString(8);
+      var hex = (123).ToHexadecimalString(8);
+
+      var chr = (System.Text.Rune)' ';
 
       var sg0 = new Flux.SpanMaker<char>();
 
       var txt = "SuperHumoungusInsertsWhereAnyCharacterOfOorRisPresentWithoutAnyReservationsAsFarAsIknow.";
 
-      var sg1 = sg0.Append(1, "Robert").Append(1, "Hugo").Insert(6, 1, '-').Prepend(1, "Lars").Insert(4, 1, '-').Replace(c => c == '-', 11, "*");
-      var sg2 = sg1.NormalizeAdjacent(1, null, '*').Replace(c => c == '*', 1, " ").Prepend(29, '^').Append(29, '^').TrimLeft(c => c == '^').TrimRight(c => c == '^');
-      var sg3 = sg2.Reverse(5, 6).Remove(4, 7).Replace("[or]", 1, txt);
-      var sg4 = sg3.Remove(txt);
-      var str = sg4.AsReadOnlySpan().ToString();
+      var sg1 = sg0.Append(1, "Robert");
+      var sg2 = sg1.Append(1, "123 Hugo");
+      var sg3 = sg2.Insert(6, 1, '-');
+      var sg4 = sg3.Prepend(1, "Lars");
+      var sg5 = sg4.Insert(4, 1, '-');
+      var sg6 = sg5.Replace(c => c == '-', 11, "*");
+      var sg7 = sg6.Replace(c => c == '*', 1, " ");
+      //var tet = sg7.RegexSplits(@"[^\p{L}\p{Nd}]"); // For show.
+      var sg8 = sg7.Prepend(29, '^');
+      var sg9 = sg8.Append(29, '^');
+      var sgA = sg9.NormalizeAdjacent(1, null, '^', ' ');
+      var sgB = sgA.TrimLeft(c => c == '^');
+      var sgC = sgB.TrimRight(c => c == '^');
+      sgC.AsSpan().Slice(5, 6).Reverse();
+      var sgE = sgC.Remove(4, 7);
+      var tet2 = sgE.AsReadOnlySpan().RegexMatches(@"\d+"); // For show.
+      sgE.MakeNumbersFixedLength(8);
+      var sgF = sgE.ReplaceRegex(@"\d+", t => int.Parse(t, System.Globalization.NumberStyles.Integer).ToOrdinalIndicatorString());
+      var sgG = sgF.RemoveRegex(txt);
+      var str = sgG.AsReadOnlySpan().ToString();
 
       var uss = @"\u00E7\U0001F47D\x0E7";
 

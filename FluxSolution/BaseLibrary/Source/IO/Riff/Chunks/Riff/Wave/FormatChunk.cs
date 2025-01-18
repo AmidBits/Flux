@@ -57,14 +57,14 @@ namespace Flux.Riff
 
     public override string ToString()
     {
-      var sb = new System.Text.StringBuilder(base.ToString());
+      var sm = new SpanMaker<char>(base.ToString());
 
       if (IsExtendedFormat)
-        sb.Insert(sb.IndexOf(0, " bytes"), "+22");
+        sm = sm.Insert(sm.AsReadOnlySpan().IndexOf(" bytes"), "+22");
 
-      sb.Insert(sb.IndexOf(0, ')') + 1, $" {GetFormatName(Format)} {SampleChannels} ch. {SampleBitDepth}-bit {SampleRate} Hz");
+      sm = sm.Insert(sm.AsReadOnlySpan().IndexOf(')') + 1, $" {GetFormatName(Format)} {SampleChannels} ch. {SampleBitDepth}-bit {SampleRate} Hz");
 
-      return sb.ToString();
+      return sm.ToString();
       //return base.ToString().Replace(">", $", {GetFormatName((int)Format)}, {SampleChannels} ch., {SampleRate} Hz, {SampleBitDepth}-bit>", System.StringComparison.Ordinal);
     }
   }

@@ -24,7 +24,7 @@ namespace Flux
     //}
 
     /// <summary>Returns the data table as a new sequence of grid-like formatted strings, that can be printed in the console.</summary>
-    public static System.Text.StringBuilder ToConsole(this System.Data.DataView source, ConsoleFormatOptions? options = null)
+    public static SpanMaker<char> ToConsole(this System.Data.DataView source, ConsoleFormatOptions? options = null)
     {
       System.ArgumentNullException.ThrowIfNull(source);
       System.ArgumentNullException.ThrowIfNull(source.Table);
@@ -33,7 +33,7 @@ namespace Flux
 
       if (source.Count == 0) throw new System.ArgumentOutOfRangeException(nameof(source), "The DataView is empty.");
 
-      var sb = new System.Text.StringBuilder();
+      var sm = new SpanMaker<char>();
 
       var horizontalSeparatorString = options.HorizontalSeparator?.ToString();
 
@@ -57,29 +57,29 @@ namespace Flux
 
       #endregion // MaxWidths
 
-      var verticalLine = options.VerticalSeparator is null ? null : string.Join(horizontalSeparatorString, maxWidths.Select(width => options.VerticalSeparator.ToStringBuilder().PadRight(width, options.VerticalSeparator)));
+      var verticalLine = options.VerticalSeparator is null ? null : string.Join(horizontalSeparatorString, maxWidths.Select(width => options.VerticalSeparator.ToSpanMaker().PadRight(width, options.VerticalSeparator).ToString()));
 
       var horizontalLineFormat = string.Join(horizontalSeparatorString, maxWidths.Select((width, index) => $"{{{index},-{width}}}"));
 
       if (options.IncludeColumnNames)
       {
-        sb.AppendLine(string.Format(horizontalLineFormat, source!.Table!.Columns.Cast<System.Data.DataColumn>().Select((e, i) => options.CenterContent ? new System.Text.StringBuilder(e.ColumnName).PadEven(maxWidths[i], ' ', ' ').ToString() : e.ColumnName).ToArray()));
+        sm = sm.AppendLine(string.Format(horizontalLineFormat, source!.Table!.Columns.Cast<System.Data.DataColumn>().Select((e, i) => options.CenterContent ? new SpanMaker<char>(e.ColumnName).PadEven(maxWidths[i], " ", " ").ToString() : e.ColumnName).ToArray()));
 
         if (verticalLine is not null)
-          sb.AppendLine(verticalLine);
+          sm = sm.AppendLine(verticalLine);
       }
 
       for (var r = 0; r < source.Count; r++)
       {
         if (verticalLine is not null && r > 0)
-          sb.AppendLine(verticalLine);
+          sm = sm.AppendLine(verticalLine);
 
-        var values = source[r].Row.ItemArray is var array && options.CenterContent ? array.Select((e, i) => new System.Text.StringBuilder($"{e}").PadEven(maxWidths[i], ' ', ' ').ToString()).ToArray() : array;
+        var values = source[r].Row.ItemArray is var array && options.CenterContent ? array.Select((e, i) => new SpanMaker<char>($"{e}").PadEven(maxWidths[i], ' ', ' ').ToString()).ToArray() : array;
 
-        sb.AppendLine(string.Format(horizontalLineFormat, values));
+        sm = sm.AppendLine(string.Format(horizontalLineFormat, values));
       }
 
-      return sb;
+      return sm;
     }
   }
 }

@@ -5,9 +5,9 @@ namespace Flux
     [System.Text.RegularExpressions.GeneratedRegex(@"(?<Prefix>U\+)(?<Codepoint>[0-9A-Fa-f]{4,6})", System.Text.RegularExpressions.RegexOptions.Compiled)]
     public static partial System.Text.RegularExpressions.Regex RegexParseUnicodeUnotation();
 
-    public static System.Text.StringBuilder UnicodeUnotationDecode(this System.ReadOnlySpan<char> source)
+    public static SpanMaker<char> UnicodeUnotationDecode(this System.ReadOnlySpan<char> source)
     {
-      var sb = new System.Text.StringBuilder();
+      var sm = new SpanMaker<char>();
 
       var evm = RegexParseUnicodeUnotation().EnumerateMatches(source);
 
@@ -18,14 +18,14 @@ namespace Flux
         var index = vm.Index;
         var length = vm.Length;
 
-        sb.Append(source.Slice(lastEnd, index - lastEnd)); // Append any in-between characters.
+        sm.Append(source.Slice(lastEnd, index - lastEnd)); // Append any in-between characters.
 
-        sb.Append(new System.Text.Rune(int.Parse(source.Slice(index + 2, length - 2), System.Globalization.NumberStyles.HexNumber)).ToString()); // Append the rune string.
+        sm.Append(new System.Text.Rune(int.Parse(source.Slice(index + 2, length - 2), System.Globalization.NumberStyles.HexNumber)).ToString()); // Append the rune string.
 
         lastEnd = index + length;
       }
 
-      return sb;
+      return sm;
     }
 
     /// <summary>
@@ -52,12 +52,12 @@ namespace Flux
     /// <param name="source"></param>
     /// <param name="format"></param>
     /// <returns></returns>
-    public static System.Text.StringBuilder UnicodeUnotationEncode(this System.ReadOnlySpan<char> source)
+    public static SpanMaker<char> UnicodeUnotationEncode(this System.ReadOnlySpan<char> source)
     {
-      var sb = new System.Text.StringBuilder();
+      var sm = new SpanMaker<char>();
       foreach (var rune in source.EnumerateRunes())
-        sb.Append(rune.UnicodeUnotationEncode());
-      return sb;
+        sm.Append(rune.UnicodeUnotationEncode());
+      return sm;
     }
 
     ///// <summary>

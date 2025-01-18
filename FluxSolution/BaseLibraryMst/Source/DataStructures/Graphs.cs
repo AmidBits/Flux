@@ -291,7 +291,7 @@ namespace DataStructures
 
       var (actualDistance, actualPredecessor) = Flux.DataStructure.Graph.Algorithm.BellmanFordShortestPaths(vertices, edges, 0);
 
-      System.Console.WriteLine(actualDistance.Rank1ToConsole());
+      System.Console.WriteLine(actualDistance.Rank1ToConsole().ToString());
 
       var expectedDistance = new double[] { 0, 2, 4, 7, -2 };
       var expectedPredecessor = new int[] { -1, 2, 3, 0, 1 };
@@ -308,7 +308,7 @@ namespace DataStructures
 
       var (actualDistance, actualPrevious) = Flux.DataStructure.Graph.Algorithm.DijkstraShortestPaths(vertices, edges, 1);
 
-      System.Console.WriteLine(actualDistance.Rank1ToConsole());
+      System.Console.WriteLine(actualDistance.Rank1ToConsole().ToString());
 
       var expectedDistance = new double[] { double.PositiveInfinity, 0, 7, 9, 20, 20, 11 };
       var expectedPrevious = new int[] { 0, 0, 1, 1, 3, 6, 3 };

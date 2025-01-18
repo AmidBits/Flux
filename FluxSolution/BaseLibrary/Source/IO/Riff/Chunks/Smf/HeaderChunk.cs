@@ -24,11 +24,11 @@ namespace Flux.Riff.Smf
 
     public override string ToString()
     {
-      var sb = new System.Text.StringBuilder(base.ToString());
+      var sm = new SpanMaker<char>(base.ToString());
 
-      sb.Insert(sb.IndexOf(0, ')') + 1, $" \"{Format}\", {Tracks} tracks, {Division}");
+      sm = sm.Insert(sm.AsReadOnlySpan().IndexOf(')') + 1, $" \"{Format}\", {Tracks} tracks, {Division}");
 
-      return sb.ToString();
+      return sm.ToString();
     }
   }
 }

@@ -18,7 +18,7 @@ namespace Flux
     /// <param name="source"></param>
     /// <param name="name"></param>
     /// <returns></returns>
-    public static string[] ToNumberOfOrdinalColumnNames<TNumber>(this TNumber source, string name = "Column")
+    public static string[] ToMultipleOrdinalColumnNames<TNumber>(this TNumber source, string name = "Column")
       where TNumber : System.Numerics.IBinaryInteger<TNumber>
     {
       var maxWidth = int.CreateChecked(source.DigitCount(10));

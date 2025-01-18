@@ -11,9 +11,9 @@ namespace Flux
     /// <param name="source"></param>
     /// <param name="replacementSelector"></param>
     /// <returns></returns>
-    public static System.Text.StringBuilder HtmlDecode(this System.ReadOnlySpan<char> source/*, System.Func<System.ReadOnlySpan<char>, string>? replacer=null*/)
+    public static SpanMaker<char> HtmlDecode(this System.ReadOnlySpan<char> source/*, System.Func<System.ReadOnlySpan<char>, string>? replacer=null*/)
     {
-      var sb = new System.Text.StringBuilder();
+      var sm = new SpanMaker<char>();
 
       var evm = RegexHtmlEncodingMatch().EnumerateMatches(source);
 
@@ -21,9 +21,7 @@ namespace Flux
 
       foreach (var vm in evm)
       {
-        sb.Append(source.Slice(lastEnd, vm.Index - lastEnd));
-
-
+        sm.Append(source.Slice(lastEnd, vm.Index - lastEnd));
 
         var integer
           = int.TryParse(source.Slice(vm.Index + 2, vm.Length - 3), System.Globalization.NumberStyles.Integer, System.Globalization.CultureInfo.InvariantCulture, out var dec)
@@ -32,12 +30,12 @@ namespace Flux
           ? hex
           : throw new System.InvalidOperationException();
 
-        sb.Append(new System.Text.Rune(integer).ToString());
+        sm.Append(new System.Text.Rune(integer).ToString());
 
         lastEnd = vm.Index + vm.Length;
       }
 
-      return sb;
+      return sm;
     }
 
     /// <summary>
@@ -66,12 +64,12 @@ namespace Flux
     /// <param name="source"></param>
     /// <param name="asHexadecimal"></param>
     /// <returns></returns>
-    public static System.Text.StringBuilder HtmlEncode(this System.ReadOnlySpan<char> source, bool asHexadecimal = false)
+    public static SpanMaker<char> HtmlEncode(this System.ReadOnlySpan<char> source, bool asHexadecimal = false)
     {
-      var sb = new System.Text.StringBuilder();
+      var sm = new SpanMaker<char>();
       foreach (var rune in source.EnumerateRunes())
-        sb.Append(rune.HtmlEncode(asHexadecimal));
-      return sb;
+        sm.Append(rune.HtmlEncode(asHexadecimal));
+      return sm;
     }
   }
 }

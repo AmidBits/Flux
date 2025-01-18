@@ -4,15 +4,15 @@ namespace Flux
   {
     public static string ToXsdDurationString(this System.TimeSpan source)
     {
-      var sb = new System.Text.StringBuilder();
+      var sm = new SpanMaker<char>();
 
       if (source.Ticks < 0)
-        sb.Append('-');
+        sm = sm.Append('-');
 
-      sb.Append('P');
+      sm = sm.Append('P');
 
       if (System.Math.Abs(source.Days) is var days && days > 0)
-        sb.Append(days).Append('D');
+        sm = sm.Append(days).Append('D');
 
       if (
         System.Math.Abs(source.Hours) is var h
@@ -24,35 +24,35 @@ namespace Flux
         && (h != 0 || m != 0 || s != 0 || milli != 0 || micro != 0 || nano != 0)
       )
       {
-        sb.Append('T');
+        sm = sm.Append('T');
 
         if (h != 0)
-          sb.Append(h).Append('H');
+          sm = sm.Append(h).Append('H');
 
         if (m != 0)
-          sb.Append(m).Append('M');
+          sm = sm.Append(m).Append('M');
 
         if (s != 0 || milli != 0 || micro != 0 || nano != 0)
         {
-          sb.Append(s);
+          sm = sm.Append(s);
 
           if (milli != 0 || micro != 0 || nano != 0)
           {
-            sb.Append('.');
+            sm = sm.Append('.');
 
             if (milli != 0)
-              sb.Append(milli.ToString("D3"));
+              sm = sm.Append(milli.ToString("D3"));
             if (micro != 0)
-              sb.Append(micro.ToString("D3"));
+              sm = sm.Append(micro.ToString("D3"));
             if (nano != 0)
-              sb.Append(nano.ToString("D3"));
+              sm = sm.Append(nano.ToString("D3"));
           }
 
-          sb.Append('S');
+          sm = sm.Append('S');
         }
       }
 
-      return sb.ToString();
+      return sm.ToString();
     }
   }
 }

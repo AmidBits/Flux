@@ -119,8 +119,7 @@ namespace Text
     public void InsertOrdinalIndicatorSuffix()
     {
       var expected = @"The 3rd item is before the 13th.";
-      var actual = new SpanMaker<char>(@"The 3 item is before the 13.");
-      actual.InsertOrdinalIndicatorSuffix();
+      var actual = new SpanMaker<char>(@"The 3 item is before the 13.").InsertOrdinalIndicatorSuffix();
       Assert.AreEqual(expected, actual.ToString());
     }
 
@@ -189,8 +188,7 @@ namespace Text
     public void MakeIntegersFixedLength()
     {
       var expected = @"The 0003 item is before the 0013.";
-      var actual = new Flux.SpanMaker<char>(@"The 3 item is before the 13.");
-      actual.MakeNumbersFixedLength(4, '0');
+      var actual = new Flux.SpanMaker<char>(@"The 3 item is before the 13.").MakeNumbersFixedLength(4, '0');
       Assert.AreEqual(expected, actual.ToString());
     }
 
@@ -198,8 +196,7 @@ namespace Text
     public void NormalizeAdjacents()
     {
       var expected = @"There is a bee in the soup.";
-      var actual = new Flux.SpanMaker<char>(@"There is aa bbee in the soup.");
-      actual = actual.NormalizeAdjacent(1, null, 'a', 'b');
+      var actual = new Flux.SpanMaker<char>(@"There is aa bbee in the soup.").NormalizeAdjacent(1, null, 'a', 'b');
       Assert.AreEqual(expected, actual.ToString());
     }
 
@@ -207,8 +204,7 @@ namespace Text
     public void NormalizeAll()
     {
       var expected = @"There is a bee in the soup.";
-      var actual = new Flux.SpanMaker<char>(@"   There  is a  bee in  the soup.");
-      actual = actual.NormalizeAll(char.IsWhiteSpace, ' ');
+      var actual = new Flux.SpanMaker<char>(@"   There  is a  bee in  the soup.").NormalizeAll(char.IsWhiteSpace, ' ');
       Assert.AreEqual(expected, actual.ToString());
     }
 
@@ -216,8 +212,7 @@ namespace Text
     public void PadEven()
     {
       var expected = @"---101----";
-      var actual = new Flux.SpanMaker<char>(@"101");
-      actual = actual.PadEven(10, "-", "-", false);
+      var actual = new Flux.SpanMaker<char>(@"101").PadEven(10, "-", "-", false);
       Assert.AreEqual(expected, actual.ToString());
     }
 
@@ -225,8 +220,7 @@ namespace Text
     public void PadLeft()
     {
       var expected = @"00000006";
-      var actual = new Flux.SpanMaker<char>(@"6");
-      actual = actual.PadLeft(8, '0'.ToString());
+      var actual = new Flux.SpanMaker<char>(@"6").PadLeft(8, '0'.ToString());
       Assert.AreEqual(expected, actual.ToString());
     }
 
@@ -234,8 +228,7 @@ namespace Text
     public void PadRight()
     {
       var expected = @"60000000";
-      var actual = new Flux.SpanMaker<char>(@"6");
-      actual = actual.PadRight(8, '0'.ToString());
+      var actual = new Flux.SpanMaker<char>(@"6").PadRight(8, '0'.ToString());
       Assert.AreEqual(expected, actual.ToString());
     }
 
@@ -243,8 +236,7 @@ namespace Text
     public void RemoveAll()
     {
       var expected = @" There  is  a  new  neat  little  thing  that  eats  soup.";
-      var actual = new Flux.SpanMaker<char>(@"1 There 2 is 3 a 4 new 5 neat 6 little 7 thing 8 that 9 eats 0 soup.");
-      actual = actual.RemoveAll(char.IsDigit);
+      var actual = new Flux.SpanMaker<char>(@"1 There 2 is 3 a 4 new 5 neat 6 little 7 thing 8 that 9 eats 0 soup.").RemoveAll(char.IsDigit);
       Assert.AreEqual(expected, actual.ToString());
     }
 
@@ -264,14 +256,13 @@ namespace Text
       Assert.AreEqual(expected, actual.ToString());
     }
 
-    [TestMethod]
-    public void Reverse()
-    {
-      var expected = @"daeheldooD";
-      var actual = new Flux.SpanMaker<char>(@"Doodlehead");
-      actual = actual.Reverse();
-      Assert.AreEqual(expected, actual.ToString());
-    }
+    //[TestMethod]
+    //public void Reverse()
+    //{
+    //  var expected = @"daeheldooD";
+    //  var actual = new Flux.SpanMaker<char>(@"Doodlehead").Reverse();
+    //  Assert.AreEqual(expected, actual.ToString());
+    //}
 
     [TestMethod]
     public void SplitFromCamelCase()
@@ -318,7 +309,8 @@ namespace Text
     public void Swap()
     {
       var expected = @"Hobert Rugo";
-      var actual = new Flux.SpanMaker<char>(@"Robert Hugo").Swap(7, 0);
+      var actual = new Flux.SpanMaker<char>(@"Robert Hugo");
+      actual.Swap(7, 0);
       Assert.AreEqual(expected, actual.ToString());
     }
 

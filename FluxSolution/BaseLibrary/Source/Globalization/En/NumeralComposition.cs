@@ -35,44 +35,44 @@ namespace Flux
       public static string GetCardinalNumeralString<TSelf>(TSelf number, string decimalSeparatorWord = "Point", bool includeAnd = false)
         where TSelf : System.Numerics.INumber<TSelf>
       {
-        var sb = new System.Text.StringBuilder();
+        var sm = new SpanMaker<char>();
 
         var composition = Globalization.En.NumeralComposition.GetCompoundNumbersAndNumerals(System.Numerics.BigInteger.CreateChecked(number)); // The integral part.
 
-        sb.Append(composition.First().CardinalNumeral);
+        sm = sm.Append(composition.First().CardinalNumeral);
 
-        AppendNumber();
+        AppendNumber(ref sm);
 
         if (!TSelf.IsInteger(number)) // If it's a decimal number...
         {
-          if (sb.Length > 0)
-            sb.Append(' ');
+          if (sm.Length > 0)
+            sm = sm.Append(' ');
 
-          sb.Append(decimalSeparatorWord);
+          sm = sm.Append(decimalSeparatorWord);
 
           composition = Globalization.En.NumeralComposition.GetCompoundNumbersAndNumerals(System.Numerics.BigInteger.CreateChecked(decimal.CreateChecked(TSelf.Abs(number)).GetParts().FractionalPartAsWholeNumber)); // The fractional part.
 
-          AppendNumber();
+          AppendNumber(ref sm);
         }
 
-        return sb.ToString();
+        return sm.ToString();
 
-        void AppendNumber()
+        void AppendNumber(ref SpanMaker<char> sm)
         {
           for (var index = 1; index < composition.Count; index++)
           {
             var currentComposition = composition.ElementAt(index);
             var previousComposition = composition.ElementAt(index - 1);
 
-            if (sb.Length > 0)
-              sb.Append(currentComposition.CompoundNumber >= 1 && currentComposition.CompoundNumber <= 9 && previousComposition.CompoundNumber >= 20 && previousComposition.CompoundNumber <= 90 ? '-' : ' ');
+            if (sm.Length > 0)
+              sm = sm.Append(currentComposition.CompoundNumber >= 1 && currentComposition.CompoundNumber <= 9 && previousComposition.CompoundNumber >= 20 && previousComposition.CompoundNumber <= 90 ? '-' : ' ');
 
-            sb.Append(currentComposition.CardinalNumeral);
+            sm = sm.Append(currentComposition.CardinalNumeral);
 
             if (includeAnd && currentComposition.CompoundNumber == 100)
             {
-              sb.Append(' ');
-              sb.Append("And");
+              sm = sm.Append(' ');
+              sm = sm.Append("And");
             }
           }
         }

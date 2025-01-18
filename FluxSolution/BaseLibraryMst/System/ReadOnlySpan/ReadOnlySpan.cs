@@ -61,7 +61,7 @@ namespace SystemFx
       var expectedIndexMin = 11;
       var expectedIndexMax = 7;
 
-      var (actualIndexMin, actualItemMin, actualValueMin, actualIndexMax, actualItemMax, actualValueMax) = span.GetExtremum(n => n, null);
+      var (actualIndexMin, actualItemMin, actualValueMin, actualIndexMax, actualItemMax, actualValueMax) = span.Extremum(n => n, null);
 
       Assert.AreEqual(expectedIndexMin, actualIndexMin);
       Assert.AreEqual(expectedIndexMax, actualIndexMax);
@@ -72,11 +72,11 @@ namespace SystemFx
     {
       var span = new System.ReadOnlySpan<int>([45, 60, 90, 10, 20, 30, 50, 100, 70, 80, 40, 10, 20, 30]);
 
-      var (actualIndexMin, actualItemMin, actualValueMin, actualIndexMax, actualItemMax, actualValueMax) = span.GetInfimumAndSupremum(60, n => n, true);
+      var (actualIndexMin, actualItemMin, actualValueMin, actualIndexMax, actualItemMax, actualValueMax) = span.InfimumAndSupremum(60, n => n, true);
       Assert.AreEqual(6, actualIndexMin);
       Assert.AreEqual(8, actualIndexMax);
 
-      (actualIndexMin, actualItemMin, actualValueMin, actualIndexMax, actualItemMax, actualValueMax) = span.GetInfimumAndSupremum(55, n => n, false);
+      (actualIndexMin, actualItemMin, actualValueMin, actualIndexMax, actualItemMax, actualValueMax) = span.InfimumAndSupremum(55, n => n, false);
       Assert.AreEqual(6, actualIndexMin);
       Assert.AreEqual(1, actualIndexMax);
     }

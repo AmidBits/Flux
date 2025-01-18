@@ -74,11 +74,15 @@ namespace Flux.Text.PhoneticAlgorithm
     /// <returns></returns>
     public static int ComputeSimilarityRating(System.ReadOnlySpan<char> code1, System.ReadOnlySpan<char> code2)
     {
-      var large = code1.ToStringBuilder();
-      var small = code2.ToStringBuilder();
+      var large = code1.ToSpanMaker();
+      var small = code2.ToSpanMaker();
 
       if (large.Length < small.Length)
-        (small, large) = (large, small);
+      {
+        var tmp = large;
+        large = small;
+        small = tmp;
+      }
 
       for (int i = 0; i < small.Length;)
       {
@@ -87,8 +91,8 @@ namespace Flux.Text.PhoneticAlgorithm
         for (int j = 0; j < large.Length; j++)
           if (small[i] == large[j])
           {
-            small.Remove(i, 1);
-            large.Remove(j, 1);
+            small = small.Remove(i, 1);
+            large = large.Remove(j, 1);
             found = true;
           }
 
@@ -104,8 +108,8 @@ namespace Flux.Text.PhoneticAlgorithm
         {
           if (small[i] == large[j])
           {
-            small.Remove(i, 1);
-            large.Remove(j, 1);
+            small = small.Remove(i, 1);
+            large = large.Remove(j, 1);
             found = true;
           }
         }

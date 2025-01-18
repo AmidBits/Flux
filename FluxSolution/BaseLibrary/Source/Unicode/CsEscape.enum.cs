@@ -5,9 +5,9 @@ namespace Flux
     [System.Text.RegularExpressions.GeneratedRegex(@"((?<Prefix>\\u)(?<Number>[0-9A-Fa-f]{4})|(?<Prefix>\\U)(?<Number>[0-9A-Fa-f]{8})|(?<Prefix>\\x)(?<Number>[0-9A-Fa-f]{1,8}))", System.Text.RegularExpressions.RegexOptions.Compiled)]
     public static partial System.Text.RegularExpressions.Regex RegexParseCsEscape();
 
-    public static System.Text.StringBuilder CsEscapeDecode(this System.ReadOnlySpan<char> source)
+    public static SpanMaker<char> CsEscapeDecode(this System.ReadOnlySpan<char> source)
     {
-      var sb = new System.Text.StringBuilder();
+      var sm = new SpanMaker<char>();
 
       var evm = RegexParseCsEscape().EnumerateMatches(source);
 
@@ -18,14 +18,14 @@ namespace Flux
         var index = vm.Index;
         var length = vm.Length;
 
-        sb.Append(source.Slice(lastEnd, index - lastEnd)); // Append any in-between characters.
+        sm.Append(source.Slice(lastEnd, index - lastEnd)); // Append any in-between characters.
 
-        sb.Append(new System.Text.Rune(int.Parse(source.Slice(index + 2, length - 2), System.Globalization.NumberStyles.HexNumber)).ToString()); // Append the rune string.
+        sm.Append(new System.Text.Rune(int.Parse(source.Slice(index + 2, length - 2), System.Globalization.NumberStyles.HexNumber)).ToString()); // Append the rune string.
 
         lastEnd = index + length;
       }
 
-      return sb;
+      return sm;
     }
 
     /// <summary>
@@ -54,12 +54,12 @@ namespace Flux
         _ => throw new NotImplementedException(),
       };
 
-    public static System.Text.StringBuilder CsEscapeEncode(this System.ReadOnlySpan<char> source, CsEscapeOption format)
+    public static SpanMaker<char> CsEscapeEncode(this System.ReadOnlySpan<char> source, CsEscapeOption format)
     {
-      var sb = new System.Text.StringBuilder();
+      var sm = new SpanMaker<char>();
       foreach (var rune in source.EnumerateRunes())
-        sb.Append(rune.CsEscapeEncode(format));
-      return sb;
+        sm.Append(rune.CsEscapeEncode(format));
+      return sm;
     }
   }
 }

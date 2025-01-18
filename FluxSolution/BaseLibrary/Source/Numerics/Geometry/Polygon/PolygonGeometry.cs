@@ -703,19 +703,19 @@ namespace Flux.Geometry
     {
       format ??= "N3";
 
-      var sb = new System.Text.StringBuilder();
+      var sm = new SpanMaker<char>();
 
-      sb.Append(GetType().Name);
+      sm = sm.Append(GetType().Name);
 
-      sb.Append($" {{ Vertices = {m_vertices.Count}");
+      sm = sm.Append($" {{ Vertices = {m_vertices.Count}");
 
       foreach (var pi in this.GetPropertyInfos().Where(pi => pi.PropertyType == typeof(double)).OrderBy(pi => pi.Name))
         if (pi.GetValue(this) is double value)
-          sb.Append($", {pi.Name} = {value.ToString(format, formatProvider)}");
+          sm = sm.Append($", {pi.Name} = {value.ToString(format, formatProvider)}");
 
-      sb.Append($" [{m_vertices.ToStringXY(format, formatProvider)}] }}");
+      sm = sm.Append($" [{m_vertices.ToStringXY(format, formatProvider)}] }}");
 
-      return sb.ToString();
+      return sm.ToString();
     }
 
     #endregion // Implemented interfaces

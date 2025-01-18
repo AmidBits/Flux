@@ -16,15 +16,18 @@ namespace Flux.IO.Hashing.Special
 
       System.Array.Resize(ref half, 7);
 
-      var sb = new System.Text.StringBuilder();
+      var sm = new SpanMaker<char>();
 
-      for (int index = 0; index < half.Length; index++) sb.Append(System.Convert.ToString(half[index], 2).PadLeft(8, '0'));
+      for (int index = 0; index < half.Length; index++)
+        sm.Append(System.Convert.ToString(half[index], 2).PadLeft(8, '0'));
 
-      for (int index = 8; index > 0; index--) sb.Insert(index * 7, '0');
+      for (int index = 8; index > 0; index--)
+        sm.Insert(index * 7, 1, '0');
 
       var desKey = new byte[8];
 
-      for (int index = 0; index < 8; index++) desKey[index] = System.Convert.ToByte(sb.ToString(index * 8, 8), 2);
+      for (int index = 0; index < 8; index++)
+        desKey[index] = System.Convert.ToByte(sm.AsReadOnlySpan().Slice(index * 8, 8).ToString(), 2);
 
       using var des = System.Security.Cryptography.TripleDES.Create();
 

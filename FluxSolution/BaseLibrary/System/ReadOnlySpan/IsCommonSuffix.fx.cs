@@ -24,7 +24,7 @@ namespace Flux
     /// <param name="value"></param>
     /// <param name="equalityComparer"></param>
     /// <returns></returns>
-    public static bool IsCommonSuffix<T>(this System.ReadOnlySpan<T> source, int offset, int count, T value, System.Collections.Generic.IEqualityComparer<T>? equalityComparer)
+    public static bool IsCommonSuffix<T>(this System.ReadOnlySpan<T> source, int offset, int count, T value, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
       => source.CommonSuffixLength(offset, value, equalityComparer, count) == count;
 
     /// <summary>
@@ -36,7 +36,7 @@ namespace Flux
     /// <param name="value"></param>
     /// <param name="equalityComparer"></param>
     /// <returns></returns>
-    public static bool IsCommonSuffix<T>(this System.ReadOnlySpan<T> source, int offset, System.ReadOnlySpan<T> value, System.Collections.Generic.IEqualityComparer<T>? equalityComparer)
+    public static bool IsCommonSuffix<T>(this System.ReadOnlySpan<T> source, int offset, System.ReadOnlySpan<T> value, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
       => source.CommonSuffixLength(offset, value, equalityComparer, value.Length) == value.Length;
   }
 }

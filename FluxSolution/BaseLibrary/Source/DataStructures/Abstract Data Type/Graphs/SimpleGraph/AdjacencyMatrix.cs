@@ -341,7 +341,7 @@
 
     public override string ToString()
     {
-      var sb = new System.Text.StringBuilder();
+      var sb = new SpanMaker<char>();
 
       sb.AppendLine($"{GetType().Name} {{ Vertices = {Count}, Edges = {GetEdges().Count()} }}");
 
@@ -363,7 +363,8 @@
           grid[i0 + 1, i1 + 1] = m_matrix[i0, i1];
       }
 
-      sb.Append(string.Join(System.Environment.NewLine, grid.Rank2ToConsole(ConsoleFormatOptions.Default with { UniformWidth = true, CenterContent = true })));
+      sb.Append(System.Environment.NewLine);
+      sb.Append(grid.Rank2ToConsole(ConsoleFormatOptions.Default with { UniformWidth = true, CenterContent = true }));
 
       return sb.ToString();
     }

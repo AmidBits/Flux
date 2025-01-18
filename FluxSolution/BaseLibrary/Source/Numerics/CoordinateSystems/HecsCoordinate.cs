@@ -123,17 +123,17 @@ namespace Flux
       {
         format ??= "N6";
 
-        var sb = new System.Text.StringBuilder();
-        sb.Append('<');
-        sb.Append(m_a.ToString(format, provider));
-        sb.Append(',');
-        sb.Append(' ');
-        sb.Append(m_r.ToString(format, provider));
-        sb.Append(',');
-        sb.Append(' ');
-        sb.Append(m_c.ToString(format, provider));
-        sb.Append('>');
-        return sb.ToString();
+        var sm = new SpanMaker<char>();
+        sm = sm.Append('<');
+        sm = sm.Append(m_a.ToString(format, provider));
+        sm = sm.Append(',');
+        sm = sm.Append(' ');
+        sm = sm.Append(m_r.ToString(format, provider));
+        sm = sm.Append(',');
+        sm = sm.Append(' ');
+        sm = sm.Append(m_c.ToString(format, provider));
+        sm = sm.Append('>');
+        return sm.ToString();
       }
 
       #endregion // Implemented interfaces

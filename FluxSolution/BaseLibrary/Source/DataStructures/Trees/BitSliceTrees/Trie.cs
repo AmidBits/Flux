@@ -43,26 +43,32 @@ namespace Flux.DataStructure
 
     public string ToConsole()
     {
-      var sb = new System.Text.StringBuilder();
+      var sm = new SpanMaker<char>();
 
-      AddString(this, 0);
+      AddString(this, 0, sm);
 
-      return sb.ToString();
+      return sm.ToString();
 
-      void AddString(Trie<TKey, TValue> node, int level)
+      void AddString(Trie<TKey, TValue> node, int level, SpanMaker<char> sm)
       {
         foreach (var childNode in node.m_children)
         {
-          sb.Append(string.Empty.PadLeft(level == 0 ? 0 : level + 1));
-          if (level == 0) sb.Append('[', 1);
-          sb.Append(childNode.Key.ToString());
-          sb.Append(childNode.Value.ToString());
-          //if (childNode.Value.IsTerminal) sb.Append("]", 1);
-          //else sb.Append($"#{childNode.Value.Children.Count}", 1);
-          //sb.Append($" ({childNode.Value.Value})", 1);
-          sb.AppendLine();
+          sm = sm.Append(string.Empty.PadLeft(level == 0 ? 0 : level + 1));
 
-          AddString(childNode.Value, level + 1);
+          if (level == 0)
+            sm = sm.Append(1, '[');
+
+          sm = sm.Append(childNode.Key.ToString());
+          sm = sm.Append(childNode.Value.ToString());
+
+          //if (childNode.Value.IsTerminal) sm = sm.Append("]", 1);
+          //else sm = sm.Append($"#{childNode.Value.Children.Count}", 1);
+
+          //sm = sm.Append($" ({childNode.Value.Value})", 1);
+
+          sm = sm.AppendLine();
+
+          AddString(childNode.Value, level + 1, sm);
         }
       }
     }

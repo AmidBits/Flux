@@ -19,10 +19,10 @@ namespace Flux
     public static Flux.SpanMaker<Text.TextElement> ToSpanMakerOfTextElement(this System.ReadOnlySpan<System.Text.Rune> source)
     {
       var si = new System.Globalization.StringInfo(source.ToListOfChar().AsSpan().ToString());
-      var sb = new Flux.SpanMaker<Text.TextElement>();
+      var sm = new Flux.SpanMaker<Text.TextElement>();
       for (var index = 0; index < si.LengthInTextElements; index++)
-        sb.Append(1, new Text.TextElement(si.SubstringByTextElements(index, 1)));
-      return sb;
+        sm = sm.Append(1, new Text.TextElement(si.SubstringByTextElements(index, 1)));
+      return sm;
     }
   }
 }

@@ -147,43 +147,43 @@ namespace Flux
         return valueSelector(source.Value);
     }
 
-    public static System.Text.StringBuilder ToConsoleBlock<TValue>(this DataStructure.IBinaryTree<TValue> source)
+    public static SpanMaker<char> ToConsoleBlock<TValue>(this DataStructure.IBinaryTree<TValue> source)
     {
       const string padUpRight = "\u2514\u2500\u2500";
       const string padVerticalRight = "\u251C\u2500\u2500";
       const string padVertical = "\u2502  ";
       const string padSpaces = "   ";
 
-      var sb = new System.Text.StringBuilder();
-      TraversePreOrder(source, string.Empty, string.Empty);
-      return sb;
+      var sm = new SpanMaker<char>();
+      TraversePreOrder(source, string.Empty, string.Empty, ref sm);
+      return sm;
 
-      void TraverseNodes(DataStructure.IBinaryTree<TValue> node, string padding, string pointer, bool hasRightSibling)
+      void TraverseNodes(DataStructure.IBinaryTree<TValue> node, string padding, string pointer, bool hasRightSibling, ref SpanMaker<char> sm)
       {
         if (node.IsEmpty)
           return;
 
-        sb.Append(padding);
-        sb.Append(pointer);
-        sb.Append(node.Value);
-        sb.Append(System.Environment.NewLine);
+        sm.Append(1, padding);
+        sm.Append(1, pointer);
+        sm.Append(1, $"{node.Value}");
+        sm.Append(1, System.Environment.NewLine);
 
         var paddingForBoth = padding + (hasRightSibling ? padVertical : padSpaces);
 
-        TraverseNodes(node.Left, paddingForBoth, node.Right.IsEmpty ? padVerticalRight : padUpRight, !node.Right.IsEmpty);
-        TraverseNodes(node.Right, paddingForBoth, padUpRight, false);
+        TraverseNodes(node.Left, paddingForBoth, node.Right.IsEmpty ? padVerticalRight : padUpRight, !node.Right.IsEmpty, ref sm);
+        TraverseNodes(node.Right, paddingForBoth, padUpRight, false, ref sm);
       }
 
-      void TraversePreOrder(DataStructure.IBinaryTree<TValue> root, string padding, string pointer)
+      void TraversePreOrder(DataStructure.IBinaryTree<TValue> root, string padding, string pointer, ref SpanMaker<char> sm)
       {
         if (root.IsEmpty)
           return;
 
-        sb.Append(root.Value);
-        sb.Append(System.Environment.NewLine);
+        sm.Append(1, $"{root.Value}");
+        sm.Append(1, System.Environment.NewLine);
 
-        TraverseNodes(root.Left, string.Empty, root.Right.IsEmpty ? padVerticalRight : padUpRight, !root.Right.IsEmpty);
-        TraverseNodes(root.Right, string.Empty, padUpRight, false);
+        TraverseNodes(root.Left, string.Empty, root.Right.IsEmpty ? padVerticalRight : padUpRight, !root.Right.IsEmpty, ref sm);
+        TraverseNodes(root.Right, string.Empty, padUpRight, false, ref sm);
       }
     }
 

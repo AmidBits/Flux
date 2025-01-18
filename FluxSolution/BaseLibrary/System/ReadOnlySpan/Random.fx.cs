@@ -25,7 +25,7 @@ namespace Flux
     {
       try
       {
-        result = Random(source, rng);
+        result = source.Random(rng);
         return true;
       }
       catch { }
