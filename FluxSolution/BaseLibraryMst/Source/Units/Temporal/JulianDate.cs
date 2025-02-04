@@ -14,7 +14,7 @@ namespace Units
     [TestMethod]
     public void ComputeTimeOfDay()
     {
-      var m = new Flux.Temporal.Moment(-4712, 1, 13, 12, 13, 14).ToJulianDate(Flux.TemporalCalendar.JulianCalendar);
+      var m = new Flux.Temporal.Moment(-4712, 1, 13, 12, 13, 14).ToJulianDate(Flux.Temporal.TemporalCalendar.JulianCalendar);
 
       Assert.AreEqual(794.0000000000000000000000160, Flux.Temporal.JulianDate.ConvertTimeOfDayToTime(m.Value).Value, 1E-6);
     }
@@ -22,7 +22,7 @@ namespace Units
     [TestMethod]
     public void FirstGregorianCalendarDate()
     {
-      var fgd = new Flux.Temporal.Moment(1582, 10, 15, 0, 0, 0).ToJulianDate(Flux.TemporalCalendar.GregorianCalendar);
+      var fgd = new Flux.Temporal.Moment(1582, 10, 15, 0, 0, 0).ToJulianDate(Flux.Temporal.TemporalCalendar.GregorianCalendar);
 
       Assert.AreEqual(2299160.5, fgd.Value, 1E-6);
     }
@@ -36,7 +36,7 @@ namespace Units
     [TestMethod]
     public void LastJulianCalendarDate()
     {
-      var ljd = new Flux.Temporal.Moment(1582, 10, 4, 23, 59, 59, 999).ToJulianDate(Flux.TemporalCalendar.JulianCalendar);
+      var ljd = new Flux.Temporal.Moment(1582, 10, 4, 23, 59, 59, 999).ToJulianDate(Flux.Temporal.TemporalCalendar.JulianCalendar);
 
       Assert.AreEqual(2299160.4999910995370370370370, ljd.Value, 1E-5);
     }
@@ -80,7 +80,7 @@ namespace Units
     [TestMethod]
     public void DayOfWeek()
     {
-      var jd1 = new Flux.Temporal.Moment(1991, 7, 11).ToJulianDayNumber(Flux.TemporalCalendar.GregorianCalendar);
+      var jd1 = new Flux.Temporal.Moment(1991, 7, 11).ToJulianDayNumber(Flux.Temporal.TemporalCalendar.GregorianCalendar);
 
       Assert.AreEqual(System.DayOfWeek.Thursday, jd1.DayOfWeek);
     }
@@ -90,7 +90,7 @@ namespace Units
     {
       // Dependencies on MomentUtc for creation from dates.
 
-      var jd1 = new Flux.Temporal.Moment(1991, 7, 11).ToJulianDate(Flux.TemporalCalendar.GregorianCalendar);
+      var jd1 = new Flux.Temporal.Moment(1991, 7, 11).ToJulianDate(Flux.Temporal.TemporalCalendar.GregorianCalendar);
       var jd2 = jd1.AddDays(10000);
 
       var diff12 = jd2.Value - jd1.Value;
@@ -103,8 +103,8 @@ namespace Units
     {
       // Dependencies on MomentUtc for creation from dates.
 
-      var jd1 = new Flux.Temporal.Moment(1910, 4, 20).ToJulianDate(Flux.TemporalCalendar.GregorianCalendar);
-      var jd2 = new Flux.Temporal.Moment(1986, 2, 9).ToJulianDate(Flux.TemporalCalendar.GregorianCalendar);
+      var jd1 = new Flux.Temporal.Moment(1910, 4, 20).ToJulianDate(Flux.Temporal.TemporalCalendar.GregorianCalendar);
+      var jd2 = new Flux.Temporal.Moment(1986, 2, 9).ToJulianDate(Flux.Temporal.TemporalCalendar.GregorianCalendar);
 
       var diff12 = jd2.Value - jd1.Value;
 
@@ -114,21 +114,21 @@ namespace Units
     [TestMethod]
     public void ToMomentUtcGC()
     {
-      var actual = new Flux.Temporal.JulianDate(2400000.5).ToMoment(Flux.TemporalCalendar.GregorianCalendar);
+      var actual = new Flux.Temporal.JulianDate(2400000.5).ToMoment(Flux.Temporal.TemporalCalendar.GregorianCalendar);
       var expected = new Flux.Temporal.Moment(1858, 11, 17, 0, 0, 0);
       Assert.AreEqual(expected, actual);
     }
     [TestMethod]
     public void ToMomentUtcProlepticGC()
     {
-      var actual = new Flux.Temporal.JulianDate(1566839.5).ToMoment(Flux.TemporalCalendar.GregorianCalendar);
+      var actual = new Flux.Temporal.JulianDate(1566839.5).ToMoment(Flux.Temporal.TemporalCalendar.GregorianCalendar);
       var expected = new Flux.Temporal.Moment(-423, 10, 5, 0, 0, 0);
       Assert.AreEqual(expected, actual);
     }
     [TestMethod]
     public void ToMomentUtcJC()
     {
-      var actual = new Flux.Temporal.JulianDate(1442454.5).ToMoment(Flux.TemporalCalendar.JulianCalendar);
+      var actual = new Flux.Temporal.JulianDate(1442454.5).ToMoment(Flux.Temporal.TemporalCalendar.JulianCalendar);
       var expected = new Flux.Temporal.Moment(-763, 3, 24, 0, 0, 0);
       Assert.AreEqual(expected, actual);
     }

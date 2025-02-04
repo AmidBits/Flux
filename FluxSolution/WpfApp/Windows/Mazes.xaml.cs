@@ -21,7 +21,7 @@ namespace WpfApp
       index = 0;
       comboBoxSeedNumber.Items.Clear();
       comboBoxSeedNumber.Items.Insert(index++, "Rnd");
-      foreach (var pn in Flux.NumberSequence.GetAscendingPrimes(2).TakeWhile(p => p < 100))
+      foreach (var pn in Flux.Numerics.NumberSequence.GetAscendingPrimes(2).TakeWhile(p => p < 100))
         comboBoxSeedNumber.Items.Insert(index++, pn.ToString());
       comboBoxSeedNumber.SelectedIndex = 0;
 
@@ -71,7 +71,7 @@ namespace WpfApp
           float x = column * width;// + wallWidth * 2F;
           float y = row * height;// + wallWidth * 2F;
 
-          foreach (Flux.CompassCardinalDirection direction in Enum.GetValues(typeof(Flux.CompassCardinalDirection)))
+          foreach (Flux.CompassCardinalDirection direction in System.Enum.GetValues(typeof(Flux.CompassCardinalDirection)))
           {
             if (!cell.Edges.ContainsKey((int)direction) || !cell.Paths.ContainsKey((int)direction))
             {

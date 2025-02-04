@@ -101,7 +101,7 @@
         matrix[5, index] = kf.Animal != EnumAnimal.Unkown ? kf.Animal.ToString() : string.Empty;
       }
 
-      System.Console.WriteLine(string.Join(System.Environment.NewLine, matrix.Rank2ToConsole(ConsoleFormatOptions.Default with { UniformWidth = true, CenterContent = true }).ToString()));
+      System.Console.WriteLine(matrix.Rank2ToConsoleString(ConsoleFormatOptions.Default with { UniformWidth = true, CenterContent = true }));
     }
 
     public static void Example()
@@ -163,7 +163,7 @@
                 h.Animal = kf.Animal;
             }
 
-            var indices = KnownFacts.SelectWhere((kf, i) => kf.House.Count == 1 && kf.House.First() == hn, (e, i) => i).OrderByDescending(k => k).ToArray();
+            var indices = KnownFacts.SelectWhere((e, i) => i, (kf, i, r) => kf.House.Count == 1 && kf.House.First() == hn).OrderByDescending(k => k).ToArray();
 
             foreach (var index in indices)
               KnownFacts.RemoveAt((int)index);

@@ -16,7 +16,7 @@ namespace Numerics
     [TestMethod]
     public void Fold()
     {
-      Assert.AreEqual(3.5, (6.5).Fold(0, 5));
+      Assert.AreEqual(3.5, (6.5).FoldBackAndForth(0, 5));
     }
 
     [TestMethod]
@@ -28,7 +28,7 @@ namespace Numerics
     [TestMethod]
     public void Wrap()
     {
-      Assert.AreEqual(2.5, (7.5).Wrap(0, 5));
+      Assert.AreEqual(2.5, (7.5).WrapAround(0, 5));
     }
   }
 }

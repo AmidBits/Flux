@@ -70,8 +70,8 @@ namespace ConsoleApp
         System.Console.WriteLine();
         System.Console.WriteLine($"{nameof(ParallelVsSerial)} comparison:");
         System.Console.WriteLine();
-        System.Console.WriteLine(Flux.Services.Performance.Measure(() => RegularForLoop(10, 0.05), 1));
-        System.Console.WriteLine(Flux.Services.Performance.Measure(() => ParallelForLoop(10, 0.05), 1));
+        System.Console.WriteLine(Flux.Diagnostics.Performance.Measure(() => RegularForLoop(10, 0.05), 1));
+        System.Console.WriteLine(Flux.Diagnostics.Performance.Measure(() => ParallelForLoop(10, 0.05), 1));
         System.Console.WriteLine();
       }
 
@@ -118,7 +118,7 @@ namespace ConsoleApp
 
     #region RunAmbOperator
 
-    private readonly static System.Numerics.BigInteger[] m_ap = Flux.NumberSequence.GetAscendingPrimes(System.Numerics.BigInteger.CreateChecked(2)).Take(100).ToArray(); // Primes.
+    private readonly static System.Numerics.BigInteger[] m_ap = Flux.Numerics.NumberSequence.GetAscendingPrimes(System.Numerics.BigInteger.CreateChecked(2)).Take(100).ToArray(); // Primes.
     private readonly static int[] m_rn = System.Linq.Enumerable.Range(0, 100).ToArray(); // Rational.
     private readonly static int[] m_en = System.Linq.Enumerable.Range(1, 200).Where(i => (i & 1) == 0).ToArray(); // Even.
     private readonly static int[] m_on = System.Linq.Enumerable.Range(1, 200).Where(i => (i & 1) != 0).ToArray(); // Odd.
@@ -147,7 +147,7 @@ namespace ConsoleApp
       {
         var rng = new System.Random();
 
-        var amb = new Flux.AmbOps.Amb();
+        var amb = new Flux.Numerics.AmbOps.Amb();
 
         #region Flow & Measurements
         rng.Shuffle(m_ap);
@@ -199,45 +199,45 @@ namespace ConsoleApp
       hints.WriteToConsole();
       System.Console.WriteLine();
 
-      var amb = new Flux.AmbOps.Amb();
+      var amb = new Flux.Numerics.AmbOps.Amb();
 
       var domain = new[] { 1, 2, 3, 4, 5 };
-      var terms = new System.Collections.Generic.Dictionary<Flux.AmbOps.IValue<int>, string>();
+      var terms = new System.Collections.Generic.Dictionary<Flux.Numerics.AmbOps.IValue<int>, string>();
 
-      Flux.AmbOps.IValue<int> Term(string name)
+      Flux.Numerics.AmbOps.IValue<int> Term(string name)
       {
         var x = amb.Choose(domain);
         terms.Add(x, name);
         return x;
       };
 
-      void AreUnique(params Flux.AmbOps.IValue<int>[] values) => amb.Require(() => values.Select(v => v.Value).Distinct().Count() == 5);
-      void IsSame(Flux.AmbOps.IValue<int> left, Flux.AmbOps.IValue<int> right) => amb.Require(() => left.Value == right.Value);
-      void IsLeftOf(Flux.AmbOps.IValue<int> left, Flux.AmbOps.IValue<int> right) => amb.Require(() => right.Value - left.Value == 1);
-      void IsIn(Flux.AmbOps.IValue<int> attrib, int house) => amb.Require(() => attrib.Value == house);
-      void IsNextTo(Flux.AmbOps.IValue<int> left, Flux.AmbOps.IValue<int> right) => amb.Require(() => System.Math.Abs(left.Value - right.Value) == 1);
+      void AreUnique(params Flux.Numerics.AmbOps.IValue<int>[] values) => amb.Require(() => values.Select(v => v.Value).Distinct().Count() == 5);
+      void IsSame(Flux.Numerics.AmbOps.IValue<int> left, Flux.Numerics.AmbOps.IValue<int> right) => amb.Require(() => left.Value == right.Value);
+      void IsLeftOf(Flux.Numerics.AmbOps.IValue<int> left, Flux.Numerics.AmbOps.IValue<int> right) => amb.Require(() => right.Value - left.Value == 1);
+      void IsIn(Flux.Numerics.AmbOps.IValue<int> attrib, int house) => amb.Require(() => attrib.Value == house);
+      void IsNextTo(Flux.Numerics.AmbOps.IValue<int> left, Flux.Numerics.AmbOps.IValue<int> right) => amb.Require(() => System.Math.Abs(left.Value - right.Value) == 1);
 
-      Flux.AmbOps.IValue<int> english = Term(nameof(english)), swede = Term(nameof(swede)), dane = Term(nameof(dane)), norwegian = Term(nameof(norwegian)), german = Term(nameof(german));
+      Flux.Numerics.AmbOps.IValue<int> english = Term(nameof(english)), swede = Term(nameof(swede)), dane = Term(nameof(dane)), norwegian = Term(nameof(norwegian)), german = Term(nameof(german));
       AreUnique(english, swede, german, dane, norwegian); // Unique values.
       IsIn(norwegian, 1); // 10
 
-      Flux.AmbOps.IValue<int> red = Term(nameof(red)), green = Term(nameof(green)), white = Term(nameof(white)), blue = Term(nameof(blue)), yellow = Term(nameof(yellow));
+      Flux.Numerics.AmbOps.IValue<int> red = Term(nameof(red)), green = Term(nameof(green)), white = Term(nameof(white)), blue = Term(nameof(blue)), yellow = Term(nameof(yellow));
       AreUnique(red, green, white, blue, yellow); // Unique values.
       IsNextTo(norwegian, blue); // 15
       IsLeftOf(green, white); // 5
       IsSame(english, red); // 2
 
-      Flux.AmbOps.IValue<int> tea = Term(nameof(tea)), coffee = Term(nameof(coffee)), milk = Term(nameof(milk)), beer = Term(nameof(beer)), water = Term(nameof(water));
+      Flux.Numerics.AmbOps.IValue<int> tea = Term(nameof(tea)), coffee = Term(nameof(coffee)), milk = Term(nameof(milk)), beer = Term(nameof(beer)), water = Term(nameof(water));
       AreUnique(tea, coffee, milk, beer, water); // Unique values.
       IsIn(milk, 3); // 9
       IsSame(dane, tea); // 4
       IsSame(green, coffee); // 6
 
-      Flux.AmbOps.IValue<int> dog = Term(nameof(dog)), cat = Term(nameof(cat)), birds = Term(nameof(birds)), horse = Term(nameof(horse)), zebra = Term(nameof(zebra));
+      Flux.Numerics.AmbOps.IValue<int> dog = Term(nameof(dog)), cat = Term(nameof(cat)), birds = Term(nameof(birds)), horse = Term(nameof(horse)), zebra = Term(nameof(zebra));
       AreUnique(dog, cat, birds, horse, zebra); // Unique values.
       IsSame(swede, dog); // 3
 
-      Flux.AmbOps.IValue<int> pallmall = Term(nameof(pallmall)), dunhill = Term(nameof(dunhill)), blend = Term(nameof(blend)), bluemaster = Term(nameof(bluemaster)), prince = Term(nameof(prince));
+      Flux.Numerics.AmbOps.IValue<int> pallmall = Term(nameof(pallmall)), dunhill = Term(nameof(dunhill)), blend = Term(nameof(blend)), bluemaster = Term(nameof(bluemaster)), prince = Term(nameof(prince));
       AreUnique(pallmall, dunhill, bluemaster, prince, blend); // Unique values.
       IsSame(pallmall, birds); // 7
       IsSame(dunhill, yellow); // 8
@@ -255,7 +255,7 @@ namespace ConsoleApp
 
       var a = new System.Collections.Generic.List<string>[5];
       for (int i = 0; i < 5; i++)
-        a[i] = new System.Collections.Generic.List<string>();
+        a[i] = [];
 
       foreach (var (key, value) in terms.Select(kvp => (kvp.Key, kvp.Value)))
         a[key.Value - 1].Add(value);
@@ -413,15 +413,15 @@ namespace ConsoleApp
     #region RunCoordinateSystems
 
     /// <summary>This is a reference coordinate for Madrid, Spain, which is antipodal to Takapau, New Zeeland.</summary>
-    public static Flux.Coordinates.GeographicCoordinate MadridSpain => new(40.416944, Flux.Quantities.AngleUnit.Degree, -3.703333, Flux.Quantities.AngleUnit.Degree, 650);
+    public static Flux.Geometry.Coordinates.GeographicCoordinate MadridSpain => new(40.416944, Flux.Quantities.AngleUnit.Degree, -3.703333, Flux.Quantities.AngleUnit.Degree, 650);
 
     /// <summary>This is a reference coordinate for Takapau, New Zeeland, which is antipodal to Madrid, Spain.</summary>
-    public static Flux.Coordinates.GeographicCoordinate TakapauNewZealand => new(-40.033333, Flux.Quantities.AngleUnit.Degree, 176.35, Flux.Quantities.AngleUnit.Degree, 235);
+    public static Flux.Geometry.Coordinates.GeographicCoordinate TakapauNewZealand => new(-40.033333, Flux.Quantities.AngleUnit.Degree, 176.35, Flux.Quantities.AngleUnit.Degree, 235);
 
     /// <summary>This is a reference point for Phoenix, Arizona, USA, from where the C# version of this library originated.</summary>
-    public static Flux.Coordinates.GeographicCoordinate PhoenixAzUsa => new(33.448333, Flux.Quantities.AngleUnit.Degree, -112.073889, Flux.Quantities.AngleUnit.Degree, 331);
+    public static Flux.Geometry.Coordinates.GeographicCoordinate PhoenixAzUsa => new(33.448333, Flux.Quantities.AngleUnit.Degree, -112.073889, Flux.Quantities.AngleUnit.Degree, 331);
     /// <summary>This is a reference point for Tucson, Arizona, USA, from where the C# version of this library originated.</summary>
-    public static Flux.Coordinates.GeographicCoordinate TucsonAzUsa => new(32.221667, Flux.Quantities.AngleUnit.Degree, -110.926389, Flux.Quantities.AngleUnit.Degree, 728);
+    public static Flux.Geometry.Coordinates.GeographicCoordinate TucsonAzUsa => new(32.221667, Flux.Quantities.AngleUnit.Degree, -110.926389, Flux.Quantities.AngleUnit.Degree, 728);
 
     /// <summary>Run the coordinate systems zample.</summary>
     public static void RunCoordinateSystems()
@@ -435,7 +435,7 @@ namespace ConsoleApp
       Draw(TakapauNewZealand, nameof(TakapauNewZealand));
       Draw(TucsonAzUsa, nameof(TucsonAzUsa));
 
-      static void Draw(Flux.Coordinates.GeographicCoordinate gc, System.ReadOnlySpan<char> label)
+      static void Draw(Flux.Geometry.Coordinates.GeographicCoordinate gc, System.ReadOnlySpan<char> label)
       {
         Flux.Console.WriteInformationLine($"{label.ToString()}:");
 
@@ -475,7 +475,7 @@ namespace ConsoleApp
 
     public static void RunDataStructuresGraphAdjacencyList()
     {
-      var al = new Flux.DataStructure.Graph.AdjacencyList<int, int>();
+      var al = new Flux.DataStructures.Graphs.AdjacencyList<int, int>();
 
       al.AddVertex(0, 9);
       al.AddVertex(1, 8);
@@ -498,14 +498,14 @@ namespace ConsoleApp
 
       System.Console.WriteLine(al.ToConsoleString());
 
-      var amt = (Flux.DataStructure.Graph.AdjacencyList<int, int>)al.TransposeToCopy();
+      var amt = (Flux.DataStructures.Graphs.AdjacencyList<int, int>)al.TransposeToCopy();
 
       System.Console.WriteLine(amt.ToConsoleString());
     }
 
     public static void RunDataStructuresGraphAdjacencyMatrix()
     {
-      var am = new Flux.DataStructure.Graph.AdjacencyMatrix<int, int>();
+      var am = new Flux.DataStructures.Graphs.AdjacencyMatrix<int, int>();
 
       am.AddVertex(0, 9);
       am.AddVertex(1, 8);
@@ -528,7 +528,7 @@ namespace ConsoleApp
 
       System.Console.WriteLine(am.ToConsoleString());
 
-      var amt = (Flux.DataStructure.Graph.AdjacencyMatrix<int, int>)am.TransposeToCopy();
+      var amt = (Flux.DataStructures.Graphs.AdjacencyMatrix<int, int>)am.TransposeToCopy();
 
       System.Console.WriteLine(amt.ToConsoleString());
     }
@@ -549,7 +549,7 @@ namespace ConsoleApp
     /// <summary>Run the coordinate systems zample.</summary>
     public static void RunAvlTree()
     {
-      var bst = Flux.DataStructure.Immutable.ImmutableAvlTree<int, string>.Empty;
+      var bst = Flux.DataStructures.BinaryTrees.Immutable.ImmutableAvlTree<int, string>.Empty;
 
       for (var index = 0; bst.GetCount() < 16; index++)
       {
@@ -602,7 +602,7 @@ namespace ConsoleApp
       System.Console.WriteLine(nameof(RunPhoneticAlgorithms));
       System.Console.WriteLine();
 
-      var ipaes = typeof(Flux.Text.IPhoneticAlgorithmEncodable).GetDerivedTypes().Select(t => (Flux.Text.IPhoneticAlgorithmEncodable)System.Activator.CreateInstance(t));
+      var ipaes = typeof(Flux.Text.PhoneticAlgorithm.IPhoneticAlgorithmEncodable).GetDerivedTypes().Select(t => (Flux.Text.PhoneticAlgorithm.IPhoneticAlgorithmEncodable)System.Activator.CreateInstance(t));
       var names = new string[] { "Dougal", "Glinde", "Plumridge", "Simak", "Webberley", "Ashcraft", "Ashcroft", "Asicroft", "Schmidt", "Schneider", "Lloyd", "Pfister" };
 
       foreach (var ipae in ipaes)
@@ -700,18 +700,8 @@ namespace ConsoleApp
       System.Console.WriteLine();
     }
 
-    private sealed class User
+    private sealed class User(int Age, string Name, string BirthCountry)
     {
-      public int Age { get; set; }
-      public string Name { get; set; }
-      public string BirthCountry { get; set; }
-
-      public User(int age, string name, string birthCountry)
-      {
-        Age = age;
-        Name = name;
-        BirthCountry = birthCountry;
-      }
 
       public override string ToString()
         => $"{GetType().Name} {{ {Name}, {Age} ({BirthCountry}) }}";
@@ -736,9 +726,9 @@ namespace ConsoleApp
 
         var cfo = ConsoleFormatOptions.Default;// with { VerticalSeparator = "-" };
 
-        System.Console.WriteLine($"{user1}, {rulesCompiled.EvaluateRules(user1).ToConsole(k => k.ToString(), v => v.ToString(), cfo).ToString()}");
-        System.Console.WriteLine($"{user2}, {rulesCompiled.EvaluateRules(user2).ToConsole(k => k.ToString(), v => v.ToString(), cfo).ToString()}");
-        System.Console.WriteLine($"{user3}, {rulesCompiled.EvaluateRules(user3).ToConsole(k => k.ToString(), v => v.ToString(), cfo).ToString()}");
+        System.Console.WriteLine($"{user1}, {rulesCompiled.EvaluateRules(user1).ToConsoleString(k => k.ToString(), v => v.ToString(), cfo)}");
+        System.Console.WriteLine($"{user2}, {rulesCompiled.EvaluateRules(user2).ToConsoleString(k => k.ToString(), v => v.ToString(), cfo)}");
+        System.Console.WriteLine($"{user3}, {rulesCompiled.EvaluateRules(user3).ToConsoleString(k => k.ToString(), v => v.ToString(), cfo)}");
       }
     }
 
@@ -830,10 +820,10 @@ namespace ConsoleApp
     static void RunQuartiles(System.Collections.Generic.List<double> x)
     {
       System.Console.WriteLine($"The computed quartiles:");
-      System.Console.WriteLine($"Method 1: {new Flux.Statistics.QuartileMethod1().ComputeQuartiles(x)}");
-      System.Console.WriteLine($"Method 2: {new Flux.Statistics.QuartileMethod2().ComputeQuartiles(x)}");
-      System.Console.WriteLine($"Method 3: {new Flux.Statistics.QuartileMethod3().ComputeQuartiles(x)}");
-      System.Console.WriteLine($"Method 4: {new Flux.Statistics.QuartileMethod4().ComputeQuartiles(x)}");
+      System.Console.WriteLine($"Method 1: {new Flux.Statistics.Quartile.Method1().ComputeQuartiles(x)}");
+      System.Console.WriteLine($"Method 2: {new Flux.Statistics.Quartile.Method2().ComputeQuartiles(x)}");
+      System.Console.WriteLine($"Method 3: {new Flux.Statistics.Quartile.Method3().ComputeQuartiles(x)}");
+      System.Console.WriteLine($"Method 4: {new Flux.Statistics.Quartile.Method4().ComputeQuartiles(x)}");
     }
 
     static void RunQuantiles(System.Collections.Generic.List<double> x)
@@ -845,15 +835,15 @@ namespace ConsoleApp
       {
         var values = new double[]
         {
-          Flux.Statistics.QuantileR1.Default.EstimateQuantileValue(x, p),
-          Flux.Statistics.QuantileR2.Default.EstimateQuantileValue(x, p),
-          Flux.Statistics.QuantileR3.Default.EstimateQuantileValue(x, p),
-          Flux.Statistics.QuantileR4.Default.EstimateQuantileValue(x, p),
-          Flux.Statistics.QuantileR5.Default.EstimateQuantileValue(x, p),
-          Flux.Statistics.QuantileR6.Default.EstimateQuantileValue(x, p),
-          Flux.Statistics.QuantileR7.Default.EstimateQuantileValue(x, p),
-          Flux.Statistics.QuantileR8.Default.EstimateQuantileValue(x, p),
-          Flux.Statistics.QuantileR9.Default.EstimateQuantileValue(x, p),
+          Flux.Statistics.Quantile.R1.Default.EstimateQuantileValue(x, p),
+          Flux.Statistics.Quantile.R2.Default.EstimateQuantileValue(x, p),
+          Flux.Statistics.Quantile.R3.Default.EstimateQuantileValue(x, p),
+          Flux.Statistics.Quantile.R4.Default.EstimateQuantileValue(x, p),
+          Flux.Statistics.Quantile.R5.Default.EstimateQuantileValue(x, p),
+          Flux.Statistics.Quantile.R6.Default.EstimateQuantileValue(x, p),
+          Flux.Statistics.Quantile.R7.Default.EstimateQuantileValue(x, p),
+          Flux.Statistics.Quantile.R8.Default.EstimateQuantileValue(x, p),
+          Flux.Statistics.Quantile.R9.Default.EstimateQuantileValue(x, p),
         };
 
         System.Console.WriteLine($"The estimated quantiles of {p:N2}:");
@@ -917,21 +907,21 @@ namespace ConsoleApp
       var dt = new Flux.Temporal.Moment(1100, 04, 28, 13, 30, 31);
       System.Console.WriteLine($"{dt}");
 
-      var jdgc = dt.ToJulianDate(Flux.TemporalCalendar.GregorianCalendar);
+      var jdgc = dt.ToJulianDate(Flux.Temporal.TemporalCalendar.GregorianCalendar);
       System.Console.WriteLine($"{jdgc.ToTimeString()}");
       var jdngc = jdgc.ToJulianDayNumber();
-      System.Console.WriteLine($"{jdngc.ToDateString(Flux.TemporalCalendar.GregorianCalendar)}");
-      var mugc = jdgc.ToMoment(Flux.TemporalCalendar.GregorianCalendar);
+      System.Console.WriteLine($"{jdngc.ToDateString(Flux.Temporal.TemporalCalendar.GregorianCalendar)}");
+      var mugc = jdgc.ToMoment(Flux.Temporal.TemporalCalendar.GregorianCalendar);
       //System.Console.WriteLine($"{mugc}, {mugc.ToDateOnly()}, {mugc.ToDateTime()}, {mugc.ToTimeOnly()}, {mugc.ToTimeSpan()}");
       System.Console.WriteLine($"{mugc}, {mugc.ToDateTime()}, {mugc.ToTimeSpan()}");
 
       //var mugc1 = mugc with { Year = Year + 1 };
 
-      var jdjc = dt.ToJulianDate(Flux.TemporalCalendar.JulianCalendar);
+      var jdjc = dt.ToJulianDate(Flux.Temporal.TemporalCalendar.JulianCalendar);
       System.Console.WriteLine($"{jdjc.ToTimeString()}");
       var jdnjc = jdjc.ToJulianDayNumber();
-      System.Console.WriteLine($"{jdnjc.ToDateString(Flux.TemporalCalendar.JulianCalendar)}");
-      var mujc = jdjc.ToMoment(Flux.TemporalCalendar.JulianCalendar);
+      System.Console.WriteLine($"{jdnjc.ToDateString(Flux.Temporal.TemporalCalendar.JulianCalendar)}");
+      var mujc = jdjc.ToMoment(Flux.Temporal.TemporalCalendar.JulianCalendar);
       //System.Console.WriteLine($"{mujc}, {mujc.ToDateOnly()}, {mujc.ToDateTime()}, {mujc.ToTimeOnly()}, {mujc.ToTimeSpan()}");
       System.Console.WriteLine($"{mujc}, {mujc.ToDateTime()}, {mujc.ToTimeSpan()}");
 

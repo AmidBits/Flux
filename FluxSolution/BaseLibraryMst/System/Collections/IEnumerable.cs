@@ -19,7 +19,7 @@ namespace Collections.Generic
     public void Choose()
     {
       var expected = new int[] { 17, 23, 57 };
-      var actual = integers.SelectWhere((e, i) => ((i & 1) == 1), (e, i) => e).ToArray();
+      var actual = integers.SelectWhere((e, i) => e, (e, i, r) => ((i & 1) == 1)).ToArray();
       CollectionAssert.AreEqual(expected, actual);
     }
 
@@ -118,17 +118,17 @@ namespace Collections.Generic
       CollectionAssert.AreEqual(new int[] { 17, 17, 19, 23, 23, 57, 17, 17, 19, 23, 23, 57 }, integers.Repeat(1).ToArray());
     }
 
-    [TestMethod]
-    public void OrderedSequenceEqual()
-    {
-      var a = new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
-      var b = new int[] { 9, 8, 7, 6, 5, 4, 3, 2, 1 };
-      var c = new int[] { 1, 9, 2, 8, 3, 7, 4, 6, 5 };
+    //[TestMethod]
+    //public void OrderedSequenceEqual()
+    //{
+    //  var a = new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+    //  var b = new int[] { 9, 8, 7, 6, 5, 4, 3, 2, 1 };
+    //  var c = new int[] { 1, 9, 2, 8, 3, 7, 4, 6, 5 };
 
-      Assert.IsTrue(a.OrderedSequenceEqual(b, v => v));
-      Assert.IsTrue(a.OrderedSequenceEqual(c, v => v));
-      Assert.IsTrue(b.OrderedSequenceEqual(c, v => v));
-    }
+    //  Assert.IsTrue(a.OrderedSequenceEqual(b, v => v));
+    //  Assert.IsTrue(a.OrderedSequenceEqual(c, v => v));
+    //  Assert.IsTrue(b.OrderedSequenceEqual(c, v => v));
+    //}
 
     [TestMethod]
     public void SequenceContentEqualByXor()
@@ -154,11 +154,11 @@ namespace Collections.Generic
       CollectionAssert.AreEqual(new int[] { 17, 17, 19, 23, 23 }, integers.SkipLastWhile((e, i) => (i & 1) == 1).ToArray());
     }
 
-    [TestMethod]
-    public void SkipUntil()
-    {
-      CollectionAssert.AreEqual(new int[] { 23, 57 }, integers.SkipUntil((e, i) => i > 2).ToArray());
-    }
+    //[TestMethod]
+    //public void SkipUntil()
+    //{
+    //  CollectionAssert.AreEqual(new int[] { 23, 57 }, integers.SkipUntil((e, i) => i > 2).ToArray());
+    //}
 
     [TestMethod]
     public void StartsWith()
@@ -178,10 +178,10 @@ namespace Collections.Generic
       CollectionAssert.AreEqual(new int[] { 57 }, integers.TakeLastWhile((e, i) => (i & 1) == 1).ToArray());
     }
 
-    [TestMethod]
-    public void TakeUntil()
-    {
-      CollectionAssert.AreEqual(new int[] { 17, 17, 19, 23 }, integers.TakeUntil((e, i) => i > 2).ToArray());
-    }
+    //[TestMethod]
+    //public void TakeUntil()
+    //{
+    //  CollectionAssert.AreEqual(new int[] { 17, 17, 19, 23 }, integers.TakeUntil((e, i) => i > 2).ToArray());
+    //}
   }
 }

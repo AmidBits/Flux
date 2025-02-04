@@ -26,7 +26,7 @@ namespace Flux.Riff.Smf
     {
       var sm = new SpanMaker<char>(base.ToString());
 
-      sm = sm.Insert(sm.AsReadOnlySpan().IndexOf(')') + 1, $" \"{Format}\", {Tracks} tracks, {Division}");
+      sm = sm.Insert(sm.AsReadOnlySpan().IndexOf(')') + 1, 1, $" \"{Format}\", {Tracks} tracks, {Division}");
 
       return sm.ToString();
     }

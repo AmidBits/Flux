@@ -17,7 +17,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\BaseLibrary\BaseLibrary.csproj" />
+	  <ProjectReference Include="..\Flux\Flux.csproj" />
 	</ItemGroup>
 
 </Project>

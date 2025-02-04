@@ -28,16 +28,16 @@ namespace Collections.Generic
     {
       //Assert.AreEqual(60, d.PercentileRank(65.0), nameof(PercentileRank));
       //Assert.AreEqual(60, Flux.Numerics.PercentileVariant3.PercentScore(0.75, d.Count()), "ComputePercentileScore");
-      Assert.AreEqual(5, Flux.Statistics.PercentileNearestRank.PercentileScore(d, 0.75), "ComputePercentileScore");
-      Assert.AreEqual(4.75, Flux.Statistics.PercentileVariant2.PercentileScore(d, 0.75), "ComputePercentileScore");
-      Assert.AreEqual(5, Flux.Statistics.PercentileVariant3.PercentileScore(d, 0.75), "ComputePercentileScore");
+      Assert.AreEqual(5, Flux.Statistics.Percentile.NearestRank.PercentileScore(d, 0.75), "ComputePercentileScore");
+      Assert.AreEqual(4.75, Flux.Statistics.Percentile.Variant2.PercentileScore(d, 0.75), "ComputePercentileScore");
+      Assert.AreEqual(5, Flux.Statistics.Percentile.Variant3.PercentileScore(d, 0.75), "ComputePercentileScore");
 
-      Assert.AreEqual(7.5, Flux.Statistics.PercentileNearestRank.PercentileRank(d.Length, 0.75), "ComputePercentileRank");
-      Assert.AreEqual(7.75, Flux.Statistics.PercentileVariant2.PercentileRank(d.Length, 0.75), "ComputePercentileRank");
-      Assert.AreEqual(8.25, Flux.Statistics.PercentileVariant3.PercentileRank(d.Length, 0.75), "ComputePercentileRank");
+      Assert.AreEqual(7.5, Flux.Statistics.Percentile.NearestRank.PercentileRank(d.Length, 0.75), "ComputePercentileRank");
+      Assert.AreEqual(7.75, Flux.Statistics.Percentile.Variant2.PercentileRank(d.Length, 0.75), "ComputePercentileRank");
+      Assert.AreEqual(8.25, Flux.Statistics.Percentile.Variant3.PercentileRank(d.Length, 0.75), "ComputePercentileRank");
 
-      Assert.AreEqual(4.75, Flux.Statistics.QuantileR7.Default.EstimateQuantileValue(d, 0.75), "QuantileR5");
-      Assert.AreEqual(5, Flux.Statistics.QuantileR6.Default.EstimateQuantileValue(d, 0.75), "QuantileR6");
+      Assert.AreEqual(4.75, Flux.Statistics.Quantile.R7.Default.EstimateQuantileValue(d, 0.75), "QuantileR5");
+      Assert.AreEqual(5, Flux.Statistics.Quantile.R6.Default.EstimateQuantileValue(d, 0.75), "QuantileR6");
 
 
 

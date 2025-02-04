@@ -12,7 +12,7 @@ namespace DataStructures
     [TestMethod]
     public void AdjacencyMatrix1()
     {
-      var gam = new Flux.DataStructure.Graph.AdjacencyMatrix<int, (int capacity, int cost)>();
+      var gam = new Flux.DataStructures.Graphs.AdjacencyMatrix<int, (int capacity, int cost)>();
 
       gam.AddVertex(0);
       gam.AddVertex(1);
@@ -50,7 +50,7 @@ namespace DataStructures
     [TestMethod]
     public void AdjacencyMatrix2()
     {
-      var gam = new Flux.DataStructure.Graph.AdjacencyMatrix<int, (int capacity, int cost)>();
+      var gam = new Flux.DataStructures.Graphs.AdjacencyMatrix<int, (int capacity, int cost)>();
 
       gam.AddVertex(0);
       gam.AddVertex(1);
@@ -87,7 +87,7 @@ namespace DataStructures
     [TestMethod]
     public void AdjacencyMatrix3()
     {
-      var gam = new Flux.DataStructure.Graph.AdjacencyMatrix<char, int>();
+      var gam = new Flux.DataStructures.Graphs.AdjacencyMatrix<char, int>();
 
       gam.AddVertex(0, 'a');
       gam.AddVertex(1, 'b');
@@ -157,7 +157,7 @@ namespace DataStructures
     [TestMethod]
     public void AdjacencyList1()
     {
-      var gal = new Flux.DataStructure.Graph.AdjacencyList<int, (int unused, int distance)>();
+      var gal = new Flux.DataStructures.Graphs.AdjacencyList<int, (int unused, int distance)>();
 
       gal.AddVertex(0);
       gal.AddVertex(1);
@@ -194,7 +194,7 @@ namespace DataStructures
     [TestMethod]
     public void AdjacencyList2()
     {
-      var gal = new Flux.DataStructure.Graph.AdjacencyList<int, (int unused, int distance)>();
+      var gal = new Flux.DataStructures.Graphs.AdjacencyList<int, (int unused, int distance)>();
 
       gal.AddVertex(0);
       gal.AddVertex(1);
@@ -230,7 +230,7 @@ namespace DataStructures
     [TestMethod]
     public void AdjacencyList3()
     {
-      var gal = new Flux.DataStructure.Graph.AdjacencyList<int, (int unused, int distance)>();
+      var gal = new Flux.DataStructures.Graphs.AdjacencyList<int, (int unused, int distance)>();
 
       gal.AddVertex(0);
       gal.AddVertex(1);
@@ -289,9 +289,9 @@ namespace DataStructures
       var vertices = new int[] { 0, 1, 2, 3, 4 };
       var edges = new (int, int, double)[] { (0, 1, 6), (0, 3, 7), (1, 3, 8), (1, 4, -4), (1, 2, 5), (2, 1, -2), (3, 2, -3), (3, 4, 9), (4, 0, 2), (4, 2, 7) };
 
-      var (actualDistance, actualPredecessor) = Flux.DataStructure.Graph.Algorithm.BellmanFordShortestPaths(vertices, edges, 0);
+      var (actualDistance, actualPredecessor) = Flux.DataStructures.Graphs.Algorithm.BellmanFordShortestPaths(vertices, edges, 0);
 
-      System.Console.WriteLine(actualDistance.Rank1ToConsole().ToString());
+      System.Console.WriteLine(actualDistance.Rank1ToConsoleString());
 
       var expectedDistance = new double[] { 0, 2, 4, 7, -2 };
       var expectedPredecessor = new int[] { -1, 2, 3, 0, 1 };
@@ -306,9 +306,9 @@ namespace DataStructures
       var vertices = new int[] { 0, 1, 2, 3, 4, 5, 6 };
       var edges = new (int, int, double)[] { (1, 2, 7), (1, 3, 9), (1, 6, 14), (2, 1, 7), (2, 3, 10), (2, 4, 15), (3, 1, 9), (3, 2, 10), (3, 4, 11), (3, 6, 2), (4, 2, 15), (4, 3, 11), (4, 5, 6), (5, 4, 6), (5, 6, 9), (6, 1, 14), (6, 3, 2), (6, 5, 9) };
 
-      var (actualDistance, actualPrevious) = Flux.DataStructure.Graph.Algorithm.DijkstraShortestPaths(vertices, edges, 1);
+      var (actualDistance, actualPrevious) = Flux.DataStructures.Graphs.Algorithm.DijkstraShortestPaths(vertices, edges, 1);
 
-      System.Console.WriteLine(actualDistance.Rank1ToConsole().ToString());
+      System.Console.WriteLine(actualDistance.Rank1ToConsoleString());
 
       var expectedDistance = new double[] { double.PositiveInfinity, 0, 7, 9, 20, 20, 11 };
       var expectedPrevious = new int[] { 0, 0, 1, 1, 3, 6, 3 };

@@ -47,7 +47,7 @@
 
         do
         {
-          ship = new Vessel(size, new System.Drawing.Point(Random.NumberGenerators.Crypto.Next(m_seaSize.X), Random.NumberGenerators.Crypto.Next(m_seaSize.Y)), (VesselOrientation)Random.NumberGenerators.Crypto.Next(2));
+          ship = new Vessel(size, new System.Drawing.Point(Randomness.NumberGenerators.Crypto.Next(m_seaSize.X), Randomness.NumberGenerators.Crypto.Next(m_seaSize.Y)), (VesselOrientation)Randomness.NumberGenerators.Crypto.Next(2));
         }
         while (!ship.IsValid(m_seaSize) || ships.Any(s => Vessel.Intersects(ship, s)));
 

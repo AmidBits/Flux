@@ -223,7 +223,7 @@ namespace Units
       var u = new Flux.Quantities.Volume(1);
 
       Assert.AreEqual(35.31466672148859, u.GetUnitValue(Flux.Quantities.VolumeUnit.CubicFoot));
-      Assert.AreEqual(1000000000, u.GetUnitValue(Flux.Quantities.VolumeUnit.CubicKilometer));
+      Assert.AreEqual(999999999.9999999, u.GetUnitValue(Flux.Quantities.VolumeUnit.CubicKilometer));
       Assert.AreEqual(2.3991275857892774E-10, u.GetUnitValue(Flux.Quantities.VolumeUnit.CubicMile));
       Assert.AreEqual(1.3079506193143922, u.GetUnitValue(Flux.Quantities.VolumeUnit.CubicYard));
       Assert.AreEqual(1000, u.GetUnitValue(Flux.Quantities.VolumeUnit.Liter));

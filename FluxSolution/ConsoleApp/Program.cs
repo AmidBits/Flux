@@ -12,7 +12,7 @@ using System.Security.Cryptography;
 using System.Text.RegularExpressions;
 using System.Xml.XPath;
 using Flux;
-using Flux.DataStructure.UnionFind;
+using Flux.DataStructures.UnionFind;
 using Flux.Quantities;
 using Flux.Text;
 using Microsoft.VisualBasic;
@@ -55,15 +55,14 @@ namespace ConsoleApp
 
         foreach (var triplet in reWhitespace.Split(text).PartitionTuple3(0, (a, b, c, i) => (a, b, c)))
         {
-          var firstandsecond = $"{triplet.Item1} {triplet.Item2}";
-          var third = $"{triplet.Item3}";
+          var firstandsecond = $"{triplet.a} {triplet.b}";
+          var third = $"{triplet.c}";
 
           if (dict3.TryGetValue(firstandsecond, out var threes))
             threes.Add(third);
           else
           {
-            threes = new System.Collections.Generic.List<string>();
-            threes.Add(third);
+            threes = [third];
             dict3[firstandsecond] = threes;
           }
 
@@ -99,144 +98,48 @@ namespace ConsoleApp
 
     }
 
+    private static void Testerino(System.UInt128 maxN)
+    {
+      for (var n = System.UInt128.Zero; n <= maxN; n++)
+      {
+        for (var k = System.UInt128.Zero; k <= n; k++)
+          System.Console.Write($"{n.BinomialCoefficient(k)} ");
+
+        System.Console.WriteLine();
+      }
+    }
+
     private static void TimedMain(string[] _)
     {
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
-      var bin = (123).ToBinaryString(8);
-      var oct = (123).ToOctalString(8);
-      var dec = (123).ToDecimalString(8);
-      var hex = (123).ToHexadecimalString(8);
+      var globalAddressesesViaHosts = Flux.Net.MyIpAddresses.TryGetMyGlobalAddressesViaHosts(out var myGlobalAddressesViaInternetHosts);
+      var localAddressesViaNics = Flux.Net.MyIpAddresses.TryGetMyLocalAddressesViaNics(out var myLocalAddressesViaNics);
+      var moreLikelylocalAddressViaNics = Flux.Net.MyIpAddresses.TryGetMyLocalAddressViaNics(out var myMoreLikelyLocalAddressViaNics);
+      var localAddressViaUdp = Flux.Net.MyIpAddresses.TryGetMyLocalAddressViaUdp(out var myLocalAdressViaUdp);
 
-      var chr = (System.Text.Rune)' ';
+      var defval = Flux.Enum.GetDefaultValue<Flux.MetricPrefix>();
 
-      var sg0 = new Flux.SpanMaker<char>();
+      var volume = new Flux.Quantities.Volume(123);
+      var uv = volume.GetUnitValue(VolumeUnit.Liter);
+      var (prefix, value) = volume.GetUnitValue(VolumeUnit.Liter).GetEngineeringNotationProperties();
+      var liters = volume.GetUnitValue(VolumeUnit.Liter).ToEngineeringNotationString(Flux.Quantities.Volume.GetUnitSymbol(VolumeUnit.Liter, false));
+      var regs = volume.GetUnitValue(VolumeUnit.CubicMeter).ToEngineeringNotationString(Flux.Quantities.Volume.GetUnitSymbol(VolumeUnit.CubicMeter, false), tripletsOnly: false);
 
-      var txt = "SuperHumoungusInsertsWhereAnyCharacterOfOorRisPresentWithoutAnyReservationsAsFarAsIknow.";
+      var v1 = 123;
 
-      var sg1 = sg0.Append(1, "Robert");
-      var sg2 = sg1.Append(1, "123 Hugo");
-      var sg3 = sg2.Insert(6, 1, '-');
-      var sg4 = sg3.Prepend(1, "Lars");
-      var sg5 = sg4.Insert(4, 1, '-');
-      var sg6 = sg5.Replace(c => c == '-', 11, "*");
-      var sg7 = sg6.Replace(c => c == '*', 1, " ");
-      //var tet = sg7.RegexSplits(@"[^\p{L}\p{Nd}]"); // For show.
-      var sg8 = sg7.Prepend(29, '^');
-      var sg9 = sg8.Append(29, '^');
-      var sgA = sg9.NormalizeAdjacent(1, null, '^', ' ');
-      var sgB = sgA.TrimLeft(c => c == '^');
-      var sgC = sgB.TrimRight(c => c == '^');
-      sgC.AsSpan().Slice(5, 6).Reverse();
-      var sgE = sgC.Remove(4, 7);
-      var tet2 = sgE.AsReadOnlySpan().RegexMatches(@"\d+"); // For show.
-      sgE.MakeNumbersFixedLength(8);
-      var sgF = sgE.ReplaceRegex(@"\d+", t => int.Parse(t, System.Globalization.NumberStyles.Integer).ToOrdinalIndicatorString());
-      var sgG = sgF.RemoveRegex(txt);
-      var str = sgG.AsReadOnlySpan().ToString();
+      var v2 = -6;
+      var vp = v1.GetEngineeringNotationProperties();
 
-      var uss = @"\u00E7\U0001F47D\x0E7";
+      var vs = v1.ToEngineeringNotationString();
+      var mp = v1 % v2;
+      var rp = v1 % v2;
 
-      var ussd = uss.AsSpan().CsEscapeDecode().ToString();
-      var usse = ussd.AsSpan().CsEscapeEncode(CsEscapeOption.Variable).ToString();
+      var (envq, envr) = v1.DivModEnveloped(v2);
+      var (dmeq, dmer) = v1.DivModEuclidean(v2);
+      var (dmfq, dmfr) = v1.DivModFloor(v2);
 
-      var vme = Flux.Unicode.RegexParseCsEscape().EnumerateMatches(uss);
-
-      foreach (var vm in vme)
-        System.Console.WriteLine($"{vm.Index}, {vm.Length} = {uss.Substring(vm.Index, vm.Length)}");
-
-      var hg = "Hello Günter";
-      var e1 = hg.AsSpan().HtmlEncode().ToString();
-      var e2 = e1.AsSpan().UriEncode().ToString();
-      var d1 = e2.AsSpan().UriDecode().ToString();
-      var d2 = d1.AsSpan().HtmlDecode().ToString();
-
-      var testString = "つれづれなるまゝに、日暮らし、硯にむかひて、心にうつりゆくよしなし事を、そこはかとなく書きつくれば、あやしうこそものぐるほしけれ。";
-      var testRunes = testString.AsSpan().ToListOfRune().AsSpan();
-
-      var htmlencode = testString.AsSpan().HtmlEncode(true).ToString();
-
-      var urlencode = htmlencode.AsSpan().UriEncode().ToString();
-
-      var urldecode = urlencode.AsSpan().UriDecode().ToString();
-
-      var htmldecode = urldecode.AsSpan().HtmlDecode().ToString();
-
-
-      var basicLatin = Flux.Unicode.GetRunesInUnicodeRange(System.Text.Unicode.UnicodeRanges.BasicLatin);
-      //basicLatin.Remove((System.Text.Rune)'L');
-      //basicLatin.Remove((System.Text.Rune)'l');
-      //basicLatin.Remove((System.Text.Rune)'R');
-      //basicLatin.Remove((System.Text.Rune)'r');
-
-      var sb = new System.Text.StringBuilder();
-      for (var i = 0; i < 3; i++)
-      {
-        sb.Append(basicLatin.Where(r => r.IsConsonantOf() && ((i == 0 && System.Text.Rune.IsUpper(r)) || (i > 0 && System.Text.Rune.IsLower(r)))).Random());
-        sb.Append(basicLatin.Where(r => r.IsVowelOf() && System.Text.Rune.IsLower(r)).Random());
-      }
-      var s = sb.ToString();
-
-      var w3cEntities = Flux.Resource.GetDotNetSequence(System.TimeZoneInfo.GetSystemTimeZones()).ToDataTable(true);// "Test", (e, e2) => e.Length.ToNumberOfOrdinalColumnNames(), (e, e2) => e.Select(o => o.GetType()).ToArray(), (e, i) => e);
-
-      var dto = System.DateTimeOffset.Now;
-
-      var bytes = new byte[16];
-
-      dto.WriteBytes(bytes, Endianess.LittleEndian);
-
-      var read = bytes.AsReadOnlySpan().ReadDateTimeOffset(Endianess.LittleEndian);
-
-
-      var zc = Flux.Resource.GetScrapeZipCodeDatabase().ToDataTable(true, "ZipCodes");
-      zc.Columns[6].DataType = typeof(double);
-      var wud = Flux.Resource.GetGutenbergWebstersUnabridgedDictionary().ToDataTable(true, "WebstersUnabridgeDictionary");
-      var mddc = (99).DigitCount(10);
-      var saasf = Flux.Resource.GetGutenbergSynonymsAndAntonymsBySamuelFallows().ToDataTable(false, "SynonymsAndAntonymsSamuelFallows");
-
-
-
-
-      var test = System.Globalization.CultureInfo.CurrentCulture.TextInfo.ListSeparator;
-
-      var l = new Flux.Quantities.Length(1, LengthUnit.Parsec);
-      System.Console.WriteLine(string.Join(System.Environment.NewLine, l.ToUnitStringAll()));
-
-      var x = System.Globalization.UnicodeCategory.PrivateUse.ToUnicodeCategoryMajor();
-
-      var us = "This function contains a unicode character pi (\u03a0)";
-
-      var usrune = us.AsSpan().CsEscapeEncode(CsEscapeOption.Variable);
-
-      //var ip = Flux.Locale.PublicIp;
-
-      //var bi = ip.ToBigInteger();
-
-      //var ipa = bi.ToIPAddress();
-
-      //var x = Flux.Locale.LocalIPv4Address.GetAddressBytes().AsReadOnlySpan().ReadUInt32(Endianess.LittleEndian);
-
-      //var pip = Flux.Locale.LocalIPv4Address;
-
-      //var pips = pip.GetAddressBytes();
-
-      //var pips32 = pips.AsReadOnlySpan().ReadUInt32(Endianess.LittleEndian);
-
-      //var guid = System.Guid.NewGuid();
-
-      //var bytes = guid.ToByteArray();
-
-      //var first = bytes.AsReadOnlySpan().ReadUInt32(Endianess.LittleEndian);
-      //var second = bytes.AsReadOnlySpan(4).ReadUInt16(Endianess.LittleEndian);
-      //var third = bytes.AsReadOnlySpan(6).ReadUInt16(Endianess.LittleEndian);
-      //var fourth = bytes.AsReadOnlySpan(8).ReadUInt16(Endianess.BigEndian);
-      //var fifth = (ulong)bytes.AsReadOnlySpan(10).ReadUInt32(Endianess.BigEndian) << 16 | (ulong)bytes.AsReadOnlySpan(14).ReadUInt16(Endianess.BigEndian);
-
-      ////Flux.Net.UdpCast.ConsoleChat(Flux.Net.UdpCast.MulticastTestEndPoint);
-
-      //Flux.Net.NetworkTimeProtocol.TryGetNetworkTimeProtocol(out var ntp);
-      //var y = ntp.ReferenceTimestampUtc;
     }
 
     #region Eliza example
@@ -352,7 +255,7 @@ namespace ConsoleApp
           {
             allResponses.Add(tempResponseCollector);
             // .Clear() gives some odd results here
-            tempResponseCollector = new System.Collections.Generic.List<string>();
+            tempResponseCollector = [];
           }
           else
           {
@@ -479,7 +382,7 @@ namespace ConsoleApp
 
       SetSize(0.75);
 
-      System.Console.WriteLine(Flux.Services.Performance.Measure(() => TimedMain(args), 1));
+      System.Console.WriteLine(Flux.Diagnostics.Performance.Measure(() => TimedMain(args), 1));
 
       ResetEncoding(originalOutputEncoding);
 

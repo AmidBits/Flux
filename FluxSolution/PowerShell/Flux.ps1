@@ -12,13 +12,15 @@ Clear-Host
 
 "PowerShell $($PSVersionTable.PSVersion) $($PSVersionTable.PSEdition) on $($PSVersionTable.OS) ($($PSVersionTable.Platform))"
 
-$vsProjectReference = @{ SolutionName='FluxSolution'; ProjectName='BaseLibrary'; Configuration='Debug'; TargetFramework='net8.0' }
+$vsProjectReference = @{ SolutionName='FluxSolution'; ProjectName='Flux'; Configuration='Debug'; TargetFramework='net9.0' }
+#$vsProjectReference 
 
 [string]$assemblyFileName = Expand-FileToPath "$($vsProjectReference.ProjectName).dll" $vsProjectReference
+#$assemblyFileName
 
 if(-not ([System.AppDomain]::CurrentDomain.GetAssemblies() | Where-Object { $_.FullName -match "^$($vsProjectReference.ProjectName)" } | Test-Any)) # Check whether the project library is already loaded.
 {
-    "Add-on <$assemblyFileName>$([System.Environment]::NewLine)"
+    "Load <$assemblyFileName>$([System.Environment]::NewLine)"
 
     # Various ways to include/use the Flux BaseLibray in PowerShell:
 
@@ -39,6 +41,9 @@ if(-not ([System.AppDomain]::CurrentDomain.GetAssemblies() | Where-Object { $_.F
     #>
 
     [void][System.Reflection.Assembly]::Load($bytes) # Load the byte array as an assembly into the current context.
+}
+else {
+    "Skip <$assemblyFileName>$([System.Environment]::NewLine)"
 }
 
 # Sample use from Flux BaseLibrary:

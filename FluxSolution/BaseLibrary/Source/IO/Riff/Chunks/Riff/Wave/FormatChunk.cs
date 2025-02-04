@@ -60,9 +60,9 @@ namespace Flux.Riff
       var sm = new SpanMaker<char>(base.ToString());
 
       if (IsExtendedFormat)
-        sm = sm.Insert(sm.AsReadOnlySpan().IndexOf(" bytes"), "+22");
+        sm = sm.Insert(sm.AsReadOnlySpan().IndexOf(" bytes"), 1, "+22");
 
-      sm = sm.Insert(sm.AsReadOnlySpan().IndexOf(')') + 1, $" {GetFormatName(Format)} {SampleChannels} ch. {SampleBitDepth}-bit {SampleRate} Hz");
+      sm = sm.Insert(sm.AsReadOnlySpan().IndexOf(')') + 1, 1, $" {GetFormatName(Format)} {SampleChannels} ch. {SampleBitDepth}-bit {SampleRate} Hz");
 
       return sm.ToString();
       //return base.ToString().Replace(">", $", {GetFormatName((int)Format)}, {SampleChannels} ch., {SampleRate} Hz, {SampleBitDepth}-bit>", System.StringComparison.Ordinal);

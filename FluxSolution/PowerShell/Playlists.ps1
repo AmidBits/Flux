@@ -30,6 +30,7 @@ Build-Playlist "All Music" ("Tracks\Collections", "Tracks\Miscellaneous")
 
 Build-Playlist "Billy Idol" ("Tracks\Collections\Billy Idol")
 Build-Playlist "Depeche Mode" ("Tracks\Collections\Depeche Mode")
+Build-Playlist "DEVO" ("Tracks\Collections\DEVO")
 Build-Playlist "Enigma" ("Tracks\Collections\Enigma")
 Build-Playlist "Enya" ("Tracks\Collections\Enya")
 Build-Playlist "Jean-Michel Jarre" ("Tracks\Collections\Jean-Michel Jarre")
@@ -39,6 +40,8 @@ Build-Playlist "Lustans Lakejer" ("Tracks\Collections\Lustans Lakejer")
 Build-Playlist "Wipeout" ("Tracks\Collections\CoLD SToRAGE", "Tracks\Collections\Wip3out")
 Build-Playlist "Yazoo" ("Tracks\Collections\Yazoo", "Tracks\Collections\Yaz")
 Build-Playlist "Yello" ("Tracks\Collections\Yello")
+
+Build-Playlist "Miscellaneous" ("Tracks\Miscellaneous")
 
 Build-Playlist "Personal Jesus" ("Tracks\Collections", "Tracks\Miscellaneous") "*Personal Jesus*.mp3"
 

@@ -9,13 +9,13 @@ namespace Text
     [TestMethod]
     public void AmericanSoundex_Default()
     {
-      Assert.AreEqual("S620", new Flux.Text.PhoneticAlgorithm.AmericanSoundex().EncodePhoneticAlgorithm("Señor Hugo"));
+      Assert.AreEqual("S620", new Flux.Text.PhoneticAlgorithm.Soundex.AmericanSoundex().EncodePhoneticAlgorithm("Señor Hugo"));
     }
 
     [TestMethod]
     public void AmericanSoundex_WikiSamples()
     {
-      var soundex = new Flux.Text.PhoneticAlgorithm.AmericanSoundex();
+      var soundex = new Flux.Text.PhoneticAlgorithm.Soundex.AmericanSoundex();
 
       Assert.AreEqual("R163", soundex.EncodePhoneticAlgorithm("Robert"));
       Assert.AreEqual("R163", soundex.EncodePhoneticAlgorithm("Rupert"));
@@ -71,13 +71,13 @@ namespace Text
     [TestMethod]
     public void RefinedSoundex_Default()
     {
-      Assert.AreEqual("S309040", new Flux.Text.PhoneticAlgorithm.RefinedSoundex().EncodePhoneticAlgorithm("Señor Hugo"));
+      Assert.AreEqual("S309040", new Flux.Text.PhoneticAlgorithm.Soundex.RefinedSoundex().EncodePhoneticAlgorithm("Señor Hugo"));
     }
 
     [TestMethod]
     public void RefinedSoundex_NikitaSamples()
     {
-      var refinedSoundex = new Flux.Text.PhoneticAlgorithm.RefinedSoundex();
+      var refinedSoundex = new Flux.Text.PhoneticAlgorithm.Soundex.RefinedSoundex();
 
       Assert.AreEqual("B1905", refinedSoundex.EncodePhoneticAlgorithm("Braz"));
       Assert.AreEqual("B1905", refinedSoundex.EncodePhoneticAlgorithm("Broz"));
