@@ -1,18 +1,9 @@
 namespace Flux.Quantities
 {
-  public enum SpeedUnit
-  {
-    /// <summary>This is the default unit for <see cref="Speed"/>.</summary>
-    MeterPerSecond,
-    FootPerSecond,
-    KilometerPerHour,
-    Knot,
-    Mach,
-    MilePerHour,
-  }
-
-  /// <summary>Speed, unit of meters per second, is the magnitude of velocity (a vector).</summary>
-  /// <see href="https://en.wikipedia.org/wiki/Speed"/>
+  /// <summary>
+  /// <para>Speed, unit of meters per second, is the magnitude of velocity (a vector).</para>
+  /// <para><see href="https://en.wikipedia.org/wiki/Speed"/></para>
+  /// </summary>
   public readonly record struct Speed
     : System.IComparable, System.IComparable<Speed>, System.IFormattable, ISiUnitValueQuantifiable<double, SpeedUnit>
   {

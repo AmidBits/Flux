@@ -1,13 +1,9 @@
 namespace Flux.Quantities
 {
-  public enum HeatCapacityUnit
-  {
-    /// <summary>This is the default unit for <see cref="HeatCapacity"/>.</summary>
-    JoulePerKelvin,
-  }
-
-  /// <summary>Heat capacity, unit of Joule per Kelvin.</summary>
-  /// <see href="https://en.wikipedia.org/wiki/Heat_capacity"/>
+  /// <summary>
+  /// <para>Heat capacity, unit of Joule per Kelvin.</para>
+  /// <para><see href="https://en.wikipedia.org/wiki/Heat_capacity"/></para>
+  /// </summary>
   public readonly record struct HeatCapacity
     : System.IComparable, System.IComparable<HeatCapacity>, System.IFormattable, ISiUnitValueQuantifiable<double, HeatCapacityUnit>
   {

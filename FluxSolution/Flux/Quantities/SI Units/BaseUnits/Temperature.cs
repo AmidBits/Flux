@@ -1,15 +1,5 @@
 namespace Flux.Quantities
 {
-  [System.ComponentModel.DefaultValue(Kelvin)]
-  public enum TemperatureUnit
-  {
-    /// <summary>This is the default unit for <see cref="Temperature"/>.</summary>
-    Kelvin,
-    Celsius,
-    Fahrenheit,
-    Rankine,
-  }
-
   /// <summary>
   /// <para>Temperature. SI unit of Kelvin. This is a base quantity.</para>
   /// <para><see href="https://en.wikipedia.org/wiki/Temperature"/></para>

@@ -114,6 +114,12 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
+
+
+      foreach (var t in typeof(Flux.Locale).Assembly.DefinedTypes)
+        if (t.TryGetAttribute<System.ComponentModel.DefaultValueAttribute>(out var attributes))
+          System.Console.WriteLine($"{string.Join(" | ", attributes.Select(a => a.Value))}");
+
       var globalAddressesesViaHosts = Flux.Net.MyIpAddresses.TryGetMyGlobalAddressesViaHosts(out var myGlobalAddressesViaInternetHosts);
       var localAddressesViaNics = Flux.Net.MyIpAddresses.TryGetMyLocalAddressesViaNics(out var myLocalAddressesViaNics);
       var moreLikelylocalAddressViaNics = Flux.Net.MyIpAddresses.TryGetMyLocalAddressViaNics(out var myMoreLikelyLocalAddressViaNics);

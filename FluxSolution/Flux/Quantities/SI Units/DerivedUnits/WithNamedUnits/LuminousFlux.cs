@@ -1,13 +1,9 @@
 namespace Flux.Quantities
 {
-  public enum LuminousFluxUnit
-  {
-    /// <summary>This is the default unit for <see cref="LuminousFlux"/>.</summary>
-    Lumen,
-  }
-
-  /// <summary>Luminous flux unit of lumen.</summary>
-  /// <see href="https://en.wikipedia.org/wiki/Luminous_flux"/>
+  /// <summary>
+  /// <para>Luminous flux, unit of lumen.</para>
+  /// <para><see href="https://en.wikipedia.org/wiki/Luminous_flux"/></para>
+  /// </summary>
   public readonly record struct LuminousFlux
     : System.IComparable, System.IComparable<LuminousFlux>, System.IFormattable, ISiUnitValueQuantifiable<double, LuminousFluxUnit>
   {

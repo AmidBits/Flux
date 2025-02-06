@@ -1,4 +1,4 @@
-﻿namespace Flux.Dsp.AudioProcessor
+﻿namespace Flux.Dsp.WaveProcessor
 {
   public enum MonoPolarizerMode
   {
@@ -33,7 +33,7 @@
       _ => wave,
     });
 
-    public IWaveMono<double> ProcessMonoWave(IWaveMono<double> mono) => (WaveMono<double>)ProcessMonoWave(mono.Wave);
+    public Waves.IWaveMono<double> ProcessMonoWave(Waves.IWaveMono<double> mono) => (Waves.WaveMono<double>)ProcessMonoWave(mono.Wave);
 
     public static double ApplyBipolarToUnipolarNegative(double sample)
       => sample / 2.0 - 0.5;

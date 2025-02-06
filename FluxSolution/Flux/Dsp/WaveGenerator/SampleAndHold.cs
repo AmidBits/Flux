@@ -10,9 +10,9 @@ namespace Flux.Dsp.WaveGenerator
 
     public SampleAndHold(System.Random rng)
       => m_rng = rng ?? System.Random.Shared;
+
     public SampleAndHold()
-      : this(System.Random.Shared)
-    { }
+      : this(System.Random.Shared) { }
 
     public double Sample(double phase)
     {
@@ -26,10 +26,11 @@ namespace Flux.Dsp.WaveGenerator
       return m_sample;
     }
 
-    public IWaveMono<double> GenerateMonoWaveUi(double phaseUi)
-      => (WaveMono<double>)Sample(phaseUi);
-    public IWaveMono<double> GenerateMonoWavePi2(double phasePi2)
-      => (WaveMono<double>)Sample(phasePi2);
+    public Waves.IWaveMono<double> GenerateMonoWaveUi(double phaseUi)
+      => (Waves.WaveMono<double>)Sample(phaseUi);
+
+    public Waves.IWaveMono<double> GenerateMonoWavePi2(double phasePi2)
+      => (Waves.WaveMono<double>)Sample(phasePi2);
   }
 
   // /// <summary>A sample and hold based on the frequencies corresponding to all MIDI notes, which is a subset of the chromatic scale.</summary>

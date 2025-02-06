@@ -1,13 +1,9 @@
 namespace Flux.Quantities
 {
-  public enum LuminousEfficacyUnit
-  {
-    /// <summary>This is the default unit for <see cref="LuminousEfficacy"/>.</summary>
-    LumenPerWatt,
-  }
-
-  /// <summary>Torque unit of newton meter.</summary>
-  /// <see href="https://en.wikipedia.org/wiki/Luminous_efficacy"/>
+  /// <summary>
+  /// <para>Luminous efficacy, unit of lumen per watt.</para>
+  /// <para><see href="https://en.wikipedia.org/wiki/Luminous_efficacy"/></para>
+  /// </summary>
   public readonly record struct LuminousEfficacy
     : System.IComparable, System.IComparable<LuminousEfficacy>, System.IFormattable, ISiUnitValueQuantifiable<double, LuminousEfficacyUnit>
   {

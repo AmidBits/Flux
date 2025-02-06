@@ -1,11 +1,5 @@
 namespace Flux.Quantities
 {
-  public enum AngularFrequencyUnit
-  {
-    /// <summary>This is the default unit for <see cref="AngularFrequency"/>.</summary>
-    RadianPerSecond,
-  }
-
   /// <summary>Angular frequency (a.k.a. angular speed, angular rate), unit of radians per second, is the magnitude of the pseudovector quantity angular velocity. This is an SI derived quantity.</summary>
   /// <see href="https://en.wikipedia.org/wiki/Angular_frequency"/>
   public readonly record struct AngularFrequency

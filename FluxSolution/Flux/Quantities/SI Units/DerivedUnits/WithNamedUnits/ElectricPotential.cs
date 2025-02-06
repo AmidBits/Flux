@@ -1,13 +1,9 @@
 namespace Flux.Quantities
 {
-  public enum ElectricPotentialUnit
-  {
-    /// <summary>This is the default unit for <see cref="ElectricPotential"/>.</summary>
-    Volt,
-  }
-
-  /// <summary>Voltage unit of volt.</summary>
-  /// <see href="https://en.wikipedia.org/wiki/Electric_potential"/>
+  /// <summary>
+  /// <para>Voltage, unit of volt.</para>
+  /// <para><see href="https://en.wikipedia.org/wiki/Electric_potential"/></para>
+  /// </summary>
   public readonly record struct ElectricPotential
     : System.IComparable, System.IComparable<ElectricPotential>, System.IFormattable, ISiUnitValueQuantifiable<double, ElectricPotentialUnit>
   {

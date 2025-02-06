@@ -1,15 +1,8 @@
 namespace Flux.Quantities
 {
-  public enum LinearDensityUnit
-  {
-    /// <summary>This is the default unit for <see cref="LinearDensity"/>.</summary>
-    KilogramPerMeter,
-    GramPerMeter,
-  }
-
   /// <summary>
   /// <para>Linear mass density, unit of kilograms per meter.</para>
-  /// <see href="https://en.wikipedia.org/wiki/Linear_density"/>
+  /// <para><see href="https://en.wikipedia.org/wiki/Linear_density"/></para>
   /// </summary>
   /// <remarks>Dimensional relationship: <see cref="LinearDensity"/>, <see cref="AreaDensity"/> and <see cref="Density"/>.</remarks>
   public readonly record struct LinearDensity

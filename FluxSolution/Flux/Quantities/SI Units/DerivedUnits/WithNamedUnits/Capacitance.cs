@@ -1,13 +1,9 @@
 namespace Flux.Quantities
 {
-  public enum CapacitanceUnit
-  {
-    /// <summary>This is the default unit for <see cref="Capacitance"/>.</summary>
-    Farad,
-  }
-
-  /// <summary>Electrical capacitance unit of Farad.</summary>
-  /// <see href="https://en.wikipedia.org/wiki/Capacitance"/>
+  /// <summary>
+  /// <para>Electrical capacitance, unit of Farad.</para>
+  /// <para><see href="https://en.wikipedia.org/wiki/Capacitance"/></para>
+  /// </summary>
   public readonly record struct Capacitance
     : System.IComparable, System.IComparable<Capacitance>, System.IFormattable, ISiUnitValueQuantifiable<double, CapacitanceUnit>
   {

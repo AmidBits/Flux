@@ -1,4 +1,4 @@
-namespace Flux.Dsp.AudioProcessor
+namespace Flux.Dsp.WaveProcessor
 {
   // https://creatingsound.com/2013/06/dsp-audio-programming-series-part-1/
   // https://stackoverflow.com/questions/11793310/how-to-add-echo-effect-on-audio-file-using-objective-c
@@ -99,6 +99,6 @@ namespace Flux.Dsp.AudioProcessor
       return ((wave * m_dryMix + bufferSample * m_wetMix) * m_gainCompensation);
     }
 
-    public IWaveMono<double> ProcessMonoWave(IWaveMono<double> mono) => (WaveMono<double>)ProcessMonoWave(mono.Wave);
+    public Waves.IWaveMono<double> ProcessMonoWave(Waves.IWaveMono<double> mono) => (Waves.WaveMono<double>)ProcessMonoWave(mono.Wave);
   }
 }

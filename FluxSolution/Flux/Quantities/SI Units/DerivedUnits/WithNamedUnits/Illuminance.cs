@@ -1,13 +1,9 @@
 namespace Flux.Quantities
 {
-  public enum IlluminanceUnit
-  {
-    /// <summary>This is the default unit for <see cref="Illuminance"/>.</summary>
-    Lux,
-  }
-
-  /// <summary>Illuminance unit of lux.</summary>
-  /// <see href="https://en.wikipedia.org/wiki/Illuminance"/>
+  /// <summary>
+  /// <para>Illuminance, unit of lux.</para>
+  /// <para><see href="https://en.wikipedia.org/wiki/Illuminance"/></para>
+  /// </summary>
   public readonly record struct Illuminance
     : System.IComparable, System.IComparable<Illuminance>, System.IFormattable, ISiUnitValueQuantifiable<double, IlluminanceUnit>
   {

@@ -1,4 +1,4 @@
-namespace Flux.Dsp.AudioProcessor
+namespace Flux.Dsp.WaveProcessor
 {
   /// <summary>A basic limiter.</summary>
   /// <see href="https://github.com/markheath/skypevoicechanger/blob/master/SkypeVoiceChanger/Effects/EventHorizon.cs"/>
@@ -105,6 +105,6 @@ namespace Flux.Dsp.AudioProcessor
       return System.Math.Min(m_computedCeiling, System.Math.Abs(wave)) * System.Math.Sign(wave);
     }
 
-    public IWaveMono<double> ProcessMonoWave(IWaveMono<double> mono) => (WaveMono<double>)ProcessMonoWave(mono.Wave);
+    public Waves.IWaveMono<double> ProcessMonoWave(Waves.IWaveMono<double> mono) => (Waves.WaveMono<double>)ProcessMonoWave(mono.Wave);
   }
 }

@@ -1,14 +1,9 @@
 namespace Flux.Quantities
 {
-  public enum RadiationExposureUnit
-  {
-    /// <summary>This is the default unit for <see cref="RadiationExposure"/>.</summary>
-    CoulombPerKilogram,
-    Röntgen
-  }
-
-  /// <summary>Force, unit of newton. This is an SI derived quantity.</summary>
-  /// <see href="https://en.wikipedia.org/wiki/Radiation_exposure"/>
+  /// <summary>
+  /// <para>Radiation exposure, unit of coulomb per kilogram. This is an SI derived quantity.</para>
+  /// <para><see href="https://en.wikipedia.org/wiki/Radiation_exposure"/></para>
+  /// </summary>
   public readonly record struct RadiationExposure
     : System.IComparable, System.IComparable<RadiationExposure>, System.IFormattable, ISiUnitValueQuantifiable<double, RadiationExposureUnit>
   {

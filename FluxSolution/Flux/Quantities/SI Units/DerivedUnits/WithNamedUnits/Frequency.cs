@@ -1,15 +1,9 @@
 namespace Flux.Quantities
 {
-  public enum FrequencyUnit
-  {
-    /// <summary>This is the default unit for <see cref="Frequency"/>.</summary>
-    Hertz,
-    /// <summary>Represents the musical BPM.</summary>
-    BeatsPerMinute
-  }
-
-  /// <summary>Temporal frequency, unit of Hertz. This is an SI derived quantity.</summary>
-  /// <see href="https://en.wikipedia.org/wiki/Frequency"/>
+  /// <summary>
+  /// <para>Temporal frequency, unit of Hertz. This is an SI derived quantity.</para>
+  /// <para><see href="https://en.wikipedia.org/wiki/Frequency"/></para>
+  /// </summary>
   public readonly record struct Frequency
     : System.IComparable, System.IComparable<Frequency>, System.IFormattable, ISiUnitValueQuantifiable<double, FrequencyUnit>
   {

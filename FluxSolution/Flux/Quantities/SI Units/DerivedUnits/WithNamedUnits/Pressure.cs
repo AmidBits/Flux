@@ -1,18 +1,9 @@
 namespace Flux.Quantities
 {
-  public enum PressureUnit
-  {
-    /// <summary>This is the default unit for <see cref="Pressure"/>.</summary>
-    Pascal,
-    Millibar,
-    Bar,
-    //HectoPascal,
-    //KiloPascal,
-    Psi,
-  }
-
-  /// <summary>Pressure, unit of Pascal. This is an SI derived quantity.</summary>
-  /// <see href="https://en.wikipedia.org/wiki/Pressure"/>
+  /// <summary>
+  /// <para>Pressure, unit of Pascal. This is an SI derived quantity.</para>
+  /// <para><see href="https://en.wikipedia.org/wiki/Pressure"/></para>
+  /// </summary>
   public readonly record struct Pressure
     : System.IComparable, System.IComparable<Pressure>, System.IFormattable, ISiUnitValueQuantifiable<double, PressureUnit>
   {

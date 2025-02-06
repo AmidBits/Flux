@@ -1,13 +1,9 @@
 namespace Flux.Quantities
 {
-  public enum CatalyticActivityUnit
-  {
-    /// <summary>This is the default unit for <see cref="CatalyticActivity"/>. Katal = (mol/s).</summary>
-    Katal,
-  }
-
-  /// <summary>Catalytic activity unit of Katal.</summary>
-  /// <see href="https://en.wikipedia.org/wiki/Catalysis"/>
+  /// <summary>
+  /// <para>Catalytic activity, unit of Katal.</para>
+  /// <para><see href="https://en.wikipedia.org/wiki/Catalysis"/></para>
+  /// </summary>
   public readonly record struct CatalyticActivity
     : System.IComparable, System.IComparable<CatalyticActivity>, System.IFormattable, ISiUnitValueQuantifiable<double, CatalyticActivityUnit>
   {

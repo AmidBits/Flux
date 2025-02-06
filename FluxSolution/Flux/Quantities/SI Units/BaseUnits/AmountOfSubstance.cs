@@ -1,11 +1,5 @@
 namespace Flux.Quantities
 {
-  [System.ComponentModel.DefaultValue(Mole)]
-  public enum AmountOfSubstanceUnit
-  {
-    Mole,
-  }
-
   /// <summary>
   /// <para>Amount of substance. SI unit of mole. This is a base quantity.</para>
   /// <para><see href="https://en.wikipedia.org/wiki/Amount_of_substance"/></para>

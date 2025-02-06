@@ -2,7 +2,7 @@ namespace Flux.Dsp.WaveFilter
 {
   /// <see cref="http://www.earlevel.com/main/2012/12/15/a-one-pole-filter/"/>
   public record class LowPass1P
-    : IMonoWaveFilterable, IMonoWaveProcessable
+    : IMonoWaveFilterable, WaveProcessor.IMonoWaveProcessable
   {
     private double m_cutoffFrequency;
     /// <summary>Sets the cutoff frequency for the filter.</summary>
@@ -34,8 +34,8 @@ namespace Flux.Dsp.WaveFilter
     public double FilterMonoWave(double wave)
       => m_z1 = wave * m_a0 + m_z1 * m_b1; // Note the assignment.
 
-    public IWaveMono<double> FilterMonoWave(IWaveMono<double> mono) => (WaveMono<double>)FilterMonoWave(mono.Wave);
+    public Waves.IWaveMono<double> FilterMonoWave(Waves.IWaveMono<double> mono) => (Waves.WaveMono<double>)FilterMonoWave(mono.Wave);
 
-    public IWaveMono<double> ProcessMonoWave(IWaveMono<double> mono) => FilterMonoWave(mono);
+    public Waves.IWaveMono<double> ProcessMonoWave(Waves.IWaveMono<double> mono) => FilterMonoWave(mono);
   }
 }

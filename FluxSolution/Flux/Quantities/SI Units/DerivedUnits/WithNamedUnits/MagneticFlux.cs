@@ -1,14 +1,9 @@
 namespace Flux.Quantities
 {
-  public enum MagneticFluxUnit
-  {
-    /// <summary>This is the default unit for <see cref="MagneticFlux"/>.</summary>
-    Weber,
-    Maxwell
-  }
-
-  /// <summary>Magnetic flux unit of weber.</summary>
-  /// <see href="https://en.wikipedia.org/wiki/Magnetic_flux"/>
+  /// <summary>
+  /// <para>Magnetic flux, unit of weber.</para>
+  /// <para><see href="https://en.wikipedia.org/wiki/Magnetic_flux"/></para>
+  /// </summary>
   public readonly record struct MagneticFlux
     : System.IComparable, System.IComparable<MagneticFlux>, System.IFormattable, ISiUnitValueQuantifiable<double, MagneticFluxUnit>
   {

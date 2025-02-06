@@ -1,11 +1,5 @@
 namespace Flux.Quantities
 {
-  public enum RelativeHumidityUnit
-  {
-    /// <summary>This is the default unit for <see cref="RelativeHumidity"/>.</summary>
-    Percent,
-  }
-
   /// <summary>
   /// <para>Relative humidity is represented as a percentage value, e.g. 34.5 for 34.5%.</para>
   /// <para><see href="https://en.wikipedia.org/wiki/Humidity#Relative_humidity"/></para>

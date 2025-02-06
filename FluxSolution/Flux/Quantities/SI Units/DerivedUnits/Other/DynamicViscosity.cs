@@ -1,13 +1,9 @@
 namespace Flux.Quantities
 {
-  public enum DynamicViscosityUnit
-  {
-    /// <summary>This is the default unit for <see cref="DynamicViscosity"/>.</summary>
-    PascalSecond,
-  }
-
-  /// <summary>Dynamic viscosity, unit of Pascal second.</summary>
-  /// <see href="https://en.wikipedia.org/wiki/Dynamic_viscosity"/>
+  /// <summary>
+  /// <para>Dynamic viscosity, unit of Pascal second.</para>
+  /// <para><see href="https://en.wikipedia.org/wiki/Dynamic_viscosity"/></para>
+  /// </summary>
   public readonly record struct DynamicViscosity
     : System.IComparable, System.IComparable<DynamicViscosity>, System.IFormattable, ISiUnitValueQuantifiable<double, DynamicViscosityUnit>
   {

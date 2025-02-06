@@ -1,11 +1,5 @@
 namespace Flux.Quantities
 {
-  public enum AccelerationUnit
-  {
-    /// <summary>This is the default unit for <see cref="Acceleration"/>.</summary>
-    MeterPerSecondSquared,
-  }
-
   /// <summary>Acceleration, a scalar quantity, unit of meters per second square. This is an SI derived quantity.</summary>
   /// <see href="https://en.wikipedia.org/wiki/Acceleration"/>
   public readonly record struct Acceleration
@@ -14,7 +8,7 @@ namespace Flux.Quantities
     /// <summary>
     /// <para>The approximate acceleration due to gravity on the surface of the Moon.</para>
     /// </summary>
-    public static double MoonGravity = 1.625;
+    public const double MoonGravity = 1.625;
 
     /// <summary>
     /// <para>The standard acceleration for gravity for Earth as defined per CODATA 2018 (exact value). I.e. a nominal gravitational acceleration of an object in a vacuum near the surface of the Earth.</para>

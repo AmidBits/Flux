@@ -1,16 +1,5 @@
 namespace Flux.Quantities
 {
-  public enum TurbidityUnit
-  {
-    /// <summary>This is the default unit for <see cref="Turbidity"/>.</summary>
-    NephelometricTurbidityUnits,
-    FormazinAttenuationUnit,
-    FormazinNephelometricUnit,
-    FormazinTurbidityUnit,
-    AmericanSocietyOfBrewingChemists,
-    EuropeanBreweryConvention
-  }
-
   /// <summary>
   /// <para>Turbidity, unit of NTU (nephelometric turbidity units).</para>
   /// <para><see href="https://en.wikipedia.org/wiki/Turbidity"/></para>

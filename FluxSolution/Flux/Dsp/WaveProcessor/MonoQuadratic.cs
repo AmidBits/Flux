@@ -1,4 +1,4 @@
-namespace Flux.Dsp.AudioProcessor
+namespace Flux.Dsp.WaveProcessor
 {
   public enum MonoQuadraticMode
   {
@@ -56,7 +56,7 @@ namespace Flux.Dsp.AudioProcessor
         _ => wave,
       });
 
-    public IWaveMono<double> ProcessMonoWave(IWaveMono<double> mono) => (WaveMono<double>)ProcessMonoWave(mono.Wave);
+    public Waves.IWaveMono<double> ProcessMonoWave(Waves.IWaveMono<double> mono) => (Waves.WaveMono<double>)ProcessMonoWave(mono.Wave);
 
     /// <summary>Introduces concave curvature (i.e. more narrow across the x axis) to the waveform signal in the range [0, 2PI] (0 = no change and the closer to 2PI the more narrow).</summary>
     public static double ApplyConcavity(double sample, double amountPi2)

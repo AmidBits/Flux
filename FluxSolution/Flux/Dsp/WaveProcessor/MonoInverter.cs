@@ -1,4 +1,4 @@
-﻿namespace Flux.Dsp.AudioProcessor
+﻿namespace Flux.Dsp.WaveProcessor
 {
   public enum MonoInverterMode
   {
@@ -35,7 +35,7 @@
       _ => wave,
     });
 
-    public IWaveMono<double> ProcessMonoWave(IWaveMono<double> mono) => (WaveMono<double>)ProcessMonoWave(mono.Wave);
+    public Waves.IWaveMono<double> ProcessMonoWave(Waves.IWaveMono<double> mono) => (Waves.WaveMono<double>)ProcessMonoWave(mono.Wave);
 
     public static double InvertNegativePeekOnly(double sample)
       => sample < 0.0 ? -sample - 1.0 : sample;

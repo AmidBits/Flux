@@ -1,13 +1,9 @@
 namespace Flux.Quantities
 {
-  public enum MagneticFluxDensityUnit
-  {
-    /// <summary>This is the default unit for <see cref="MagneticFluxDensity"/>.</summary>
-    Tesla,
-  }
-
-  /// <summary>Magnetic flux density (B), unit of tesla.</summary>
-  /// <see href="https://en.wikipedia.org/wiki/Magnetic_flux_density"/>
+  /// <summary>
+  /// <para>Magnetic flux density (B), unit of tesla.</para>
+  /// <para><see href="https://en.wikipedia.org/wiki/Magnetic_flux_density"/></para>
+  /// </summary>
   public readonly record struct MagneticFluxDensity
     : System.IComparable, System.IComparable<MagneticFluxDensity>, System.IFormattable, ISiUnitValueQuantifiable<double, MagneticFluxDensityUnit>
   {

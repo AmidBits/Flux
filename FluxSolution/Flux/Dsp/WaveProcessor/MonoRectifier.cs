@@ -1,4 +1,4 @@
-namespace Flux.Dsp.AudioProcessor
+namespace Flux.Dsp.WaveProcessor
 {
   public enum MonoRectifierMode
   {
@@ -47,7 +47,7 @@ namespace Flux.Dsp.AudioProcessor
         _ => wave,
       });
 
-    public IWaveMono<double> ProcessMonoWave(IWaveMono<double> mono) => new WaveMono<double>(ProcessMonoWave(mono.Wave));
+    public Waves.IWaveMono<double> ProcessMonoWave(Waves.IWaveMono<double> mono) => new Waves.WaveMono<double>(ProcessMonoWave(mono.Wave));
 
     public static double RectifyFullWave(double sample, double threshold = 0.0)
       => sample < threshold ? System.Math.Min(threshold + (threshold - sample), 1.0) : sample;

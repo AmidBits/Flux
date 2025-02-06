@@ -1,13 +1,9 @@
 namespace Flux.Quantities
 {
-  public enum InductanceUnit
-  {
-    /// <summary>This is the default unit for <see cref="Inductance"/>.</summary>
-    Henry,
-  }
-
-  /// <summary>Electrical inductance unit of Henry.</summary>
-  /// <see href="https://en.wikipedia.org/wiki/Inductance"/>
+  /// <summary>
+  /// <para>Electrical inductance, unit of Henry.</para>
+  /// <para><see href="https://en.wikipedia.org/wiki/Inductance"/></para>
+  /// </summary>
   public readonly record struct Inductance
     : System.IComparable, System.IComparable<Inductance>, System.IFormattable, ISiUnitValueQuantifiable<double, InductanceUnit>
   {

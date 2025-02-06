@@ -1,13 +1,9 @@
 namespace Flux.Quantities
 {
-  public enum ElectricalConductanceUnit
-  {
-    /// <summary>This is the default unit for <see cref="CurrentDensity"/>. Siemens = (1/ohm).</summary>
-    Siemens,
-  }
-
-  /// <summary>Electrical conductance, unit of Siemens.</summary>
-  /// <see href="https://en.wikipedia.org/wiki/Electrical_resistance_and_conductance"/>
+  /// <summary>
+  /// <para>Electrical conductance, unit of Siemens.</para>
+  /// <para><see href="https://en.wikipedia.org/wiki/Electrical_resistance_and_conductance"/></para>
+  /// </summary>
   public readonly record struct ElectricalConductance
     : System.IComparable, System.IComparable<ElectricalConductance>, System.IFormattable, ISiUnitValueQuantifiable<double, ElectricalConductanceUnit>
   {

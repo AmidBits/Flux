@@ -1,11 +1,5 @@
 namespace Flux.Quantities
 {
-  public enum ActionUnit
-  {
-    /// <summary>This is the default unit for <see cref="Action"/>.</summary>
-    JouleSecond,
-  }
-
   /// <summary>Action. Unit of Joule second.</summary>
   /// <see href="https://en.wikipedia.org/wiki/Action_(physics)"/>
   public readonly record struct Action

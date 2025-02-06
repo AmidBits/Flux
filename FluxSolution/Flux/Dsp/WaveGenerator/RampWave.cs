@@ -5,16 +5,18 @@
   public record class RampWave
     : IMonoWaveUiGeneratable, IMonoWavePi2Generatable
   {
-    public IWaveMono<double> GenerateMonoWaveUi(double phaseUi)
-      => (WaveMono<double>)SampleUi(phaseUi);
-    public IWaveMono<double> GenerateMonoWavePi2(double phasePi2)
-      => (WaveMono<double>)SamplePi2(phasePi2);
-
     /// <summary>Generates a ramp (inverted saw) wave from a unit interval. Periodic function, with the domain [-infinity, infinity], the codomain [-1, 1], and period: 1.</summary>
     public static double SampleUi(double phaseUi)
       => Tools.AbsolutePhaseUi(phaseUi) * 2 - 1;
+
     /// <summary>Generates a ramp (inverted saw) wave using radians. Periodic function, with the domain [-infinity, infinity], the codomain [-1, 1], and period: 2PI.</summary>
     public static double SamplePi2(double phasePi2)
       => Tools.AbsolutePhasePi2(phasePi2) / System.Math.PI - 1;
+
+    public Waves.IWaveMono<double> GenerateMonoWaveUi(double phaseUi)
+      => (Waves.WaveMono<double>)SampleUi(phaseUi);
+
+    public Waves.IWaveMono<double> GenerateMonoWavePi2(double phasePi2)
+      => (Waves.WaveMono<double>)SamplePi2(phasePi2);
   }
 }

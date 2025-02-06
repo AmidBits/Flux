@@ -1,15 +1,9 @@
 namespace Flux.Quantities
 {
-  public enum ElectricalResistanceUnit
-  {
-    /// <summary>This is the default unit for <see cref="ElectricalResistance"/>.</summary>
-    Ohm,
-    //KiloOhm,
-    //MegaOhm,
-  }
-
-  /// <summary>Electric resistance, unit of Ohm.</summary>
-  /// <see href="https://en.wikipedia.org/wiki/Electrical_resistance_and_conductance"/>
+  /// <summary>
+  /// <para>Electric resistance, unit of Ohm.</para>
+  /// <para><see href="https://en.wikipedia.org/wiki/Electrical_resistance_and_conductance"/></para>
+  /// </summary>
   public readonly record struct ElectricalResistance
     : System.IComparable, System.IComparable<ElectricalResistance>, System.IFormattable, ISiUnitValueQuantifiable<double, ElectricalResistanceUnit>
   {

@@ -1,13 +1,9 @@
 namespace Flux.Quantities
 {
-  public enum SurfaceTensionUnit
-  {
-    /// <summary>This is the default unit for <see cref="SurfaceTension"/>.</summary>
-    NewtonPerMeter,
-  }
-
-  /// <summary>Surface tension, unit of Newton per meter.</summary>
-  /// <see href="https://en.wikipedia.org/wiki/Surface_tension"/>
+  /// <summary>
+  /// <para>Surface tension, unit of Newton per meter.</para>
+  /// <para><see href="https://en.wikipedia.org/wiki/Surface_tension"/></para>
+  /// </summary>
   public readonly record struct SurfaceTension
     : System.IComparable, System.IComparable<SurfaceTension>, System.IFormattable, ISiUnitValueQuantifiable<double, SurfaceTensionUnit>
   {

@@ -1,13 +1,9 @@
 namespace Flux.Quantities
 {
-  public enum WavelengthUnit
-  {
-    /// <summary>This is the default unit for <see cref="Wavelength"/>.</summary>
-    MeterPerRadian,
-  }
-
-  /// <summary>Wavelength, unit of meter per radian.</summary>
-  /// <see href="https://en.wikipedia.org/wiki/Wavelength"/>
+  /// <summary>
+  /// <para>Wavelength, unit of meter per radian.</para>
+  /// <para><see href="https://en.wikipedia.org/wiki/Wavelength"/></para>
+  /// </summary>
   public readonly record struct Wavelength
     : System.IComparable, System.IComparable<Wavelength>, System.IFormattable, ISiUnitValueQuantifiable<double, WavelengthUnit>
   {

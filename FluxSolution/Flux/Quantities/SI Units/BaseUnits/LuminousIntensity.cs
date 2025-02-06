@@ -1,11 +1,5 @@
 namespace Flux.Quantities
 {
-  [System.ComponentModel.DefaultValue(Candela)]
-  public enum LuminousIntensityUnit
-  {
-    Candela,
-  }
-
   /// <summary>
   /// <para>Luminous intensity. SI unit of candela. This is a base quantity.</para>
   /// <para><see href="https://en.wikipedia.org/wiki/Luminous_intensity"/></para>

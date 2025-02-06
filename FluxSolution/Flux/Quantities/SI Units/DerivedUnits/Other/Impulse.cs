@@ -1,13 +1,9 @@
 namespace Flux.Quantities
 {
-  public enum ImpulseUnit
-  {
-    /// <summary>This is the default unit for <see cref="Impulse"/>.</summary>
-    NewtonSecond,
-  }
-
-  /// <summary>Impulse, unit of Newton second.</summary>
-  /// <see href="https://en.wikipedia.org/wiki/Impulse"/>
+  /// <summary>
+  /// <para>Impulse, unit of Newton second.</para>
+  /// <para><see href="https://en.wikipedia.org/wiki/Impulse"/></para>
+  /// </summary>
   public readonly record struct Impulse
     : System.IComparable, System.IComparable<Impulse>, System.IFormattable, ISiUnitValueQuantifiable<double, ImpulseUnit>
   {

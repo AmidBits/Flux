@@ -1,19 +1,5 @@
 namespace Flux.Quantities
 {
-  public enum DigitalInformationUnit
-  {
-    /// <summary>This is the default unit for <see cref="DigitalInformation"/>.</summary>
-    Byte,
-    kibiByte,
-    mebiByte,
-    gibiByte,
-    tebiByte,
-    pebiByte,
-    exbiByte,
-    zebiByte,
-    yobiByte,
-  }
-
   /// <summary>
   /// <para>DigitalStorage, units in power-of-2.</para>
   /// <para><see href="https://en.wikipedia.org/wiki/Binary_prefix"/></para>

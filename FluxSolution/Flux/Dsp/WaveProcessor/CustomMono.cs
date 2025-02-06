@@ -1,4 +1,4 @@
-﻿namespace Flux.Dsp.AudioProcessor
+﻿namespace Flux.Dsp.WaveProcessor
 {
   public record class CustomMono
     : IMonoWaveProcessable
@@ -9,6 +9,6 @@
 
     public double ProcessMonoWave(double mono) => m_function(mono);
 
-    public IWaveMono<double> ProcessMonoWave(IWaveMono<double> mono) => (WaveMono<double>)m_function(mono.Wave);
+    public Waves.IWaveMono<double> ProcessMonoWave(Waves.IWaveMono<double> mono) => (Waves.WaveMono<double>)m_function(mono.Wave);
   }
 }

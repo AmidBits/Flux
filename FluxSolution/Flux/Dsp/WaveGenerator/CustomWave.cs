@@ -13,9 +13,10 @@
       m_functionPi2 = functionPi2;
     }
 
-    public IWaveMono<double> GenerateMonoWaveUi(double phaseUi)
-      => (WaveMono<double>)m_functionUi(phaseUi);
-    public IWaveMono<double> GenerateMonoWavePi2(double phasePi2)
-      => (WaveMono<double>)m_functionPi2(phasePi2);
+    public Waves.IWaveMono<double> GenerateMonoWaveUi(double phaseUi)
+      => (Waves.WaveMono<double>)m_functionUi(phaseUi);
+
+    public Waves.IWaveMono<double> GenerateMonoWavePi2(double phasePi2)
+      => (Waves.WaveMono<double>)m_functionPi2(phasePi2);
   }
 }

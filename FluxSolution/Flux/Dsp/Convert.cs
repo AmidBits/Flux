@@ -24,6 +24,7 @@ namespace Flux.Dsp
     /// <seealso cref="http://www.sengpielaudio.com/calculator-FactorRatioLevelDecibel.htm"/>
     public static double DecibelsToRatio(double dB, double referenceFactor = 1, double quantityScalar = FieldQuantity)
       => referenceFactor * System.Math.Pow(10, dB / quantityScalar);
+
     /// <summary>Conversion from factor (ratio) to gain (decibels).</summary>
     /// <param name="ratio">The factor (ratio) to convert into decibels.</param>
     /// <param name="referenceFactor">The reference factor for 0 dB.</param>

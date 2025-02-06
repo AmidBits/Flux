@@ -1,11 +1,5 @@
 namespace Flux.Quantities
 {
-  public enum AbsoluteHumidityUnit
-  {
-    /// <summary>This is the default unit for <see cref="AbsoluteHumidity"/>.</summary>
-    GramPerCubicMeter,
-  }
-
   /// <summary>
   /// <para>Absolute humidity, unit of grams per cubic meter.</para>
   /// <para><see href="https://en.wikipedia.org/wiki/Humidity#Absolute_humidity"/></para>

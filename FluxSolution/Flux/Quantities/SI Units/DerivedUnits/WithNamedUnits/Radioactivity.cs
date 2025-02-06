@@ -1,13 +1,7 @@
 namespace Flux.Quantities
 {
-  public enum RadioactivityUnit
-  {
-    /// <summary>This is the default unit for <see cref="Radioactivity"/>.</summary>
-    Becquerel,
-  }
-
   /// <summary>
-  /// <para>Activity, unit of becquerel.</para>
+  /// <para>Radioactivity, unit of becquerel.</para>
   /// <para><see href="https://en.wikipedia.org/wiki/Specific_activity"/></para>
   /// </summary>
   public readonly record struct Radioactivity

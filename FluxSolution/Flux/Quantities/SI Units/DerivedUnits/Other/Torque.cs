@@ -1,13 +1,9 @@
 namespace Flux.Quantities
 {
-  public enum TorqueUnit
-  {
-    /// <summary>This is the default unit for <see cref="Torque"/>.</summary>
-    NewtonMeter,
-  }
-
-  /// <summary>Torque unit of newton meter.</summary>
-  /// <see href="https://en.wikipedia.org/wiki/Torque"/>
+  /// <summary>
+  /// <para>Torque, unit of newton meter.</para>
+  /// <para><see href="https://en.wikipedia.org/wiki/Torque"/></para>
+  /// </summary>
   public readonly record struct Torque
     : System.IComparable, System.IComparable<Torque>, System.IFormattable, ISiUnitValueQuantifiable<double, TorqueUnit>
   {

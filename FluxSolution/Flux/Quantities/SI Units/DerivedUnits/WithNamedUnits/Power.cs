@@ -1,15 +1,9 @@
 namespace Flux.Quantities
 {
-  public enum PowerUnit
-  {
-    /// <summary>This is the default unit for <see cref="Power"/>.</summary>
-    Watt,
-    //KiloWatt,
-    //MegaWatt,
-  }
-
-  /// <summary>Power unit of watt.</summary>
-  /// <see href="https://en.wikipedia.org/wiki/Power"/>
+  /// <summary>
+  /// <para>Power, unit of watt.</para>
+  /// <para><see href="https://en.wikipedia.org/wiki/Power"/></para>
+  /// </summary>
   public readonly record struct Power
     : System.IComparable, System.IComparable<Power>, System.IFormattable, ISiUnitValueQuantifiable<double, PowerUnit>
   {

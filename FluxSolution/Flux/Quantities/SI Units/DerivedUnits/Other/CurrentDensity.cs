@@ -1,13 +1,9 @@
 namespace Flux.Quantities
 {
-  public enum CurrentDensityUnit
-  {
-    /// <summary>This is the default unit for <see cref="CurrentDensity"/>.</summary>
-    AmperePerSquareMeter,
-  }
-
-  /// <summary>Current density, unit of ampere per square meter.</summary>
-  /// <see href="https://en.wikipedia.org/wiki/Current_density"/>
+  /// <summary>
+  /// <para>Current density, unit of ampere per square meter.</para>
+  /// <para><see href="https://en.wikipedia.org/wiki/Current_density"/></para>
+  /// </summary>
   public readonly record struct CurrentDensity
     : System.IComparable, System.IComparable<CurrentDensity>, System.IFormattable, ISiUnitValueQuantifiable<double, CurrentDensityUnit>
   {

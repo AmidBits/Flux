@@ -1,4 +1,4 @@
-namespace Flux.Dsp.AudioProcessor
+namespace Flux.Dsp.WaveProcessor
 {
   /// <summary>A simple lag function, where the signal is lagged by interpolating the signal over time.</summary>
   public record class MonoLagger
@@ -28,6 +28,6 @@ namespace Flux.Dsp.AudioProcessor
     public double ProcessMonoWave(double wave)
       => (m_amount > Numerics.Constants.EpsilonCpp32 ? m_previousSample = wave.InterpolateCosine(m_previousSample, m_amount) : wave);
 
-    public IWaveMono<double> ProcessMonoWave(IWaveMono<double> mono) => (WaveMono<double>)ProcessMonoWave(mono.Wave);
+    public Waves.IWaveMono<double> ProcessMonoWave(Waves.IWaveMono<double> mono) => (Waves.WaveMono<double>)ProcessMonoWave(mono.Wave);
   }
 }

@@ -1,14 +1,8 @@
 namespace Flux.Quantities
 {
-  public enum LinearChargeDensityUnit
-  {
-    /// <summary>This is the default unit for <see cref="LinearChargeDensity"/>.</summary>
-    CoulombPerMeter,
-  }
-
   /// <summary>
   /// <para>Linear mass density, unit of kilograms per meter.</para>
-  /// <see href="https://en.wikipedia.org/wiki/Charge_density"/>
+  /// <para><see href="https://en.wikipedia.org/wiki/Charge_density"/></para>
   /// </summary>
   /// <remarks>Dimensional relationship: <see cref="LinearChargeDensity"/>, <see cref="AreaDensity"/> and <see cref="Density"/>.</remarks>
   public readonly record struct LinearChargeDensity

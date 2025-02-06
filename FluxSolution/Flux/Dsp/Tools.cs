@@ -17,7 +17,7 @@ namespace Flux.Dsp
 
     /// <summary>Compute the root mean square (RMS) of the samples in the sequence.</summary>
     /// <see href="https://en.wikipedia.org/wiki/Root_mean_square"/>
-    public static IWaveMono<double> ComputeRms(System.Collections.Generic.IEnumerable<IWaveMono<double>> buffer)
-      => new WaveMono<double>(double.Sqrt(buffer.Average(mono => mono.Wave * mono.Wave)));
+    public static Waves.IWaveMono<double> ComputeRms(System.Collections.Generic.IEnumerable<Waves.IWaveMono<double>> buffer)
+      => new Waves.WaveMono<double>(double.Sqrt(buffer.Average(mono => mono.Wave * mono.Wave)));
   }
 }

@@ -1,18 +1,18 @@
-namespace Flux.Dsp.WaveFilter
+namespace Flux.Dsp
 {
   /// <see cref="http://www.earlevel.com/main/2012/12/15/a-one-pole-filter/"/>
   public record class Bypass
-    : IMonoWaveFilterable, IMonoWaveProcessable, IStereoWaveProcessable
+    : WaveFilter.IMonoWaveFilterable, WaveProcessor.IMonoWaveProcessable, WaveProcessor.IStereoWaveProcessable
   {
     public double FilterMonoWave(double wave) => wave;
 
     // IMonoWaveFilterable
-    public IWaveMono<double> FilterMonoWave(IWaveMono<double> wave) => wave;
+    public Waves.IWaveMono<double> FilterMonoWave(Waves.IWaveMono<double> wave) => wave;
 
     // IMonoWaveProcessable
-    public IWaveMono<double> ProcessMonoWave(IWaveMono<double> wave) => wave;
+    public Waves.IWaveMono<double> ProcessMonoWave(Waves.IWaveMono<double> wave) => wave;
 
     // IStereoWaveProcessable
-    public IWaveStereo<double> ProcessStereoWave(IWaveStereo<double> wave) => wave;
+    public Waves.IWaveStereo<double> ProcessStereoWave(Waves.IWaveStereo<double> wave) => wave;
   }
 }

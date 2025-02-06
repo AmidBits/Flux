@@ -1,13 +1,9 @@
 namespace Flux.Quantities
 {
-  public enum MagneticFluxStrengthUnit
-  {
-    /// <summary>This is the default unit for <see cref="MagneticFluxStrength"/>.</summary>
-    AmperePerMeter
-  }
-
-  /// <summary>Magnetic flux strength (H), unit of ampere-per-meter.</summary>
-  /// <see href="https://en.wikipedia.org/wiki/Magnetic_field"/>
+  /// <summary>
+  /// <para>Magnetic flux strength (H), unit of ampere-per-meter.</para>
+  /// <para><see href="https://en.wikipedia.org/wiki/Magnetic_field"/></para>
+  /// </summary>
   public readonly record struct MagneticFluxStrength
     : System.IComparable, System.IComparable<MagneticFluxStrength>, System.IFormattable, ISiUnitValueQuantifiable<double, MagneticFluxStrengthUnit>
   {

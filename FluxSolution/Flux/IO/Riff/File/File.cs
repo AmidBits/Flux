@@ -10,7 +10,7 @@ namespace Flux.IO.Riff.File
 {
   public static class File
   {
-    public static void CreateFile16BitMono(string path, Dsp.Synthesis.Oscillator oscillator, int sampleCount)
+    public static void CreateFile16BitMono(string path, Dsp.Oscillators.Oscillator oscillator, int sampleCount)
     {
       System.ArgumentNullException.ThrowIfNull(oscillator);
 
@@ -35,7 +35,7 @@ namespace Flux.IO.Riff.File
       }
     }
 
-    public static void CreateFile16BitStereo(string path, Dsp.Synthesis.Oscillator oscillatorL, Dsp.Synthesis.Oscillator oscillatorR, int sampleCount)
+    public static void CreateFile16BitStereo(string path, Dsp.Oscillators.Oscillator oscillatorL, Dsp.Oscillators.Oscillator oscillatorR, int sampleCount)
     {
       System.ArgumentNullException.ThrowIfNull(oscillatorL);
       System.ArgumentNullException.ThrowIfNull(oscillatorR);

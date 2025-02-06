@@ -1,13 +1,9 @@
 namespace Flux.Quantities
 {
-  public enum EquivalentDoseUnit
-  {
-    /// <summary>This is the default unit for <see cref="EquivalentDose"/>.</summary>
-    Sievert,
-  }
-
-  /// <summary>Dose equivalent, unit of sievert.</summary>
-  /// <see href="https://en.wikipedia.org/wiki/Equivalent_dose"/>
+  /// <summary>
+  /// <para>Equivalent dose, unit of sievert.</para>
+  /// <para><see href="https://en.wikipedia.org/wiki/Equivalent_dose"/></para>
+  /// </summary>
   public readonly record struct EquivalentDose
     : System.IComparable, System.IComparable<EquivalentDose>, System.IFormattable, ISiUnitValueQuantifiable<double, EquivalentDoseUnit>
   {

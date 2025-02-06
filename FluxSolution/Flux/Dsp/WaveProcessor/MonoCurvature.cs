@@ -1,4 +1,4 @@
-namespace Flux.Dsp.AudioProcessor
+namespace Flux.Dsp.WaveProcessor
 {
   /// <summary>Apply curvature with a contour [-1 = convex/logarithmic, 0 = linear, +1 = concave/exponential] to an arbitrary mono signal sample.</summary>
   public record class MonoCurvature
@@ -28,7 +28,7 @@ namespace Flux.Dsp.AudioProcessor
     public double ProcessMonoWave(double wave)
       => (2 * ((System.Math.Pow(m_contourScaled, (wave + 1) * 50) - 1) / (System.Math.Pow(m_contourScaled, 100) - 1)) - 1);
 
-    public IWaveMono<double> ProcessMonoWave(IWaveMono<double> mono) => (WaveMono<double>)ProcessMonoWave(mono.Wave);
+    public Waves.IWaveMono<double> ProcessMonoWave(Waves.IWaveMono<double> mono) => (Waves.WaveMono<double>)ProcessMonoWave(mono.Wave);
 
     /// <summary>Apply curvature with the specified contour to an arbitrary mono signal sample.</summary>
     /// <param name="contour">The contour in the range [-1, 1] is used to transform the amplitude sample, where negative means convex/logarithmic, positive means concave/exponential, and 0 means linear.</param>

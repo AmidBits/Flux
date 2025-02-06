@@ -2,7 +2,7 @@
 {
   /// <summary>Calculates all filter frequency functions all at once.</summary>
   public record class MultiSvf
-    : IMonoWaveFilterable, IMonoWaveProcessable
+    : IMonoWaveFilterable, WaveProcessor.IMonoWaveProcessable
   {
     /// <summary>Indicates which function to apply to the auto chain through interfaces. All frequency functions are still always computed regardless of this setting.</summary>
     public MultiSvfFrequencyFunction AutoFunction { get; private set; }
@@ -96,8 +96,8 @@
       };
     }
 
-    public IWaveMono<double> FilterMonoWave(IWaveMono<double> mono) => (WaveMono<double>)FilterMonoWave(mono.Wave);
+    public Waves.IWaveMono<double> FilterMonoWave(Waves.IWaveMono<double> mono) => (Waves.WaveMono<double>)FilterMonoWave(mono.Wave);
 
-    public IWaveMono<double> ProcessMonoWave(IWaveMono<double> mono) => FilterMonoWave(mono);
+    public Waves.IWaveMono<double> ProcessMonoWave(Waves.IWaveMono<double> mono) => FilterMonoWave(mono);
   }
 }

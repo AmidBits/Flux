@@ -1,19 +1,9 @@
 namespace Flux.Quantities
 {
-  public enum FlowUnit
-  {
-    /// <summary>This is the default unit for <see cref="Flow"/>.</summary>
-    CubicMeterPerSecond,
-    /// <summary>
-    /// <see cref="https://en.wikipedia.org/wiki/Sverdrup"/>
-    /// </summary>
-    /// <remarks>Not to be confused with <see cref="EquivalentDoseUnit.Sievert"/>, unit of <see cref="EquivalentDose"/>.</remarks>
-    Sverdrup,
-    USGallonPerMinute,
-  }
-
-  /// <summary>Volumetric flow, unit of cubic meters per second, is the rate of change of volume with respect to time.</summary>
-  /// <see href="https://en.wikipedia.org/wiki/Volumetric_flow_rate"/>
+  /// <summary>
+  /// <para>Volumetric flow, unit of cubic meters per second, is the rate of change of volume with respect to time.</para>
+  /// <para><see href="https://en.wikipedia.org/wiki/Volumetric_flow_rate"/></para>
+  /// </summary>
   public readonly record struct Flow
     : System.IComparable, System.IComparable<Flow>, System.IFormattable, ISiUnitValueQuantifiable<double, FlowUnit>
   {

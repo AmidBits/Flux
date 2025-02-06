@@ -1,18 +1,9 @@
 namespace Flux.Quantities
 {
-  public enum EnergyUnit
-  {
-    /// <summary>This is the default unit for <see cref="Energy"/>.</summary>
-    Joule,
-    ElectronVolt,
-    Calorie,
-    WattHour,
-    KilowattHour,
-    BritishThermalUnits
-  }
-
-  /// <summary>Energy unit of Joule.</summary>
-  /// <see href="https://en.wikipedia.org/wiki/Energy"/>
+  /// <summary>
+  /// <para>Energy, unit of Joule.</para>
+  /// <para><see href="https://en.wikipedia.org/wiki/Energy"/></para>
+  /// </summary>
   public readonly record struct Energy
     : System.IComparable, System.IComparable<Energy>, System.IFormattable, ISiUnitValueQuantifiable<double, EnergyUnit>
   {

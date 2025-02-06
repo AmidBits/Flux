@@ -1,4 +1,4 @@
-namespace Flux.Dsp.AudioProcessor.Adapter
+namespace Flux.Dsp.WaveProcessor.Adapter
 {
   /// <summary>Process a stereo signal using two mono audio processors (IAudioProcessorMono).</summary>
   public record class StereoThruMonoProcessors
@@ -13,7 +13,7 @@ namespace Flux.Dsp.AudioProcessor.Adapter
       Right = right;
     }
 
-    public IWaveStereo<double> ProcessStereoWave(IWaveStereo<double> stereo)
-      => new WaveStereo<double>(Left.ProcessMonoWave(new WaveMono<double>(stereo.SampleLeft)).Wave, Right.ProcessMonoWave(new WaveMono<double>(stereo.SampleRight)).Wave);
+    public Waves.IWaveStereo<double> ProcessStereoWave(Waves.IWaveStereo<double> stereo)
+      => new Waves.WaveStereo<double>(Left.ProcessMonoWave(new Waves.WaveMono<double>(stereo.SampleLeft)).Wave, Right.ProcessMonoWave(new Waves.WaveMono<double>(stereo.SampleRight)).Wave);
   }
 }

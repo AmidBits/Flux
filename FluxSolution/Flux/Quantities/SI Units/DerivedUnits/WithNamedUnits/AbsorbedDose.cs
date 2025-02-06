@@ -1,11 +1,5 @@
 namespace Flux.Quantities
 {
-  public enum AbsorbedDoseUnit
-  {
-    /// <summary>This is the default unit for <see cref="AbsorbedDose"/>.</summary>
-    Gray,
-  }
-
   /// <summary>
   /// <para>Absorbed dose, unit of gray. This is an SI derived quantity.</para>
   /// <para><see href="https://en.wikipedia.org/wiki/Absorbed_dose"/></para>

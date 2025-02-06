@@ -1,12 +1,5 @@
 namespace Flux.Quantities
 {
-  public enum AreaDensityUnit
-  {
-    /// <summary>This is the default unit for <see cref="AreaDensity"/>.</summary>
-    KilogramPerSquareMeter,
-    GramPerSquareMeter,
-  }
-
   /// <summary>
   /// <para>Area mass density, unit of kilograms per square meter.</para>
   /// <see href="https://en.wikipedia.org/wiki/Area_density"/>

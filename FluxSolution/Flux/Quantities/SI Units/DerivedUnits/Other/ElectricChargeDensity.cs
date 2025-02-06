@@ -1,14 +1,8 @@
 namespace Flux.Quantities
 {
-  public enum ElectricChargeDensityUnit
-  {
-    /// <summary>This is the default unit for <see cref="ElectricChargeDensity"/>.</summary>
-    CoulombPerCubicMeter,
-  }
-
   /// <summary>
   /// <para>Volumetric mass density, unit of kilograms per cubic meter.</para>
-  /// <see href="https://en.wikipedia.org/wiki/Charge_density"/>
+  /// <para><see href="https://en.wikipedia.org/wiki/Charge_density"/></para>
   /// </summary>
   /// <remarks>Dimensional relationship: <see cref="LinearChargeDensity"/>, <see cref="AreaDensity"/> and <see cref="ElectricChargeDensity"/>.</remarks>
   public readonly record struct ElectricChargeDensity

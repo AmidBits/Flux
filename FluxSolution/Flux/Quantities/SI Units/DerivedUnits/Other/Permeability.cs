@@ -1,13 +1,9 @@
 namespace Flux.Quantities
 {
-  public enum PermeabilityUnit
-  {
-    /// <summary>This is the default unit for <see cref="Permeability"/>.</summary>
-    HenryPerMeter,
-  }
-
-  /// <summary>Force, unit of newton. This is an SI derived quantity.</summary>
-  /// <see href="https://en.wikipedia.org/wiki/Force"/>
+  /// <summary>
+  /// <para>Permeability, unit of henry per meter. This is an SI derived quantity.</para>
+  /// <para><see href="https://en.wikipedia.org/wiki/Force"/></para>
+  /// </summary>
   public readonly record struct Permeability
     : System.IComparable, System.IComparable<Permeability>, System.IFormattable, ISiUnitValueQuantifiable<double, PermeabilityUnit>
   {

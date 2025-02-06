@@ -1,4 +1,4 @@
-namespace Flux.Dsp.AudioProcessor
+namespace Flux.Dsp.WaveProcessor
 {
   // https://stackoverflow.com/questions/376036/algorithm-to-mix-sound
 
@@ -51,6 +51,6 @@ namespace Flux.Dsp.AudioProcessor
       return (wave * m_autoAttenuation);
     }
 
-    public IWaveMono<double> ProcessMonoWave(IWaveMono<double> mono) => (WaveMono<double>)ProcessMonoWave(mono.Wave);
+    public Waves.IWaveMono<double> ProcessMonoWave(Waves.IWaveMono<double> mono) => (Waves.WaveMono<double>)ProcessMonoWave(mono.Wave);
   }
 }

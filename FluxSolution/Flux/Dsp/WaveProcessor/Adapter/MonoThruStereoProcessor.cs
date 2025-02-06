@@ -1,4 +1,4 @@
-namespace Flux.Dsp.AudioProcessor.Adapter
+namespace Flux.Dsp.WaveProcessor.Adapter
 {
   public record class MonoThruStereoProcessor
     : IMonoWaveProcessable
@@ -10,7 +10,7 @@ namespace Flux.Dsp.AudioProcessor.Adapter
       Stereo = stereo;
     }
 
-    public IWaveMono<double> ProcessMonoWave(IWaveMono<double> wave)
+    public Waves.IWaveMono<double> ProcessMonoWave(Waves.IWaveMono<double> wave)
       => Stereo.ProcessStereoWave(wave.ToStereoWave()).ToMonoWave();
   }
 }

@@ -1,14 +1,8 @@
 namespace Flux.Quantities
 {
-  public enum MolarityUnit
-  {
-    /// <summary>This is the default unit for <see cref="Molarity"/>.</summary>
-    MolesPerCubicMeter,
-  }
-
   /// <summary>
   /// <para>Volumetric mass density, unit of kilograms per cubic meter.</para>
-  /// <see href="https://en.wikipedia.org/wiki/Density"/>
+  /// <para><see href="https://en.wikipedia.org/wiki/Density"/></para>
   /// </summary>
   /// <remarks>Dimensional relationship: <see cref="LinearDensity"/>, <see cref="AreaDensity"/> and <see cref="Molarity"/>.</remarks>
   public readonly record struct Molarity

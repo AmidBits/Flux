@@ -1,13 +1,9 @@
 namespace Flux.Quantities
 {
-  public enum ElectricChargeUnit
-  {
-    /// <summary>This is the default unit for <see cref="ElectricCharge"/>.</summary>
-    Coulomb,
-  }
-
-  /// <summary>Electric charge, unit of Coulomb.</summary>
-  /// <see href="https://en.wikipedia.org/wiki/Electric_charge"/>
+  /// <summary>
+  /// <para>Electric charge, unit of Coulomb.</para>
+  /// <para><see href="https://en.wikipedia.org/wiki/Electric_charge"/></para>
+  /// </summary>
   public readonly record struct ElectricCharge
     : System.IComparable, System.IComparable<ElectricCharge>, System.IFormattable, ISiUnitValueQuantifiable<double, ElectricChargeUnit>
   {

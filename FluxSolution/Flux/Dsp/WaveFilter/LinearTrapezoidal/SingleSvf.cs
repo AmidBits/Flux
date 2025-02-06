@@ -4,7 +4,7 @@ namespace Flux.Dsp.WaveFilter.LinearTrapezoidal
   /// <see href="https://cytomic.com/index.php?q=technical-papers"/>
   /// <seealso cref="https://cytomic.com/files/dsp/SvfLinearTrapOptimised2.pdf"/>
   public record class SingleSvf
-    : IMonoWaveFilterable, IMonoWaveProcessable
+    : IMonoWaveFilterable, WaveProcessor.IMonoWaveProcessable
   {
     public SingleSvfFrequencyFunction Function { get; private set; }
 
@@ -158,8 +158,8 @@ namespace Flux.Dsp.WaveFilter.LinearTrapezoidal
       return m0 * v0 + m1 * m_v1 + m2 * m_v2;
     }
 
-    public IWaveMono<double> FilterMonoWave(IWaveMono<double> mono) => (WaveMono<double>)FilterMonoWave(mono.Wave);
+    public Waves.IWaveMono<double> FilterMonoWave(Waves.IWaveMono<double> mono) => (Waves.WaveMono<double>)FilterMonoWave(mono.Wave);
 
-    public IWaveMono<double> ProcessMonoWave(IWaveMono<double> mono) => FilterMonoWave(mono);
+    public Waves.IWaveMono<double> ProcessMonoWave(Waves.IWaveMono<double> mono) => FilterMonoWave(mono);
   }
 }

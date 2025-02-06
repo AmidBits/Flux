@@ -1,13 +1,5 @@
 namespace Flux.Quantities
 {
-  public enum AreaUnit
-  {
-    /// <summary>This is the default unit for <see cref="Area"/>.</summary>
-    SquareMeter,
-    Hectare,
-    Acre
-  }
-
   /// <summary>
   /// <para>Area, unit of square meter. This is an SI derived quantity.</para>
   /// <see href="https://en.wikipedia.org/wiki/Area"/>

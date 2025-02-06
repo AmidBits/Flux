@@ -1,4 +1,4 @@
-namespace Flux.Dsp.AudioProcessor.Adapter
+namespace Flux.Dsp.WaveProcessor.Adapter
 {
   /// <summary>Add as many effects as desired, and they will be applied evenly across the stereo spectrum.</summary>
   public sealed class AutoSpreader
@@ -31,9 +31,9 @@ namespace Flux.Dsp.AudioProcessor.Adapter
       }
     }
 
-    public System.Collections.Generic.List<IMonoWaveProcessable> WaveProcessors { get; } = new();
+    public System.Collections.Generic.List<IMonoWaveProcessable> WaveProcessors { get; } = [];
 
-    public IWaveStereo<double> ProcessStereoWave(IWaveStereo<double> stereo)
+    public Waves.IWaveStereo<double> ProcessStereoWave(Waves.IWaveStereo<double> stereo)
     {
       var left = 0d;
       var right = 0d;
@@ -58,7 +58,7 @@ namespace Flux.Dsp.AudioProcessor.Adapter
       left /= WaveProcessors.Count;
       right /= WaveProcessors.Count;
 
-      return new WaveStereo<double>(stereo.SampleLeft * m_dryMix + left * m_wetMix, stereo.SampleRight * m_dryMix + right * m_wetMix);
+      return new Waves.WaveStereo<double>(stereo.SampleLeft * m_dryMix + left * m_wetMix, stereo.SampleRight * m_dryMix + right * m_wetMix);
     }
   }
 }

@@ -1,15 +1,9 @@
 namespace Flux.Quantities
 {
-  public enum ForceUnit
-  {
-    /// <summary>This is the default unit for <see cref="Force"/>.</summary>
-    Newton,
-    KilogramForce,
-    PoundForce,
-  }
-
-  /// <summary>Force, unit of newton. This is an SI derived quantity.</summary>
-  /// <see href="https://en.wikipedia.org/wiki/Force"/>
+  /// <summary>
+  /// <para>Force, unit of newton. This is an SI derived quantity.</para>
+  /// <para><see href="https://en.wikipedia.org/wiki/Force"/></para>
+  /// </summary>
   public readonly record struct Force
     : System.IComparable, System.IComparable<Force>, System.IFormattable, ISiUnitValueQuantifiable<double, ForceUnit>
   {

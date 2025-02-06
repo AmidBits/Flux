@@ -1,4 +1,4 @@
-namespace Flux.Dsp
+namespace Flux.Dsp.WaveFilter
 {
   public interface IMonoWaveFilterable
   {
@@ -7,7 +7,7 @@ namespace Flux.Dsp
     /// <returns>The filtered audio sample in the [-1.0, 1.0] range.</returns>
     double FilterMonoWave(double sample);
 
-    IWaveMono<double> FilterMonoWave(IWaveMono<double> sample);
+    Waves.IWaveMono<double> FilterMonoWave(Waves.IWaveMono<double> sample);
   }
 }
 

@@ -1,13 +1,5 @@
 namespace Flux.Quantities
 {
-  [System.ComponentModel.DefaultValue(Ampere)]
-  public enum ElectricCurrentUnit
-  {
-    /// <summary>This is the default unit for <see cref="ElectricCurrent"/>.</summary>
-    Ampere,
-    Milliampere,
-  }
-
   /// <summary>
   /// <para>Electric current. SI unit of ampere. This is a base quantity.</para>
   /// <para><see href="https://en.wikipedia.org/wiki/Electric_current"/></para>

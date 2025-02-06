@@ -1,14 +1,9 @@
 namespace Flux.Quantities
 {
-  public enum SolidAngleUnit
-  {
-    /// <summary>This is the default unit for <see cref="SolidAngle"/>.</summary>
-    Steradian,
-    Spat,
-  }
-
-  /// <summary>Solid angle. Unit of steradian.</summary>
-  /// <see href="https://en.wikipedia.org/wiki/Solid_angle"/>
+  /// <summary>
+  /// <para>Solid angle, unit of steradian.</para>
+  /// <para><see href="https://en.wikipedia.org/wiki/Solid_angle"/></para>
+  /// </summary>
   public readonly record struct SolidAngle
     : System.IComparable, System.IComparable<SolidAngle>, System.IFormattable, ISiUnitValueQuantifiable<double, SolidAngleUnit>
   {

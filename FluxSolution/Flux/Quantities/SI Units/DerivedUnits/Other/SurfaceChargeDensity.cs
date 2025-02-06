@@ -1,14 +1,8 @@
 namespace Flux.Quantities
 {
-  public enum SurfaceChargeDensityUnit
-  {
-    /// <summary>This is the default unit for <see cref="SurfaceChargeDensity"/>.</summary>
-    CoulombPerSquareMeter,
-  }
-
   /// <summary>
   /// <para>Area mass density, unit of kilograms per square meter.</para>
-  /// <see href="https://en.wikipedia.org/wiki/Charge_density"/>
+  /// <para><see href="https://en.wikipedia.org/wiki/Charge_density"/></para>
   /// </summary>
   /// <remarks>Dimensional relationship: <see cref="LinearChargeDensity"/>, <see cref="SurfaceChargeDensity"/> and <see cref="ElectricChargeDensity"/>.</remarks>
   public readonly record struct SurfaceChargeDensity
@@ -58,9 +52,9 @@ namespace Flux.Quantities
 
     #region ISiUnitValueQuantifiable<>
 
-    public string GetSiUnitName(MetricPrefix prefix, bool preferPlural) => prefix.GetMetricPrefixName() + GetUnitName(SurfaceChargeDensityUnit.CoulombPerSquareMeter, preferPlural);
+    public static string GetSiUnitName(MetricPrefix prefix, bool preferPlural) => prefix.GetMetricPrefixName() + GetUnitName(SurfaceChargeDensityUnit.CoulombPerSquareMeter, preferPlural);
 
-    public string GetSiUnitSymbol(MetricPrefix prefix, bool preferUnicode) => prefix.GetMetricPrefixSymbol(preferUnicode) + GetUnitSymbol(SurfaceChargeDensityUnit.CoulombPerSquareMeter, preferUnicode);
+    public static string GetSiUnitSymbol(MetricPrefix prefix, bool preferUnicode) => prefix.GetMetricPrefixSymbol(preferUnicode) + GetUnitSymbol(SurfaceChargeDensityUnit.CoulombPerSquareMeter, preferUnicode);
 
     public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertTo(m_value, prefix);
 

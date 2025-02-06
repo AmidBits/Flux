@@ -1,7 +1,7 @@
 namespace Flux.Dsp.WaveFilter
 {
   public record class TripleEq
-    : IMonoWaveFilterable, IMonoWaveProcessable
+    : IMonoWaveFilterable, WaveProcessor.IMonoWaveProcessable
   {
     private const double vsa = (1.0 / uint.MaxValue); // Very small amount (Denormal Fix)
 
@@ -84,8 +84,8 @@ namespace Flux.Dsp.WaveFilter
       return low + mid + high;
     }
 
-    public IWaveMono<double> FilterMonoWave(IWaveMono<double> mono) => (WaveMono<double>)FilterMonoWave(mono.Wave);
+    public Waves.IWaveMono<double> FilterMonoWave(Waves.IWaveMono<double> mono) => (Waves.WaveMono<double>)FilterMonoWave(mono.Wave);
 
-    public IWaveMono<double> ProcessMonoWave(IWaveMono<double> mono) => FilterMonoWave(mono);
+    public Waves.IWaveMono<double> ProcessMonoWave(Waves.IWaveMono<double> mono) => FilterMonoWave(mono);
   }
 }
