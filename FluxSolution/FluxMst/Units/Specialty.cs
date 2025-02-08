@@ -8,7 +8,7 @@ namespace Units
     [TestMethod]
     public void Rate()
     {
-      var u = new Flux.Quantities.Rate<Flux.Quantities.Length, Flux.Quantities.Time>(new Flux.Quantities.Length(1), new Flux.Quantities.Time(1));
+      var u = new Flux.Units.Rate<Flux.Units.Length, Flux.Units.Time>(new Flux.Units.Length(1), new Flux.Units.Time(1));
 
       Assert.AreEqual(1, u.Ratio);
     }
@@ -16,7 +16,7 @@ namespace Units
     [TestMethod]
     public void Ratio()
     {
-      var u = new Flux.Quantities.Ratio(1, 1);
+      var u = new Flux.Units.Ratio(1, 1);
 
       Assert.AreEqual(1, u.Value);
     }

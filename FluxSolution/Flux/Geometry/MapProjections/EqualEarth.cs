@@ -61,11 +61,11 @@
 
       return new(
         lat,
-        Quantities.AngleUnit.Radian,
+        Units.AngleUnit.Radian,
         lon,
-        Quantities.AngleUnit.Radian,
+        Units.AngleUnit.Radian,
         location.Z,
-        Quantities.LengthUnit.Meter
+        Units.LengthUnit.Meter
       );
     }
   }

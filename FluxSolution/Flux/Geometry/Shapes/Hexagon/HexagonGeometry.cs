@@ -28,7 +28,7 @@ namespace Flux.Geometry.Shapes.Hexagon
     /// <summary>
     /// <para>The perimeter of the hexagon.</para>
     /// </summary>
-    public double Perimeter => Quantities.Length.PerimeterOfHexagon(m_sideLength);
+    public double Perimeter => Units.Length.PerimeterOfHexagon(m_sideLength);
 
     /// <summary>
     /// <para>The side-length of the hexagon, which is equal to the circumradius.</para>
@@ -39,7 +39,7 @@ namespace Flux.Geometry.Shapes.Hexagon
     /// <para>The surface area of the hexagon.</para>
     /// </summary>
     /// <param name="length">Length of the side (or outer radius, i.e. half outer diameter).</param>
-    public double SurfaceArea => Quantities.Area.OfHexagon(m_sideLength);
+    public double SurfaceArea => Units.Area.OfHexagon(m_sideLength);
 
     /// <summary>
     /// <para>Verify whether the point (<paramref name="x"/>, <paramref name="y"/>) is inside the hexagon, assuming (0, 0) is the center of the hexagon.</para>

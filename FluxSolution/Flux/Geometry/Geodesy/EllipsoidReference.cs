@@ -1,4 +1,4 @@
-namespace Flux
+namespace Flux.Geometry.Geodesy
 {
   /// <summary>
   /// <para>An ellipsoid reference, which is an object yielding Earth related information in terms of an ellipsoid from specific reference values.</para>
@@ -43,7 +43,7 @@ namespace Flux
     public double Flattening => 1 / m_inverseFlattening;
 
     /// <summary>The polar circumference equals Cp=4mp, i.e. four times the quarter meridian.</summary>
-    public double PolarCircumference => Quantities.Length.PerimeterOfEllipse(m_semiMajorAxis, m_semiMinorAxis);
+    public double PolarCircumference => Units.Length.PerimeterOfEllipse(m_semiMajorAxis, m_semiMinorAxis);
 
     /// <summary>Diameter of Earth's semi-minor axis.</summary>
     public double PolarDiameter => 2 * m_semiMinorAxis;

@@ -9,7 +9,7 @@ namespace Flux
     {
       var list = value.GetDigitsReversed(radix); // Already asserts radix.
 
-      var rdx = TNumber.CreateChecked(Quantities.Radix.AssertMember(radix));
+      var rdx = TNumber.CreateChecked(Units.Radix.AssertWithin(radix));
 
       var power = TNumber.One;
 

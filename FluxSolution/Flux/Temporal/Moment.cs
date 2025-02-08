@@ -149,7 +149,7 @@ namespace Flux
       /// <summary>Creates a new <see cref="JulianDayNumber"/> from this instance. Uses the default conversion calendar.</summary>
       public JulianDayNumber ToJulianDayNumber() => ToJulianDayNumber(GetConversionCalendar());
 
-      public Quantities.Time ToTime() => new(ConvertTimePartsToTotalSeconds(m_day, m_hour, m_minute, m_second, m_millisecond, m_microsecond, m_nanosecond));
+      public Units.Time ToTime() => new(ConvertTimePartsToTotalSeconds(m_day, m_hour, m_minute, m_second, m_millisecond, m_microsecond, m_nanosecond));
 
       /// <summary>Creates a new <see cref="System.TimeOnly"/> from the time components in this instance.</summary>
       public System.TimeOnly ToTimeOnly() => new(m_hour, m_minute, m_second, m_millisecond, m_microsecond);

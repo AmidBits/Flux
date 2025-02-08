@@ -23,7 +23,7 @@
     {
       checked
       {
-        log = TNumber.IsZero(number) ? 0.0 : double.Log(double.CreateChecked(TNumber.Abs(number)), double.CreateChecked(Quantities.Radix.AssertMember(radix)));
+        log = TNumber.IsZero(number) ? 0.0 : double.Log(double.CreateChecked(TNumber.Abs(number)), double.CreateChecked(Units.Radix.AssertWithin(radix)));
 
         // I am not sure why I was checking for negative since the code above is for absolute-number and asserted-radix...
         return /*double.IsNegative(log) ? TNumber.CreateChecked(log.RoundUniversal(mode)) :*/ (log < 1.0) ? TNumber.Zero : TNumber.CopySign(TNumber.CreateChecked(log.RoundUniversal(mode)), number);

@@ -19,11 +19,11 @@
     public Coordinates.GeographicCoordinate ProjectReverse(System.Numerics.Vector3 project)
       => new(
         project.X / (project.Z * System.Math.Cos(StandardParallels)) + CenterOfMap.Longitude.Value,
-        Quantities.AngleUnit.Radian,
+        Units.AngleUnit.Radian,
         project.Y / project.Z + CenterOfMap.Latitude.Value,
-        Quantities.AngleUnit.Radian,
+        Units.AngleUnit.Radian,
         project.Z,
-        Quantities.LengthUnit.Meter
+        Units.LengthUnit.Meter
       );
   }
 

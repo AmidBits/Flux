@@ -2,18 +2,18 @@ namespace Flux
 {
   public static partial class Fx
   {
-    public static Quantities.OrbitalEccentricityClass GetOrbitalEccentricityClass(this Quantities.OrbitalEccentricity source)
+    public static Units.OrbitalEccentricityClass GetOrbitalEccentricityClass(this Units.OrbitalEccentricity source)
       => source.Value switch
       {
-        0 => Quantities.OrbitalEccentricityClass.CircularOrbit,
-        > 0 and < 1 => Quantities.OrbitalEccentricityClass.EllipticOrbit,
-        1 => Quantities.OrbitalEccentricityClass.ParabolicTrajectory,
-        > 1 => Quantities.OrbitalEccentricityClass.HyperbolicTrajectory,
+        0 => Units.OrbitalEccentricityClass.CircularOrbit,
+        > 0 and < 1 => Units.OrbitalEccentricityClass.EllipticOrbit,
+        1 => Units.OrbitalEccentricityClass.ParabolicTrajectory,
+        > 1 => Units.OrbitalEccentricityClass.HyperbolicTrajectory,
         _ => throw new System.ArgumentOutOfRangeException(nameof(source)),
       };
   }
 
-  namespace Quantities
+  namespace Units
   {
     public enum OrbitalEccentricityClass
     {

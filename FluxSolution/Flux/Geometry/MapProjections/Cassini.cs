@@ -16,11 +16,11 @@
     public Coordinates.GeographicCoordinate ProjectReverse(System.Numerics.Vector3 project)
       => new(
         double.Asin(double.Sin(project.Y) * double.Cos(project.X)),
-        Quantities.AngleUnit.Radian,
+        Units.AngleUnit.Radian,
         double.Atan2(double.Tan(project.X), double.Cos(project.Y)),
-        Quantities.AngleUnit.Radian,
+        Units.AngleUnit.Radian,
         project.Z,
-        Quantities.LengthUnit.Meter
+        Units.LengthUnit.Meter
       );
   }
 }

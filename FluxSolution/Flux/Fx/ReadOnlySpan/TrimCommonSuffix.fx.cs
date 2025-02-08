@@ -15,7 +15,7 @@ namespace Flux
     {
       var length = source.CommonSuffixLength(offset, predicate, maxTrimLength);
 
-      return source[^length..];
+      return source[..^length];
     }
 
     /// <summary>
@@ -32,7 +32,7 @@ namespace Flux
     {
       var length = source.CommonSuffixLength(offset, value, equalityComparer, maxTrimLength);
 
-      return source[^length..];
+      return source[..^length];
     }
 
     /// <summary>
@@ -49,7 +49,7 @@ namespace Flux
     {
       var length = source.CommonSuffixLength(offset, value, equalityComparer, maxTrimLength);
 
-      return source[^length..];
+      return source[..^length];
     }
   }
 }

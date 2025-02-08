@@ -15,7 +15,7 @@ namespace Flux
 
       try
       {
-        var powOfRadix = TNumber.CreateChecked(Quantities.Radix.AssertMember(radix));
+        var powOfRadix = TNumber.CreateChecked(Units.Radix.AssertWithin(radix));
 
         while (powOfRadix < number)
           powOfRadix = TNumber.CreateChecked(powOfRadix * powOfRadix);

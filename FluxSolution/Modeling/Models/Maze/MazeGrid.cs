@@ -34,18 +34,18 @@ namespace Flux.Model.Maze
 
           if (orthogonal)
           {
-            if (n) cell.Edges.Add((int)CompassCardinalDirection.N, this[y - 1, x]);
-            if (e) cell.Edges.Add((int)CompassCardinalDirection.E, this[y, x + 1]);
-            if (s) cell.Edges.Add((int)CompassCardinalDirection.S, this[y + 1, x]);
-            if (w) cell.Edges.Add((int)CompassCardinalDirection.W, this[y, x - 1]);
+            if (n) cell.Edges.Add((int)Geometry.Geodesy.CompassCardinalDirection.N, this[y - 1, x]);
+            if (e) cell.Edges.Add((int)Geometry.Geodesy.CompassCardinalDirection.E, this[y, x + 1]);
+            if (s) cell.Edges.Add((int)Geometry.Geodesy.CompassCardinalDirection.S, this[y + 1, x]);
+            if (w) cell.Edges.Add((int)Geometry.Geodesy.CompassCardinalDirection.W, this[y, x - 1]);
           }
 
           if (diagonal)
           {
-            if (n && e) cell.Edges.Add((int)CompassInterCardinalDirection.NE, this[y - 1, x + 1]);
-            if (s && e) cell.Edges.Add((int)CompassInterCardinalDirection.SE, this[y + 1, x + 1]);
-            if (s && w) cell.Edges.Add((int)CompassInterCardinalDirection.SW, this[y + 1, x - 1]);
-            if (n && w) cell.Edges.Add((int)CompassInterCardinalDirection.NW, this[y - 1, x - 1]);
+            if (n && e) cell.Edges.Add((int)Geometry.Geodesy.CompassInterCardinalDirection.NE, this[y - 1, x + 1]);
+            if (s && e) cell.Edges.Add((int)Geometry.Geodesy.CompassInterCardinalDirection.SE, this[y + 1, x + 1]);
+            if (s && w) cell.Edges.Add((int)Geometry.Geodesy.CompassInterCardinalDirection.SW, this[y + 1, x - 1]);
+            if (n && w) cell.Edges.Add((int)Geometry.Geodesy.CompassInterCardinalDirection.NW, this[y - 1, x - 1]);
           }
         }
       }

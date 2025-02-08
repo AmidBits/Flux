@@ -19,7 +19,7 @@ namespace Flux.Mechanics
     /// <param name="initialHeight"></param>
     /// <param name="gravitationalAcceleration"></param>
     /// <returns></returns>
-    public static double AngleOfImpact(double initialAngle, double initialVelocity, double initialHeight = 0, double gravitationalAcceleration = Flux.Quantities.Acceleration.StandardGravity)
+    public static double AngleOfImpact(double initialAngle, double initialVelocity, double initialHeight = 0, double gravitationalAcceleration = Flux.Units.Acceleration.StandardGravity)
     {
       var sin = double.Sin(initialAngle);
 
@@ -48,7 +48,7 @@ namespace Flux.Mechanics
     /// <param name="initialVelocity"></param>
     /// <param name="gravitationalAcceleration"></param>
     /// <returns></returns>
-    public static (double angleOfShallowTrajectory, double angleOfSteepTrajectory) AngleOfReach(double targetX, double targetY, double initialVelocity, double gravitationalAcceleration = Flux.Quantities.Acceleration.StandardGravity)
+    public static (double angleOfShallowTrajectory, double angleOfSteepTrajectory) AngleOfReach(double targetX, double targetY, double initialVelocity, double gravitationalAcceleration = Flux.Units.Acceleration.StandardGravity)
     {
       if (targetY == 0)
       {
@@ -104,7 +104,7 @@ namespace Flux.Mechanics
     /// <param name="initialVelocity"></param>
     /// <param name="gravitationalAcceleration"></param>
     /// <returns></returns>
-    public static double DisplacementVertical(double time, double initialAngle, double initialVelocity, double gravitationalAcceleration = Flux.Quantities.Acceleration.StandardGravity)
+    public static double DisplacementVertical(double time, double initialAngle, double initialVelocity, double gravitationalAcceleration = Flux.Units.Acceleration.StandardGravity)
       => initialVelocity * time * double.Sin(initialAngle) - 0.5 * gravitationalAcceleration * time * time;
 
     /// <summary>
@@ -115,7 +115,7 @@ namespace Flux.Mechanics
     /// <param name="initialVelocity"></param>
     /// <param name="gravitationalAcceleration"></param>
     /// <returns></returns>
-    public static double LengthOfParabolicArc(double initialAngle, double initialVelocity, double gravitationalAcceleration = Flux.Quantities.Acceleration.StandardGravity)
+    public static double LengthOfParabolicArc(double initialAngle, double initialVelocity, double gravitationalAcceleration = Flux.Units.Acceleration.StandardGravity)
     {
       var sin = double.Sin(initialAngle);
       var cos = double.Cos(initialAngle);
@@ -135,7 +135,7 @@ namespace Flux.Mechanics
     /// <param name="gravitationalAcceleration"></param>
     /// <param name="earthRadius"></param>
     /// <returns></returns>
-    public static double PlanetaryTrajectoryHeight(double initialAngle, double initialVelocity, double gravitationalAcceleration = Quantities.Acceleration.StandardGravity, double earthRadius = EllipsoidReference.EarthMeanRadius)
+    public static double PlanetaryTrajectoryHeight(double initialAngle, double initialVelocity, double gravitationalAcceleration = Units.Acceleration.StandardGravity, double earthRadius = Geometry.Geodesy.EllipsoidReference.EarthMeanRadius)
     {
       var (sin, cos) = double.SinCos(initialAngle);
 
@@ -155,7 +155,7 @@ namespace Flux.Mechanics
     /// <param name="gravitationalAcceleration"></param>
     /// <param name="earthRadius"></param>
     /// <returns></returns>
-    public static double PlanetaryTrajectoryRange(double initialAngle, double initialVelocity, double gravitationalAcceleration = Quantities.Acceleration.StandardGravity, double earthRadius = EllipsoidReference.EarthMeanRadius)
+    public static double PlanetaryTrajectoryRange(double initialAngle, double initialVelocity, double gravitationalAcceleration = Units.Acceleration.StandardGravity, double earthRadius = Geometry.Geodesy.EllipsoidReference.EarthMeanRadius)
     {
       var sin = double.Sin(initialAngle);
 
@@ -175,7 +175,7 @@ namespace Flux.Mechanics
     /// <param name="gravitationalAcceleration"></param>
     /// <param name="earthRadius"></param>
     /// <returns></returns>
-    public static double PlanetaryTrajectoryTime(double initialAngle, double initialVelocity, double gravitationalAcceleration = Quantities.Acceleration.StandardGravity, double earthRadius = EllipsoidReference.EarthMeanRadius)
+    public static double PlanetaryTrajectoryTime(double initialAngle, double initialVelocity, double gravitationalAcceleration = Units.Acceleration.StandardGravity, double earthRadius = Geometry.Geodesy.EllipsoidReference.EarthMeanRadius)
     {
       var (sin, cos) = double.SinCos(initialAngle);
 
@@ -203,7 +203,7 @@ namespace Flux.Mechanics
     /// <param name="initialVelocity"></param>
     /// <param name="gravitationalAcceleration"></param>
     /// <returns></returns>
-    public static double TrajectoryHeight(double initialAngle, double initialVelocity, double initialHeight = 0, double gravitationalAcceleration = Quantities.Acceleration.StandardGravity)
+    public static double TrajectoryHeight(double initialAngle, double initialVelocity, double initialHeight = 0, double gravitationalAcceleration = Units.Acceleration.StandardGravity)
     {
       var sin = double.Sin(initialAngle);
 
@@ -221,7 +221,7 @@ namespace Flux.Mechanics
     /// <param name="initialVelocity"></param>
     /// <param name="gravitationalAcceleration"></param>
     /// <returns></returns>
-    public static double TrajectoryRange(double initialAngle, double initialVelocity, double initialHeight = 0, double gravitationalAcceleration = Quantities.Acceleration.StandardGravity)
+    public static double TrajectoryRange(double initialAngle, double initialVelocity, double initialHeight = 0, double gravitationalAcceleration = Units.Acceleration.StandardGravity)
     {
       var v0sin = initialVelocity * double.Sin(initialAngle);
 
@@ -236,7 +236,7 @@ namespace Flux.Mechanics
     /// <param name="initialVelocity"></param>
     /// <param name="gravitationalAcceleration"></param>
     /// <returns></returns>
-    public static double TrajectoryTime(double initialAngle, double initialVelocity, double initialHeight = 0, double gravitationalAcceleration = Quantities.Acceleration.StandardGravity)
+    public static double TrajectoryTime(double initialAngle, double initialVelocity, double initialHeight = 0, double gravitationalAcceleration = Units.Acceleration.StandardGravity)
     {
       var v0sin = initialVelocity * double.Sin(initialAngle);
 

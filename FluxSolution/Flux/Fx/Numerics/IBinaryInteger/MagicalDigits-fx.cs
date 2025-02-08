@@ -7,9 +7,9 @@ namespace Flux
     /// </summary>
     public static (TNumber DigitCount, TNumber DigitSum, bool IsJumbled, bool IsPowOf, TNumber NumberReversed, System.Collections.Generic.List<TNumber> PlaceValues, System.Collections.Generic.List<TNumber> ReverseDigits) MagicalDigits<TNumber, TRadix>(this TNumber value, TRadix radix)
       where TNumber : System.Numerics.IBinaryInteger<TNumber>
-      where TRadix : System.Numerics.INumber<TRadix>
+      where TRadix : System.Numerics.IBinaryInteger<TRadix>
     {
-      var rdx = TNumber.CreateChecked(Quantities.Radix.AssertMember(radix));
+      var rdx = TNumber.CreateChecked(Units.Radix.AssertWithin(radix));
 
       var count = TNumber.Zero;
       var isJumbled = true;

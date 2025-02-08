@@ -3,7 +3,7 @@ namespace Flux.Geometry.Coordinates
   /// <summary>Represents a geographic position, using latitude, longitude and altitude.</summary>
   /// <seealso cref="http://www.edwilliams.org/avform.htm"/>
   /// <seealso cref="http://www.movable-type.co.uk/scripts/latlong.html"/>
-  /// <remarks>Abbreviated angles are in radians, and full names are in degrees.</remarks>
+  /// <remarks>Abbreviated angles (e.g. lat and lon) are in radians, and full names (e.g. latitude and longitude) are in degrees.</remarks>
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
   public readonly record struct GeographicCoordinate
     : System.IFormattable
@@ -13,22 +13,22 @@ namespace Flux.Geometry.Coordinates
 
     public static GeographicCoordinate Empty { get; }
 
-    public static GeographicCoordinate GreenwichMeridian { get; } = new(51.477811, Quantities.AngleUnit.Degree, -0.001475, Quantities.AngleUnit.Degree);
+    public static GeographicCoordinate GreenwichMeridian { get; } = new(51.477811, Units.AngleUnit.Degree, -0.001475, Units.AngleUnit.Degree);
 
     private readonly Geodesy.Latitude m_latitude;
 
     private readonly Geodesy.Longitude m_longitude;
 
-    private readonly Quantities.Length m_altitude;
+    private readonly Units.Length m_altitude;
 
     /// <summary>
     /// <para>Create a new <see cref="GeographicCoordinate"/> from the specified <paramref name="latitude"/>, <paramref name="longitude"/> and <paramref name="altitude"/>.</para>
     /// </summary>
-    /// <param name="latitude">The <see cref="Quantities.Angle"/> of the latitude.</param>
-    /// <param name="longitude">The <see cref="Quantities.Angle"/> of the longitude.</param>
-    /// <param name="altitude">The <see cref="Quantities.Length"/> of the altitude.</param>
+    /// <param name="latitude">The <see cref="Units.Angle"/> of the latitude.</param>
+    /// <param name="longitude">The <see cref="Units.Angle"/> of the longitude.</param>
+    /// <param name="altitude">The <see cref="Units.Length"/> of the altitude.</param>
     /// <exception cref="System.ArgumentOutOfRangeException"></exception>
-    public GeographicCoordinate(Quantities.Angle latitude, Quantities.Angle longitude, Quantities.Length altitude)
+    public GeographicCoordinate(Units.Angle latitude, Units.Angle longitude, Units.Length altitude)
     {
       m_latitude = new(latitude);
       m_longitude = new(longitude);
@@ -39,14 +39,14 @@ namespace Flux.Geometry.Coordinates
     /// <para>Create a new <see cref="GeographicCoordinate"/> from the specified <paramref name="latitudeValue"/>, <paramref name="latitudeUnit"/>, <paramref name="longitudeValue"/>, <paramref name="longitudeUnit"/>, <paramref name="altitudeValue"/> and <paramref name="altitudeUnit"/>.</para>
     /// </summary>
     /// <param name="latitudeValue">The angle of the latitude.</param>
-    /// <param name="latitudeUnit">The <see cref="Quantities.AngleUnit"/> of the latitude.</param>
+    /// <param name="latitudeUnit">The <see cref="Units.AngleUnit"/> of the latitude.</param>
     /// <param name="longitudeValue">The angle of the longitude.</param>
-    /// <param name="latitudeUnit">The <see cref="Quantities.AngleUnit"/> of the longitude.</param>
+    /// <param name="latitudeUnit">The <see cref="Units.AngleUnit"/> of the longitude.</param>
     /// <param name="altitudeValue">The length of the altitude.</param>
-    /// <param name="altitudeUnit">The <see cref="Quantities.Length"/> of the altitude.</param>
+    /// <param name="altitudeUnit">The <see cref="Units.Length"/> of the altitude.</param>
     /// <exception cref="System.ArgumentOutOfRangeException"></exception>
-    public GeographicCoordinate(double latitudeValue, Quantities.AngleUnit latitudeUnit, double longitudeValue, Quantities.AngleUnit longitudeUnit, double altitudeValue = 1, Quantities.LengthUnit altitudeUnit = Quantities.LengthUnit.Meter)
-      : this(new Quantities.Angle(latitudeValue, latitudeUnit), new Quantities.Angle(longitudeValue, longitudeUnit), new Quantities.Length(altitudeValue, altitudeUnit))
+    public GeographicCoordinate(double latitudeValue, Units.AngleUnit latitudeUnit, double longitudeValue, Units.AngleUnit longitudeUnit, double altitudeValue = 1, Units.LengthUnit altitudeUnit = Units.LengthUnit.Meter)
+      : this(new Units.Angle(latitudeValue, latitudeUnit), new Units.Angle(longitudeValue, longitudeUnit), new Units.Length(altitudeValue, altitudeUnit))
     { }
 
     /// <summary>
@@ -63,7 +63,7 @@ namespace Flux.Geometry.Coordinates
     }
 
     /// <summary>The height (a.k.a. altitude) of the geographic position in meters.</summary>
-    public Quantities.Length Altitude => m_altitude;
+    public Units.Length Altitude => m_altitude;
 
     /// <summary>The diametrical opposite of the <see cref="GeographicCoordinate"/>, i.e. the opposite side of Earth's surface. This is a plain mathematical antipode.</summary>
     public GeographicCoordinate Antipode
@@ -86,9 +86,9 @@ namespace Flux.Geometry.Coordinates
       var (lat, lon, alt) = this;
 
       return new(
-        alt, Quantities.LengthUnit.Meter,
-        lat + (double.Pi / 2), Quantities.AngleUnit.Radian,
-        lon, Quantities.AngleUnit.Radian
+        alt, Units.LengthUnit.Meter,
+        lat + (double.Pi / 2), Units.AngleUnit.Radian,
+        lon, Units.AngleUnit.Radian
       );
     }
 
@@ -119,7 +119,7 @@ namespace Flux.Geometry.Coordinates
     }
 
     /// <summary>Returns a bounding box for the specified lat/lon (both in radians) and box radius.</summary>
-    public static bool GetBoundingBox(double lat, double lon, double metersBoxRadius, out double latMin, out double lonMin, out double latMax, out double lonMax, EllipsoidReference ellipsoidReference)
+    public static bool GetBoundingBox(double lat, double lon, double metersBoxRadius, out double latMin, out double lonMin, out double latMax, out double lonMax, Geometry.Geodesy.EllipsoidReference ellipsoidReference)
     {
       metersBoxRadius = System.Math.Max(metersBoxRadius, 1);
 
@@ -166,7 +166,7 @@ namespace Flux.Geometry.Coordinates
     /// <para>Central angles are subtended by an arc between those two points, and the arc length is the central angle of a circle of radius one (measured in radians). The central angle is also known as the arc's angular distance.</para>
     /// </remarks>
     public static double GetCentralAngleHaversineFormula(double lat1, double lon1, double lat2, double lon2)
-      => Quantities.Angle.Ahvsin(Quantities.Angle.Hvsin(lat2 - lat1) + System.Math.Cos(lat1) * System.Math.Cos(lat2) * Quantities.Angle.Hvsin(lon2 - lon1));
+      => Units.Angle.Ahvsin(Units.Angle.Hvsin(lat2 - lat1) + System.Math.Cos(lat1) * System.Math.Cos(lat2) * Units.Angle.Hvsin(lon2 - lon1));
 
     /// <summary>
     /// <para>The shortest distance between two points on the surface of a sphere, measured along the surface of the sphere (as opposed to a straight line through the sphere's interior). Multiply by unit radius, e.g. 6371 km or 3959 mi.</para>
@@ -431,11 +431,15 @@ namespace Flux.Geometry.Coordinates
     /// <summary>Try parsing the specified latitude and longitude into a Geoposition.</summary>
     public static bool TryParse(string latitudeDms, string longitudeDms, out GeographicCoordinate result, double earthRadius)
     {
-      if (Quantities.Angle.TryParseDms(latitudeDms, out var latitudeAngle) && Quantities.Angle.TryParseDms(longitudeDms, out var longitudeAngle))
+      try
       {
-        result = new GeographicCoordinate(latitudeAngle.Value, Quantities.AngleUnit.Radian, longitudeAngle.Value, Quantities.AngleUnit.Radian, earthRadius);
-        return true;
+        if (Units.Angle.TryParseDmsNotations(latitudeDms, out var latitudes) && latitudes.Single(e => e is Flux.Geometry.Geodesy.Latitude) is var latitudeAngle && Units.Angle.TryParseDmsNotations(longitudeDms, out var longitudes) && longitudes.Single(e => e is Flux.Geometry.Geodesy.Longitude) is var longitudeAngle)
+        {
+          result = new GeographicCoordinate(latitudeAngle.Value, Units.AngleUnit.Radian, longitudeAngle.Value, Units.AngleUnit.Radian, earthRadius);
+          return true;
+        }
       }
+      catch { }
 
       result = default;
       return false;
@@ -446,7 +450,7 @@ namespace Flux.Geometry.Coordinates
     #region Implemented interfaces
 
     public string ToString(string? format, System.IFormatProvider? formatProvider)
-      => $"<{m_latitude.ToSexagesimalDegreeString()} {m_longitude.ToSexagesimalDegreeString()} ({m_latitude.ToDecimalString()}, {m_longitude.ToDecimalString()}), {m_altitude.ToString(format ?? 3.FormatUpToFractionalDigits(), formatProvider)}>";
+      => $"<{m_latitude.ToDmsNotationString()} {m_longitude.ToDmsNotationString()} ({m_latitude.ToDecimalString()}, {m_longitude.ToDecimalString()}), {m_altitude.ToString(format ?? 3.FormatUpToFractionalDigits(), formatProvider)}>";
 
     #endregion Implemented interfaces
 

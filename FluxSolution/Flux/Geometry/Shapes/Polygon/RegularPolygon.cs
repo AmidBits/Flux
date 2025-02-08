@@ -15,9 +15,9 @@ namespace Flux.Geometry.Shapes.Polygon
 
     public override bool IsConvex => true;
 
-    public override double Perimeter => Quantities.Length.PerimeterOfRegularPolygon(Circumradius, m_vertices.Count);
+    public override double Perimeter => Units.Length.PerimeterOfRegularPolygon(Circumradius, m_vertices.Count);
 
-    public override double SurfaceArea => Quantities.Area.OfRegularPolygon(Circumradius, m_vertices.Count);
+    public override double SurfaceArea => Units.Area.OfRegularPolygon(Circumradius, m_vertices.Count);
 
     #region Static methods
 

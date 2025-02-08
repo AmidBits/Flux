@@ -16,7 +16,7 @@ namespace Flux.Geometry.Shapes.Circle
     /// <summary>
     /// <para>The circumference (perimeter) of the circle.</para>
     /// </summary>
-    public double Circumference => Quantities.Length.PerimeterOfCircle(m_radius);
+    public double Circumference => Units.Length.PerimeterOfCircle(m_radius);
 
     /// <summary>
     /// <para>The radius of the circle.</para>
@@ -24,7 +24,7 @@ namespace Flux.Geometry.Shapes.Circle
     public double Radius => m_radius;
 
     /// <summary>The surface area of circle.</summary>
-    public double SurfaceArea => Quantities.Area.OfCircle(m_radius);
+    public double SurfaceArea => Units.Area.OfCircle(m_radius);
 
     /// <summary>Returns whether a point is inside the circle.</summary>
     public bool Contains(double x, double y) => PointInCircle(m_radius, x, y);

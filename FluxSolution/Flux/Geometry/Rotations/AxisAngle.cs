@@ -1,111 +1,47 @@
-namespace Flux
+namespace Flux.Geometry.Rotations
 {
-  #region ExtensionMethods
-  public static partial class Fx
+  /// <summary>Axis-angle 3D rotation.</summary>
+  /// <remarks>All angles in radians.</remarks>
+  /// <see href="https://en.wikipedia.org/wiki/Axis-angle_representation"/>
+  [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
+  public readonly record struct AxisAngle
   {
-    public static Geometry.Rotations.EulerAngles ToEulerAngles(this Geometry.Rotations.AxisAngle source)
+    private readonly Units.Length m_x;
+    private readonly Units.Length m_y;
+    private readonly Units.Length m_z;
+    private readonly Units.Angle m_angle;
+
+    public AxisAngle(Units.Length x, Units.Length y, Units.Length z, Units.Angle angle)
     {
-      var (x, y, z, angle) = source;
+      var xd = x.Value;
+      var yd = y.Value;
+      var zd = z.Value;
 
-      var (s, c) = System.Math.SinCos(angle);
+      if (System.Math.Sqrt(xd * xd + yd * yd + zd * zd) is var magnitude && magnitude == 0)
+        throw new ArithmeticException("Invalid axis (magnitude = 0).");
 
-      var t = 1 - c;
+      m_x = x /= magnitude;
+      m_y = y /= magnitude;
+      m_z = z /= magnitude;
 
-      var test = x * y * t + z * s;
-
-      if (test > 0.998) // North pole singularity detected.
-      {
-        var (sa, ca) = System.Math.SinCos(angle / 2);
-
-        return new(
-          System.Math.Atan2(x * sa, ca) * 2, Quantities.AngleUnit.Radian,
-          System.Math.PI / 2, Quantities.AngleUnit.Radian,
-          0, Quantities.AngleUnit.Radian
-        );
-      }
-      else if (test < -0.998) // South pole singularity detected.
-      {
-        var (sa, ca) = System.Math.SinCos(angle / 2);
-
-        return new(
-          System.Math.Atan2(x * sa, ca) * -2, Quantities.AngleUnit.Radian,
-          -System.Math.PI / 2, Quantities.AngleUnit.Radian,
-          0, Quantities.AngleUnit.Radian
-        );
-      }
-      else
-        return new(
-          System.Math.Atan2(y * s - x * z * t, 1 - (y * y + z * z) * t), Quantities.AngleUnit.Radian,
-          System.Math.Asin(x * y * t + z * s), Quantities.AngleUnit.Radian,
-          System.Math.Atan2(x * s - y * z * t, 1 - (x * x + z * z) * t), Quantities.AngleUnit.Radian
-        );
+      m_angle = angle;
     }
 
-    public static (System.Numerics.Vector3 axis, Quantities.Angle angle) ToQuantities(this Geometry.Rotations.AxisAngle source)
-      => (
-        new System.Numerics.Vector3((float)source.X.Value, (float)source.Y.Value, (float)source.Z.Value),
-        source.Angle
-      );
+    public AxisAngle(double xValue, Units.LengthUnit xUnit, double yValue, Units.LengthUnit yUnit, double zValue, Units.LengthUnit zUnit, double angleValue, Units.AngleUnit angleUnit)
+      : this(new Units.Length(xValue, xUnit), new Units.Length(yValue, yUnit), new Units.Length(zValue, zUnit), new Units.Angle(angleValue, angleUnit)) { }
 
-    public static System.Numerics.Quaternion ToQuaternion(this Geometry.Rotations.AxisAngle source)
-    {
-      var (s, w) = System.Math.SinCos(source.Angle.Value / 2);
+    public void Deconstruct(out double x, out double y, out double z, out double angle) { x = m_x.Value; y = m_y.Value; z = m_z.Value; angle = m_angle.Value; }
 
-      var x = source.X.Value * s;
-      var y = source.Y.Value * s;
-      var z = source.Z.Value * s;
+    /// <summary>The x-axis vector component of the rotation.</summary>
+    public Units.Length X => m_x;
 
-      return new((float)x, (float)y, (float)z, (float)w);
-    }
-  }
+    /// <summary>The y-axis vector component of the rotation.</summary>
+    public Units.Length Y => m_y;
 
-  #endregion ExtensionMethods
+    /// <summary>The z-axis vector component of the rotation.</summary>
+    public Units.Length Z => m_z;
 
-  namespace Geometry.Rotations
-  {
-    /// <summary>Axis-angle 3D rotation.</summary>
-    /// <remarks>All angles in radians.</remarks>
-    /// <see href="https://en.wikipedia.org/wiki/Axis-angle_representation"/>
-    [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
-    public readonly record struct AxisAngle
-    {
-      private readonly Quantities.Length m_x;
-      private readonly Quantities.Length m_y;
-      private readonly Quantities.Length m_z;
-      private readonly Quantities.Angle m_angle;
-
-      public AxisAngle(Quantities.Length x, Quantities.Length y, Quantities.Length z, Quantities.Angle angle)
-      {
-        var xd = x.Value;
-        var yd = y.Value;
-        var zd = z.Value;
-
-        if (System.Math.Sqrt(xd * xd + yd * yd + zd * zd) is var magnitude && magnitude == 0)
-          throw new ArithmeticException("Invalid axis (magnitude = 0).");
-
-        m_x = x /= magnitude;
-        m_y = y /= magnitude;
-        m_z = z /= magnitude;
-
-        m_angle = angle;
-      }
-
-      public AxisAngle(double xValue, Quantities.LengthUnit xUnit, double yValue, Quantities.LengthUnit yUnit, double zValue, Quantities.LengthUnit zUnit, double angleValue, Quantities.AngleUnit angleUnit)
-        : this(new Quantities.Length(xValue, xUnit), new Quantities.Length(yValue, yUnit), new Quantities.Length(zValue, zUnit), new Quantities.Angle(angleValue, angleUnit)) { }
-
-      public void Deconstruct(out double x, out double y, out double z, out double angle) { x = m_x.Value; y = m_y.Value; z = m_z.Value; angle = m_angle.Value; }
-
-      /// <summary>The x-axis vector component of the rotation.</summary>
-      public Quantities.Length X => m_x;
-
-      /// <summary>The y-axis vector component of the rotation.</summary>
-      public Quantities.Length Y => m_y;
-
-      /// <summary>The z-axis vector component of the rotation.</summary>
-      public Quantities.Length Z => m_z;
-
-      /// <summary>The angle component of the rotation.</summary>
-      public Quantities.Angle Angle => m_angle;
-    }
+    /// <summary>The angle component of the rotation.</summary>
+    public Units.Angle Angle => m_angle;
   }
 }

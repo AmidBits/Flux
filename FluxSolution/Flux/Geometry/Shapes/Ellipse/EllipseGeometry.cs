@@ -26,10 +26,10 @@ namespace Flux.Geometry.Shapes.Ellipse
     public double B => m_b;
 
     /// <summary>Returns the approximate circumference of an ellipse based on the two semi-axis or radii a and b (the order of the arguments do not matter). Uses Ramanujans second approximation.</summary>
-    public double Perimeter => Quantities.Length.PerimeterOfEllipse(m_a, m_b);
+    public double Perimeter => Units.Length.PerimeterOfEllipse(m_a, m_b);
 
     /// <summary>Returns the area of an ellipse based on two semi-axes or radii a and b (the order of the arguments do not matter).</summary>
-    public double SurfaceArea => Quantities.Area.OfEllipse(m_a, m_b);
+    public double SurfaceArea => Units.Area.OfEllipse(m_a, m_b);
 
     /// <summary>Returns whether a point (<paramref name="x"/>, <paramref name="y"/>) is inside the optionally rotated (<paramref name="rotationAngle"/> in radians, the default 0 equals no rotation) ellipse.</summary>
     public bool Contains(double x, double y, double rotationAngle = 0) => PointInEllipse(m_a, m_b, x, y, rotationAngle);

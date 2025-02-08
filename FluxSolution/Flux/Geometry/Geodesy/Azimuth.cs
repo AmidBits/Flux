@@ -15,22 +15,22 @@ namespace Flux.Geometry.Geodesy
     /// <summary>MinValue is a closed (included) endpoint.</summary>
     public const double MinValue = 0;
 
-    private readonly Quantities.Angle m_angle;
+    private readonly Units.Angle m_angle;
 
     /// <summary>
     /// <para>Creates a new <see cref="Azimuth"/> from the specified <paramref name="angle"/>.</para>
     /// </summary>
-    public Azimuth(Quantities.Angle angle) => m_angle = new(angle.InDegrees.WrapAroundOpenEnd(MinValue, MaxValue), Quantities.AngleUnit.Degree);
+    public Azimuth(Units.Angle angle) => m_angle = new(angle.InDegrees.WrapAroundOpenEnd(MinValue, MaxValue), Units.AngleUnit.Degree);
 
     /// <summary>
     /// <para>Creates a new <see cref="Azimuth"/> from the specified <paramref name="angle"/> and <paramref name="unit"/>.</para>
     /// </summary>
-    public Azimuth(double angle, Quantities.AngleUnit unit = Quantities.AngleUnit.Degree) : this(new Quantities.Angle(angle, unit)) { }
+    public Azimuth(double angle, Units.AngleUnit unit = Units.AngleUnit.Degree) : this(new Units.Angle(angle, unit)) { }
 
     /// <summary>
-    /// <para>Gets the <see cref="Quantities.Angle"/> of the <see cref="Azimuth"/>.</para>
+    /// <para>Gets the <see cref="Units.Angle"/> of the <see cref="Azimuth"/>.</para>
     /// </summary>
-    public Quantities.Angle Angle { get => m_angle; }
+    public Units.Angle Angle { get => m_angle; }
 
     public CompassRose32Wind CompassAbbreviation => CompassPoint(m_angle.InDegrees, PointsOfTheCompass.ThirtytwoWinds, MidpointRounding.ToZero, out double _);
 
@@ -56,13 +56,13 @@ namespace Flux.Geometry.Geodesy
     /// <param name="azimuth2"></param>
     /// <returns></returns>
     public static double DeltaBearing(double azimuth1, double azimuth2)
-      => new Quantities.Angle(azimuth2 - azimuth1, Quantities.AngleUnit.Degree).GetUnitValue(Quantities.AngleUnit.Degree);
+      => new Units.Angle(azimuth2 - azimuth1, Units.AngleUnit.Degree).GetUnitValue(Units.AngleUnit.Degree);
 
     /// <summary>
     /// <para>Returns the bearing needle latched to one of the specified number of positions around the compass. For example, 4 positions will return an index [0, 3] (of four) for the latched bearing.</para>
     /// </summary>
     public static int LatchNeedle(double azimuth, int positions, System.MidpointRounding roundingMethod)
-      => System.Convert.ToInt32(double.Round(new Quantities.Angle(azimuth, Quantities.AngleUnit.Degree).GetUnitValue(Quantities.AngleUnit.Degree) / (MaxValue / positions) % positions, roundingMethod));
+      => System.Convert.ToInt32(double.Round(new Units.Angle(azimuth, Units.AngleUnit.Degree).GetUnitValue(Units.AngleUnit.Degree) / (MaxValue / positions) % positions, roundingMethod));
 
     /// <summary>
     /// <para>Create a new <see cref="Azimuth"/> by parsing <paramref name="compassPointAbbreviated"/>.</para>
@@ -149,17 +149,17 @@ namespace Flux.Geometry.Geodesy
     public static bool operator >(Azimuth a, Azimuth b) => a.CompareTo(b) > 0;
     public static bool operator >=(Azimuth a, Azimuth b) => a.CompareTo(b) >= 0;
 
-    public static Azimuth operator -(Azimuth v) => new(-v.m_angle.GetUnitValue(Quantities.AngleUnit.Degree));
-    public static Azimuth operator +(Azimuth a, double b) => new(a.m_angle.GetUnitValue(Quantities.AngleUnit.Degree) + b);
-    public static Azimuth operator +(Azimuth a, Azimuth b) => a + b.m_angle.GetUnitValue(Quantities.AngleUnit.Degree);
-    public static Azimuth operator /(Azimuth a, double b) => new(a.m_angle.GetUnitValue(Quantities.AngleUnit.Degree) / b);
-    public static Azimuth operator /(Azimuth a, Azimuth b) => a / b.m_angle.GetUnitValue(Quantities.AngleUnit.Degree);
-    public static Azimuth operator *(Azimuth a, double b) => new(a.m_angle.GetUnitValue(Quantities.AngleUnit.Degree) * b);
-    public static Azimuth operator *(Azimuth a, Azimuth b) => a * b.m_angle.GetUnitValue(Quantities.AngleUnit.Degree);
-    public static Azimuth operator %(Azimuth a, double b) => new(a.m_angle.GetUnitValue(Quantities.AngleUnit.Degree) % b);
-    public static Azimuth operator %(Azimuth a, Azimuth b) => a % b.m_angle.GetUnitValue(Quantities.AngleUnit.Degree);
-    public static Azimuth operator -(Azimuth a, double b) => new(a.m_angle.GetUnitValue(Quantities.AngleUnit.Degree) - b);
-    public static Azimuth operator -(Azimuth a, Azimuth b) => a - b.m_angle.GetUnitValue(Quantities.AngleUnit.Degree);
+    public static Azimuth operator -(Azimuth v) => new(-v.m_angle.GetUnitValue(Units.AngleUnit.Degree));
+    public static Azimuth operator +(Azimuth a, double b) => new(a.m_angle.GetUnitValue(Units.AngleUnit.Degree) + b);
+    public static Azimuth operator +(Azimuth a, Azimuth b) => a + b.m_angle.GetUnitValue(Units.AngleUnit.Degree);
+    public static Azimuth operator /(Azimuth a, double b) => new(a.m_angle.GetUnitValue(Units.AngleUnit.Degree) / b);
+    public static Azimuth operator /(Azimuth a, Azimuth b) => a / b.m_angle.GetUnitValue(Units.AngleUnit.Degree);
+    public static Azimuth operator *(Azimuth a, double b) => new(a.m_angle.GetUnitValue(Units.AngleUnit.Degree) * b);
+    public static Azimuth operator *(Azimuth a, Azimuth b) => a * b.m_angle.GetUnitValue(Units.AngleUnit.Degree);
+    public static Azimuth operator %(Azimuth a, double b) => new(a.m_angle.GetUnitValue(Units.AngleUnit.Degree) % b);
+    public static Azimuth operator %(Azimuth a, Azimuth b) => a % b.m_angle.GetUnitValue(Units.AngleUnit.Degree);
+    public static Azimuth operator -(Azimuth a, double b) => new(a.m_angle.GetUnitValue(Units.AngleUnit.Degree) - b);
+    public static Azimuth operator -(Azimuth a, Azimuth b) => a - b.m_angle.GetUnitValue(Units.AngleUnit.Degree);
 
     #endregion // Overloaded operators
 
@@ -172,7 +172,7 @@ namespace Flux.Geometry.Geodesy
     public int CompareTo(object? other) => other is not null && other is Azimuth o ? CompareTo(o) : -1;
 
     // IFormattable
-    public string ToString(string? format, System.IFormatProvider? formatProvider) => Angle.ToUnitString(Quantities.AngleUnit.Degree, format, formatProvider);
+    public string ToString(string? format, System.IFormatProvider? formatProvider) => Angle.ToUnitString(Units.AngleUnit.Degree, format, formatProvider);
 
     #region IValueQuantifiable<>
 

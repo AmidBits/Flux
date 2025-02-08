@@ -19,7 +19,7 @@ namespace Flux
 
       try
       {
-        var rdx = TNumber.CreateChecked(Quantities.Radix.AssertMember(radix));
+        var rdx = TNumber.CreateChecked(Units.Radix.AssertWithin(radix));
 
         while (!TNumber.IsZero(value))
         {
@@ -52,7 +52,7 @@ namespace Flux
 
       try
       {
-        var rdx = TNumber.CreateChecked(Quantities.Radix.AssertMember(radix));
+        var rdx = TNumber.CreateChecked(Units.Radix.AssertWithin(radix));
 
         for (var index = 0; index < positionalNotationIndices.Count; index++)
         {
@@ -129,12 +129,12 @@ namespace Flux
     /// <param name="alphabet"></param>
     /// <returns></returns>
     /// <exception cref="System.ArgumentOutOfRangeException"></exception>
-    public static System.ReadOnlySpan<char> ToBinaryString<TNumber>(this TNumber value, int minLength = 1, string alphabet = Quantities.Radix.Base62)
+    public static System.ReadOnlySpan<char> ToBinaryString<TNumber>(this TNumber value, int minLength = 1, string alphabet = Units.Radix.Base62)
       where TNumber : System.Numerics.IBinaryInteger<TNumber>
     {
       if (minLength <= 0) minLength = value.GetBitCount();
 
-      alphabet ??= Quantities.Radix.Base62;
+      alphabet ??= Units.Radix.Base62;
 
       if (alphabet.Length < 2) throw new System.ArgumentOutOfRangeException(nameof(alphabet));
 
@@ -165,12 +165,12 @@ namespace Flux
     /// <param name="alphabet"></param>
     /// <returns></returns>
     /// <exception cref="System.ArgumentOutOfRangeException"></exception>
-    public static System.ReadOnlySpan<char> ToDecimalString<TNumber>(this TNumber value, int minLength = 1, char negativeSymbol = '\u002D', string alphabet = Quantities.Radix.Base62)
+    public static System.ReadOnlySpan<char> ToDecimalString<TNumber>(this TNumber value, int minLength = 1, char negativeSymbol = '\u002D', string alphabet = Units.Radix.Base62)
       where TNumber : System.Numerics.IBinaryInteger<TNumber>
     {
       if (minLength <= 0) minLength = value.GetBitCount().MaxDigitCountOfBitLength(10, value.IsSignedNumber());
 
-      alphabet ??= Quantities.Radix.Base62;
+      alphabet ??= Units.Radix.Base62;
 
       if (alphabet.Length < 10) throw new System.ArgumentOutOfRangeException(nameof(alphabet));
 
@@ -198,12 +198,12 @@ namespace Flux
     /// <param name="alphabet"></param>
     /// <returns></returns>
     /// <exception cref="System.ArgumentOutOfRangeException"></exception>
-    public static System.ReadOnlySpan<char> ToHexadecimalString<TNumber>(this TNumber value, int minLength = 1, string alphabet = Quantities.Radix.Base62)
+    public static System.ReadOnlySpan<char> ToHexadecimalString<TNumber>(this TNumber value, int minLength = 1, string alphabet = Units.Radix.Base62)
       where TNumber : System.Numerics.IBinaryInteger<TNumber>
     {
       if (minLength <= 0) minLength = value.GetBitCount().MaxDigitCountOfBitLength(16, value.IsSignedNumber());
 
-      alphabet ??= Quantities.Radix.Base62;
+      alphabet ??= Units.Radix.Base62;
 
       if (alphabet.Length < 16) throw new System.ArgumentOutOfRangeException(nameof(alphabet));
 
@@ -231,12 +231,12 @@ namespace Flux
     /// <param name="alphabet"></param>
     /// <returns></returns>
     /// <exception cref="System.ArgumentOutOfRangeException"></exception>
-    public static System.ReadOnlySpan<char> ToOctalString<TNumber>(this TNumber value, int minLength = 1, string alphabet = Quantities.Radix.Base62)
+    public static System.ReadOnlySpan<char> ToOctalString<TNumber>(this TNumber value, int minLength = 1, string alphabet = Units.Radix.Base62)
       where TNumber : System.Numerics.IBinaryInteger<TNumber>
     {
       if (minLength <= 0) minLength = value.GetBitCount().MaxDigitCountOfBitLength(8, value.IsSignedNumber());
 
-      alphabet ??= Quantities.Radix.Base62;
+      alphabet ??= Units.Radix.Base62;
 
       if (alphabet.Length < 8) throw new System.ArgumentOutOfRangeException(nameof(alphabet));
 
@@ -261,11 +261,11 @@ namespace Flux
     /// <param name="alphabet"></param>
     /// <returns></returns>
     /// <exception cref="System.ArgumentOutOfRangeException"></exception>
-    public static System.ReadOnlySpan<char> ToRadixString<TNumber, TRadix>(this TNumber value, TRadix radix, int minLength = 1, string alphabet = Quantities.Radix.Base62)
+    public static System.ReadOnlySpan<char> ToRadixString<TNumber, TRadix>(this TNumber value, TRadix radix, int minLength = 1, string alphabet = Units.Radix.Base62)
       where TNumber : System.Numerics.IBinaryInteger<TNumber>
       where TRadix : System.Numerics.IBinaryInteger<TRadix>
     {
-      var rdx = int.CreateChecked(Quantities.Radix.AssertMember(radix));
+      var rdx = int.CreateChecked(Units.Radix.AssertWithin(radix));
 
       if (rdx == 2)
         return value.ToBinaryString(minLength, alphabet);
@@ -279,7 +279,7 @@ namespace Flux
       {
         if (minLength <= 0) minLength = value.GetBitCount().MaxDigitCountOfBitLength(rdx, value.IsSignedNumber());
 
-        alphabet ??= Quantities.Radix.Base62;
+        alphabet ??= Units.Radix.Base62;
 
         if (alphabet.Length < rdx) throw new System.ArgumentOutOfRangeException(nameof(alphabet));
 
@@ -308,7 +308,7 @@ namespace Flux
     public static System.ReadOnlySpan<char> ToSubscriptString<TValue, TRadix>(this TValue value, TRadix radix, int minLength = 1)
       where TValue : System.Numerics.IBinaryInteger<TValue>
       where TRadix : System.Numerics.IBinaryInteger<TRadix>
-      => value.ToRadixString(Quantities.Radix.AssertMember(radix, TRadix.CreateChecked(10)), minLength, SubscriptNumerals); // Extra top-limit to radix (only 10 characters in subscript alphabet).
+      => value.ToRadixString(Units.Radix.AssertWithin(radix, TRadix.CreateChecked(10)), minLength, SubscriptNumerals); // Extra top-limit to radix (only 10 characters in subscript alphabet).
 
     public static readonly string SuperscriptNumerals = "\u2070\u00B9\u00B2\u00B3\u2074\u2075\u2076\u2077\u2078\u2079";
 
@@ -324,6 +324,6 @@ namespace Flux
     public static System.ReadOnlySpan<char> ToSuperscriptString<TSelf, TRadix>(this TSelf value, TRadix radix, int minLength = 1)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
       where TRadix : System.Numerics.IBinaryInteger<TRadix>
-      => value.ToRadixString(Quantities.Radix.AssertMember(radix, TRadix.CreateChecked(10)), minLength, SuperscriptNumerals); // Extra top-limit to radix (only 10 characters in superscript alphabet).
+      => value.ToRadixString(Units.Radix.AssertWithin(radix, TRadix.CreateChecked(10)), minLength, SuperscriptNumerals); // Extra top-limit to radix (only 10 characters in superscript alphabet).
   }
 }

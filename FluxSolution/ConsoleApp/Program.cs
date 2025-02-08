@@ -13,8 +13,8 @@ using System.Text.RegularExpressions;
 using System.Xml.XPath;
 using Flux;
 using Flux.DataStructures.UnionFind;
-using Flux.Quantities;
 using Flux.Text;
+using Flux.Units;
 using Microsoft.VisualBasic;
 
 // C# Interactive commands:
@@ -114,7 +114,19 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
+      var s = "-40 ° 26 '46″ N79 ° 58 ′ 56 ″W";
 
+      var latitudeDd = Flux.Geometry.Geodesy.Latitude.ParseDmsNotation(s);
+      var longitudeDd = Flux.Geometry.Geodesy.Longitude.ParseDmsNotation(s);
+
+      var latitudeDn = latitudeDd.ToDmsNotationString();
+      var longitudeDn = longitudeDd.ToDmsNotationString();
+
+      var latS1 = Flux.Units.Angle.ConvertDecimalDegreesToSexagesimalUnitSubdivisions(latitudeDd.Value);
+      //var latS2 = Flux.SexagesimalUnitSubdivisions.ConvertDecimalDegreesToSubdivisions2(latitudeDd);
+
+      var lonS1 = Flux.Units.Angle.ConvertDecimalDegreesToSexagesimalUnitSubdivisions(longitudeDd.Value);
+      //var lonS2 = Flux.SexagesimalUnitSubdivisions.ConvertDecimalDegreesToSubdivisions2(longitudeDd);
 
       foreach (var t in typeof(Flux.Locale).Assembly.DefinedTypes)
         if (t.TryGetAttribute<System.ComponentModel.DefaultValueAttribute>(out var attributes))
@@ -127,11 +139,11 @@ namespace ConsoleApp
 
       var defval = Flux.Enum.GetDefaultValue<Flux.MetricPrefix>();
 
-      var volume = new Flux.Quantities.Volume(123);
+      var volume = new Flux.Units.Volume(123);
       var uv = volume.GetUnitValue(VolumeUnit.Liter);
       var (prefix, value) = volume.GetUnitValue(VolumeUnit.Liter).GetEngineeringNotationProperties();
-      var liters = volume.GetUnitValue(VolumeUnit.Liter).ToEngineeringNotationString(Flux.Quantities.Volume.GetUnitSymbol(VolumeUnit.Liter, false));
-      var regs = volume.GetUnitValue(VolumeUnit.CubicMeter).ToEngineeringNotationString(Flux.Quantities.Volume.GetUnitSymbol(VolumeUnit.CubicMeter, false), tripletsOnly: false);
+      var liters = volume.GetUnitValue(VolumeUnit.Liter).ToEngineeringNotationString(Flux.Units.Volume.GetUnitSymbol(VolumeUnit.Liter, false));
+      var regs = volume.GetUnitValue(VolumeUnit.CubicMeter).ToEngineeringNotationString(Flux.Units.Volume.GetUnitSymbol(VolumeUnit.CubicMeter, false), tripletsOnly: false);
 
       var v1 = 123;
 

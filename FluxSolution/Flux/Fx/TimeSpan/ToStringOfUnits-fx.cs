@@ -8,32 +8,32 @@ namespace Flux
 
       if (source.Days > 0)
       {
-        var td = new Quantities.Time(source.Days, Quantities.TimeUnit.Day);
-        sm = sm.Append(td.ToUnitString(Quantities.TimeUnit.Day));
+        var td = new Units.Time(source.Days, Units.TimeUnit.Day);
+        sm = sm.Append(td.ToUnitString(Units.TimeUnit.Day));
       }
 
       sm = sm.Append(' ');
 
       if (source.Hours > 0)
       {
-        var th = new Quantities.Time(source.Hours, Quantities.TimeUnit.Hour);
-        sm = sm.Append(th.ToUnitString(Quantities.TimeUnit.Hour));
+        var th = new Units.Time(source.Hours, Units.TimeUnit.Hour);
+        sm = sm.Append(th.ToUnitString(Units.TimeUnit.Hour));
       }
 
       sm = sm.Append(' ');
 
       if (source.Minutes > 0)
       {
-        var tm = new Quantities.Time(source.Minutes, Quantities.TimeUnit.Minute);
-        sm = sm.Append(tm.ToUnitString(Quantities.TimeUnit.Minute));
+        var tm = new Units.Time(source.Minutes, Units.TimeUnit.Minute);
+        sm = sm.Append(tm.ToUnitString(Units.TimeUnit.Minute));
       }
 
       sm = sm.Append(' ');
 
       if (source.Seconds > 0)
       {
-        var ts = new Quantities.Time(source.Seconds, Quantities.TimeUnit.Second);
-        sm = sm.Append(ts.ToUnitString(Quantities.TimeUnit.Second));
+        var ts = new Units.Time(source.Seconds, Units.TimeUnit.Second);
+        sm = sm.Append(ts.ToUnitString(Units.TimeUnit.Second));
       }
 
       return sm.ToString();

@@ -45,7 +45,7 @@ namespace Flux.Temporal
       };
 
     /// <summary>
-    /// <para>Indicates whether the <paramref name="julianDayNumber"/> (JDN) can be considered to be in the (regular) <paramref name="source"/> <see cref="Quantities.TemporalCalendar"/>.</para>
+    /// <para>Indicates whether the <paramref name="julianDayNumber"/> (JDN) can be considered to be in the (regular) <paramref name="source"/> <see cref="Units.TemporalCalendar"/>.</para>
     /// </summary>
     /// <param name="source"></param>
     /// <param name="julianDayNumber"></param>
@@ -53,7 +53,7 @@ namespace Flux.Temporal
     public static bool Contains(this TemporalCalendar source, int julianDayNumber) => source.Contains((double)julianDayNumber);
 
     /// <summary>
-    /// <para>Indicates whether the (<paramref name="year"/>, <paramref name="month"/> and <paramref name="day"/>) date components can be considered to be in the (regular) <paramref name="source"/> <see cref="Quantities.TemporalCalendar"/>.</para>
+    /// <para>Indicates whether the (<paramref name="year"/>, <paramref name="month"/> and <paramref name="day"/>) date components can be considered to be in the (regular) <paramref name="source"/> <see cref="Units.TemporalCalendar"/>.</para>
     /// </summary>
     /// <param name="source"></param>
     /// <param name="year"></param>

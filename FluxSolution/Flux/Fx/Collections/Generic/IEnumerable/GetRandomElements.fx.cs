@@ -8,7 +8,7 @@ namespace Flux
     /// <exception cref="System.ArgumentOutOfRangeException"/>
     public static System.Collections.Generic.IEnumerable<T> GetRandomElements<T>(this System.Collections.Generic.IEnumerable<T> source, double probability, System.Random? rng = null)
     {
-      Quantities.Probability.AssertMember(probability);
+      Units.Probability.AssertMember(probability, IntervalNotation.HalfOpenLeft); // Cannot be zero, but can be one.
 
       rng ??= System.Random.Shared;
 

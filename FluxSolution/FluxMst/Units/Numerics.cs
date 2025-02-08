@@ -8,7 +8,7 @@ namespace Units
     [TestMethod]
     public void BigRational()
     {
-      var u = new Flux.Quantities.BigRational(1);
+      var u = new Flux.Units.BigRational(1);
 
       Assert.AreEqual(1, u.Value);
     }
@@ -16,7 +16,7 @@ namespace Units
     [TestMethod]
     public void Probability()
     {
-      var u = new Flux.Quantities.Probability(1);
+      var u = new Flux.Units.Probability(1);
 
       Assert.AreEqual(1, u.Value);
     }
@@ -24,7 +24,7 @@ namespace Units
     [TestMethod]
     public void Radix()
     {
-      var u = new Flux.Quantities.Radix(2);
+      var u = new Flux.Units.Radix(2);
 
       Assert.AreEqual(2, u.Value);
     }
@@ -32,7 +32,7 @@ namespace Units
     [TestMethod]
     public void UnitInterval()
     {
-      var u = new Flux.Quantities.UnitInterval(1);
+      var u = new Flux.Units.UnitInterval(1);
 
       Assert.AreEqual(1, u.Value);
     }

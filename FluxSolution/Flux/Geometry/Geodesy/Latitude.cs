@@ -7,7 +7,7 @@ namespace Flux.Geometry.Geodesy
   /// <remarks>
   /// <para>The value is folded within the range [-90, +90].</para>
   /// </remarks>
-  public readonly record struct Latitude
+  public readonly partial record struct Latitude
     : System.IComparable, System.IComparable<Latitude>, System.IFormattable, IValueQuantifiable<double>
   {
     public const double MaxValue = +90;
@@ -19,16 +19,16 @@ namespace Flux.Geometry.Geodesy
     public static Latitude TropicOfCancer { get; } = new(23.43648);
     public static Latitude TropicOfCapricorn { get; } = new(-23.43648);
 
-    private readonly Quantities.Angle m_angle;
+    private readonly Units.Angle m_angle;
 
     /// <summary>Creates a new <see cref="Latitude"/> from the specified <paramref name="angle"/>.</summary>
-    public Latitude(Quantities.Angle angle) => m_angle = new(angle.InDegrees.FoldBackAndForth(MinValue, MaxValue), Quantities.AngleUnit.Degree);
+    public Latitude(Units.Angle angle) => m_angle = new(angle.InDegrees.FoldBackAndForth(MinValue, MaxValue), Units.AngleUnit.Degree);
 
     /// <summary>Creates a new <see cref="Latitude"/> from the specified <paramref name="angle"/> and <paramref name="unit"/>.</summary>
-    public Latitude(double angle, Quantities.AngleUnit unit = Quantities.AngleUnit.Degree) : this(new Quantities.Angle(angle, unit)) { }
+    public Latitude(double angle, Units.AngleUnit unit = Units.AngleUnit.Degree) : this(new Units.Angle(angle, unit)) { }
 
-    /// <summary>The <see cref="Quantities.Angle"/> of the latitude.</summary>
-    public Quantities.Angle Angle { get => m_angle; }
+    /// <summary>The <see cref="Units.Angle"/> of the latitude.</summary>
+    public Units.Angle Angle { get => m_angle; }
 
     /// <summary>Projects the latitude to a mercator Y value in the range [-PI, PI]. The Y value is logarithmic.</summary>
     /// https://en.wikipedia.org/wiki/Mercator_projection
@@ -36,10 +36,13 @@ namespace Flux.Geometry.Geodesy
     public double GetMercatorProjectedY()
       => System.Math.Clamp(System.Math.Log(System.Math.Tan(System.Math.PI / 4 + Angle.Value / 2)), -System.Math.PI, System.Math.PI);
 
-    public string ToDecimalString() => m_angle.GetUnitValue(Quantities.AngleUnit.Degree).ToString(6.FormatUpToFractionalDigits());
+    public string ToDecimalString() => m_angle.GetUnitValue(Units.AngleUnit.Degree).ToString(6.FormatUpToFractionalDigits());
 
-    public string ToSexagesimalDegreeString(Quantities.AngleDmsNotation format = Quantities.AngleDmsNotation.DegreesMinutesDecimalSeconds, Unicode.UnicodeSpacing componentSpacing = Unicode.UnicodeSpacing.None)
-      => Quantities.Angle.ToDmsString(m_angle.GetUnitValue(Quantities.AngleUnit.Degree), format, CompassCardinalAxis.NorthSouth, -1, componentSpacing);
+    //public string ToSexagesimalDegreeString(Units.AngleDmsNotation format = Units.AngleDmsNotation.DegreesMinutesDecimalSeconds, Unicode.UnicodeSpacing componentSpacing = Unicode.UnicodeSpacing.None)
+    //  => Units.Angle.ToStringDmsNotation(m_angle.GetUnitValue(Units.AngleUnit.Degree), format, CompassCardinalAxis.NorthSouth, -1, componentSpacing);
+
+    public string ToDmsNotationString(Units.AngleDmsNotation dmsNotation = Units.AngleDmsNotation.DegreesMinutesDecimalSeconds, Unicode.UnicodeSpacing componentSpacing = Unicode.UnicodeSpacing.None)
+      => Units.Angle.ToStringDmsNotation(m_angle.GetUnitValue(Units.AngleUnit.Degree), dmsNotation, CompassCardinalAxis.NorthSouth, -1, componentSpacing);
 
     #region Static methods
 
@@ -84,6 +87,12 @@ namespace Flux.Geometry.Geodesy
     /// <returns></returns>
     public static double GetMaximumLatitude(double lat, double azm) => System.Math.Acos(System.Math.Abs(System.Math.Sin(azm) * System.Math.Cos(lat)));
 
+    public static Latitude ParseDmsNotation(string dmsNotation)
+      => Units.Angle.TryParseDmsNotations(dmsNotation, out var dmsNotations) ? (Latitude)dmsNotations.First(e => e is Latitude) : throw new System.InvalidOperationException();
+
+    //public static string ToStringDmsNotation(double decimalDegrees, Units.AngleDmsNotation dmsNotation = Units.AngleDmsNotation.DegreesMinutesDecimalSeconds, int decimalPoints = -1, Unicode.UnicodeSpacing componentSpacing = Unicode.UnicodeSpacing.None)
+    //  => Units.Angle.ToStringDmsNotation(decimalDegrees, dmsNotation, CompassCardinalAxis.NorthSouth, decimalPoints, componentSpacing);
+
     #endregion Static methods
 
     #region Overloaded operators
@@ -93,17 +102,17 @@ namespace Flux.Geometry.Geodesy
     public static bool operator >(Latitude a, Latitude b) => a.CompareTo(b) > 0;
     public static bool operator >=(Latitude a, Latitude b) => a.CompareTo(b) >= 0;
 
-    public static Latitude operator -(Latitude v) => new(-v.m_angle.GetUnitValue(Quantities.AngleUnit.Degree));
-    public static Latitude operator +(Latitude a, double b) => new(a.m_angle.GetUnitValue(Quantities.AngleUnit.Degree) + b);
-    public static Latitude operator +(Latitude a, Latitude b) => a + b.m_angle.GetUnitValue(Quantities.AngleUnit.Degree);
-    public static Latitude operator /(Latitude a, double b) => new(a.m_angle.GetUnitValue(Quantities.AngleUnit.Degree) / b);
-    public static Latitude operator /(Latitude a, Latitude b) => a / b.m_angle.GetUnitValue(Quantities.AngleUnit.Degree);
-    public static Latitude operator *(Latitude a, double b) => new(a.m_angle.GetUnitValue(Quantities.AngleUnit.Degree) * b);
-    public static Latitude operator *(Latitude a, Latitude b) => a * b.m_angle.GetUnitValue(Quantities.AngleUnit.Degree);
-    public static Latitude operator %(Latitude a, double b) => new(a.m_angle.GetUnitValue(Quantities.AngleUnit.Degree) % b);
-    public static Latitude operator %(Latitude a, Latitude b) => a % b.m_angle.GetUnitValue(Quantities.AngleUnit.Degree);
-    public static Latitude operator -(Latitude a, double b) => new(a.m_angle.GetUnitValue(Quantities.AngleUnit.Degree) - b);
-    public static Latitude operator -(Latitude a, Latitude b) => a - b.m_angle.GetUnitValue(Quantities.AngleUnit.Degree);
+    public static Latitude operator -(Latitude v) => new(-v.m_angle.GetUnitValue(Units.AngleUnit.Degree));
+    public static Latitude operator +(Latitude a, double b) => new(a.m_angle.GetUnitValue(Units.AngleUnit.Degree) + b);
+    public static Latitude operator +(Latitude a, Latitude b) => a + b.m_angle.GetUnitValue(Units.AngleUnit.Degree);
+    public static Latitude operator /(Latitude a, double b) => new(a.m_angle.GetUnitValue(Units.AngleUnit.Degree) / b);
+    public static Latitude operator /(Latitude a, Latitude b) => a / b.m_angle.GetUnitValue(Units.AngleUnit.Degree);
+    public static Latitude operator *(Latitude a, double b) => new(a.m_angle.GetUnitValue(Units.AngleUnit.Degree) * b);
+    public static Latitude operator *(Latitude a, Latitude b) => a * b.m_angle.GetUnitValue(Units.AngleUnit.Degree);
+    public static Latitude operator %(Latitude a, double b) => new(a.m_angle.GetUnitValue(Units.AngleUnit.Degree) % b);
+    public static Latitude operator %(Latitude a, Latitude b) => a % b.m_angle.GetUnitValue(Units.AngleUnit.Degree);
+    public static Latitude operator -(Latitude a, double b) => new(a.m_angle.GetUnitValue(Units.AngleUnit.Degree) - b);
+    public static Latitude operator -(Latitude a, Latitude b) => a - b.m_angle.GetUnitValue(Units.AngleUnit.Degree);
     #endregion Overloaded operators
 
     #region Implemented interfaces
@@ -117,10 +126,10 @@ namespace Flux.Geometry.Geodesy
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? formatProvider)
       => format is not null
-      ? Quantities.Angle.TryConvertFormatToDmsNotation(format, out var dmsNotation)
-        ? ToSexagesimalDegreeString(dmsNotation)
-        : m_angle.ToUnitString(Quantities.AngleUnit.Degree, format, formatProvider)
-      : ToSexagesimalDegreeString();
+      ? Units.Angle.TryConvertFormatToDmsNotation(format, out var dmsNotation)
+        ? ToDmsNotationString(dmsNotation)
+        : m_angle.ToUnitString(Units.AngleUnit.Degree, format, formatProvider)
+      : ToDmsNotationString();
 
     #region IValueQuantifiable<>
 

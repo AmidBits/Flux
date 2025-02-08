@@ -36,7 +36,7 @@
       where TRadix : System.Numerics.IBinaryInteger<TRadix>
       => TNumber.IsZero(number)
       ? number
-      : TNumber.CopySign(TNumber.CreateChecked(double.Log(double.CreateChecked(TNumber.Abs(number)), double.CreateChecked(Quantities.Radix.AssertMember(radix))).Envelop()), number);
+      : TNumber.CopySign(TNumber.CreateChecked(double.Log(double.CreateChecked(TNumber.Abs(number)), double.CreateChecked(Units.Radix.AssertWithin(radix))).Envelop()), number);
 
     /// <summary>
     /// <para>Round a <paramref name="number"/> to the nearest log-of-<paramref name="radix"/> toward-zero.</para>
@@ -52,6 +52,6 @@
       where TRadix : System.Numerics.IBinaryInteger<TRadix>
       => TNumber.IsZero(number)
       ? number
-      : TNumber.CopySign(TNumber.CreateChecked(double.Truncate(double.Log(double.CreateChecked(TNumber.Abs(number)), double.CreateChecked(Quantities.Radix.AssertMember(radix))))), number);
+      : TNumber.CopySign(TNumber.CreateChecked(double.Truncate(double.Log(double.CreateChecked(TNumber.Abs(number)), double.CreateChecked(Units.Radix.AssertWithin(radix))))), number);
   }
 }

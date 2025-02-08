@@ -6,15 +6,15 @@ namespace Flux.Geometry.Rotations
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
   public readonly record struct TwoLineElementSet2
   {
-    private readonly Quantities.Angle m_inclination;
-    private readonly Quantities.Angle m_rightAscensionOfAscendingNode;
+    private readonly Units.Angle m_inclination;
+    private readonly Units.Angle m_rightAscensionOfAscendingNode;
     private readonly double m_eccentricity;
-    private readonly Quantities.Angle m_argumentOfPerigee;
-    private readonly Quantities.Angle m_meanAnomaly;
+    private readonly Units.Angle m_argumentOfPerigee;
+    private readonly Units.Angle m_meanAnomaly;
     private readonly double m_meanMotion;
     private readonly double m_revolutionNumberAtEpoch;
 
-    public TwoLineElementSet2(Quantities.Angle inclination, Quantities.Angle rightAscensionOfAscendingNode, double eccentricity, Quantities.Angle argumentOfPerigee, Quantities.Angle meanAnomaly, double meanMotion, double revolutionNumberAtEpoch)
+    public TwoLineElementSet2(Units.Angle inclination, Units.Angle rightAscensionOfAscendingNode, double eccentricity, Units.Angle argumentOfPerigee, Units.Angle meanAnomaly, double meanMotion, double revolutionNumberAtEpoch)
     {
       m_inclination = inclination;
       m_rightAscensionOfAscendingNode = rightAscensionOfAscendingNode;
@@ -25,7 +25,7 @@ namespace Flux.Geometry.Rotations
       m_revolutionNumberAtEpoch = revolutionNumberAtEpoch;
     }
 
-    public TwoLineElementSet2(double inclinationValue, Quantities.AngleUnit inclinationUnit, double rightAscensionOfAscendingNodeValue, Quantities.AngleUnit rightAscensionOfAscendingNodeUnit, double eccentricity, double argumentOfPerigeeValue, Quantities.AngleUnit argumentOfPerigeeUnit, double meanAnomalyValue, Quantities.AngleUnit meanAnomalyUnit, double meanMotion, double revolutionNumberAtEpoch)
+    public TwoLineElementSet2(double inclinationValue, Units.AngleUnit inclinationUnit, double rightAscensionOfAscendingNodeValue, Units.AngleUnit rightAscensionOfAscendingNodeUnit, double eccentricity, double argumentOfPerigeeValue, Units.AngleUnit argumentOfPerigeeUnit, double meanAnomalyValue, Units.AngleUnit meanAnomalyUnit, double meanMotion, double revolutionNumberAtEpoch)
       : this(
           new(inclinationValue, inclinationUnit),
           new(rightAscensionOfAscendingNodeValue, rightAscensionOfAscendingNodeUnit),
@@ -38,19 +38,19 @@ namespace Flux.Geometry.Rotations
     { }
 
     /// <summary>The angle between the equator and the orbit plane. The value provided is the TEME mean inclination. Degrees, in the range [0, 180] degrees, i.e. [0, PI] radians.</summary>
-    public Quantities.Angle Inclination => m_inclination;
+    public Units.Angle Inclination => m_inclination;
 
     /// <summary>The angle between vernal equinox and the point where the orbit crosses the equatorial plane (going north). The value provided is the TEME mean right ascension of the ascending node. Degrees, in the range [0, 360] degrees, i.e. [0, 2PI] radians.</summary>
-    public Quantities.Angle RightAscensionOfAscendingNode => m_rightAscensionOfAscendingNode;
+    public Units.Angle RightAscensionOfAscendingNode => m_rightAscensionOfAscendingNode;
 
     /// <summary>A constant defining the shape of the orbit (0=circular, Less than 1=elliptical). The value provided is the mean eccentricity.</summary>
     public double Eccentricity => m_eccentricity;
 
     /// <summary>The angle between the ascending node and the orbit's point of closest approach to the earth (perigee). The value provided is the TEME mean argument of perigee. Degrees, in the range [0, 360] degrees, i.e. [0, 2PI].</summary>
-    public Quantities.Angle ArgumentOfPerigee => m_argumentOfPerigee;
+    public Units.Angle ArgumentOfPerigee => m_argumentOfPerigee;
 
     /// <summary>The angle, measured from perigee, of the satellite location in the orbit referenced to a circular orbit with radius equal to the semi-major axis. Degrees.</summary>
-    public Quantities.Angle MeanAnomaly => m_meanAnomaly;
+    public Units.Angle MeanAnomaly => m_meanAnomaly;
 
     /// <summary> The value is the mean number of orbits per day the object completes. There are 8 digits after the decimal, leaving no trailing space(s) when the following element exceeds 9999. Revolutions per day.</summary>
     public double MeanMotion => m_meanMotion;
@@ -117,7 +117,7 @@ namespace Flux.Geometry.Rotations
     #region Implemented interfaces
 
     public string ToString(string? format, IFormatProvider? formatProvider)
-      => $"{GetType().Name} {{ Inclination = {m_inclination.ToUnitString(Quantities.AngleUnit.Degree, format, formatProvider)}, RightAscensionOfAscendingNode = {m_rightAscensionOfAscendingNode.ToUnitString(Quantities.AngleUnit.Degree, format, formatProvider)}, Eccentricity = {m_eccentricity}, ArgumentOfPerigee = {m_argumentOfPerigee.ToUnitString(Quantities.AngleUnit.Degree, format, formatProvider)}, MeanAnomaly = {m_meanAnomaly.ToUnitString(Quantities.AngleUnit.Degree, format, formatProvider)}, MeanMotion = {m_meanMotion} }}";
+      => $"{GetType().Name} {{ Inclination = {m_inclination.ToUnitString(Units.AngleUnit.Degree, format, formatProvider)}, RightAscensionOfAscendingNode = {m_rightAscensionOfAscendingNode.ToUnitString(Units.AngleUnit.Degree, format, formatProvider)}, Eccentricity = {m_eccentricity}, ArgumentOfPerigee = {m_argumentOfPerigee.ToUnitString(Units.AngleUnit.Degree, format, formatProvider)}, MeanAnomaly = {m_meanAnomaly.ToUnitString(Units.AngleUnit.Degree, format, formatProvider)}, MeanMotion = {m_meanMotion} }}";
 
     #endregion // Implemented interfaces
 
