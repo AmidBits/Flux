@@ -1,4 +1,4 @@
-namespace Flux.Geometry.Coordinates
+namespace Flux.Geometry.CoordinateSystems
 {
   /// <summary>
   /// <para>Cartesian coordinate.</para>
@@ -18,6 +18,10 @@ namespace Flux.Geometry.Coordinates
     public CartesianCoordinate(System.Runtime.Intrinsics.Vector128<double> xy) => m_v = System.Runtime.Intrinsics.Vector256.Create(xy[0], xy[1], 0, 0);
 
     public CartesianCoordinate(System.Runtime.Intrinsics.Vector256<double> xyzw) => m_v = xyzw;
+
+    public CartesianCoordinate(System.Runtime.Intrinsics.Vector256<double> xyz, double w = 0) => m_v = System.Runtime.Intrinsics.Vector256.Create(xyz[0], xyz[1], xyz[2], w);
+
+    public CartesianCoordinate(System.Runtime.Intrinsics.Vector256<double> xy, double z = 0, double w = 0) => m_v = System.Runtime.Intrinsics.Vector256.Create(xy[0], xy[1], z, w);
 
     public CartesianCoordinate(double x, double y, double z = 0, double w = 0) => m_v = System.Runtime.Intrinsics.Vector256.Create(x, y, z, w);
 
@@ -120,7 +124,7 @@ namespace Flux.Geometry.Coordinates
       );
     }
 
-    /// <summary>Creates a new <see cref="System.Numerics.Vector2"/> from a <see cref="Coordinates.CartesianCoordinate"/>.</summary>
+    /// <summary>Creates a new <see cref="System.Numerics.Vector2"/> from a <see cref="CoordinateSystems.CartesianCoordinate"/>.</summary>
     public System.Numerics.Vector2 ToVector2()
     {
       var (x, y) = this;
@@ -131,7 +135,7 @@ namespace Flux.Geometry.Coordinates
       );
     }
 
-    /// <summary>Creates a new <see cref="System.Numerics.Vector2"/> from a <see cref="Coordinates.CartesianCoordinate"/>.</summary>
+    /// <summary>Creates a new <see cref="System.Numerics.Vector2"/> from a <see cref="CoordinateSystems.CartesianCoordinate"/>.</summary>
     public System.Numerics.Vector3 ToVector3()
     {
       var (x, y, z) = this;
@@ -143,7 +147,7 @@ namespace Flux.Geometry.Coordinates
       );
     }
 
-    /// <summary>Creates a new <see cref="System.Numerics.Vector2"/> from a <see cref="Coordinates.CartesianCoordinate"/>.</summary>
+    /// <summary>Creates a new <see cref="System.Numerics.Vector2"/> from a <see cref="CoordinateSystems.CartesianCoordinate"/>.</summary>
     public System.Numerics.Vector4 ToVector4()
     {
       var (x, y, z, w) = this;
@@ -156,13 +160,13 @@ namespace Flux.Geometry.Coordinates
       );
     }
 
-    /// <summary>Creates a new <see cref="System.Runtime.Intrinsics.Vector256{T}"/> from a <see cref="Coordinates.CartesianCoordinate"/> (with 1 (x) + 3 optional components).</summary>
+    /// <summary>Creates a new <see cref="System.Runtime.Intrinsics.Vector256{T}"/> from a <see cref="CoordinateSystems.CartesianCoordinate"/> (with 1 (x) + 3 optional components).</summary>
     public System.Runtime.Intrinsics.Vector256<double> ToVector128D2(double z = 0, double w = 0) => System.Runtime.Intrinsics.Vector256.Create(X.Value, Y.Value, z, w);
 
-    /// <summary>Creates a new <see cref="System.Runtime.Intrinsics.Vector256{T}"/> from a <see cref="Coordinates.CartesianCoordinate"/> (with 2 (x, y) + 2 optional components).</summary>
+    /// <summary>Creates a new <see cref="System.Runtime.Intrinsics.Vector256{T}"/> from a <see cref="CoordinateSystems.CartesianCoordinate"/> (with 2 (x, y) + 2 optional components).</summary>
     public System.Runtime.Intrinsics.Vector256<double> ToVector256D2(double z = 0, double w = 0) => System.Runtime.Intrinsics.Vector256.Create(X.Value, Y.Value, z, w);
 
-    /// <summary>Creates a new <see cref="System.Runtime.Intrinsics.Vector256{T}"/> from a <see cref="Coordinates.CartesianCoordinate"/> (with 3 (x, y, z) + 1 optional component).</summary>
+    /// <summary>Creates a new <see cref="System.Runtime.Intrinsics.Vector256{T}"/> from a <see cref="CoordinateSystems.CartesianCoordinate"/> (with 3 (x, y, z) + 1 optional component).</summary>
     public System.Runtime.Intrinsics.Vector256<double> ToVector256D3(double w = 0) => System.Runtime.Intrinsics.Vector256.Create(X.Value, Y.Value, Z.Value, w);
 
     #region Static methods

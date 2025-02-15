@@ -2,10 +2,10 @@
 using Flux;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace SystemFx
+namespace NetFx.ReadOnlySpan.Special
 {
   [TestClass]
-  public class SpanMetrics
+  public partial class SpanMetrics
   {
     private readonly string m_text1a = "CA";
     private readonly string m_text1b = "ABC";
@@ -28,7 +28,7 @@ namespace SystemFx
     readonly StringComparerEx m_comparerDoNotIgnoreCase = StringComparerEx.CurrentCulture;
 
     [TestMethod]
-    public void DamerauLevenshteinDistance()
+    public void DamerauLevenshteinDistance2()
     {
       Assert.AreEqual(2, m_text1a.AsSpan().DamerauLevenshteinDistanceMetric(m_text1b, out var _, m_comparisonOrdinal));
       Assert.AreEqual(2, m_text1a.AsSpan().DamerauLevenshteinDistanceMetric(m_text1b, out var _, m_comparisonOrdinalIgnoreCase));
@@ -44,7 +44,7 @@ namespace SystemFx
     }
 
     [TestMethod]
-    public void HammingDistance()
+    public void HammingDistance2()
     {
       Assert.AreEqual(0, m_text2a.AsSpan().HammingDistanceMetric(m_text2b, m_comparableIgnoreNonSpace));
       Assert.AreEqual(60, m_text2a.AsSpan().HammingDistanceMetric(m_text2b, m_comparerDoNotIgnoreCase));
@@ -54,7 +54,7 @@ namespace SystemFx
     }
 
     [TestMethod]
-    public void JaroWinklerDistance()
+    public void JaroWinklerDistance2()
     {
       Assert.AreEqual(0, m_text1a.AsSpan().JaroWinklerSimilarity(m_text1b, m_comparisonOrdinal));
       Assert.AreEqual(0, m_text1a.AsSpan().JaroWinklerSimilarity(m_text1b, m_comparisonOrdinalIgnoreCase));
@@ -67,7 +67,7 @@ namespace SystemFx
     }
 
     [TestMethod]
-    public void LevenshteinDistance()
+    public void LevenshteinDistance2()
     {
       Assert.AreEqual(3, m_text1a.AsSpan().LevenshteinDistanceMetric(m_text1b, m_comparisonOrdinal));
       Assert.AreEqual(3, m_text1a.AsSpan().LevenshteinDistanceMetric(m_text1b, m_comparisonOrdinalIgnoreCase));
@@ -83,7 +83,7 @@ namespace SystemFx
     }
 
     [TestMethod]
-    public void LongestCommonSubsequence()
+    public void LongestCommonSubsequence2()
     {
       Assert.AreEqual(1, m_text1a.AsSpan().LongestCommonSubsequenceLength(m_text1b, m_comparisonOrdinal));
       Assert.AreEqual(1, m_text1a.AsSpan().LongestCommonSubsequenceLength(m_text1b, m_comparisonOrdinalIgnoreCase));
@@ -99,7 +99,7 @@ namespace SystemFx
     }
 
     [TestMethod]
-    public void LongestCommonSubstring()
+    public void LongestCommonSubstring2()
     {
       Assert.AreEqual(1, m_text1a.AsSpan().LongestCommonSubstringLength(m_text1b, m_comparisonOrdinal));
       Assert.AreEqual(1, m_text1a.AsSpan().LongestCommonSubstringLength(m_text1b, m_comparisonOrdinalIgnoreCase));
@@ -115,7 +115,7 @@ namespace SystemFx
     }
 
     [TestMethod]
-    public void OptimalStringAlignment()
+    public void OptimalStringAlignment2()
     {
       Assert.AreEqual(3, m_text1a.AsSpan().OptimalStringAlignmentMetric(m_text1b, m_comparisonOrdinal));
       Assert.AreEqual(3, m_text1a.AsSpan().OptimalStringAlignmentMetric(m_text1b, m_comparisonOrdinalIgnoreCase));
@@ -131,7 +131,7 @@ namespace SystemFx
     }
 
     [TestMethod]
-    public void ShortestBalancingSubstring()
+    public void ShortestBalancingSubstring2()
     {
       var vocab = "ACGT";
 

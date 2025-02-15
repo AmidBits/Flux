@@ -10,7 +10,7 @@ namespace Flux
     /// <param name="equalityComparer"></param>
     /// <param name="values"></param>
     /// <returns></returns>
-    public static int IndexOfAny<T>(this System.ReadOnlySpan<T> source, System.Collections.Generic.IEqualityComparer<T> equalityComparer, params T[] values)
+    public static int IndexOfAny<T>(this System.ReadOnlySpan<T> source, System.Collections.Generic.IEqualityComparer<T>? equalityComparer, params T[] values)
     {
       equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
 

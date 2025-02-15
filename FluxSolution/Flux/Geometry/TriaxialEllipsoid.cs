@@ -26,9 +26,9 @@ namespace Flux.Geometry
     /// <param name="inclination"></param>
     /// <param name="azimuth"></param>
     /// <returns></returns>
-    public Coordinates.CartesianCoordinate PolarToCartesianCoordinate3(double inclination, double azimuth)
+    public CoordinateSystems.CartesianCoordinate PolarToCartesianCoordinate3(double inclination, double azimuth)
     {
-      var (x, y, z) = Coordinates.SphericalCoordinate.ConvertSphericalByInclinationToCartesianCoordinate3(inclination, azimuth, m_a, m_b, m_c);
+      var (x, y, z) = CoordinateSystems.SphericalCoordinate.ConvertSphericalByInclinationToCartesianCoordinate3(inclination, azimuth, m_a, m_b, m_c);
 
       return new(x, y, z, 0);
     }
@@ -40,9 +40,9 @@ namespace Flux.Geometry
     /// <param name="lat"></param>
     /// <param name="lon"></param>
     /// <returns></returns>
-    public Coordinates.CartesianCoordinate EquatorToCartesianCoordinate3(double lat, double lon)
+    public CoordinateSystems.CartesianCoordinate EquatorToCartesianCoordinate3(double lat, double lon)
     {
-      var (x, y, z) = Coordinates.SphericalCoordinate.ConvertSphericalByElevationToCartesianCoordinate3(lat, lon, m_a, m_b, m_c);
+      var (x, y, z) = CoordinateSystems.SphericalCoordinate.ConvertSphericalByElevationToCartesianCoordinate3(lat, lon, m_a, m_b, m_c);
 
       return new(x, y, z, 0);
     }

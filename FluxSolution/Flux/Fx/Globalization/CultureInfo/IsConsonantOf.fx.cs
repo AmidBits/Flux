@@ -21,7 +21,7 @@ namespace Flux
     /// <param name="culture">If null, then <see cref="System.Globalization.CultureInfo.CurrentCulture"/></param>
     /// <returns></returns>
     public static bool IsConsonantOf(this char source, System.Globalization.CultureInfo? culture = null)
-      => char.IsLetter(source) && GetConsonantsOf(culture!).Contains(source);
+      => char.IsLetter(source) && MemoryExtensions.Contains(GetConsonantsOf(culture!), source);
 
     /// <summary>
     /// <para></para>
@@ -30,6 +30,6 @@ namespace Flux
     /// <param name="culture">If null, then <see cref="System.Globalization.CultureInfo.CurrentCulture"/></param>
     /// <returns></returns>
     public static bool IsConsonantOf(this System.Text.Rune source, System.Globalization.CultureInfo? culture = null)
-      => System.Text.Rune.IsLetter(source) && GetConsonantsOf(culture!).Contains((char)source.Value);
+      => System.Text.Rune.IsLetter(source) && MemoryExtensions.Contains(GetConsonantsOf(culture!), (char)source.Value);
   }
 }

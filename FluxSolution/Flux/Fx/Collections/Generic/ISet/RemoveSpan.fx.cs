@@ -11,10 +11,6 @@ namespace Flux
           count++;
     }
 
-    public static void RemoveSpan<T>(this System.Collections.Generic.ISet<T> source, System.ReadOnlySpan<T> other)
-    {
-      for (var index = 0; index < other.Length; index++)
-        source.Remove(other[index]);
-    }
+    public static void RemoveSpan<T>(this System.Collections.Generic.ISet<T> source, System.ReadOnlySpan<T> other) => source.RemoveSpan(other, out var _);
   }
 }

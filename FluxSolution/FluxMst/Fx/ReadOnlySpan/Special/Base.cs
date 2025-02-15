@@ -3,10 +3,10 @@ using System.Linq;
 using Flux;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace SystemFx
+namespace NetFx.ReadOnlySpan.Special
 {
   [TestClass]
-  public class ReadOnlySpan
+  public partial class Base
   {
     [TestMethod]
     public void BoothsMinimalRotation()
@@ -51,34 +51,6 @@ namespace SystemFx
       var expected = 0.5;
       var actual = collection1.DiceSørensenCoefficient(collection2);
       Assert.AreEqual(expected, actual);
-    }
-
-    [TestMethod]
-    public void GetExtremum()
-    {
-      var span = new System.ReadOnlySpan<int>(new int[] { 45, 60, 90, 10, 20, 30, 50, 100, 70, 80, 40, 10, 20, 30 });
-
-      var expectedIndexMin = 11;
-      var expectedIndexMax = 7;
-
-      var (actualIndexMin, actualItemMin, actualValueMin, actualIndexMax, actualItemMax, actualValueMax) = span.Extremum(n => n, null);
-
-      Assert.AreEqual(expectedIndexMin, actualIndexMin);
-      Assert.AreEqual(expectedIndexMax, actualIndexMax);
-    }
-
-    [TestMethod]
-    public void GetInfimumAndSupremum()
-    {
-      var span = new System.ReadOnlySpan<int>([45, 60, 90, 10, 20, 30, 50, 100, 70, 80, 40, 10, 20, 30]);
-
-      var (actualIndexMin, actualItemMin, actualValueMin, actualIndexMax, actualItemMax, actualValueMax) = span.InfimumAndSupremum(60, n => n, true);
-      Assert.AreEqual(6, actualIndexMin);
-      Assert.AreEqual(8, actualIndexMax);
-
-      (actualIndexMin, actualItemMin, actualValueMin, actualIndexMax, actualItemMax, actualValueMax) = span.InfimumAndSupremum(55, n => n, false);
-      Assert.AreEqual(6, actualIndexMin);
-      Assert.AreEqual(1, actualIndexMax);
     }
 
     [TestMethod]
@@ -308,25 +280,23 @@ namespace SystemFx
       var b = System.Linq.Enumerable.Range(4, 9).ToArray().AsReadOnlySpan();
 
       var expected = new int[] { 4, 5 };
-      var actual = a.Intersect(b).ToArray();
+      var actual = a.Intersect(b).Order().ToArray();
 
       CollectionAssert.AreEqual(expected, actual, "SetIntersect");
     }
 
-    //[TestMethod]
-    //public void SetPowerSet()
-    //{
-    //  var a = System.Linq.Enumerable.Range(1, 5).ToArray().AsReadOnlySpan();
-    //  var b = System.Linq.Enumerable.Range(4, 9).ToArray().AsReadOnlySpan();
+    [TestMethod]
+    public void SetPowerSet()
+    {
+      var a = System.Linq.Enumerable.Range(1, 5).ToArray().AsReadOnlySpan();
+      var b = System.Linq.Enumerable.Range(4, 9).ToArray().AsReadOnlySpan();
 
-    //  var expected = new int[] { 4, 5 };
+      var expected = new int[][] { [], [1], [2], [3], [4], [5], [1, 2], [1, 3], [1, 4], [1, 5], [2, 3], [2, 4], [2, 5], [3, 4], [3, 5], [4, 5], [1, 2, 3], [1, 2, 4], [1, 2, 5], [1, 3, 4], [1, 3, 5], [1, 4, 5], [2, 3, 4], [2, 3, 5], [2, 4, 5], [3, 4, 5], [1, 2, 3, 4], [1, 2, 3, 5], [1, 2, 4, 5], [1, 3, 4, 5], [2, 3, 4, 5], [1, 2, 3, 4, 5] };
 
-    //  var actual = a.PowerSet();
+      var actual = a.PowerSet().OrderBy(a => a.Length).ThenBy(a => string.Join(",", a.Order())).ToArray();
 
-    //  CollectionAssert.AreEqual(expected, actual, "SetPowerSet");
-
-    //  actual = b.PowerSet();
-    //}
+      CollectionAssert.AreEqual(expected, actual, "SetPowerSet");
+    }
 
     [TestMethod]
     public void SetSymmetricExcept()

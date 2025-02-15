@@ -1,4 +1,4 @@
-namespace Flux.Geometry.Coordinates
+namespace Flux.Geometry.CoordinateSystems
 {
   /// <summary>
   /// <para>Spherical coordinate.</para>

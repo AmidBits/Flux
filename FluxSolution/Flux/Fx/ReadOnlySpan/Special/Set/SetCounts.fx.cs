@@ -11,7 +11,7 @@ namespace Flux
     /// <param name="returnIfUnfound"></param>
     /// <param name="equalityComparer"></param>
     /// <returns></returns>
-    public static (int unfoundCount, int uniqueCount) SetStatistics<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, bool returnIfUnfound, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
+    public static (int unfoundCount, int uniqueCount) SetCounts<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, bool returnIfUnfound, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
     {
       equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
 

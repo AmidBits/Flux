@@ -16,6 +16,18 @@
 		<DefineConstants>TRACE</DefineConstants>
 	</PropertyGroup>
 
+	<ItemGroup>
+	  <Compile Remove="TextTemplateTest\TextTemplateTest.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Include="TextTemplateTest\TextTemplateTest.cs">
+	    <DependentUpon>TextTemplateTest.tt</DependentUpon>
+	    <DesignTime>True</DesignTime>
+	    <AutoGen>True</AutoGen>
+	  </None>
+	</ItemGroup>
+
 	<!--<PropertyGroup>
 		<RuntimeIdentifier>win-x86</RuntimeIdentifier>
 		<PublishSingleFile>true</PublishSingleFile>
@@ -24,6 +36,17 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\Modeling\Modeling.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Update="TextTemplateTest\TextTemplateTest.tt">
+	    <LastGenOutput>TextTemplateTest.cs</LastGenOutput>
+	    <Generator>TextTemplatingFileGenerator</Generator>
+	  </None>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
 	</ItemGroup>
 
 </Project>

@@ -2,7 +2,7 @@ namespace Flux
 {
   public static partial class Em
   {
-    public static (Geometry.Shapes.Line.LineIntersectTest Outcome, Geometry.Coordinates.CartesianCoordinate Intersection) IntersectsWith(this Geometry.Shapes.Line.LineGeometry a, Geometry.Shapes.Line.LineGeometry b)
+    public static (Geometry.Shapes.Line.LineIntersectTest Outcome, Geometry.CoordinateSystems.CartesianCoordinate Intersection) IntersectsWith(this Geometry.Shapes.Line.LineGeometry a, Geometry.Shapes.Line.LineGeometry b)
     {
       var (Outcome, Intersection) = Geometry.Shapes.Line.LineGeometry.GivenTwoPointsOnEach(a.V1, a.V2, b.V1, b.V2);
 
@@ -46,7 +46,7 @@ namespace Flux
       public double X2 => m_v2[0];
       public double Y2 => m_v2[1];
 
-      public Coordinates.CartesianCoordinate Lerp(double p) => new(m_v1.Lerp(m_v2, p));
+      public CoordinateSystems.CartesianCoordinate Lerp(double p) => new(m_v1.Lerp(m_v2, p));
 
       public double SideTest(double x, double y) => SideTest(x, y, X1, Y1, X2, Y2);
 

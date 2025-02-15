@@ -1,11 +1,5 @@
 namespace Flux
 {
-  public static partial class Fx
-  {
-    public static SpanRuneToCharEnumerator EnumerateChars(this System.ReadOnlySpan<System.Text.Rune> source)
-      => new(source);
-  }
-
   public ref struct SpanRuneToCharEnumerator
   {
     private readonly System.ReadOnlySpan<System.Text.Rune> m_span;
@@ -21,7 +15,7 @@ namespace Flux
       m_span = span;
       m_spanIndex = 0;
 
-      m_spanChar = m_span.Length > 0 ? m_span[0].ToString() : System.ReadOnlySpan<char>.Empty;
+      m_spanChar = m_span.Length > 0 ? m_span[0].ToString() : [];
       m_spanCharIndex = 0;
 
       m_current = default;
@@ -57,7 +51,7 @@ namespace Flux
     {
       m_spanIndex = 0;
 
-      m_spanChar = m_span.Length > 0 ? m_span[0].ToString() : System.ReadOnlySpan<char>.Empty;
+      m_spanChar = m_span.Length > 0 ? m_span[0].ToString() : [];
       m_spanCharIndex = 0;
     }
   }

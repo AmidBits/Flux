@@ -24,7 +24,7 @@ namespace Flux
 
         if (!map.TryGetValue(key, out var value))
         {
-          value = new();
+          value = [];
 
           map[key] = value;
         }

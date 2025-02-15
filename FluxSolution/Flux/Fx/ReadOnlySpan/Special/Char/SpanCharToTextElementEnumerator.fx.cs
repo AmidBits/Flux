@@ -1,27 +1,21 @@
 namespace Flux
 {
-  public static partial class Fx
-  {
-    public static SpanCharToTextElementEnumerator EnumerateTextElements(this System.ReadOnlySpan<char> source)
-      => new(source);
-  }
-
   public ref struct SpanCharToTextElementEnumerator
   {
     private readonly System.ReadOnlySpan<char> m_span;
 
-    private System.ReadOnlySpan<char> m_startOfNextTextElement;
-
     private Text.TextElement m_current;
+
+    private System.ReadOnlySpan<char> m_startOfNextTextElement;
 
     internal SpanCharToTextElementEnumerator(System.ReadOnlySpan<char> span)
     {
       m_span = span;
 
-      m_startOfNextTextElement = m_span;
-
-      m_current = new Text.TextElement(System.ReadOnlySpan<char>.Empty);
+      Reset();
     }
+
+    internal SpanCharToTextElementEnumerator(System.Span<char> span) : this((System.ReadOnlySpan<char>)span) { }
 
     public readonly Text.TextElement Current => m_current;
 
@@ -45,9 +39,9 @@ namespace Flux
 
     public void Reset()
     {
-      m_startOfNextTextElement = m_span;
+      m_current = new Text.TextElement([]);
 
-      m_current = new Text.TextElement(System.ReadOnlySpan<char>.Empty);
+      m_startOfNextTextElement = m_span;
     }
   }
 }

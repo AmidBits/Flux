@@ -2,12 +2,16 @@ namespace Flux
 {
   public static partial class Fx
   {
-    public static System.Collections.Generic.IEnumerable<Text.TextElement> EnumerateTextElements(this string source)
+    public static System.Collections.Generic.List<Text.TextElement> GetTextElements(this string source)
     {
+      var list = new System.Collections.Generic.List<Text.TextElement>();
+
       var si = new System.Globalization.StringInfo(source);
 
       for (var index = 0; index < si.LengthInTextElements; index++)
-        yield return new Text.TextElement(si.SubstringByTextElements(index, 1));
+        list.Add(new Text.TextElement(si.SubstringByTextElements(index, 1)));
+
+      return list;
     }
   }
 }

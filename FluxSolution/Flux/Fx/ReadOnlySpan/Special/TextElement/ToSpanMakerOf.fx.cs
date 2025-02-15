@@ -2,7 +2,11 @@ namespace Flux
 {
   public static partial class Fx
   {
-    /// <summary>Creates a new <see cref="SpanMaker{T}"/> from the <paramref name="source"/> as content.</summary>
+    /// <summary>
+    /// <para>Creates a new <see cref="SpanMaker{T}"/> from the <paramref name="source"/> as content.</para>
+    /// </summary>
+    /// <param name="source"></param>
+    /// <returns></returns>
     public static Flux.SpanMaker<char> ToSpanMakerOfChar(this System.ReadOnlySpan<Text.TextElement> source)
     {
       var sm = new Flux.SpanMaker<char>();
@@ -11,12 +15,42 @@ namespace Flux
       return sm;
     }
 
-    /// <summary>Creates a new <see cref="SpanMaker{T}"/> from the <paramref name="source"/> as content.</summary>
+    /// <summary>
+    /// <para>Creates a new <see cref="SpanMaker{T}"/> from the <paramref name="source"/> as content.</para>
+    /// </summary>
+    /// <param name="source"></param>
+    /// <returns></returns>
     public static Flux.SpanMaker<System.Text.Rune> ToSpanMakerOfRune(this System.ReadOnlySpan<Text.TextElement> source)
     {
       var sm = new Flux.SpanMaker<System.Text.Rune>();
       for (var index = 0; index < source.Length; index++)
-        sm = sm.Append(1, source[index].AsReadOnlySpanOfChar.ToListOfRune());
+        sm = sm.Append(1, source[index].AsReadOnlySpan().ToListOfRune());
+      return sm;
+    }
+
+    /// <summary>
+    /// <para>Creates a new <see cref="SpanMaker{T}"/> from the <paramref name="source"/> as content.</para>
+    /// </summary>
+    /// <param name="source"></param>
+    /// <returns></returns>
+    public static Flux.SpanMaker<char> ToSpanMakerOfChar(this System.ReadOnlySpan<string> source)
+    {
+      var sm = new Flux.SpanMaker<char>();
+      for (var index = 0; index < source.Length; index++)
+        sm = sm.Append(1, source[index].AsSpan().ToListOfRune());
+      return sm;
+    }
+
+    /// <summary>
+    /// <para>Creates a new <see cref="SpanMaker{T}"/> from the <paramref name="source"/> as content.</para>
+    /// </summary>
+    /// <param name="source"></param>
+    /// <returns></returns>
+    public static Flux.SpanMaker<System.Text.Rune> ToSpanMakerOfRune(this System.ReadOnlySpan<string> source)
+    {
+      var sm = new Flux.SpanMaker<System.Text.Rune>();
+      for (var index = 0; index < source.Length; index++)
+        sm = sm.Append(1, source[index].AsSpan().ToListOfRune());
       return sm;
     }
   }

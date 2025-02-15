@@ -40,19 +40,19 @@ namespace Flux
     }
 
     /// <summary>
-    /// <para>Returns the last index of <paramref name="value"/> in <paramref name="source"/>, or -1 if not found. Uses the specified <paramref name="equalityComparer"/>, or default if null.</para>
+    /// <para>Returns the last index of <paramref name="target"/> in <paramref name="source"/>, or -1 if not found. Uses the specified <paramref name="equalityComparer"/>, or default if null.</para>
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <param name="source"></param>
-    /// <param name="value"></param>
+    /// <param name="target"></param>
     /// <param name="equalityComparer"></param>
     /// <returns></returns>
-    public static int LastIndexOf<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> value, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
+    public static int LastIndexOf<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
     {
       equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
 
-      for (var index = source.Length - value.Length; index >= 0; index--)
-        if (source.IsCommonPrefix(index, value, equalityComparer))
+      for (var index = source.Length - target.Length; index >= 0; index--)
+        if (source.Slice(index).IsCommonPrefix(target, equalityComparer))
           return index;
 
       return -1;

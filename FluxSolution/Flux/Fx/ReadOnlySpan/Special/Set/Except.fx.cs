@@ -11,13 +11,15 @@ namespace Flux
     /// <param name="equalityComparer"></param>
     /// <param name="additionalCapacity"></param>
     /// <returns></returns>
-    public static System.Collections.Generic.HashSet<T> Except<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null, int additionalCapacity = 0)
+    public static System.Collections.Generic.HashSet<T> Except<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
     {
-      if (source == target) return new System.Collections.Generic.HashSet<T>(additionalCapacity, equalityComparer); // A set minus itself is an empty set.
+      if (source == target)
+        return new(equalityComparer); // A set minus itself is an empty set.
 
-      var except = source.ToHashSet(equalityComparer, additionalCapacity);
+      var except = source.ToHashSet(equalityComparer);
 
-      if (target.Length > 0) except.RemoveSpan(target); // If target is empty, source is the result.
+      if (target.Length > 0)
+        except.RemoveSpan(target); // If target is empty, source is the result.
 
       return except;
     }

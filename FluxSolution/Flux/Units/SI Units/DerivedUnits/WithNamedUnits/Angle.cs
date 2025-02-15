@@ -499,13 +499,13 @@ namespace Flux.Units
         {
           var decimalDegrees = 0.0;
 
-          if (m.Groups["Degrees"] is var g1 && g1.Success && double.TryParse(g1.Value.AsSpan().TrimCommonSuffix(0, c => !char.IsDigit(c)), out var degrees))
+          if (m.Groups["Degrees"] is var g1 && g1.Success && double.TryParse(g1.Value.AsSpan().TrimCommonSuffix(c => !char.IsDigit(c)), out var degrees))
             decimalDegrees += degrees;
 
-          if (m.Groups["Minutes"] is var g2 && g2.Success && double.TryParse(g2.Value.AsSpan().TrimCommonSuffix(0, c => !char.IsDigit(c)), out var minutes))
+          if (m.Groups["Minutes"] is var g2 && g2.Success && double.TryParse(g2.Value.AsSpan().TrimCommonSuffix(c => !char.IsDigit(c)), out var minutes))
             decimalDegrees += minutes / 60;
 
-          if (m.Groups["Seconds"] is var g3 && g3.Success && double.TryParse(g3.Value.AsSpan().TrimCommonSuffix(0, c => !char.IsDigit(c)), out var seconds))
+          if (m.Groups["Seconds"] is var g3 && g3.Success && double.TryParse(g3.Value.AsSpan().TrimCommonSuffix(c => !char.IsDigit(c)), out var seconds))
             decimalDegrees += seconds / 3600;
 
           if (m.Groups["Direction"] is var g4 && g4.Success && (g4.Value[0] == 'S' || g4.Value[0] == 'W'))

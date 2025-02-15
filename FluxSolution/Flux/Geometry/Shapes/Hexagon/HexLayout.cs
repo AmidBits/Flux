@@ -18,7 +18,7 @@ namespace Flux.Geometry.Shapes.Hexagon
     public System.Drawing.Point Origin { get => m_origin; init => m_origin = value; }
     public HexOrientation Orientation { get => m_orientation; init => m_orientation = value; }
 
-    public void HexToPixel(Coordinates.HexCoordinate<int> h, out double x, out double y)
+    public void HexToPixel(CoordinateSystems.HexCoordinate<int> h, out double x, out double y)
     {
       x = (m_orientation.F0 * h.Q + m_orientation.F1 * h.R) * m_size.X;
       y = (m_orientation.F2 * h.Q + m_orientation.F3 * h.R) * m_size.Y;
@@ -27,7 +27,7 @@ namespace Flux.Geometry.Shapes.Hexagon
       y += m_origin.Y;
     }
 
-    public Coordinates.HexCoordinate<double> PixelToHex(double x, double y)
+    public CoordinateSystems.HexCoordinate<double> PixelToHex(double x, double y)
     {
       var dx = (x - m_origin.X) / m_size.X;
       var dy = (y - m_origin.Y) / m_size.Y;
@@ -46,7 +46,7 @@ namespace Flux.Geometry.Shapes.Hexagon
       y = m_size.Y * System.Math.Sin(angle);
     }
 
-    public System.Collections.Generic.List<(double x, double y)> PolygonCorners(Coordinates.HexCoordinate<int> h)
+    public System.Collections.Generic.List<(double x, double y)> PolygonCorners(CoordinateSystems.HexCoordinate<int> h)
     {
       var corners = new System.Collections.Generic.List<(double x, double y)>();
 

@@ -2,7 +2,7 @@ namespace Flux
 {
   public static partial class Em
   {
-    public static (Geometry.Shapes.Line.LineSegmentIntersectTest Outcome, Geometry.Coordinates.CartesianCoordinate Intersection) IntersectsWith(this Geometry.Shapes.Line.LineSegmentGeometry a, Geometry.Shapes.Line.LineSegmentGeometry b)
+    public static (Geometry.Shapes.Line.LineSegmentIntersectTest Outcome, Geometry.CoordinateSystems.CartesianCoordinate Intersection) IntersectsWith(this Geometry.Shapes.Line.LineSegmentGeometry a, Geometry.Shapes.Line.LineSegmentGeometry b)
     {
       var (Outcome, Intersection) = Geometry.Shapes.Line.LineSegmentGeometry.GivenTwoPointsOnEach(a.V1, a.V2, b.V1, b.V2);
 
@@ -42,7 +42,7 @@ namespace Flux
 
       public double Length => m_v1.Subtract(m_v2).EuclideanLength();
 
-      public Geometry.Coordinates.CartesianCoordinate Lerp(double p) => new(p < 0 ? m_v1 : p > 1 ? m_v2 : m_v1.Lerp(m_v2, p));
+      public Geometry.CoordinateSystems.CartesianCoordinate Lerp(double p) => new(p < 0 ? m_v1 : p > 1 ? m_v2 : m_v1.Lerp(m_v2, p));
 
       public LineGeometry ToLineGeometry() => new(m_v1, m_v2);
 

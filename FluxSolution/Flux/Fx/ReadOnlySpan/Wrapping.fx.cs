@@ -15,7 +15,7 @@ namespace Flux
     {
       equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
 
-      return source.Length >= (left.Length + right.Length) && source.IsCommonPrefix(0, left, equalityComparer) && source.IsCommonSuffix(0, right, equalityComparer);
+      return source.Length >= (left.Length + right.Length) && source.IsCommonPrefix(left, equalityComparer) && source.IsCommonSuffix(right, equalityComparer);
     }
   }
 }

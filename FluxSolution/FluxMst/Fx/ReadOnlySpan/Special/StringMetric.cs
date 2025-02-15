@@ -3,10 +3,10 @@ using Flux;
 using Flux.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace SystemFx
+namespace NetFx.ReadOnlySpan.Special
 {
   [TestClass]
-  public partial class SequenceMetrics
+  public partial class StringMetric
   {
     readonly string source = "Senor Hugo";
     readonly string target = "señor hugo";

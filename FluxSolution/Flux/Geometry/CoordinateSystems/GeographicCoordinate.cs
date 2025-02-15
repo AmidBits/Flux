@@ -1,4 +1,4 @@
-namespace Flux.Geometry.Coordinates
+namespace Flux.Geometry.CoordinateSystems
 {
   /// <summary>Represents a geographic position, using latitude, longitude and altitude.</summary>
   /// <seealso cref="http://www.edwilliams.org/avform.htm"/>
@@ -79,8 +79,8 @@ namespace Flux.Geometry.Coordinates
     /// <summary>The longitude component of the geographic position. Range from -180.0 (western half) to 180.0 degrees (eastern half).</summary>
     public Geodesy.Longitude Longitude => m_longitude;
 
-    /// <summary>Creates a new <see cref="Coordinates.SphericalCoordinate"/> from the <see cref="GeographicCoordinate"/>.</summary>
-    public Coordinates.SphericalCoordinate ToSphericalCoordinate()
+    /// <summary>Creates a new <see cref="CoordinateSystems.SphericalCoordinate"/> from the <see cref="GeographicCoordinate"/>.</summary>
+    public CoordinateSystems.SphericalCoordinate ToSphericalCoordinate()
     // Translates the geographic coordinate to spherical coordinate transparently. I cannot recall the reason for the System.Math.PI involvement (see remarks).
     {
       var (lat, lon, alt) = this;

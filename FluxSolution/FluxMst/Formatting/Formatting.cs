@@ -7,14 +7,11 @@ namespace Formatting
   [TestClass]
   public class Dms
   {
-    readonly string _dms1 = "40\u00B011\u203215\u2033"; // Default is to use Unicode, so we test with Unicode.
-    readonly double _dms1tp = 40.1875;
-
     [TestMethod]
     public void LatitudeFormatter()
     {
       var expected = $"40\u00B011\u203215\u2033N"; // Default is to use Unicode, so we test with Unicode.
-      var actual = Flux.Units.Angle.ToStringDmsNotation(40.1875, Flux.Units.AngleDmsNotation.DegreesMinutesDecimalSeconds, Flux.Geometry.Geodesy.CompassCardinalAxis.NorthSouth);
+      var actual = new Flux.Geometry.Geodesy.Latitude(40.1875).ToDmsNotationString();
 
       var e = expected.ToCharArray(); // For comparing odd unicode choices.
       var a = actual.ToCharArray(); // For comparing odd unicode choices.
@@ -25,16 +22,17 @@ namespace Formatting
     [TestMethod]
     public void LatitudeTryParse()
     {
-      Assert.IsTrue(Flux.Units.Angle.TryParseDmsNotations(_dms1, out var dms1tp));
+      var expected = 40.1875;
+      var actual = Flux.Geometry.Geodesy.Latitude.ParseDmsNotation("40\u00B011\u2032 15\u2033 N").Value;
 
-      Assert.AreEqual(_dms1tp, dms1tp.GetUnitValue(Flux.Units.AngleUnit.Degree));
+      Assert.AreEqual(expected, actual);
     }
 
     [TestMethod]
     public void LongitudeFormatter()
     {
-      var expected = $"40\u00B011\u203215\u2033E"; // Default is to use Unicode, so we test with Unicode.
-      var actual = Flux.Units.Angle.ToStringDmsNotation(40.1875, Flux.Units.AngleDmsNotation.DegreesMinutesDecimalSeconds, Flux.Geometry.Geodesy.CompassCardinalAxis.EastWest);
+      var expected = $"40\u00B011\u203215\u2033W"; // Default is to use Unicode, so we test with Unicode.
+      var actual = new Flux.Geometry.Geodesy.Longitude(-40.1875).ToDmsNotationString();
 
       var e = expected.ToCharArray(); // For comparing odd unicode choices.
       var a = actual.ToCharArray(); // For comparing odd unicode choices.
@@ -45,9 +43,10 @@ namespace Formatting
     [TestMethod]
     public void LongitudeTryParse()
     {
-      Assert.IsTrue(Flux.Units.Angle.TryParseDmsNotations(_dms1, out var dms1tp));
+      var expected = -40.1875;
+      var actual = Flux.Geometry.Geodesy.Longitude.ParseDmsNotation("40\u00B011\u2032 15\u2033 W").Value;
 
-      Assert.AreEqual(_dms1tp, dms1tp.GetUnitValue(Flux.Units.AngleUnit.Degree));
+      Assert.AreEqual(expected, actual);
     }
   }
 

@@ -6,17 +6,18 @@ namespace Flux
 #if NET9_0_OR_GREATER
 
     /// <summary>
-    /// <para>Creates a new list of ranges and sub-strings in <paramref name="source"/> split by <paramref name="regexPattern"/></para>
+    /// <para>Creates a new list of ranges and sub-strings in <paramref name="source"/> that's been split by <paramref name="regexPattern"/></para>
     /// </summary>
     /// <param name="source"></param>
     /// <param name="regexPattern"></param>
     /// <returns></returns>
-    public static System.Collections.Generic.List<(System.Range Range, string Text)> RegexSplits(this System.ReadOnlySpan<char> source, string regexPattern)
+    public static DataStructures.OrderedDictionary<Slice, string> RegexSplits(this System.ReadOnlySpan<char> source, string regexPattern)
     {
-      var list = new System.Collections.Generic.List<(System.Range Range, string Text)>();
-      foreach (var range in new System.Text.RegularExpressions.Regex(regexPattern).EnumerateSplits(source))
-        list.Add((range, source[range].ToString()));
-      return list;
+      var dictionary = new DataStructures.OrderedDictionary<Slice, string>();
+      foreach (var r in new System.Text.RegularExpressions.Regex(regexPattern).EnumerateSplits(source))
+        if (new Slice(r, source.Length) is var slice)
+          dictionary.Add(slice, source.Slice(slice).ToString());
+      return dictionary;
     }
 
 #endif

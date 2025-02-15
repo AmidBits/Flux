@@ -4,7 +4,7 @@ namespace Flux
   {
     private const int DefaultBufferSize = 2;
 
-    private T[] m_array;
+    private readonly T[] m_array;
 
     private int m_head; // Start of buffer data.
     private int m_tail; // End of buffer data.
@@ -19,7 +19,7 @@ namespace Flux
 
     public SpanMaker(int capacity)
     {
-      m_array = capacity >= 1 ? System.Buffers.ArrayPool<T>.Shared.Rent(int.Max(capacity, DefaultBufferSize).Pow2AwayFromZero(false)) : System.Array.Empty<T>();
+      m_array = capacity >= 1 ? System.Buffers.ArrayPool<T>.Shared.Rent(int.Max(capacity, DefaultBufferSize).Pow2AwayFromZero(false)) : [];
 
       m_head = m_array.Length / 2;
       m_tail = m_array.Length / 2;
@@ -29,7 +29,7 @@ namespace Flux
 
 #if NET9_0_OR_GREATER
 
-    public SpanMaker(System.ReadOnlySpan<T> span)
+    public SpanMaker(params System.ReadOnlySpan<T> span)
       : this(span.Length + DefaultBufferSize)
     {
       m_head = m_array.Length / 2 - span.Length / 2;
@@ -82,59 +82,59 @@ namespace Flux
     /// </summary>
     public readonly int Length => m_tail - m_head;
 
+    #region Append
+
     public SpanMaker<T> Append(int count, SpanMaker<T> other) => Append(count, other.AsReadOnlySpan());
 
     public SpanMaker<T> Append(SpanMaker<T> other) => Append(1, other.AsReadOnlySpan());
 
-    #region Append
+    //#if NET9_0_OR_GREATER
 
-#if XNET9_0_OR_GREATER
+    //    /// <summary>Append <paramref name="collection"/>, <paramref name="count"/> times.</summary>
+    //    public SpanMaker<T> Append(int count, params System.Collections.Generic.ICollection<T> collection)
+    //    {
+    //      var totalAppend = collection.Count * count;
 
-    /// <summary>Append <paramref name="collection"/>, <paramref name="count"/> times.</summary>
-    public SpanMaker<T> Append(int count, params System.Collections.Generic.ICollection<T> collection)
-    {
-      var totalAppend = collection.Count * count;
+    //      var (array, head, tail) = EnsureCapacityAppend(totalAppend);
 
-      var (array, head, tail) = EnsureCapacityAppend(totalAppend);
+    //      var index = tail - totalAppend;
 
-      var index = tail - totalAppend;
+    //      while (count-- > 0)
+    //      {
+    //        collection.CopyTo(array, index);
 
-      while (count-- > 0)
-      {
-        collection.CopyTo(array, index);
+    //        index += collection.Count;
+    //      }
 
-        index += collection.Count;
-      }
+    //      return new(array, head, tail);
+    //    }
 
-      return new(array, head, tail);
-    }
+    //    /// <summary>Append <paramref name="span"/>, <paramref name="count"/> times.</summary>
+    //    public SpanMaker<T> Append(int count, params System.ReadOnlySpan<T> span)
+    //    {
+    //      var totalAppend = span.Length * count;
 
-    /// <summary>Append <paramref name="span"/>, <paramref name="count"/> times.</summary>
-    public SpanMaker<T> Append(int count, params System.ReadOnlySpan<T> span)
-    {
-      var totalAppend = span.Length * count;
+    //      var (array, head, tail) = EnsureCapacityAppend(totalAppend);
 
-      var (array, head, tail) = EnsureCapacityAppend(totalAppend);
+    //      var index = tail - totalAppend;
 
-      var index = tail - totalAppend;
+    //      while (count-- > 0)
+    //      {
+    //        span.CopyTo(array.AsSpan().Slice(index, span.Length));
 
-      while (count-- > 0)
-      {
-        span.CopyTo(array.AsSpan().Slice(index, span.Length));
+    //        index += span.Length;
+    //      }
 
-        index += span.Length;
-      }
+    //      return new(array, head, tail);
+    //    }
 
-      return new(array, head, tail);
-    }
+    //    /// <summary>Append <paramref name="collection"/>, <paramref name="count"/> times.</summary>
+    //    public SpanMaker<T> Append(params System.Collections.Generic.ICollection<T> collection) => Append(1, collection);
 
-    /// <summary>Append <paramref name="collection"/>, <paramref name="count"/> times.</summary>
-    public SpanMaker<T> Append(params System.Collections.Generic.ICollection<T> collection) => Append(1, collection);
+    //    /// <summary>Append <paramref name="span"/>, <paramref name="count"/> times.</summary>
+    //    public SpanMaker<T> Append(params System.ReadOnlySpan<T> span) => Append(1, span);
 
-    /// <summary>Append <paramref name="span"/>, <paramref name="count"/> times.</summary>
-    public SpanMaker<T> Append(params System.ReadOnlySpan<T> span) => Append(1, span);
-
-#else
+    //#else
 
     /// <summary>Append <paramref name="value"/>, <paramref name="count"/> times.</summary>
     public SpanMaker<T> Append(int count, T value)
@@ -193,14 +193,14 @@ namespace Flux
     /// <summary>Append <paramref name="span"/>.</summary>
     public SpanMaker<T> Append(System.ReadOnlySpan<T> span) => Append(1, span);
 
-#endif
+    //#endif
 
     #endregion // Append
 
     /// <summary>Creates a non-allocating <see cref="System.ReadOnlySpan{T}"/> of the elements in the <see cref="SpanMaker{T}"/>.</summary>
     public readonly System.ReadOnlySpan<T> AsReadOnlySpan() => new(m_array, m_head, m_tail - m_head);
 
-    /// <summary>Creates a non-allocating <see cref="System.Span{T}"/> of the elements in the <see cref="SpanMaker{T}"/>. This provides partial direct access into the underlying array storage for the SpanBuilder.</summary>
+    /// <summary>Creates a non-allocating <see cref="System.Span{T}"/> of the elements in the <see cref="SpanMaker{T}"/>. This provides partial direct access into the underlying array storage for the <see cref="SpanMaker{T}"/>.</summary>
     /// <remarks>Use with caution!</remarks>
     public readonly System.Span<T> AsSpan() => new(m_array, m_head, m_tail - m_head);
 
@@ -212,28 +212,86 @@ namespace Flux
       m_tail = m_array.Length / 2;
     }
 
+    #region Duplicate methods
+
     /// <summary>
-    /// <para>Duplicates the elements satisfying the <paramref name="predicate"/> <paramref name="count"/> times.</para>
+    /// <para>Duplicates all elements satisfying the <paramref name="predicate"/>, <paramref name="count"/> times, in the <see cref="SpanMaker{T}"/>.</para>
     /// </summary>
     /// <param name="predicate"></param>
     /// <param name="count"></param>
     /// <returns></returns>
-    public SpanMaker<T> Duplicate(System.Func<T, bool> predicate, int count)
+    public readonly SpanMaker<T> Duplicate(System.Func<T, bool> predicate, int count)
     {
-      var sm = this;
+      var totalDuplicatesToInsert = 0;
+      for (var index = m_head; index < m_tail; index++)
+        if (predicate(m_array[index]))
+          totalDuplicatesToInsert += count;
 
-      for (var index = 0; index < sm.Length; index++)
-        if (sm[index] is var value && predicate(value))
+      var (array, head, tail) = EnsureCapacityAppend(totalDuplicatesToInsert);
+
+      var targetIndex = tail;
+      var sourceIndex = tail - totalDuplicatesToInsert;
+
+      while (targetIndex > sourceIndex)
+      {
+        var sc = array[--sourceIndex];
+
+        if (predicate(sc))
         {
-          sm = sm.Insert(index, count, value);
+          targetIndex -= count;
 
-          index += count;
+          System.Array.Fill(array, sc, --targetIndex, count + 1);
         }
+        else
+          array[--targetIndex] = sc;
+      }
 
-      return sm;
+      return new SpanMaker<T>(array, head, tail);
     }
 
-    internal (T[] array, int head, int tail) EnsureCapacityAppend(int needAppend)
+    /// <summary>
+    /// <para>Duplicates all elements that equals any <paramref name="values"/>, <paramref name="count"/> times, in the <see cref="SpanMaker{T}"/>.</para>
+    /// </summary>
+    /// <param name="count"></param>
+    /// <param name="values"></param>
+    /// <returns></returns>
+    public readonly SpanMaker<T> Duplicate(int count, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null, params T[] values) => Duplicate(c => values.Contains(c, equalityComparer), count);
+
+    #endregion // Duplicate methods
+
+    #region (internal) EnsureCapacity methods
+
+    //readonly internal void EnsureCapacityAppendTest(int needAppend, out T[] array, out int head, out int tail)
+    //{
+    //  (array, head, tail) = this;
+
+    //  if (FreeAppend > needAppend) // There is already room to prepend.
+    //  {
+    //    tail += needAppend;
+    //    return;
+    //  }
+    //  else if (FreePrepend + FreeAppend > needAppend) // There is room, if current data is moved.
+    //  {
+    //    var offset = (needAppend - FreeAppend);
+    //    System.Array.Copy(array, head, array, head - offset, Length);
+    //    head -= offset;
+    //    tail = array.Length;
+    //    return;
+    //  }
+
+    //  var totalSize = FreePrepend + Length + needAppend + FreeAppend;
+
+    //  array = System.Buffers.ArrayPool<T>.Shared.Rent(int.Max(totalSize, DefaultBufferSize).Pow2AwayFromZero(true));
+
+    //  head = FreePrepend;
+    //  tail = FreePrepend + Length + needAppend;
+
+    //  System.Array.Copy(m_array, m_head, array, head, Length); // Copy old content.
+
+    //  return;
+    //}
+
+    readonly internal (T[] array, int head, int tail) EnsureCapacityAppend(int needAppend)
     {
       var (array, head, tail) = this;
 
@@ -258,7 +316,7 @@ namespace Flux
       return (array, head, tail);
     }
 
-    internal (T[] array, int head, int tail) EnsureCapacityInsert(int indexInsert, int needInsert)
+    readonly internal (T[] array, int head, int tail) EnsureCapacityInsert(int indexInsert, int needInsert)
     {
       var (array, head, tail) = this;
 
@@ -301,7 +359,7 @@ namespace Flux
       return (array, head, tail);
     }
 
-    internal (T[] array, int head, int tail) EnsureCapacityPrepend(int needPrepend)
+    readonly internal (T[] array, int head, int tail) EnsureCapacityPrepend(int needPrepend)
     {
       var (array, head, tail) = this;
 
@@ -326,15 +384,36 @@ namespace Flux
       return (array, head, tail);
     }
 
-    public SpanMaker<T> Insert(int index, SpanMaker<T> spanGlue, int count) => Insert(index, count, spanGlue.AsReadOnlySpan().ToArray().AsReadOnlySpan());
-
-    public SpanMaker<T> Insert(int index, SpanMaker<T> spanGlue) => Insert(index, 1, spanGlue.AsReadOnlySpan().ToArray().AsReadOnlySpan());
+    #endregion // EnsureCapacity methods
 
     #region Insert
 
-#if XNET9_0_OR_GREATER
+    /// <summary>
+    /// <para>Inserts all elements from <paramref name="another"/> span-maker, <paramref name="count"/> times, into the <see cref="SpanMaker{T}"/> starting at <paramref name="index"/>.</para>
+    /// </summary>
+    /// <param name="index"></param>
+    /// <param name="another"></param>
+    /// <param name="count"></param>
+    /// <returns></returns>
+    public SpanMaker<T> Insert(int index, SpanMaker<T> another, int count) => Insert(index, count, another.AsReadOnlySpan().ToArray().AsReadOnlySpan());
 
-    /// <summary>Insert <paramref name="count"/> of <paramref name="collection"/> starting at <paramref name="index"/>.</summary>
+    /// <summary>
+    /// <para>Inserts all elements from <paramref name="another"/> span-maker into the <see cref="SpanMaker{T}"/> starting at <paramref name="index"/>.</para>
+    /// </summary>
+    /// <param name="index"></param>
+    /// <param name="another"></param>
+    /// <returns></returns>
+    public SpanMaker<T> Insert(int index, SpanMaker<T> another) => Insert(index, 1, another.AsReadOnlySpan().ToArray().AsReadOnlySpan());
+
+#if NET9_0_OR_GREATER
+
+    /// <summary>
+    /// <para>Insert all elements from a <paramref name="collection"/>, <paramref name="count"/> times, into the <see cref="SpanMaker{T}"/> starting at <paramref name="index"/>.</para>
+    /// </summary>
+    /// <param name="index"></param>
+    /// <param name="count"></param>
+    /// <param name="collection"></param>
+    /// <returns></returns>
     public SpanMaker<T> Insert(int index, int count, params System.Collections.Generic.ICollection<T> collection)
     {
       var totalInsert = collection.Count * count;
@@ -353,7 +432,13 @@ namespace Flux
       return new(array, head, tail);
     }
 
-    /// <summary>Insert <paramref name="count"/> of <paramref name="span"/> starting at <paramref name="index"/>.</summary>
+    /// <summary>
+    /// <para>Insert all elements from a <paramref name="span"/>, <paramref name="count"/> times, into the <see cref="SpanMaker{T}"/> starting at <paramref name="index"/>.</para>
+    /// </summary>
+    /// <param name="index"></param>
+    /// <param name="count"></param>
+    /// <param name="span"></param>
+    /// <returns></returns>
     public SpanMaker<T> Insert(int index, int count, params System.ReadOnlySpan<T> span)
     {
       var totalInsert = span.Length * count;
@@ -370,8 +455,20 @@ namespace Flux
       return new(array, head, tail);
     }
 
+    /// <summary>
+    /// <para>Insert all elements from a <paramref name="collection"/> into the <see cref="SpanMaker{T}"/> starting at <paramref name="index"/>.</para>
+    /// </summary>
+    /// <param name="index"></param>
+    /// <param name="collection"></param>
+    /// <returns></returns>
     public SpanMaker<T> Insert(int index, params System.Collections.Generic.ICollection<T> collection) => Insert(index, 1, collection);
 
+    /// <summary>
+    /// <para>Insert all elements from a <paramref name="span"/> into the <see cref="SpanMaker{T}"/> starting at <paramref name="index"/>.</para>
+    /// </summary>
+    /// <param name="index"></param>
+    /// <param name="span"></param>
+    /// <returns></returns>
     public SpanMaker<T> Insert(int index, params System.ReadOnlySpan<T> span) => Insert(index, 1, span);
 
 #else
@@ -426,12 +523,18 @@ namespace Flux
 
     #endregion // Insert
 
-#if NET9_0_OR_GREATER
+    #region Normalization methods
 
     /// <summary>
-    /// <para>Normalize (trim down) any consecutive <paramref name="values"/> (or all items, if none specified) that occur more than <paramref name="maxAdjacentCount"/> in the <see cref="SpanBuilder{T}"/>. Uses the specfied <paramref name="equalityComparer"/>.</para>
+    /// <para>Normalize (reduce count of) any consecutive elements from <paramref name="values"/> (or all, if empty or null) that occur more than <paramref name="maxAdjacentCount"/> in the <see cref="SpanMaker{T}"/>.</para>
+    /// <para>Uses the specfied <paramref name="equalityComparer"/>, or default if null.</para>
     /// </summary>
-    public SpanMaker<T> NormalizeAdjacent(int maxAdjacentCount, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null, params System.ReadOnlySpan<T> values)
+    /// <param name="maxAdjacentCount">The maximum number of adjacent/consecutive items to allow.</param>
+    /// <param name="equalityComparer">The equality comparer to use, or <see cref="System.Collections.Generic.EqualityComparer{T}.Default"/> if null.</param>
+    /// <param name="values">The items to normalize.</param>
+    /// <returns></returns>
+    /// <exception cref="System.ArgumentNullException"></exception>
+    public SpanMaker<T> NormalizeAdjacent(int maxAdjacentCount, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null, bool any = false, params T[] values)
     {
       if (maxAdjacentCount < 1) throw new System.ArgumentNullException(nameof(maxAdjacentCount));
 
@@ -446,9 +549,9 @@ namespace Flux
       {
         var current = m_array[i];
 
-        var isEqual = values.Length > 0 // Use span or just items?
-          ? (values.Exists(c => equalityComparer.Equals(c, current)) && values.Exists(c => equalityComparer.Equals(c, previous))) // Is both current and previous in items?
-          : equalityComparer.Equals(current, previous); // Are current and previous items equal?
+        var isEqual = any
+          ? values.Contains(current, equalityComparer) && values.Contains(previous, equalityComparer)
+          : values.Contains(current, equalityComparer) && equalityComparer.Equals(current, previous);
 
         if (!isEqual || adjacentLength < maxAdjacentCount)
         {
@@ -464,54 +567,13 @@ namespace Flux
 
       return this;
     }
-
-#else
-
-    /// <summary>
-    /// <para>Normalize (trim down) any consecutive <paramref name="values"/> (or all items, if none specified) that occur more than <paramref name="maxAdjacentCount"/> in the <see cref="SpanBuilder{T}"/>. Uses the specfied <paramref name="equalityComparer"/>.</para>
-    /// </summary>
-    public SpanMaker<T> NormalizeAdjacent(int maxAdjacentCount, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null, params T[] values)
-    {
-      System.ArgumentNullException.ThrowIfNull(values);
-
-      if (maxAdjacentCount < 1) throw new System.ArgumentNullException(nameof(maxAdjacentCount));
-
-      equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
-
-      var normalizedTail = m_head;
-
-      T previous = default!;
-      var adjacentLength = 1;
-
-      for (var i = m_head; i < m_tail; i++)
-      {
-        var current = m_array[i];
-
-        var isEqual = values.Length > 0 // Use span or just items?
-          ? (System.Array.Exists(values, c => equalityComparer.Equals(c, current)) && System.Array.Exists(values, c => equalityComparer.Equals(c, previous))) // Is both current and previous in items?
-          : equalityComparer.Equals(current, previous); // Are current and previous items equal?
-
-        if (!isEqual || adjacentLength < maxAdjacentCount)
-        {
-          m_array[normalizedTail++] = current;
-
-          previous = current;
-        }
-
-        adjacentLength = !isEqual ? 1 : adjacentLength + 1;
-      }
-
-      m_tail = normalizedTail;
-
-      return this;
-    }
-
-#endif
 
     /// <summary>
     /// <para>Normalize all adjacent duplicates. Uses the specified <paramref name="equalityComparer"/>.</para>
     /// </summary>
-    public SpanMaker<T> NormalizeAdjacentDuplicates(System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
+    /// <param name="equalityComparer"></param>
+    /// <returns></returns>
+    public SpanMaker<T> NormalizeDuplicates(System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
     {
       if (Length >= 2)
       {
@@ -529,11 +591,13 @@ namespace Flux
       return this;
     }
 
-    /// <summary>Normalize any one or more consecutive items satisfied by the <paramref name="predicate"/> to one instance of <paramref name="replacement"/>.</summary>
-    /// <example>"".Normalize(char.IsWhiteSpace, ' ');</example>
-    /// <example>"".Normalize(c => c == ' ', ' ');</example>
-    /// <remarks>Normalizing (here) means removing leading/trailing (either end of the <see cref="SpanBuilder{T}"/>) and replacing one or more consecutive characters satisfying the <paramref name="predicate"/> within the <see cref="SpanBuilder{T}"/> to one instance of <paramref name="replacement"/>. No replacements, i.e. only removals, are performed if elements are on left or right edge.</remarks>
-    public SpanMaker<T> NormalizeAll(System.Func<T, bool> predicate, T replacement)
+    /// <summary>
+    /// <para>Normalize any one or more consecutive elements satisfying the <paramref name="predicate"/> to a single <paramref name="replacement"/> element.</para>
+    /// <para><c>"".Normalize(char.IsWhiteSpace, ' ');</c></para>
+    /// <para><c>"".Normalize(c => c == ' ', ' ');</c></para>
+    /// </summary>
+    /// <remarks>Normalizing (here) means removing leading/trailing (i.e. on either end) and replacing one or more consecutive characters satisfying the <paramref name="predicate"/> within the <see cref="SpanMaker{T}"/> to one instance of <paramref name="replacement"/>. No replacements, i.e. only removals, are performed if elements are on left or right edge.</remarks>
+    public SpanMaker<T> NormalizeReplace(System.Func<T, bool> predicate, T replacement)
     {
       System.ArgumentNullException.ThrowIfNull(predicate);
 
@@ -562,70 +626,74 @@ namespace Flux
       return this;
     }
 
-#if XNET9_0_OR_GREATER
+    #endregion // Normalization methods
 
-    /// <summary>
-    /// <para>Pad evenly on both sides (with <paramref name="leftBias"/> if true, or right-bias if false) using <paramref name="paddingLeft"/> and <paramref name="paddingRight"/> to the specified <paramref name="totalWidth"/>.</para>
-    /// </summary>
-    /// <param name="totalWidth"></param>
-    /// <param name="paddingLeft"></param>
-    /// <param name="paddingRight"></param>
-    /// <param name="leftBias"></param>
-    /// <returns></returns>
-    public SpanMaker<T> PadEven(int totalWidth, System.ReadOnlySpan<T> paddingLeft, System.ReadOnlySpan<T> paddingRight, bool leftBias = true)
-    {
-      var sm = this;
+    #region Pad (even/left/right) methods
 
-      if (totalWidth > sm.Length)
-      {
-        var quotient = System.Math.DivRem(totalWidth - sm.Length, 2, out var remainder);
+    //#if NET9_0_OR_GREATER
 
-        sm = sm.PadLeft(sm.Length + (leftBias && remainder > 0 ? quotient + 1 : quotient), paddingLeft);
-        sm = sm.PadRight(totalWidth, paddingRight);
-      }
+    //    /// <summary>
+    //    /// <para>Pad evenly on both sides (with <paramref name="leftBias"/> if true, or right-bias if false) using <paramref name="paddingLeft"/> and <paramref name="paddingRight"/> to the specified <paramref name="totalWidth"/> in the <see cref="SpanMaker{T}"/>.</para>
+    //    /// </summary>
+    //    /// <param name="totalWidth"></param>
+    //    /// <param name="paddingLeft"></param>
+    //    /// <param name="paddingRight"></param>
+    //    /// <param name="leftBias"></param>
+    //    /// <returns></returns>
+    //    public SpanMaker<T> PadEven(int totalWidth, System.ReadOnlySpan<T> paddingLeft, System.ReadOnlySpan<T> paddingRight, bool leftBias = true)
+    //    {
+    //      var sm = this;
 
-      return sm;
-    }
+    //      if (totalWidth > sm.Length)
+    //      {
+    //        var quotient = System.Math.DivRem(totalWidth - sm.Length, 2, out var remainder);
 
-    /// <summary>
-    /// <para>Pad evenly on both sides (with <paramref name="leftBias"/> if true, or right-bias if false) using <paramref name="paddingLeft"/> and <paramref name="paddingRight"/> to the specified <paramref name="totalWidth"/>.</para>
-    /// </summary>
-    /// <param name="totalWidth"></param>
-    /// <param name="paddingLeft"></param>
-    /// <param name="paddingRight"></param>
-    /// <param name="leftBias"></param>
-    /// <returns></returns>
-    public SpanMaker<T> PadEven(int totalWidth, T paddingLeft, T paddingRight, bool leftBias = true) => PadEven(totalWidth, new T[] { paddingLeft }, new T[] { paddingRight }, leftBias);
+    //        sm = sm.PadLeft(sm.Length + (leftBias && remainder > 0 ? quotient + 1 : quotient), paddingLeft);
+    //        sm = sm.PadRight(totalWidth, paddingRight);
+    //      }
 
-    /// <summary>
-    /// <para>Pad on the left using <paramref name="padding"/> to the specified <paramref name="totalWidth"/>.</para>
-    /// </summary>
-    /// <param name="totalWidth"></param>
-    /// <param name="padding"></param>
-    /// <returns></returns>
-    public SpanMaker<T> PadLeft(int totalWidth, params System.ReadOnlySpan<T> padding)
-    {
-      var sm = this;
-      sm = sm.Prepend((totalWidth - sm.Length) / padding.Length + 1, padding);
-      sm = sm.Remove(0, sm.Length - totalWidth);
-      return sm;
-    }
+    //      return sm;
+    //    }
 
-    /// <summary>
-    /// <para>Pad on the right using <paramref name="padding"/> to the specified <paramref name="totalWidth"/>.</para>
-    /// </summary>
-    /// <param name="totalWidth"></param>
-    /// <param name="padding"></param>
-    /// <returns></returns>
-    public SpanMaker<T> PadRight(int totalWidth, params System.ReadOnlySpan<T> padding)
-    {
-      var sm = this;
-      sm = sm.Append((totalWidth - sm.Length) / padding.Length + 1, padding);
-      sm = sm.Remove(totalWidth);
-      return sm;
-    }
+    //    /// <summary>
+    //    /// <para>Pad evenly on both sides (with <paramref name="leftBias"/> if true, or right-bias if false) using <paramref name="paddingLeft"/> and <paramref name="paddingRight"/> to the specified <paramref name="totalWidth"/> in the <see cref="SpanMaker{T}"/>.</para>
+    //    /// </summary>
+    //    /// <param name="totalWidth"></param>
+    //    /// <param name="paddingLeft"></param>
+    //    /// <param name="paddingRight"></param>
+    //    /// <param name="leftBias"></param>
+    //    /// <returns></returns>
+    //    public SpanMaker<T> PadEven(int totalWidth, T paddingLeft, T paddingRight, bool leftBias = true) => PadEven(totalWidth, new T[] { paddingLeft }, new T[] { paddingRight }, leftBias);
 
-#else
+    //    /// <summary>
+    //    /// <para>Pad on the left using <paramref name="padding"/> to the specified <paramref name="totalWidth"/> in the <see cref="SpanMaker{T}"/>.</para>
+    //    /// </summary>
+    //    /// <param name="totalWidth"></param>
+    //    /// <param name="padding"></param>
+    //    /// <returns></returns>
+    //    public SpanMaker<T> PadLeft(int totalWidth, params System.ReadOnlySpan<T> padding)
+    //    {
+    //      var sm = this;
+    //      sm = sm.Prepend((totalWidth - sm.Length) / padding.Length + 1, padding);
+    //      sm = sm.Remove(0, sm.Length - totalWidth);
+    //      return sm;
+    //    }
+
+    //    /// <summary>
+    //    /// <para>Pad on the right using <paramref name="padding"/> to the specified <paramref name="totalWidth"/> in the <see cref="SpanMaker{T}"/>.</para>
+    //    /// </summary>
+    //    /// <param name="totalWidth"></param>
+    //    /// <param name="padding"></param>
+    //    /// <returns></returns>
+    //    public SpanMaker<T> PadRight(int totalWidth, params System.ReadOnlySpan<T> padding)
+    //    {
+    //      var sm = this;
+    //      sm = sm.Append((totalWidth - sm.Length) / padding.Length + 1, padding);
+    //      sm = sm.Remove(totalWidth);
+    //      return sm;
+    //    }
+
+    //#else
 
     /// <summary>Pad evenly on both sides to the specified width by the specified <paramref name="paddingLeft"/> and <paramref name="paddingRight"/> respectively.</summary>
     public SpanMaker<T> PadEven(int totalWidth, System.ReadOnlySpan<T> paddingLeft, System.ReadOnlySpan<T> paddingRight, bool leftBias = true)
@@ -657,34 +725,82 @@ namespace Flux
     /// <summary>Pads this <see cref="SpanMaker{T}"/> on the left with the specified padding string.</summary>
     public SpanMaker<T> PadLeft(int totalWidth, System.ReadOnlySpan<T> padding)
     {
-      var sm = this;
-      sm = sm.Prepend((totalWidth - sm.Length) / padding.Length + 1, padding);
-      sm = sm.Remove(0, sm.Length - totalWidth);
-      return sm;
+      var totalPrepend = totalWidth - Length;
+
+      var (array, head, tail) = EnsureCapacityPrepend(totalPrepend);
+
+      var index = head;
+
+      while (totalPrepend > padding.Length)
+      {
+        padding.CopyTo(array.AsSpan(index, padding.Length));
+
+        index += padding.Length;
+        totalPrepend -= padding.Length;
+      }
+
+      if (totalPrepend > 0)
+        padding[..totalPrepend].CopyTo(array.AsSpan(index, totalPrepend));
+
+      return new(array, head, tail);
     }
 
-    public SpanMaker<T> PadLeft(int totalWidth, T padding) => PadLeft(totalWidth, new T[] { padding });
+    public SpanMaker<T> PadLeft(int totalWidth, T padding)
+    {
+      var totalPrepend = totalWidth - Length;
+
+      var (array, head, tail) = EnsureCapacityPrepend(totalPrepend);
+
+      System.Array.Fill(array, padding, head, totalPrepend);
+
+      return new(array, head, tail);
+    }
 
     /// <summary>Pads this <see cref="SpanMaker{T}"/> on the right with the specified padding string.</summary>
     public SpanMaker<T> PadRight(int totalWidth, System.ReadOnlySpan<T> padding)
     {
-      var sm = this;
-      sm = sm.Append((totalWidth - sm.Length) / padding.Length + 1, padding);
-      sm = sm.Remove(totalWidth);
-      return sm;
+      var totalAppend = totalWidth - Length;
+
+      var (array, head, tail) = EnsureCapacityAppend(totalAppend);
+
+      var index = tail - totalAppend;
+
+      while (totalAppend > padding.Length)
+      {
+        padding.CopyTo(array.AsSpan(index, padding.Length));
+
+        index += padding.Length;
+        totalAppend -= padding.Length;
+      }
+
+      if (totalAppend > 0)
+        padding[..totalAppend].CopyTo(array.AsSpan(index));
+
+      return new(array, head, tail);
     }
 
-    public SpanMaker<T> PadRight(int totalWidth, T padding) => PadRight(totalWidth, new T[] { padding });
+    public SpanMaker<T> PadRight(int totalWidth, T padding)
+    {
+      var totalAppend = totalWidth - Length;
 
-#endif
+      var (array, head, tail) = EnsureCapacityAppend(totalAppend);
+
+      System.Array.Fill(array, padding, tail - totalAppend, totalAppend);
+
+      return new(array, head, tail);
+    }
+
+    //#endif
+
+    #endregion // Pad (even/left/right) methods
+
+    #region Prepend
 
     public SpanMaker<T> Prepend(int count, SpanMaker<T> other) => Prepend(count, other.AsReadOnlySpan());
 
     public SpanMaker<T> Prepend(SpanMaker<T> other) => Prepend(1, other.AsReadOnlySpan());
 
-    #region Prepend
-
-#if XNET9_0_OR_GREATER
+#if NET9_0_OR_GREATER
 
     /// <summary>
     /// <para>Prepends <paramref name="collection"/>, <paramref name="count"/> times, to the <see cref="SpanMaker{T}"/>.</para>
@@ -809,6 +925,8 @@ namespace Flux
 
     #endregion // Prepend
 
+    #region Remove methods
+
     /// <summary>
     /// <para>Removes the specified range [index..(index + count)] of elements in the <see cref="SpanMaker{T}">.</para>
     /// </summary>
@@ -831,21 +949,19 @@ namespace Flux
 
       if (m_head <= m_array.Length - m_tail) // Shrink from start.
       {
-
         System.Array.Copy(m_array, m_head, m_array, m_head + count, mark - m_head);
 
         return new(m_array, m_head + count, m_tail);
       }
       else // Otherwise shrink from end.
       {
-
         System.Array.Copy(m_array, mark + count, m_array, mark, m_tail - mark - count);
 
         return new(m_array, m_head, m_tail - count);
       }
     }
 
-    public SpanMaker<T> Remove(System.Range range) => Remove(range.Start.Value, range.End.Value - range.Start.Value);
+    public SpanMaker<T> Remove(Slice slice) => Remove(slice.Index, slice.Length);
 
     /// <summary>
     /// <para>Removes the specified range [index..] of elements from the <see cref="SpanMaker{T}"/>.</para>
@@ -889,6 +1005,8 @@ namespace Flux
       ? throw new System.ArgumentOutOfRangeException(nameof(count))
       : new(m_array, m_head, m_tail - count);
 
+    #endregion // Remove methods
+
     /// <summary>
     /// <para>Repeats the content in a <see cref="SpanMaker{T}"/> <paramref name="count"/> times.</para>
     /// </summary>
@@ -896,17 +1014,72 @@ namespace Flux
     /// <param name="source"></param>
     /// <param name="count"></param>
     /// <returns></returns>
-    public SpanMaker<T> Repeat(int count) => Append(count, AsReadOnlySpan().ToArray().AsReadOnlySpan());
+    public SpanMaker<T> Repeat(int count)
+    {
+      var repeatLength = Length;
 
-#if XNET9_0_OR_GREATER
+      var totalAppend = count * repeatLength;
+
+      var (array, head, tail) = EnsureCapacityAppend(totalAppend);
+
+      var index = tail - totalAppend;
+
+      while (--count >= 0)
+      {
+        System.Array.Copy(array, head, array, index, repeatLength);
+
+        index += repeatLength;
+      }
+
+      return new(array, head, tail);
+    }
+
+    #region Replace methods
 
     /// <summary>
-    /// <para>Replaces all elements satisfying the <paramref name="predicate"/> with <paramref name="count"/> of <paramref name="replacement"/> in the <see cref="SpanMaker{T}"/>.</para>
+    /// <para>Replaces the <paramref name="length"/> elements from <paramref name="startIndex"/> with <paramref name="replacements"/> in the <see cref="SpanMaker{T}"/>.</para>
+    /// </summary>
+    /// <param name="startIndex"></param>
+    /// <param name="length"></param>
+    /// <param name="replacements"></param>
+    /// <returns></returns>
+    public SpanMaker<T> Replace(int startIndex, int length, System.ReadOnlySpan<T> replacements)
+    {
+      if (replacements.Length is var replacementLength && replacementLength <= length)
+      {
+        replacements.CopyTo(m_array.AsSpan(m_head + startIndex, replacementLength));
+
+        if (replacementLength < length)
+          return Remove(replacementLength + length - 1, length - replacementLength);
+
+        return this;
+      }
+      else
+      {
+        var sm = this;
+        sm = sm.Remove(startIndex, length);
+        sm = sm.Insert(startIndex, replacements);
+        return sm;
+      }
+    }
+
+    /// <summary>
+    /// <para>Replaces the all elements in the <paramref name="range"/> with <paramref name="replacements"/> in the <see cref="SpanMaker{T}"/>.</para>
+    /// </summary>
+    /// <param name="range"></param>
+    /// <param name="replacements"></param>
+    /// <returns></returns>
+    public SpanMaker<T> Replace(Slice slice, System.ReadOnlySpan<T> replacements)
+      => Replace(slice.Index, slice.Length, replacements);
+
+    /// <summary>
+    /// <para>Replaces all elements satisfying the <paramref name="predicate"/> with <paramref name="count"/> of <paramref name="replacements"/> in the <see cref="SpanMaker{T}"/>.</para>
     /// </summary>
     /// <param name="predicate"></param>
-    /// <param name="replacement"></param>
+    /// <param name="count"></param>
+    /// <param name="replacements"></param>
     /// <returns></returns>
-    public SpanMaker<T> Replace(System.Func<T, bool> predicate, int count, params System.ReadOnlySpan<T> replacement)
+    public SpanMaker<T> Replace(System.Func<T, bool> predicate, int count, System.ReadOnlySpan<T> replacements)
     {
       var sm = this;
 
@@ -914,32 +1087,11 @@ namespace Flux
         if (predicate(sm[i]))
         {
           sm = sm.Remove(i, 1);
-          sm = sm.Insert(i, count, replacement);
+          sm = sm.Insert(i, count, replacements);
         }
 
       return sm;
     }
-
-#else
-
-    /// <summary>
-    /// <para>Replaces all elements satisfying the <paramref name="predicate"/> with <paramref name="count"/> of <paramref name="replacement"/> in the <see cref="SpanMaker{T}"/>.</para>
-    /// </summary>
-    /// <param name="predicate"></param>
-    /// <param name="replacement"></param>
-    /// <returns></returns>
-    public SpanMaker<T> Replace(System.Func<T, bool> predicate, int count, System.ReadOnlySpan<T> replacement)
-    {
-      var sm = this;
-
-      for (var i = sm.m_tail - sm.m_head; i >= 0; i--)
-        if (predicate(sm.m_array[sm.m_head + i]))
-          sm = sm.Remove(i, 1).Insert(i, count, replacement);
-
-      return sm;
-    }
-
-#endif
 
     public SpanMaker<T> ReplaceIfEqualAt(int startAt, System.ReadOnlySpan<T> find, System.ReadOnlySpan<T> replacement, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
     {
@@ -953,6 +1105,29 @@ namespace Flux
       return sm;
     }
 
+    #endregion // Replace methods
+
+    /// <summary>
+    /// <para>Reverses the content of a <see cref="SpanMaker{T}"/>.</para>
+    /// </summary>
+    /// <param name="index"></param>
+    /// <param name="length"></param>
+    /// <returns></returns>
+    /// <exception cref="System.ArgumentOutOfRangeException"></exception>
+    public SpanMaker<T> Reverse(int index, int length)
+    {
+      if (index < 0 || index >= Length) throw new System.ArgumentOutOfRangeException(nameof(index));
+      if (length <= 0 || index + length >= Length) throw new System.ArgumentOutOfRangeException(nameof(length));
+
+      var left = index;
+      var right = index + length;
+
+      while (left < right)
+        Swap(left++, --right);
+
+      return this;
+    }
+
     /// <summary>
     /// <para>Create a new <see cref="SpanMaker{T}"/> from a subset of a <see cref="SpanMaker{T}"/>.</para>
     /// </summary>
@@ -960,7 +1135,7 @@ namespace Flux
     /// <param name="length"></param>
     /// <returns></returns>
     /// <exception cref="System.ArgumentOutOfRangeException"></exception>
-    public SpanMaker<T> Slice(int index, int length)
+    public readonly SpanMaker<T> Slice(int index, int length)
     {
       if (index < 0 || index >= Length) throw new System.ArgumentOutOfRangeException(nameof(index));
       if (length < 0 || index + length > Length) throw new System.ArgumentOutOfRangeException(nameof(length));
@@ -976,16 +1151,21 @@ namespace Flux
     /// <returns></returns>
     public bool Swap(int indexA, int indexB) => AsSpan().Swap(indexA, indexB);
 
+    #region Trim methods
+
     /// <summary>
     /// <para>Trims all consecutive occurences that satisfies the <paramref name="predicate"/> at the beginning of the <see cref="SpanMaker{T}"/>.</para>
     /// </summary>
-    public SpanMaker<T> TrimLeft(System.Func<T, bool> predicate) => new(m_array, m_head + AsReadOnlySpan().CommonPrefixLength(0, predicate), m_tail);
+    public SpanMaker<T> TrimLeft(System.Func<T, bool> predicate) => new(m_array, m_head + AsReadOnlySpan().CommonPrefixLength(predicate), m_tail);
 
     /// <summary>
     /// <para>Trims all consecutive occurences that satisfies the <paramref name="predicate"/> at the end of the <see cref="SpanMaker{T}"/>.</para>
     /// </summary>
-    public SpanMaker<T> TrimRight(System.Func<T, bool> predicate) => new(m_array, m_head, m_tail - AsReadOnlySpan().CommonSuffixLength(0, predicate));
+    public SpanMaker<T> TrimRight(System.Func<T, bool> predicate) => new(m_array, m_head, m_tail - AsReadOnlySpan().CommonSuffixLength(predicate));
 
+    #endregion // Trim methods
+
+    #region Wrap methods
 
     /// <summary>Remove the specified wrapping characters from the source, if they exist. E.g. brackets, or parenthesis.</summary>
     public SpanMaker<T> Unwrap(T left, T right, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
@@ -1033,11 +1213,12 @@ namespace Flux
       return sm;
     }
 
+    #endregion // Wrap methods
 
     //public string ToString(int index, int length)
     //  => AsReadOnlySpan().Slice(index, length).ToString();
 
-    public override string ToString() => AsReadOnlySpan().ToString();
+    public override readonly string ToString() => AsReadOnlySpan().ToString();
 
     //public System.Collections.Generic.IEnumerator<T> GetEnumerator() => AsReadOnlySpan().ToArray().AsEnumerable().GetEnumerator();
     //System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => GetEnumerator();

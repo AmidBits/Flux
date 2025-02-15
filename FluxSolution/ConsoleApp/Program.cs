@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Immutable;
 using System.Data;
+using System.Diagnostics;
 using System.Linq;
 using System.Net.WebSockets;
 using System.Numerics;
@@ -114,49 +115,40 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
-      var s = "-40 ° 26 '46″ N79 ° 58 ′ 56 ″W";
+      var a = "Robert Hugo".AsSpan();
+      var b = "Rob";
 
-      var latitudeDd = Flux.Geometry.Geodesy.Latitude.ParseDmsNotation(s);
-      var longitudeDd = Flux.Geometry.Geodesy.Longitude.ParseDmsNotation(s);
+      var c = a.IsCommonPrefixAny(null, b);
 
-      var latitudeDn = latitudeDd.ToDmsNotationString();
-      var longitudeDn = longitudeDd.ToDmsNotationString();
+      var r = new SpanMaker<char>("The Lars Robert Hugo man.");
+      var d = r.AsReadOnlySpan().RegexSplits(@" ");
 
-      var latS1 = Flux.Units.Angle.ConvertDecimalDegreesToSexagesimalUnitSubdivisions(latitudeDd.Value);
-      //var latS2 = Flux.SexagesimalUnitSubdivisions.ConvertDecimalDegreesToSubdivisions2(latitudeDd);
+      //r = r.PadLeft(30, "Pre");
+      //var rl = r.Length;
+      //r = r.Duplicate(c => c == 'o' || c == 'T' || c == '.', 9);
 
-      var lonS1 = Flux.Units.Angle.ConvertDecimalDegreesToSexagesimalUnitSubdivisions(longitudeDd.Value);
-      //var lonS2 = Flux.SexagesimalUnitSubdivisions.ConvertDecimalDegreesToSubdivisions2(longitudeDd);
+      //System.Globalization.StringInfo.
 
-      foreach (var t in typeof(Flux.Locale).Assembly.DefinedTypes)
-        if (t.TryGetAttribute<System.ComponentModel.DefaultValueAttribute>(out var attributes))
-          System.Console.WriteLine($"{string.Join(" | ", attributes.Select(a => a.Value))}");
+      var di = new System.IO.DirectoryInfo(@"E:\Media\Audio\Tracks");
+      var ef = di.EnumerateFiles("*.mp3", System.IO.SearchOption.AllDirectories).Select(fi => fi.FullName).Distinct().Order().ToArray();
+      var efid = ef.Select(fn => (fn.GetHashCode(), fn)).Distinct().ToArray();
 
-      var globalAddressesesViaHosts = Flux.Net.MyIpAddresses.TryGetMyGlobalAddressesViaHosts(out var myGlobalAddressesViaInternetHosts);
-      var localAddressesViaNics = Flux.Net.MyIpAddresses.TryGetMyLocalAddressesViaNics(out var myLocalAddressesViaNics);
-      var moreLikelylocalAddressViaNics = Flux.Net.MyIpAddresses.TryGetMyLocalAddressViaNics(out var myMoreLikelyLocalAddressViaNics);
-      var localAddressViaUdp = Flux.Net.MyIpAddresses.TryGetMyLocalAddressViaUdp(out var myLocalAdressViaUdp);
+      var di2 = new System.IO.DirectoryInfo(@"F:\Media\Audio\Sounds");
+      var ef2 = di2.EnumerateFiles("*.*", System.IO.SearchOption.AllDirectories).Select(fi => fi.FullName).Distinct().ToArray();
+      var efhc2 = ef2.Select(fn => fn.GetHashCode()).Distinct().ToArray();
 
-      var defval = Flux.Enum.GetDefaultValue<Flux.MetricPrefix>();
 
-      var volume = new Flux.Units.Volume(123);
-      var uv = volume.GetUnitValue(VolumeUnit.Liter);
-      var (prefix, value) = volume.GetUnitValue(VolumeUnit.Liter).GetEngineeringNotationProperties();
-      var liters = volume.GetUnitValue(VolumeUnit.Liter).ToEngineeringNotationString(Flux.Units.Volume.GetUnitSymbol(VolumeUnit.Liter, false));
-      var regs = volume.GetUnitValue(VolumeUnit.CubicMeter).ToEngineeringNotationString(Flux.Units.Volume.GetUnitSymbol(VolumeUnit.CubicMeter, false), tripletsOnly: false);
+      var s = "-41 ° 26 '46″ N79 ° 58 ′ 56 ″W";
+      s = "a 123b45c";
+      var x = s.ToSpanMaker().ReplaceRegex(@"\d+", s => int.TryParse(s, System.Globalization.NumberStyles.Integer, null, out var r) ? r.ToOrdinalIndicatorString() : "UGH!");
 
-      var v1 = 123;
-
-      var v2 = -6;
-      var vp = v1.GetEngineeringNotationProperties();
-
-      var vs = v1.ToEngineeringNotationString();
-      var mp = v1 % v2;
-      var rp = v1 % v2;
-
-      var (envq, envr) = v1.DivModEnveloped(v2);
-      var (dmeq, dmer) = v1.DivModEuclidean(v2);
-      var (dmfq, dmfr) = v1.DivModFloor(v2);
+      s = "Z̤͔ͧ̑̓ä͖̭̈̇lͮ̒ͫǧ̗͚̚o̙̔ͮ̇͐̇";
+      s = "Powerلُلُصّبُلُلصّبُررً ॣ ॣh ॣ ॣ冗\r\n🏳0🌈️\r\nజ్ఞ‌ా";
+      var ss = s.AsSpan();
+      var tel = s.AsSpan().ToListOfTextElement().Select(l => l.ToString()).ToList().AsSpan();
+      var sl = s.Length;
+      var t = s.GetTextElements();
+      var tl = t.Count;
 
     }
 

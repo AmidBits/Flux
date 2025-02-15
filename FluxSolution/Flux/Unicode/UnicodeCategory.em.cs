@@ -38,8 +38,8 @@ namespace Flux
       var ucsb = new SpanMaker<char>(source == System.Globalization.UnicodeCategory.OtherNotAssigned ? source.ToString()[5..] : source.ToString());
       var ucms = source.ToUnicodeCategoryMajor().ToString();
 
-      if (ucsb.AsReadOnlySpan().IsCommonSuffix(0, ucms)) ucsb.Remove(ucsb.Length - ucms.Length, ucms.Length); // Either fix the unicode category that ends with its own category major.
-      else if (ucsb.AsReadOnlySpan().IsCommonPrefix(0, ucms)) ucsb.Remove(0, ucms.Length); // Or fix the unicode category that starts with its own category major.
+      if (ucsb.AsReadOnlySpan().IsCommonSuffix(ucms)) ucsb.Remove(ucsb.Length - ucms.Length, ucms.Length); // Either fix the unicode category that ends with its own category major.
+      else if (ucsb.AsReadOnlySpan().IsCommonPrefix(ucms)) ucsb.Remove(0, ucms.Length); // Or fix the unicode category that starts with its own category major.
 
       ucsb.PrefixCapWords();
 

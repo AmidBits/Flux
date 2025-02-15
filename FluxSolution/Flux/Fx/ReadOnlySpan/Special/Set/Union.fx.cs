@@ -11,9 +11,9 @@ namespace Flux
     /// <param name="additionalCapacity"></param>
     /// <returns></returns>
     /// <remarks>Uses <see cref="System.Runtime.InteropServices.CollectionsMarshal.SetCount{T}(List{T}, int)"/> and <see cref="System.Runtime.InteropServices.CollectionsMarshal.AsSpan{T}(List{T}?)"/> to copy <paramref name="source"/> and <paramref name="target"/> into a resulting <see cref="System.Collections.Generic.List{T}"/>.</remarks>
-    public static System.Collections.Generic.List<T> UnionAll<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, int additionalCapacity = 0)
+    public static System.Collections.Generic.List<T> UnionAll<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target)
     {
-      var unionAll = source.ToList(target.Length + additionalCapacity);
+      var unionAll = source.ToList(target.Length);
       unionAll.AddRange(target);
       return unionAll;
     }
@@ -27,9 +27,9 @@ namespace Flux
     /// <param name="equalityComparer"></param>
     /// <param name="additionalCapacity"></param>
     /// <returns></returns>
-    public static System.Collections.Generic.HashSet<T> Union<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null, int additionalCapacity = 0)
+    public static System.Collections.Generic.HashSet<T> Union<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
     {
-      var union = source.ToHashSet(equalityComparer, target.Length + additionalCapacity);
+      var union = source.ToHashSet(equalityComparer, target.Length);
       union.AddSpan(target);
       return union;
     }

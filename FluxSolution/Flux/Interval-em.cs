@@ -51,5 +51,9 @@
     public static Interval<TSelf> ToMarginInterval<TSelf>(this Interval<TSelf> source, TSelf minMargin, TSelf maxMargin, IntervalNotation notation)
       where TSelf : System.Numerics.INumber<TSelf>
       => (Interval<TSelf>)notation.GetMarginInterval(source.MinValue, source.MaxValue, minMargin, maxMargin);
+
+    public static (TSelf offset, TSelf length) GetOffsetAndLength<TSelf>(this Interval<TSelf> source)
+      where TSelf : System.Numerics.IBinaryInteger<TSelf>
+      => (source.MinValue, source.MaxValue - source.MinValue + TSelf.One);
   }
 }

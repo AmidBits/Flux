@@ -7,7 +7,7 @@ namespace Flux
     public static System.Collections.Generic.IEnumerable<T> SymmetricDifference<T>(this System.Collections.Generic.ISet<T> source, System.Collections.Generic.IEnumerable<T> target)
     {
       if (ReferenceEquals(source, target))
-        return System.Linq.Enumerable.Empty<T>(); // A symmetric difference of a set with itself is an empty set.
+        return []; // A symmetric difference of a set with itself is an empty set.
 
       if (!source.Any())
         return target; // If source is empty, target is the result.

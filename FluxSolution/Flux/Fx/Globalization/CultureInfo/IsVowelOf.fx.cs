@@ -21,7 +21,7 @@ namespace Flux
     /// <param name="culture">If null, then <see cref="System.Globalization.CultureInfo.CurrentCulture"/></param>
     /// <returns></returns>
     public static bool IsVowelOf(this char source, System.Globalization.CultureInfo? culture = null)
-      => char.IsLetter(source) && GetVowelsOf(culture!).Contains(source);
+      => char.IsLetter(source) && MemoryExtensions.Contains(GetVowelsOf(culture!), source);
 
     /// <summary>
     /// <para></para>
@@ -30,6 +30,6 @@ namespace Flux
     /// <param name="culture">If null, then <see cref="System.Globalization.CultureInfo.CurrentCulture"/></param>
     /// <returns></returns>
     public static bool IsVowelOf(this System.Text.Rune source, System.Globalization.CultureInfo? culture = null)
-      => System.Text.Rune.IsLetter(source) && GetVowelsOf(culture!).Contains((char)source.Value);
+      => System.Text.Rune.IsLetter(source) && MemoryExtensions.Contains(GetVowelsOf(culture!), (char)source.Value);
   }
 }

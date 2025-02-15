@@ -11,5 +11,16 @@ namespace Flux
         list.AddRange(source[index].ToString());
       return list;
     }
+
+    /// <summary>Creates a new <see cref="SpanMaker{T}"/> from the <paramref name="source"/> as the content.</summary>
+    public static System.Collections.Generic.List<string> ToListOfTextElement(this System.ReadOnlySpan<System.Text.Rune> source)
+    {
+      var list = new System.Collections.Generic.List<string>();
+      var e = System.Globalization.StringInfo.GetTextElementEnumerator(source.ToListOfChar().AsSpan().ToString());
+      while (e.MoveNext())
+        if (e.Current.ToString() is string s)
+          list.Add(s);
+      return list;
+    }
   }
 }
