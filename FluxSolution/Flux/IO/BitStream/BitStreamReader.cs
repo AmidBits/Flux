@@ -1,100 +1,125 @@
 namespace Flux.IO.BitStream
 {
-  public sealed class BitStreamReader(System.IO.Stream baseStream)
+  public sealed class BitStreamReader
     : System.IO.Stream
   {
-    private ulong m_bitBuffer;
+    private readonly System.IO.Stream m_baseStream;
 
     private int m_bitCount;
+    private ulong m_bitField;
 
-    /// <summary>The intermediate 64-bit storage buffer.</summary>
-    [System.CLSCompliant(false)]
-    public ulong BitBuffer => m_bitBuffer & ((1UL << m_bitCount) - 1UL);
+    public BitStreamReader(System.IO.Stream baseStream)
+    {
+      m_baseStream = baseStream;
+
+      LoadBytes();
+    }
 
     /// <summary>The number of bits currently stored in the bit buffer.</summary>
     public int BitCount => m_bitCount;
 
+    /// <summary>The intermediate 64-bit storage buffer.</summary>
+    public long BitField => unchecked((long)(m_bitField & (ulong)m_bitCount.CreateBitMaskLsbFromBitLength()));
+
     /// <summary>The total number of bits read through the bit stream.</summary>
-    public int TotalBits { get; private set; }
+    public int TotalReadBits { get; private set; }
+
+    private int m_lastReadByte = 0;
 
     /// <summary>
-    /// <para>Read bytes until at least <paramref name="bitCount"/> bits are in the bit-buffer.</para>
+    /// <para></para>
     /// </summary>
-    /// <param name="bitCount">The minimum number of bits to buffer.</param>
-    /// <exception cref="System.IO.EndOfStreamException"></exception>
-    private void ReadBytes(int bitCount)
+    private void LoadBytes()
     {
-      while (m_bitCount < bitCount)
+      while (m_bitCount <= 56) // Load up with data from the base-stream.
       {
-        if (baseStream.ReadByte() is int read && read == -1)
-          throw new System.IO.EndOfStreamException();
+        m_lastReadByte = m_baseStream.ReadByte();
+
+        if (m_lastReadByte == -1)
+          break;
 
         m_bitCount += 8;
-        m_bitBuffer = (m_bitBuffer << 8) | (byte)read;
+        m_bitField = (m_bitField << 8) | (byte)m_lastReadByte;
       }
     }
 
-    public int ReadBitsInt32(int bitCount) => unchecked((int)ReadBitsUInt32(bitCount));
-    public long ReadBitsInt64(int bitCount) => unchecked((long)ReadBitsUInt64(bitCount));
+    /// <summary>
+    /// <para>Returns <paramref name="bitCount"/> bits and returns the number of <paramref name="actualBitCount"/> as an out parameter.</para>
+    /// </summary>
+    /// <param name="bitCount"></param>
+    /// <returns>The number of bits actually read.</returns>
+    /// <exception cref="System.ArgumentOutOfRangeException"></exception>
+    private long GetBits(int bitCount, out int actualBitCount)
+    {
+      if (m_bitCount < bitCount) LoadBytes();
+
+      actualBitCount = int.Min(bitCount, m_bitCount); // Can only present as many bits as available in base-stream.
+
+      m_bitCount -= actualBitCount;
+
+      var bitField = unchecked((long)((m_bitField >> m_bitCount) & ((ulong)actualBitCount).CreateBitMaskLsbFromBitLength()));
+
+      TotalReadBits += actualBitCount;
+
+      return bitField;
+    }
+
+    public int ReadBitsInt32(int bitCount, out int actualBitCount)
+      => unchecked((int)ReadBitsUInt32(bitCount, out actualBitCount));
+    public long ReadBitsInt64(int bitCount, out int actualBitCount)
+      => unchecked((long)ReadBitsUInt64(bitCount, out actualBitCount));
 
     [System.CLSCompliant(false)]
-    public uint ReadBitsUInt32(int bitCount)
+    public uint ReadBitsUInt32(int bitCount, out int actualBitCount)
     {
       if (bitCount < 0 || bitCount > 32) throw new System.ArgumentOutOfRangeException(nameof(bitCount));
 
-      ReadBytes(bitCount);
-
-      TotalBits += bitCount;
-
-      m_bitCount -= bitCount;
-
-      return (uint)((m_bitBuffer >> m_bitCount) & ((1UL << bitCount) - 1UL));
+      return (uint)GetBits(bitCount, out actualBitCount);
     }
+
     [System.CLSCompliant(false)]
-    public ulong ReadBitsUInt64(int bitCount)
+    public ulong ReadBitsUInt64(int bitCount, out int actualBitCount)
     {
       if (bitCount < 0 || bitCount > 64) throw new System.ArgumentOutOfRangeException(nameof(bitCount));
 
-      var bits = 0UL;
-
-      if (bitCount > 32)
-      {
-        bitCount -= 32;
-
-        bits = ((ulong)ReadBitsUInt32(32)) << bitCount;
-      }
-
-      return bits | ReadBitsUInt32(bitCount);
+      return (ulong)GetBits(bitCount, out actualBitCount);
     }
 
     #region Overridden inheritance
 
     // System.IO.Stream
-    public override bool CanRead => baseStream.CanRead;
+    public override bool CanRead => m_bitCount > 0;
     public override bool CanSeek => false;
     public override bool CanWrite => false;
     public override void Flush() { }
-    public override long Length => baseStream.Length;
-    public override long Position { get => baseStream.Position; set => throw new System.NotImplementedException(); }
+    public override long Length => m_baseStream.Length;
+    public override long Position { get => m_baseStream.Position; set => throw new System.NotImplementedException(); }
 
     /// <summary>Implements reading bulk bytes of bits.</summary>
     public override int Read(byte[] buffer, int offset, int count)
     {
       System.ArgumentNullException.ThrowIfNull(buffer);
 
-      int index = offset, limit = offset + count;
+      var index = offset;
+      var limit = offset + count;
 
       for (; index < limit; index++)
       {
-        try { buffer[index] = (byte)ReadByte(); }
-        catch { break; }
+        if (ReadByte() is var read && read == -1) break;
+
+        buffer[index] = (byte)read;
       }
 
       return limit - index - 1;
     }
 
     /// <summary>Implements reading a single byte of bits.</summary>
-    public override int ReadByte() => (byte)ReadBitsUInt32(8);
+    public override int ReadByte()
+    {
+      var bits = GetBits(8, out var actualBitCount);
+
+      return (actualBitCount == 0) ? -1 : (byte)bits;
+    }
 
     public override long Seek(long offset, System.IO.SeekOrigin origin) => throw new System.NotImplementedException();
     public override void SetLength(long value) => throw new System.NotImplementedException();

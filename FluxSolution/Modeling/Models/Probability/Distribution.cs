@@ -1,5 +1,3 @@
-using System.Linq;
-
 namespace Flux.Probabilities
 {
   // Extension methods on distributions

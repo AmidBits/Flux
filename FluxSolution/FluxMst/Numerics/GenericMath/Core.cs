@@ -125,7 +125,7 @@ namespace Maths
       var n = 512d;
       var m = 20;
 
-      n.MultipleOf(m, false, UniversalRounding.HalfAwayFromZero, out var multipleTowardsZero, out var multipleAwayFromZero);
+      n.MultipleOfNearest(m, false, UniversalRounding.HalfAwayFromZero, out var multipleTowardsZero, out var multipleAwayFromZero);
 
       var nearestMultiple = n.RoundToNearest(UniversalRounding.HalfTowardZero, multipleTowardsZero, multipleAwayFromZero);
 

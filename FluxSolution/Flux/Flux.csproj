@@ -1,13 +1,52 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net9.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
-  </ItemGroup>
+	<ItemGroup>
+		<Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Update="Resources\Dictionaries\Ipa\*.*">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Resources\ProjectGutenberg\*.*">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Resources\Scowl\*.*">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Resources\Scrape\*.*">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Resources\Ucd\*.*">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Resources\W3c\*.*">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Resources\*.*">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Compile Update="Numerics\INumber\WrapAround.cs">
+	    <DesignTime>True</DesignTime>
+	    <AutoGen>True</AutoGen>
+	    <DependentUpon>WrapAround.tt</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Update="Numerics\INumber\WrapAround.tt">
+	    <Generator>TextTemplatingFileGenerator</Generator>
+	    <LastGenOutput>WrapAround.cs</LastGenOutput>
+	  </None>
+	</ItemGroup>
 
 </Project>

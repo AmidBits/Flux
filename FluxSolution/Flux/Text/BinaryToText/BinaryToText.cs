@@ -45,6 +45,72 @@ namespace Flux
     /// <seealso cref="https://github.com/ssg/SimpleBase/blob/main/src/Base85.cs"/>
     public static partial class BinaryToText
     {
+      public static void Recode<TSource, TTarget>(this TSource[] source, int sourceBitSize, int targetBitSize, out TTarget[] target)
+        where TSource : System.Numerics.IBinaryInteger<TSource>
+        where TTarget : System.Numerics.IBinaryInteger<TTarget>
+      {
+        var targetLength = (source.Length * sourceBitSize).DivModEnveloped(targetBitSize);
+
+        target = new TTarget[targetLength.quotientEnveloped];
+
+        var sourceIndex = 0;
+        var targetIndex = 0;
+
+        var sourceBitField = ulong.CreateChecked(source[sourceIndex++]);
+        var sourceBitCount = sourceBitSize;
+
+        while (sourceIndex < source.Length && targetIndex < target.Length)
+        {
+          while (sourceBitCount < targetBitSize)
+          {
+            sourceBitField <<= sourceBitSize;
+            sourceBitField |= ulong.CreateChecked(source[sourceIndex++]);
+            sourceBitCount += sourceBitSize;
+          }
+
+          target[targetIndex++] = TTarget.CreateChecked((sourceBitField >> (sourceBitCount - targetBitSize)) & ((ulong)targetBitSize).CreateBitMaskLsbFromBitLength());
+          sourceBitCount -= targetBitSize;
+        }
+
+        var minCount = int.Min(targetBitSize, sourceBitCount);
+
+        if (sourceBitCount > 0)
+          target[targetIndex++] = TTarget.CreateChecked((sourceBitField << (targetBitSize - minCount)) & ((ulong)minCount).CreateBitMaskLsbFromBitLength());
+      }
+
+      public static void EncodeToIndices(this byte[] source, int targetBitSize, out byte[] target)
+      {
+        using var mss = new System.IO.MemoryStream(source);
+        var targetLength = (source.Length * 8).DivModEnveloped(targetBitSize);
+        target = new byte[targetLength.quotientEnveloped];
+        using var mst = new System.IO.MemoryStream(target);
+
+        EncodeToIndices(mss, targetBitSize, mst);
+      }
+
+      public static void EncodeToIndices(this System.IO.Stream source, int targetBitSize, System.IO.Stream target)
+      {
+        using var br = new Flux.IO.BitStream.BitStreamReader(source);
+        using var bw = new Flux.IO.BitStream.BitStreamWriter(target);
+
+        var lastCount = 0;
+
+        while (true)
+        {
+          var bits = br.ReadBitsInt32(targetBitSize, out var actualCount);
+
+          if (actualCount == 0) break;
+
+          if (actualCount < targetBitSize) bits <<= (targetBitSize - actualCount);
+
+          bw.WriteBits(bits, 8);
+
+          lastCount = actualCount;
+        }
+
+        bw.Flush();
+      }
+
       /// <summary>
       /// <para>Encodes <paramref name="sourceBinaryData"/> into <paramref name="targetEncodedBase85"/>.</para>
       /// </summary>

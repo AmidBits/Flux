@@ -1,0 +1,144 @@
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ assembly name="System.Linq" #>
+<#@ assembly name="System.Numerics" #>
+<#@ assembly name="System.Runtime" #>
+<#@ assembly name="System.Runtime.InteropServices" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Numerics" #>
+<#@ import namespace="System.Runtime" #>
+<#@ import namespace="System.Runtime.InteropServices" #>
+<#@ output extension=".cs" #>
+
+<# System.Type[] numberSignedTypes = new System.Type[] {
+      typeof(System.Decimal),
+      typeof(System.Double),
+      //typeof(System.Half),
+      //typeof(System.Int128),
+      typeof(System.Int16),
+      typeof(System.Int32),
+      typeof(System.Int64),
+      typeof(System.IntPtr),
+      typeof(System.Numerics.BigInteger),
+      //typeof(System.Numerics.Complex),
+      //typeof(System.Runtime.InteropServices.NFloat),
+      typeof(System.SByte),
+      typeof(System.Single)
+}; #>
+
+<# System.Type[] numberUnsignedTypes = new System.Type[] {
+      typeof(System.Byte),
+      typeof(System.Char),
+      //typeof(System.UInt128),
+      typeof(System.UInt16),
+      typeof(System.UInt32),
+      typeof(System.UInt64),
+      typeof(System.UIntPtr)
+}; #>
+
+<# System.Type[] numericBaseFloatingPointTypes = new System.Type[] {
+      typeof(System.Decimal),
+      typeof(System.Double),
+      //typeof(System.Half),
+      //typeof(System.Runtime.InteropServices.NFloat),
+      typeof(System.Single)
+}; #>
+
+<# System.Type[] numericBaseIntegerTypes = new System.Type[] {
+      typeof(System.Byte),
+      //typeof(System.Char),
+      //typeof(System.Int128),
+      typeof(System.Int16),
+      typeof(System.Int32),
+      typeof(System.Int64),
+      typeof(System.IntPtr),
+      typeof(System.Numerics.BigInteger),
+      typeof(System.SByte),
+      //typeof(System.UInt128),
+      typeof(System.UInt16),
+      typeof(System.UInt32),
+      typeof(System.UInt64),
+      typeof(System.UIntPtr)
+}; #>
+
+<# System.Type[] nonClsCompliantTypes = new System.Type[] {
+      typeof(System.SByte),
+      typeof(System.Char),
+      //typeof(System.UInt128),
+      typeof(System.UInt16),
+      typeof(System.UInt32),
+      typeof(System.UInt64),
+      typeof(System.UIntPtr)
+}; #>
+
+/*
+
+namespace Flux
+{
+    public static partial class Fx
+    {
+
+    <# foreach (var type in numberSignedTypes.Concat(numberUnsignedTypes)) {
+    #>
+
+    <# if (numberUnsignedTypes.Contains(type)) { #>  [System.CLSCompliant(false)] <# } #>
+
+    public static <#= type.FullName #> WrapAround(this <#= type.FullName #> number, <#= type.FullName #> minValue, <#= type.FullName #> maxValue)
+        => (<#= type.FullName #>)(number < minValue
+        ? maxValue - (minValue - number) % (maxValue - minValue)
+        : number > maxValue
+        ? minValue + (number - minValue) % (maxValue - minValue)
+        : number);
+
+    <# }
+    #>
+
+    <# foreach (var type in numericBaseIntegerTypes) {
+    #>
+
+    <# if (nonClsCompliantTypes.Contains(type)) { #>  [System.CLSCompliant(false)] <# } #>
+
+    public static <#= type.FullName #> Fold(this <#= type.FullName #> value, <#= type.FullName #> min, <#= type.FullName #> max)
+    {
+      if (value > max)
+        return (<#= type.FullName #>)(<#= type.FullName #>.DivRem((<#= type.FullName #>)(value - max), (<#= type.FullName #>)(max - min)) is var (q, remainder) && (q & 1) == 0 ? max - remainder : min + remainder);
+      else if (value < min)
+        return (<#= type.FullName #>)(<#= type.FullName #>.DivRem((<#= type.FullName #>)(min - value), (<#= type.FullName #>)(max - min)) is var (q, remainder) && (q & 1) == 0 ? min + remainder : max - remainder);
+      return value;
+    }
+
+    <# }
+    #>
+
+    <# foreach (var type in numericBaseFloatingPointTypes) {
+    #>
+
+    public static <#= type.FullName #> Fold(this <#= type.FullName #> value, <#= type.FullName #> min, <#= type.FullName #> max)
+    {
+      <#= type.FullName #> magnitude, range;
+
+      if (value > max)
+      {
+        magnitude = value - max;
+        range = max - min;
+
+        return ((int)(magnitude / range) & 1) == 0 ? max - (magnitude % range) : min + (magnitude % range);
+      }
+      else if (value < min)
+      {
+        magnitude = min - value;
+        range = max - min;
+
+        return ((int)(magnitude / range) & 1) == 0 ? min + (magnitude % range) : max - (magnitude % range);
+      }
+
+      return value;
+    }
+
+    <# }
+    #>
+
+    }
+}
+
+*/

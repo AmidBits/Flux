@@ -2,6 +2,12 @@ namespace Flux
 {
   public static partial class Em
   {
+    public static System.Numerics.BigInteger ActualValue(this MetricPrefix source)
+      => System.Numerics.BigInteger.Pow(10, (int)source);
+
+    public static string? ConvertToShortScale(this MetricPrefix source)
+      => Globalization.En.NumeralComposition.ShortScaleDictionary.TryGetValue(source.ActualValue(), out var shortScaleName) ? shortScaleName : null;
+
     /// <summary>
     /// <para>Convert <paramref name="value"/> from <paramref name="source"/> prefix to <paramref name="target"/> prefix with a choice of <paramref name="dimensions"/> (1 is default, 2 for squares and 3 for cubes).</para>
     /// </summary>
@@ -42,8 +48,8 @@ namespace Flux
       if (forceTriples && log > -3 && log < 3)
         return (MetricPrefix)log.Spread(-3, 3, HalfRounding.Random);
 
-      if (TSource.IsNegative(source) && log.TruncRemSgn(3, out var r, out var rs) is var q)
-        return (MetricPrefix)((q + rs) * 3);
+      if (TSource.IsNegative(source) && log.TruncRem(3) is var (tq, r))
+        return (MetricPrefix)((tq + int.Sign(r)) * 3);
 
       return (MetricPrefix)(log / 3 * 3);
     }

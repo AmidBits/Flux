@@ -40,7 +40,7 @@ namespace Maths
       var n = 1.75;
       var m = 0.45;
 
-      n.MultipleOf(m, false, UniversalRounding.HalfAwayFromZero, out var multipleTowardsZero, out var multipleAwayFromZero);
+      n.MultipleOfNearest(m, false, UniversalRounding.HalfAwayFromZero, out var multipleTowardsZero, out var multipleAwayFromZero);
 
       Assert.AreEqual(1.8, n.RoundToNearest(Flux.UniversalRounding.HalfAwayFromZero, multipleTowardsZero, multipleAwayFromZero), $"{nameof(RoundToMultipleOf)} {Flux.UniversalRounding.HalfAwayFromZero}");
     }

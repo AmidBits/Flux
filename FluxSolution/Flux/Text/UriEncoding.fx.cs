@@ -13,7 +13,7 @@ namespace Flux
     private const int UriPercentEncodedOctetLength = 3;
 
     [System.Text.RegularExpressions.GeneratedRegexAttribute(@"(?<Prefix>%)(?<Octet>[0-9A-Fa-f]{2})", System.Text.RegularExpressions.RegexOptions.Compiled)]
-    public static partial System.Text.RegularExpressions.Regex RegexUriEncodingMatch();
+    public static partial System.Text.RegularExpressions.Regex RegexUriEncodedOctetMatch();
 
     /// <summary>
     /// <para>URIs include components and subcomponents that are delimited by characters in the "reserved" set. These characters are called "reserved" because they may(or may not) be defined as delimiters by the generic syntax, by each scheme-specific syntax, or by the implementation-specific syntax of a URI's dereferencing algorithm.</para>
@@ -97,7 +97,7 @@ namespace Flux
     {
       var sm = new SpanMaker<char>();
 
-      var evm = RegexUriEncodingMatch().EnumerateMatches(source);
+      var evm = RegexUriEncodedOctetMatch().EnumerateMatches(source);
 
       var listBytes = new System.Collections.Generic.List<byte>();
 

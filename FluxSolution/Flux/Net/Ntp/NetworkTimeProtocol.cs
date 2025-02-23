@@ -160,11 +160,11 @@
 
     [System.CLSCompliant(false)]
     public static System.TimeSpan ConvertNtpShortFormatToTimeSpan(ushort seconds, ushort fraction)
-      => System.TimeSpan.FromSeconds(seconds + fraction.ToDecimalFraction(10));
+      => System.TimeSpan.FromSeconds(seconds + fraction.ConvertToDecimalFraction(10));
 
     [System.CLSCompliant(false)]
     public static System.DateTime ConvertNtpTimestampFormatToDateTime(uint seconds, uint fraction)
-      => NetworkTimeProtocol.PrimeEpoch.AddSeconds(seconds + fraction.ToDecimalFraction(10));
+      => NetworkTimeProtocol.PrimeEpoch.AddSeconds(seconds + fraction.ConvertToDecimalFraction(10));
 
     #endregion // Conversion methods
 

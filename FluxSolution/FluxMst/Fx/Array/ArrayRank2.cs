@@ -201,7 +201,7 @@ namespace SystemFx
       System.Console.WriteLine(matrix.Rank2ToConsoleString(cso));
       System.Console.WriteLine();
 
-      var actual = matrix.RotateToCopyCcw();
+      var actual = matrix.RotateToCopy(RotationalDirection.CounterClockWise);
       System.Console.WriteLine(nameof(Fx.RotateToCopyCcw));
       System.Console.WriteLine(actual.Rank2ToConsoleString(cso));
       System.Console.WriteLine();
@@ -232,7 +232,7 @@ namespace SystemFx
       System.Console.WriteLine(matrix.Rank2ToConsoleString(cso));
       System.Console.WriteLine();
 
-      var actual = matrix.RotateToCopyCw();
+      var actual = matrix.RotateToCopy(RotationalDirection.ClockWise);
       System.Console.WriteLine(nameof(Fx.RotateToCopyCw));
       System.Console.WriteLine(actual.Rank2ToConsoleString(cso));
       System.Console.WriteLine();

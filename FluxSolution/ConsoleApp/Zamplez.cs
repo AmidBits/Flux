@@ -299,14 +299,15 @@ namespace ConsoleApp
       //var mAwayFromZeropf = value.MultipleOfAwayFromZero(multiple, false);
       //var mAwayFromZeropt = value.MultipleOfAwayFromZero(multiple, true);
 
-      var rtmo = value.MultipleOf(multiple, true, Flux.UniversalRounding.WholeAwayFromZero, out var mTowardsZero, out var mAwayFromZero);
+      var rtmo = value.MultipleOfNearest(multiple, true, Flux.UniversalRounding.WholeAwayFromZero, out var mTowardsZero, out var mAwayFromZero);
 
       var rtpTowardsZero = value.PowOfTowardZero(radix, true);
       var rtpAwayFromZero = value.PowOfAwayFromZero(radix, true);
       var rtp = value.RoundToNearest(Flux.UniversalRounding.WholeAwayFromZero, rtpTowardsZero, rtpAwayFromZero);
       //var rtp = Flux.Quantities.Radix.PowOf(value, radix, true, Flux.RoundingMode.AwayFromZero, out var rtpTowardsZero, out var rtpAwayFromZero);
 
-      var quotient = int.CreateChecked(value.AssertNonNegativeNumber().TruncRem(1, out var remainder));
+      var (q, remainder) = value.AssertNonNegativeNumber().TruncRem(1);
+      var quotient = int.CreateChecked(q);
 
       var p2TowardsZero = quotient.MostSignificant1Bit();
       var p2AwayFromZero = (p2TowardsZero < quotient || remainder > 0) ? (p2TowardsZero == 0 ? 1 : p2TowardsZero << 1) : p2TowardsZero;
@@ -350,11 +351,11 @@ namespace ConsoleApp
       var birbyts = n.ReverseBytes();
       System.Console.WriteLine($"   Reverse Bytes = {birbyts.ToBinaryString()}");
 
-      var bfl = n.BitFoldToMsb();
+      var bfl = n.BitFoldMsb();
       System.Console.WriteLine($"   Bit-Fold Left = {bfl}");
       var bfls = bfl.ToBinaryString();
       System.Console.WriteLine($"       As Binary = {bfls}");
-      var bfr = n.BitFoldToLsb();
+      var bfr = n.BitFoldLsb();
       System.Console.WriteLine($"  Bit-Fold Right = {bfr}");
       var bfrs = bfr.ToBinaryString();
       System.Console.WriteLine($"       As Binary = {bfrs}");
@@ -362,10 +363,10 @@ namespace ConsoleApp
       var bln = n.GetBitLength();
       //var l2 = bi.IntegerLog2();
       var ms1b = n.MostSignificant1Bit();
-      var bmr = n.CreateBitMaskLsb();
+      var bmr = n.CreateBitMaskLsbFromBitLength();
       var bmrs = bmr.ToBinaryString();
       var bmrsl = bmrs.Length;
-      var bml = n.CreateBitMaskMsb();
+      var bml = n.CreateBitMaskMsbFromBitLength();
       var bmls = bml.ToBinaryString();
       var bmlsl = bmls.Length;
     }

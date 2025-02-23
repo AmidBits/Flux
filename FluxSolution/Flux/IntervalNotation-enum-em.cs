@@ -47,12 +47,15 @@ namespace Flux
     {
       source.AssertValidInterval(minValue, maxValue);
 
+      var vctmin = value.CompareTo(minValue);
+      var vctmax = value.CompareTo(maxValue);
+
       return source switch
       {
-        IntervalNotation.Closed => value.CompareTo(minValue) < 0 ? -1 : value.CompareTo(maxValue) > 0 ? +1 : 0,
-        IntervalNotation.Open => value.CompareTo(minValue) <= 0 ? -1 : value.CompareTo(maxValue) >= 0 ? +1 : 0,
-        IntervalNotation.HalfOpenLeft => value.CompareTo(minValue) <= 0 ? -1 : value.CompareTo(maxValue) > 0 ? +1 : 0,
-        IntervalNotation.HalfOpenRight => value.CompareTo(minValue) < 0 ? -1 : value.CompareTo(maxValue) >= 0 ? +1 : 0,
+        IntervalNotation.Closed => vctmin < 0 ? -1 : vctmax > 0 ? +1 : 0,
+        IntervalNotation.Open => vctmin <= 0 ? -1 : vctmax >= 0 ? +1 : 0,
+        IntervalNotation.HalfOpenLeft => vctmin <= 0 ? -1 : vctmax > 0 ? +1 : 0,
+        IntervalNotation.HalfOpenRight => vctmin < 0 ? -1 : vctmax >= 0 ? +1 : 0,
         _ => throw new NotImplementedException(),
       };
     }
@@ -120,7 +123,7 @@ namespace Flux
     /// <param name="value">The value to verify.</param>
     /// <param name="minValue">The lower bound of the interval set.</param>
     /// <param name="maxValue">The upper bound of the interval set.</param>
-    /// <returns>Whether the <paramref name="value"/> is a member of the interval set <paramref name="minValue"/>..<paramref name="maxValue"/> using the <see cref="IntervalNotation"/>.</returns>
+    /// <returns>Whether the <paramref name="value"/> is a member of the interval set <paramref name="minValue"/>..<paramref name="maxValue"/> using the source <see cref="IntervalNotation"/>.</returns>
     ///// <exception cref="System.ArgumentOutOfRangeException"/>
     ///// <exception cref="System.NotImplementedException"/>
     public static bool IsWithinInterval<T>(this IntervalNotation source, T value, T minValue, T maxValue)
@@ -136,14 +139,15 @@ namespace Flux
     }
 
     /// <summary>
-    /// <para>Gets new appropriate (depending on type <typeparamref name="T"/>) values as min-value and max-value using the specified <see cref="IntervalNotation"/>.</para>
-    /// <para>If <typeparamref name="T"/> is an integer, the new values are (<paramref name="minValue"/> + 1) and (<paramref name="maxValue"/> - 1).</para>
-    /// <para>If <typeparamref name="T"/> is a floating point value, the new values are (<paramref name="minValue"/> + epsilon) and (<paramref name="maxValue"/> - epsilon). In this context epsilon is a value that makes the original value and the new value not equal.</para>
+    /// <para>Gets a new min/max interval (depending on type <typeparamref name="T"/>) using the specified <see cref="IntervalNotation"/>, <paramref name="minValue"/>, <paramref name="maxValue"/> and <paramref name="magnitude"/>.</para>
+    /// <para>If <typeparamref name="T"/> is an integer, magnitude = 1 and notation = <see cref="IntervalNotation.Open"/>, the new values are (<paramref name="minValue"/> + 1) and (<paramref name="maxValue"/> - 1).</para>
+    /// <para>If <typeparamref name="T"/> is a floating point value, magnitude = 1 and notation = <see cref="IntervalNotation.Open"/>, the new values are (<paramref name="minValue"/> + epsilon) and (<paramref name="maxValue"/> - epsilon). In this context epsilon is a value that makes the original value and the new value not equal.</para>
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <param name="source"></param>
     /// <param name="minValue"></param>
     /// <param name="maxValue"></param>
+    /// <param name="magnitude">This is the magnitude of the extent to aim for. It is essentially a multiplier of the minimum possible extent (when any open interval is chosen).</param>
     /// <returns></returns>
     /// <exception cref="System.ArgumentOutOfRangeException"></exception>
     /// <exception cref="NotImplementedException"></exception>
@@ -169,12 +173,25 @@ namespace Flux
       return (minValue, maxValue);
     }
 
-    public static bool TryGetExtentInterval<T>(this IntervalNotation source, T minValue, T maxValue, out T minExtent, out T maxExtent)
+    /// <summary>
+    /// <para>Attempts to get a new min/max interval (depending on type <typeparamref name="T"/>) using the specified <see cref="IntervalNotation"/>, <paramref name="minValue"/>, <paramref name="maxValue"/> and <paramref name="magnitude"/>.</para>
+    /// <para>If <typeparamref name="T"/> is an integer, magnitude = 1 and notation = <see cref="IntervalNotation.Open"/>, the new values are (<paramref name="minValue"/> + 1 * 1) and (<paramref name="maxValue"/> - 1 * 1).</para>
+    /// <para>If <typeparamref name="T"/> is a floating point value, magnitude = 1 and notation = <see cref="IntervalNotation.Open"/>, the new values are (<paramref name="minValue"/> + epsilon * 1) and (<paramref name="maxValue"/> - epsilon * 1). In this context epsilon is a value that makes the original value and the new value not equal.</para>
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="source"></param>
+    /// <param name="minValue"></param>
+    /// <param name="maxValue"></param>
+    /// <param name="magnitude">This is the magnitude of the extent to aim for. It is essentially a multiplier of the minimum possible extent (when any open interval is chosen).</param>
+    /// <param name="minExtent"></param>
+    /// <param name="maxExtent"></param>
+    /// <returns></returns>
+    public static bool TryGetExtentInterval<T>(this IntervalNotation source, T minValue, T maxValue, int magnitude, out T minExtent, out T maxExtent)
       where T : System.Numerics.INumber<T>
     {
       try
       {
-        (minExtent, maxExtent) = source.GetExtentInterval(minValue, maxValue);
+        (minExtent, maxExtent) = source.GetExtentInterval(minValue, maxValue, magnitude);
         return true;
       }
       catch { }
@@ -184,6 +201,18 @@ namespace Flux
       return false;
     }
 
+    /// <summary>
+    /// <para>Gets a new min/max interval, using the <paramref name="source"/> <see cref="IntervalNotation"/> where <paramref name="minMargin"/>/<paramref name="maxMargin"/> are absolute margins applied to <paramref name="minValue"/>/<paramref name="maxValue"/> respectively.</para>
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="source"></param>
+    /// <param name="minValue"></param>
+    /// <param name="maxValue"></param>
+    /// <param name="minMargin"></param>
+    /// <param name="maxMargin"></param>
+    /// <returns></returns>
+    /// <exception cref="System.ArgumentOutOfRangeException"></exception>
+    /// <exception cref="NotImplementedException"></exception>
     public static (T Minimum, T Maximum) GetMarginInterval<T>(this IntervalNotation source, T minValue, T maxValue, T minMargin, T maxMargin)
       where T : System.Numerics.INumber<T>
     {
@@ -206,15 +235,18 @@ namespace Flux
       return (min, max);
     }
 
-    ///// <summary>
-    ///// <para>Spreads a value in the closed interval [<paramref name="minValue"/>, <paramref name="maxValue"/>] to the edge of the interval. i.e. the value returned is either <paramref name="minValue"/> or <paramref name="maxValue"/>.</para>
-    ///// </summary>
-    //public static TNumber Spread<TNumber>(this TNumber source, TNumber minValue, TNumber maxValue, MidpointRounding mode)
-    //  where TNumber : System.Numerics.INumber<TNumber>
-    //  => source <= minValue || source >= maxValue
-    //  ? source
-    //  : source.RoundToNearest((UniversalRounding)(int)mode, minValue, maxValue);
-
+    /// <summary>
+    /// <para>Attempts to get a new min/max interval, using the <paramref name="source"/> <see cref="IntervalNotation"/> where <paramref name="minMargin"/>/<paramref name="maxMargin"/> are absolute margins applied to <paramref name="minValue"/>/<paramref name="maxValue"/> respectively.</para>
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="source"></param>
+    /// <param name="minValue"></param>
+    /// <param name="maxValue"></param>
+    /// <param name="minMargin"></param>
+    /// <param name="maxMargin"></param>
+    /// <param name="minimum"></param>
+    /// <param name="maximum"></param>
+    /// <returns></returns>
     public static bool TryGetMarginInterval<T>(this IntervalNotation source, T minValue, T maxValue, T minMargin, T maxMargin, out T minimum, out T maximum)
       where T : System.Numerics.INumber<T>
     {
@@ -229,6 +261,82 @@ namespace Flux
       maximum = default!;
       return false;
     }
+
+    public static IntervalNotation InvertNotation(this IntervalNotation source)
+      => source switch
+      {
+        IntervalNotation.Closed => IntervalNotation.Open,
+        IntervalNotation.Open => IntervalNotation.Closed,
+        IntervalNotation.HalfOpenLeft => IntervalNotation.HalfOpenRight,
+        IntervalNotation.HalfOpenRight => IntervalNotation.HalfOpenLeft,
+        _ => throw new NotImplementedException(),
+      };
+
+    /// <summary>
+    /// <para>Loop back-and-forth between <paramref name="start"/> and <paramref name="stop"/> in <paramref name="step"/>s for a number of <paramref name="iterations"/>.</para>
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="source">The interval-notation to apply for the first and last number in the loop.</param>
+    /// <param name="start">The first number in the loop (which may not appear in the output depending on the interval-notation).</param>
+    /// <param name="stop">The last number in the loop (which may not appear in the output depending on the interval-notation).</param>
+    /// <param name="step">The size to increase the counter by for each loop.</param>
+    /// <param name="iterations">The number of times to repeat the entire loop.</param>
+    /// <returns></returns>
+    public static System.Collections.Generic.IEnumerable<T> LoopBackAndForth<T>(this IntervalNotation source, T start, T stop, int iterations = 1)
+      where T : System.Numerics.IBinaryInteger<T>
+    {
+      System.ArgumentOutOfRangeException.ThrowIfNegative(iterations, nameof(iterations));
+
+      while (iterations-- > 0)
+      {
+        foreach (var item in source.LoopBetween(start, stop, 1)) yield return item;
+        foreach (var item in source.InvertNotation().LoopBetween(stop, start, 1)) yield return item;
+      }
+    }
+
+    /// <summary>
+    /// <para>Loop between <paramref name="start"/> and <paramref name="stop"/> in <paramref name="step"/>s for a number of <paramref name="iterations"/>.</para>
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="source">The interval-notation to apply for the first and last number in the loop.</param>
+    /// <param name="start">The first number in the loop (which may not appear in the output depending on the interval-notation).</param>
+    /// <param name="stop">The last number in the loop (which may not appear in the output depending on the interval-notation).</param>
+    /// <param name="step">The size to increase the counter by for each loop.</param>
+    /// <param name="iterations">The number of times to repeat the entire loop.</param>
+    /// <returns></returns>
+    public static System.Collections.Generic.IEnumerable<T> LoopBetween<T>(this IntervalNotation source, T start, T stop, int iterations = 1)
+      where T : System.Numerics.IBinaryInteger<T>
+    {
+      System.ArgumentOutOfRangeException.ThrowIfNegative(iterations, nameof(iterations));
+
+      var step = (stop - start).Sign();
+
+      while (iterations-- > 0)
+      {
+        if (source is IntervalNotation.Closed or IntervalNotation.HalfOpenRight)
+          yield return start;
+
+        for (var index = start + step; index != stop; index += step)
+          yield return index;
+
+        if (source is IntervalNotation.Closed or IntervalNotation.HalfOpenLeft)
+          yield return stop;
+      }
+    }
+
+    /// <summary>
+    /// <para>Loop the range from <paramref name="start"/> and <paramref name="count"/> numbers in <paramref name="step"/>s for a number of <paramref name="iterations"/>.</para>
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="source">The interval-notation to apply for the first and last number in the loop.</param>
+    /// <param name="start">The first number in the loop (which may not appear in the output depending on the interval-notation).</param>
+    /// <param name="count">The count of numbers the loop should produce.</param>
+    /// <param name="step">The size to increase the counter by for each loop.</param>
+    /// <param name="iterations">The number of times to repeat the entire loop.</param>
+    /// <returns></returns>
+    public static System.Collections.Generic.IEnumerable<T> LoopRange<T>(this IntervalNotation source, T start, T count, int iterations = 1)
+      where T : System.Numerics.IBinaryInteger<T>
+      => source.LoopBetween(start, start + count - T.CopySign(T.One, count), iterations);
 
     /// <summary>
     /// <para>Gets a char representing the <see cref="IntervalNotation"/> (specified by <paramref name="source"/>) on the left hand side.</para>

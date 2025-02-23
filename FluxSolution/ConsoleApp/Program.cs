@@ -14,6 +14,7 @@ using System.Text.RegularExpressions;
 using System.Xml.XPath;
 using Flux;
 using Flux.DataStructures.UnionFind;
+using Flux.Probabilities;
 using Flux.Text;
 using Flux.Units;
 using Microsoft.VisualBasic;
@@ -45,11 +46,11 @@ namespace ConsoleApp
     {
       var reWhitespace = new System.Text.RegularExpressions.Regex(@"\s+");
 
-      var ttwts = Flux.Resource.GetGutenbergTenThousandWonderfulThings();
+      var ttwts = Flux.Resources.GetGutenbergTenThousandWonderfulThings().ToArray();
 
       var dict3 = new System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>>();
 
-      foreach (var ttwt in ttwts)
+      foreach (var ttwt in ttwts.Skip(1))
       {
         var title = ttwt[0];
         var text = ttwt[1];
@@ -115,19 +116,77 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
-      var a = "Robert Hugo".AsSpan();
-      var b = "Rob";
+      var spread = 5.Spread(3, 6, HalfRounding.TowardZero);
 
-      var c = a.IsCommonPrefixAny(null, b);
+      var dividend = 1234d;
+      var divisor = 123d;
 
-      var r = new SpanMaker<char>("The Lars Robert Hugo man.");
-      var d = r.AsReadOnlySpan().RegexSplits(@" ");
+      var quotient = dividend / divisor;
+      var remainder = dividend % divisor;
 
-      //r = r.PadLeft(30, "Pre");
-      //var rl = r.Length;
-      //r = r.Duplicate(c => c == 'o' || c == 'T' || c == '.', 9);
+      var (Q, R) = dividend.TruncRem(divisor);
 
-      //System.Globalization.StringInfo.
+      var (TruncatedQuotient, Remainder) = dividend.TruncRem(divisor);
+
+      var ens = (1234).ToBinaryString(16);
+
+      var lfb = Flux.IntervalNotation.Closed.LoopBackAndForth(-1, 8).ToArray();
+      var lb = Flux.IntervalNotation.Closed.LoopBetween(-1, 8).ToArray();
+      var lr = Flux.IntervalNotation.Closed.LoopRange(-1, -10).ToArray();
+
+      return;
+
+      System.Console.WriteLine(Flux.Probabilities.Normal.Distribution(1.0, 1.5).Histogram(-4, 4));
+
+      var xy = "ABCD".Select((e, i) => System.Collections.Generic.KeyValuePair.Create(e, i)).FlipPairs().ToArray();
+
+      var sequence1 = new System.Collections.Generic.List<int> { 1, 2, 3 }.ToArray();
+      var sequence2 = new System.Collections.Generic.List<string> { "A", "B", "C" }.ToArray();
+
+      var s1s2 = sequence1.CartesianProductPairWith(sequence2).ToArray();
+
+      //var test0 = .SelectManyMany(z => new int[] { z.First }, z => new string[] { z.Second }).ToArray();
+      //var test1 = test0.FlipPairs().ToArray();
+      //var test2 = test1.FlipPairs().ToArray();
+
+
+      var d = new System.Collections.Generic.Dictionary<char, int>() { { 'A', 1 }, { 'B', 2 }, { 'C', 1 } };
+
+      var ds = d.ToSwitchable();
+
+      var sds1 = ds.Switch();
+      var sds2 = sds1.Switch();
+
+      var sds2u = sds1.ToUnswitchable();
+
+      //Flux.Globalization.En.NumeralComposition.ShortScaleDictionary.TryGet
+
+      var ssn = Flux.MetricPrefix.Mega.ConvertToShortScale();
+
+
+      var html = "<div>This is some text by <b>Paka</b></div>";
+      //var actual = html.RemoveAllMarkupTags();
+
+      var sm = html.ToSpanMaker();
+      var smactual = sm.RemoveRegex(@"(<[^>]+>)+");
+
+      var n = 0x10;
+      var nlp2 = n.MostSignificant1Bit() << 1;
+      var nsp2 = n.MostSignificant1Bit() >> 1;
+      var np2tzf = n.Pow2TowardZero(false);
+      var np2afzf = n.Pow2AwayFromZero(false);
+      var np2tzt = n.Pow2TowardZero(true);
+      var np2afzt = n.Pow2AwayFromZero(true);
+      var nflsb = (n.BitFoldLsb() >> 2) + 1;
+
+      var text = "M";
+      var bytes = System.Text.Encoding.UTF8.GetBytes(text);
+      //bytes.Recode(8, 5, out byte[] recoded);
+
+      bytes.EncodeToIndices(6, out var indices);
+
+      var iwi = Flux.IntervalNotation.Closed.IsWithinInterval(5, 3, 7);
+
 
       var di = new System.IO.DirectoryInfo(@"E:\Media\Audio\Tracks");
       var ef = di.EnumerateFiles("*.mp3", System.IO.SearchOption.AllDirectories).Select(fi => fi.FullName).Distinct().Order().ToArray();

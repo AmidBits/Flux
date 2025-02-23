@@ -20,7 +20,7 @@ namespace Flux.Geometry.Geodesy
     /// <summary>
     /// <para>Creates a new <see cref="Azimuth"/> from the specified <paramref name="angle"/>.</para>
     /// </summary>
-    public Azimuth(Units.Angle angle) => m_angle = new(angle.InDegrees.WrapAroundOpenEnd(MinValue, MaxValue), Units.AngleUnit.Degree);
+    public Azimuth(Units.Angle angle) => m_angle = new(angle.InDegrees.WrapAroundHalfOpenMax(MinValue, MaxValue), Units.AngleUnit.Degree);
 
     /// <summary>
     /// <para>Creates a new <see cref="Azimuth"/> from the specified <paramref name="angle"/> and <paramref name="unit"/>.</para>
