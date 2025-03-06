@@ -2,12 +2,14 @@
 {
   /// <see href="https://en.wikipedia.org/wiki/Brownian_noise"/>
   /// <seealso cref="http://vellocet.com/dsp/noise/VRand.html"/>
-  public sealed class BrownNoise(System.Random rng)
+  public sealed class BrownNoise
     : IMonoWaveUiGeneratable, IMonoWavePi2Generatable
   {
-    private readonly System.Random m_rng = rng ?? System.Random.Shared;
+    private readonly System.Random m_rng;
 
     private double m_brown;
+
+    public BrownNoise(System.Random rng) => m_rng = rng ?? System.Random.Shared;
 
     public BrownNoise() : this(System.Random.Shared) { }
 

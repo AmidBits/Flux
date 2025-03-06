@@ -362,8 +362,12 @@ namespace Flux
     /// <param name="endianess"></param>
     public static void WriteBytes(this System.Guid value, System.Span<byte> buffer, Endianess endianess)
     {
+#if NET8_0_OR_GREATER
       if (!value.TryWriteBytes(buffer, endianess == Endianess.BigEndian, out var bytesWritten) || bytesWritten != 16)
         throw new System.InvalidOperationException();
+#else
+      value.TryWriteBytes(buffer);
+#endif
     }
 
     /// <summary>
@@ -595,7 +599,8 @@ namespace Flux
     /// <param name="buffer"></param>
     /// <param name="endianess"></param>
     /// <exception cref="System.ArgumentOutOfRangeException"></exception>
-    private static void WriteBuffer(this System.UInt128 value, System.Span<byte> buffer, Endianess endianess)
+    [System.CLSCompliant(false)]
+    public static void WriteBuffer(this System.UInt128 value, System.Span<byte> buffer, Endianess endianess)
     {
       if (endianess == Endianess.BigEndian)
         for (var i = buffer.Length - 1; i >= 0; i--)

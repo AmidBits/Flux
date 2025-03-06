@@ -13,7 +13,7 @@
     /// <param name="nth">Essentially the radix.</param>
     /// <param name="root">The integer <paramref name="nth"/> root of <paramref name="value"/>.</param>
     /// <returns>Whether the operation was successful.</returns>
-    public static bool TryFastIntegerRootN<TValue, TNth, TRoot>(TValue value, TNth nth, UniversalRounding mode, out TRoot integerRoot, out double root)
+    public static bool TryFastIntegerRootN<TValue, TNth, TRoot>(this TValue value, TNth nth, UniversalRounding mode, out TRoot integerRoot, out double root)
       where TValue : System.Numerics.IBinaryInteger<TValue>
       where TNth : System.Numerics.IBinaryInteger<TNth>
       where TRoot : System.Numerics.IBinaryInteger<TRoot>

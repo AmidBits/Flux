@@ -20,25 +20,25 @@ namespace Flux
     public static System.Span<T> AsSpan<T>(this System.Collections.Generic.List<T> source)
       => System.Runtime.InteropServices.CollectionsMarshal.AsSpan(source);
 
-    /// <summary>
-    /// <para></para>
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="source"></param>
-    /// <param name="equalityComparer"></param>
-    public static void RemoveAdjacentDuplicates<T>(this System.Collections.Generic.List<T> source, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
-    {
-      if (source.Count < 2) return;
+    ///// <summary>
+    ///// <para></para>
+    ///// </summary>
+    ///// <typeparam name="T"></typeparam>
+    ///// <param name="source"></param>
+    ///// <param name="equalityComparer"></param>
+    //public static void RemoveAdjacentDuplicates<T>(this System.Collections.Generic.List<T> source, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
+    //{
+    //  if (source.Count < 2) return;
 
-      equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
+    //  equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
 
-      var removeIndex = 1;
+    //  var removeIndex = 1;
 
-      for (var index = 1; index < source.Count; index++)
-        if (!equalityComparer.Equals(source[removeIndex - 1], source[index]))
-          source[removeIndex++] = source[index];
+    //  for (var index = 1; index < source.Count; index++)
+    //    if (!equalityComparer.Equals(source[removeIndex - 1], source[index]))
+    //      source[removeIndex++] = source[index];
 
-      source.RemoveRange(removeIndex, source.Count - removeIndex);
-    }
+    //  source.RemoveRange(removeIndex, source.Count - removeIndex);
+    //}
   }
 }

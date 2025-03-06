@@ -5,18 +5,20 @@
   /// https://www.tutorialspoint.com/representation-of-graphs
   /// https://www.geeksforgeeks.org/graph-data-structure-and-algorithms/
   /// <see href="https://en.wikipedia.org/wiki/Graph_(discrete_mathematics)"/>
-  public sealed class AdjacencyMatrix<TVertexValue, TEdgeValue>(int[,] matrix)
+  public sealed class AdjacencyMatrix<TVertexValue, TEdgeValue>
     : IGraph<TVertexValue, TEdgeValue>
     where TVertexValue : notnull
     where TEdgeValue : notnull
   {
     /// <summary>This is the adjacency matrix (of a directed simple graph) which consists of its edges.</summary>
-    private int[,] m_matrix = (int[,])matrix.AssertDimensionallySymmetrical(out var _);
+    private int[,] m_matrix;
 
     /// <summary>The values of vertices.</summary>
-    private readonly System.Collections.Generic.Dictionary<int, TVertexValue> m_vertexValues = [];
+    private readonly System.Collections.Generic.Dictionary<int, TVertexValue> m_vertexValues = new();
     /// <summary>The values of edges.</summary>
-    private readonly System.Collections.Generic.Dictionary<(int, int), TEdgeValue> m_edgeValues = [];
+    private readonly System.Collections.Generic.Dictionary<(int, int), TEdgeValue> m_edgeValues = new();
+
+    public AdjacencyMatrix(int[,] matrix) => m_matrix = (int[,])matrix.AssertDimensionallySymmetrical(out var _);
 
     public AdjacencyMatrix() : this(new int[0, 0]) { }
 

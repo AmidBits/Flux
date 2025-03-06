@@ -1,21 +1,29 @@
 ﻿namespace Flux.Model
 {
-  public class Grid<TValue>(int rows, int columns)
-    where TValue : notnull
+  public class Grid<TValue> where TValue : notnull
   {
-    private readonly Flux.DataStructures.OrderedDictionary<(int row, int column), TValue> m_data = [];
+    private readonly Flux.DataStructures.OrderedDictionary<(int row, int column), TValue> m_data = new();
+
+    private readonly int m_rows;
+    private readonly int m_columns;
+
+    public Grid(int rows, int columns)
+    {
+      m_rows = rows;
+      m_columns = columns;
+    }
 
     /// <summary>
     /// <para>The number of squares available for the <see cref="Grid{TValue}"/>.</para>
     /// </summary>
-    public int Length => rows * columns;
+    public int Length => m_rows * m_columns;
 
     public int Count => m_data.Count;
 
-    public int Rows => rows;
-    public int Columns => columns;
+    public int Rows => m_rows;
+    public int Columns => m_columns;
 
-    public System.Drawing.Point Size => new(columns, rows);
+    public System.Drawing.Point Size => new(m_columns, m_rows);
 
     public System.Collections.Generic.IReadOnlyCollection<(int row, int column)> Keys => (System.Collections.Generic.IReadOnlyCollection<(int row, int column)>)m_data.Keys;
     public System.Collections.Generic.IReadOnlyCollection<TValue> Values => (System.Collections.Generic.IReadOnlyCollection<TValue>)m_data.Values;
@@ -38,23 +46,23 @@
     /// <returns></returns>
     /// <exception cref="System.ArgumentOutOfRangeException"></exception>
     private (int row, int column) KeyFrom(int row, int column)
-      => row < 0 || row >= rows ? throw new System.ArgumentOutOfRangeException(nameof(row))
-      : column < 0 || column >= columns ? throw new System.ArgumentOutOfRangeException(nameof(column))
+      => row < 0 || row >= m_rows ? throw new System.ArgumentOutOfRangeException(nameof(row))
+      : column < 0 || column >= m_columns ? throw new System.ArgumentOutOfRangeException(nameof(column))
       : (row, column);
     private (int row, int column) KeyFrom(int uniqueIndex)
-      => uniqueIndex < 0 || uniqueIndex >= (rows * columns)
+      => uniqueIndex < 0 || uniqueIndex >= (m_rows * m_columns)
       ? throw new System.ArgumentOutOfRangeException(nameof(uniqueIndex))
-      : (uniqueIndex / columns, uniqueIndex % columns);
+      : (uniqueIndex / m_columns, uniqueIndex % m_columns);
 
     public bool ContainsKey(int row, int column) => m_data.ContainsKey(KeyFrom(row, column));
     public bool ContainsKey(int uniqueIndex) => m_data.ContainsKey(KeyFrom(uniqueIndex));
 
     public bool ContainsValue(TValue value) => m_data.ContainsValue(value);
 
-    public bool IsWithinBounds(int row, int column) => row >= 0 && row < rows && column >= 0 && column < columns;
+    public bool IsWithinBounds(int row, int column) => row >= 0 && row < m_rows && column >= 0 && column < m_columns;
     public bool IsWithinBounds(int linearIndex)
-      => linearIndex >= 0 && linearIndex < (rows * columns)
-      ? IsWithinBounds(linearIndex / columns, linearIndex % columns)
+      => linearIndex >= 0 && linearIndex < (m_rows * m_columns)
+      ? IsWithinBounds(linearIndex / m_columns, linearIndex % m_columns)
       : throw new System.ArgumentOutOfRangeException(nameof(linearIndex));
 
     public void Swap(int sourceRow, int sourceColumn, int targetRow, int targetColumn)
@@ -91,10 +99,10 @@
     {
       var extra = includeArrayFrameSlots ? 1 : 0;
 
-      var array = new object[extra + rows + extra, extra + columns + extra];
+      var array = new object[extra + m_rows + extra, extra + m_columns + extra];
 
-      for (var row = 0; row < rows; row++)
-        for (var column = 0; column < columns; column++)
+      for (var row = 0; row < m_rows; row++)
+        for (var column = 0; column < m_columns; column++)
           array[row + extra, column + extra] = resultSelector(TryGetValue(row, column, out var value) ? value : default!);
 
       return array;

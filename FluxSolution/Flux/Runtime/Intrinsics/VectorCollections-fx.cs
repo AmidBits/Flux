@@ -134,11 +134,11 @@ namespace Flux
     /// <para>Returns all midpoints (halfway) points of the polygon.</para>
     /// </summary>
     public static System.Collections.Generic.IEnumerable<System.Runtime.Intrinsics.Vector128<double>> GetMidpoints(System.Collections.Generic.IEnumerable<System.Runtime.Intrinsics.Vector128<double>> source)
-      => source.PartitionTuple2(true, (leading, trailing, index) => (leading, trailing)).Select(edge => (edge.trailing + edge.leading) / 2);
+      => source.PartitionTuple2(true, (leading, trailing, index) => (leading, trailing)).Select(edge => (edge.trailing + edge.leading) / System.Runtime.Intrinsics.Vector128.Create(2d));
 
     /// <summary>Returns all midpoints (halfway) points of the polygon. (2D/3D)</summary>
     public static System.Collections.Generic.IEnumerable<(System.Runtime.Intrinsics.Vector256<double> midpoint, (System.Runtime.Intrinsics.Vector256<double>, System.Runtime.Intrinsics.Vector256<double>) pair)> GetMidpoints(System.Collections.Generic.IEnumerable<System.Runtime.Intrinsics.Vector256<double>> source)
-      => source.PartitionTuple2(true, (leading, trailing, index) => ((trailing + leading) / 2, (leading, trailing)));
+      => source.PartitionTuple2(true, (leading, trailing, index) => ((trailing + leading) / System.Runtime.Intrinsics.Vector256.Create(2d), (leading, trailing)));
 
     #endregion // GetMidpoints
 

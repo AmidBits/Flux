@@ -17,14 +17,14 @@ namespace Flux
     public static System.Collections.Generic.IDictionary<TKey, System.Collections.Generic.IList<TValue>> ToSwitchable<TKey, TValue>(this System.Collections.Generic.IDictionary<TKey, TValue> source)
       where TKey : notnull
     {
-      var switchable = new System.Collections.Generic.OrderedDictionary<TKey, System.Collections.Generic.IList<TValue>>();
+      var switchable = new DataStructures.OrderedDictionary<TKey, System.Collections.Generic.IList<TValue>>();
 
       foreach (var kvp in source)
       {
         if (kvp.Value is System.Collections.Generic.IList<TValue> list)
           switchable.Add(kvp.Key, list);
         else
-          switchable.Add(kvp.Key, [kvp.Value]);
+          switchable.Add(kvp.Key, new TValue[] { kvp.Value });
       }
 
       return switchable;
@@ -36,7 +36,7 @@ namespace Flux
     {
       equalityComparer ??= System.Collections.Generic.EqualityComparer<TValue>.Default;
 
-      var switched = new System.Collections.Generic.OrderedDictionary<TValue, System.Collections.Generic.IList<TKey>>(equalityComparer);
+      var switched = new DataStructures.OrderedDictionary<TValue, System.Collections.Generic.IList<TKey>>(equalityComparer);
 
       foreach (var kvp in source)
         foreach (var value in kvp.Value)
@@ -53,7 +53,7 @@ namespace Flux
     public static System.Collections.Generic.IDictionary<TKey, TValue> ToUnswitchable<TKey, TValue>(this System.Collections.Generic.IDictionary<TKey, System.Collections.Generic.IList<TValue>> source)
       where TKey : notnull
     {
-      var unswitchable = new System.Collections.Generic.OrderedDictionary<TKey, TValue>();
+      var unswitchable = new DataStructures.OrderedDictionary<TKey, TValue>();
 
       foreach (var kvp in source)
         unswitchable.Add(kvp.Key, kvp.Value.Single());

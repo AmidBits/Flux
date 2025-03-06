@@ -43,6 +43,8 @@ namespace Flux.Units
     #region Static methods
 
     #region Conversion methods
+    public static double ConvertAngleToPercentSlope(double radAngle)
+      => double.Tan(radAngle);
 
     /// <summary>
     /// <para>Convert decimal degrees to the traditional sexagsimal unit subdivisions, a.k.a. DMS notation.</para>

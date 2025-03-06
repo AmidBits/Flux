@@ -1,12 +1,12 @@
 namespace Flux.IO.TabularStream
 {
-  public sealed class TabularStreamReader(string path, System.Text.Encoding encoding, char fieldSeparator = ',')
+  public sealed class TabularStreamReader
     : Data.TabularDataReader
   {
-    private readonly System.IO.StreamReader m_streamReader = new(path, encoding);
+    private readonly System.IO.StreamReader m_streamReader;
 
     /// <summary>An array of the field provider types for the result.</summary>
-    public System.Collections.Generic.List<string> FieldProviderTypes { get; } = [];
+    public System.Collections.Generic.List<string> FieldProviderTypes { get; } = new();
 
     public int RecordIndex { get; private set; }
 
@@ -40,6 +40,13 @@ namespace Flux.IO.TabularStream
     }
 
     private readonly System.Text.StringBuilder m_fieldValue = new();
+    private readonly char m_fieldSeparator;
+
+    public TabularStreamReader(string path, System.Text.Encoding encoding, char fieldSeparator = ',')
+    {
+      m_fieldSeparator = fieldSeparator;
+      m_streamReader = new(path, encoding);
+    }
 
     public System.Collections.Generic.IEnumerable<string> ReadCsvLine()
     {
@@ -99,7 +106,7 @@ namespace Flux.IO.TabularStream
           {
             isEscaped = true;
           }
-          else if (read == fieldSeparator)
+          else if (read == m_fieldSeparator)
           {
             yield return getFieldValue(); // End Of Field.
 
@@ -117,7 +124,7 @@ namespace Flux.IO.TabularStream
         }
         else if (isEscaped)
         {
-          if (read == '"' && (peek == fieldSeparator || peek == '\r' || peek == '\n' || peek == -1)) // If it's a double quote followed by fieldSeparator, carriage return, line feed or EOF, then exit quoted mode.
+          if (read == '"' && (peek == m_fieldSeparator || peek == '\r' || peek == '\n' || peek == -1)) // If it's a double quote followed by fieldSeparator, carriage return, line feed or EOF, then exit quoted mode.
           {
             isEscaped = false;
           }

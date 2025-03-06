@@ -20,5 +20,8 @@
     Hour,
     Minute,
     Second,
+    Millisecond,
+    Microsecond,
+    Tick,
   }
 }

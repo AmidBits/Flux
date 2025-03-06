@@ -19,7 +19,7 @@ namespace Flux
 
     public SpanMaker(int capacity)
     {
-      m_array = capacity >= 1 ? System.Buffers.ArrayPool<T>.Shared.Rent(int.Max(capacity, DefaultBufferSize).Pow2AwayFromZero(false)) : [];
+      m_array = capacity >= 1 ? System.Buffers.ArrayPool<T>.Shared.Rent(int.Max(capacity, DefaultBufferSize).Pow2AwayFromZero(false)) : System.Array.Empty<T>();
 
       m_head = m_array.Length / 2;
       m_tail = m_array.Length / 2;
@@ -259,6 +259,149 @@ namespace Flux
 
     #endregion // Duplicate methods
 
+    #region Insert
+
+    /// <summary>
+    /// <para>Inserts all elements from <paramref name="another"/> span-maker, <paramref name="count"/> times, into the <see cref="SpanMaker{T}"/> starting at <paramref name="index"/>.</para>
+    /// </summary>
+    /// <param name="index"></param>
+    /// <param name="another"></param>
+    /// <param name="count"></param>
+    /// <returns></returns>
+    public SpanMaker<T> Insert(int index, SpanMaker<T> another, int count) => Insert(index, count, another.AsReadOnlySpan().ToArray().AsReadOnlySpan());
+
+    /// <summary>
+    /// <para>Inserts all elements from <paramref name="another"/> span-maker into the <see cref="SpanMaker{T}"/> starting at <paramref name="index"/>.</para>
+    /// </summary>
+    /// <param name="index"></param>
+    /// <param name="another"></param>
+    /// <returns></returns>
+    public SpanMaker<T> Insert(int index, SpanMaker<T> another) => Insert(index, 1, another.AsReadOnlySpan().ToArray().AsReadOnlySpan());
+
+#if NET9_0_OR_GREATER
+
+    /// <summary>
+    /// <para>Insert all elements from a <paramref name="collection"/>, <paramref name="count"/> times, into the <see cref="SpanMaker{T}"/> starting at <paramref name="index"/>.</para>
+    /// </summary>
+    /// <param name="index"></param>
+    /// <param name="count"></param>
+    /// <param name="collection"></param>
+    /// <returns></returns>
+    public SpanMaker<T> Insert(int index, int count, params System.Collections.Generic.ICollection<T> collection)
+    {
+      var totalInsert = collection.Count * count;
+
+      var (array, head, tail) = EnsureCapacityInsert(index, totalInsert);
+
+      index += head;
+
+      while (count-- > 0)
+      {
+        collection.CopyTo(array, index);
+
+        index += collection.Count;
+      }
+
+      return new(array, head, tail);
+    }
+
+    /// <summary>
+    /// <para>Insert all elements from a <paramref name="span"/>, <paramref name="count"/> times, into the <see cref="SpanMaker{T}"/> starting at <paramref name="index"/>.</para>
+    /// </summary>
+    /// <param name="index"></param>
+    /// <param name="count"></param>
+    /// <param name="span"></param>
+    /// <returns></returns>
+    public SpanMaker<T> Insert(int index, int count, params System.ReadOnlySpan<T> span)
+    {
+      var totalInsert = span.Length * count;
+
+      var (array, head, tail) = EnsureCapacityInsert(index, totalInsert);
+
+      while (count-- > 0)
+      {
+        span.CopyTo(array.AsSpan().Slice(head + index, span.Length));
+
+        index += span.Length;
+      }
+
+      return new(array, head, tail);
+    }
+
+    /// <summary>
+    /// <para>Insert all elements from a <paramref name="collection"/> into the <see cref="SpanMaker{T}"/> starting at <paramref name="index"/>.</para>
+    /// </summary>
+    /// <param name="index"></param>
+    /// <param name="collection"></param>
+    /// <returns></returns>
+    public SpanMaker<T> Insert(int index, params System.Collections.Generic.ICollection<T> collection) => Insert(index, 1, collection);
+
+    /// <summary>
+    /// <para>Insert all elements from a <paramref name="span"/> into the <see cref="SpanMaker{T}"/> starting at <paramref name="index"/>.</para>
+    /// </summary>
+    /// <param name="index"></param>
+    /// <param name="span"></param>
+    /// <returns></returns>
+    public SpanMaker<T> Insert(int index, params System.ReadOnlySpan<T> span) => Insert(index, 1, span);
+
+#else
+
+    /// <summary>Insert <paramref name="count"/> of <paramref name="value"/> starting at <paramref name="index"/>.</summary>
+    public SpanMaker<T> Insert(int index, int count, T value)
+    {
+      var (array, head, tail) = EnsureCapacityInsert(index, count);
+
+      System.Array.Fill(array, value, index + head, count);
+
+      return new(array, head, tail);
+    }
+
+    public SpanMaker<T> Insert(int index, T value) => Insert(index, 1, value);
+
+    /// <summary>Insert <paramref name="count"/> of <paramref name="collection"/> starting at <paramref name="index"/>.</summary>
+    public SpanMaker<T> Insert(int index, int count, System.Collections.Generic.ICollection<T> collection)
+    {
+      var totalInsert = collection.Count * count;
+
+      var (array, head, tail) = EnsureCapacityInsert(index, totalInsert);
+
+      index += head;
+
+      while (count-- > 0)
+      {
+        collection.CopyTo(array, index);
+
+        index += collection.Count;
+      }
+
+      return new(array, head, tail);
+    }
+
+    public SpanMaker<T> Insert(int index, System.Collections.Generic.ICollection<T> collection) => Insert(index, 1, collection);
+
+    /// <summary>Insert <paramref name="count"/> of <paramref name="span"/> starting at <paramref name="index"/>.</summary>
+    public SpanMaker<T> Insert(int index, int count, System.ReadOnlySpan<T> span)
+    {
+      var totalInsert = span.Length * count;
+
+      var (array, head, tail) = EnsureCapacityInsert(index, totalInsert);
+
+      while (count-- > 0)
+      {
+        span.CopyTo(array.AsSpan().Slice(head + index, span.Length));
+
+        index += span.Length;
+      }
+
+      return new(array, head, tail);
+    }
+
+    public SpanMaker<T> Insert(int index, System.ReadOnlySpan<T> span) => Insert(index, 1, span);
+
+#endif
+
+    #endregion // Insert
+
     #region (internal) EnsureCapacity methods
 
     //readonly internal void EnsureCapacityAppendTest(int needAppend, out T[] array, out int head, out int tail)
@@ -386,142 +529,18 @@ namespace Flux
 
     #endregion // EnsureCapacity methods
 
-    #region Insert
+    #region (internal) AssertValid methods
 
-    /// <summary>
-    /// <para>Inserts all elements from <paramref name="another"/> span-maker, <paramref name="count"/> times, into the <see cref="SpanMaker{T}"/> starting at <paramref name="index"/>.</para>
-    /// </summary>
-    /// <param name="index"></param>
-    /// <param name="another"></param>
-    /// <param name="count"></param>
-    /// <returns></returns>
-    public SpanMaker<T> Insert(int index, SpanMaker<T> another, int count) => Insert(index, count, another.AsReadOnlySpan().ToArray().AsReadOnlySpan());
-
-    /// <summary>
-    /// <para>Inserts all elements from <paramref name="another"/> span-maker into the <see cref="SpanMaker{T}"/> starting at <paramref name="index"/>.</para>
-    /// </summary>
-    /// <param name="index"></param>
-    /// <param name="another"></param>
-    /// <returns></returns>
-    public SpanMaker<T> Insert(int index, SpanMaker<T> another) => Insert(index, 1, another.AsReadOnlySpan().ToArray().AsReadOnlySpan());
-
-#if NET9_0_OR_GREATER
-
-    /// <summary>
-    /// <para>Insert all elements from a <paramref name="collection"/>, <paramref name="count"/> times, into the <see cref="SpanMaker{T}"/> starting at <paramref name="index"/>.</para>
-    /// </summary>
-    /// <param name="index"></param>
-    /// <param name="count"></param>
-    /// <param name="collection"></param>
-    /// <returns></returns>
-    public SpanMaker<T> Insert(int index, int count, params System.Collections.Generic.ICollection<T> collection)
+    readonly internal void AssertValidIndexAndLength(int index, int length)
     {
-      var totalInsert = collection.Count * count;
-
-      var (array, head, tail) = EnsureCapacityInsert(index, totalInsert);
-
-      index += head;
-
-      while (count-- > 0)
-      {
-        collection.CopyTo(array, index);
-
-        index += collection.Count;
-      }
-
-      return new(array, head, tail);
+      if (index < 0 || index >= Length) throw new System.ArgumentOutOfRangeException(nameof(index));
+      if (length < 0 || index + length > Length) throw new System.ArgumentOutOfRangeException(nameof(length));
     }
 
-    /// <summary>
-    /// <para>Insert all elements from a <paramref name="span"/>, <paramref name="count"/> times, into the <see cref="SpanMaker{T}"/> starting at <paramref name="index"/>.</para>
-    /// </summary>
-    /// <param name="index"></param>
-    /// <param name="count"></param>
-    /// <param name="span"></param>
-    /// <returns></returns>
-    public SpanMaker<T> Insert(int index, int count, params System.ReadOnlySpan<T> span)
-    {
-      var totalInsert = span.Length * count;
+    readonly internal void AssertValidSlice(Slice slice)
+      => AssertValidIndexAndLength(slice.Index, slice.Length);
 
-      var (array, head, tail) = EnsureCapacityInsert(index, totalInsert);
-
-      while (count-- > 0)
-      {
-        span.CopyTo(array.AsSpan().Slice(head + index, span.Length));
-
-        index += span.Length;
-      }
-
-      return new(array, head, tail);
-    }
-
-    /// <summary>
-    /// <para>Insert all elements from a <paramref name="collection"/> into the <see cref="SpanMaker{T}"/> starting at <paramref name="index"/>.</para>
-    /// </summary>
-    /// <param name="index"></param>
-    /// <param name="collection"></param>
-    /// <returns></returns>
-    public SpanMaker<T> Insert(int index, params System.Collections.Generic.ICollection<T> collection) => Insert(index, 1, collection);
-
-    /// <summary>
-    /// <para>Insert all elements from a <paramref name="span"/> into the <see cref="SpanMaker{T}"/> starting at <paramref name="index"/>.</para>
-    /// </summary>
-    /// <param name="index"></param>
-    /// <param name="span"></param>
-    /// <returns></returns>
-    public SpanMaker<T> Insert(int index, params System.ReadOnlySpan<T> span) => Insert(index, 1, span);
-
-#else
-
-    /// <summary>Insert <paramref name="count"/> of <paramref name="value"/> starting at <paramref name="index"/>.</summary>
-    public SpanMaker<T> Insert(int index, int count, T value)
-    {
-      var (array, head, tail) = EnsureCapacityInsert(index, count);
-
-      System.Array.Fill(array, value, index + head, count);
-
-      return new(array, head, tail);
-    }
-
-    /// <summary>Insert <paramref name="count"/> of <paramref name="collection"/> starting at <paramref name="index"/>.</summary>
-    public SpanMaker<T> Insert(int index, int count, System.Collections.Generic.ICollection<T> collection)
-    {
-      var totalInsert = collection.Count * count;
-
-      var (array, head, tail) = EnsureCapacityInsert(index, totalInsert);
-
-      index += head;
-
-      while (count-- > 0)
-      {
-        collection.CopyTo(array, index);
-
-        index += collection.Count;
-      }
-
-      return new(array, head, tail);
-    }
-
-    /// <summary>Insert <paramref name="count"/> of <paramref name="span"/> starting at <paramref name="index"/>.</summary>
-    public SpanMaker<T> Insert(int index, int count, System.ReadOnlySpan<T> span)
-    {
-      var totalInsert = span.Length * count;
-
-      var (array, head, tail) = EnsureCapacityInsert(index, totalInsert);
-
-      while (count-- > 0)
-      {
-        span.CopyTo(array.AsSpan().Slice(head + index, span.Length));
-
-        index += span.Length;
-      }
-
-      return new(array, head, tail);
-    }
-
-#endif
-
-    #endregion // Insert
+    #endregion // AssertValid methods
 
     #region Normalization methods
 
@@ -934,43 +953,43 @@ namespace Flux
     /// <param name="count"></param>
     /// <returns></returns>
     /// <exception cref="System.ArgumentOutOfRangeException"></exception>
-    public SpanMaker<T> Remove(int index, int count)
+    public SpanMaker<T> Remove(int index, int length)
     {
-      if (index < 0 || index >= Length) throw new System.ArgumentOutOfRangeException(nameof(index));
-      if (count < 0 || index + count > Length) throw new System.ArgumentOutOfRangeException(nameof(count));
+      AssertValidIndexAndLength(index, length);
 
       if (index == 0)
-        return RemoveLeft(count);
+        return RemoveLeft(length);
 
-      if (index + count == Length)
-        return RemoveRight(count);
+      if (index + length == Length)
+        return RemoveRight(length);
 
       var mark = index + m_head;
 
       if (m_head <= m_array.Length - m_tail) // Shrink from start.
       {
-        System.Array.Copy(m_array, m_head, m_array, m_head + count, mark - m_head);
+        System.Array.Copy(m_array, m_head, m_array, m_head + length, mark - m_head);
 
-        return new(m_array, m_head + count, m_tail);
+        return new(m_array, m_head + length, m_tail);
       }
       else // Otherwise shrink from end.
       {
-        System.Array.Copy(m_array, mark + count, m_array, mark, m_tail - mark - count);
+        System.Array.Copy(m_array, mark + length, m_array, mark, m_tail - mark - length);
 
-        return new(m_array, m_head, m_tail - count);
+        return new(m_array, m_head, m_tail - length);
       }
     }
 
     public SpanMaker<T> Remove(Slice slice) => Remove(slice.Index, slice.Length);
 
-    /// <summary>
-    /// <para>Removes the specified range [index..] of elements from the <see cref="SpanMaker{T}"/>.</para>
-    /// </summary>
-    public SpanMaker<T> Remove(int index)
-      // Direct code modifications, checks needed.
-      => index < 0 || index >= Length
-      ? throw new System.ArgumentOutOfRangeException(nameof(index))
-      : new(m_array, m_head, m_head + index);
+    ///// <summary>
+    ///// <para>Removes the specified range [index..] of elements from the <see cref="SpanMaker{T}"/>.</para>
+    ///// </summary>
+    //public SpanMaker<T> Remove(int index)
+    //{
+    //  if (index < 0 || index >= Length) throw new System.ArgumentOutOfRangeException(nameof(index));
+
+    //  return new(m_array, m_head, m_head + index);
+    //}
 
     public SpanMaker<T> RemoveAll(System.Func<T, bool> predicate)
     {
@@ -987,23 +1006,31 @@ namespace Flux
       return this;
     }
 
-    public SpanMaker<T> RemoveLeft(int count)
-      // Direct code modifications, checks needed.
-      => count < 0 || count > Length
-      ? throw new System.ArgumentOutOfRangeException(nameof(count))
-      : new(m_array, m_head + count, m_tail);
-
     /// <summary>
-    /// <para></para>
+    /// <para>Removes <paramref name="count"/> elements on the left (at the beginning) of a <see cref="SpanMaker{T}"/>.</para>
     /// </summary>
     /// <param name="count"></param>
     /// <returns></returns>
     /// <exception cref="System.ArgumentOutOfRangeException"></exception>
-    public SpanMaker<T> RemoveRight(int count)
-      // Direct code modifications, checks needed.
-      => count < 0 || count > Length
-      ? throw new System.ArgumentOutOfRangeException(nameof(count))
-      : new(m_array, m_head, m_tail - count);
+    public readonly SpanMaker<T> RemoveLeft(int count)
+    {
+      if (count < 0 || count > Length) throw new System.ArgumentOutOfRangeException(nameof(count));
+
+      return new(m_array, m_head + count, m_tail);
+    }
+
+    /// <summary>
+    /// <para>Removes <paramref name="count"/> elements on the right (at the end) of a <see cref="SpanMaker{T}"/>.</para>
+    /// </summary>
+    /// <param name="count"></param>
+    /// <returns></returns>
+    /// <exception cref="System.ArgumentOutOfRangeException"></exception>
+    public readonly SpanMaker<T> RemoveRight(int count)
+    {
+      if (count < 0 || count > Length) throw new System.ArgumentOutOfRangeException(nameof(count));
+
+      return new(m_array, m_head, m_tail - count);
+    }
 
     #endregion // Remove methods
 
@@ -1037,58 +1064,56 @@ namespace Flux
     #region Replace methods
 
     /// <summary>
-    /// <para>Replaces the <paramref name="length"/> elements from <paramref name="startIndex"/> with <paramref name="replacements"/> in the <see cref="SpanMaker{T}"/>.</para>
+    /// <para>Replaces the <paramref name="length"/> elements from <paramref name="index"/> with <paramref name="replacement"/> in the <see cref="SpanMaker{T}"/>.</para>
     /// </summary>
-    /// <param name="startIndex"></param>
+    /// <param name="index"></param>
     /// <param name="length"></param>
-    /// <param name="replacements"></param>
+    /// <param name="replacement"></param>
     /// <returns></returns>
-    public SpanMaker<T> Replace(int startIndex, int length, System.ReadOnlySpan<T> replacements)
+    public SpanMaker<T> Replace(int index, int length, System.ReadOnlySpan<T> replacement)
     {
-      if (replacements.Length is var replacementLength && replacementLength <= length)
+      AssertValidIndexAndLength(index, length);
+
+      if (replacement.Length is var replacementLength && replacementLength <= length)
       {
-        replacements.CopyTo(m_array.AsSpan(m_head + startIndex, replacementLength));
+        replacement.CopyTo(m_array.AsSpan(m_head + index, replacementLength));
 
         if (replacementLength < length)
-          return Remove(replacementLength + length - 1, length - replacementLength);
+          return Remove(index + replacementLength, length - replacementLength);
 
         return this;
       }
       else
       {
-        var sm = this;
-        sm = sm.Remove(startIndex, length);
-        sm = sm.Insert(startIndex, replacements);
-        return sm;
+        var (array, head, tail) = EnsureCapacityInsert(index, replacementLength - length);
+        replacement.CopyTo(array.AsSpan(head + index, replacementLength));
+        return new(array, head, tail);
       }
     }
 
     /// <summary>
-    /// <para>Replaces the all elements in the <paramref name="range"/> with <paramref name="replacements"/> in the <see cref="SpanMaker{T}"/>.</para>
+    /// <para>Replaces the <paramref name="slice"/> with <paramref name="replacement"/> in the <see cref="SpanMaker{T}"/>.</para>
     /// </summary>
-    /// <param name="range"></param>
-    /// <param name="replacements"></param>
+    /// <param name="slice"></param>
+    /// <param name="replacement"></param>
     /// <returns></returns>
-    public SpanMaker<T> Replace(Slice slice, System.ReadOnlySpan<T> replacements)
-      => Replace(slice.Index, slice.Length, replacements);
+    public SpanMaker<T> Replace(Slice slice, System.ReadOnlySpan<T> replacement)
+      => Replace(slice.Index, slice.Length, replacement);
 
     /// <summary>
-    /// <para>Replaces all elements satisfying the <paramref name="predicate"/> with <paramref name="count"/> of <paramref name="replacements"/> in the <see cref="SpanMaker{T}"/>.</para>
+    /// <para>Replaces all elements satisfying the <paramref name="predicate"/> with <paramref name="count"/> of <paramref name="replacement"/> in the <see cref="SpanMaker{T}"/>.</para>
     /// </summary>
     /// <param name="predicate"></param>
     /// <param name="count"></param>
-    /// <param name="replacements"></param>
+    /// <param name="replacement"></param>
     /// <returns></returns>
-    public SpanMaker<T> Replace(System.Func<T, bool> predicate, int count, System.ReadOnlySpan<T> replacements)
+    public SpanMaker<T> Replace(System.Func<T, bool> predicate, System.ReadOnlySpan<T> replacement)
     {
       var sm = this;
 
       for (var i = sm.Length - 1; i >= 0; i--)
         if (predicate(sm[i]))
-        {
-          sm = sm.Remove(i, 1);
-          sm = sm.Insert(i, count, replacements);
-        }
+          sm = sm.Replace(i, 1, replacement);
 
       return sm;
     }
@@ -1099,8 +1124,8 @@ namespace Flux
 
       var sm = this;
 
-      if (AsReadOnlySpan().EqualsAt(startAt, find, equalityComparer))
-        sm = sm.Remove(startAt, find.Length).Insert(startAt, 1, replacement);
+      if (AsReadOnlySpan()[startAt..].IsCommonPrefix(find, equalityComparer))
+        sm = sm.Replace(startAt, find.Length, replacement);
 
       return sm;
     }
@@ -1116,8 +1141,7 @@ namespace Flux
     /// <exception cref="System.ArgumentOutOfRangeException"></exception>
     public SpanMaker<T> Reverse(int index, int length)
     {
-      if (index < 0 || index >= Length) throw new System.ArgumentOutOfRangeException(nameof(index));
-      if (length <= 0 || index + length >= Length) throw new System.ArgumentOutOfRangeException(nameof(length));
+      AssertValidIndexAndLength(index, length);
 
       var left = index;
       var right = index + length;
@@ -1129,7 +1153,7 @@ namespace Flux
     }
 
     /// <summary>
-    /// <para>Create a new <see cref="SpanMaker{T}"/> from a subset of a <see cref="SpanMaker{T}"/>.</para>
+    /// <para>Create a new <see cref="SpanMaker{T}"/> from <paramref name="index"/> and <paramref name="length"/> of a <see cref="SpanMaker{T}"/>.</para>
     /// </summary>
     /// <param name="index"></param>
     /// <param name="length"></param>
@@ -1137,11 +1161,17 @@ namespace Flux
     /// <exception cref="System.ArgumentOutOfRangeException"></exception>
     public readonly SpanMaker<T> Slice(int index, int length)
     {
-      if (index < 0 || index >= Length) throw new System.ArgumentOutOfRangeException(nameof(index));
-      if (length < 0 || index + length > Length) throw new System.ArgumentOutOfRangeException(nameof(length));
+      AssertValidIndexAndLength(index, length);
 
       return new(m_array, m_head + index, m_head + index + length);
     }
+
+    /// <summary>
+    /// <para>Create a new <see cref="SpanMaker{T}"/> from <paramref name="index"/> to the end of a <see cref="SpanMaker{T}"/>.</para>
+    /// </summary>
+    /// <param name="index"></param>
+    /// <returns></returns>
+    public readonly SpanMaker<T> Slice(int index) => RemoveLeft(index);
 
     /// <summary>
     /// <para>Swaps two elements at the specified [<paramref name="indexA"/>] and [<paramref name="indexB"/>] in the <see cref="SpanMaker{T}"/>.</para>
@@ -1156,12 +1186,12 @@ namespace Flux
     /// <summary>
     /// <para>Trims all consecutive occurences that satisfies the <paramref name="predicate"/> at the beginning of the <see cref="SpanMaker{T}"/>.</para>
     /// </summary>
-    public SpanMaker<T> TrimLeft(System.Func<T, bool> predicate) => new(m_array, m_head + AsReadOnlySpan().CommonPrefixLength(predicate), m_tail);
+    public SpanMaker<T> TrimLeft(System.Func<T, bool> predicate) => RemoveLeft(AsReadOnlySpan().CommonPrefixLength(predicate));
 
     /// <summary>
     /// <para>Trims all consecutive occurences that satisfies the <paramref name="predicate"/> at the end of the <see cref="SpanMaker{T}"/>.</para>
     /// </summary>
-    public SpanMaker<T> TrimRight(System.Func<T, bool> predicate) => new(m_array, m_head, m_tail - AsReadOnlySpan().CommonSuffixLength(predicate));
+    public SpanMaker<T> TrimRight(System.Func<T, bool> predicate) => RemoveRight(AsReadOnlySpan().CommonSuffixLength(predicate));
 
     #endregion // Trim methods
 

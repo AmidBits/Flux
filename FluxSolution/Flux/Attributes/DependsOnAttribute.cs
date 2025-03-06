@@ -3,10 +3,15 @@
   /// <summary>Dependancy attribute to build automatic dependency notifications using INotifyPropertyChanged for methods and properties.</summary>
   /// <remarks>When used on ICommand.Execute then the Parameters will always be null.</remarks>
   [System.AttributeUsage(System.AttributeTargets.Method | System.AttributeTargets.Property, AllowMultiple = true)]
-  public sealed class DependsOnAttribute(string dependencyMemberName)
+  public sealed class DependsOnAttribute
     : System.Attribute
   {
-    public string DependencyMemberName { get; } = dependencyMemberName;
+
+    private string m_dependencyMemberName;
+
+    public DependsOnAttribute(string dependencyMemberName) => m_dependencyMemberName = dependencyMemberName;
+
+    public string DependencyMemberName => m_dependencyMemberName;
 
     /// <summary>
     /// <para>Reverse dependency names based on the DependsOn attribute.</para>

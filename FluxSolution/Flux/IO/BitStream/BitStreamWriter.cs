@@ -1,11 +1,15 @@
+
 namespace Flux.IO.BitStream
 {
-  public sealed class BitStreamWriter(System.IO.Stream baseStream)
-    : System.IO.Stream
+  public sealed class BitStreamWriter : System.IO.Stream
   {
     private ulong m_bitBuffer;
 
     private int m_bitCount;
+
+    private readonly Stream m_baseStream;
+
+    public BitStreamWriter(System.IO.Stream baseStream) => m_baseStream = baseStream;
 
     /// <summary>The intermediate 64-bit storage buffer.</summary>
     [System.CLSCompliant(false)]
@@ -23,7 +27,7 @@ namespace Flux.IO.BitStream
       {
         m_bitCount -= 8;
 
-        baseStream.WriteByte((byte)(m_bitBuffer >> m_bitCount));
+        m_baseStream.WriteByte((byte)(m_bitBuffer >> m_bitCount));
       }
 
       if (m_bitCount > 0)
@@ -66,7 +70,7 @@ namespace Flux.IO.BitStream
     // System.IO.Stream
     public override bool CanRead => false;
     public override bool CanSeek => false;
-    public override bool CanWrite => baseStream.CanWrite;
+    public override bool CanWrite => m_baseStream.CanWrite;
 
     public override void Flush()
     {
@@ -78,11 +82,11 @@ namespace Flux.IO.BitStream
 
       WriteBytes();
 
-      baseStream.Flush();
+      m_baseStream.Flush();
     }
 
-    public override long Length => baseStream.Length;
-    public override long Position { get => baseStream.Position; set => throw new System.NotImplementedException(); }
+    public override long Length => m_baseStream.Length;
+    public override long Position { get => m_baseStream.Position; set => throw new System.NotImplementedException(); }
     public override int Read(byte[] buffer, int offset, int count) => throw new System.NotImplementedException();
     public override long Seek(long offset, System.IO.SeekOrigin origin) => throw new System.NotImplementedException();
     public override void SetLength(long value) => throw new System.NotImplementedException();

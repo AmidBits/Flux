@@ -3,10 +3,12 @@ namespace Flux.IO
   // https://www.w3.org/TR/xml/#NT-Char
   // https://docs.microsoft.com/en-us/dotnet/api/system.xml.xmlreader
   // https://github.com/Microsoft/referencesource/blob/master/mscorlib/system/io/textreader.cs
-  public sealed class FilterInvalidXmlReader(System.IO.Stream stream)
+  public sealed class FilterInvalidXmlReader
     : System.IO.TextReader
   {
-    private readonly System.IO.StreamReader m_streamReader = new(stream);
+    private readonly System.IO.StreamReader m_streamReader;
+
+    public FilterInvalidXmlReader(System.IO.Stream stream) => m_streamReader = new(stream);
 
     public System.IO.Stream BaseStream => m_streamReader.BaseStream;
 

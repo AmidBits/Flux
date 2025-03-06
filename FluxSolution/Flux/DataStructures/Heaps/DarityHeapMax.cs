@@ -4,11 +4,14 @@ namespace Flux.DataStructures.Heaps
   /// <para></para>
   /// <para><see href="https://en.wikipedia.org/wiki/Heap_(data_structure)"/></para>
   /// </summary>
-  public sealed class DarityHeapMax<TValue>(int arity)
+  public sealed class DarityHeapMax<TValue>
     : IHeap<TValue>, System.ICloneable, System.Collections.Generic.IReadOnlyCollection<TValue>
     where TValue : System.IComparable<TValue>
   {
-    private System.Collections.Generic.List<TValue> m_data = [];
+    private int m_arity;
+    private readonly System.Collections.Generic.List<TValue> m_data = new();
+
+    public DarityHeapMax(int arity) => m_arity = arity;
 
     public DarityHeapMax(int arity, System.Collections.Generic.IEnumerable<TValue> collection)
       : this(arity)
@@ -98,8 +101,10 @@ namespace Flux.DataStructures.Heaps
     {
       var min = m_data[0];
 
-      m_data[0] = m_data[^1];
-      m_data.RemoveAt(m_data.Count - 1);
+      var lastIndex = m_data.Count - 1;
+
+      m_data[0] = m_data[lastIndex];
+      m_data.RemoveAt(lastIndex);
 
       HeapifyDown(0);
 
@@ -108,8 +113,6 @@ namespace Flux.DataStructures.Heaps
 
     public void Insert(TValue item)
     {
-      m_data ??= [];
-
       m_data.Add(item);
 
       HeapifyUp(m_data.Count - 1);
@@ -121,7 +124,7 @@ namespace Flux.DataStructures.Heaps
 
     #region ICloneable
 
-    public object Clone() => new DarityHeapMax<TValue>(arity, m_data);
+    public object Clone() => new DarityHeapMax<TValue>(m_arity, m_data);
 
     #endregion // ICloneable
 
@@ -133,6 +136,6 @@ namespace Flux.DataStructures.Heaps
 
     #endregion // IReadOnlyCollection<T>
 
-    public override string ToString() => $"{GetType().Name} {{ Arity = {arity}, Count = {m_data.Count} }}";
+    public override string ToString() => $"{GetType().Name} {{ Arity = {m_arity}, Count = {m_data.Count} }}";
   }
 }

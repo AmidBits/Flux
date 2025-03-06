@@ -16,12 +16,16 @@ namespace Flux.Randomness
     /// <summary>Gets the IsaacRandom rng.</summary>
     public static System.Random Isaac => m_isaac.Value!;
 
-    private static readonly System.Threading.ThreadLocal<System.Random> m_simple = new(() => Randomness.Rng32.SimpleRng.Shared);
+    private static readonly System.Threading.ThreadLocal<System.Random> m_simpleRng = new(() => Randomness.Rng32.SimpleRng.Shared);
     /// <summary>Gets the SimpleRng rng.</summary>
-    public static System.Random Simple => m_simple.Value!;
+    public static System.Random SimpleRng => m_simpleRng.Value!;
+
+    private static readonly System.Threading.ThreadLocal<System.Random> m_lecuyer128 = new(() => new Randomness.Rng64.Lecuyer128());
+    /// <summary>Gets a Lecuyer128 rng.</summary>
+    public static System.Random Lecuyer128 => m_lecuyer128.Value!;
 
     private static readonly System.Threading.ThreadLocal<System.Random> m_pakaRng = new(() => Randomness.Rng64.PakaRng.Shared);
-    /// <summary>Gets the SplitMix64 rng.</summary>
+    /// <summary>Gets a PakaRng rng.</summary>
     public static System.Random PakaRng => m_pakaRng.Value!;
 
     private static readonly System.Threading.ThreadLocal<System.Random> m_splitMix64 = new(() => Randomness.Rng64.SplitMix64.Shared);
@@ -29,11 +33,11 @@ namespace Flux.Randomness
     public static System.Random SplitMix64 => m_splitMix64.Value!;
 
     private static readonly System.Threading.ThreadLocal<System.Random> m_xoshiro128p = new(() => Randomness.Rng32.Xoshiro128P.Shared);
-    /// <summary>Gets the Xoshiro256P rng.</summary>
+    /// <summary>Gets the Xoshiro128P rng.</summary>
     public static System.Random Xoshiro128P => m_xoshiro128p.Value!;
 
     private static readonly System.Threading.ThreadLocal<System.Random> m_xoshiro128ss = new(() => Randomness.Rng32.Xoshiro128SS.Shared);
-    /// <summary>Gets the Xoshiro256SS rng.</summary>
+    /// <summary>Gets the Xoshiro128SS rng.</summary>
     public static System.Random Xoshiro128SS => m_xoshiro128ss.Value!;
 
     private static readonly System.Threading.ThreadLocal<System.Random> m_xoshiro256p = new(() => Randomness.Rng64.Xoshiro256P.Shared);

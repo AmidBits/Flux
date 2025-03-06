@@ -26,11 +26,12 @@ namespace Flux
       => source.CommonSuffixLength(value, equalityComparer, count) == count;
 
     /// <summary>
-    /// <para>Indicates whether the <paramref name="source"/> ends with the <paramref name="target"/>. Uses the specified <paramref name="equalityComparer"/>, or default if null.</para>
+    /// <para>Indicates whether the <paramref name="source"/> ends with <paramref name="length"/> elements from the <paramref name="target"/>. Uses the specified <paramref name="equalityComparer"/>, or default if null.</para>
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <param name="source"></param>
     /// <param name="target"></param>
+    /// <param name="length"></param>
     /// <param name="equalityComparer"></param>
     /// <returns></returns>
     public static bool IsCommonSuffix<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, int length, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)

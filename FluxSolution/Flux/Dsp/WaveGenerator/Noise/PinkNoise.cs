@@ -3,10 +3,10 @@
   /// <summary>Pink noise oscillator. Can only be used by instance.</summary>
   /// <see cref="http://stackoverflow.com/questions/616897/how-can-i-make-a-pink-noise-generator"/>
   /// <see cref="http://www.firstpr.com.au/dsp/pink-noise/"/>
-  public sealed class PinkNoise3(System.Random rng)
-        : IMonoWaveUiGeneratable, IMonoWavePi2Generatable
+  public sealed class PinkNoise3
+    : IMonoWaveUiGeneratable, IMonoWavePi2Generatable
   {
-    private readonly System.Random m_rng = rng ?? System.Random.Shared;
+    private readonly System.Random m_rng;
 
     public const double A0 = 0.02109238, A1 = 0.07113478, A2 = 0.68873558;
     public const double P0 = 0.3190, P1 = 0.7756, P2 = 0.9613;
@@ -16,6 +16,8 @@
     public const double RMI2 = 2.0 / 1.0 + 1.0;
 
     private double m_state0, m_state1, m_state2;
+
+    public PinkNoise3(System.Random rng) => m_rng = rng ?? System.Random.Shared;
 
     public PinkNoise3() : this(System.Random.Shared) { }
 

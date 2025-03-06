@@ -17,8 +17,6 @@ using Flux.DataStructures.UnionFind;
 using Flux.Probabilities;
 using Flux.Text;
 using Flux.Units;
-using Microsoft.VisualBasic;
-
 // C# Interactive commands:
 // #r "System.Runtime"
 // #r "System.Runtime.Numerics"
@@ -111,103 +109,92 @@ namespace ConsoleApp
       }
     }
 
+    private static void TestDspWithPlot()
+    {
+      var wg = new Flux.Dsp.WaveGenerator.TriangleWave();
+      var wp = new Flux.Dsp.WaveProcessor.MonoQuadratic(Flux.Dsp.WaveProcessor.MonoQuadraticMode.Symmetric, .75);
+
+      var listx = new System.Collections.Generic.List<double>();
+      var lists = new System.Collections.Generic.List<double>();
+      var listsi = new System.Collections.Generic.List<double>();
+      var listy = new System.Collections.Generic.List<double>();
+      var listyi = new System.Collections.Generic.List<double>();
+
+
+      for (var phase = 0.0; phase <= double.Tau; phase += double.Tau / 100)
+      {
+        var signal = wg.GenerateMonoWavePi2(phase);
+        var signali = (Flux.Dsp.Waves.WaveMono<double>)(-signal.Wave);
+        listx.Add(phase);
+        lists.Add(signal.Wave);
+        listsi.Add(signali.Wave);
+        listy.Add(wp.ProcessMonoWave(signal).Wave);
+        listyi.Add(wp.ProcessMonoWave(signali).Wave);
+      }
+
+      ScottPlot.Plot plt = new();
+      plt.Add.Scatter(listx, lists, ScottPlot.Color.Gray(55));
+      plt.Add.Scatter(listx, listsi, ScottPlot.Color.Gray(200));
+      plt.Add.Scatter(listx, listy, ScottPlot.Color.FromColor(System.Drawing.Color.DarkGreen));
+      plt.Add.Scatter(listx, listyi, ScottPlot.Color.FromColor(System.Drawing.Color.LightGreen));
+      plt.SavePng("C:\\Users\\Rob\\source\\repos\\AmidBits\\Flux\\FluxSolution\\ConsoleApp\\quickstart.png", 400, 300);
+    }
+
+    private static double LoadBearingCapacityAluExt(double sectionDiameter, double wallThickness, double length, double tensileStrength)
+      => 0.44 * (sectionDiameter + wallThickness) * length * tensileStrength;
+
     private static void TimedMain(string[] _)
     {
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
-      var spread = 5.Spread(3, 6, HalfRounding.TowardZero);
+      //      System.Console.WriteLine(string.Join(System.Environment.NewLine, typeof(IValueQuantifiable<>).GetDerivedTypes().Select(t => t.Name).Order()));
+      //      System.Console.WriteLine();
 
-      var dividend = 1234d;
-      var divisor = 123d;
+      //var lbc = LoadBearingCapacityAluExt(.020, .002, .610, 230000000);
 
-      var quotient = dividend / divisor;
-      var remainder = dividend % divisor;
+      var pc = new Flux.Geometry.CoordinateSystems.PolarCoordinate(new Length(0.700, LengthUnit.Meter).GetUnitValue(LengthUnit.Inch), new Angle(78.5, AngleUnit.Degree).Value);
+      var cc = pc.ToCartesianCoordinate();
 
-      var (Q, R) = dividend.TruncRem(divisor);
+      var slope = new Flux.Units.Slope(2, 11);
+      var slopeAOI = Flux.Units.Slope.FromAngleOfInclination(14, AngleUnit.Degree);
+      var slopeS = new Flux.Units.Slope(2, 3);
+      var slopeRP = Flux.Units.Slope.FromRoofPitch(3);
+      var gradeGP = Flux.Units.Slope.FromGradePercentage(20);
+      var slopeR = Flux.Units.Slope.FromRatio(new Ratio(2, 11));
 
-      var (TruncatedQuotient, Remainder) = dividend.TruncRem(divisor);
-
-      var ens = (1234).ToBinaryString(16);
-
-      var lfb = Flux.IntervalNotation.Closed.LoopBackAndForth(-1, 8).ToArray();
-      var lb = Flux.IntervalNotation.Closed.LoopBetween(-1, 8).ToArray();
-      var lr = Flux.IntervalNotation.Closed.LoopRange(-1, -10).ToArray();
-
-      return;
-
-      System.Console.WriteLine(Flux.Probabilities.Normal.Distribution(1.0, 1.5).Histogram(-4, 4));
-
-      var xy = "ABCD".Select((e, i) => System.Collections.Generic.KeyValuePair.Create(e, i)).FlipPairs().ToArray();
-
-      var sequence1 = new System.Collections.Generic.List<int> { 1, 2, 3 }.ToArray();
-      var sequence2 = new System.Collections.Generic.List<string> { "A", "B", "C" }.ToArray();
-
-      var s1s2 = sequence1.CartesianProductPairWith(sequence2).ToArray();
-
-      //var test0 = .SelectManyMany(z => new int[] { z.First }, z => new string[] { z.Second }).ToArray();
-      //var test1 = test0.FlipPairs().ToArray();
-      //var test2 = test1.FlipPairs().ToArray();
+      var x = (1000.0).RescaleLogarithmicToLinear(300, 3000, 10, 12, 2);
+      var y = (7.5).RescaleLinearToLogarithmic(0.1, 10, 0.1, 10, 2);
 
 
-      var d = new System.Collections.Generic.Dictionary<char, int>() { { 'A', 1 }, { 'B', 2 }, { 'C', 1 } };
+      //var sm = new SpanMaker<char>("Hello--World");
+      //sm = sm.Replace(c => c == '-', "Covid");
 
-      var ds = d.ToSwitchable();
+      //var os = new Flux.Statistics.RunningStatistics();
+      //os.AddRange([2, 3, 5, 7, 11, 13]);
+      //os.Add(17);
+      //os.Add(19);
+      //os.Add(23);
+      //os.Add(29);
+      //os.Add(31);
 
-      var sds1 = ds.Switch();
-      var sds2 = sds1.Switch();
+      //var n = new double[] { 9, 27, 63, 81, 90 };
 
-      var sds2u = sds1.ToUnswitchable();
+      //var (madMean, madMedian) = n.MeanMedianAbsoluteDeviation();
 
-      //Flux.Globalization.En.NumeralComposition.ShortScaleDictionary.TryGet
+      //var s = "-41 ° 26 '46″ N79 ° 58 ′ 56 ″W";
+      //s = "a 123b45c";
+      //var x = s.ToSpanMaker().ReplaceRegex(@"\d+", s => int.TryParse(s, System.Globalization.NumberStyles.Integer, null, out var r) ? r.ToOrdinalIndicatorString() : "UGH!");
 
-      var ssn = Flux.MetricPrefix.Mega.ConvertToShortScale();
-
-
-      var html = "<div>This is some text by <b>Paka</b></div>";
-      //var actual = html.RemoveAllMarkupTags();
-
-      var sm = html.ToSpanMaker();
-      var smactual = sm.RemoveRegex(@"(<[^>]+>)+");
-
-      var n = 0x10;
-      var nlp2 = n.MostSignificant1Bit() << 1;
-      var nsp2 = n.MostSignificant1Bit() >> 1;
-      var np2tzf = n.Pow2TowardZero(false);
-      var np2afzf = n.Pow2AwayFromZero(false);
-      var np2tzt = n.Pow2TowardZero(true);
-      var np2afzt = n.Pow2AwayFromZero(true);
-      var nflsb = (n.BitFoldLsb() >> 2) + 1;
-
-      var text = "M";
-      var bytes = System.Text.Encoding.UTF8.GetBytes(text);
-      //bytes.Recode(8, 5, out byte[] recoded);
-
-      bytes.EncodeToIndices(6, out var indices);
-
-      var iwi = Flux.IntervalNotation.Closed.IsWithinInterval(5, 3, 7);
-
-
-      var di = new System.IO.DirectoryInfo(@"E:\Media\Audio\Tracks");
-      var ef = di.EnumerateFiles("*.mp3", System.IO.SearchOption.AllDirectories).Select(fi => fi.FullName).Distinct().Order().ToArray();
-      var efid = ef.Select(fn => (fn.GetHashCode(), fn)).Distinct().ToArray();
-
-      var di2 = new System.IO.DirectoryInfo(@"F:\Media\Audio\Sounds");
-      var ef2 = di2.EnumerateFiles("*.*", System.IO.SearchOption.AllDirectories).Select(fi => fi.FullName).Distinct().ToArray();
-      var efhc2 = ef2.Select(fn => fn.GetHashCode()).Distinct().ToArray();
-
-
-      var s = "-41 ° 26 '46″ N79 ° 58 ′ 56 ″W";
-      s = "a 123b45c";
-      var x = s.ToSpanMaker().ReplaceRegex(@"\d+", s => int.TryParse(s, System.Globalization.NumberStyles.Integer, null, out var r) ? r.ToOrdinalIndicatorString() : "UGH!");
-
-      s = "Z̤͔ͧ̑̓ä͖̭̈̇lͮ̒ͫǧ̗͚̚o̙̔ͮ̇͐̇";
-      s = "Powerلُلُصّبُلُلصّبُررً ॣ ॣh ॣ ॣ冗\r\n🏳0🌈️\r\nజ్ఞ‌ా";
-      var ss = s.AsSpan();
-      var tel = s.AsSpan().ToListOfTextElement().Select(l => l.ToString()).ToList().AsSpan();
-      var sl = s.Length;
-      var t = s.GetTextElements();
-      var tl = t.Count;
+      //s = "Z̤͔ͧ̑̓ä͖̭̈̇lͮ̒ͫǧ̗͚̚o̙̔ͮ̇͐̇";
+      //s = "Powerلُلُصّبُلُلصّبُررً ॣ ॣh ॣ ॣ冗\r\n🏳0🌈️\r\nజ్ఞ‌ా";
+      //var ros = s.ToSpanMakerOfRune().AsReadOnlySpan();
+      //var rs = ros.ToSpanMakerOfChar().ToString();
+      //var ss = s.AsSpan();
+      //var tel = s.AsSpan().ToListOfTextElement().Select(l => l.ToString()).ToList().AsSpan();
+      //var sl = s.Length;
+      //var t = s.GetTextElements();
+      //var tl = t.Count;
 
     }
 

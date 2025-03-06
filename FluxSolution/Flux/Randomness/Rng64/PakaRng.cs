@@ -1,7 +1,5 @@
 namespace Flux.Randomness.Rng64
 {
-  /// <summary>SimpleRng is a simple random number generator based on George Marsaglia's MWC (multiply with carry) generator.</summary>
-  /// <remarks>Although it is very simple, it passes Marsaglia's DIEHARD series of random number generator tests.</remarks>
   public sealed class PakaRng
     : ARandomUInt64
   {

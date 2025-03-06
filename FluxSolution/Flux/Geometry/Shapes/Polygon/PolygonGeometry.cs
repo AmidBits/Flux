@@ -45,7 +45,7 @@ namespace Flux.Geometry.Shapes.Polygon
     /// <para><see href="https://en.wikipedia.org/wiki/Centroid"/></para>
     /// <para><seealso href="https://en.wikipedia.org/wiki/Polygon#Centroid"/></para>
     /// </summary>
-    public virtual System.Runtime.Intrinsics.Vector128<double> Centroid => m_vertices.Aggregate(Flux.Intrinsics.Zero128D, (aggv, v, index) => aggv + v, (a, count) => a / count);
+    public virtual System.Runtime.Intrinsics.Vector128<double> Centroid => m_vertices.Aggregate(Flux.Intrinsics.Zero128D, (aggv, v, index) => aggv + v, (a, count) => a / System.Runtime.Intrinsics.Vector128.Create((double)count));
 
     public virtual double Circumradius => m_vertices.Max(v => v.EuclideanLength());
 

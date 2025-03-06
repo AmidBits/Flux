@@ -1,10 +1,12 @@
 ﻿namespace Flux.Dsp.WaveGenerator.Noise
 {
   /// <see href="https://en.wikipedia.org/wiki/White_noise"/>
-  public sealed class WhiteNoise(System.Random? rng)
+  public sealed class WhiteNoise
     : IMonoWaveUiGeneratable, IMonoWavePi2Generatable
   {
-    private readonly System.Random m_rng = rng ?? System.Random.Shared;
+    private readonly System.Random m_rng;
+
+    public WhiteNoise(System.Random? rng) => m_rng = rng ?? System.Random.Shared;
 
     public WhiteNoise() : this(System.Random.Shared) { }
 

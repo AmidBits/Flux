@@ -2,119 +2,56 @@ namespace Flux.Numerics
 {
   public static partial class NumberSequence
   {
-    public static (TValue PrimeCandidateTowardZero, TValue PrimeCandidateAwayFromZero) SurroundingPrimeCandidates<TValue>(this TValue value, UniversalRounding mode)
+    public static TValue PrimeCandidate<TValue>(this TValue value, UniversalRounding mode, out TValue primeCandidateTowardZero, out TValue primeCandidateAwayFromZero)
       where TValue : System.Numerics.IBinaryInteger<TValue>
     {
-      if (TValue.IsNegative(value))
-      {
-        var (pctz, pcafz) = SurroundingPrimeCandidates(TValue.Abs(value), mode);
+      var absValue = TValue.Abs(value);
 
-        return (-pctz, -pcafz);
-      }
-      else
+      if (absValue > TValue.CreateChecked(5))
       {
-        if (TValue.CreateChecked(3) is var pos3 && value <= pos3) // Special case for numbers less than or equal to 3, ensuring candidates 2 and 3.
-          return (TValue.CreateChecked(2), pos3);
-        else if (value == TValue.CreateChecked(4)) // Special case for number 4, ensuring candidates 3 and 5.
-          return (pos3, TValue.CreateChecked(5));
-        else // Otherwise compute standard prime multiple.
+        var pmn = PrimeMultiple(value, mode, out var primeMultipleTowardZero, out var primeMultipleAwayFromZero);
+
+        var copySignOne = TValue.CopySign(TValue.One, value);
+
+        if (primeMultipleTowardZero == primeMultipleAwayFromZero)
         {
-          var pm = value.RoundToPrimeMultiple(mode);
-
-          return (pm - TValue.One, pm + TValue.One);
+          primeCandidateTowardZero = pmn - copySignOne;
+          primeCandidateAwayFromZero = pmn + copySignOne;
+        }
+        else
+        {
+          primeCandidateTowardZero = primeMultipleTowardZero + copySignOne;
+          primeCandidateAwayFromZero = primeMultipleAwayFromZero - copySignOne;
         }
       }
+      else if (absValue == TValue.One) // Yields a 2-tuple : 1 = (-2, 2) or -1 = (2, -2).
+      {
+        primeCandidateAwayFromZero = TValue.CopySign(TValue.CreateChecked(2), value);
+        primeCandidateTowardZero = -primeCandidateAwayFromZero;
+      }
+      else if (absValue == TValue.CreateChecked(4)) // Yields value = 2-tuple : 4 = (3, 5) or -4 = (-3, -5).
+      {
+        primeCandidateTowardZero = TValue.CopySign(TValue.CreateChecked(3), value);
+        primeCandidateAwayFromZero = TValue.CopySign(TValue.CreateChecked(5), value);
+      }
+      else // Yields 2-tuples of any values : 5 or -5, 3 or -3, 2 or -2 or 0.
+        return primeCandidateTowardZero = primeCandidateAwayFromZero = value;
+
+      return TValue.CopySign(value.RoundToNearest(mode, primeCandidateTowardZero, primeCandidateAwayFromZero), value);
     }
 
-    public static TValue RoundToPrimeCandidate<TValue>(this TValue value, UniversalRounding mode)
+    public static TValue PrimeMultiple<TValue>(this TValue value, UniversalRounding mode, out TValue primeMultipleTowardZero, out TValue primeMultipleAwayFromZero)
       where TValue : System.Numerics.IBinaryInteger<TValue>
     {
-      var (pctz, pcafz) = value.SurroundingPrimeCandidates(mode);
+      //if (TValue.CreateChecked(5) is var five && TValue.Abs(value) < five)
+      //  return primeMultipleTowardZero = primeMultipleAwayFromZero = TValue.Zero;
 
-      return value.RoundToNearest(mode, pctz, pcafz);
-    }
-
-    public static (TValue PrimeMultipleTowardZero, TValue PrimeMultipleAwayFromZero) SurroundingPrimeMultiples<TValue>(this TValue value)
-      where TValue : System.Numerics.IBinaryInteger<TValue>
-    {
       var rev = value.ReverseRemainder(TValue.CreateChecked(6), out var rem);
 
-      return (value - rem, value + rev);
-    }
+      primeMultipleTowardZero = value - rem;
+      primeMultipleAwayFromZero = value + rev;
 
-    public static TValue RoundToPrimeMultiple<TValue>(this TValue value, UniversalRounding mode)
-      where TValue : System.Numerics.IBinaryInteger<TValue>
-    {
-      var (pmtz, pmafz) = value.SurroundingPrimeMultiples();
-
-      return (pmtz == pmafz) ? value : TValue.CopySign(value.RoundToNearest(mode, pmtz, pmafz), value);
-    }
-
-    public static TValue PrimeCandidateAwayFromZero<TValue>(this TValue value, bool unequal)
-      where TValue : System.Numerics.IBinaryInteger<TValue>
-    {
-      var two = TValue.CreateChecked(2);
-      var three = TValue.CreateChecked(3);
-      var four = TValue.CreateChecked(4);
-      var five = TValue.CreateChecked(5);
-
-      if (value <= three)
-      {
-        if (value < two || (!unequal && value == two)) return two;
-        else if (value < three || (!unequal && value == three)) return three;
-        else if (unequal && value == three) return five;
-      }
-
-      var pcmafz = PrimeMultipleAwayFromZero(value);
-
-      var tzM1 = pcmafz - TValue.One;
-      var tzP1 = pcmafz + TValue.One;
-
-      if (unequal && value == tzP1) return tzP1 + TValue.CreateChecked(4);
-      else if ((unequal && value == tzM1) || value >= pcmafz) return tzP1;
-      else return tzM1;
-    }
-
-    public static TValue PrimeCandidateTowardZero<TValue>(this TValue value, bool unequal)
-      where TValue : System.Numerics.IBinaryInteger<TValue>
-    {
-      var two = TValue.CreateChecked(2);
-      var three = TValue.CreateChecked(3);
-      var four = TValue.CreateChecked(4);
-      var five = TValue.CreateChecked(5);
-
-      if (value < three || (unequal && value == three)) return two;
-      else if (value < five || (unequal && value == five)) return three;
-
-      var pcmtz = PrimeMultipleTowardZero(value);
-
-      var tzM1 = pcmtz - TValue.One;
-      var tzP1 = pcmtz + TValue.One;
-
-      if (unequal && value == tzM1) return tzM1 - four;
-      else if ((unequal && value == tzP1) || value <= pcmtz) return tzM1;
-      else return tzP1;
-    }
-
-    public static TValue PrimeMultipleAwayFromZero<TValue>(this TValue value)
-      where TValue : System.Numerics.IBinaryInteger<TValue>
-    {
-      var six = TValue.CreateChecked(6);
-
-      var rem = value % six;
-
-      if (rem <= TValue.One) return value - rem;
-      else return value + six - rem;
-    }
-
-    public static TValue PrimeMultipleTowardZero<TValue>(this TValue value)
-      where TValue : System.Numerics.IBinaryInteger<TValue>
-    {
-      var rem = value % TValue.CreateChecked(6);
-
-      if (TValue.IsZero(rem)) return value;
-      else if (rem == TValue.CreateChecked(5)) return value + TValue.One;
-      else return value - rem;
+      return TValue.CopySign(value.RoundToNearest(mode, primeMultipleTowardZero, primeMultipleAwayFromZero), value);
     }
 
     /// <summary>
@@ -153,34 +90,6 @@ namespace Flux.Numerics
         multiple += six;
       }
     }
-
-    //public static System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetAscendingPotentialPrimes(System.Numerics.BigInteger startAt)
-    //{
-    //  var quotient = System.Numerics.BigInteger.DivRem(startAt, 6, out var remainder);
-
-    //  var multiple = 6 * (quotient + (remainder > 1 ? 1 : 0));
-
-    //  if (quotient == 0) // If startAt is less than 6.
-    //  {
-    //    if (startAt <= 2) yield return 2;
-    //    if (startAt <= 3) yield return 3;
-
-    //    multiple = 6;
-    //  }
-    //  else if (remainder <= 1) // Or, either between two potential primes or on right of a % 6 value. E.g. 12 or 13.
-    //  {
-    //    yield return multiple + 1;
-    //    multiple += 6;
-    //  }
-
-    //  while (true)
-    //  {
-    //    yield return multiple - 1;
-    //    yield return multiple + 1;
-
-    //    multiple += 6;
-    //  }
-    //}
 
     /// <summary>
     /// <para>Creates a new sequence ascending prime numbers, greater-than-or-equal-to the specified <paramref name="value"/>.</para>

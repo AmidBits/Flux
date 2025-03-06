@@ -1,6 +1,7 @@
+
 namespace Flux.IO.Json
 {
-  public ref struct Utf8JsonStreamReader(System.IO.Stream stream, int bufferSize)
+  public ref struct Utf8JsonStreamReader
   {
     private SequenceSegment? m_firstSegment = null;
     private int m_firstSegmentStartIndex = 0;
@@ -10,6 +11,15 @@ namespace Flux.IO.Json
     private System.Text.Json.Utf8JsonReader m_jsonReader = default;
     private bool m_keepBuffers = false;
     private bool m_isFinalBlock = false;
+
+    private readonly Stream m_stream;
+    private readonly int m_bufferSize;
+
+    public Utf8JsonStreamReader(System.IO.Stream stream, int bufferSize)
+    {
+      m_stream = stream;
+      m_bufferSize = bufferSize;
+    }
 
     public bool Read()
     {
@@ -49,7 +59,7 @@ namespace Flux.IO.Json
           currentFirstSegment.Dispose();
       }
 
-      var newSegment = new SequenceSegment(bufferSize, m_lastSegment); // Add new segment.
+      var newSegment = new SequenceSegment(m_bufferSize, m_lastSegment); // Add new segment.
       m_lastSegment?.SetNext(newSegment);
       m_lastSegment = newSegment;
 
@@ -65,7 +75,7 @@ namespace Flux.IO.Json
 
       do
       {
-        bytesRead = stream.Read(newSegment.Buffer.Memory.Span[m_lastSegmentEndIndex..]);
+        bytesRead = m_stream.Read(newSegment.Buffer.Memory.Span[m_lastSegmentEndIndex..]);
 
         m_lastSegmentEndIndex += bytesRead;
       }
@@ -153,7 +163,7 @@ namespace Flux.IO.Json
       m_lastSegment?.Dispose();
       m_firstSegment?.Dispose();
 
-      stream?.Dispose();
+      m_stream?.Dispose();
     }
 
     public readonly int CurrentDepth => m_jsonReader.CurrentDepth;

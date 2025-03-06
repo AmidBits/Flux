@@ -1,9 +1,15 @@
 namespace Flux.IO.TabularStream
 {
-  public sealed class TabularStreamWriter(string path, System.Text.Encoding encoding, char fieldSeparator = ',')
-    : Disposable
+  public sealed class TabularStreamWriter : Disposable
   {
-    private readonly System.IO.StreamWriter _streamWriter = new(path, false, encoding);
+    private readonly System.IO.StreamWriter m_streamWriter;
+    private readonly char m_fieldSeparator;
+
+    public TabularStreamWriter(string path, System.Text.Encoding encoding, char fieldSeparator = ',')
+    {
+      m_fieldSeparator = fieldSeparator;
+      m_streamWriter = new(path, false, encoding);
+    }
 
     /// <summary>Writes a sequence of object values to the stream, by converting them to strings using the ConvertToString method.</summary>
     public void WriteRecord(System.Collections.Generic.IEnumerable<object> values)
@@ -24,27 +30,27 @@ namespace Flux.IO.TabularStream
       {
         if (fieldIndex++ > 0)
         {
-          _streamWriter.Write(fieldSeparator);
+          m_streamWriter.Write(m_fieldSeparator);
         }
 
-        if (value.AsSpan().IndexOfAny($"{fieldSeparator}\"\r\n".ToCharArray()) > -1)
+        if (value.AsSpan().IndexOfAny($"{m_fieldSeparator}\"\r\n".ToCharArray()) > -1)
         {
-          _streamWriter.Write('"');
-          _streamWriter.Write(value.Replace("\"", "\"\"", System.StringComparison.Ordinal));
-          _streamWriter.Write('"');
+          m_streamWriter.Write('"');
+          m_streamWriter.Write(value.Replace("\"", "\"\"", System.StringComparison.Ordinal));
+          m_streamWriter.Write('"');
         }
         else
         {
-          _streamWriter.Write(value);
+          m_streamWriter.Write(value);
         }
       }
 
-      _streamWriter.WriteLine();
+      m_streamWriter.WriteLine();
     }
 
     protected override void DisposeManaged()
     {
-      _streamWriter.Dispose();
+      m_streamWriter.Dispose();
     }
 
     public static string ConvertToString(object value)

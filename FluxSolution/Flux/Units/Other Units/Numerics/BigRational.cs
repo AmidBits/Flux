@@ -27,6 +27,7 @@ namespace Flux.Units
     , System.Numerics.IDecrementOperators<BigRational>
     , System.Numerics.IDivisionOperators<BigRational, BigRational, BigRational>, System.Numerics.IDivisionOperators<BigRational, System.Numerics.BigInteger, BigRational>
     , System.Numerics.IEqualityOperators<BigRational, BigRational, bool>
+    //, System.Numerics.IFloatingPoint<BigRational> // Need to implement this.
     , System.Numerics.IFloatingPointConstants<BigRational>
     , System.Numerics.IIncrementOperators<BigRational>
     , System.Numerics.IModulusOperators<BigRational, BigRational, BigRational>, System.Numerics.IModulusOperators<BigRational, System.Numerics.BigInteger, BigRational>

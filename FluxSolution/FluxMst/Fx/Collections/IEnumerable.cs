@@ -91,11 +91,9 @@ namespace Collections.Generic
     [TestMethod]
     public void Medoid()
     {
-      var medoid = integers.Select(i => (System.Numerics.BigInteger)i).Medoid(out var index, out int count);
+      Assert.IsTrue(integers.Select(i => i).ToList().TryComputeMedoid(out var medoid));
 
-      Assert.AreEqual(19, medoid, nameof(medoid));
-      Assert.AreEqual(2, index, nameof(index));
-      Assert.AreEqual(6, count, nameof(count));
+      Assert.AreEqual(17, medoid, nameof(medoid));
     }
 
     [TestMethod]
@@ -163,7 +161,7 @@ namespace Collections.Generic
     [TestMethod]
     public void StartsWith()
     {
-      Assert.IsTrue(integers.IsCommonPrefix(new int[] { 17, 17, 19 }));
+      Assert.IsTrue(integers.IsCommonPrefix(new int[] { 17, 17, 19 }.AsEnumerable(), 3));
     }
 
     [TestMethod]

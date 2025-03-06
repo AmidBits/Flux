@@ -1,5 +1,9 @@
 namespace Flux.Geometry.Shapes.Polygon
 {
+  /// <summary>
+  /// <para>A regular polygon is a polygon that is direct equiangular (all angles are equal in measure) and equilateral (all sides have the same length).</para>
+  /// <para><see href="https://en.wikipedia.org/wiki/Regular_polygon"/></para>
+  /// </summary>
   public sealed record class RegularPolygon
     : PolygonGeometry
   {

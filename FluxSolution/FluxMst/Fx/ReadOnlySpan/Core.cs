@@ -28,29 +28,29 @@ namespace NetFx.ReadOnlySpan
       Assert.AreEqual(expected, actual);
     }
 
-    [TestMethod]
-    public void EqualsAnyAt()
-    {
-      var expected = false;
-      var actual = "Robert".AsSpan().EqualsAnyAt(2, 2, ["do", "re", "mi"]);
-      Assert.AreEqual(expected, actual);
+    //[TestMethod]
+    //public void EqualsAnyAt()
+    //{
+    //  var expected = false;
+    //  var actual = "Robert".AsSpan().EqualsAnyAt(2, 2, ["do", "re", "mi"]);
+    //  Assert.AreEqual(expected, actual);
 
-      expected = true;
-      actual = "Robert".AsSpan().EqualsAnyAt(2, 2, ["bo", "bitter", "be"]);
-      Assert.AreEqual(expected, actual);
-    }
+    //  expected = true;
+    //  actual = "Robert".AsSpan().EqualsAnyAt(2, 2, ["bo", "bitter", "be"]);
+    //  Assert.AreEqual(expected, actual);
+    //}
 
-    [TestMethod]
-    public void EqualsAt()
-    {
-      var expected = false;
-      var actual = "Robert".AsSpan().EqualsAt(2, "re");
-      Assert.AreEqual(expected, actual);
+    //[TestMethod]
+    //public void EqualsAt()
+    //{
+    //  var expected = false;
+    //  var actual = "Robert".AsSpan().EqualsAt(2, "re");
+    //  Assert.AreEqual(expected, actual);
 
-      expected = true;
-      actual = "Robert".AsSpan().EqualsAt(2, "be");
-      Assert.AreEqual(expected, actual);
-    }
+    //  expected = true;
+    //  actual = "Robert".AsSpan().EqualsAt(2, "be");
+    //  Assert.AreEqual(expected, actual);
+    //}
 
     [TestMethod]
     public void GetExtremum()

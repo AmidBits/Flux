@@ -3,12 +3,15 @@
   public static partial class Fx
   {
     /// <summary>
-    /// <para>Compare the fraction part of <paramref name="value"/> to it's midpoint (i.e. 0.5).</para>
+    /// <para>Compare the fraction part of <paramref name="value"/> to it's midpoint (i.e. its .5).</para>
     /// </summary>
     /// <typeparam name="TNumber"></typeparam>
     /// <param name="value">The value to be compared.</param>
     /// <returns>
-    /// <para>-1 if <paramref name="value"/> is less than 0.5.</para>
+    /// <para>The result is similar to that of the Compare/CompareTo functionality, but exactly -1, 0, or 1 is always returned.</para>
+    /// <para>-1 if <paramref name="value"/> is less-than 0.5.</para>
+    /// <para>0 if <paramref name="value"/> is equal-to 0.5.</para>
+    /// <para>1 if <paramref name="value"/> is greater-than 0.5.</para>
     /// </returns>
     public static int CompareToFractionMidpoint<TNumber>(this TNumber value)
       where TNumber : System.Numerics.IFloatingPoint<TNumber>
@@ -21,7 +24,7 @@
     /// <param name="value">The value to be compared.</param>
     /// <param name="percent">Percent in the range [0, 1].</param>
     /// <returns>
-    /// <para></para>
+    /// <para>The result is similar to that of the Compare/CompareTo functionality, but exactly -1, 0, or 1 is always returned.</para>
     /// <para>-1 when <paramref name="value"/> is less than <paramref name="percent"/>.</para>
     /// <para>0 when <paramref name="value"/> is equal to <paramref name="percent"/>.</para>
     /// <para>1 when <paramref name="value"/> is greater than <paramref name="percent"/>.</para>

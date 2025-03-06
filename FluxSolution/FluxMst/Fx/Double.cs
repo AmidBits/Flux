@@ -10,12 +10,11 @@ namespace SystemFx
     private readonly double[] d = new double[] { 9d, 27d, 63d, 81d, 90d };
 
     [TestMethod]
-    public void AverageAbsoluteDeviationFrom()
+    public void MeanMedianAbsoluteDeviation()
     {
-      d.AverageAbsoluteDeviationFrom<double, double>(out double mean, out double median, out double mode);
-      Assert.AreEqual(2.6666666666666665, mean, "AverageAbsoluteDeviationFrom[mean]");
-      Assert.AreEqual(2.5, median, "AverageAbsoluteDeviationFrom[median]");
-      Assert.AreEqual(4.166666666666667, mode, "AverageAbsoluteDeviationFrom[mode");
+      var (madMean, madMedian) = d.MeanMedianAbsoluteDeviation();
+      Assert.AreEqual(28.8, madMean, "MeanMedianAbsoluteDeviation[madMean]");
+      Assert.AreEqual(27, madMedian, "MeanMedianAbsoluteDeviation[madMedian]");
     }
 
     //[TestMethod]
@@ -37,15 +36,15 @@ namespace SystemFx
     [TestMethod]
     public void Mean()
     {
-      d.Mean(out double result, out double _, out int _);
+      var mean = d.Mean(out double _, out int _);
 
-      Assert.AreEqual(54, result, nameof(Mean));
+      Assert.AreEqual(54, mean, nameof(Mean));
     }
 
     [TestMethod]
     public void Median()
     {
-      d.Median(out double median, out var _);
+      var (mean, median, mode) = d.MeanMedianMode();
       Assert.AreEqual(63.0, median, nameof(Median));
     }
 

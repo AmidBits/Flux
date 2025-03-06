@@ -19,55 +19,135 @@
     private double m_reciprocalSum; // The sum of reciprocal of all values.
     private double m_sum; // The sum of all values.
 
-    /// <summary>The number of samples.</summary>    
+    private RunningStatistics(long count, double max, double min, double m1, double m2, double m3, double m4, double product, double reciprocalSum, double sum)
+    {
+      m_count = count;
+      m_max = max;
+      m_min = min;
+      m_m1 = m1;
+      m_m2 = m2;
+      m_m3 = m3;
+      m_m4 = m4;
+      m_product = product;
+      m_reciprocalSum = reciprocalSum;
+      m_sum = sum;
+    }
+
+    public RunningStatistics() : this(
+      0, // count
+      double.NaN, // max
+      double.NaN, // min
+      double.NaN, // m1
+      double.NaN, // m2
+      double.NaN, // m3
+      double.NaN, // m4
+      double.NaN, // product
+      double.NaN, // reciprocalSum
+      double.NaN // sum
+    )
+    { }
+
+    public RunningStatistics(System.Collections.Generic.IEnumerable<double> values) => AddRange(values);
+
+    /// <summary>
+    /// <para>The number of samples.</para>
+    /// </summary>    
     public long Count => m_count;
 
-    /// <summary>Returns the maximum value of all samples, or NaN if no data/any entry is NaN.</summary>
-    public double Maximum => m_count > 0 ? m_max : double.NaN;
+    /// <summary>
+    /// <para>Returns the maximum value of all samples.</para>
+    /// <para>Returns NaN if insufficient data.</para>
+    /// </summary>
+    public double Maximum => m_max;
 
-    /// <summary>Returns the minimum value of all samples. Returns NaN if data is empty or if any entry is NaN.</summary>
-    public double Minimum => m_count > 0 ? m_min : double.NaN;
+    /// <summary>
+    /// <para>Returns the minimum value of all samples.</para>
+    /// <para>Returns NaN if insufficient data.</para>
+    /// </summary>
+    public double Minimum => m_min;
 
-    /// <summary>The product of all samples. Returns NaN if no data or any sample is NaN.</summary>
-    public double Product => m_count > 0 ? m_product : double.NaN;
+    /// <summary>
+    /// <para>The product of all samples.</para>
+    /// <para>Returns NaN if insufficient data.</para>
+    /// </summary>
+    public double Product => m_product;
 
-    /// <summary>The sum of all samples. Returns NaN if no data or any sample is NaN.</summary>
-    public double Sum => m_count > 0 ? m_sum : double.NaN;
+    /// <summary>
+    /// <para>The sum of all samples.</para>
+    /// <para>Returns NaN if insufficient data.</para>
+    /// </summary>
+    public double Sum => m_sum;
 
-    /// <summary>Evaluates the sample mean, an estimate of the population mean. Returns NaN if data is empty or if any entry is NaN.</summary>
-    public double Mean => m_count > 0 ? m_m1 : double.NaN;
+    /// <summary>
+    /// <para>Evaluates the sample mean, an estimate of the population mean.</para>
+    /// <para>Returns NaN if insufficient data.</para>
+    /// </summary>
+    public double Mean => m_m1;
 
-    /// <summary>Evaluates the geometric mean of the enumerable, in a single pass without memoization. Returns NaN if data is empty or any entry is NaN.</summary>    
-    public double GeometricMean => m_count > 0 ? double.Pow(m_product, 1d / m_count) : double.NaN;
+    /// <summary>
+    /// <para>Evaluates the geometric mean of the enumerable, in a single pass without memoization.</para>
+    /// <para>Returns NaN if insufficient data.</para>
+    /// </summary>    
+    public double GeometricMean => double.Pow(m_product, 1d / m_count);
 
-    /// <summary>Evaluates the harmonic mean of the enumerable, in a single pass without memoization. Returns NaN if data is empty or any entry is NaN.</summary>
-    public double HarmonicMean => m_count > 0 ? m_count / m_reciprocalSum : double.NaN;
+    /// <summary>
+    /// <para>Evaluates the harmonic mean of the enumerable, in a single pass without memoization.</para>
+    /// <para>Returns NaN if insufficient data.</para>
+    /// </summary>
+    public double HarmonicMean => m_count / m_reciprocalSum;
 
-    /// <summary>Estimates the unbiased population variance from the provided samples. On a dataset of size N will use an N-1 normalizer (Bessel's correction). Returns NaN if data has less than two entries or if any entry is NaN.</summary>
+    /// <summary>
+    /// <para>Estimates the unbiased population variance from the provided samples. On a dataset of size N will use an N-1 normalizer (Bessel's correction).</para>
+    /// <para>Returns NaN if insufficient (&lt;2) data.</para>
+    /// </summary>
     public double Variance => m_count < 2 ? double.NaN : m_m2 / (m_count - 1);
 
-    /// <summary>Evaluates the variance from the provided full population. On a dataset of size N will use an N normalizer and would thus be biased if applied to a subset. Returns NaN if data is empty or if any entry is NaN.</summary>
+    /// <summary>
+    /// <para>Evaluates the variance from the provided full population. On a dataset of size N will use an N normalizer and would thus be biased if applied to a subset.</para>
+    /// <para>Returns NaN if insufficient (&lt;2) data.</para>
+    /// </summary>
     public double PopulationVariance => m_count < 2 ? double.NaN : m_m2 / m_count;
 
-    /// <summary> Estimates the unbiased population standard deviation from the provided samples. On a dataset of size N will use an N-1 normalizer (Bessel's correction). Returns NaN if data has less than two entries or if any entry is NaN.</summary>
+    /// <summary>
+    /// <para>Estimates the unbiased population standard deviation from the provided samples. On a dataset of size N will use an N-1 normalizer (Bessel's correction).</para>
+    /// <para>Returns NaN if insufficient data.</para>
+    /// </summary>
     public double StandardDeviation => double.Sqrt(Variance);
 
-    /// <summary>Evaluates the standard deviation from the provided full population. On a dataset of size N will use an N normalizer and would thus be biased if applied to a subset. Returns NaN if data is empty or if any entry is NaN.</summary>
+    /// <summary>
+    /// <para>Evaluates the standard deviation from the provided full population. On a dataset of size N will use an N normalizer and would thus be biased if applied to a subset.</para>
+    /// <para>Returns NaN if insufficient data.</para>
+    /// </summary>
     public double PopulationStandardDeviation => double.Sqrt(PopulationVariance);
 
-    /// <summary>Estimates the unbiased population skewness from the provided samples. Uses a normalizer (Bessel's correction; type 2). Returns NaN if data has less than three entries or if any entry is NaN.</summary>
+    /// <summary>
+    /// <para>Estimates the unbiased population skewness from the provided samples. Uses a normalizer (Bessel's correction; type 2).</para>
+    /// <para>Returns NaN if insufficient (&lt;3) data.</para>
+    /// </summary>
     public double Skewness => m_count < 3 ? double.NaN : (m_count * m_m3 * double.Sqrt(m_m2 / (m_count - 1)) / (m_m2 * m_m2 * (m_count - 2))) * (m_count - 1);
 
-    /// <summary>Evaluates the population skewness from the full population. Does not use a normalizer and would thus be biased if applied to a subset (type 1). Returns NaN if data has less than two entries or if any entry is NaN. </summary>
+    /// <summary>
+    /// <para>Evaluates the population skewness from the full population. Does not use a normalizer and would thus be biased if applied to a subset (type 1).</para>
+    /// <para>Returns NaN if insufficient (&lt;2) data.</para>
+    /// </summary>
     public double PopulationSkewness => m_count < 2 ? double.NaN : double.Sqrt(m_count) * m_m3 / System.Math.Pow(m_m2, 1.5);
 
-    /// <summary>Estimates the unbiased population kurtosis from the provided samples. Uses a normalizer (Bessel's correction; type 2). Returns NaN if data has less than four entries or if any entry is NaN.</summary>
+    /// <summary>
+    /// <para>Estimates the unbiased population kurtosis from the provided samples. Uses a normalizer (Bessel's correction; type 2).</para>
+    /// <para>Returns NaN if insufficient (&lt;4) data.</para>
+    /// </summary>
     public double Kurtosis => m_count < 4 ? double.NaN : ((double)m_count * m_count - 1) / ((m_count - 2) * (m_count - 3)) * (m_count * m_m4 / (m_m2 * m_m2) - 3d + 6d / (m_count + 1));
 
-    /// <summary>Evaluates the population kurtosis from the full population. Does not use a normalizer and would thus be biased if applied to a subset (type 1). Returns NaN if data has less than three entries or if any entry is NaN.</summary>
+    /// <summary>
+    /// <para>Evaluates the population kurtosis from the full population. Does not use a normalizer and would thus be biased if applied to a subset (type 1).</para>
+    /// <para>Returns NaN if insufficient (&lt;3) data.</para>
+    /// </summary>
     public double PopulationKurtosis => m_count < 3 ? double.NaN : m_count * m_m4 / (m_m2 * m_m2) - 3d;
 
-    /// <summary>Update the running statistics by adding an observed sample (in-place).</summary>
+    /// <summary>
+    /// <para>Update the running statistics by adding an observed sample.</para>
+    /// </summary>
+    /// <param name="value"></param>
     public void Add(double value)
     {
       if (m_count == 0)
@@ -75,7 +155,14 @@
         m_max = double.NegativeInfinity;
         m_min = double.PositiveInfinity;
 
+        m_m1 = 0;
+        m_m2 = 0;
+        m_m3 = 0;
+        m_m4 = 0;
+
         m_product = 1;
+        m_reciprocalSum = 0;
+        m_sum = 0;
       }
 
       m_count++;
@@ -100,7 +187,9 @@
       m_sum += value;
     }
 
-    /// <summary>Update the running statistics by adding a sequence of observed sample (in-place).</summary>
+    /// <summary>
+    /// <para>Update running statistics by adding a sequence of observed sample.</para>
+    /// </summary>
     public void AddRange(System.Collections.Generic.IEnumerable<double> values)
     {
       foreach (double value in values ?? throw new System.ArgumentNullException(nameof(values)))
@@ -117,58 +206,26 @@
       if (b.m_count == 0)
         return a;
 
-      var count = a.m_count + b.m_count;
-
       var d1 = b.m_m1 - a.m_m1;
       var d2 = d1 * d1;
       var d3 = d2 * d1;
       var d4 = d2 * d2;
+
+      var count = a.m_count + b.m_count;
+
+      var max = double.Max(a.m_max, b.m_max);
+      var min = double.Min(a.m_min, b.m_min);
 
       var m1 = (a.m_count * a.m_m1 + b.m_count * b.m_m1) / count;
       var m2 = a.m_m2 + b.m_m2 + d2 * a.m_count * b.m_count / count;
       var m3 = a.m_m3 + b.m_m3 + d3 * a.m_count * b.m_count * (a.m_count - b.m_count) / (count * count) + 3 * d1 * (a.m_count * b.m_m2 - b.m_count * a.m_m2) / count;
       var m4 = a.m_m4 + b.m_m4 + d4 * a.m_count * b.m_count * (a.m_count * a.m_count - a.m_count * b.m_count + b.m_count * b.m_count) / (count * count * count) + 6 * d2 * (a.m_count * a.m_count * b.m_m2 + b.m_count * b.m_count * a.m_m2) / (count * count) + 4 * d1 * (a.m_count * b.m_m3 - b.m_count * a.m_m3) / count;
 
-      return new RunningStatistics
-      {
-        m_count = count,
+      var product = a.m_product * b.m_product;
+      var reciprocalSum = a.m_reciprocalSum + b.m_reciprocalSum;
+      var sum = a.m_sum + b.m_sum;
 
-        m_m1 = m1,
-        m_m2 = m2,
-        m_m3 = m3,
-        m_m4 = m4,
-
-        m_max = System.Math.Max(a.m_max, b.m_max),
-        m_min = System.Math.Min(a.m_min, b.m_min),
-
-        m_product = a.m_product * b.m_product,
-        m_reciprocalSum = a.m_reciprocalSum + b.m_reciprocalSum,
-        m_sum = a.m_sum + b.m_sum,
-      };
-    }
-
-    public static RunningStatistics Create()
-    {
-      return new RunningStatistics()
-      {
-        m_count = 0,
-        m_reciprocalSum = 0,
-        m_m1 = 0,
-        m_m2 = 0,
-        m_m3 = 0,
-        m_m4 = 0,
-        m_max = double.NegativeInfinity,
-        m_min = double.PositiveInfinity,
-        m_sum = 0,
-        m_product = 1
-      };
-    }
-
-    public static RunningStatistics Create(System.Collections.Generic.IEnumerable<double> values)
-    {
-      var rs = Create();
-      rs.AddRange(values);
-      return rs;
+      return new RunningStatistics(count, max, min, m1, m2, m3, m4, product, reciprocalSum, sum);
     }
 
     #endregion Static members

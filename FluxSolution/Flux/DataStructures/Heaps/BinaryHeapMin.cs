@@ -8,7 +8,7 @@ namespace Flux.DataStructures.Heaps
     : IHeap<TValue>, System.ICloneable, System.Collections.Generic.IReadOnlyCollection<TValue>
     where TValue : System.IComparable<TValue>
   {
-    private readonly System.Collections.Generic.List<TValue> m_data = [];
+    private readonly System.Collections.Generic.List<TValue> m_data = new();
 
     public BinaryHeapMin() { }
     public BinaryHeapMin(System.Collections.Generic.IEnumerable<TValue> collection)
@@ -19,7 +19,7 @@ namespace Flux.DataStructures.Heaps
         Insert(item);
     }
 
-    public System.Collections.Generic.IEnumerable<int> GetIndicesOfDescendantsBFS(int index, int maxIndex)
+    public System.Collections.Generic.IEnumerable<int> GetIndicesOfDescendantsBfs(int index, int maxIndex)
     {
       for (int baseParentIndex = (index << 1) + 1, ordinalLevel = 1; baseParentIndex <= maxIndex; baseParentIndex = (baseParentIndex << 1) + 1, ordinalLevel++)
         for (int childIndex = baseParentIndex, maxChildIndex = baseParentIndex + (1 << ordinalLevel); childIndex < maxChildIndex && maxChildIndex <= maxIndex; childIndex++)
@@ -69,7 +69,7 @@ namespace Flux.DataStructures.Heaps
 
       int m1 = 0, z = 0, p1 = 0;
 
-      foreach (var index in GetIndicesOfDescendantsBFS(1, m_data.Count))
+      foreach (var index in GetIndicesOfDescendantsBfs(1, m_data.Count))
         switch (m_data[(index - 1) >> 1].CompareTo(m_data[index]))
         {
           case -1:
@@ -102,8 +102,10 @@ namespace Flux.DataStructures.Heaps
     {
       var min = m_data[0];
 
-      m_data[0] = m_data[^1];
-      m_data.RemoveAt(m_data.Count - 1);
+      var lastIndex = m_data.Count - 1;
+
+      m_data[0] = m_data[lastIndex];
+      m_data.RemoveAt(lastIndex);
 
       HeapifyDown(0);
 

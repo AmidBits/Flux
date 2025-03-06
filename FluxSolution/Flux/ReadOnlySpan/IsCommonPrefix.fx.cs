@@ -18,6 +18,7 @@ namespace Flux
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <param name="source"></param>
+    /// <param name="count"></param>
     /// <param name="value"></param>
     /// <param name="equalityComparer"></param>
     /// <returns></returns>
@@ -25,7 +26,7 @@ namespace Flux
       => source.CommonPrefixLength(value, equalityComparer, count) == count;
 
     /// <summary>
-    /// <para>Indicates whether the <paramref name="source"/> starts with the <paramref name="target"/> span. Uses the specified <paramref name="equalityComparer"/>, or default if null.</para>
+    /// <para>Indicates whether the <paramref name="source"/> starts with <paramref name="length"/> elements from the <paramref name="target"/> span. Uses the specified <paramref name="equalityComparer"/>, or default if null.</para>
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <param name="source"></param>

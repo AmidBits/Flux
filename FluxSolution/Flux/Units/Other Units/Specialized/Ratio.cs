@@ -34,6 +34,9 @@ namespace Flux.Units
       ? new(System.Numerics.BigInteger.CreateChecked(m_numerator), System.Numerics.BigInteger.CreateChecked(m_denominator))
       : BigRational.ApproximateRational(Value);
 
+    public string ToRatioNotationString(string? format, System.IFormatProvider? formatProvider = null, RatioNotation ratioNotation = RatioNotation.AcolonB)
+      => ratioNotation.ToRatioNotationString(m_numerator, m_denominator, format, formatProvider);
+
     #region Static methods
 
     /// <summary>
@@ -67,7 +70,7 @@ namespace Flux.Units
     #region Implemented interfaces
 
     // IFormattable
-    public string ToString(string? format, System.IFormatProvider? formatProvider) => RatioNotation.AcolonB.ToRatioNotationString(m_numerator, m_denominator, format, formatProvider);
+    public string ToString(string? format, System.IFormatProvider? formatProvider) => ToRatioNotationString(format, formatProvider);
 
     #region IValueQuantifiable<>
 

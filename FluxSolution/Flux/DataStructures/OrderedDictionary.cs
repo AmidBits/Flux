@@ -52,13 +52,15 @@ namespace Flux
     /// <typeparam name="TKey"></typeparam>
     /// <typeparam name="TValue"></typeparam>
     /// <remarks>An ordered data structure maintains an indexed order, i.e. like a <see cref="System.Collections.Generic.List{TValue}"/> or a <typeparamref name="TValue"/>[].</remarks>
-    public sealed class OrderedDictionary<TKey, TValue>(System.Collections.Generic.IEqualityComparer<TKey> equalityComparer)
+    public sealed class OrderedDictionary<TKey, TValue>
       : IOrderedDictionary<TKey, TValue>
-    where TKey : notnull
+      where TKey : notnull
     {
-      private readonly System.Collections.Generic.Dictionary<TKey, TValue> m_dictionary = new(equalityComparer);
+      private readonly System.Collections.Generic.Dictionary<TKey, TValue> m_dictionary;
       private readonly System.Collections.Generic.List<TKey> m_listOfKeys = new();
       private readonly System.Collections.Generic.List<TValue> m_listOfValues = new();
+
+      public OrderedDictionary(System.Collections.Generic.IEqualityComparer<TKey> equalityComparer) => m_dictionary = new(equalityComparer);
 
       public OrderedDictionary() : this(System.Collections.Generic.EqualityComparer<TKey>.Default) { }
 

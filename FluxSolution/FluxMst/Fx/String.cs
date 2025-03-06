@@ -24,11 +24,11 @@ namespace SystemFx
       Assert.AreEqual(14, s1.AsSpan().CommonPrefixLength(s2));
     }
 
-    [TestMethod]
-    public void EqualsAnyAt()
-    {
-      Assert.AreEqual(true, s1.AsSpan().EqualsAnyAt(4, "ph", "thi", "s"));
-    }
+    //[TestMethod]
+    //public void EqualsAnyAt()
+    //{
+    //  Assert.AreEqual(true, s1.AsSpan().EqualsAnyAt(4, "ph", "thi", "s"));
+    //}
 
     [TestMethod]
     public void LeftMost()

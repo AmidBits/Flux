@@ -24,7 +24,7 @@ namespace Flux
         {
           var lm1mj = lm1 - j;
 
-          var pt = source[i, j];                   // Move P1 to pt
+          var pt = source[i, j];                        // Move P1 to pt
 
           switch (direction)
           {
@@ -33,20 +33,20 @@ namespace Flux
               // P2 = [n-1-j, i]
               // P3 = [n-1-i, n-1-j]
               // P4 = [j, n-1-i]
-              source[i, j] = source[lm1mj, i];         // Move P2 to P1
-              source[lm1mj, i] = source[lm1mi, lm1mj]; // Move P3 to P4
-              source[lm1mi, lm1mj] = source[j, lm1mi]; // Move P4 to P3
-              source[j, lm1mi] = pt;                   // Move pt to P4
+              source[i, j] = source[lm1mj, i];          // Move P2 to P1
+              source[lm1mj, i] = source[lm1mi, lm1mj];  // Move P3 to P4
+              source[lm1mi, lm1mj] = source[j, lm1mi];  // Move P4 to P3
+              source[j, lm1mi] = pt;                    // Move pt to P4
               break;
-            case RotationalDirection.CounterClockWise: // Swap elements in counter-clockwise order. The elements in this group are:
+            case RotationalDirection.CounterClockWise:  // Swap elements in counter-clockwise order. The elements in this group are:
               // P1 = [i, j]
               // P2 = [j, n-1-i]
               // P3 = [n-1-i, n-1-j]
               // P4 = [n-1-j, i]
-              source[i, j] = source[j, lm1mi];         // Move P2 to P1
-              source[j, lm1mi] = source[lm1mi, lm1mj]; // Move P3 to P4
-              source[lm1mi, lm1mj] = source[lm1mj, i]; // Move P4 to P3
-              source[lm1mj, i] = pt;                   // Move pt to P4
+              source[i, j] = source[j, lm1mi];          // Move P2 to P1
+              source[j, lm1mi] = source[lm1mi, lm1mj];  // Move P3 to P4
+              source[lm1mi, lm1mj] = source[lm1mj, i];  // Move P4 to P3
+              source[lm1mj, i] = pt;                    // Move pt to P4
               break;
           }
         }

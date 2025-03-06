@@ -209,7 +209,8 @@ namespace ConsoleApp
         var x = amb.Choose(domain);
         terms.Add(x, name);
         return x;
-      };
+      }
+      ;
 
       void AreUnique(params Flux.Numerics.AmbOps.IValue<int>[] values) => amb.Require(() => values.Select(v => v.Value).Distinct().Count() == 5);
       void IsSame(Flux.Numerics.AmbOps.IValue<int> left, Flux.Numerics.AmbOps.IValue<int> right) => amb.Require(() => left.Value == right.Value);
@@ -363,10 +364,10 @@ namespace ConsoleApp
       var bln = n.GetBitLength();
       //var l2 = bi.IntegerLog2();
       var ms1b = n.MostSignificant1Bit();
-      var bmr = n.CreateBitMaskLsbFromBitLength();
+      var bmr = n.GetBitLength().CreateBitMaskLsbFromBitLength();
       var bmrs = bmr.ToBinaryString();
       var bmrsl = bmrs.Length;
-      var bml = n.CreateBitMaskMsbFromBitLength();
+      var bml = n.GetBitLength().CreateBitMaskMsbFromBitLength();
       var bmls = bml.ToBinaryString();
       var bmlsl = bmls.Length;
     }
@@ -701,11 +702,25 @@ namespace ConsoleApp
       System.Console.WriteLine();
     }
 
-    private sealed class User(int Age, string Name, string BirthCountry)
+    private sealed class User
     {
+      private int m_age;
+      private string m_name;
+      private string m_birthCountry;
+
+      public User(int age, string name, string birthCountry)
+      {
+        m_age = age;
+        m_name = name;
+        m_birthCountry = birthCountry;
+      }
+
+      public int Age => m_age;
+      public string Name => m_name;
+      public string BirthCountry => m_birthCountry;
 
       public override string ToString()
-        => $"{GetType().Name} {{ {Name}, {Age} ({BirthCountry}) }}";
+        => $"{GetType().Name} {{ {m_name}, {m_age} ({m_birthCountry}) }}";
 
       public static void ShowCase()
       {
@@ -725,11 +740,9 @@ namespace ConsoleApp
 
         var rulesCompiled = rules.CompileRules<User>();
 
-        var cfo = ConsoleFormatOptions.Default;// with { VerticalSeparator = "-" };
-
-        System.Console.WriteLine($"{user1}, {rulesCompiled.EvaluateRules(user1).ToConsoleString(k => k.ToString(), v => v.ToString(), cfo)}");
-        System.Console.WriteLine($"{user2}, {rulesCompiled.EvaluateRules(user2).ToConsoleString(k => k.ToString(), v => v.ToString(), cfo)}");
-        System.Console.WriteLine($"{user3}, {rulesCompiled.EvaluateRules(user3).ToConsoleString(k => k.ToString(), v => v.ToString(), cfo)}");
+        System.Console.WriteLine($"{user1}{System.Environment.NewLine}{rulesCompiled.EvaluateRules(user1).ToConsoleString(k => k.ToString(), v => v.ToString())}");
+        System.Console.WriteLine($"{user2}{System.Environment.NewLine}{rulesCompiled.EvaluateRules(user2).ToConsoleString(k => k.ToString(), v => v.ToString())}");
+        System.Console.WriteLine($"{user3}{System.Environment.NewLine}{rulesCompiled.EvaluateRules(user3).ToConsoleString(k => k.ToString(), v => v.ToString())}");
       }
     }
 
@@ -856,7 +869,8 @@ namespace ConsoleApp
     static void RunStats()
     {
       var a = new int[] { 13, 12, 11, 8, 4, 3, 2, 1, 1, 1 };
-      a = a.Reverse().ToArray();
+      a.Reverse();
+      a = a.ToArray();
       //a = new int[] { 1, 2, 3, 6, 6, 6, 7, 8, 9 };
       //a = new int[] { 1, 2, 3, 4, 4, 5, 6, 7, 8 };
       //a = new int[] { 2, 4, 5, 6, 6, 7, 9, 12, 14, 15, 18, 19, 22, 24, 26, 28 };

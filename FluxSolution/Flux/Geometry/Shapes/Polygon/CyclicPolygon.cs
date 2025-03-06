@@ -1,5 +1,9 @@
 namespace Flux.Geometry.Shapes.Polygon
 {
+  /// <summary>
+  /// <para>A set of points are said to be concyclic (or cocyclic) if they lie on a common circle. A polygon whose vertices are concyclic is called a cyclic polygon, and the circle is called its circumscribing circle or circumcircle. All concyclic points are equidistant from the center of the circle.</para>
+  /// <para><see href="https://en.wikipedia.org/wiki/Concyclic_points"/></para>
+  /// </summary>
   public sealed record class CyclicPolygon
     : PolygonGeometry
   {
