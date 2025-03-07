@@ -123,7 +123,7 @@ namespace Flux.Geometry.Shapes.Ellipse
     /// <param name="maxRandomness"></param>
     /// <param name="rng"></param>
     /// <returns></returns>
-    public static System.Collections.Generic.IEnumerable<System.Runtime.Intrinsics.Vector128<double>> CreatePointsOfEllipse(int count, double a = 1, double b = 1, double arcOffset = 0, double translateX = 0, double translateY = 0, double maxRandomness = 0, System.Random? rng = null)
+    public static System.Collections.Generic.IEnumerable<System.Runtime.Intrinsics.Vector128<double>> CreatePointsOnEllipse(int count, double a = 1, double b = 1, double arcOffset = 0, double translateX = 0, double translateY = 0, double maxRandomness = 0, System.Random? rng = null)
     {
       rng ??= System.Random.Shared;
 

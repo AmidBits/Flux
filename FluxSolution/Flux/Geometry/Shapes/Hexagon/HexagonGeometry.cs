@@ -76,7 +76,7 @@ namespace Flux.Geometry.Shapes.Hexagon
     #endregion // Conversion methods
 
     public static System.Collections.Generic.IEnumerable<System.Runtime.Intrinsics.Vector128<double>> CreatePointsOfHexagon(double circumradius = 1, double arcOffset = 0, double translateX = 0, double translateY = 0)
-      => Ellipse.EllipseGeometry.CreatePointsOfEllipse(6, circumradius, circumradius, arcOffset, translateX, translateY);
+      => Ellipse.EllipseGeometry.CreatePointsOnEllipse(6, circumradius, circumradius, arcOffset, translateX, translateY);
 
     /// <summary>
     /// <para>Find the centered hexagonal number by index. This is the number of hexagons in the "ring" represented by <paramref name="index"/>.</para>

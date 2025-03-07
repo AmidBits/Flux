@@ -79,10 +79,10 @@ namespace Flux.Units
     {
       var circle = double.Pi * (a + b); // (2 * PI * radius)
 
-      if (a == b) // For a circle, use (PI * diameter);
+      if (a == b) // Short circuit for circles (PI * diameter);
         return circle;
 
-      var h3 = 3 * (double.Pow(a - b, 2) / double.Pow(a + b, 2)); // H function.
+      var h3 = 3 * (double.Pow(a - b, 2) / double.Pow(a + b, 2)); // H function (* 3 for H3 is an optimizaion for below).
 
       return circle * (1 + h3 / (10 + double.Sqrt(4 - h3)));
     }

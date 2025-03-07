@@ -153,6 +153,8 @@ namespace ConsoleApp
 
       //var lbc = LoadBearingCapacityAluExt(.020, .002, .610, 230000000);
 
+      TestDspWithPlot();
+
       var pc = new Flux.Geometry.CoordinateSystems.PolarCoordinate(new Length(0.700, LengthUnit.Meter).GetUnitValue(LengthUnit.Inch), new Angle(78.5, AngleUnit.Degree).Value);
       var cc = pc.ToCartesianCoordinate();
 

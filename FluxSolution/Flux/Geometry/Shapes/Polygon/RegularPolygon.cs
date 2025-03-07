@@ -35,7 +35,7 @@ namespace Flux.Geometry.Shapes.Polygon
     /// <param name="translateY">The translation Y offset.</param>
     /// <returns></returns>
     public static RegularPolygon Create(int count, double circumradius, double arcOffset = 0, double translateX = 0, double translateY = 0)
-      => new(Ellipse.EllipseGeometry.CreatePointsOfEllipse(count, circumradius, circumradius, arcOffset, translateX, translateY));
+      => new(Ellipse.EllipseGeometry.CreatePointsOnEllipse(count, circumradius, circumradius, arcOffset, translateX, translateY));
 
     #region Conversion methods
 

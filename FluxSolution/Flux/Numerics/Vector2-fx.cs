@@ -1,3 +1,6 @@
+using System.Globalization;
+using System.Runtime.Intrinsics;
+
 namespace Flux
 {
   public static partial class Fx
@@ -35,23 +38,12 @@ namespace Flux
       => (float)(System.Numerics.Vector2.Dot(a, b) / System.Math.Sqrt(a.LengthSquared() * b.LengthSquared()));
 
     /// <summary>
-    /// <para>Computes the perimeter of the specified ellipse.</para>
+    /// <para>Computes the perimeter of the specified ellipse using the components of <paramref name="semiAxes"/>.</para>
     /// </summary>
-    /// <param name="semiMajorAxis">The longer radius.</param>
-    /// <param name="semiMinorAxis">The shorter radius.</param>
+    /// <param name="semiAxes"></param>
+    /// <returns></returns>
     public static double EllipsePerimeter(this System.Numerics.Vector2 semiAxes)
-    {
-      var circle = System.Math.PI * (semiAxes.X + semiAxes.Y);
-
-      if (semiAxes.X == semiAxes.Y) // For a circle, use (PI * diameter);
-        return circle;
-
-      var h3 = 3 * System.Math.Pow(System.Math.Abs(semiAxes.X - semiAxes.Y), 2) / System.Math.Pow(semiAxes.X + semiAxes.Y, 2);
-
-      var ellipse = circle * (1 + h3 / (10 + System.Math.Sqrt(4 - h3)));
-
-      return ellipse;
-    }
+      => Units.Length.PerimeterOfEllipse(semiAxes.X, semiAxes.Y);
 
     /// <summary>
     /// <para>Creates a elliptical polygon with random vertices from the specified number of segments, width, height and an optional random variance unit interval (toward 0 = least random, toward 1 = most random).</para>
@@ -72,28 +64,8 @@ namespace Flux
     /// <param name="maxRandomness">The maximum randomness to allow for each vector. Must be in the range [0, 0.5].</param>
     /// <param name="rng">The random number generator to use, or default if null.</param>
     /// <returns>A new sequence of <typeparamref name="TResult"/>.</returns>
-    public static System.Numerics.Vector2[] GenerateEllipseVectors(this System.Numerics.Vector2 source, double count, double radOffset = 0, double maxRandomness = 0, System.Random? rng = null)
-    {
-      rng ??= System.Random.Shared;
-
-      var arc = System.Math.Tau / count;
-
-      var array = new System.Numerics.Vector2[int.CreateChecked(System.Math.Ceiling(count))];
-
-      for (var index = 0; index < count; index++)
-      {
-        var angle = radOffset + index * arc;
-
-        if (maxRandomness > 0)
-          angle += rng.NextDouble(0, arc * maxRandomness);
-
-        var (x, y) = Geometry.CoordinateSystems.PolarCoordinate.ConvertPolarToCartesian2Ex(1, angle);
-
-        array[index] = new System.Numerics.Vector2((float)x * source.X, (float)y * source.Y);
-      }
-
-      return array;
-    }
+    public static System.Numerics.Vector2[] GenerateEllipseVectors(this System.Numerics.Vector2 source, int count, double radOffset = 0, double maxRandomness = 0, System.Random? rng = null)
+      => Geometry.Shapes.Ellipse.EllipseGeometry.CreatePointsOnEllipse(count, source.X, source.Y, radOffset, 0, 0, maxRandomness, rng).Select(v128 => v128.ToVector2()).ToArray();
 
     /// <summary>
     /// <para>Returns whether a point is inside the circle.</para>

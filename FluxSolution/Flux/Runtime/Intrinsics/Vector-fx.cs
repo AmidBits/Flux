@@ -29,7 +29,7 @@ namespace Flux
     //public static Vector128<long> SignMask128Int64 => Vector128.Create(~long.MaxValue);
     //public static Vector256<long> SignMask256Int64 => Vector256.Create(~long.MaxValue);
 #if NET8_0_OR_GREATER
-   public static Vector512<long> SignMask512Int64 => Vector512.Create(~long.MaxValue);
+    public static Vector512<long> SignMask512Int64 => Vector512.Create(~long.MaxValue);
 #endif
 
     //public static Vector128<long> AbsMask128Int64 => Vector128.Create(long.MaxValue);
@@ -281,6 +281,20 @@ namespace Flux
       // Trying this (below) for 4 dimensional computation, rather than just 3D (above).
       ? System.Runtime.Intrinsics.X86.Avx.Subtract(System.Runtime.Intrinsics.X86.Avx2.Multiply(System.Runtime.Intrinsics.X86.Avx2.Permute4x64(source, ShuffleYZXW), System.Runtime.Intrinsics.X86.Avx2.Permute4x64(target, ShuffleZXYW)), System.Runtime.Intrinsics.X86.Avx.Multiply(System.Runtime.Intrinsics.X86.Avx2.Permute4x64(source, ShuffleZXYW), System.Runtime.Intrinsics.X86.Avx2.Permute4x64(target, ShuffleYZXW)))
       : Vector256.Create(source[1] * target[2] - source[2] * target[1], source[2] * target[0] - source[0] * target[2], source[0] * target[1] - source[1] * target[0], 0);
+
+    public static void Deconstruct(this Vector128<double> source, out double x, out double y)
+    {
+      x = source[0];
+      y = source[1];
+    }
+
+    public static void Deconstruct(this Vector256<double> source, out double x, out double y, out double z, out double w)
+    {
+      x = source[0];
+      y = source[1];
+      z = source[2];
+      w = source[3];
+    }
 
     #region Divide
 
@@ -795,6 +809,42 @@ namespace Flux
 
     #endregion // Normalize
 
+
+    /// <summary>
+    /// <para>Returns the orthant (quadrant) of the 2D vector using the specified center and orthant numbering.</para>
+    /// <see href="https://en.wikipedia.org/wiki/Orthant"/>
+    /// </summary>
+    public static int OrthantNumber2D(this Vector128<double> source, Vector128<double> center, Geometry.OrthantNumbering numbering)
+    {
+      source.Deconstruct(out var sx, out var sy);
+      center.Deconstruct(out var cx, out var cy);
+
+      return numbering switch
+      {
+        Geometry.OrthantNumbering.Traditional => sy >= cy ? (sx >= cx ? 0 : 1) : (sx >= cx ? 3 : 2),
+        Geometry.OrthantNumbering.BinaryNegativeAs1 => (sx >= cx ? 0 : 1) + (sy >= cy ? 0 : 2),
+        Geometry.OrthantNumbering.BinaryPositiveAs1 => (sx < cx ? 0 : 1) + (sy < cy ? 0 : 2),
+        _ => throw new System.ArgumentOutOfRangeException(nameof(numbering))
+      };
+    }
+
+    /// <summary>Returns the orthant (quadrant) of the 2D vector using the specified center and orthant numbering.</summary>
+    /// <see href="https://en.wikipedia.org/wiki/Orthant"/>
+    public static int OrthantNumber3D(this Vector256<double> source, Vector256<double> center, Geometry.OrthantNumbering numbering)
+    {
+      source.Deconstruct(out var sx, out var sy, out var sz, out var _);
+      center.Deconstruct(out var cx, out var cy, out var cz, out var _);
+
+      return numbering switch
+      {
+        Geometry.OrthantNumbering.Traditional => sz >= cz ? (sy >= cy ? (sx >= cx ? 0 : 1) : (sx >= cx ? 3 : 2)) : (sy >= cy ? (sx >= cx ? 7 : 6) : (sx >= cx ? 4 : 5)),
+        Geometry.OrthantNumbering.BinaryNegativeAs1 => (sx >= cx ? 0 : 1) + (sy >= cy ? 0 : 2) + (sz >= cz ? 0 : 4),
+        Geometry.OrthantNumbering.BinaryPositiveAs1 => (sx < cx ? 0 : 1) + (sy < cy ? 0 : 2) + (sz < cz ? 0 : 4),
+        _ => throw new System.ArgumentOutOfRangeException(nameof(numbering))
+      };
+    }
+
+
     #region Pow
 
     /// <summary>Calculates the power of the value and specified exponent, using exponentiation by repeated squaring. Essentially, we repeatedly double source, and if the exponent has a 1 bit at that position, we multiply/accumulate that into the result.</summary>
@@ -1247,6 +1297,12 @@ namespace Flux
       => $"<{source[0].ToString(format, formatProvider)}, {source[1].ToString(format, formatProvider)}, {source[2].ToString(format, formatProvider)}, {source[3].ToString(format, formatProvider)}>";
 
     #endregion // ToString..
+
+    public static System.Numerics.Vector2 ToVector2(this Vector128<double> source)
+      => new((float)source[0], (float)source[1]);
+
+    public static System.Numerics.Vector3 ToVector3(this Vector256<double> source)
+      => new((float)source[0], (float)source[1], (float)source[2]);
 
     #region Truncate
 

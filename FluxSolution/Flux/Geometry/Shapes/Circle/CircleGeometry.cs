@@ -1,3 +1,5 @@
+using Flux.Geometry.CoordinateSystems;
+
 namespace Flux.Geometry.Shapes.Circle
 {
   /// <summary>
@@ -29,6 +31,8 @@ namespace Flux.Geometry.Shapes.Circle
     /// <summary>Returns whether a point is inside the circle.</summary>
     public bool Contains(double x, double y) => PointInCircle(m_radius, x, y);
 
+    public PolarCoordinate ToPolarCoordinate(double azimuthValue, Units.AngleUnit azimuthUnit) => new PolarCoordinate(m_radius, Units.LengthUnit.Meter, azimuthValue, azimuthUnit);
+
     #region Static methods
 
     /// <summary>
@@ -42,8 +46,8 @@ namespace Flux.Geometry.Shapes.Circle
     /// <param name="maxRandomness"></param>
     /// <param name="rng"></param>
     /// <returns></returns>
-    public static System.Collections.Generic.IEnumerable<System.Runtime.Intrinsics.Vector128<double>> CreatePointsOfCircle(int count, double radius = 1, double arcOffset = 0, double translateX = 0, double translateY = 0)
-      => Ellipse.EllipseGeometry.CreatePointsOfEllipse(count, radius, radius, arcOffset, translateX, translateY);
+    public static System.Collections.Generic.IEnumerable<System.Runtime.Intrinsics.Vector128<double>> CreatePointsOnCircle(int count, double radius = 1, double arcOffset = 0, double translateX = 0, double translateY = 0)
+      => Ellipse.EllipseGeometry.CreatePointsOnEllipse(count, radius, radius, arcOffset, translateX, translateY);
 
     /// <summary>
     /// <para>Returns whether a point (<paramref name="x"/>, <paramref name="y"/>) is inside of a circle with the specified <paramref name="radius"/>.</para>
