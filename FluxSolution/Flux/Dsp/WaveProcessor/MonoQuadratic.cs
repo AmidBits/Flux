@@ -54,9 +54,9 @@ namespace Flux.Dsp.WaveProcessor
 
     /// <summary>Introduces concave curvature (i.e. more narrow across the x axis) to the waveform signal in the range [0, 2PI] (0 = no change and the closer to 2PI the more narrow).</summary>
     public static double ApplyConcavity(double sample, double amountPi2)
-      => System.Math.Pow(sample, 1 + amountPi2 * 1.5);
+      => double.Pow(sample, 1 + amountPi2 * 1.5);
     /// <summary>Introduces convex curvature (i.e. more width across the x axis) to the waveform signal in the (clamped) range [0, 2PI] (0 = no change and the closer to 2PI the more width).</summary>
     public static double ApplyConvexity(double sample, double amountPi2)
-      => System.Math.Pow(sample, 1 - 6 / amountPi2);
+      => double.Pow(sample, 1 - 6 / amountPi2);
   }
 }

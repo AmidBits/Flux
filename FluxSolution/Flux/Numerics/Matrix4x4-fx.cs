@@ -319,16 +319,16 @@ namespace Flux
 
     public static Geometry.Rotations.EulerAngles ToEulerAnglesTaitBryanZYX(this System.Numerics.Matrix4x4 source)
       => new(
-        System.Math.Atan2(source.M11, source.M21), Units.AngleUnit.Radian,
-        System.Math.Atan2(System.Math.Sqrt(1 - source.M31 * source.M31), -source.M31), Units.AngleUnit.Radian,
-        System.Math.Atan2(source.M33, source.M32), Units.AngleUnit.Radian
+        double.Atan2(source.M11, source.M21), Units.AngleUnit.Radian,
+        double.Atan2(double.Sqrt(1 - source.M31 * source.M31), -source.M31), Units.AngleUnit.Radian,
+        double.Atan2(source.M33, source.M32), Units.AngleUnit.Radian
       );
 
     public static Geometry.Rotations.EulerAngles ToEulerAnglesProperEulerZXZ(this System.Numerics.Matrix4x4 source)
       => new(
-        System.Math.Atan2(-source.M23, source.M13), Units.AngleUnit.Radian,
-        System.Math.Atan2(source.M33, System.Math.Sqrt(1 - source.M33 * source.M33)), Units.AngleUnit.Radian,
-        System.Math.Atan2(source.M32, source.M31), Units.AngleUnit.Radian
+        double.Atan2(-source.M23, source.M13), Units.AngleUnit.Radian,
+        double.Atan2(source.M33, double.Sqrt(1 - source.M33 * source.M33)), Units.AngleUnit.Radian,
+        double.Atan2(source.M32, source.M31), Units.AngleUnit.Radian
       );
 
     /// <summary>Attempts to calculate the inverse of the given matrix. If successful, result will contain the inverted matrix.</summary>

@@ -26,12 +26,12 @@ namespace Flux
       switch (dimension)
       {
         case 0:
-          concat = new T[(sourceLength0 + targetLength0), System.Math.Max(sourceLength1, targetLength1)];
+          concat = new T[(sourceLength0 + targetLength0), int.Max(sourceLength1, targetLength1)];
           source.CopyTo(concat, 0, 0, 0, 0, sourceLength0, sourceLength1);
           target.CopyTo(concat, 0, 0, sourceLength0, 0, targetLength0, targetLength1);
           break;
         case 1:
-          concat = new T[System.Math.Max(sourceLength0, targetLength0), (sourceLength1 + targetLength1)];
+          concat = new T[int.Max(sourceLength0, targetLength0), (sourceLength1 + targetLength1)];
           source.CopyTo(concat, 0, 0, 0, 0, sourceLength0, sourceLength1);
           target.CopyTo(concat, 0, 0, 0, sourceLength1, targetLength0, targetLength1);
           break;

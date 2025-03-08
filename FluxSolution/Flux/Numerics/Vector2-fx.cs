@@ -20,14 +20,14 @@ namespace Flux
     /// <para>When dot lt 0 then the angle is greater than 90 degrees (dot=-1 can be interpreted as the opposite direction).</para>
     /// </summary>
     public static double AngleTo(this System.Numerics.Vector2 source, System.Numerics.Vector2 target)
-      => System.Math.Acos(System.Math.Clamp(System.Numerics.Vector2.Dot(System.Numerics.Vector2.Normalize(source), System.Numerics.Vector2.Normalize(target)), -1, 1));
+      => double.Acos(double.Clamp(System.Numerics.Vector2.Dot(System.Numerics.Vector2.Normalize(source), System.Numerics.Vector2.Normalize(target)), -1, 1));
 
     /// <summary>
     /// <para>Compute the Chebyshev length of the vector. To compute the Chebyshev distance between two vectors, ChebyshevLength(target - source).</para>
     /// <see href="https://en.wikipedia.org/wiki/Chebyshev_distance"/>
     /// </summary>
     public static float ChebyshevLength(this System.Numerics.Vector2 source, float edgeLength = 1)
-      => System.Math.Max(System.Math.Abs(source.X / edgeLength), System.Math.Abs(source.Y / edgeLength));
+      => float.Max(float.Abs(source.X / edgeLength), float.Abs(source.Y / edgeLength));
 
     /// <summary>
     /// <para>Returns the dot product of two non-normalized 3D vectors.</para>
@@ -35,7 +35,7 @@ namespace Flux
     /// </summary>
     /// <remarks>This method saves a square root computation by doing a two-in-one.</remarks>
     public static float DotProductEx(this System.Numerics.Vector2 a, System.Numerics.Vector2 b)
-      => (float)(System.Numerics.Vector2.Dot(a, b) / System.Math.Sqrt(a.LengthSquared() * b.LengthSquared()));
+      => (float)(System.Numerics.Vector2.Dot(a, b) / double.Sqrt(a.LengthSquared() * b.LengthSquared()));
 
     /// <summary>
     /// <para>Computes the perimeter of the specified ellipse using the components of <paramref name="semiAxes"/>.</para>
@@ -71,13 +71,13 @@ namespace Flux
     /// <para>Returns whether a point is inside the circle.</para>
     /// </summary>
     public static bool IsInCircle(this System.Numerics.Vector2 source, double radius)
-      => System.Math.Pow(source.X, 2) + System.Math.Pow(source.Y, 2) <= System.Math.Pow(radius, 2);
+      => double.Pow(source.X, 2) + double.Pow(source.Y, 2) <= double.Pow(radius, 2);
 
     /// <summary>
     /// <para>Returns whether a point (<paramref name="source"/>) is inside the optionally rotated (by <paramref name="rotationAngle"/> in radians, the default 0 means no rotation) ellipse (defined by the specified <paramref name="radii"/>).</para>
     /// </summary>
     public static bool IsInEllipse(this System.Numerics.Vector2 source, System.Numerics.Vector2 radii, double rotationAngle = 0)
-      => System.Math.SinCos(rotationAngle) is var (sin, cos) && (radii.X * radii.Y) is var xy && (System.Math.Pow(cos * source.X + sin * source.Y, 2) / xy + System.Math.Pow(sin * source.X - cos * source.Y, 2) / xy) <= 1;
+      => double.SinCos(rotationAngle) is var (sin, cos) && (radii.X * radii.Y) is var xy && (double.Pow(cos * source.X + sin * source.Y, 2) / xy + double.Pow(sin * source.X - cos * source.Y, 2) / xy) <= 1;
 
     /// <summary>
     /// <para>Determines the inclusion of a vector <paramref name="source"/> in the (2D planar) polygon (defined by the specified <paramref name="vertices"/>). This Winding Number method counts the number of times the polygon winds around the point. The point is outside only when this "winding number" is 0, otherwise the point is inside.</para>
@@ -107,17 +107,17 @@ namespace Flux
     }
 
     public static float LineSlopeX(this System.Numerics.Vector2 source)
-      => System.MathF.CopySign(source.X / source.Y, source.X);
+      => float.CopySign(source.X / source.Y, source.X);
 
     public static float LineSlopeY(this System.Numerics.Vector2 source)
-      => System.MathF.CopySign(source.Y / source.X, source.Y);
+      => float.CopySign(source.Y / source.X, source.Y);
 
     /// <summary>
     /// <para>Compute the Manhattan length (or magnitude) of the vector. To compute the Manhattan distance between two vectors, ManhattanLength(target - source).</para>
     /// <see href="https://en.wikipedia.org/wiki/Taxicab_geometry"/>
     /// </summary>
     public static float ManhattanLength(this System.Numerics.Vector2 source, float edgeLength = 1)
-      => System.Math.Abs(source.X / edgeLength) + System.Math.Abs(source.Y / edgeLength);
+      => float.Abs(source.X / edgeLength) + float.Abs(source.Y / edgeLength);
 
     /// <summary>
     /// <para>Returns the orthant (quadrant) of the 2D vector using the specified center and orthant numbering.</para>
@@ -153,7 +153,7 @@ namespace Flux
     /// <param name="c">Represents c of the line equation (ax+by+c=0).</param>
     /// <param name="source">A given point.</param>
     public static double PerpendicularDistance(this System.Numerics.Vector2 source, float a, float b, float c)
-      => System.Math.Abs(a * source.X + b * source.Y + c) / System.Math.Sqrt(a * a + b * b);
+      => double.Abs(a * source.X + b * source.Y + c) / double.Sqrt(a * a + b * b);
 
     /// <summary>
     /// <para>Perpendicular distance to the to the line.</para>
@@ -188,17 +188,17 @@ namespace Flux
     /// <para>Returns the sign indicating whether the point is Left|On|Right of an infinite line (a to b). Through point1 and point2 the result has the meaning: greater than 0 is to the left of the line, equal to 0 is on the line, less than 0 is to the right of the line. (This is also known as an IsLeft function.)</para>
     /// </summary>
     public static int SideTest(this System.Numerics.Vector2 source, System.Numerics.Vector2 a, System.Numerics.Vector2 b)
-      => System.Math.Sign((source.X - b.X) * (a.Y - b.Y) - (source.Y - b.Y) * (a.X - b.X));
+      => double.Sign((source.X - b.X) * (a.Y - b.Y) - (source.Y - b.Y) * (a.X - b.X));
 
     /// <summary>
     /// <para>Slerp travels the torque-minimal path, which means it travels along the straightest path the rounded surface of a sphere.</para>
     /// </summary>
     public static System.Numerics.Vector2 Slerp(this System.Numerics.Vector2 source, System.Numerics.Vector2 target, float percent = 0.5f)
     {
-      var dot = System.Math.Clamp(System.Numerics.Vector2.Dot(source, target), -1.0f, 1.0f); // Ensure precision doesn't exceed acos limits.
-      var theta = System.MathF.Acos(dot) * percent; // Angle between start and desired.
+      var dot = float.Clamp(System.Numerics.Vector2.Dot(source, target), -1.0f, 1.0f); // Ensure precision doesn't exceed acos limits.
+      var theta = float.Acos(dot) * percent; // Angle between start and desired.
       var relative = System.Numerics.Vector2.Normalize(target - source * dot);
-      return source * System.MathF.Cos(theta) + relative * System.MathF.Sin(theta);
+      return source * float.Cos(theta) + relative * float.Sin(theta);
     }
 
     /// <summary>
@@ -244,7 +244,7 @@ namespace Flux
 
     /// <summary>Compute the surface area of the polygon.</summary>
     public static double ComputeArea(this System.Collections.Generic.IEnumerable<System.Numerics.Vector2> source)
-      => System.Math.Abs(ComputeAreaSigned(source));
+      => double.Abs(ComputeAreaSigned(source));
 
     /// <summary>Returns the centroid (a.k.a. geometric center, arithmetic mean, barycenter, etc.) point of the polygon. (2D/3D)</summary>
     public static System.Numerics.Vector2 ComputeCentroid(this System.Collections.Generic.IEnumerable<System.Numerics.Vector2> source)
@@ -407,7 +407,7 @@ namespace Flux
     /// <remarks>Applicable to any shape with more than 3 vertices.</remarks>
     public static System.Collections.Generic.IEnumerable<System.Collections.Generic.IList<System.Numerics.Vector2>> SplitByTriangulation(this System.Collections.Generic.IEnumerable<System.Numerics.Vector2> source, Geometry.TriangulationType mode, System.Random? rng = null)
     {
-      const double halfPi = System.Math.PI / 2;
+      const double halfPi = double.Pi / 2;
 
       var copy = source.ToList();
 
@@ -421,8 +421,8 @@ namespace Flux
           Geometry.TriangulationType.Randomized => copy.PartitionTuple3(2, (v1, v2, v3, i) => (v1, v2, v3, i, 0d)).Random(rng),
           Geometry.TriangulationType.SmallestAngle => GetAnglesEx(copy).Aggregate((a, b) => a.angle < b.angle ? a : b),
           Geometry.TriangulationType.LargestAngle => GetAnglesEx(copy).Aggregate((a, b) => a.angle > b.angle ? a : b),
-          Geometry.TriangulationType.LeastSquare => GetAnglesEx(copy).Aggregate((a, b) => System.Math.Abs(a.angle - halfPi) > System.Math.Abs(b.angle - halfPi) ? a : b),
-          Geometry.TriangulationType.MostSquare => GetAnglesEx(copy).Aggregate((a, b) => System.Math.Abs(a.angle - halfPi) < System.Math.Abs(b.angle - halfPi) ? a : b),
+          Geometry.TriangulationType.LeastSquare => GetAnglesEx(copy).Aggregate((a, b) => double.Abs(a.angle - halfPi) > double.Abs(b.angle - halfPi) ? a : b),
+          Geometry.TriangulationType.MostSquare => GetAnglesEx(copy).Aggregate((a, b) => double.Abs(a.angle - halfPi) < double.Abs(b.angle - halfPi) ? a : b),
           _ => throw new System.Exception(),
         };
         yield return new System.Collections.Generic.List<System.Numerics.Vector2>() { triplet.v2, triplet.v3, triplet.v1 };

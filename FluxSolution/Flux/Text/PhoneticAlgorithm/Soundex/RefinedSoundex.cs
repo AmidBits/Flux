@@ -32,7 +32,7 @@ namespace Flux.Text.PhoneticAlgorithm.Soundex
           }
         }
 
-      return refinedSoundex.AsReadOnlySpan().Slice(0, System.Math.Min(MaxCodeLength, refinedSoundex.Length)).ToString();
+      return refinedSoundex.AsReadOnlySpan().Slice(0, int.Min(MaxCodeLength, refinedSoundex.Length)).ToString();
     }
   }
 }

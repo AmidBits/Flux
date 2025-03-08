@@ -34,7 +34,7 @@ namespace Flux.Statistics
       foreach (var (value, index) in list.Select((v, i) => (value: v, index: i)))
       {
         v1 += (index - m_avgX) * (value - m_avgY);
-        v2 += System.Math.Pow(index - m_avgX, 2);
+        v2 += double.Pow(index - m_avgX, 2);
       }
 
       m_slope = v1 / v2;

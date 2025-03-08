@@ -11,7 +11,7 @@ namespace Flux.Dsp.WaveProcessor.Adapter
       get => _mix;
       set
       {
-        _mix = System.Math.Clamp(value, -1.0, 1.0);
+        _mix = double.Clamp(value, -1.0, 1.0);
 
         if (_mix > Numerics.Constants.EpsilonCpp32)
         {

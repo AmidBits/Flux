@@ -63,7 +63,7 @@ namespace Flux.Temporal
       if (year <= 0 && calendar == TemporalCalendar.GregorianCalendar)
       {
         sm = sm.Append(@" or ");
-        sm = sm.Append(System.Math.Abs(year) + 1);
+        sm = sm.Append(int.Abs(year) + 1);
         sm = sm.Append(@" BCE");
       }
 
@@ -122,8 +122,8 @@ namespace Flux.Temporal
       if (calendar == TemporalCalendar.GregorianCalendar)
         f += (4 * julianDayNumber + 274277) / 146097 * 3 / 4 + -38;
 
-      var eq = System.Math.DivRem(4 * f + 3, 1461, out var er);
-      var hq = System.Math.DivRem(5 * (er / 4) + 2, 153, out var hr);
+      var (eq, er) = int.DivRem(4 * f + 3, 1461);
+      var (hq, hr) = int.DivRem(5 * (er / 4) + 2, 153);
 
       var day = hr / 5 + 1;
       var month = ((hq + 2) % 12) + 1;

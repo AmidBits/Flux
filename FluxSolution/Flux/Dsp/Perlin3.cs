@@ -12,9 +12,9 @@ namespace Flux.Dsp
 
     public double Noise(double x, double y, double z)
     {
-      var X = (int)System.Math.Floor(x);
-      var Y = (int)System.Math.Floor(y);
-      var Z = (int)System.Math.Floor(z);
+      var X = (int)double.Floor(x);
+      var Y = (int)double.Floor(y);
+      var Z = (int)double.Floor(z);
 
       x -= X;
       y -= Y;

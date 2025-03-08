@@ -10,7 +10,7 @@ namespace Flux
     {
       (min, max) = ComputeMinMax(source, out alpha, out red, out green, out blue);
 
-      return System.Math.Clamp(max - min, 0, 1);
+      return double.Clamp(max - min, 0, 1);
     }
 
     /// <summary>
@@ -37,7 +37,7 @@ namespace Flux
       if (hue < 0)
         hue += 360; // If negative wrap-around to a positive degree in the [0, 360] range.
 
-      return System.Math.Clamp(hue, 0, 360);
+      return double.Clamp(hue, 0, 360);
     }
 
     /// <summary>
@@ -48,8 +48,8 @@ namespace Flux
       (alpha, red, green, blue) = ToArgb(source);
 
       return (
-        System.Math.Min(System.Math.Min(red, green), blue),
-        System.Math.Max(System.Math.Max(red, green), blue)
+        double.Min(double.Min(red, green), blue),
+        double.Max(double.Max(red, green), blue)
       );
     }
 
@@ -90,11 +90,11 @@ namespace Flux
       var (a, r, g, b) = ToArgb(source);
 
       var alpha = (2 * r - g - b) / 2;
-      var beta = (System.Math.Sqrt(3) / 2) * (g - b);
+      var beta = (double.Sqrt(3) / 2) * (g - b);
 
       return (
-        System.Math.Sqrt(alpha * alpha + beta * beta),
-        double.RadiansToDegrees(System.Math.Atan2(beta, alpha)).WrapAround(0, 360)
+        double.Sqrt(alpha * alpha + beta * beta),
+        double.RadiansToDegrees(double.Atan2(beta, alpha)).WrapAround(0, 360)
       );
     }
 
@@ -107,9 +107,9 @@ namespace Flux
 
       var k = 1 - max;
       var ki = 1 - k;
-      var c = System.Math.Clamp(ki - r, 0, 1) / ki;
-      var m = System.Math.Clamp(ki - g, 0, 1) / ki;
-      var y = System.Math.Clamp(ki - b, 0, 1) / ki;
+      var c = double.Clamp(ki - r, 0, 1) / ki;
+      var m = double.Clamp(ki - g, 0, 1) / ki;
+      var y = double.Clamp(ki - b, 0, 1) / ki;
 
       return (a, c, m, y, k);
     }
@@ -140,7 +140,7 @@ namespace Flux
       var chroma = source.ComputeChroma(out var alpha, out var red, out var green, out var blue, out var min, out var max);
 
       var l = 0.5 * (max + min);
-      var s = l == 0 || l == 1 ? 0 : System.Math.Clamp(chroma / (1 - System.Math.Abs(2 * l - 1)), 0, 1);
+      var s = l == 0 || l == 1 ? 0 : double.Clamp(chroma / (1 - double.Abs(2 * l - 1)), 0, 1);
 
       return (
         alpha,
@@ -180,10 +180,10 @@ namespace Flux
     /// </summary>
     public static (double A, double R, double G, double B) ToArgb(this System.Drawing.Color source)
       => (
-        System.Math.Clamp(source.A / 255d, 0, 1),
-        System.Math.Clamp(source.R / 255d, 0, 1),
-        System.Math.Clamp(source.G / 255d, 0, 1),
-        System.Math.Clamp(source.B / 255d, 0, 1)
+        double.Clamp(source.A / 255d, 0, 1),
+        double.Clamp(source.R / 255d, 0, 1),
+        double.Clamp(source.G / 255d, 0, 1),
+        double.Clamp(source.B / 255d, 0, 1)
       );
 
     /// <summary>

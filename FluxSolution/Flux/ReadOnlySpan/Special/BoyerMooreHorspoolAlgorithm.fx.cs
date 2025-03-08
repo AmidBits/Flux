@@ -52,7 +52,7 @@
       var sourceLength = source.Length;
       var targetLength = target.Length;
 
-      for (var index = System.Math.Max(targetLength, sourceLength) - 1; index >= 0; index--)
+      for (var index = int.Max(targetLength, sourceLength) - 1; index >= 0; index--)
       {
         if (index < targetLength && target[index] is var wc && !table.ContainsKey(wc)) // Add to alphabet from source (word/needle), if it is not already in the table.
           table.Add(wc, targetLength);

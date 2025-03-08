@@ -48,7 +48,7 @@ namespace Flux.Units
     /// <returns>The proportional (to the arguments passed) lengths of width (e.g. 56.6524099130957) and height (e.g. 31.866980576116333).</returns>
     public static (double width, double height) ToSize(double diagonalLength, double ratioX, double ratioY)
     {
-      var m = System.Math.Sqrt(ratioX * ratioX + ratioY * ratioY);
+      var m = double.Sqrt(ratioX * ratioX + ratioY * ratioY);
 
       return new(diagonalLength * ratioX / m, diagonalLength * ratioY / m);
     }

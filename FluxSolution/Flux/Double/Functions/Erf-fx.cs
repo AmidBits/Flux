@@ -15,13 +15,13 @@ namespace Flux
 
       var p = 0.3275911;
 
-      var absx = System.Math.Abs(x);
+      var absx = double.Abs(x);
 
       // A&S formula 7.1.26
       var t = 1 / (1 + p * absx);
-      var y = 1 - (((((a5 * t + a4) * t) + a3) * t + a2) * t + a1) * t * System.Math.Exp(-absx * absx);
+      var y = 1 - (((((a5 * t + a4) * t) + a3) * t + a2) * t + a1) * t * double.Exp(-absx * absx);
 
-      return System.Math.CopySign(y, x);
+      return double.CopySign(y, x);
     }
   }
 }

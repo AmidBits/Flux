@@ -75,12 +75,12 @@ namespace Flux
 
           var isEqual = equalityComparer.Equals(sourceItem, targetItem);
 
-          ldg[si + 1, ti + 1] = System.Math.Min(
-            System.Math.Min(
+          ldg[si + 1, ti + 1] = double.Min(
+            double.Min(
               ldg[si, ti + 1] + costOfDeletion,
               ldg[si + 1, ti] + costOfInsertion
             ),
-            System.Math.Min(
+            double.Min(
               isEqual ? ldg[si, ti] : ldg[si, ti] + costOfSubstitution,
               ldg[lsi, ltim] + (si - lsi - 1) + costOfTransposition + (ti - ltim - 1)
             )
@@ -171,12 +171,12 @@ namespace Flux
 
           var isEqual = equalityComparer.Equals(sourceItem, targetItem);
 
-          ldg[si + 1, ti + 1] = System.Math.Min(
-            System.Math.Min(
+          ldg[si + 1, ti + 1] = int.Min(
+            int.Min(
               ldg[si, ti + 1] + 1, // Deletion.
               ldg[si + 1, ti] + 1 // Insertion
             ),
-            System.Math.Min(
+            int.Min(
               isEqual ? ldg[si, ti] : ldg[si, ti] + 1, // Substitution.
               ldg[lsi, ltim] + (si - lsi - 1) + 1 + (ti - ltim - 1) // Transposition.
             )
@@ -212,6 +212,6 @@ namespace Flux
     /// <remarks>Takes into account: insertions, deletions, substitutions, or transpositions, using a dictionary. Implemented based on the Wiki article.</remarks>
     public static double DamerauLevenshteinDistanceSmd<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
       where T : notnull
-      => (double)DamerauLevenshteinDistanceMetric(source, target, out var _, equalityComparer) / (double)System.Math.Max(source.Length, target.Length);
+      => (double)DamerauLevenshteinDistanceMetric(source, target, out var _, equalityComparer) / (double)int.Max(source.Length, target.Length);
   }
 }

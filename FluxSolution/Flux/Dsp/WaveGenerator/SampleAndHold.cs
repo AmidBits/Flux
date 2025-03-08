@@ -6,7 +6,7 @@ namespace Flux.Dsp.WaveGenerator
   {
     private readonly System.Random m_rng;
 
-    private double m_sample, m_hold = System.Math.PI;
+    private double m_sample, m_hold = double.Pi;
 
     public SampleAndHold(System.Random rng)
       => m_rng = rng ?? System.Random.Shared;

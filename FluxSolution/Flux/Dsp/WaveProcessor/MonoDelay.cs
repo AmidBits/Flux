@@ -12,7 +12,7 @@ namespace Flux.Dsp.WaveProcessor
 
     private double m_feedback, m_feedbackNormalizer;
     /// <summary>The amount (in percent) of delayed audio to resend through the delay line. For example, a setting of 20% sends delayed audio at one-fifth of its original volume, creating echoes that gently fade away. A setting of 200% sends delayed audio at double its original volume, creating echoes that quickly grow in intensity.note: When experimenting with extremely high Feedback settings, turn down your system volume.</summary>
-    public double Feedback { get => m_feedback; set => m_feedbackNormalizer = 1 + (m_feedback = System.Math.Clamp(value, 0, 1)); }
+    public double Feedback { get => m_feedback; set => m_feedbackNormalizer = 1 + (m_feedback = double.Clamp(value, 0, 1)); }
 
     private double m_gain, m_gainCompensation;
     /// <summary>The gain amount of delayed audio [0, 1] to send through the output.</summary>
@@ -21,7 +21,7 @@ namespace Flux.Dsp.WaveProcessor
       get => m_gain;
       set
       {
-        m_gain = System.Math.Clamp(value, 0, 1);
+        m_gain = double.Clamp(value, 0, 1);
 
         m_gainCompensation = (2 - (1 - m_gain)) / 2;
         m_gainCompensation = (1 - m_gainCompensation) / m_gainCompensation;
@@ -35,7 +35,7 @@ namespace Flux.Dsp.WaveProcessor
       get => _mix;
       set
       {
-        _mix = System.Math.Clamp(value, -1.0, 1.0);
+        _mix = double.Clamp(value, -1.0, 1.0);
 
         if (_mix > Numerics.Constants.EpsilonCpp32)
         {
@@ -58,11 +58,11 @@ namespace Flux.Dsp.WaveProcessor
     private double _time;
     private int m_timeIndex;
     /// <summary>The amount of buffer time [0, 1] (percent) used of the maximum delay time, where 0 = no delay and 1 = maximum delay.</summary>
-    public double Time { get => _time; set => m_timeIndex = (int)(m_buffer.Length * (_time = System.Math.Clamp(value, 0.0, 1.0))); }
+    public double Time { get => _time; set => m_timeIndex = (int)(m_buffer.Length * (_time = double.Clamp(value, 0.0, 1.0))); }
 
     public MonoDelay(int maxDelayTimeInSeconds, double sampleRate)
     {
-      m_buffer = new double[(int)System.Math.Ceiling(sampleRate * maxDelayTimeInSeconds)];
+      m_buffer = new double[(int)double.Ceiling(sampleRate * maxDelayTimeInSeconds)];
       m_bufferPosition = 0;
 
       Feedback = 0.0;

@@ -12,7 +12,7 @@ namespace Flux.Dsp.WaveProcessor
     public double Threshold
     {
       get => m_threshold;
-      set => m_threshold = System.Math.Clamp(value, -1.0, 1.0);
+      set => m_threshold = double.Clamp(value, -1.0, 1.0);
     }
 
     public MonoRectifier(MonoRectifierMode mode, double threshold)
@@ -27,9 +27,9 @@ namespace Flux.Dsp.WaveProcessor
     public double ProcessMonoWave(double wave)
       => (Mode switch
       {
-        MonoRectifierMode.NegativeFullWave when wave > m_threshold => System.Math.Max(m_threshold - (wave - m_threshold), -1),
+        MonoRectifierMode.NegativeFullWave when wave > m_threshold => double.Max(m_threshold - (wave - m_threshold), -1),
         MonoRectifierMode.NegativeHalfWave when wave > m_threshold => m_threshold,
-        MonoRectifierMode.FullWave when wave < m_threshold => System.Math.Min(m_threshold + (m_threshold - wave), 1),
+        MonoRectifierMode.FullWave when wave < m_threshold => double.Min(m_threshold + (m_threshold - wave), 1),
         MonoRectifierMode.HalfWave when wave < m_threshold => m_threshold,
         _ => wave,
       });
@@ -37,7 +37,7 @@ namespace Flux.Dsp.WaveProcessor
     public Waves.IWaveMono<double> ProcessMonoWave(Waves.IWaveMono<double> mono) => new Waves.WaveMono<double>(ProcessMonoWave(mono.Wave));
 
     public static double RectifyFullWave(double sample, double threshold = 0.0)
-      => sample < threshold ? System.Math.Min(threshold + (threshold - sample), 1.0) : sample;
+      => sample < threshold ? double.Min(threshold + (threshold - sample), 1.0) : sample;
     public static double RectifyHalfWave(double sample, double threshold = 0.0)
       => sample < threshold ? threshold : sample;
   }

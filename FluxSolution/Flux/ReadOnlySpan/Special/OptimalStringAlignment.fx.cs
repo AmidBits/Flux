@@ -31,12 +31,12 @@ namespace Flux
         {
           var targetItem = target[ti - 1];
 
-          ldg[si, ti] = ldg[si, ti] = System.Math.Min(
-            System.Math.Min(
+          ldg[si, ti] = ldg[si, ti] = double.Min(
+            double.Min(
               ldg[si - 1, ti] + costOfDeletion,
               ldg[si, ti - 1] + costOfInsertion
             ),
-            System.Math.Min(
+            double.Min(
               equalityComparer.Equals(sourceItem, targetItem) ? ldg[si - 1, ti - 1] : ldg[si - 1, ti - 1] + costOfSubstitution,
               si > 1 && ti > 1 && equalityComparer.Equals(sourceItem, target[ti - 2]) && equalityComparer.Equals(source[si - 2], targetItem) ? ldg[si - 2, ti - 2] + costOfTransposition : double.MaxValue
             )
@@ -83,12 +83,12 @@ namespace Flux
         {
           var targetItem = target[ti - 1];
 
-          v0[ti] = System.Math.Min(
-            System.Math.Min(
+          v0[ti] = double.Min(
+            double.Min(
               v1[ti] + costOfDeletion, // Deletion.
               v0[ti - 1] + costOfInsertion // Insertion.
             ),
-            System.Math.Min(
+            double.Min(
               equalityComparer.Equals(sourceItem, targetItem) ? v1[ti - 1] : v1[ti - 1] + costOfSubstitution, // Substitution.
               si > 1 && ti > 1 && equalityComparer.Equals(sourceItem, target[ti - 2]) && equalityComparer.Equals(source[si - 2], targetItem) ? v2[ti - 2] + costOfTransposition : double.MaxValue // Transposition.
             )
@@ -128,12 +128,12 @@ namespace Flux
         {
           var targetItem = target[ti - 1];
 
-          ldg[si, ti] = ldg[si, ti] = System.Math.Min(
-            System.Math.Min(
+          ldg[si, ti] = ldg[si, ti] = int.Min(
+            int.Min(
               ldg[si - 1, ti] + 1, // Deletion.
               ldg[si, ti - 1] + 1 // Insertion.
             ),
-            System.Math.Min(
+            int.Min(
               equalityComparer.Equals(sourceItem, targetItem) ? ldg[si - 1, ti - 1] : ldg[si - 1, ti - 1] + 1, // Substitution.
               si > 1 && ti > 1 && equalityComparer.Equals(sourceItem, target[ti - 2]) && equalityComparer.Equals(source[si - 2], targetItem) ? ldg[si - 2, ti - 2] + 1 : int.MaxValue // Transposition.
             )
@@ -181,12 +181,12 @@ namespace Flux
         {
           var targetItem = target[ti - 1];
 
-          v0[ti] = System.Math.Min(
-            System.Math.Min(
+          v0[ti] = int.Min(
+            int.Min(
               v1[ti] + 1, // Deletion.
               v0[ti - 1] + 1 // Insertion.
             ),
-            System.Math.Min(
+            int.Min(
               equalityComparer.Equals(sourceItem, targetItem) ? v1[ti - 1] : v1[ti - 1] + 1, // Substitution.
               si > 1 && ti > 1 && equalityComparer.Equals(sourceItem, target[ti - 2]) && equalityComparer.Equals(source[si - 2], targetItem) ? v2[ti - 2] + 1 : int.MaxValue // Transposition.
             )
@@ -221,6 +221,6 @@ namespace Flux
     /// <para>This Levenshtein algorithm does not rely on a complete matrix. It only needs three alternating horizontal rows throughout the process.</para>
     /// </remarks>
     public static double OptimalStringAlignmentSmd<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
-      => (double)OptimalStringAlignmentMetric(source, target, equalityComparer) / (double)System.Math.Max(source.Length, target.Length);
+      => (double)OptimalStringAlignmentMetric(source, target, equalityComparer) / (double)int.Max(source.Length, target.Length);
   }
 }

@@ -3,8 +3,8 @@ namespace Flux.Geometry.Shapes.Hexagon
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
   public readonly record struct HexOrientation
   {
-    public static readonly HexOrientation FlatTopped = new(3.0 / 2.0, 0.0, System.Math.Sqrt(3.0) / 2.0, System.Math.Sqrt(3.0), 2.0 / 3.0, 0.0, -1.0 / 3.0, System.Math.Sqrt(3.0) / 3.0, 0.0);
-    public static readonly HexOrientation PointyTopped = new(System.Math.Sqrt(3.0), System.Math.Sqrt(3.0) / 2.0, 0.0, 3.0 / 2.0, System.Math.Sqrt(3.0) / 3.0, -1.0 / 3.0, 0.0, 2.0 / 3.0, 0.5);
+    public static readonly HexOrientation FlatTopped = new(3.0 / 2.0, 0.0, double.Sqrt(3.0) / 2.0, double.Sqrt(3.0), 2.0 / 3.0, 0.0, -1.0 / 3.0, double.Sqrt(3.0) / 3.0, 0.0);
+    public static readonly HexOrientation PointyTopped = new(double.Sqrt(3.0), double.Sqrt(3.0) / 2.0, 0.0, 3.0 / 2.0, double.Sqrt(3.0) / 3.0, -1.0 / 3.0, 0.0, 2.0 / 3.0, 0.5);
 
     public readonly double m_f0;
     public readonly double m_f1;

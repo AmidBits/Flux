@@ -30,8 +30,8 @@ namespace Flux
 
       // See article above for explanation of the following section.
       return (p < 0.5)
-        ? -RationalApproximation(System.Math.Sqrt(-2 * System.Math.Log(p))) // F^-1(p) = - G^-1(p)
-        : RationalApproximation(System.Math.Sqrt(-2 * System.Math.Log(1 - p))); // F^-1(p) = G^-1(1-p)
+        ? -RationalApproximation(double.Sqrt(-2 * double.Log(p))) // F^-1(p) = - G^-1(p)
+        : RationalApproximation(double.Sqrt(-2 * double.Log(1 - p))); // F^-1(p) = G^-1(1-p)
     }
   }
 }

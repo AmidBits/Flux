@@ -200,7 +200,7 @@ namespace Flux.Geometry.Shapes.Polygon
     //    var a = polygon[(i == 0 ? polygon.Count - 1 : i - 1)] - c;
     //    var b = polygon[(i == polygon.Count - 1 ? 0 : i + 1)] - c;
 
-    //    if (System.Math.Acos(System.Numerics.Vector3.Dot(System.Numerics.Vector3.Normalize(a), System.Numerics.Vector3.Normalize(b))) is double angle && angle < 0)
+    //    if (double.Acos(System.Numerics.Vector3.Dot(System.Numerics.Vector3.Normalize(a), System.Numerics.Vector3.Normalize(b))) is double angle && angle < 0)
     //    {
     //      negative = true;
     //    }
@@ -344,11 +344,11 @@ namespace Flux.Geometry.Shapes.Polygon
     //        triplet = (descendingAngle.Item1, descendingAngle.Item2, descendingAngle.Item3, descendingAngle.index);
     //        break;
     //      case TriangulationType.LeastSquare:
-    //        var leastSquare = GetAngles(copy).Aggregate((System.Func<(System.Numerics.Vector3, System.Numerics.Vector3, System.Numerics.Vector3, int index, double angle), (System.Numerics.Vector3, System.Numerics.Vector3, System.Numerics.Vector3, int index, double angle), (System.Numerics.Vector3, System.Numerics.Vector3, System.Numerics.Vector3, int index, double angle)>)((a, b) => System.Math.Abs(a.angle - Maths.PiOver2) > System.Math.Abs(b.angle - Maths.PiOver2) ? a : b));
+    //        var leastSquare = GetAngles(copy).Aggregate((System.Func<(System.Numerics.Vector3, System.Numerics.Vector3, System.Numerics.Vector3, int index, double angle), (System.Numerics.Vector3, System.Numerics.Vector3, System.Numerics.Vector3, int index, double angle), (System.Numerics.Vector3, System.Numerics.Vector3, System.Numerics.Vector3, int index, double angle)>)((a, b) => double.Abs(a.angle - Maths.PiOver2) > double.Abs(b.angle - Maths.PiOver2) ? a : b));
     //        triplet = (leastSquare.Item1, leastSquare.Item2, leastSquare.Item3, leastSquare.index);
     //        break;
     //      case TriangulationType.MostSquare:
-    //        var mostSquare = GetAngles(copy).Aggregate((System.Func<(System.Numerics.Vector3, System.Numerics.Vector3, System.Numerics.Vector3, int index, double angle), (System.Numerics.Vector3, System.Numerics.Vector3, System.Numerics.Vector3, int index, double angle), (System.Numerics.Vector3, System.Numerics.Vector3, System.Numerics.Vector3, int index, double angle)>)((a, b) => System.Math.Abs(a.angle - Maths.PiOver2) < System.Math.Abs(b.angle - Maths.PiOver2) ? a : b));
+    //        var mostSquare = GetAngles(copy).Aggregate((System.Func<(System.Numerics.Vector3, System.Numerics.Vector3, System.Numerics.Vector3, int index, double angle), (System.Numerics.Vector3, System.Numerics.Vector3, System.Numerics.Vector3, int index, double angle), (System.Numerics.Vector3, System.Numerics.Vector3, System.Numerics.Vector3, int index, double angle)>)((a, b) => double.Abs(a.angle - Maths.PiOver2) < double.Abs(b.angle - Maths.PiOver2) ? a : b));
     //        triplet = (mostSquare.Item1, mostSquare.Item2, mostSquare.Item3, mostSquare.index);
     //        break;
     //      default:
@@ -561,9 +561,9 @@ namespace Flux.Geometry.Shapes.Polygon
     //      triangle[1] = copy[(i == copy.Count - 1 ? 0 : i + 1)]; // b
     //      triangle[2] = copy[(i == 0 ? copy.Count - 1 : i - 1)]; // a
 
-    //      var angle = System.Math.Acos(System.Numerics.Vector2.Dot(System.Numerics.Vector2.Normalize(triangle[2] - triangle[0]), System.Numerics.Vector2.Normalize(triangle[1] - triangle[0])));
+    //      var angle = double.Acos(System.Numerics.Vector2.Dot(System.Numerics.Vector2.Normalize(triangle[2] - triangle[0]), System.Numerics.Vector2.Normalize(triangle[1] - triangle[0])));
 
-    //      if (angle > 0 && angle < System.Math.PI)
+    //      if (angle > 0 && angle < double.PI)
     //      {
     //        yield return triangle;
 
@@ -677,7 +677,7 @@ namespace Flux.Geometry.Shapes.Polygon
     //          triplet = (descendingAngle.Item1, descendingAngle.Item2, descendingAngle.Item3, descendingAngle.index);
     //          break;
     //        case TriangulatingAlgorithmEnum.MostSquare:
-    //          var anglets = GetAngles(copy).Aggregate((a, b) => System.Math.Abs(a.angle - Math.Pi.Over2) < System.Math.Abs(b.angle - Math.Pi.Over2) ? a : b);
+    //          var anglets = GetAngles(copy).Aggregate((a, b) => double.Abs(a.angle - Math.Pi.Over2) < double.Abs(b.angle - Math.Pi.Over2) ? a : b);
     //          triplet = (anglets.Item1, anglets.Item2, anglets.Item3, anglets.index);
     //          break;
     //        case TriangulatingAlgorithmEnum.Randomized:

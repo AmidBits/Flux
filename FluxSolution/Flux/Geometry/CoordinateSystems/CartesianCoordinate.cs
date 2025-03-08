@@ -100,14 +100,13 @@ namespace Flux.Geometry.CoordinateSystems
     public System.Drawing.PointF ToPointF() => new((float)m_v[0], (float)m_v[1]);
 
     /// <summary>Creates a new <see cref="PolarCoordinate"/> from a <see cref="CartesianCoordinate"/> and its (X, Y) components.</summary>
-    public PolarCoordinate ToPolarCoordinate()
+    public PolarCoordinate ToPolarCoordinate(bool likeCompass = false)
     {
       var (x, y) = this;
 
-      return new(
-            double.Sqrt(x * x + y * y), Units.LengthUnit.Meter,
-            double.Atan2(y, x), Units.AngleUnit.Radian
-          );
+      var (radius, angle) = likeCompass ? PolarCoordinate.ConvertCartesian2ToPolarEx(x, y) : PolarCoordinate.ConvertCartesian2ToPolar(x, y);
+
+      return new(radius, angle);
     }
 
     /// <summary>Creates a new <see cref="SphericalCoordinate"/> from a <see cref="CartesianCoordinate"/> and its (X, Y, Z) components.</summary>

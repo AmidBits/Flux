@@ -21,7 +21,7 @@ namespace Flux
       System.ArgumentNullException.ThrowIfNull(source);
       System.ArgumentNullException.ThrowIfNull(target);
 
-      var count = System.Math.Min(source.Length, target.Count);
+      var count = int.Min(source.Length, target.Count);
       CopyTo(source, 0, target, 0, count);
       return count;
     }

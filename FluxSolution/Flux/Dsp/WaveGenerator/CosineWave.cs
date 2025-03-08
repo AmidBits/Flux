@@ -6,11 +6,11 @@ namespace Flux.Dsp.WaveGenerator
   {
     /// <summary>Generates a cosine wave from a unit interval. Periodic function, with the domain [-infinity, infinity], the codomain [-1, 1], and period: 1.</summary>
     public static double SampleUi(double phaseUi)
-      => System.Math.Cos(phaseUi * System.Math.Tau);
+      => double.Cos(phaseUi * double.Tau);
 
     /// <summary>Generates a cosine wave using radians. Periodic function, with the domain [-infinity, infinity], the codomain [-1, 1], and period: 2PI.</summary>
     public static double SamplePi2(double phasePi2)
-      => System.Math.Cos(phasePi2);
+      => double.Cos(phasePi2);
 
     public Waves.IWaveMono<double> GenerateMonoWaveUi(double phase)
       => (Waves.WaveMono<double>)SampleUi(phase);

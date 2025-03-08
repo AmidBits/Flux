@@ -11,7 +11,7 @@ namespace Flux.Dsp.WaveProcessor
       get => m_position;
       set
       {
-        m_position = System.Math.Clamp(value, -1.0, 1.0);
+        m_position = double.Clamp(value, -1.0, 1.0);
 
         if (m_position > Numerics.Constants.EpsilonCpp32)
         {

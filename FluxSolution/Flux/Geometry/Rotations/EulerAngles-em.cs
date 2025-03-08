@@ -8,9 +8,9 @@ namespace Flux
       var halfPitch = source.Pitch / 2;
       var halfRoll = source.Roll / 2;
 
-      var (s1, c1) = System.Math.SinCos(halfYaw.Value);
-      var (s2, c2) = System.Math.SinCos(halfPitch.Value);
-      var (s3, c3) = System.Math.SinCos(halfRoll.Value);
+      var (s1, c1) = double.SinCos(halfYaw.Value);
+      var (s2, c2) = double.SinCos(halfPitch.Value);
+      var (s3, c3) = double.SinCos(halfRoll.Value);
 
       var c1c2 = c1 * c2;
       var s1s2 = s1 * s2;
@@ -20,14 +20,14 @@ namespace Flux
       var y = s1 * c2 * c3 + c1 * s2 * s3;
       var z = c1 * s2 * c3 - s1 * c2 * s3;
 
-      var angle = System.Math.Acos(w) * 2;
+      var angle = double.Acos(w) * 2;
 
       var square = x * x + y * y + z * z;
 
       if (square < 0.001) // If all euler angles are zero angles, i.e. = 0, so we can set the axis to anything to avoid divide by zero.
         return new(1, Units.LengthUnit.Meter, 0, Units.LengthUnit.Meter, 0, Units.LengthUnit.Meter, angle, Units.AngleUnit.Radian);
 
-      square = System.Math.Sqrt(square);
+      square = double.Sqrt(square);
 
       x /= square;
       y /= square;
@@ -38,9 +38,9 @@ namespace Flux
 
     public static System.Numerics.Matrix4x4 ToMatrixTaitBryanXYZ(this Geometry.Rotations.EulerAngles source)
     {
-      var (s1, c1) = System.Math.SinCos(source.Yaw.Value);
-      var (s2, c2) = System.Math.SinCos(source.Pitch.Value);
-      var (s3, c3) = System.Math.SinCos(source.Roll.Value);
+      var (s1, c1) = double.SinCos(source.Yaw.Value);
+      var (s2, c2) = double.SinCos(source.Pitch.Value);
+      var (s3, c3) = double.SinCos(source.Roll.Value);
 
       return new(
         (float)(c2 * c3), (float)-s2, (float)(c2 * s3), 0,
@@ -52,9 +52,9 @@ namespace Flux
 
     public static System.Numerics.Matrix4x4 ToMatrixLhTaitBryanYXZ(this Geometry.Rotations.EulerAngles source)
     {
-      var (s1, c1) = System.Math.SinCos(source.Yaw.Value);
-      var (s2, c2) = System.Math.SinCos(source.Pitch.Value);
-      var (s3, c3) = System.Math.SinCos(source.Roll.Value);
+      var (s1, c1) = double.SinCos(source.Yaw.Value);
+      var (s2, c2) = double.SinCos(source.Pitch.Value);
+      var (s3, c3) = double.SinCos(source.Roll.Value);
 
       return new(
         (float)(c1 * c3 + s1 * s2 * s3), (float)(c3 * s1 * s2 - c1 * s3), (float)(c2 * s1), 0,
@@ -66,9 +66,9 @@ namespace Flux
 
     public static System.Numerics.Matrix4x4 ToMatrixLhTaitBryanZYX(this Geometry.Rotations.EulerAngles source)
     {
-      var (s3, c3) = System.Math.SinCos(source.Yaw.Value);
-      var (s2, c2) = System.Math.SinCos(source.Pitch.Value);
-      var (s1, c1) = System.Math.SinCos(source.Roll.Value);
+      var (s3, c3) = double.SinCos(source.Yaw.Value);
+      var (s2, c2) = double.SinCos(source.Pitch.Value);
+      var (s1, c1) = double.SinCos(source.Roll.Value);
 
       return new(
         (float)(c1 * c2), (float)(c1 * s2 * s3 - c3 * s1), (float)(s1 * s3 + c1 * c3 * s2), 0,
@@ -80,9 +80,9 @@ namespace Flux
 
     public static System.Numerics.Matrix4x4 ToMatrixLhProperEulerZXZ(this Geometry.Rotations.EulerAngles source)
     {
-      var (s1, c1) = System.Math.SinCos(source.Yaw.Value);
-      var (s2, c2) = System.Math.SinCos(source.Pitch.Value);
-      var (s3, c3) = System.Math.SinCos(source.Roll.Value);
+      var (s1, c1) = double.SinCos(source.Yaw.Value);
+      var (s2, c2) = double.SinCos(source.Pitch.Value);
+      var (s3, c3) = double.SinCos(source.Roll.Value);
 
       return new(
         (float)(c1 * c3 - c2 * s1 * s3), (float)(-c1 * s3 - c2 * c3 * s1), (float)(s1 * s2), 0,
@@ -105,9 +105,9 @@ namespace Flux
       var halfPitch = source.Pitch / 2;
       var halfRoll = source.Roll / 2;
 
-      var (sy, cy) = System.Math.SinCos(halfYaw.Value);
-      var (sp, cp) = System.Math.SinCos(halfPitch.Value);
-      var (sr, cr) = System.Math.SinCos(halfRoll.Value);
+      var (sy, cy) = double.SinCos(halfYaw.Value);
+      var (sp, cp) = double.SinCos(halfPitch.Value);
+      var (sr, cr) = double.SinCos(halfRoll.Value);
 
       return new(
         (float)(sr * cp * cy - cr * sp * sy),

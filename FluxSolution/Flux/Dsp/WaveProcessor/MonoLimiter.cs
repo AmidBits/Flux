@@ -12,7 +12,7 @@ namespace Flux.Dsp.WaveProcessor
       get => m_threshold;
       set
       {
-        m_threshold = System.Math.Clamp(value, -30, 0);
+        m_threshold = double.Clamp(value, -30, 0);
 
         SetState();
       }
@@ -25,7 +25,7 @@ namespace Flux.Dsp.WaveProcessor
       get => m_ceiling;
       set
       {
-        m_ceiling = System.Math.Clamp(value, -20, 0);
+        m_ceiling = double.Clamp(value, -20, 0);
 
         SetState();
       }
@@ -38,7 +38,7 @@ namespace Flux.Dsp.WaveProcessor
       get => m_softClipDecibel;
       set
       {
-        m_softClipDecibel = System.Math.Clamp(value, 0, 6);
+        m_softClipDecibel = double.Clamp(value, 0, 6);
 
         SetState();
       }
@@ -51,7 +51,7 @@ namespace Flux.Dsp.WaveProcessor
       get => m_softClipRatio;
       set
       {
-        m_softClipRatio = System.Math.Clamp(System.Math.Round(value), 3, 20);
+        m_softClipRatio = double.Clamp(double.Round(value), 3, 20);
 
         SetState();
       }
@@ -75,17 +75,17 @@ namespace Flux.Dsp.WaveProcessor
     {
       //_computedThreshold = System.Math.Exp(_threshold * Convert.Decibel2Logarithm);
       m_computedThresholdDecibel = m_threshold;
-      m_computedCeiling = System.Math.Exp(m_ceiling * Convert.Decibel2Logarithm);
+      m_computedCeiling = double.Exp(m_ceiling * Convert.Decibel2Logarithm);
       m_computedCeilingDecibel = m_ceiling;
-      m_computedMakeup = System.Math.Exp((m_computedCeilingDecibel - m_computedThresholdDecibel) * Convert.Decibel2Logarithm);
+      m_computedMakeup = double.Exp((m_computedCeilingDecibel - m_computedThresholdDecibel) * Convert.Decibel2Logarithm);
       //_computedMakeupDecibel = _computedCeilingDecibel - _computedThresholdDecibel;
       m_computedSoftClip = -m_softClipDecibel;
-      m_computedSoftClipV = System.Math.Exp(m_computedSoftClip * Convert.Decibel2Logarithm);
+      m_computedSoftClipV = double.Exp(m_computedSoftClip * Convert.Decibel2Logarithm);
       //_computedSoftClipComp = System.Math.Exp(-_computedSoftClip * Convert.Decibel2Logarithm);
       m_computedPeakDecibel = m_computedCeilingDecibel + 25;
       //_computedPeakLevel = System.Math.Exp(_computedPeakDecibel * Convert.Decibel2Logarithm);
       //_computedSoftClipRatio = _softClipRatio;
-      m_computedSoftClipMult = System.Math.Abs((m_computedCeilingDecibel - m_computedSoftClip) / (m_computedPeakDecibel - m_computedSoftClip));
+      m_computedSoftClipMult = double.Abs((m_computedCeilingDecibel - m_computedSoftClip) / (m_computedPeakDecibel - m_computedSoftClip));
     }
 
     public double ProcessMonoWave(double wave)
@@ -94,15 +94,15 @@ namespace Flux.Dsp.WaveProcessor
 
       wave *= m_computedMakeup;
 
-      var abs = System.Math.Abs(wave);
-      var sign = System.Math.Sign(wave);
+      var abs = double.Abs(wave);
+      var sign = double.Sign(wave);
 
-      var overdB = 2.08136898 * System.Math.Log(abs) * Convert.Logarithm2Decibel - m_computedCeilingDecibel;
+      var overdB = 2.08136898 * double.Log(abs) * Convert.Logarithm2Decibel - m_computedCeilingDecibel;
 
       if (abs > m_computedSoftClipV)
-        wave = sign * (m_computedSoftClipV + System.Math.Exp(overdB * m_computedSoftClipMult) * Convert.Decibel2Logarithm);
+        wave = sign * (m_computedSoftClipV + double.Exp(overdB * m_computedSoftClipMult) * Convert.Decibel2Logarithm);
 
-      return System.Math.Min(m_computedCeiling, System.Math.Abs(wave)) * System.Math.Sign(wave);
+      return double.Min(m_computedCeiling, double.Abs(wave)) * double.Sign(wave);
     }
 
     public Waves.IWaveMono<double> ProcessMonoWave(Waves.IWaveMono<double> mono) => (Waves.WaveMono<double>)ProcessMonoWave(mono.Wave);

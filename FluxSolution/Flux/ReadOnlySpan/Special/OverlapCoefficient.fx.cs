@@ -12,6 +12,6 @@ namespace Flux
     /// <param name="equalityComparer"></param>
     /// <returns></returns>
     public static double OverlapCoefficient<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
-      => (double)source.Intersect(target, equalityComparer).Count / (double)System.Math.Min(source.Length, target.Length);
+      => (double)source.Intersect(target, equalityComparer).Count / (double)int.Min(source.Length, target.Length);
   }
 }

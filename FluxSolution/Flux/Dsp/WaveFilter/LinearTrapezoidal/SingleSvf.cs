@@ -79,7 +79,7 @@ namespace Flux.Dsp.WaveFilter.LinearTrapezoidal
           m2 = 0.0;
           break;
         case SingleSvfFrequencyFunction.Bell:
-          A = System.Math.Pow(10.0, gain / 40.0);
+          A = double.Pow(10.0, gain / 40.0);
           k = 1.0 / (Q * A);
           a1 = 1.0 / (1.0 + g * (g + k));
           a2 = g * a1;
@@ -97,8 +97,8 @@ namespace Flux.Dsp.WaveFilter.LinearTrapezoidal
           m2 = -1.0;
           break;
         case SingleSvfFrequencyFunction.HighShelf:
-          A = System.Math.Pow(10.0, gain / 40.0);
-          g /= System.Math.Sqrt(A);
+          A = double.Pow(10.0, gain / 40.0);
+          g /= double.Sqrt(A);
           a1 = 1.0 / (1.0 + g * (g + k));
           a2 = g * a1;
           a3 = g * a2;
@@ -115,8 +115,8 @@ namespace Flux.Dsp.WaveFilter.LinearTrapezoidal
           m2 = 1.0;
           break;
         case SingleSvfFrequencyFunction.LowShelf:
-          A = System.Math.Pow(10.0, gain / 40.0);
-          g /= System.Math.Sqrt(A);
+          A = double.Pow(10.0, gain / 40.0);
+          g /= double.Sqrt(A);
           a1 = 1.0 / (1.0 + g * (g + k));
           a2 = g * a1;
           a3 = g * a2;

@@ -18,12 +18,12 @@ namespace Flux.Colors
     public double Saturation { get => m_saturation; init => m_saturation = value; }
     public double Lightness { get => m_lightness; init => m_lightness = value; }
 
-    public double GetChroma() => (1 - System.Math.Abs(2 * m_lightness - 1)) * m_saturation;
+    public double GetChroma() => (1 - double.Abs(2 * m_lightness - 1)) * m_saturation;
 
     /// <summary>Creates an HSV color corresponding to the HSL instance.</summary>
     public Hsv ToHsv()
     {
-      var value = m_lightness + m_saturation * System.Math.Min(m_lightness, 1 - m_lightness);
+      var value = m_lightness + m_saturation * double.Min(m_lightness, 1 - m_lightness);
 
       return new Hsv(m_hue, value == 0 ? 0 : 2 * (1 - m_lightness / value), value);
     }
@@ -33,7 +33,7 @@ namespace Flux.Colors
     {
       var c = GetChroma();
       var h = m_hue / 60;
-      var x = c * (1 - System.Math.Abs((h % 2) - 1));
+      var x = c * (1 - double.Abs((h % 2) - 1));
 
       var m = m_lightness - (0.5 * c);
 

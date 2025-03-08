@@ -11,11 +11,11 @@
       var lat = project.Latitude.Value;
       var lon = project.Longitude.Value;
 
-      var latP2 = System.Math.Pow(lat, 2);
+      var latP2 = double.Pow(lat, 2);
       var latP4 = latP2 * latP2;
-      var latP6 = System.Math.Pow(lat, 6);
+      var latP6 = double.Pow(lat, 6);
       var latP8 = latP4 * latP4;
-      var latP10 = System.Math.Pow(lat, 10);
+      var latP10 = double.Pow(lat, 10);
       var latP12 = latP6 * latP6;
 
       var x = lon * (0.870700 - 0.131979 * latP2 - 0.013791 * latP4 + 0.003971 * latP10 - 0.001529 * latP12);

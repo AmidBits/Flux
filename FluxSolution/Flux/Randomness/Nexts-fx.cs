@@ -218,7 +218,7 @@ namespace Flux
     {
       System.ArgumentNullException.ThrowIfNull(source);
 
-      return -System.Math.Log(NextUniform(source));
+      return -double.Log(NextUniform(source));
     }
 
     /// <summary>
@@ -259,10 +259,10 @@ namespace Flux
       }
       while (u1 <= double.Epsilon || u2 <= double.Epsilon);
 
-      var s = System.Math.Sqrt(-2 * System.Math.Log(u1));
+      var s = double.Sqrt(-2 * double.Log(u1));
 
-      var z0 = s * System.Math.Cos(System.Math.Tau * u2);
-      var z1 = s * System.Math.Sin(System.Math.Tau * u2);
+      var z0 = s * double.Cos(double.Tau * u2);
+      var z1 = s * double.Sin(double.Tau * u2);
 
       return (z0 * sigma + mu, z1 * sigma + mu);
     }
@@ -290,7 +290,7 @@ namespace Flux
       }
       while (s >= 1 || s == 0);
 
-      s = System.Math.Sqrt(-2.0 * System.Math.Log(s) / s);
+      s = double.Sqrt(-2.0 * double.Log(s) / s);
 
       var z0 = u * s;
       var z1 = v * s;
@@ -322,7 +322,7 @@ namespace Flux
     {
       System.ArgumentNullException.ThrowIfNull(source);
 
-      return NextUniform(source) is var u && u < 0.5 ? mean + scale * System.Math.Log(2 * u) : mean - scale * System.Math.Log(2 * (1 - u));
+      return NextUniform(source) is var u && u < 0.5 ? mean + scale * double.Log(2 * u) : mean - scale * double.Log(2 * (1 - u));
     }
 
     /// <summary>
@@ -336,7 +336,7 @@ namespace Flux
     {
       System.ArgumentNullException.ThrowIfNull(source);
 
-      return System.Math.Exp(NextNormal(source, mu, sigma));
+      return double.Exp(NextNormal(source, mu, sigma));
     }
 
     /// <summary>
@@ -348,7 +348,7 @@ namespace Flux
     {
       System.ArgumentNullException.ThrowIfNull(source);
 
-      return System.Math.Sqrt(-2 * System.Math.Log(NextUniform(source))) * System.Math.Sin((System.Math.PI / 2) * NextUniform(source));
+      return double.Sqrt(-2 * double.Log(NextUniform(source))) * double.Sin((double.Pi / 2) * NextUniform(source));
     }
 
     /// <summary>
@@ -460,7 +460,7 @@ namespace Flux
       if (shape <= 0) throw new System.ArgumentOutOfRangeException(nameof(shape));
       if (scale <= 0) throw new System.ArgumentOutOfRangeException(nameof(scale));
 
-      return scale * System.Math.Pow(-System.Math.Log(NextUniform(source)), 1 / shape);
+      return scale * double.Pow(-double.Log(NextUniform(source)), 1 / shape);
     }
   }
 }

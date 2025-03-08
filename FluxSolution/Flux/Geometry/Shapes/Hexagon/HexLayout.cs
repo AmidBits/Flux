@@ -42,8 +42,8 @@ namespace Flux.Geometry.Shapes.Hexagon
     {
       var angle = double.Tau * (m_orientation.StartAngle - corner) / 6.0;
 
-      x = m_size.X * System.Math.Cos(angle);
-      y = m_size.Y * System.Math.Sin(angle);
+      x = m_size.X * double.Cos(angle);
+      y = m_size.Y * double.Sin(angle);
     }
 
     public System.Collections.Generic.List<(double x, double y)> PolygonCorners(CoordinateSystems.HexCoordinate<int> h)

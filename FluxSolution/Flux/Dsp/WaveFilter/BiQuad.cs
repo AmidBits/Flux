@@ -66,7 +66,7 @@ namespace Flux.Dsp.WaveFilter
     }
     private void SetCoefficientsHighShelf()
     {
-      double k = double.TanPi(m_cutoffFrequency / m_sampleRate), kk = k * k, sqrt2k = System.Math.Sqrt(2.0) * k, v = System.Math.Pow(10.0, System.Math.Abs(m_gain) / 20.0), sqrt2vk = System.Math.Sqrt(2.0 * v) * k;
+      double k = double.TanPi(m_cutoffFrequency / m_sampleRate), kk = k * k, sqrt2k = double.Sqrt(2.0) * k, v = double.Pow(10.0, double.Abs(m_gain) / 20.0), sqrt2vk = double.Sqrt(2.0 * v) * k;
 
       if (m_gain >= 0) // boost
       {
@@ -99,7 +99,7 @@ namespace Flux.Dsp.WaveFilter
     }
     private void SetCoefficientsLowShelf()
     {
-      double k = double.TanPi(m_cutoffFrequency / m_sampleRate), kk = k * k, sqrt2k = System.Math.Sqrt(2.0) * k, v = System.Math.Pow(10.0, System.Math.Abs(m_gain) / 20.0), vkk = v * kk, sqrt2vk = System.Math.Sqrt(2.0 * v) * k;
+      double k = double.TanPi(m_cutoffFrequency / m_sampleRate), kk = k * k, sqrt2k = double.Sqrt(2.0) * k, v = double.Pow(10.0, double.Abs(m_gain) / 20.0), vkk = v * kk, sqrt2vk = double.Sqrt(2.0 * v) * k;
 
       if (m_gain >= 0) // boost
       {
@@ -132,7 +132,7 @@ namespace Flux.Dsp.WaveFilter
     }
     private void SetCoefficientsPeak()
     {
-      double k = double.TanPi(m_cutoffFrequency / m_sampleRate), kk = k * k, invQk = 1.0 / m_Q * k, v = System.Math.Pow(10.0, System.Math.Abs(m_gain) / 20.0), vQk = v / m_Q * k;
+      double k = double.TanPi(m_cutoffFrequency / m_sampleRate), kk = k * k, invQk = 1.0 / m_Q * k, v = double.Pow(10.0, double.Abs(m_gain) / 20.0), vQk = v / m_Q * k;
 
       if (m_gain >= 0.0) // boost
       {

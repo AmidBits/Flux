@@ -53,7 +53,7 @@ namespace Flux
 
       for (var si = 0; si < sourceLength; si++)
         for (var ti = 0; ti < targetLength; ti++)
-          scsg[si + 1, ti + 1] = equalityComparer.Equals(source[si], target[ti]) ? scsg[si, ti] + 1 : System.Math.Min(scsg[si, ti + 1], scsg[si + 1, ti]) + 1;
+          scsg[si + 1, ti + 1] = equalityComparer.Equals(source[si], target[ti]) ? scsg[si, ti] + 1 : int.Min(scsg[si, ti + 1], scsg[si + 1, ti]) + 1;
 
       lengthScs = scsg[source.Length, target.Length];
 

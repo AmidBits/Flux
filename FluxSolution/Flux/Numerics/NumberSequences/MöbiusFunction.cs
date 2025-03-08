@@ -17,7 +17,7 @@ namespace Flux.NumberSequences
       for (var i = 0; i < m_maxValue; i++)
         m_sieve[i] = 1;
 
-      var sqrt = (int)System.Math.Sqrt(m_maxValue);
+      var sqrt = (int)double.Sqrt(m_maxValue);
 
       for (var i = 2; i <= sqrt; i++)
       {

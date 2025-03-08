@@ -45,7 +45,7 @@ namespace Flux.Units
     /// <para>Returns the angular velocity from the (rotational) frequency.</para>
     /// <para><see href="https://en.wikipedia.org/wiki/Revolutions_per_minute"/></para>
     /// </summary>
-    public AngularFrequency ToAngularVelocity() => new(System.Math.Tau * m_value);
+    public AngularFrequency ToAngularVelocity() => new(double.Tau * m_value);
 
     #region Static methods
     /// <remarks>Revolutions Per Minute (RPM) is officially a frequency and as such measured in Hertz (which is 'per second'). Conversion is a straight forward by a factor of 60 (i.e. seconds per minute)</remarks>

@@ -28,37 +28,37 @@ namespace Flux.Model.Dynamics.ForceGenerators
           if (body.ObjectPosition.X < Low.X)
           {
             position.X = (Low.X + (Low.X - body.ObjectPosition.X));
-            linearVelocity.X = System.Math.Abs(body.LinearVelocity.X * body.CoefficientOfRestitution);
+            linearVelocity.X = float.Abs(body.LinearVelocity.X * body.CoefficientOfRestitution);
             System.Numerics.Quaternion.Inverse(body.ObjectRotation);
           }
           else if (body.ObjectPosition.X > High.X)
           {
             position.X = (High.X - (body.ObjectPosition.X - High.X));
-            linearVelocity.X = -System.Math.Abs(body.LinearVelocity.X * body.CoefficientOfRestitution);
+            linearVelocity.X = -float.Abs(body.LinearVelocity.X * body.CoefficientOfRestitution);
             System.Numerics.Quaternion.Inverse(body.ObjectRotation);
           }
           if (body.ObjectPosition.Y < Low.Y)
           {
             position.Y = (Low.Y + (Low.Y - body.ObjectPosition.Y));
-            linearVelocity.Y = System.Math.Abs(body.LinearVelocity.Y * body.CoefficientOfRestitution);
+            linearVelocity.Y = float.Abs(body.LinearVelocity.Y * body.CoefficientOfRestitution);
             System.Numerics.Quaternion.Inverse(body.ObjectRotation);
           }
           else if (body.ObjectPosition.Y > High.Y)
           {
             position.Y = (High.Y - (body.ObjectPosition.Y - High.Y));
-            linearVelocity.Y = -System.Math.Abs(body.LinearVelocity.Y * body.CoefficientOfRestitution);
+            linearVelocity.Y = -float.Abs(body.LinearVelocity.Y * body.CoefficientOfRestitution);
             System.Numerics.Quaternion.Inverse(body.ObjectRotation);
           }
           if (body.ObjectPosition.Z < Low.Z)
           {
             position.Z = (Low.Z + (Low.Z - body.ObjectPosition.Z));
-            linearVelocity.Z = System.Math.Abs(body.LinearVelocity.Z * body.CoefficientOfRestitution);
+            linearVelocity.Z = float.Abs(body.LinearVelocity.Z * body.CoefficientOfRestitution);
             System.Numerics.Quaternion.Inverse(body.ObjectRotation);
           }
           else if (body.ObjectPosition.Z > High.Z)
           {
             position.Z = (High.Z - (body.ObjectPosition.Z - High.Z));
-            linearVelocity.Z = -System.Math.Abs(body.LinearVelocity.Z * body.CoefficientOfRestitution);
+            linearVelocity.Z = -float.Abs(body.LinearVelocity.Z * body.CoefficientOfRestitution);
             System.Numerics.Quaternion.Inverse(body.ObjectRotation);
           }
           break;

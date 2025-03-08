@@ -19,10 +19,10 @@ namespace Flux.Units
     #region Conversion methods
 
     /// <summary>Convert a specified interval ratio to a number of cents.</summary>
-    public static double ConvertFrequencyRatioToCent(double frequencyRatio) => System.Math.Log(frequencyRatio, 2) * 1200;
+    public static double ConvertFrequencyRatioToCent(double frequencyRatio) => double.Log(frequencyRatio, 2) * 1200;
 
     /// <summary>Convert a specified number of cents to an interval ratio.</summary>
-    public static double ConvertCentToFrequencyRatio(int cents) => System.Math.Pow(2, cents / 1200.0);
+    public static double ConvertCentToFrequencyRatio(int cents) => double.Pow(2, cents / 1200.0);
 
     #endregion // Conversion methods
 

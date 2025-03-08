@@ -33,6 +33,6 @@ namespace Flux
 
     /// <summary>Yields a sequence of dates between the source and the specified target, which can be included or not.</summary>
     public static System.Collections.Generic.IEnumerable<System.DateTime> GetDatesTo(this System.DateTime source, System.DateTime target, bool includeTarget)
-      => source.GetDates((target - source).Days is var numberOfDays && includeTarget ? numberOfDays + System.Math.Sign(numberOfDays) : numberOfDays);
+      => source.GetDates((target - source).Days is var numberOfDays && includeTarget ? numberOfDays + int.Sign(numberOfDays) : numberOfDays);
   }
 }

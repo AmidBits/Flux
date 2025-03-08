@@ -12,7 +12,7 @@ namespace Flux.Dsp.WaveProcessor
       get => m_width;
       set
       {
-        m_width = System.Math.Clamp(value, -1.0, 1.0);
+        m_width = double.Clamp(value, -1.0, 1.0);
 
         // var tmp = 1 / System.Math.Max(m_width + 1, 2); // This was present in my code, but I am unsure what it is suppose to do.
 

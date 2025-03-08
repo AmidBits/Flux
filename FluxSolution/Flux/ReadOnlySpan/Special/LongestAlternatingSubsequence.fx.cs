@@ -60,7 +60,7 @@
             matrix[i, 1] = mj0p1;
         }
 
-        length = System.Math.Max(length, System.Math.Max(matrix[i, 0], matrix[i, 1]));
+        length = int.Max(length, int.Max(matrix[i, 0], matrix[i, 1]));
       }
 
       return matrix;
@@ -88,7 +88,7 @@
 
         for (int i = 0, mark = 0; i < source.Length; i++)
         {
-          var max = System.Math.Max(matrix[i, 0], matrix[i, 1]);
+          var max = int.Max(matrix[i, 0], matrix[i, 1]);
 
           if (max > mark)
           {

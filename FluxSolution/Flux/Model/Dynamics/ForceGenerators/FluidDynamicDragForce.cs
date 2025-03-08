@@ -12,7 +12,7 @@ namespace Flux.Model.Dynamics.ForceGenerators
     {
       System.ArgumentNullException.ThrowIfNull(body);
 
-      var dragForce = 0.5f * DragDensity * (float)System.Math.Pow(body.LinearVelocity.Length(), 2) * body.CoefficientOfDrag;
+      var dragForce = 0.5f * DragDensity * float.Pow(body.LinearVelocity.Length(), 2) * body.CoefficientOfDrag;
 
       body.ApplyForce(System.Numerics.Vector3.Zero, System.Numerics.Vector3.Negate(body.LinearVelocity * dragForce));
     }

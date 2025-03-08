@@ -7,7 +7,7 @@ namespace Flux.Dsp.WaveProcessor
   {
     private double m_release = 0.001;
     /// <summary>The amount of attenuation to apply each iteration in order to restore attenuation to full.</summary>
-    public double Release { get => m_release; set => m_release = System.Math.Clamp(value, Numerics.Constants.EpsilonCpp32, 1.0); }
+    public double Release { get => m_release; set => m_release = double.Clamp(value, Numerics.Constants.EpsilonCpp32, 1.0); }
 
     private double m_autoAttenuation = 1.0;
     /// <summary>The amount of attenuation to apply on the output. This is automatically calculated on sample amplitude overflow.</summary>
@@ -17,12 +17,12 @@ namespace Flux.Dsp.WaveProcessor
     {
       if (m_autoAttenuation < 1.0)
       {
-        m_autoAttenuation = System.Math.Clamp(m_autoAttenuation + m_release, Numerics.Constants.EpsilonCpp32, 1.0);
+        m_autoAttenuation = double.Clamp(m_autoAttenuation + m_release, Numerics.Constants.EpsilonCpp32, 1.0);
       }
 
       if (sample < -1.0 || sample > 1.0)
       {
-        if (1.0 / System.Math.Abs(sample) is var attenuationRequired && attenuationRequired < m_autoAttenuation)
+        if (1.0 / double.Abs(sample) is var attenuationRequired && attenuationRequired < m_autoAttenuation)
         {
           m_autoAttenuation = attenuationRequired;
         }
@@ -31,18 +31,18 @@ namespace Flux.Dsp.WaveProcessor
       return sample * m_autoAttenuation;
     }
 
-    public static double Limit(double sample) => System.Math.Clamp(sample, -1.0, 1.0);
+    public static double Limit(double sample) => double.Clamp(sample, -1.0, 1.0);
 
     public double ProcessMonoWave(double wave)
     {
       if (m_autoAttenuation < 1.0)
       {
-        m_autoAttenuation = System.Math.Clamp(m_autoAttenuation + m_release, Numerics.Constants.EpsilonCpp32, 1);
+        m_autoAttenuation = double.Clamp(m_autoAttenuation + m_release, Numerics.Constants.EpsilonCpp32, 1);
       }
 
       if (wave < -1 || wave > 1)
       {
-        if (1 / System.Math.Abs(wave) is var attenuationRequired && attenuationRequired < m_autoAttenuation)
+        if (1 / double.Abs(wave) is var attenuationRequired && attenuationRequired < m_autoAttenuation)
         {
           m_autoAttenuation = attenuationRequired;
         }

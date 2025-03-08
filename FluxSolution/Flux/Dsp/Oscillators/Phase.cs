@@ -4,7 +4,7 @@ namespace Flux.Dsp.Oscillators
   {
     private double m_frequencyModulation;
     /// <summary>The amount [0, 1] of output from the frequency modulator to apply.</summary>
-    public double FrequencyModulation { get => m_frequencyModulation; set => m_frequencyModulation = System.Math.Clamp(value, 0.0, 1.0); }
+    public double FrequencyModulation { get => m_frequencyModulation; set => m_frequencyModulation = double.Clamp(value, 0.0, 1.0); }
 
     /// <summary>The frequency modulator (FM) for the oscillator.</summary>
     /// <see href="https://en.wikipedia.org/wiki/Frequency_modulation"/>
@@ -17,7 +17,7 @@ namespace Flux.Dsp.Oscillators
 
     private double m_phaseModulation;
     /// <summary>The amount [0, 1] of output from the phase modulator to apply.</summary>
-    public double PhaseModulation { get => m_phaseModulation; set => m_phaseModulation = System.Math.Clamp(value, 0.0, 1.0); }
+    public double PhaseModulation { get => m_phaseModulation; set => m_phaseModulation = double.Clamp(value, 0.0, 1.0); }
 
     /// <summary>The pulse modulator (PM) for the oscillator.</summary>
     /// <see href="https://en.wikipedia.org/wiki/Phase_modulation"/>

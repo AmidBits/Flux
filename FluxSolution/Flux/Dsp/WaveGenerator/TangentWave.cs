@@ -10,7 +10,7 @@ namespace Flux.Dsp.WaveGenerator
 
     /// <summary>Generates a cosine wave using radians. Periodic function, with the domain [-infinity, infinity], the codomain [-1, 1], and period: 2PI.</summary>
     public static double SamplePi2(double phasePi2)
-      => System.Math.Tan(phasePi2 / 2);
+      => double.Tan(phasePi2 / 2);
 
     public Waves.IWaveMono<double> GenerateMonoWaveUi(double phaseUi)
       => (Waves.WaveMono<double>)SampleUi(phaseUi);

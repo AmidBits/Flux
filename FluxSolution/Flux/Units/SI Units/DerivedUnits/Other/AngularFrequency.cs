@@ -14,7 +14,7 @@ namespace Flux.Units
     /// <summary>Creates a new <see cref="AngularFrequency"/> instance from <see cref="Speed">tangential/linear speed</see> and <see cref="Length">radius</see></summary>
     public AngularFrequency(Speed tangentialSpeed, Length radius) : this(tangentialSpeed.Value / radius.Value) { }
 
-    public Frequency ToFrequency() => new(m_value / System.Math.Tau);
+    public Frequency ToFrequency() => new(m_value / double.Tau);
 
     #region Static methods
 
@@ -24,7 +24,7 @@ namespace Flux.Units
     /// </summary>
     /// <param name="radianPerSecond"></param>
     /// <returns></returns>
-    public static double ConvertAngularVelocityToRpm(double radianPerSecond) => radianPerSecond / System.Math.Tau;
+    public static double ConvertAngularVelocityToRpm(double radianPerSecond) => radianPerSecond / double.Tau;
 
     /// <summary>
     /// <para></para>

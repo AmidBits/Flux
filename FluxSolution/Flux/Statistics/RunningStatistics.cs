@@ -130,7 +130,7 @@
     /// <para>Evaluates the population skewness from the full population. Does not use a normalizer and would thus be biased if applied to a subset (type 1).</para>
     /// <para>Returns NaN if insufficient (&lt;2) data.</para>
     /// </summary>
-    public double PopulationSkewness => m_count < 2 ? double.NaN : double.Sqrt(m_count) * m_m3 / System.Math.Pow(m_m2, 1.5);
+    public double PopulationSkewness => m_count < 2 ? double.NaN : double.Sqrt(m_count) * m_m3 / double.Pow(m_m2, 1.5);
 
     /// <summary>
     /// <para>Estimates the unbiased population kurtosis from the provided samples. Uses a normalizer (Bessel's correction; type 2).</para>

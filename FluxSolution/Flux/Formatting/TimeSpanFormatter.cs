@@ -6,7 +6,7 @@ namespace Flux.Formatting
   /// <example>
   /// System.Console.WriteLine(string.Format(new Flux.IFormatProvider.TsFormatter() { Abbreviated = true }, "{0:TS}", timeValue));
   /// </example>
-  public sealed class TimeSpanFormatter 
+  public sealed class TimeSpanFormatter
     : AFormatter
   {
     private const string csD = "d";
@@ -33,10 +33,10 @@ namespace Flux.Formatting
 
       switch (arg)
       {
-        case System.Decimal f128 when (int)System.Math.Floor(f128) is var i32:
+        case System.Decimal f128 when (int)decimal.Floor(f128) is var i32:
           ts = new System.TimeSpan(0, 0, 0, i32, (int)((f128 - i32) * 1000));
           break;
-        case System.Double f64 when (int)System.Math.Floor(f64) is var i32:
+        case System.Double f64 when (int)double.Floor(f64) is var i32:
           ts = new System.TimeSpan(0, 0, 0, i32, (int)((f64 - i32) * 1000));
           break;
         case System.TimeSpan timeSpan:
@@ -48,7 +48,7 @@ namespace Flux.Formatting
         case System.Int64 ticks:
           ts = new System.TimeSpan(ticks);
           break;
-        case System.Single f32 when (int)System.Math.Floor(f32) is var i32:
+        case System.Single f32 when (int)float.Floor(f32) is var i32:
           ts = new System.TimeSpan(0, 0, 0, i32, (int)((f32 - i32) * 1000));
           break;
         case System.Numerics.BigInteger nanoSeconds:

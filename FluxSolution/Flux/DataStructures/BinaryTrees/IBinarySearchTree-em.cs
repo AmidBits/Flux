@@ -180,7 +180,7 @@ namespace Flux
       }
 
       if (left.HasValue && right.HasValue)
-        return isMax ? System.Math.Max(left.Value, right.Value) : System.Math.Min(left.Value, right.Value);
+        return isMax ? int.Max(left.Value, right.Value) : int.Min(left.Value, right.Value);
       else if (left.HasValue)
         return left.Value;
       else if (right.HasValue)

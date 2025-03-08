@@ -41,7 +41,7 @@ namespace Flux
         {
           for (var i = 0; i < length; i += 2 * width) // Array A is full of runs of length width.
           {
-            BottomUpMerge(source, target, i, System.Math.Min(i + width, length), System.Math.Min(i + 2 * width, length), comparer); // Merge two runs: source[i:i+width-1] and target[i+width:i+2*width-1] to B[] // or copy A[i:n-1] to B[] ( if(i+width >= n) )
+            BottomUpMerge(source, target, i, int.Min(i + width, length), int.Min(i + 2 * width, length), comparer); // Merge two runs: source[i:i+width-1] and target[i+width:i+2*width-1] to B[] // or copy A[i:n-1] to B[] ( if(i+width >= n) )
           }
 
           CopyArray(target, source, length); // Now work array target is full of runs of length 2*width. Copy array target to array source for next iteration. A more efficient implementation would swap the roles of A and B. Now array source is full of runs of length 2*width.

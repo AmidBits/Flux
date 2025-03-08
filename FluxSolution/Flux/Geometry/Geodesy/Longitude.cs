@@ -1,5 +1,3 @@
-using System.Security.Cryptography;
-
 namespace Flux.Geometry.Geodesy
 {
   /// <summary>
@@ -46,7 +44,7 @@ namespace Flux.Geometry.Geodesy
 
     /// <summary>Returns the theoretical time zone offset, relative prime meridian. There are many places with deviations across all time zones.</summary>
     /// <param name="longitude">The longitude in degrees.</param>
-    public static int GetTheoreticalTimezoneOffset(double longitude) => System.Convert.ToInt32(System.Math.Truncate((longitude + System.Math.CopySign(7.5, longitude)) / 15));
+    public static int GetTheoreticalTimezoneOffset(double longitude) => System.Convert.ToInt32(double.Truncate((longitude + double.CopySign(7.5, longitude)) / 15));
 
     ///// <summary>A longitude is wrapped over within the closed interval (<see cref="MinValue"/> = -180, <see cref="MaxValue"/> = +180).</summary>
     ///// <param name="longitude">The longitude in degrees.</param>

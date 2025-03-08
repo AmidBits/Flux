@@ -1,6 +1,4 @@
-﻿using Flux.Geometry.Geodesy;
-
-namespace Flux.Units
+﻿namespace Flux.Units
 {
   /// <summary>
   /// <para>Plane angle, unit of radian. This is an SI derived quantity.</para>
@@ -514,9 +512,9 @@ namespace Flux.Units
             decimalDegrees = -decimalDegrees;
 
           if (g4.Success && (g4.Value[0] is 'N' or 'S'))
-            list.Add(new Latitude(decimalDegrees));
+            list.Add(new Geometry.Geodesy.Latitude(decimalDegrees));
           else if (g4.Success && (g4.Value[0] is 'E' or 'W'))
-            list.Add(new Longitude(decimalDegrees));
+            list.Add(new Geometry.Geodesy.Longitude(decimalDegrees));
           else
             throw new System.InvalidOperationException();
         }

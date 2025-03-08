@@ -249,7 +249,7 @@
         }
 
         for (var i = 0; i < vertexCount; i++)
-          pi![i] = System.Math.Min(pi[i] + distance[i], double.PositiveInfinity);
+          pi![i] = double.Min(pi[i] + distance[i], double.PositiveInfinity);
 
         return found![target]; // Return the value obtained at target.
       }
@@ -265,7 +265,7 @@
           var amt = double.PositiveInfinity; // Set the default amount.
 
           for (var i = target; i != source; i = dad[i])
-            amt = System.Math.Min(amt, flow[i, dad[i]] != 0 ? flow[i, dad[i]] : Capacity(dad[i], i) - flow[dad[i], i]);
+            amt = double.Min(amt, flow[i, dad[i]] != 0 ? flow[i, dad[i]] : Capacity(dad[i], i) - flow[dad[i], i]);
 
           for (var i = target; i != source; i = dad[i])
           {

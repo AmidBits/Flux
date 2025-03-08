@@ -1,5 +1,3 @@
-using Flux.Geometry.CoordinateSystems;
-
 namespace Flux.Geometry.Shapes.Circle
 {
   /// <summary>
@@ -31,7 +29,7 @@ namespace Flux.Geometry.Shapes.Circle
     /// <summary>Returns whether a point is inside the circle.</summary>
     public bool Contains(double x, double y) => PointInCircle(m_radius, x, y);
 
-    public PolarCoordinate ToPolarCoordinate(double azimuthValue, Units.AngleUnit azimuthUnit) => new PolarCoordinate(m_radius, Units.LengthUnit.Meter, azimuthValue, azimuthUnit);
+    public CoordinateSystems.PolarCoordinate ToPolarCoordinate(double azimuthValue, Units.AngleUnit azimuthUnit) => new(m_radius, Units.LengthUnit.Meter, azimuthValue, azimuthUnit);
 
     #region Static methods
 

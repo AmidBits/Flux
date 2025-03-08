@@ -53,7 +53,7 @@ namespace Flux.Dsp.WaveFilter
       m_resonance = resonance;
       m_sampleRate = sampleRate;
 
-      m_normalizedCutoffFrequency = (System.Math.PI / 2) * (m_cutoffFrequency / m_sampleRate);
+      m_normalizedCutoffFrequency = (double.Pi / 2) * (m_cutoffFrequency / m_sampleRate);
     }
 
     public double FilterMonoWave(double wave)

@@ -6,7 +6,7 @@ namespace Flux
     /// <param name="source"></param>
     /// <param name="apothem"></param>
     /// <returns></returns>
-    public static double GetRegularPolygonAreaByApothem(this Geometry.Shapes.Polygon.PolygonType source, double apothem) => (int)source * (apothem * apothem) * System.Math.Tan(System.Math.PI / (int)source);
+    public static double GetRegularPolygonAreaByApothem(this Geometry.Shapes.Polygon.PolygonType source, double apothem) => (int)source * (apothem * apothem) * double.Tan(double.Pi / (int)source);
 
     /// <summary></summary>
     /// <param name="source"></param>
@@ -32,7 +32,7 @@ namespace Flux
     /// <summary></summary>
     /// <see href="https://en.wikipedia.org/wiki/Regular_polygon#Angles"/>
     /// <returns></returns>
-    public static Units.Angle GetRegularPolygonInteriorAngle(this Geometry.Shapes.Polygon.PolygonType source) => new(((int)source - 2) * System.Math.PI / ((int)source));
+    public static Units.Angle GetRegularPolygonInteriorAngle(this Geometry.Shapes.Polygon.PolygonType source) => new(((int)source - 2) * double.Pi / ((int)source));
 
     /// <summary>An n-sided convex regular polygon is denoted by its Schläfli symbol {n}. For n < 3, we have two degenerate cases (Monogon and Digon).</summary>
     /// <see href="https://en.wikipedia.org/wiki/Schl%C3%A4fli_symbol"/>

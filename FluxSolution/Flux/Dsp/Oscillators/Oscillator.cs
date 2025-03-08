@@ -5,7 +5,7 @@ namespace Flux.Dsp.Oscillators
   {
     private double m_amplitudeModulation;
     /// <summary>The amount [0, 1] of output from the amplitude modulator to apply.</summary>
-    public double AmplitudeModulation { get => m_amplitudeModulation; set => m_amplitudeModulation = System.Math.Clamp(value, 0.0, 1.0); }
+    public double AmplitudeModulation { get => m_amplitudeModulation; set => m_amplitudeModulation = double.Clamp(value, 0.0, 1.0); }
 
     /// <summary>The amplitude modulator (AM) for the oscillator.</summary>
     /// <see href="https://en.wikipedia.org/wiki/Amplitude_modulation"/>
@@ -21,7 +21,7 @@ namespace Flux.Dsp.Oscillators
 
     private double m_frequencyModulation;
     /// <summary>The amount [0, 1] of output from the frequency modulator to apply.</summary>
-    public double FrequencyModulation { get => m_frequencyModulation; set => m_frequencyModulation = System.Math.Clamp(value, 0.0, 1.0); }
+    public double FrequencyModulation { get => m_frequencyModulation; set => m_frequencyModulation = double.Clamp(value, 0.0, 1.0); }
 
     /// <summary>The frequency modulator (FM) for the oscillator.</summary>
     /// <see href="https://en.wikipedia.org/wiki/Frequency_modulation"/>
@@ -49,7 +49,7 @@ namespace Flux.Dsp.Oscillators
 
     private double m_phaseModulation;
     /// <summary>The amount [0, 1] of output from the phase modulator to apply.</summary>
-    public double PhaseModulation { get => m_phaseModulation; set => m_phaseModulation = System.Math.Clamp(value, 0.0, 1.0); }
+    public double PhaseModulation { get => m_phaseModulation; set => m_phaseModulation = double.Clamp(value, 0.0, 1.0); }
 
     /// <summary>The pulse modulator (PM) for the oscillator.</summary>
     /// <see href="https://en.wikipedia.org/wiki/Phase_modulation"/>
@@ -66,7 +66,7 @@ namespace Flux.Dsp.Oscillators
 
     private double m_ringModulation;
     /// <summary>The amount [0, 1] of output from the ring modulator to apply.</summary>
-    public double RingModulation { get => m_ringModulation; set => m_ringModulation = System.Math.Clamp(value, 0.0, 1.0); }
+    public double RingModulation { get => m_ringModulation; set => m_ringModulation = double.Clamp(value, 0.0, 1.0); }
 
     /// <summary>The ring modulator (RM) for the oscillator.</summary>
     /// <see href="https://en.wikipedia.org/wiki/Ring_modulation"/>

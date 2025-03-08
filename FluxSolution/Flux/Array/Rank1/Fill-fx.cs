@@ -10,7 +10,7 @@ namespace Flux
       System.ArgumentNullException.ThrowIfNull(source);
       System.ArgumentNullException.ThrowIfNull(pattern);
 
-      var copyLength = System.Math.Min(pattern.Length, count);
+      var copyLength = int.Min(pattern.Length, count);
 
       System.Array.Copy(pattern, 0, source, index, copyLength);
 

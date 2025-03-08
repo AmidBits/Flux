@@ -84,13 +84,13 @@ namespace Flux.Geometry.Rotations
     #region Static methods
 
     public static double ComputeProportionalityConstant(double gravitionalConstant, double massOfSun, double massOfPlanet)
-      => System.Math.Pow(4 * System.Math.PI, 2) / (gravitionalConstant * (massOfSun + massOfPlanet));
+      => double.Pow(4 * double.Pi, 2) / (gravitionalConstant * (massOfSun + massOfPlanet));
 
     public static void ToRotationMatrix(double longitudeOfAscendingNode, double inclination, double argumentOfPeriapsis, out double x1, out double x2, out double x3, out double y1, out double y2, out double y3, out double z1, out double z2, out double z3)
     {
-      var (so, co) = System.Math.SinCos(longitudeOfAscendingNode);
-      var (si, ci) = System.Math.SinCos(inclination);
-      var (sw, cw) = System.Math.SinCos(argumentOfPeriapsis);
+      var (so, co) = double.SinCos(longitudeOfAscendingNode);
+      var (si, ci) = double.SinCos(inclination);
+      var (sw, cw) = double.SinCos(argumentOfPeriapsis);
 
       x1 = co * cw - so * ci * sw;
       x2 = so * cw + co * ci * sw;
@@ -111,9 +111,9 @@ namespace Flux.Geometry.Rotations
     //  y = y.Normalized();
     //  z = z.Normalized();
 
-    //  var alpha = System.Math.Atan2(-x.Y, z.X);
-    //  var beta = System.Math.Atan2(z.Z, System.Math.Sqrt(z.X * z.X + z.Y * z.Y));
-    //  var gamma = System.Math.Atan2(y.Z, x.Z);
+    //  var alpha = double.Atan2(-x.Y, z.X);
+    //  var beta = double.Atan2(z.Z, double.Sqrt(z.X * z.X + z.Y * z.Y));
+    //  var gamma = double.Atan2(y.Z, x.Z);
 
     //  return new(alpha, beta, gamma);
     //}
@@ -122,9 +122,9 @@ namespace Flux.Geometry.Rotations
     public static void ToOrbitalElements(double x1, double x2, double x3, double y1, double y2, double y3, double z1, double z2, double z3, out double longitudeOfAscendingNode, out double inclination, out double argumentOfPeriapsis)
 #pragma warning restore IDE0060 // Remove unused parameter
     {
-      longitudeOfAscendingNode = System.Math.Atan2(-x2, z1);
-      inclination = System.Math.Atan2(z3, System.Math.Sqrt(z1 * z1 + z2 * z2));
-      argumentOfPeriapsis = System.Math.Atan2(y3, x3);
+      longitudeOfAscendingNode = double.Atan2(-x2, z1);
+      inclination = double.Atan2(z3, double.Sqrt(z1 * z1 + z2 * z2));
+      argumentOfPeriapsis = double.Atan2(y3, x3);
     }
     #endregion // Static methods
 

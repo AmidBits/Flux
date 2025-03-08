@@ -55,7 +55,7 @@ namespace Flux.Text.PhoneticAlgorithm
     /// <param name="codeLength2">The second encoded length.</param>
     public static int ComputeMinimumRating(int codeLength1, int codeLength2)
     {
-      if (System.Math.Abs(codeLength1 - codeLength2) >= 3)
+      if (int.Abs(codeLength1 - codeLength2) >= 3)
         return 0;
 
       return (codeLength1 + codeLength2) switch

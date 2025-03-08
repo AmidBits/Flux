@@ -12,20 +12,12 @@ namespace Flux.Dsp.WaveProcessor
       get => m_angle;
       set
       {
-        m_angle = System.Math.Clamp(value, -1.0, 1.0);
+        m_angle = double.Clamp(value, -1.0, 1.0);
 
         if (m_angle > Numerics.Constants.EpsilonCpp32 || m_angle < -Numerics.Constants.EpsilonCpp32)
-        {
-          var angle = m_angle * System.Math.PI;
-
-          m_cosC = System.Math.Cos(angle);
-          m_sinC = System.Math.Sin(angle);
-        }
+          (m_sinC, m_cosC) = double.SinCos(m_angle * double.Pi);
         else
-        {
-          m_cosC = 1.0;
-          m_sinC = 1.0;
-        }
+          m_sinC = m_cosC = 1.0;
       }
     }
 
@@ -39,6 +31,6 @@ namespace Flux.Dsp.WaveProcessor
     /// <param name="left">Left stereo sample.</param>
     /// <param name="right">Right stereo sample.</param>
     public static (double left, double right) Apply(double angle, double left, double right)
-      => (angle > Numerics.Constants.EpsilonCpp32 || angle < Numerics.Constants.EpsilonCpp32) && angle * System.Math.PI is var anglePi && System.Math.Cos(anglePi) is var cos && System.Math.Sin(anglePi) is var sin ? (left * cos - right * sin, left * sin + right * cos) : (left, right);
+      => (angle > Numerics.Constants.EpsilonCpp32 || angle < Numerics.Constants.EpsilonCpp32) && angle * double.Pi is var anglePi && double.Cos(anglePi) is var cos && double.Sin(anglePi) is var sin ? (left * cos - right * sin, left * sin + right * cos) : (left, right);
   }
 }

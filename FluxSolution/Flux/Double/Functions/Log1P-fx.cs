@@ -9,8 +9,8 @@ namespace Flux
     {
       if (x <= -1) throw new ArgumentOutOfRangeException(nameof(x));
 
-      if (System.Math.Abs(x) > 1e-4)
-        return System.Math.Log(1 + x);
+      if (double.Abs(x) > 1e-4)
+        return double.Log(1 + x);
 
       // Use Taylor approx. log(1 + x) = x - x^2/2 with error roughly x^3/3
       // Since |x| < 10^-4, |x|^3 < 10^-12, relative error less than 10^-8

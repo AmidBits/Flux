@@ -70,7 +70,7 @@
     /// <returns></returns>
     public Flux.DataStructures.BitArray64 And(Flux.DataStructures.BitArray64 other)
     {
-      for (var i = System.Math.Min(m_bitArray.Length, other.m_bitArray.Length) - 1; i >= 0; i--)
+      for (var i = int.Min(m_bitArray.Length, other.m_bitArray.Length) - 1; i >= 0; i--)
         m_bitArray[i] &= other.m_bitArray[i];
 
       return this;
@@ -170,7 +170,7 @@
     /// <returns></returns>
     public Flux.DataStructures.BitArray64 Or(Flux.DataStructures.BitArray64 other)
     {
-      for (var i = System.Math.Min(m_bitArray.Length, other.m_bitArray.Length) - 1; i >= 0; i--)
+      for (var i = int.Min(m_bitArray.Length, other.m_bitArray.Length) - 1; i >= 0; i--)
         m_bitArray[i] |= other.m_bitArray[i];
 
       return this;
@@ -238,7 +238,7 @@
     /// <returns></returns>
     public Flux.DataStructures.BitArray64 Xor(Flux.DataStructures.BitArray64 other)
     {
-      for (var i = System.Math.Min(m_bitArray.Length, other.m_bitArray.Length) - 1; i >= 0; i--)
+      for (var i = int.Min(m_bitArray.Length, other.m_bitArray.Length) - 1; i >= 0; i--)
         m_bitArray[i] ^= other.m_bitArray[i];
 
       return this;

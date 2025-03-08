@@ -46,7 +46,7 @@ namespace Flux
     }
 
     /// <summary>
-    /// <para>Computes <paramref name="radix"/> raised to the power of absolute(<paramref name="exponent"/>), using exponentiation by squaring, and also returns the <paramref name="reciprocal"/> of the result (i.e. 1.0 / result) as an out parameter. The reciprocal is the same as specifying a negative exponent to <see cref="System.Math.Pow"/>.</para>
+    /// <para>Computes <paramref name="radix"/> raised to the power of absolute(<paramref name="exponent"/>), using exponentiation by squaring, and also returns the <paramref name="reciprocal"/> of the result (i.e. 1.0 / result) as an out parameter. The reciprocal is the same as specifying a negative exponent to <see cref="double.Pow(double, double)"/>.</para>
     /// </summary>
     /// <typeparam name="TRadix"></typeparam>
     /// <param name="radix">The radix (base) to be raised to the power-of-<paramref name="exponent"/>.</param>

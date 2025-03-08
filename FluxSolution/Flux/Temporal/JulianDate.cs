@@ -56,7 +56,7 @@ namespace Flux.Temporal
     #region Conversion methods
 
     /// <summary>Converts the julian-date time fraction to time-of-day in seconds. The fractional part represents the unit time, from the preceeding noon to the next, in Universal Time.</summary>
-    public static Units.Time ConvertTimeOfDayToTime(double julianDate) => new((julianDate - System.Math.Truncate(julianDate)) * 86400d);
+    public static Units.Time ConvertTimeOfDayToTime(double julianDate) => new((julianDate - double.Truncate(julianDate)) * 86400d);
 
     /// <summary>
     /// <para>Converts a Julian Date (JD) to a Julian Day Number (JDN).</para>

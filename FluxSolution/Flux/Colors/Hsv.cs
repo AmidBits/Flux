@@ -24,7 +24,7 @@ namespace Flux.Colors
     {
       var lightness = m_value * (1 - m_saturation / 2);
 
-      return new Hsl(m_hue, lightness == 0 || lightness == 1 ? 0 : (m_value - lightness) / System.Math.Min(lightness, 1 - lightness), lightness);
+      return new Hsl(m_hue, lightness == 0 || lightness == 1 ? 0 : (m_value - lightness) / double.Min(lightness, 1 - lightness), lightness);
     }
 
     /// <summary>Converts to a Hwb color.</summary>
@@ -35,7 +35,7 @@ namespace Flux.Colors
     {
       var c = GetChroma();
       var h = m_hue / 60;
-      var x = c * (1 - System.Math.Abs((h % 2) - 1));
+      var x = c * (1 - double.Abs((h % 2) - 1));
 
       var m = m_value - c;
 

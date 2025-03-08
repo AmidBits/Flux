@@ -17,14 +17,14 @@ namespace Flux.Colors
     public double Saturation { get => m_saturation; init => m_saturation = value; }
     public double Intensity { get => m_intensity; init => m_intensity = value; }
 
-    public double GetChroma() => 3 * m_intensity * m_saturation / (1 + (1 - System.Math.Abs((m_hue / 60 % 2) - 1)));
+    public double GetChroma() => 3 * m_intensity * m_saturation / (1 + (1 - double.Abs((m_hue / 60 % 2) - 1)));
 
     /// <summary>Creates an RGB color corresponding to the HSI instance.</summary>
     public Rgb ToRgb()
     {
       var c = GetChroma();
       var h = m_hue / 60;
-      var x = c * (1 - System.Math.Abs((h % 2) - 1));
+      var x = c * (1 - double.Abs((h % 2) - 1));
 
       var m = m_intensity * (1 - m_saturation);
 

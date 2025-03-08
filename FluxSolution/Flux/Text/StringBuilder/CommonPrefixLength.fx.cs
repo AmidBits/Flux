@@ -66,7 +66,7 @@ namespace Flux
 
       equalityComparer ??= System.Collections.Generic.EqualityComparer<char>.Default;
 
-      var minLength = System.Math.Min(source.Length, value.Length);
+      var minLength = int.Min(source.Length, value.Length);
 
       var length = 0;
       while (length < minLength && offset < source.Length && length < maxLength && equalityComparer.Equals(source[offset++], value[length]))

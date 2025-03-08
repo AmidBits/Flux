@@ -22,9 +22,9 @@ namespace Flux
 
       for (var si = 1; si <= source.Length; si++)
         for (var ti = 1; ti <= target.Length; ti++)
-          ldg[si, ti] = System.Math.Min(
+          ldg[si, ti] = double.Min(
             ldg[si - 1, ti] + costOfDeletion,
-            System.Math.Min(
+            double.Min(
               ldg[si, ti - 1] + costOfInsertion,
               equalityComparer.Equals(source[si - 1], target[ti - 1]) ? ldg[si - 1, ti - 1] : ldg[si - 1, ti - 1] + costOfSubstitution
             )
@@ -64,9 +64,9 @@ namespace Flux
 
         for (var j = 0; j < target.Length; j++)
         {
-          v0[j + 1] = System.Math.Min(
+          v0[j + 1] = double.Min(
             v1[j + 1] + costOfDeletion, // Deletion.
-            System.Math.Min(
+            double.Min(
               v0[j] + costOfInsertion, // Insertion.
               equalityComparer.Equals(source[i], target[j]) ? v1[j] : v1[j] + costOfSubstitution // Substitution.
             )
@@ -102,9 +102,9 @@ namespace Flux
 
       for (var si = 1; si <= source.Length; si++)
         for (var ti = 1; ti <= target.Length; ti++)
-          ldg[si, ti] = System.Math.Min(
+          ldg[si, ti] = int.Min(
             ldg[si - 1, ti] + 1, // Deletion.
-            System.Math.Min(
+            int.Min(
               ldg[si, ti - 1] + 1, // Insertion.
               equalityComparer.Equals(source[si - 1], target[ti - 1]) ? ldg[si - 1, ti - 1] : ldg[si - 1, ti - 1] + 1 // Substitution.
             )
@@ -173,9 +173,9 @@ namespace Flux
 
         for (var ti = 0; ti < target.Length; ti++)
         {
-          v0[ti + 1] = System.Math.Min(
+          v0[ti + 1] = int.Min(
             v1[ti + 1] + 1, // Deletion.
-            System.Math.Min(
+            int.Min(
               v0[ti] + 1, // Insertion.
               equalityComparer.Equals(source[si], target[ti]) ? v1[ti] : v1[ti] + 1 // Substitution.
             )
@@ -272,6 +272,6 @@ namespace Flux
     /// <para>This Levenshtein algorithm does not rely on a complete matrix. It only needs two alternating horizontal rows throughout the process.</para>
     /// </remarks>
     public static double LevenshteinDistanceSmd<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
-      => (double)LevenshteinDistanceMetric(source, target, equalityComparer) / (double)System.Math.Max(source.Length, target.Length);
+      => (double)LevenshteinDistanceMetric(source, target, equalityComparer) / (double)int.Max(source.Length, target.Length);
   }
 }

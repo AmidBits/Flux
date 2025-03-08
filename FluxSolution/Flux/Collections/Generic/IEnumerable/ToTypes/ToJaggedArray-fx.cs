@@ -12,7 +12,7 @@ namespace Flux
 
       while (sourceList.Count != 0)
       {
-        var count = System.Math.Min(countSelector(sourceList), sourceList.Count); // Cannot select more elements than is in the list.
+        var count = int.Min(countSelector(sourceList), sourceList.Count); // Cannot select more elements than is in the list.
 
         var resultList = new System.Collections.Generic.List<TResult>();
 

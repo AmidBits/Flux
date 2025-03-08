@@ -123,7 +123,7 @@ function BellmanFord(list vertices, list edges, vertex source) is
         }
 
         for (var i = 0; i < vertexCount; i++)
-          pi![i] = System.Math.Min(pi[i] + distance[i], double.PositiveInfinity);
+          pi![i] = double.Min(pi[i] + distance[i], double.PositiveInfinity);
 
         return found![x]; // Return the value obtained at target.
       }
@@ -139,7 +139,7 @@ function BellmanFord(list vertices, list edges, vertex source) is
           var amt = double.PositiveInfinity; // Set the default amount.
 
           for (var i = x; i != y; i = dad[i])
-            amt = System.Math.Min(amt, flow[i, dad[i]] != 0 ? flow[i, dad[i]] : capacitySelector(source.GraphGetState(dad[i], i)) - flow[dad[i], i]);
+            amt = double.Min(amt, flow[i, dad[i]] != 0 ? flow[i, dad[i]] : capacitySelector(source.GraphGetState(dad[i], i)) - flow[dad[i], i]);
 
           for (var i = x; i != y; i = dad[i])
           {

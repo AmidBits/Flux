@@ -4,9 +4,9 @@ namespace Flux.Dsp
   {
     public static double Noise(double x, double y)
     {
-      var x0 = (int)System.Math.Floor(x);
+      var x0 = (int)double.Floor(x);
       var x1 = x0 + 1;
-      var y0 = (int)System.Math.Floor(y);
+      var y0 = (int)double.Floor(y);
       var y1 = y0 + 1;
 
       var sx = x - x0;
@@ -43,7 +43,7 @@ namespace Flux.Dsp
 
       var random = a * (3.14159265 / ~(~0u >> 1)); // in [0, 2*Pi]
 
-      return new((float)System.Math.Cos(random), (float)System.Math.Sin(random));
+      return new((float)double.Cos(random), (float)double.Sin(random));
     }
     public static double DotGridGradient(int ix, int iy, double x, double y)
     {

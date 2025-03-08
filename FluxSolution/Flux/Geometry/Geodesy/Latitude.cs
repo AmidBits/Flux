@@ -34,7 +34,7 @@ namespace Flux.Geometry.Geodesy
     /// https://en.wikipedia.org/wiki/Mercator_projection
     /// https://en.wikipedia.org/wiki/Web_Mercator_projection#Formulas
     public double GetMercatorProjectedY()
-      => System.Math.Clamp(System.Math.Log(System.Math.Tan(System.Math.PI / 4 + Angle.Value / 2)), -System.Math.PI, System.Math.PI);
+      => double.Clamp(double.Log(double.Tan(double.Pi / 4 + Angle.Value / 2)), -double.Pi, double.Pi);
 
     public string ToDecimalString() => m_angle.GetUnitValue(Units.AngleUnit.Degree).ToString(6.FormatUpToFractionalDigits());
 
@@ -61,11 +61,11 @@ namespace Flux.Geometry.Geodesy
 
     /// <summary>Computes the approximate length in meters per degree of latitudinal at the specified latitude.</summary>
     /// <param name="lat">The latitude in radians.</param>
-    public static double GetApproximateLatitudinalHeight(double lat) => 111132.954 + -559.822 * System.Math.Cos(2 * lat) + 1.175 * System.Math.Cos(4 * lat) + -0.0023 * System.Math.Cos(6 * lat);
+    public static double GetApproximateLatitudinalHeight(double lat) => 111132.954 + -559.822 * double.Cos(2 * lat) + 1.175 * double.Cos(4 * lat) + -0.0023 * double.Cos(6 * lat);
 
     /// <summary>Computes the approximate length in meters per degree of longitudinal at the specified latitude.</summary>
     /// <param name="lat">The latitude in radians.</param>
-    public static double GetApproximateLongitudinalWidth(double lat) => 111412.84 * System.Math.Cos(lat) + -93.5 * System.Math.Cos(3 * lat) + 0.118 * System.Math.Cos(5 * lat);
+    public static double GetApproximateLongitudinalWidth(double lat) => 111412.84 * double.Cos(lat) + -93.5 * double.Cos(3 * lat) + 0.118 * double.Cos(5 * lat);
 
     /// <summary>Determines an approximate radius in meters.</summary>
     /// <see href="https://en.wikipedia.org/wiki/Earth_radius#Radius_at_a_given_geodetic_latitude"/>
@@ -73,19 +73,19 @@ namespace Flux.Geometry.Geodesy
     /// <param name="lat">The latitude in radians.</param>
     public static double GetApproximateRadius(double lat, double equatorialRadius, double polarRadius)
     {
-      var (sin, cos) = System.Math.SinCos(lat);
+      var (sin, cos) = double.SinCos(lat);
 
-      var numerator = System.Math.Pow(System.Math.Pow(equatorialRadius, 2) * cos, 2) + System.Math.Pow(System.Math.Pow(polarRadius, 2) * sin, 2);
-      var denominator = System.Math.Pow(equatorialRadius * cos, 2) + System.Math.Pow(polarRadius * sin, 2);
+      var numerator = double.Pow(double.Pow(equatorialRadius, 2) * cos, 2) + double.Pow(double.Pow(polarRadius, 2) * sin, 2);
+      var denominator = double.Pow(equatorialRadius * cos, 2) + double.Pow(polarRadius * sin, 2);
 
-      return System.Math.Sqrt(numerator / denominator);
+      return double.Sqrt(numerator / denominator);
     }
 
     /// <summary>Clairaut’s formula will give you the maximum latitude of a great circle path, given a bearing and latitude on the great circle.</summary>
     /// <param name="lat">The latitude in radians.</param>
     /// <param name="azm">The azimuth in radians.</param>
     /// <returns></returns>
-    public static double GetMaximumLatitude(double lat, double azm) => System.Math.Acos(System.Math.Abs(System.Math.Sin(azm) * System.Math.Cos(lat)));
+    public static double GetMaximumLatitude(double lat, double azm) => double.Acos(double.Abs(double.Sin(azm) * double.Cos(lat)));
 
     public static Latitude ParseDmsNotation(string dmsNotation)
       => Units.Angle.TryParseDmsNotations(dmsNotation, out var dmsNotations) ? (Latitude)dmsNotations.First(e => e is Latitude) : throw new System.InvalidOperationException();

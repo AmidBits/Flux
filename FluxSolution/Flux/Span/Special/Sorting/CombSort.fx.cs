@@ -19,7 +19,7 @@ namespace Flux
 
       while (isSorted == false)
       {
-        gap = (int)System.Math.Floor(gap / shrinkFactor);
+        gap = (int)double.Floor(gap / shrinkFactor);
 
         if (gap <= 1)
         {

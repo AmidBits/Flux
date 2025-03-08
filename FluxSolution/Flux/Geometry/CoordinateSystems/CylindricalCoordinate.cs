@@ -98,7 +98,7 @@ namespace Flux.Geometry.CoordinateSystems
 
       return new(
         double.Sqrt(r * r + h * h), Units.LengthUnit.Meter,
-        (double.Pi / 2) - double.Atan(h / r), Units.AngleUnit.Radian, // "System.Math.Atan(m_radius / m_height);", does NOT work for Takapau, New Zealand. Have to use elevation math instead of inclination, and investigate.
+        (double.Pi / 2) - double.Atan(h / r), Units.AngleUnit.Radian, // "double.Atan(m_radius / m_height);", does NOT work for Takapau, New Zealand. Have to use elevation math instead of inclination, and investigate.
         m_azimuth.Value, Units.AngleUnit.Radian
       );
     }
@@ -114,14 +114,14 @@ namespace Flux.Geometry.CoordinateSystems
 
     #region Static methods
 
-    public static CylindricalCoordinate FromCartesianCoordinates(double x, double y, double z)
-    {
-      return new(
-        double.Sqrt(x * x + y * y), Units.LengthUnit.Meter,
-        (double.Atan2(y, x) + double.Tau) % double.Tau, Units.AngleUnit.Radian,
-        z, Units.LengthUnit.Meter
-      );
-    }
+    //public static CylindricalCoordinate FromCartesianCoordinates(double x, double y, double z)
+    //{
+    //  return new(
+    //    double.Sqrt(x * x + y * y), Units.LengthUnit.Meter,
+    //    (double.Atan2(y, x) + double.Tau) % double.Tau, Units.AngleUnit.Radian,
+    //    z, Units.LengthUnit.Meter
+    //  );
+    //}
 
     #endregion // Static methods
 

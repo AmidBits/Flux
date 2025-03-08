@@ -117,11 +117,12 @@ namespace Flux
           foreach (var token in chain[key].Keys)
           {
             var count = chain[key][token];
-            var weighted = System.Math.Floor(System.Math.Pow(count, 1.3));
+            var weighted = double.Floor(double.Pow(count, 1.3));
 
             chain[key][token] = weighted;
             table_len[key] += weighted;
-          };
+          }
+          ;
         }
 
         chain["table_len"] = table_len;
@@ -160,7 +161,7 @@ namespace Flux
 
         var len = value;
 
-        var idx = System.Math.Floor(m_rng.NextDouble() * len);
+        var idx = double.Floor(m_rng.NextDouble() * len);
 
         var tokens = chain[key].Keys.ToList();
         var acc = 0d;

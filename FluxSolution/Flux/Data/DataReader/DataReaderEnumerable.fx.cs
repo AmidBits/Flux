@@ -48,7 +48,7 @@ namespace Flux.Data
         return field.Length; // MS docs: If you pass a buffer that is null, GetBytes returns the length of the row in bytes.
       }
 
-      var count = System.Math.Min(System.Math.Min(length, buffer.Length - bufferIndex), field.Length - fieldIndex);
+      var count = long.Min(int.Min(length, buffer.Length - bufferIndex), field.Length - fieldIndex);
 
       if (count <= int.MaxValue)
       {
@@ -74,7 +74,7 @@ namespace Flux.Data
         return field.Length; // MS docs: If you pass a buffer that is null, GetChars returns the length of the field in characters.
       }
 
-      var count = System.Math.Min(System.Math.Min(length, buffer.Length - bufferIndex), field.Length - fieldIndex);
+      var count = long.Min(int.Min(length, buffer.Length - bufferIndex), field.Length - fieldIndex);
 
       if (count <= int.MaxValue)
       {
@@ -115,7 +115,7 @@ namespace Flux.Data
     {
       System.ArgumentNullException.ThrowIfNull(values);
 
-      var count = System.Math.Min(FieldCount, values.Length);
+      var count = int.Min(FieldCount, values.Length);
 
       for (var index = count - 1; index >= 0; index--)
       {

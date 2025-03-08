@@ -51,7 +51,7 @@ namespace Flux
     public static int GetMaxDepth<TValue>(this DataStructures.BinaryTrees.IBinaryTree<TValue> source)
       => source.IsEmpty
       ? 0
-      : 1 + System.Math.Max(
+      : 1 + int.Max(
           source.Left.GetMaxDepth(),
           source.Right.GetMaxDepth()
         );
@@ -138,7 +138,7 @@ namespace Flux
       }
 
       if (left.HasValue && right.HasValue)
-        return isMax ? System.Math.Max(left.Value, right.Value) : System.Math.Min(left.Value, right.Value);
+        return isMax ? int.Max(left.Value, right.Value) : int.Min(left.Value, right.Value);
       else if (left.HasValue)
         return left.Value;
       else if (right.HasValue)

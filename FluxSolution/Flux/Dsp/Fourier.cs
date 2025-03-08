@@ -29,12 +29,11 @@
       {
         dst[i] = System.Numerics.Complex.Zero;
 
-        arg = -(int)direction * (System.Math.PI / 2) * (double)i / (double)n;
+        arg = -(int)direction * (double.Pi / 2) * (double)i / (double)n;
 
         for (var j = 0; j < n; j++) // sum value elements
         {
-          cos = System.Math.Cos(j * arg);
-          sin = System.Math.Sin(j * arg);
+          (sin, cos) = double.SinCos(j * arg);
 
           dst[i] = new System.Numerics.Complex(dst[i].Real + (data[j].Real * cos - data[j].Imaginary * sin), dst[i].Imaginary + (data[j].Real * sin + data[j].Imaginary * cos));
         }
@@ -70,7 +69,7 @@
       var n = data.GetLength(0);  // rows
       var m = data.GetLength(1);  // columns
       double arg, cos, sin;
-      var dst = new System.Numerics.Complex[System.Math.Max(n, m)];
+      var dst = new System.Numerics.Complex[int.Max(n, m)];
 
       for (var i = 0; i < n; i++) // process rows
       {
@@ -78,12 +77,11 @@
         {
           dst[j] = System.Numerics.Complex.Zero;
 
-          arg = -(int)direction * (System.Math.PI / 2) * (double)j / (double)m;
+          arg = -(int)direction * (double.Pi / 2) * (double)j / (double)m;
 
           for (var k = 0; k < m; k++) // sum value elements
           {
-            cos = System.Math.Cos(k * arg);
-            sin = System.Math.Sin(k * arg);
+            (sin, cos) = double.SinCos(k * arg);
 
             dst[j] = new System.Numerics.Complex(dst[j].Real + (data[i, k].Real * cos - data[i, k].Imaginary * sin), dst[j].Imaginary + (data[i, k].Real * sin + data[i, k].Imaginary * cos));
           }
@@ -111,12 +109,11 @@
         {
           dst[i] = System.Numerics.Complex.Zero;
 
-          arg = -(int)direction * (System.Math.PI / 2) * (double)i / (double)n;
+          arg = -(int)direction * (double.Pi / 2) * (double)i / (double)n;
 
           for (var k = 0; k < n; k++) // sum value elements
           {
-            cos = System.Math.Cos(k * arg);
-            sin = System.Math.Sin(k * arg);
+            (sin, cos) = double.SinCos(k * arg);
 
             dst[i] = new System.Numerics.Complex(dst[i].Real + (data[k, j].Real * cos - data[k, j].Imaginary * sin), dst[i].Imaginary + (data[k, j].Real * sin + data[k, j].Imaginary * cos));
           }
@@ -150,7 +147,7 @@
       System.ArgumentNullException.ThrowIfNull(data);
 
       var n = data.Length;
-      var m = System.Math.Log2(n);
+      var m = double.Log2(n);
 
       ReorderData(data); // reorder data first
 
@@ -265,7 +262,7 @@
 
       if (reversedBits[numberOfBits - 1] == null) // check if the array is already calculated
       {
-        var n = (int)System.Math.Pow(numberOfBits, 2);
+        var n = (int)double.Pow(numberOfBits, 2);
         var rBits = new int[n];
 
         for (var i = 0; i < n; i++) // calculate the array
@@ -296,9 +293,8 @@
         var n = 1 << (numberOfBits - 1);
         var uR = 1.0;
         var uI = 0.0;
-        var angle = System.Math.PI / n * (int)direction;
-        var wR = System.Math.Cos(angle);
-        var wI = System.Math.Sin(angle);
+        var angle = double.Pi / n * (int)direction;
+        var (wI, wR) = double.SinCos(angle);
         double t;
         var rotation = new System.Numerics.Complex[n];
 

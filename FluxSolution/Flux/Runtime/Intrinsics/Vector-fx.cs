@@ -1063,7 +1063,7 @@ namespace Flux
     public static Vector128<double> RoundToNegativeInfinity(this Vector128<double> source)
       => System.Runtime.Intrinsics.X86.Sse41.IsSupported
       ? System.Runtime.Intrinsics.X86.Sse41.RoundToNegativeInfinity(source)
-      : Vector128.Create(System.Math.Round(source[0], System.MidpointRounding.ToNegativeInfinity), System.Math.Round(source[1], System.MidpointRounding.ToNegativeInfinity));
+      : Vector128.Create(double.Round(source[0], System.MidpointRounding.ToNegativeInfinity), double.Round(source[1], System.MidpointRounding.ToNegativeInfinity));
 
     /// <summary>Returns a new vector with the components rounded to their nearest integer values, that are towards negative infinity.</summary>
     public static Vector256<double> RoundToNegativeInfinity(this Vector256<double> source)

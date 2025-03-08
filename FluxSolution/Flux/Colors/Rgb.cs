@@ -25,14 +25,14 @@ namespace Flux.Colors
     /// <see href="https://en.wikipedia.org/wiki/Chrominance"/>
     public double GetChroma(out double min, out double max, out double r, out double g, out double b)
     {
-      r = System.Math.Clamp(m_red / 255d, 0, 1);
-      g = System.Math.Clamp(m_green / 255d, 0, 1);
-      b = System.Math.Clamp(m_blue / 255d, 0, 1);
+      r = double.Clamp(m_red / 255d, 0, 1);
+      g = double.Clamp(m_green / 255d, 0, 1);
+      b = double.Clamp(m_blue / 255d, 0, 1);
 
-      min = System.Math.Min(System.Math.Min(r, g), b);
-      max = System.Math.Max(System.Math.Max(r, g), b);
+      min = double.Min(double.Min(r, g), b);
+      max = double.Max(double.Max(r, g), b);
 
-      return System.Math.Clamp(max - min, 0, 1);
+      return double.Clamp(max - min, 0, 1);
     }
 
     /// <summary>Returns the hue [0, 360] for the RGB value.</summary>
@@ -92,8 +92,8 @@ namespace Flux.Colors
       g = m_green / 255d;
       b = m_blue / 255d;
 
-      max = System.Math.Max(System.Math.Max(r, g), b);
-      min = System.Math.Min(System.Math.Min(r, g), b);
+      max = double.Max(double.Max(r, g), b);
+      min = double.Min(double.Min(r, g), b);
 
       return max - min;
     }
@@ -106,10 +106,10 @@ namespace Flux.Colors
       var b = m_blue / 255d;
 
       var alpha = (2 * r - g - b) / 2;
-      var beta = (System.Math.Sqrt(3) / 2) * (g - b);
+      var beta = (double.Sqrt(3) / 2) * (g - b);
 
-      chroma2 = System.Math.Sqrt(alpha * alpha + beta * beta);
-      hue2 = double.RadiansToDegrees(System.Math.Atan2(beta, alpha)).WrapAround(0, 360);
+      chroma2 = double.Sqrt(alpha * alpha + beta * beta);
+      hue2 = double.RadiansToDegrees(double.Atan2(beta, alpha)).WrapAround(0, 360);
     }
 
     /// <summary>Converts the RGB color to grayscale using the specified method.
@@ -124,7 +124,8 @@ namespace Flux.Colors
         case GrayscaleMethod.Luminosity601: return new Rgb((byte)(m_red * 0.30), (byte)(m_green * 0.59), (byte)(m_blue * 0.11));
         case GrayscaleMethod.Luminosity709: return new Rgb((byte)(m_red * 0.21), (byte)(m_green * 0.72), (byte)(m_blue * 0.07));
         default: throw new System.ArgumentOutOfRangeException(nameof(method));
-      };
+      }
+      ;
     }
 
     /// <summary>Creates a CMYK color corresponding to the RGB instance.</summary>
@@ -133,9 +134,9 @@ namespace Flux.Colors
       GetNormalizedChroma(out var _, out var max, out var r, out var g, out var b);
       var k = 1 - max;
       var ki = 1 - k;
-      var c = System.Math.Clamp(ki - r, 0, 1) / ki;
-      var m = System.Math.Clamp(ki - g, 0, 1) / ki;
-      var y = System.Math.Clamp(ki - b, 0, 1) / ki;
+      var c = double.Clamp(ki - r, 0, 1) / ki;
+      var m = double.Clamp(ki - g, 0, 1) / ki;
+      var y = double.Clamp(ki - b, 0, 1) / ki;
       return new(c, m, y, k);
     }
 
@@ -153,7 +154,7 @@ namespace Flux.Colors
     {
       var h = GetHue(out var min, out var max, out var _, out var _, out var _, out var chroma);
       var l = 0.5 * (max + min);
-      var s = l == 0 || l == 1 ? 0 : System.Math.Clamp(chroma / (1 - System.Math.Abs(2 * l - 1)), 0, 1);
+      var s = l == 0 || l == 1 ? 0 : double.Clamp(chroma / (1 - double.Abs(2 * l - 1)), 0, 1);
       return new(h, s, l);
     }
 

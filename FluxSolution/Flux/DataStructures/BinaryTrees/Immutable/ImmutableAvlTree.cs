@@ -28,7 +28,7 @@ namespace Flux.DataStructures.BinaryTrees.Immutable
       m_value = value;
       m_left = left;
       m_right = right;
-      m_height = 1 + System.Math.Max(Height(left), Height(right));
+      m_height = 1 + int.Max(Height(left), Height(right));
     }
 
     #region IBinaryTree<TValue>

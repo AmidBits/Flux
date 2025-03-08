@@ -47,7 +47,7 @@ namespace Flux
         }
         else
         {
-          n = System.Convert.ToInt32(System.Math.Floor(y)) - 1;  // will use n later
+          n = System.Convert.ToInt32(double.Floor(y)) - 1;  // will use n later
           y -= n;
         }
 
@@ -98,7 +98,7 @@ namespace Flux
         return double.PositiveInfinity; // Correct answer too large to display. 
       }
 
-      return System.Math.Exp(LogGamma(x));
+      return double.Exp(LogGamma(x));
     }
   }
 }

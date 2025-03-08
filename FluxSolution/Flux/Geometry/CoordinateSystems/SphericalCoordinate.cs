@@ -159,16 +159,16 @@ namespace Flux.Geometry.CoordinateSystems
 
     #endregion // Conversion methods
 
-    public static SphericalCoordinate FromCartesianCoordinates(double x, double y, double z)
-    {
-      var x2y2 = x * x + y * y;
+    //public static SphericalCoordinate FromCartesianCoordinates(double x, double y, double z)
+    //{
+    //  var x2y2 = x * x + y * y;
 
-      return new(
-        double.Sqrt(x2y2 + z * z), Units.LengthUnit.Meter,
-        double.Atan2(double.Sqrt(x2y2), z) + double.Pi, Units.AngleUnit.Radian,
-        double.Atan2(y, x) + double.Pi, Units.AngleUnit.Radian
-      );
-    }
+    //  return new(
+    //    double.Sqrt(x2y2 + z * z), Units.LengthUnit.Meter,
+    //    double.Atan2(double.Sqrt(x2y2), z) + double.Pi, Units.AngleUnit.Radian,
+    //    double.Atan2(y, x) + double.Pi, Units.AngleUnit.Radian
+    //  );
+    //}
 
     #endregion // Static methods
 

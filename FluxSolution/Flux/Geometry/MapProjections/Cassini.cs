@@ -8,8 +8,8 @@
 
     public System.Numerics.Vector3 ProjectForward(CoordinateSystems.GeographicCoordinate project)
       => new(
-        (float)System.Math.Asin(System.Math.Cos(project.Latitude.Value) * System.Math.Sin(project.Longitude.Value)),
-        (float)System.Math.Atan(System.Math.Tan(project.Latitude.Value) / System.Math.Cos(project.Longitude.Value)),
+        (float)double.Asin(double.Cos(project.Latitude.Value) * double.Sin(project.Longitude.Value)),
+        (float)double.Atan(double.Tan(project.Latitude.Value) / double.Cos(project.Longitude.Value)),
         (float)project.Altitude.Value
       );
 

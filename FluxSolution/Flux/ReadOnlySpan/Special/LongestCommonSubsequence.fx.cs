@@ -32,7 +32,7 @@ namespace Flux
         (v0, v1) = (v1, v0);
 
         for (var j = target.Length - 1; j >= 0; j--)
-          v0[j] = equalityComparer.Equals(source[i], target[j]) ? v1[j + 1] + 1 : System.Math.Max(v1[j], v0[j + 1]);
+          v0[j] = equalityComparer.Equals(source[i], target[j]) ? v1[j + 1] + 1 : int.Max(v1[j], v0[j + 1]);
       }
 
       return v0[0] + equalAtStart + equalAtEnd;
@@ -66,7 +66,7 @@ namespace Flux
 
       for (int si = 0; si < source.Length; si++)
         for (int ti = 0; ti < target.Length; ti++)
-          lcsg[si + 1, ti + 1] = equalityComparer.Equals(source[si], target[ti]) ? lcsg[si, ti] + 1 : System.Math.Max(lcsg[si + 1, ti], lcsg[si, ti + 1]);
+          lcsg[si + 1, ti + 1] = equalityComparer.Equals(source[si], target[ti]) ? lcsg[si, ti] + 1 : int.Max(lcsg[si + 1, ti], lcsg[si, ti + 1]);
 
       return lcsg;
     }
@@ -124,7 +124,7 @@ namespace Flux
     /// <para>This algorithm does not rely on a complete matrix. It only needs two alternating horizontal rows throughout the process.</para>
     /// </remarks>
     public static double LongestCommonSubsequenceSmd<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
-      => (double)LongestCommonSubsequenceMetric(source, target, equalityComparer) / (double)System.Math.Max(source.Length, target.Length);
+      => (double)LongestCommonSubsequenceMetric(source, target, equalityComparer) / (double)int.Max(source.Length, target.Length);
 
     /// <summary>
     /// <para>Finding the longest common subsequence (LCS) of two sequences. It differs from problems of finding common substrings: unlike substrings, subsequences are not required to occupy consecutive positions within the original sequences.</para>

@@ -22,7 +22,7 @@ namespace Flux.Statistics.Quartile
     public static double ComputeAt(System.Collections.Generic.IEnumerable<double> sample, double p)
     {
       var a = p * (sample.Count() + 1);
-      var k = System.Math.Truncate(a);
+      var k = double.Truncate(a);
 
       a -= k;
 

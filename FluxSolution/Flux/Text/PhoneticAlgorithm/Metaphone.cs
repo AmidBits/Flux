@@ -223,7 +223,7 @@
     /// <summary>Moves the current position ahead the specified number of characters.</summary>
     void MoveAhead(int count = 1)
     {
-      __pos = System.Math.Min(__pos + count, __text.Length);
+      __pos = int.Min(__pos + count, __text.Length);
     }
 
     /// <summary>Returns the character at the current position.</summary>

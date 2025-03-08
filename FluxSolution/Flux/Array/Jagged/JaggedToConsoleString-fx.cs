@@ -24,7 +24,7 @@ namespace Flux
 
       for (var r = length0 - 1; r >= 0; r--)
         for (var c = source[r].Length - 1; c >= 0; c--)
-          maxWidths[c] = System.Math.Max(maxWidths[c], $"{source[r][c]}".Length); // Find the max width for each column from all sub-arrays.
+          maxWidths[c] = int.Max(maxWidths[c], $"{source[r][c]}".Length); // Find the max width for each column from all sub-arrays.
 
       var maxWidth = maxWidths.Max(); // Find the total max width.
 

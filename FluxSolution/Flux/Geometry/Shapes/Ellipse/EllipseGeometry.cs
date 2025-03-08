@@ -98,15 +98,15 @@ namespace Flux.Geometry.Shapes.Ellipse
     /// <summary>Returns an ellipse geometry from the specified cartesian coordinates. The angle (radians) is derived as starting at a 90 degree angle (i.e. 3 o'clock), so not at the "top" as may be expected.</summary>
     public static (double a, double b) ConvertCartesian2ToEllipse(double x, double y)
       => (
-        System.Math.Sqrt(x * x + y * y),
-        System.Math.Atan2(y, x)
+        double.Sqrt(x * x + y * y),
+        double.Atan2(y, x)
       );
 
     /// <summary></summary>
     public static (double x, double y) ConvertEllipseToCartesian2(double a, double b, double rotationAngle = 0)
       => (
-        System.Math.Cos(rotationAngle) * a,
-        System.Math.Sin(rotationAngle) * b
+        double.Cos(rotationAngle) * a,
+        double.Sin(rotationAngle) * b
       );
 
     #endregion // Conversion methods
@@ -127,7 +127,7 @@ namespace Flux.Geometry.Shapes.Ellipse
     {
       rng ??= System.Random.Shared;
 
-      var arc = System.Math.Tau / count;
+      var arc = double.Tau / count;
 
       for (var index = 0; index < count; index++)
       {

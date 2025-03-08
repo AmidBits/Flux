@@ -62,9 +62,9 @@ namespace Flux.Geometry.Rotations
     {
       KeplerianElements.ToRotationMatrix(m_rightAscensionOfAscendingNode.Value, m_inclination.Value, m_argumentOfPerigee.Value, out var x1, out var x2, out var x3, out var y1, out var y2, out var y3, out var z1, out var z2, out var z3);
 
-      //var (so, co) = System.Math.SinCos(m_rightAscensionOfAscendingNode.Value);
-      //var (si, ci) = System.Math.SinCos(m_inclination.Value);
-      //var (sw, cw) = System.Math.SinCos(m_argumentOfPerigee.Value);
+      //var (so, co) = double.SinCos(m_rightAscensionOfAscendingNode.Value);
+      //var (si, ci) = double.SinCos(m_inclination.Value);
+      //var (sw, cw) = double.SinCos(m_argumentOfPerigee.Value);
 
       //var x1 = co * cw - so * ci * sw;
       //var x2 = so * cw + co * ci * sw;
@@ -89,7 +89,7 @@ namespace Flux.Geometry.Rotations
     #region Static methods
 
     public static double ComputeProportionalityConstant(double gravitionalConstant, double massOfSun, double massOfPlanet)
-      => System.Math.Pow(4 * System.Math.PI, 2) / (gravitionalConstant * (massOfSun + massOfPlanet));
+      => double.Pow(4 * double.Pi, 2) / (gravitionalConstant * (massOfSun + massOfPlanet));
 
     //
     //public static EulerAngles ToEulerAngles(CartesianCoordinate3 x, CartesianCoordinate3 y, CartesianCoordinate3 z)
@@ -98,9 +98,9 @@ namespace Flux.Geometry.Rotations
     //  y = CartesianCoordinate3.Normalize(y);
     //  z = CartesianCoordinate3.Normalize(z);
 
-    //  var alpha = System.Math.Atan2(-x.Y, z.X);
-    //  var beta = System.Math.Atan2(z.Z, System.Math.Sqrt(z.X * z.X + z.Y * z.Y));
-    //  var gamma = System.Math.Atan2(y.Z, x.Z);
+    //  var alpha = double.Atan2(-x.Y, z.X);
+    //  var beta = double.Atan2(z.Z, double.Sqrt(z.X * z.X + z.Y * z.Y));
+    //  var gamma = double.Atan2(y.Z, x.Z);
 
     //  return new(alpha, beta, gamma);
     //}
@@ -108,9 +108,9 @@ namespace Flux.Geometry.Rotations
     //
     //public static void ToOrbitalElements(double x1, double x2, double x3, double y1, double y2, double y3, double z1, double z2, double z3, out double radInclination, out double radRightAscensionOfAscendingNode, out double radArgumentOfPerigee)
     //{
-    //  radRightAscensionOfAscendingNode = System.Math.Atan2(-x2, z1);
-    //  radInclination = System.Math.Atan2(z3, System.Math.Sqrt(z1 * z1 + z2 * z2));
-    //  radArgumentOfPerigee = System.Math.Atan2(y3, x3);
+    //  radRightAscensionOfAscendingNode = double.Atan2(-x2, z1);
+    //  radInclination = double.Atan2(z3, double.Sqrt(z1 * z1 + z2 * z2));
+    //  radArgumentOfPerigee = double.Atan2(y3, x3);
     //}
     #endregion Static methods
 

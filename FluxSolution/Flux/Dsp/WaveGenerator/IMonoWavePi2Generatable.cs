@@ -13,7 +13,7 @@ namespace Flux.Dsp.WaveGenerator
     /// <summary>Returns the absolute phase (negative phase align correctly on positive side) normalized to 2*PI [0, 2*PI).</summary>
     public static double AbsolutePhasePi2(double phasePi2)
       => phasePi2 < 0
-      ? (phasePi2 % System.Math.Tau) + System.Math.Tau // Align phased correctly on positive side.
-      : phasePi2 % System.Math.Tau;
+      ? (phasePi2 % double.Tau) + double.Tau // Align phased correctly on positive side.
+      : phasePi2 % double.Tau;
   }
 }

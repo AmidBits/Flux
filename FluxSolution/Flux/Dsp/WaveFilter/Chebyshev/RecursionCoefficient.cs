@@ -85,8 +85,8 @@ namespace Flux.Dsp.WaveFilter.Chebyshev
             SB += B[i];
             break;
           case 1:
-            SA += A[i] * System.Math.Pow(-1.0, i);
-            SB += B[i] * System.Math.Pow(-1.0, i);
+            SA += A[i] * double.Pow(-1.0, i);
+            SB += B[i] * double.Pow(-1.0, i);
             break;
         }
       }
@@ -111,32 +111,32 @@ namespace Flux.Dsp.WaveFilter.Chebyshev
     /// <see cref="http://www.dspguide.com/ch20/4.htm"/>
     public static (double A0, double A1, double A2, double B1, double B2) Subroutine(double FC, int LH, double PR, int NP, int P)
     {
-      var poleAngle = System.Math.PI / (NP * 2) + (P - 1) * (System.Math.PI / NP);
+      var poleAngle = double.Pi / (NP * 2) + (P - 1) * (double.Pi / NP);
 
       // Calculate the pole location on the unit circle.
-      var RP = -System.Math.Cos(poleAngle);
-      var IP = System.Math.Sin(poleAngle);
+      var RP = -double.Cos(poleAngle);
+      var IP = double.Sin(poleAngle);
 
       if (PR > 0) // Warp from a circle to an ellipse.
       {
-        var ES = System.Math.Sqrt(System.Math.Pow(100.0 / (100.0 - PR), 2.0) - 1.0);
+        var ES = double.Sqrt(double.Pow(100.0 / (100.0 - PR), 2.0) - 1.0);
         var NPi = 1.0 / NP;
         var ESi = 1 / ES;
         var ES2i = 1 / (ES * ES);
-        var VX = NPi * System.Math.Log(ESi + System.Math.Sqrt(ES2i + 1.0));
-        var KX = NPi * System.Math.Log(ESi + System.Math.Sqrt(ES2i - 1.0));
-        KX = (System.Math.Exp(KX) + System.Math.Exp(-KX)) / 2.0;
-        var expVX = System.Math.Exp(VX);
-        var expVXn = System.Math.Exp(-VX);
+        var VX = NPi * double.Log(ESi + double.Sqrt(ES2i + 1.0));
+        var KX = NPi * double.Log(ESi + double.Sqrt(ES2i - 1.0));
+        KX = (double.Exp(KX) + double.Exp(-KX)) / 2.0;
+        var expVX = double.Exp(VX);
+        var expVXn = double.Exp(-VX);
         RP = RP * ((expVX - expVXn) / 2.0) / KX;
         IP = IP * ((expVX + expVXn) / 2.0) / KX;
       }
 
       // s-domain to z-domain conversion
-      var T = 2.0 * System.Math.Tan(0.5);
+      var T = 2.0 * double.Tan(0.5);
       var T2 = (T * T);
       var RPmulT = RP * T;
-      var W = (System.Math.PI / 2) * FC;
+      var W = (double.Pi / 2) * FC;
       var M = (RP * RP) + (IP * IP);
       var MmulT2 = M * T2;
       var D = 4.0 - 4.0 * RPmulT + MmulT2;
@@ -151,10 +151,10 @@ namespace Flux.Dsp.WaveFilter.Chebyshev
       switch (LH)
       {
         case 0:
-          K = System.Math.Sin(0.5 - K) / System.Math.Sin(0.5 + K);
+          K = double.Sin(0.5 - K) / double.Sin(0.5 + K);
           break;
         case 1:
-          K = -System.Math.Cos(K + 0.5) / System.Math.Cos(K - 0.5);
+          K = -double.Cos(K + 0.5) / double.Cos(K - 0.5);
           break;
       }
       var K2 = (K * K);

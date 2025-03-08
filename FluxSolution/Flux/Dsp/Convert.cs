@@ -2,8 +2,8 @@ namespace Flux.Dsp
 {
   public static partial class Convert
   {
-    public const double Decibel2Logarithm = 0.11512925464970228420089957273422; // System.Math.Log(10.0) / 20.0
-    public const double Logarithm2Decibel = 8.6858896380650365530225783783321; // 20.0 / System.Math.Log(10.0)
+    public const double Decibel2Logarithm = 0.11512925464970228420089957273422; // double.Log(10.0) / 20.0
+    public const double Logarithm2Decibel = 8.6858896380650365530225783783321; // 20.0 / double.Log(10.0)
 
     /// <summary>The energy quantity scalar for conversions.</summary>
     public const double EnergyQuantity = 10;
@@ -23,7 +23,7 @@ namespace Flux.Dsp
     /// <returns>The factor (as a ratio).</returns>
     /// <seealso cref="http://www.sengpielaudio.com/calculator-FactorRatioLevelDecibel.htm"/>
     public static double DecibelsToRatio(double dB, double referenceFactor = 1, double quantityScalar = FieldQuantity)
-      => referenceFactor * System.Math.Pow(10, dB / quantityScalar);
+      => referenceFactor * double.Pow(10, dB / quantityScalar);
 
     /// <summary>Conversion from factor (ratio) to gain (decibels).</summary>
     /// <param name="ratio">The factor (ratio) to convert into decibels.</param>
@@ -32,7 +32,7 @@ namespace Flux.Dsp
     /// <returns>The gain (in decibels).</returns>
     /// <seealso cref="http://www.sengpielaudio.com/calculator-FactorRatioLevelDecibel.htm"/>
     public static double RatioToDecibels(double ratio, double referenceFactor = 1, double quantityScalar = FieldQuantity)
-      => quantityScalar * System.Math.Log10(ratio / referenceFactor);
+      => quantityScalar * double.Log10(ratio / referenceFactor);
 
     /// <summary>Convert a mono sample into a set of stereo samples.</summary>
     public static (double sampleL, double sampleR) MonoToStereo(double sampleM) => (sampleM, sampleM);

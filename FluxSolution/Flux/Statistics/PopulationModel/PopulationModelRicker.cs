@@ -40,6 +40,6 @@ namespace Flux.Statistics.PopulationModel
     /// <returns>The expected number (or density) of individuals in (the next) generation (Nt + 1).</returns>
     /// <see href="https://en.wikipedia.org/wiki/Ricker_model"/>
     public static double Compute(double population, double growthRate, double carryingCapacity)
-      => population * System.Math.Pow(System.Math.E, growthRate * (1 - (population / carryingCapacity)));
+      => population * double.Pow(double.E, growthRate * (1 - (population / carryingCapacity)));
   }
 }

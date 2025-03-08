@@ -24,7 +24,7 @@ namespace Flux
           {
             v0[j] = v1[j + 1] + 1;
 
-            maxLength = System.Math.Max(maxLength, v0[j]);
+            maxLength = int.Max(maxLength, v0[j]);
           }
           else
           {

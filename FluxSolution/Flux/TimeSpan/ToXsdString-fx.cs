@@ -11,16 +11,16 @@ namespace Flux
 
       sm = sm.Append('P');
 
-      if (System.Math.Abs(source.Days) is var days && days > 0)
+      if (int.Abs(source.Days) is var days && days > 0)
         sm = sm.Append(days).Append('D');
 
       if (
-        System.Math.Abs(source.Hours) is var h
-        && System.Math.Abs(source.Minutes) is var m
-        && System.Math.Abs(source.Seconds) is var s
-        && System.Math.Abs(source.Milliseconds) is var milli
-        && System.Math.Abs(source.Microseconds) is var micro
-        && System.Math.Abs(source.Nanoseconds) is var nano
+        int.Abs(source.Hours) is var h
+        && int.Abs(source.Minutes) is var m
+        && int.Abs(source.Seconds) is var s
+        && int.Abs(source.Milliseconds) is var milli
+        && int.Abs(source.Microseconds) is var micro
+        && int.Abs(source.Nanoseconds) is var nano
         && (h != 0 || m != 0 || s != 0 || milli != 0 || micro != 0 || nano != 0)
       )
       {

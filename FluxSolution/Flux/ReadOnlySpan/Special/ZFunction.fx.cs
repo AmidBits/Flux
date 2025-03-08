@@ -21,7 +21,7 @@ namespace Flux
       for (int i = 1, l = 0, r = 0; i < source.Length; i++)
       {
         if (i <= r)
-          z[i] = System.Math.Min(r - i + 1, z[i - l]);
+          z[i] = int.Min(r - i + 1, z[i - l]);
 
         while (i + z[i] < source.Length && equalityComparer.Equals(source[z[i]], source[i + z[i]]))
           z[i]++;

@@ -9,7 +9,7 @@ namespace Flux.Dsp.WaveProcessor
     public double PolarBias
     {
       get => m_polarBias;
-      set => m_polarBias = System.Math.Clamp(value, -1.0, 1.0);
+      set => m_polarBias = double.Clamp(value, -1.0, 1.0);
     }
 
     private double m_multiplier;
@@ -19,7 +19,7 @@ namespace Flux.Dsp.WaveProcessor
       get => m_multiplier > 1.0 ? (m_multiplier - 1.0) / 9.0 : m_multiplier - 1.0;
       set
       {
-        m_multiplier = System.Math.Clamp(value, -1.0, 1.0);
+        m_multiplier = double.Clamp(value, -1.0, 1.0);
 
         if (m_multiplier > Numerics.Constants.EpsilonCpp32)
           m_multiplier = m_multiplier * 9.0 + 1.0;

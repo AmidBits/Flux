@@ -53,7 +53,7 @@ namespace Flux.DataStructures
           {
             if (m_items.Select(i => i.Position).Distinct().Count() > 1)
             {
-              if (System.Math.Abs(BoundaryHigh.X - BoundaryLow.X) > 1 && System.Math.Abs(BoundaryHigh.Y - BoundaryLow.Y) > 1)
+              if (int.Abs(BoundaryHigh.X - BoundaryLow.X) > 1 && int.Abs(BoundaryHigh.Y - BoundaryLow.Y) > 1)
               {
                 Split();
               }

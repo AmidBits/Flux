@@ -10,10 +10,10 @@
 
       var w = n.W;
 
-      var angle = System.Math.Acos(w);
+      var angle = double.Acos(w);
       angle += angle; // Times 2!
 
-      var s = System.Math.Sqrt(1 - w * w); // Assuming quaternion normalized then w is less than 1, so term always positive.
+      var s = double.Sqrt(1 - w * w); // Assuming quaternion normalized then w is less than 1, so term always positive.
 
       if (s < 0.001) // Test to avoid divide by zero. If s close to zero then direction of axis not important.
         return new(1, Units.LengthUnit.Meter, 0, Units.LengthUnit.Meter, 0, Units.LengthUnit.Meter, angle, Units.AngleUnit.Radian); // If it is important that axis is normalised then replace with x=1; y=z=0;
@@ -38,19 +38,19 @@
 
       if (test > 0.499 * unit) // Singularity at north pole when pitch approaches +90.
       {
-        var xw = System.Math.Atan2(x, w);
-        return new(double.CreateChecked(xw + xw), Units.AngleUnit.Radian, System.Math.PI / 2, Units.AngleUnit.Radian, 0, Units.AngleUnit.Radian);
+        var xw = double.Atan2(x, w);
+        return new(double.CreateChecked(xw + xw), Units.AngleUnit.Radian, double.Pi / 2, Units.AngleUnit.Radian, 0, Units.AngleUnit.Radian);
       }
 
       if (test < -0.499 * unit) // Singularity at south pole when pitch approaches -90.
       {
-        var xw = System.Math.Atan2(x, w);
-        return new(double.CreateChecked(-(xw + xw)), Units.AngleUnit.Radian, -System.Math.PI / 2, Units.AngleUnit.Radian, 0, Units.AngleUnit.Radian);
+        var xw = double.Atan2(x, w);
+        return new(double.CreateChecked(-(xw + xw)), Units.AngleUnit.Radian, -double.Pi / 2, Units.AngleUnit.Radian, 0, Units.AngleUnit.Radian);
       }
 
-      var h = System.Math.Atan2((y + y) * w - (x + x) * z, sqx - sqy - sqz + sqw);
-      var a = System.Math.Asin((test + test) / unit);
-      var b = System.Math.Atan2((x + x) * w - (y + y) * z, -sqx + sqy - sqz + sqw);
+      var h = double.Atan2((y + y) * w - (x + x) * z, sqx - sqy - sqz + sqw);
+      var a = double.Asin((test + test) / unit);
+      var b = double.Atan2((x + x) * w - (y + y) * z, -sqx + sqy - sqz + sqw);
 
       return new(double.CreateChecked(h), Units.AngleUnit.Radian, double.CreateChecked(a), Units.AngleUnit.Radian, double.CreateChecked(b), Units.AngleUnit.Radian);
     }

@@ -15,7 +15,7 @@ namespace Flux
 
       if (x < 12.0)
       {
-        return System.Math.Log(System.Math.Abs(Gamma(x)));
+        return double.Log(double.Abs(Gamma(x)));
       }
 
       // Abramowitz and Stegun 6.1.41
@@ -52,7 +52,7 @@ namespace Flux
 
       var halfLogTwoPi = 0.91893853320467274178032973640562;
 
-      var logGamma = (x - 0.5) * System.Math.Log(x) - x + halfLogTwoPi + series;
+      var logGamma = (x - 0.5) * double.Log(x) - x + halfLogTwoPi + series;
 
       return logGamma;
     }

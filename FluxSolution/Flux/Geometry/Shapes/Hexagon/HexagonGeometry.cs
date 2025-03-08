@@ -63,7 +63,7 @@ namespace Flux.Geometry.Shapes.Hexagon
     /// <param name="inradius"></param>
     /// <returns></returns>
     /// <remarks>The inradius is also known as minimal radius.</remarks>
-    public static double ConvertInradiusToCircumradius(double inradius) => inradius * 2 / System.Math.Sqrt(3);
+    public static double ConvertInradiusToCircumradius(double inradius) => inradius * 2 / double.Sqrt(3);
 
     /// <summary>
     /// <para>Compute the hexagon inradius from its <paramref name="circumradius"/>.</para>
@@ -71,7 +71,7 @@ namespace Flux.Geometry.Shapes.Hexagon
     /// <param name="circumradius"></param>
     /// <returns></returns>
     /// <remarks>The circumradius, or maximal radius, is equal to the side-length of a hexagon.</remarks>
-    public static double ConvertCircumradiusToInradius(double circumradius) => circumradius * System.Math.Sqrt(3) / 2;
+    public static double ConvertCircumradiusToInradius(double circumradius) => circumradius * double.Sqrt(3) / 2;
 
     #endregion // Conversion methods
 
@@ -102,7 +102,7 @@ namespace Flux.Geometry.Shapes.Hexagon
     /// </summary>
     /// <remarks>Indexing of the centered hexagonal number is 1-based. Index is also referred to as "ring".</remarks>
     public static int IndexOfCenteredHexagonalNumber(int centeredHexagonalNumber)
-      => centeredHexagonalNumber > 0 ? (3 + (int)System.Math.Sqrt(12 * centeredHexagonalNumber - 3)) / 6 : throw new System.ArgumentOutOfRangeException(nameof(centeredHexagonalNumber));
+      => centeredHexagonalNumber > 0 ? (3 + (int)double.Sqrt(12 * centeredHexagonalNumber - 3)) / 6 : throw new System.ArgumentOutOfRangeException(nameof(centeredHexagonalNumber));
 
     /// <summary>
     /// <para>Returns whether a point (<paramref name="x"/>, <paramref name="y"/>) is inside the hexagon with the specified <paramref name="sideLength"/>.</para>
@@ -114,11 +114,11 @@ namespace Flux.Geometry.Shapes.Hexagon
     /// <returns></returns>
     public static bool PointInHexagon(double sideLength, double x, double y)
     {
-      var q2x = System.Math.Abs(x);         // transform the test point locally and to quadrant 2
-      var q2y = System.Math.Abs(y);         // transform the test point locally and to quadrant 2
+      var q2x = double.Abs(x);         // transform the test point locally and to quadrant 2
+      var q2y = double.Abs(y);         // transform the test point locally and to quadrant 2
 
       var v = sideLength;
-      var h = 2 * sideLength * System.Math.Cos(30);
+      var h = 2 * sideLength * double.Cos(30);
 
       if (q2x > h || q2y > v * 2) return false;           // bounding test (since q2 is in quadrant 2 only 2 tests are needed)
 

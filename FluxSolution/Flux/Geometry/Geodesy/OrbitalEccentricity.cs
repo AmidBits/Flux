@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class Em
   {
     public static Units.OrbitalEccentricityClass GetOrbitalEccentricityClass(this Units.OrbitalEccentricity source)
       => source.Value switch

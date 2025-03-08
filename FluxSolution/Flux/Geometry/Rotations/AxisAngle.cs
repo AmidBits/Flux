@@ -17,7 +17,7 @@ namespace Flux.Geometry.Rotations
       var yd = y.Value;
       var zd = z.Value;
 
-      if (System.Math.Sqrt(xd * xd + yd * yd + zd * zd) is var magnitude && magnitude == 0)
+      if (double.Sqrt(xd * xd + yd * yd + zd * zd) is var magnitude && magnitude == 0)
         throw new ArithmeticException("Invalid axis (magnitude = 0).");
 
       m_x = x /= magnitude;
@@ -28,7 +28,7 @@ namespace Flux.Geometry.Rotations
     }
 
     public AxisAngle(double xValue, Units.LengthUnit xUnit, double yValue, Units.LengthUnit yUnit, double zValue, Units.LengthUnit zUnit, double angleValue, Units.AngleUnit angleUnit)
-      : this(new Units.Length(xValue, xUnit), new Units.Length(yValue, yUnit), new Units.Length(zValue, zUnit), new Units.Angle(angleValue, angleUnit)) { }
+      : this(new(xValue, xUnit), new(yValue, yUnit), new(zValue, zUnit), new(angleValue, angleUnit)) { }
 
     public void Deconstruct(out double x, out double y, out double z, out double angle) { x = m_x.Value; y = m_y.Value; z = m_z.Value; angle = m_angle.Value; }
 

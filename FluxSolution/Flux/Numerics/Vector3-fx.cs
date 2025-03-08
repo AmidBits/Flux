@@ -5,7 +5,7 @@ namespace Flux
     #region 3D vector (non-collection) computations
 
     public static float AbsoluteSum(this System.Numerics.Vector3 source)
-      => System.Math.Abs(source.X) + System.Math.Abs(source.Y) + System.Math.Abs(source.Z);
+      => float.Abs(source.X) + float.Abs(source.Y) + float.Abs(source.Z);
 
     /// <summary>Returns the angle for the source point to the other two specified points.</summary>>
     public static double AngleBetween(this System.Numerics.Vector3 source, System.Numerics.Vector3 before, System.Numerics.Vector3 after)
@@ -17,7 +17,7 @@ namespace Flux
     /// When dot lt 0 then the angle is greater than 90 degrees (dot=-1 can be interpreted as the opposite direction).
     /// </summary>
     public static double AngleTo(this System.Numerics.Vector3 source, System.Numerics.Vector3 target)
-      => System.Math.Acos(System.Math.Clamp(System.Numerics.Vector3.Dot(System.Numerics.Vector3.Normalize(source), System.Numerics.Vector3.Normalize(target)), -1, 1));
+      => double.Acos(double.Clamp(System.Numerics.Vector3.Dot(System.Numerics.Vector3.Normalize(source), System.Numerics.Vector3.Normalize(target)), -1, 1));
     //    //{
     //    //  var cross = System.Numerics.Vector3.Cross(source, target);
 
@@ -34,18 +34,18 @@ namespace Flux
     /// <summary>Compute the Chebyshev length of a vector.</summary>
     /// <see href="https://en.wikipedia.org/wiki/Chebyshev_distance"/>
     public static float ChebyshevLength(this System.Numerics.Vector3 source, float edgeLength = 1)
-      => System.Math.Max(System.Math.Max(source.X, source.Y), source.Z) / edgeLength;
+      => float.Max(float.Max(source.X, source.Y), source.Z) / edgeLength;
 
     /// <summary>Returns the dot product of two non-normalized 3D vectors.</summary>
     /// <remarks>This method saves a square root computation by doing a two-in-one.</remarks>
     /// <see href="https://gamedev.stackexchange.com/a/89832/129646"/>
     public static float DotProductEx(this System.Numerics.Vector3 a, System.Numerics.Vector3 b)
-      => (float)(System.Numerics.Vector3.Dot(a, b) / System.Math.Sqrt(a.LengthSquared() * b.LengthSquared()));
+      => (float)(System.Numerics.Vector3.Dot(a, b) / double.Sqrt(a.LengthSquared() * b.LengthSquared()));
 
     /// <summary>Compute the Manhattan length (or magnitude) of the vector. Known as the Manhattan distance (i.e. from 0,0,0).</summary>
     /// <see href="https://en.wikipedia.org/wiki/Taxicab_geometry"/>
     public static float ManhattanLength(this System.Numerics.Vector3 source, float edgeLength = 1)
-      => (System.Math.Abs(source.X) + System.Math.Abs(source.Y) + System.Math.Abs(source.Z)) / edgeLength;
+      => (float.Abs(source.X) + float.Abs(source.Y) + float.Abs(source.Z)) / edgeLength;
 
     /// <summary>Lerp is a normalized linear interpolation between point a (unit interval = 0.0) and point b (unit interval = 1.0).</summary>
     public static System.Numerics.Vector3 Nlerp(this System.Numerics.Vector3 source, System.Numerics.Vector3 target, float mu)
@@ -65,7 +65,7 @@ namespace Flux
     /// <summary>Always works if the input is non-zero. Does not require the input to be normalised, and does not normalise the output.</summary>
     /// <see cref="http://lolengine.net/blog/2013/09/21/picking-orthogonal-vector-combing-coconuts"/>
     public static System.Numerics.Vector3 Orthogonal(this System.Numerics.Vector3 source)
-      => System.Math.Abs(source.X) > System.Math.Abs(source.Z) ? new System.Numerics.Vector3(-source.Y, source.X, 0) : new System.Numerics.Vector3(0, -source.Z, source.Y);
+      => double.Abs(source.X) > double.Abs(source.Z) ? new System.Numerics.Vector3(-source.Y, source.X, 0) : new System.Numerics.Vector3(0, -source.Z, source.Y);
 
     /// <summary>Rotate the vector around the specified axis.</summary>
     public static System.Numerics.Vector3 RotateAroundAxis(this System.Numerics.Vector3 source, System.Numerics.Vector3 axis, float angle)
@@ -83,10 +83,10 @@ namespace Flux
     /// <summary>Slerp travels the torque-minimal path, which means it travels along the straightest path the rounded surface of a sphere.</summary>>
     public static System.Numerics.Vector3 Slerp(this System.Numerics.Vector3 source, System.Numerics.Vector3 target, float percent = 0.5f)
     {
-      var dot = System.Math.Clamp(System.Numerics.Vector3.Dot(source, target), -1.0f, 1.0f); // Ensure precision doesn't exceed acos limits.
-      var theta = System.MathF.Acos(dot) * percent; // Angle between start and desired.
+      var dot = float.Clamp(System.Numerics.Vector3.Dot(source, target), -1.0f, 1.0f); // Ensure precision doesn't exceed acos limits.
+      var theta = float.Acos(dot) * percent; // Angle between start and desired.
       var relative = System.Numerics.Vector3.Normalize(target - source * dot);
-      return source * System.MathF.Cos(theta) + relative * System.MathF.Sin(theta);
+      return source * float.Cos(theta) + relative * float.Sin(theta);
     }
 
     /// <summary>Returns a quaternion from two vectors.
@@ -95,7 +95,7 @@ namespace Flux
     /// </summary>
     public static System.Numerics.Quaternion ToQuaternion(this System.Numerics.Vector3 source, System.Numerics.Vector3 target)
     {
-      var norm_u_norm_v = System.Math.Sqrt(System.Numerics.Vector3.Dot(source, source) * System.Numerics.Vector3.Dot(target, target));
+      var norm_u_norm_v = double.Sqrt(System.Numerics.Vector3.Dot(source, source) * System.Numerics.Vector3.Dot(target, target));
       var real_part = (float)norm_u_norm_v + System.Numerics.Vector3.Dot(source, target);
 
       System.Numerics.Vector3 w;
@@ -105,7 +105,7 @@ namespace Flux
         real_part = 0;
 
         // If u and v are exactly opposite, rotate 180 degrees around an arbitrary orthogonal axis. Axis normalisation can happen later, when we normalise the quaternion.
-        w = System.Math.Abs(source.X) > System.Math.Abs(source.Z) ? new System.Numerics.Vector3(-source.Y, source.X, 0) : new System.Numerics.Vector3(0, -source.Z, source.Y);
+        w = double.Abs(source.X) > double.Abs(source.Z) ? new System.Numerics.Vector3(-source.Y, source.X, 0) : new System.Numerics.Vector3(0, -source.Z, source.Y);
       }
       else
       {
@@ -149,7 +149,7 @@ namespace Flux
 
     /// <summary>Compute the surface area of the polygon. (2D/3D)</summary>
     public static double ComputeArea(this System.Collections.Generic.IEnumerable<System.Numerics.Vector3> source)
-      => System.Math.Abs(ComputeAreaSigned(source));
+      => double.Abs(ComputeAreaSigned(source));
 
     /// <summary>Returns the centroid (a.k.a. geometric center, arithmetic mean, barycenter, etc.) point of the polygon. (2D/3D)</summary>
     public static System.Numerics.Vector3 ComputeCentroid(this System.Collections.Generic.IEnumerable<System.Numerics.Vector3> source)
@@ -180,7 +180,7 @@ namespace Flux
       => source.PartitionTuple2(true, (e1, e2, index) => (e1, (e2 + e1) / 2, e2, index));
 
     public static bool InsidePolygon(this System.Collections.Generic.IEnumerable<System.Numerics.Vector3> source, System.Numerics.Vector3 vector)
-      => System.Math.Abs(AngleSum(source, vector)) > 1;
+      => double.Abs(AngleSum(source, vector)) > 1;
 
     /// <summary>Determines whether the polygon is convex. (2D/3D)</summary>
     public static bool IsConvexPolygon(this System.Collections.Generic.IEnumerable<System.Numerics.Vector3> source)
@@ -261,7 +261,7 @@ namespace Flux
     /// <remarks>Applicable to any shape with more than 3 vertices.</remarks>
     public static System.Collections.Generic.IEnumerable<System.Collections.Generic.List<System.Numerics.Vector3>> SplitByTriangulation(this System.Collections.Generic.IEnumerable<System.Numerics.Vector3> source, Geometry.TriangulationType mode, System.Random? rng = null)
     {
-      const double halfPi = System.Math.PI / 2;
+      const double halfPi = double.Pi / 2;
 
       var copy = source.ToList();
 
@@ -275,8 +275,8 @@ namespace Flux
           Geometry.TriangulationType.Randomized => copy.PartitionTuple3(2, (v1, v2, v3, i) => (v1, v2, v3, i, 0d)).Random(rng),
           Geometry.TriangulationType.SmallestAngle => GetAnglesEx(copy).Aggregate((a, b) => a.angle < b.angle ? a : b),
           Geometry.TriangulationType.LargestAngle => GetAnglesEx(copy).Aggregate((a, b) => a.angle > b.angle ? a : b),
-          Geometry.TriangulationType.LeastSquare => GetAnglesEx(copy).Aggregate((a, b) => System.Math.Abs(a.angle - halfPi) > System.Math.Abs(b.angle - halfPi) ? a : b),
-          Geometry.TriangulationType.MostSquare => GetAnglesEx(copy).Aggregate((a, b) => System.Math.Abs(a.angle - halfPi) < System.Math.Abs(b.angle - halfPi) ? a : b),
+          Geometry.TriangulationType.LeastSquare => GetAnglesEx(copy).Aggregate((a, b) => double.Abs(a.angle - halfPi) > double.Abs(b.angle - halfPi) ? a : b),
+          Geometry.TriangulationType.MostSquare => GetAnglesEx(copy).Aggregate((a, b) => double.Abs(a.angle - halfPi) < double.Abs(b.angle - halfPi) ? a : b),
           _ => throw new System.Exception(),
         };
 

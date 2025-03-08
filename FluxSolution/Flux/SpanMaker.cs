@@ -721,7 +721,7 @@ namespace Flux
 
       if (totalWidth > sm.Length)
       {
-        var quotient = System.Math.DivRem(totalWidth - sm.Length, 2, out var remainder);
+        var (quotient, remainder) = int.DivRem(totalWidth - sm.Length, 2);
 
         sm = sm.PadLeft(sm.Length + (leftBias && remainder > 0 ? quotient + 1 : quotient), paddingLeft);
         sm = sm.PadRight(totalWidth, paddingRight);

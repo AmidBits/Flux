@@ -82,7 +82,7 @@ namespace Flux.Units
       => unit switch
       {
         SolidAngleUnit.Steradian => 1,
-        SolidAngleUnit.Spat => System.Math.Tau + System.Math.Tau,
+        SolidAngleUnit.Spat => double.Tau + double.Tau,
 
         _ => throw new System.NotImplementedException()
       };

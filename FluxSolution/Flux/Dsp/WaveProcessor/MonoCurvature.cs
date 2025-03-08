@@ -13,7 +13,7 @@ namespace Flux.Dsp.WaveProcessor
       get => m_contour;
       set
       {
-        m_contour = System.Math.Clamp(value, -1.0, 1.0);
+        m_contour = double.Clamp(value, -1.0, 1.0);
 
         m_contourScaled = m_contour is > Numerics.Constants.Epsilon1E7 or < -Numerics.Constants.Epsilon1E7 ? (-m_contour * 0.1 + 1) : 0;
       }

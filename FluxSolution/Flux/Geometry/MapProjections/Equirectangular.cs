@@ -11,14 +11,14 @@
 
     public System.Numerics.Vector3 ProjectForward(CoordinateSystems.GeographicCoordinate project)
       => new(
-        (float)(project.Altitude.Value * (project.Longitude.Value - CenterOfMap.Longitude.Value) * System.Math.Cos(StandardParallels)),
+        (float)(project.Altitude.Value * (project.Longitude.Value - CenterOfMap.Longitude.Value) * double.Cos(StandardParallels)),
         (float)(project.Altitude.Value * (project.Latitude.Value - CenterOfMap.Latitude.Value)),
         (float)project.Altitude.Value
       );
 
     public CoordinateSystems.GeographicCoordinate ProjectReverse(System.Numerics.Vector3 project)
       => new(
-        project.X / (project.Z * System.Math.Cos(StandardParallels)) + CenterOfMap.Longitude.Value,
+        project.X / (project.Z * double.Cos(StandardParallels)) + CenterOfMap.Longitude.Value,
         Units.AngleUnit.Radian,
         project.Y / project.Z + CenterOfMap.Latitude.Value,
         Units.AngleUnit.Radian,
