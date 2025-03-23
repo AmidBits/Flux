@@ -28,7 +28,7 @@ namespace Flux.Geometry.Shapes.Hexagon
     /// <summary>
     /// <para>The perimeter of the hexagon.</para>
     /// </summary>
-    public double Perimeter => Units.Length.PerimeterOfHexagon(m_sideLength);
+    public double Perimeter => Units.Length.OfHexagonPerimeter(m_sideLength);
 
     /// <summary>
     /// <para>The side-length of the hexagon, which is equal to the circumradius.</para>
@@ -129,11 +129,11 @@ namespace Flux.Geometry.Shapes.Hexagon
 
     #region Implemented interfaces
 
-    public string ToString(string? format, IFormatProvider? formatProvider)
+    public string ToString(string? format, IFormatProvider? provider)
     {
       format ??= "N3";
 
-      return $"{GetType().Name} {{ SideLength = {SideLength.ToString(format, formatProvider)}, Circumradius = {Circumradius.ToString(format, formatProvider)}, Inradius = {Inradius.ToString(format, formatProvider)}, Perimeter = {Perimeter.ToString(format, formatProvider)}, SurfaceArea = {SurfaceArea.ToString(format, formatProvider)} }}";
+      return $"{GetType().Name} {{ SideLength = {SideLength.ToString(format, provider)}, Circumradius = {Circumradius.ToString(format, provider)}, Inradius = {Inradius.ToString(format, provider)}, Perimeter = {Perimeter.ToString(format, provider)}, SurfaceArea = {SurfaceArea.ToString(format, provider)} }}";
     }
 
     #endregion // Implemented interfaces

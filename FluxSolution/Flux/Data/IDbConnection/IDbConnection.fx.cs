@@ -95,14 +95,14 @@
 
 //          if (columns.Count > 0)
 //          {
-//            //foreach (var kvp in source.ExecuteDictionary($"SELECT TOP 0 {string.Join(", ", columns)} FROM {table.QualifiedNameQuoted(3)} (NOLOCK); SELECT TOP 1 {string.Join(", ", columns)} FROM {table.QualifiedNameQuoted(3)} (NOLOCK);", commandTimeout))
-//            foreach (var kvp in source.ExecuteDictionary($"SELECT TOP 1 {string.Join(", ", columns)} FROM {table.QualifiedNameQuoted(3)} (NOLOCK);", commandTimeout))
+//            //foreach (var kvp in source.ExecuteDictionary($"SELECT TOP 0 {string.Join(Static.CommaSpace, columns)} FROM {table.QualifiedNameQuoted(3)} (NOLOCK); SELECT TOP 1 {string.Join(Static.CommaSpace, columns)} FROM {table.QualifiedNameQuoted(3)} (NOLOCK);", commandTimeout))
+//            foreach (var kvp in source.ExecuteDictionary($"SELECT TOP 1 {string.Join(Static.CommaSpace, columns)} FROM {table.QualifiedNameQuoted(3)} (NOLOCK);", commandTimeout))
 //            {
 //              dataRow[kvp.Key] = kvp.Value;
 //            }
 //          }
 
-//          //dataRow[indexStatistics] = source.ExecuteScalar($"SELECT TOP 0 {string.Join(", ", columns)} FROM {table.QualifiedNameQuoted(3)} (NOLOCK); SELECT TOP 1 {string.Join(", ", columns)} FROM {table.QualifiedNameQuoted(3)} (NOLOCK);", "NULL", 360);
+//          //dataRow[indexStatistics] = source.ExecuteScalar($"SELECT TOP 0 {string.Join(Static.CommaSpace, columns)} FROM {table.QualifiedNameQuoted(3)} (NOLOCK); SELECT TOP 1 {string.Join(Static.CommaSpace, columns)} FROM {table.QualifiedNameQuoted(3)} (NOLOCK);", "NULL", 360);
 //        }
 //      }
 

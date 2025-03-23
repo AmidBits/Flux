@@ -60,14 +60,14 @@
 //    //  => $"{Tsql.Select(columnNames)} FROM {tableName3.DatabaseNameQuoted}.[INFORMATION_SCHEMA].[TABLES] (NOLOCK) WHERE TABLE_CATALOG = '{tableName3.DatabaseName}' AND TABLE_SCHEMA = '{tableName3.SchemaName}' AND TABLE_NAME = '{tableName3.ObjectName}'";
 
 //    public static string JoinColumnNames(System.Collections.Generic.IEnumerable<string> columnNames, bool quoted = true, string? alias = null)
-//      => string.Join(@", ", columnNames.Any() ? columnNames.Select(cn => (alias is not null ? alias : string.Empty) + (quoted ? '[' + cn + ']' : cn)) : (alias is not null ? alias : string.Empty) + @"*");
+//      => string.Join(Static.CommaSpace, columnNames.Any() ? columnNames.Select(cn => (alias is not null ? alias : string.Empty) + (quoted ? '[' + cn + ']' : cn)) : (alias is not null ? alias : string.Empty) + @"*");
 //    public static string JoinColumnNames(params string[] columnNames)
 //      => JoinColumnNames(columnNames, true, null);
 
 
 //    /// <summary>Select all rows with column information from INFORMATION_SCHEMA.COLUMNS for the specified schema and table ordered by ordinal position.</summary>
 //    public static string SelectColumns(string schemaName, string tableName)
-//      => $"SELECT {string.Join(@", ", m_columns)} FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = '{schemaName}' AND TABLE_NAME = '{tableName}' ORDER BY ORDINAL_POSITION";
+//      => $"SELECT {string.Join(Static.CommaSpace, m_columns)} FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = '{schemaName}' AND TABLE_NAME = '{tableName}' ORDER BY ORDINAL_POSITION";
 //    /// <summary>Select rows from [sys].[columns] for the specified table, optionally with specified columns.</summary>
 //    public static string SelectColumns(TsqlName tableName3, params string[] columnNames)
 //      => $"SELECT {(columnNames.Any() ? JoinColumnNames(columnNames) : @"C.*")} FROM sys.schemas S (NOLOCK) INNER JOIN sys.tables AS T (NOLOCK) ON (S.[schema_id] = T.[schema_id]) INNER JOIN sys.columns AS C (NOLOCK) ON (T.[object_id] = C.[object_id]) INNER JOIN sys.types CT (NOLOCK) ON (C.system_type_id = CT.system_type_id AND C.user_type_id = CT.user_type_id) WHERE DB_NAME() = '{tableName3.DatabaseName}' AND S.[name] = '{tableName3.SchemaName}' AND T.[name] = '{tableName3.ObjectName}' ORDER BY [column_id]";

@@ -8,7 +8,7 @@ namespace Units
     [TestMethod]
     public void BigRational()
     {
-      var u = new Flux.Units.BigRational(1);
+      var u = new Flux.Numerics.BigRational(1);
 
       Assert.AreEqual(1, u.Value);
     }

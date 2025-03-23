@@ -7,7 +7,7 @@ namespace Flux.Temporal
   /// </summary>
   /// <remarks>Julian Date is not related to the Julian Calendar. Functionality that compute on the Julian Calendar will have JulianCalendar in the name.</remarks>
   public readonly record struct JulianDate
-    : System.IComparable, System.IComparable<JulianDate>, System.IFormattable, IValueQuantifiable<double>
+    : System.IComparable, System.IComparable<JulianDate>, System.IFormattable, Units.IValueQuantifiable<double>
   {
     public static readonly JulianDate GregorianCalendarEpoch = new(2299160.5); // 1582/10/15 (midnight)
     public static readonly JulianDate JulianCalendarEpoch = new(1718501.5); // -0007/01/01 (midnight)

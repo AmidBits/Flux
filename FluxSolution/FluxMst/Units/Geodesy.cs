@@ -10,7 +10,7 @@ namespace Units
     {
       var a = new Flux.Units.Angle(1, Flux.Units.AngleUnit.Degree);
 
-      var u = new Flux.Geometry.Geodesy.Azimuth(a);
+      var u = new Flux.Geodesy.Azimuth(a);
 
       Assert.AreEqual(a.GetUnitValue(Flux.Units.AngleUnit.Degree), u.Value);
     }
@@ -20,7 +20,7 @@ namespace Units
     {
       var a = new Flux.Units.Angle(1, Flux.Units.AngleUnit.Degree);
 
-      var u = new Flux.Geometry.Geodesy.Latitude(a);
+      var u = new Flux.Geodesy.Latitude(a);
 
       Assert.AreEqual(a.GetUnitValue(Flux.Units.AngleUnit.Degree), u.Value);
     }
@@ -30,7 +30,7 @@ namespace Units
     {
       var a = new Flux.Units.Angle(1, Flux.Units.AngleUnit.Degree);
 
-      var u = new Flux.Geometry.Geodesy.Longitude(a);
+      var u = new Flux.Geodesy.Longitude(a);
 
       Assert.AreEqual(a.GetUnitValue(Flux.Units.AngleUnit.Degree), u.Value);
     }

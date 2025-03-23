@@ -6,7 +6,7 @@ namespace Flux.Geometry.CoordinateSystems
   /// </summary>
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
   public readonly record struct CartesianCoordinate
-    : System.IFormattable, IValueQuantifiable<System.Runtime.Intrinsics.Vector256<double>>
+    : System.IFormattable, Units.IValueQuantifiable<System.Runtime.Intrinsics.Vector256<double>>
   {
     public static CartesianCoordinate UnitX { get; } = new(1d, 0d, 0d, 0d);
     public static CartesianCoordinate UnitY { get; } = new(0d, 1d, 0d, 0d);
@@ -170,22 +170,6 @@ namespace Flux.Geometry.CoordinateSystems
 
     #region Static methods
 
-    ///// <summary>
-    ///// <para>Compute the Chebyshev length (using the specified edgeLength) of the cartesian coordinates.</para>
-    ///// <see href="https://en.wikipedia.org/wiki/Chebyshev_distance"/>
-    ///// </summary>
-    //public static TSelf ChebyshevLength<TSelf>(TSelf edgeLength, params TSelf[] cartesianCoordinates)
-    //  where TSelf : System.Numerics.INumber<TSelf>
-    //{
-    //  var max = TSelf.Zero;
-
-    //  for (var i = cartesianCoordinates.Length - 1; i >= 0; i--)
-    //    if (TSelf.Abs(cartesianCoordinates[i]) is var current && current > max)
-    //      max = current;
-
-    //  return max / edgeLength;
-    //}
-
     /// <summary>
     /// <para>Converts cartesian 2D (<paramref name="x"/>, <paramref name="y"/>) coordinates to a linear index of a grid with the <paramref name="width"/> (the length of the x-axis).</para>
     /// </summary>
@@ -225,21 +209,6 @@ namespace Flux.Geometry.CoordinateSystems
         linearIndex / xy
       );
     }
-
-    ///// <summary>
-    ///// <para>Compute the Manhattan length (using the specified edgeLength) of the cartesian coordinates.</para>
-    ///// <see href="https://en.wikipedia.org/wiki/Taxicab_geometry"/>
-    ///// </summary>
-    //public static TSelf ManhattanLength<TSelf>(TSelf edgeLength, params TSelf[] cartesianCoordinates)
-    //  where TSelf : System.Numerics.INumber<TSelf>
-    //{
-    //  var sum = TSelf.Zero;
-
-    //  for (var i = cartesianCoordinates.Length - 1; i >= 0; i--)
-    //    sum += TSelf.Abs(cartesianCoordinates[i]);
-
-    //  return sum / edgeLength;
-    //}
 
     #endregion // Static methods
 

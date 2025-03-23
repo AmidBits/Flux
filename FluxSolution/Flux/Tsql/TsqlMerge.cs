@@ -23,7 +23,7 @@
 //    public static string WhenNotMatchedBySource()
 //      => $"WHEN NOT MATCHED BY SOURCE THEN UPDATE SET T.[EffectiveEndDate] = @PriorProcessDate ";
 //    public static string WhenNotMatchedByTarget(string[] sourceColumnNames, string[] targetColumnNames)
-//      => $"WHEN NOT MATCHED BY TARGET THEN INSERT ({string.Join(", ", targetColumnNames.Select(name => $"[{name}]"))}, [EffectiveStartDate], [EffectiveEndDate]) VALUES ({string.Join(", ", sourceColumnNames.Select(name => $"S.[{name}]"))}, @ProcessDate, @EndDate)";
+//      => $"WHEN NOT MATCHED BY TARGET THEN INSERT ({string.Join(Static.CommaSpace, targetColumnNames.Select(name => $"[{name}]"))}, [EffectiveStartDate], [EffectiveEndDate]) VALUES ({string.Join(Static.CommaSpace, sourceColumnNames.Select(name => $"S.[{name}]"))}, @ProcessDate, @EndDate)";
 
 //    public static string OnCompareEquality(string columnName, string dataTypeName, bool allowDBNull)
 //      => OnCompareEquality(columnName, columnName, dataTypeName, allowDBNull);

@@ -12,18 +12,18 @@ namespace Flux.Geometry.Rotations
     /// <summary>
     /// <para><see href="https://ssd.jpl.nasa.gov/horizons/app.html#/"/></para>
     /// </summary>
-    public static KeplerianElements Mars { get; } = new(new Units.OrbitalEccentricity(9.327987858487280E-02), new Units.Length(MetricPrefix.Kilo, 2.279325209790799E+08), new Units.Angle(1.847854452956304E+00, Units.AngleUnit.Degree), new Units.Angle(4.948935675287289E+01, Units.AngleUnit.Degree), new Units.Angle(2.866702002890120E+02, Units.AngleUnit.Degree), new Units.Angle(3.270334666858926E+02, Units.AngleUnit.Degree));
+    public static KeplerianElements Mars { get; } = new(new Geodesy.OrbitalEccentricity(9.327987858487280E-02), new Units.Length(Units.MetricPrefix.Kilo, 2.279325209790799E+08), new Units.Angle(1.847854452956304E+00, Units.AngleUnit.Degree), new Units.Angle(4.948935675287289E+01, Units.AngleUnit.Degree), new Units.Angle(2.866702002890120E+02, Units.AngleUnit.Degree), new Units.Angle(3.270334666858926E+02, Units.AngleUnit.Degree));
 
     public static readonly double TheObliquityOfTheEclipticInDegrees = 23.4;
 
-    private readonly Units.OrbitalEccentricity m_eccentricity;
+    private readonly Geodesy.OrbitalEccentricity m_eccentricity;
     private readonly Units.Length m_semiMajorAxis;
     private readonly Units.Angle m_inclination;
     private readonly Units.Angle m_longitudeOfAscendingNode;
     private readonly Units.Angle m_argumentOfPeriapsis;
     private readonly Units.Angle m_trueAnomaly;
 
-    public KeplerianElements(Units.OrbitalEccentricity eccentricity, Units.Length semiMajorAxis, Units.Angle inclination, Units.Angle longitudeOfAscendingNode, Units.Angle argumentOfPeriapsis, Units.Angle trueAnomaly)
+    public KeplerianElements(Geodesy.OrbitalEccentricity eccentricity, Units.Length semiMajorAxis, Units.Angle inclination, Units.Angle longitudeOfAscendingNode, Units.Angle argumentOfPeriapsis, Units.Angle trueAnomaly)
     {
       m_eccentricity = eccentricity;
       m_semiMajorAxis = semiMajorAxis;
@@ -37,7 +37,7 @@ namespace Flux.Geometry.Rotations
     /// <para>The amount by which an orbit around another body deviates from a perfect circle.</para>
     /// <para><see href="https://en.wikipedia.org/wiki/Orbital_eccentricity"/></para>
     /// </summary>
-    public Units.OrbitalEccentricity Eccentricity { get => m_eccentricity; init => m_eccentricity = value; }
+    public Geodesy.OrbitalEccentricity Eccentricity { get => m_eccentricity; init => m_eccentricity = value; }
 
     /// <summary>
     /// <para>The longest diameter of an ellipse.</para>

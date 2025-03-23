@@ -361,7 +361,7 @@
 
 //      foreach (Node node in currLevel)
 //      {
-//        Console.Write("[" + string.Join(", ", node.Keys.Select(k => k.ToString()).ToArray()) + "] ");
+//        Console.Write("[" + string.Join(Static.CommaSpace, node.Keys.Select(k => k.ToString()).ToArray()) + "] ");
 
 //        if (!node.Leaf)
 //        {

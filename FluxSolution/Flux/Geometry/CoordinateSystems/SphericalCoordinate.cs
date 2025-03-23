@@ -123,8 +123,16 @@ namespace Flux.Geometry.CoordinateSystems
 
     #region Conversion methods
 
-    /// <summary>Creates cartesian 3D coordinates from the inclination and azimuth of a <see cref="SphericalCoordinate"/>, but with triaxial ellipsoid as three radii for the X (A), Y (B) and Z (C) axis.</summary>
+    /// <summary>
+    /// <para>Creates cartesian 3D coordinates from the inclination and azimuth of a <see cref="SphericalCoordinate"/>, but with triaxial ellipsoid as three radii for the X (A), Y (B) and Z (C) axis.</para>
     /// <remarks>All angles in radians.</remarks>
+    /// </summary>
+    /// <param name="inclination"></param>
+    /// <param name="azimuth"></param>
+    /// <param name="radiusA"></param>
+    /// <param name="radiusB"></param>
+    /// <param name="radiusC"></param>
+    /// <returns></returns>
     public static (double x, double y, double z) ConvertSphericalByInclinationToCartesianCoordinate3(double inclination, double azimuth, double radiusA, double radiusB, double radiusC)
     {
       var (sp, cp) = double.SinCos(inclination);
@@ -137,12 +145,20 @@ namespace Flux.Geometry.CoordinateSystems
       );
     }
 
-    /// <summary>Creates cartesian 3D coordinates from the latitude (elevation) and longitude (azimuth) of a <see cref="SphericalCoordinate"/>, but with triaxial ellipsoid as three radii for the X (A), Y (B) and Z (C) axis.</summary>
+    /// <summary>
+    /// <para>Creates cartesian 3D coordinates from the latitude (elevation) and longitude (azimuth) of a <see cref="SphericalCoordinate"/>, but with triaxial ellipsoid as three radii for the X (A), Y (B) and Z (C) axis.</para>
     /// <remarks>All angles in radians.</remarks>
-    public static (double x, double y, double z) ConvertSphericalByElevationToCartesianCoordinate3(double lat, double lon, double radiusA, double radiusB, double radiusC)
+    /// </summary>
+    /// <param name="latitude"></param>
+    /// <param name="longitude"></param>
+    /// <param name="radiusA"></param>
+    /// <param name="radiusB"></param>
+    /// <param name="radiusC"></param>
+    /// <returns></returns>
+    public static (double x, double y, double z) ConvertSphericalByElevationToCartesianCoordinate3(double latitude, double longitude, double radiusA, double radiusB, double radiusC)
     {
-      var (sp, cp) = double.SinCos(lat);
-      var (sa, ca) = double.SinCos(lon);
+      var (sp, cp) = double.SinCos(latitude);
+      var (sa, ca) = double.SinCos(longitude);
 
       return (
         radiusA * cp * ca,

@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Constants
+  public static partial class Fx
   {
     /// <summary>
     /// <para>Creates a new sequence consisting of 'moded' (i.e. sorted by the most frequent or common) elements in <paramref name="source"/>.</para>

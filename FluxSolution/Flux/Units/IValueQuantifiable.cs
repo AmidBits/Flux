@@ -1,4 +1,4 @@
-﻿namespace Flux
+﻿namespace Flux.Units
 {
   /// <summary>
   /// <para>This is for general quantities (where the concept of units are not needed).</para>

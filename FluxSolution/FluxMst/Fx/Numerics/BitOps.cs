@@ -293,8 +293,8 @@ namespace Numerics
     {
       // Somehow BigInteger must differ between .NET version 6 and 7. 
 
-      Assert.AreEqual(0x00010000, Flux.BitOps.ReverseBits(0x00008000)); // This works on .NET 7, but not on .NET 6.
-      Assert.AreEqual(0x10000000, Flux.BitOps.ReverseBits(0x00000008)); // This works on .NET 6, but not on .NET 7.
+      Assert.AreEqual(0x00010000, 0x00008000.ReverseBits()); // This works on .NET 7, but not on .NET 6.
+      Assert.AreEqual(0x10000000, 0x00000008.ReverseBits()); // This works on .NET 6, but not on .NET 7.
 
       Assert.AreEqual(unchecked((int)0xFFFFFFFE), 0x7FFFFFFF.ReverseBits());
     }
@@ -306,7 +306,7 @@ namespace Numerics
     [TestMethod]
     public void ReverseBytes()
     {
-      Assert.AreEqual(0x00010000, Flux.BitOps.ReverseBytes(0x00000100));
+      Assert.AreEqual(0x00010000, 0x00000100.ReverseBytes());
     }
 
     #endregion // ReverseBytes

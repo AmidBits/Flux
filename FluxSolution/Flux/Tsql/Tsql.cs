@@ -115,7 +115,7 @@
 //    public static string Cast(string expression, string dataType)
 //      => $"CAST({expression} AS {dataType})";
 //    public static string Coalesce(params string[] expressions)
-//      => $"COALESCE({string.Join(", ", expressions)})";
+//      => $"COALESCE({string.Join(Static.CommaSpace, expressions)})";
 //    public static string Convert(string dataType, string expression)
 //      => $"CONVERT({dataType}, {expression})";
 //    public static string Convert(string dataType, string expression, string style)
@@ -133,7 +133,7 @@
 //    public static string In(string subqueryOrExpression)
 //      => $"IN ( {subqueryOrExpression} )";
 //    public static string In(params string[] expressions)
-//      => In(string.Join(", ", expressions));
+//      => In(string.Join(Static.CommaSpace, expressions));
 //    public static string IsNotNull(string expression)
 //      => $"{expression} IS NOT NULL";
 //    public static System.Collections.Generic.IEnumerable<string> IsNotNull(params string[] expressions)
@@ -155,7 +155,7 @@
 //    public static string Or(params string[] booleanExpression)
 //      => $"({string.Join(" OR ", booleanExpression)})";
 //    public static string Raiserror(string msgStrOrLocalVariable, int severity = -1, int state = -1, params string[] args)
-//      => $"RAISERROR( {msgStrOrLocalVariable}, {severity}, {state}{(args.Length > 0 ? $", {string.Join(@", ", args)}" : string.Empty)} )";
+//      => $"RAISERROR( {msgStrOrLocalVariable}, {severity}, {state}{(args.Length > 0 ? $", {string.Join(Static.CommaSpace, args)}" : string.Empty)} )";
 //    public static string Some(string subquery)
 //      => $"SOME ( {subquery} )";
 //    public static string Stuff(string characterExpression, int start, int length, string replacementExpression = "")
@@ -182,9 +182,9 @@
 //      => $"DECLARE @iEndDate [{(highFrequency ? TsqlDataType.Bigint : TsqlDataType.Int)}] = {(highFrequency ? @"29990101010101" : @"29990101")}";
 
 //    public static string CreateMergeTable(TsqlName mergeName3, string[] providerTypes, bool mergeDense)
-//      => $"CREATE TABLE {mergeName3.QualifiedNameQuoted(3)} ({string.Join(", ", providerTypes)}, [EffectiveStartDate] {(mergeDense ? "[bigint]" : "[int]")} NOT NULL, [EffectiveEndDate] {(mergeDense ? "[bigint]" : "[int]")} NOT NULL)";
+//      => $"CREATE TABLE {mergeName3.QualifiedNameQuoted(3)} ({string.Join(Static.CommaSpace, providerTypes)}, [EffectiveStartDate] {(mergeDense ? "[bigint]" : "[int]")} NOT NULL, [EffectiveEndDate] {(mergeDense ? "[bigint]" : "[int]")} NOT NULL)";
 //    public static string CreateTable(TsqlName tableName3, string[] providerTypes)
-//      => $"CREATE TABLE {tableName3.QualifiedNameQuoted(3)} ({string.Join(", ", providerTypes)})";
+//      => $"CREATE TABLE {tableName3.QualifiedNameQuoted(3)} ({string.Join(Static.CommaSpace, providerTypes)})";
 //    public static string MergeTable(bool highFrequency, TsqlName mergeName3, TsqlName sourceName3, string[] fieldNames, string[] fieldProviderTypes)
 //    {
 //      var sb = new System.Text.StringBuilder();
@@ -193,7 +193,7 @@
 //      sb.AppendLine($"USING (SELECT * FROM {sourceName3.QualifiedNameQuoted(3)}) AS S ");
 //      sb.AppendLine($"ON ({string.Join(" AND ", fieldNames.Select((name, index) => TsqlMerge.OnCompareEquality(name, fieldProviderTypes[index][..fieldProviderTypes[index].IndexOf(']', System.StringComparison.Ordinal)][(fieldProviderTypes[index].IndexOf('[', System.StringComparison.Ordinal) + 1)..], !fieldProviderTypes[index].EndsWith("NOT NULL", System.StringComparison.OrdinalIgnoreCase))))}) ");
 //      sb.AppendLine($"WHEN NOT MATCHED BY SOURCE THEN UPDATE SET T.[EffectiveEndDate] = @PriorProcessDate ");
-//      sb.Append($"WHEN NOT MATCHED BY TARGET THEN INSERT ({string.Join(", ", fieldNames.Select(fieldName => $"[{fieldName}]"))}, [EffectiveStartDate], [EffectiveEndDate]) VALUES ({string.Join(", ", fieldNames.Select(fieldName => $"[{fieldName}]"))}, @ProcessDate, @EndDate)");
+//      sb.Append($"WHEN NOT MATCHED BY TARGET THEN INSERT ({string.Join(Static.CommaSpace, fieldNames.Select(fieldName => $"[{fieldName}]"))}, [EffectiveStartDate], [EffectiveEndDate]) VALUES ({string.Join(Static.CommaSpace, fieldNames.Select(fieldName => $"[{fieldName}]"))}, @ProcessDate, @EndDate)");
 //      sb.Append($"OUTPUT $action INTO @actions; SELECT 'INSERT=' + (SELECT CAST(COUNT(1) AS [nvarchar](10)) FROM @actions WHERE ActionType = 'INSERT') + '; UPDATE=' + (SELECT CAST(COUNT(1) AS [nvarchar](10)) FROM @actions WHERE ActionType = 'UPDATE') + '; DELETE=' + (SELECT CAST(COUNT(1) AS [nvarchar](10)) FROM @actions WHERE ActionType = 'DELETE')");
 //      //sb.Append($"OUTPUT $action, inserted.*, deleted.*");
 //      sb.Append(';');
@@ -240,7 +240,7 @@
 
 //    #region Composite statements
 //    public static string CombineColumnNames(System.Collections.Generic.IEnumerable<string> columnNames, string? tableAlias = null)
-//      => string.Join(@", ", columnNames.SubstituteOnNullOrEmpty(@"*").Select(cn => (tableAlias?.Length ?? 0) > 0 ? $"{tableAlias}.{cn}" : cn));
+//      => string.Join(Static.CommaSpace, columnNames.SubstituteOnNullOrEmpty(@"*").Select(cn => (tableAlias?.Length ?? 0) > 0 ? $"{tableAlias}.{cn}" : cn));
 
 //    public static string DropTable(TsqlName table3)
 //      => $"DROP TABLE {table3.QualifiedNameQuoted(3)}";
@@ -265,14 +265,14 @@
 //    public static string TruncateTable(TsqlName table3)
 //      => $"TRUNCATE TABLE {table3.QualifiedNameQuoted(3)}";
 //    public static string Values(params string[] columnValues)
-//      => $"VALUES ( {string.Join(@", ", columnValues)} )";
+//      => $"VALUES ( {string.Join(Static.CommaSpace, columnValues)} )";
 //    #endregion Composite statements
 //  }
 
 //  //public static class TSql
 //  //{
-//  //  public static string CreateMergeTable(Sql.QName mergeName3, string[] providerTypes, bool mergeDense) => $"CREATE TABLE {mergeName3.QualifiedNameQuoted(3)} ({string.Join(", ", providerTypes)}, [EffectiveStartDate] {(mergeDense ? "[bigint]" : "[int]")} NOT NULL, [EffectiveEndDate] {(mergeDense ? "[bigint]" : "[int]")} NOT NULL)";
-//  //  public static string CreateTable(Sql.QName tableName3, string[] providerTypes) => $"CREATE TABLE {tableName3.QualifiedNameQuoted(3)} ({string.Join(", ", providerTypes)})";
+//  //  public static string CreateMergeTable(Sql.QName mergeName3, string[] providerTypes, bool mergeDense) => $"CREATE TABLE {mergeName3.QualifiedNameQuoted(3)} ({string.Join(Static.CommaSpace, providerTypes)}, [EffectiveStartDate] {(mergeDense ? "[bigint]" : "[int]")} NOT NULL, [EffectiveEndDate] {(mergeDense ? "[bigint]" : "[int]")} NOT NULL)";
+//  //  public static string CreateTable(Sql.QName tableName3, string[] providerTypes) => $"CREATE TABLE {tableName3.QualifiedNameQuoted(3)} ({string.Join(Static.CommaSpace, providerTypes)})";
 //  //  public static string MergeTable(bool highFrequency, Sql.QName mergeName3, Sql.QName sourceName3, string[] fieldNames, string[] fieldProviderTypes)
 //  //  {
 //  //    var sb = new System.Text.StringBuilder();
@@ -281,7 +281,7 @@
 //  //    sb.AppendLine($"USING (SELECT * FROM {sourceName3.QualifiedNameQuoted(3)}) AS S ");
 //  //    sb.AppendLine($"ON ({string.Join(" AND ", fieldNames.Select((name, index) => Merge.OnCompareEquality(name, fieldProviderTypes[index].Substring(0, fieldProviderTypes[index].IndexOf(']')).Substring(fieldProviderTypes[index].IndexOf('[') + 1), fieldProviderTypes[index].EndsWith("NOT NULL") ? false : true)))}) ");
 //  //    sb.AppendLine($"WHEN NOT MATCHED BY SOURCE THEN UPDATE SET T.[EffectiveEndDate] = @PriorProcessDate ");
-//  //    sb.Append($"WHEN NOT MATCHED BY TARGET THEN INSERT ({string.Join(", ", fieldNames.Select(fieldName => $"[{fieldName}]"))}, [EffectiveStartDate], [EffectiveEndDate]) VALUES ({string.Join(", ", fieldNames.Select(fieldName => $"[{fieldName}]"))}, @ProcessDate, @EndDate)");
+//  //    sb.Append($"WHEN NOT MATCHED BY TARGET THEN INSERT ({string.Join(Static.CommaSpace, fieldNames.Select(fieldName => $"[{fieldName}]"))}, [EffectiveStartDate], [EffectiveEndDate]) VALUES ({string.Join(Static.CommaSpace, fieldNames.Select(fieldName => $"[{fieldName}]"))}, @ProcessDate, @EndDate)");
 //  //    sb.Append($"OUTPUT $action INTO @actions; SELECT 'INSERT=' + (SELECT CAST(COUNT(1) AS [nvarchar](10)) FROM @actions WHERE ActionType = 'INSERT') + '; UPDATE=' + (SELECT CAST(COUNT(1) AS [nvarchar](10)) FROM @actions WHERE ActionType = 'UPDATE') + '; DELETE=' + (SELECT CAST(COUNT(1) AS [nvarchar](10)) FROM @actions WHERE ActionType = 'DELETE')");
 //  //    //sb.Append($"OUTPUT $action, inserted.*, deleted.*");
 //  //    sb.Append(';');
@@ -325,14 +325,14 @@
 //  //  public static string DropTable(Sql.QName table3) => $"DROP TABLE {table3.QualifiedNameQuoted(3)}";
 //  //  public static string From(Sql.QName table3) => $"FROM {table3.QualifiedNameQuoted(3)} (NOLOCK)";
 //  //  public static string FromSubquery(string tsql_subquery) => $"FROM ( {tsql_subquery} ) AS SQ";
-//  //  public static string InsertInto(Sql.QName table3, params string[] columnNames) => $"INSERT INTO {table3.QualifiedNameQuoted(3)} ( {string.Join(@", ", columnNames)} )";
-//  //  public static string JoinColumnNames(System.Collections.Generic.IEnumerable<string> columnNames, string tableNameOrAlias = "") => string.Join(@", ", (columnNames.Any() ? columnNames : columnNames.Append(@"*")).Select(cn => string.IsNullOrWhiteSpace(tableNameOrAlias) ? cn : $"{tableNameOrAlias}.{cn}"));
+//  //  public static string InsertInto(Sql.QName table3, params string[] columnNames) => $"INSERT INTO {table3.QualifiedNameQuoted(3)} ( {string.Join(Static.CommaSpace, columnNames)} )";
+//  //  public static string JoinColumnNames(System.Collections.Generic.IEnumerable<string> columnNames, string tableNameOrAlias = "") => string.Join(Static.CommaSpace, (columnNames.Any() ? columnNames : columnNames.Append(@"*")).Select(cn => string.IsNullOrWhiteSpace(tableNameOrAlias) ? cn : $"{tableNameOrAlias}.{cn}"));
 //  //  public static string Select(params string[] columnNames) => $"SELECT {JoinColumnNames(columnNames)}";
 //  //  public static string Select(System.Collections.Generic.IEnumerable<string> columnNames) => $"SELECT {JoinColumnNames(columnNames)}";
 //  //  public static string SelectCount() => Select("COUNT(1)");
 //  //  public static string SelectTop(int topCount, params string[] columnNames) => $"SELECT TOP {topCount} {JoinColumnNames(columnNames)}";
 //  //  public static string TruncateTable(Sql.QName table3) => $"TRUNCATE TABLE {table3.QualifiedNameQuoted(3)}";
-//  //  public static string Values(params string[] columnValues) => $"VALUES ( {string.Join(@", ", columnValues)} )";
+//  //  public static string Values(params string[] columnValues) => $"VALUES ( {string.Join(Static.CommaSpace, columnValues)} )";
 
 //  //  public static class InformationSchema
 //  //  {
@@ -353,7 +353,7 @@
 //  //    public static string On(string[] symmetricColumnNames, params string[] targetColumnDefinitions) => On(symmetricColumnNames, symmetricColumnNames, targetColumnDefinitions);
 //  //    public static string On(string[] sourceColumnNames, string[] targetColumnNames, string[] targetColumnDefinitions) => $"ON ({string.Join(" AND ", targetColumnNames.Select((name, index) => OnCompareEquality(sourceColumnNames[index], targetColumnNames[index], targetColumnDefinitions[index].Substring(0, targetColumnDefinitions[index].LastIndexOf(']')).Substring(targetColumnDefinitions[index].LastIndexOf('[') + 1), targetColumnDefinitions[index].EndsWith("NOT NULL") ? false : true)))}) ";
 //  //    public static string WhenNotMatchedBySource() => $"WHEN NOT MATCHED BY SOURCE THEN UPDATE SET T.[EffectiveEndDate] = @PriorProcessDate ";
-//  //    public static string WhenNotMatchedByTarget(string[] sourceColumnNames, string[] targetColumnNames) => $"WHEN NOT MATCHED BY TARGET THEN INSERT ({string.Join(", ", targetColumnNames.Select(name => $"[{name}]"))}, [EffectiveStartDate], [EffectiveEndDate]) VALUES ({string.Join(", ", sourceColumnNames.Select(name => $"S.[{name}]"))}, @ProcessDate, @EndDate)";
+//  //    public static string WhenNotMatchedByTarget(string[] sourceColumnNames, string[] targetColumnNames) => $"WHEN NOT MATCHED BY TARGET THEN INSERT ({string.Join(Static.CommaSpace, targetColumnNames.Select(name => $"[{name}]"))}, [EffectiveStartDate], [EffectiveEndDate]) VALUES ({string.Join(Static.CommaSpace, sourceColumnNames.Select(name => $"S.[{name}]"))}, @ProcessDate, @EndDate)";
 
 //  //    public static string OnCompareEquality(string columnName, string dataTypeName, bool allowDBNull) => OnCompareEquality(columnName, columnName, dataTypeName, allowDBNull);
 //  //    public static string OnCompareEquality(string sourceColumnName, string targetColumnName, string dataTypeName, bool allowDBNull)

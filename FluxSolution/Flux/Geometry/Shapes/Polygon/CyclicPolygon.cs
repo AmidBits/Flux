@@ -35,6 +35,6 @@ namespace Flux.Geometry.Shapes.Polygon
 
     #endregion // Implemented interfaces
 
-    public override string ToString() => ToString(null, null);
+    public override string ToString() => base.ToString(null, null);
   }
 }

@@ -3,6 +3,9 @@ namespace Flux.Dsp.WaveformGenerator
   /// <see href="https://en.wikibooks.org/wiki/Sound_Synthesis_Theory/Oscillators_and_Wavetables#Sine_wave"/>
   public record class PeriodicWaveform
   {
+    public static double Saw(double phase, double wavePeriod, double superScalar = 1)
+      => phase % (wavePeriod / superScalar);
+
     public static double WaveEquation(double x, double waveLength)
       => (double.Tau / waveLength * x);
 

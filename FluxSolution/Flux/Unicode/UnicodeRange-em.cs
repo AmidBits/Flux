@@ -7,9 +7,13 @@ namespace Flux
     {
       var dictionary = new System.Collections.Generic.Dictionary<System.Text.Unicode.UnicodeRange, string>();
 
-      foreach (var pi in Flux.Fx.GetPropertyInfos(typeof(System.Text.Unicode.UnicodeRanges)).Where(pi => pi.Name != nameof(System.Text.Unicode.UnicodeRanges.All) && pi.Name != nameof(System.Text.Unicode.UnicodeRanges.None)))
-        if (pi.GetValue(null, null) is System.Text.Unicode.UnicodeRange ur)
-          dictionary.Add(ur, pi.Name);
+      foreach (var kvp in typeof(System.Text.Unicode.UnicodeRanges).GetPropertyDictionary().Where(kvp => kvp.Key.Name != nameof(System.Text.Unicode.UnicodeRanges.All) && kvp.Key.Name != nameof(System.Text.Unicode.UnicodeRanges.None)))
+        if (kvp.Value is System.Text.Unicode.UnicodeRange ur)
+          dictionary.Add(ur, kvp.Key.Name);
+
+      //foreach (var pi in typeof(System.Text.Unicode.UnicodeRanges).GetPropertyInfos().Where(pi => pi.Name != nameof(System.Text.Unicode.UnicodeRanges.All) && pi.Name != nameof(System.Text.Unicode.UnicodeRanges.None)))
+      //  if (pi.GetValue(null, null) is System.Text.Unicode.UnicodeRange ur)
+      //    dictionary.Add(ur, pi.Name);
 
       return dictionary;
     }

@@ -2,10 +2,10 @@ namespace Flux
 {
   public static partial class Em
   {
-    public static System.Numerics.BigInteger ActualValue(this MetricPrefix source)
+    public static System.Numerics.BigInteger ActualValue(this Units.MetricPrefix source)
       => System.Numerics.BigInteger.Pow(10, (int)source);
 
-    public static string? ConvertToShortScale(this MetricPrefix source)
+    public static string? ConvertToShortScale(this Units.MetricPrefix source)
       => Globalization.En.NumeralComposition.ShortScaleDictionary.TryGetValue(source.ActualValue(), out var shortScaleName) ? shortScaleName : null;
 
     /// <summary>
@@ -16,18 +16,18 @@ namespace Flux
     /// <param name="target"></param>
     /// <param name="dimensions"></param>
     /// <returns></returns>
-    public static T ConvertTo<T>(this MetricPrefix source, T value, MetricPrefix target, int dimensions)
+    public static T ConvertTo<T>(this Units.MetricPrefix source, T value, Units.MetricPrefix target, int dimensions)
       where T : System.Numerics.INumber<T>, System.Numerics.IPowerFunctions<T>
       => value * T.Pow(T.Pow(T.CreateChecked(10), T.CreateChecked((int)source) - T.CreateChecked((int)target)), T.CreateChecked(dimensions));
 
-    public static T ConvertTo<T>(this MetricPrefix source, T value, MetricPrefix target)
+    public static T ConvertTo<T>(this Units.MetricPrefix source, T value, Units.MetricPrefix target)
       where T : System.Numerics.INumber<T>, System.Numerics.IPowerFunctions<T>
       => value * T.Pow(T.CreateChecked(10), T.CreateChecked((int)source) - T.CreateChecked((int)target));
 
-    public static System.Runtime.Intrinsics.Vector256<double> ConvertTo(this MetricPrefix source, System.Runtime.Intrinsics.Vector256<double> value, MetricPrefix target, int dimensions)
+    public static System.Runtime.Intrinsics.Vector256<double> ConvertTo(this Units.MetricPrefix source, System.Runtime.Intrinsics.Vector256<double> value, Units.MetricPrefix target, int dimensions)
       => value * double.Pow(double.Pow(10, (int)source - (int)target), dimensions);
 
-    public static System.Runtime.Intrinsics.Vector256<double> ConvertTo(this MetricPrefix source, System.Runtime.Intrinsics.Vector256<double> value, MetricPrefix target)
+    public static System.Runtime.Intrinsics.Vector256<double> ConvertTo(this Units.MetricPrefix source, System.Runtime.Intrinsics.Vector256<double> value, Units.MetricPrefix target)
       => value * double.Pow(10, (int)source - (int)target);
 
     /// <summary>
@@ -37,21 +37,21 @@ namespace Flux
     /// <param name="source"></param>
     /// <param name="forceTriples"></param>
     /// <returns></returns>
-    public static MetricPrefix GetEngineeringNotationPrefix<TSource>(this TSource source, bool forceTriples = true)
+    public static Units.MetricPrefix GetEngineeringNotationPrefix<TSource>(this TSource source, bool forceTriples = true)
       where TSource : System.Numerics.INumber<TSource>
     {
       if (TSource.IsZero(source))
-        return MetricPrefix.Unprefixed;
+        return Units.MetricPrefix.Unprefixed;
 
       var log = int.CreateChecked(TSource.Abs(source).FastIntegerLog(10, UniversalRounding.WholeToNegativeInfinity, out var _));
 
       if (forceTriples && log > -3 && log < 3)
-        return (MetricPrefix)log.Spread(-3, 3, HalfRounding.Random);
+        return (Units.MetricPrefix)log.Spread(-3, 3, HalfRounding.Random);
 
       if (TSource.IsNegative(source) && log.TruncRem(3) is var (tq, r))
-        return (MetricPrefix)((tq + int.Sign(r)) * 3);
+        return (Units.MetricPrefix)((tq + int.Sign(r)) * 3);
 
-      return (MetricPrefix)(log / 3 * 3);
+      return (Units.MetricPrefix)(log / 3 * 3);
     }
 
     /// <summary>
@@ -60,61 +60,61 @@ namespace Flux
     /// <param name="source"></param>
     /// <param name="value"></param>
     /// <returns></returns>
-    public static (T TowardZeroValue, MetricPrefix TowardZeroPrefix, T AwayFromValue, MetricPrefix AwayFromPrefix) GetInfimumAndSupremum<T>(this MetricPrefix source, T value, bool proper)
+    public static (T TowardZeroValue, Units.MetricPrefix TowardZeroPrefix, T AwayFromValue, Units.MetricPrefix AwayFromPrefix) GetInfimumAndSupremum<T>(this Units.MetricPrefix source, T value, bool proper)
       where T : System.Numerics.INumber<T>, System.Numerics.IPowerFunctions<T>
     {
-      var metricPrefixes = System.Enum.GetValues<MetricPrefix>();
+      var metricPrefixes = System.Enum.GetValues<Units.MetricPrefix>();
 
-      var adjustedValue = source.ConvertTo(value, MetricPrefix.Unprefixed);
+      var adjustedValue = source.ConvertTo(value, Units.MetricPrefix.Unprefixed);
 
       var (InfimumIndex, InfimumItem, InfimumValue, SupremumIndex, SupremumItem, SupremumValue) = metricPrefixes.AsReadOnlySpan().InfimumAndSupremum(adjustedValue, e => T.CopySign(T.Pow(T.CreateChecked(10), T.Abs(T.CreateChecked((int)e))), T.CreateChecked((int)e)), proper);
 
-      var ltValue = MetricPrefix.Unprefixed.ConvertTo(value, InfimumItem);
-      var gtValue = MetricPrefix.Unprefixed.ConvertTo(value, SupremumItem);
+      var ltValue = Units.MetricPrefix.Unprefixed.ConvertTo(value, InfimumItem);
+      var gtValue = Units.MetricPrefix.Unprefixed.ConvertTo(value, SupremumItem);
 
       return (ltValue, InfimumItem, gtValue, SupremumItem);
     }
 
-    public static string GetMetricPrefixName(this MetricPrefix source)
-      => source != MetricPrefix.Unprefixed ? source.ToString() : string.Empty;
+    public static string GetMetricPrefixName(this Units.MetricPrefix source)
+      => source != Units.MetricPrefix.Unprefixed ? source.ToString() : string.Empty;
 
-    public static string GetMetricPrefixSymbol(this MetricPrefix source, bool preferUnicode)
+    public static string GetMetricPrefixSymbol(this Units.MetricPrefix source, bool preferUnicode)
       => source switch
       {
-        MetricPrefix.Unprefixed => string.Empty,
-        MetricPrefix.Quetta => "Q",
-        MetricPrefix.Ronna => "R",
-        MetricPrefix.Yotta => "Y",
-        MetricPrefix.Zetta => "Z",
-        MetricPrefix.Exa => "E",
-        MetricPrefix.Peta => "P",
-        MetricPrefix.Tera => "T",
-        MetricPrefix.Giga => "G",
-        MetricPrefix.Mega => "M",
-        MetricPrefix.Kilo => "k",
-        MetricPrefix.Hecto => "h",
-        MetricPrefix.Deca => preferUnicode ? "\u3372" : "da",
-        MetricPrefix.Deci => "d",
-        MetricPrefix.Centi => "c",
-        MetricPrefix.Milli => "m",
-        MetricPrefix.Micro => preferUnicode ? "\u03BC" : "\u00B5",
-        MetricPrefix.Nano => "n",
-        MetricPrefix.Pico => "p",
-        MetricPrefix.Femto => "f",
-        MetricPrefix.Atto => "a",
-        MetricPrefix.Zepto => "z",
-        MetricPrefix.Yocto => "y",
-        MetricPrefix.Ronto => "r",
-        MetricPrefix.Quecto => "q",
+        Units.MetricPrefix.Unprefixed => string.Empty,
+        Units.MetricPrefix.Quetta => "Q",
+        Units.MetricPrefix.Ronna => "R",
+        Units.MetricPrefix.Yotta => "Y",
+        Units.MetricPrefix.Zetta => "Z",
+        Units.MetricPrefix.Exa => "E",
+        Units.MetricPrefix.Peta => "P",
+        Units.MetricPrefix.Tera => "T",
+        Units.MetricPrefix.Giga => "G",
+        Units.MetricPrefix.Mega => "M",
+        Units.MetricPrefix.Kilo => "k",
+        Units.MetricPrefix.Hecto => "h",
+        Units.MetricPrefix.Deca => preferUnicode ? "\u3372" : "da",
+        Units.MetricPrefix.Deci => "d",
+        Units.MetricPrefix.Centi => "c",
+        Units.MetricPrefix.Milli => "m",
+        Units.MetricPrefix.Micro => preferUnicode ? "\u03BC" : "\u00B5",
+        Units.MetricPrefix.Nano => "n",
+        Units.MetricPrefix.Pico => "p",
+        Units.MetricPrefix.Femto => "f",
+        Units.MetricPrefix.Atto => "a",
+        Units.MetricPrefix.Zepto => "z",
+        Units.MetricPrefix.Yocto => "y",
+        Units.MetricPrefix.Ronto => "r",
+        Units.MetricPrefix.Quecto => "q",
         _ => string.Empty,
       };
 
     #region Engineering notation
 
-    public static (MetricPrefix prefix, double value) GetEngineeringNotationProperties<TSelf>(this TSelf source, bool restrictToTriplets = true)
+    public static (Units.MetricPrefix prefix, double value) GetEngineeringNotationProperties<TSelf>(this TSelf source, bool restrictToTriplets = true)
       where TSelf : System.Numerics.INumber<TSelf>
     {
-      var prefix = MetricPrefix.Unprefixed;
+      var prefix = Units.MetricPrefix.Unprefixed;
 
       var number = double.CreateChecked(source);
 
@@ -129,12 +129,12 @@ namespace Flux
           var floor = double.Floor(div3);
           var mul3 = floor * 3;
 
-          prefix = (MetricPrefix)int.CreateChecked(mul3);
+          prefix = (Units.MetricPrefix)int.CreateChecked(mul3);
         }
         else
         {
           var floor = double.Floor(log10);
-          var iands = System.Enum.GetValues<MetricPrefix>().GetInfimumAndSupremum(mp => (int)mp, int.CreateChecked(floor), true);
+          var iands = System.Enum.GetValues<Units.MetricPrefix>().GetInfimumAndSupremum(mp => (int)mp, int.CreateChecked(floor), true);
 
           prefix = iands.TowardZeroItem;
         }

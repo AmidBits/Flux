@@ -66,7 +66,7 @@ namespace Flux.Units
     /// <para>Computes the perimeter (circumference) of a circle with the specified <paramref name="radius"/>.</para>
     /// <para><see cref="https://en.wikipedia.org/wiki/Perimeter"/></para>
     /// </summary>
-    public static double PerimeterOfCircle(double radius)
+    public static double OfCirclePerimeter(double radius)
       => 2 * double.Pi * radius;
 
     /// <summary>
@@ -75,7 +75,7 @@ namespace Flux.Units
     /// <param name="a"></param>
     /// <param name="b"></param>
     /// <returns></returns>
-    public static double PerimeterOfEllipse(double a, double b)
+    public static double OfEllipsePerimeter(double a, double b)
     {
       var circle = double.Pi * (a + b); // (2 * PI * radius)
 
@@ -91,7 +91,7 @@ namespace Flux.Units
     /// <para>Computes the perimeter of a hexagon with the specified <paramref name="sideLength"/> (which is the length of a side and also the circumradius).</para>
     /// </summary>
     /// <param name="length">Length of the side (and also the circumradius, i.e. half outer diameter).</param>
-    public static double PerimeterOfHexagon(double sideLength)
+    public static double OfHexagonPerimeter(double sideLength)
       => sideLength * 6;
 
     /// <summary>
@@ -100,7 +100,7 @@ namespace Flux.Units
     /// </summary>
     /// <param name="length">The length of a rectangle.</param>
     /// <param name="width">The width of a rectangle.</param>
-    public static double PerimeterOfRectangle(double length, double width)
+    public static double OfRectanglePerimeter(double length, double width)
       => 2 * length + 2 * width;
 
     /// <summary>
@@ -109,14 +109,14 @@ namespace Flux.Units
     /// <param name="circumradius"></param>
     /// <param name="numberOfSides"></param>
     /// <returns></returns>
-    public static double PerimeterOfRegularPolygon(double circumradius, int numberOfSides)
+    public static double OfRegularPolygonPerimeter(double circumradius, int numberOfSides)
       => 2 * circumradius * numberOfSides * double.Sin(double.Pi / numberOfSides);
 
     /// <summary>
     /// <para>Computes the perimeter of a semicircle with the specified <paramref name="radius"/>.</para>
     /// <para><see cref="https://en.wikipedia.org/wiki/Perimeter"/></para>
     /// </summary>
-    public static double PerimeterOfSemicircle(double radius)
+    public static double OfSemicirclePerimeter(double radius)
       => (double.Pi + 2) * radius;
 
     /// <summary>
@@ -124,7 +124,7 @@ namespace Flux.Units
     /// <para><see href="https://en.wikipedia.org/wiki/Perimeter"/></para>
     /// </summary>
     /// <param name="sideLength">The sidelength of a rectangle.</param>
-    public static double PerimeterOfSquare(double sideLength)
+    public static double OfSquarePerimeter(double sideLength)
       => 4 * sideLength;
 
     /// <summary>
@@ -135,7 +135,7 @@ namespace Flux.Units
     /// <param name="b"></param>
     /// <param name="c"></param>
     /// <returns></returns>
-    public static double PerimeterOfTriangle(double a, double b, double c)
+    public static double OfTrianglePerimeter(double a, double b, double c)
       => a + b + c;
 
     #endregion // Perimeter of geometric shapes

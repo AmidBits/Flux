@@ -40,6 +40,8 @@ namespace ConsoleApp
 
     #endregion // Presets
 
+    #region Stuff
+
     private static void TripletGenerator()
     {
       var reWhitespace = new System.Text.RegularExpressions.Regex(@"\s+");
@@ -143,27 +145,127 @@ namespace ConsoleApp
     private static double LoadBearingCapacityAluExt(double sectionDiameter, double wallThickness, double length, double tensileStrength)
       => 0.44 * (sectionDiameter + wallThickness) * length * tensileStrength;
 
+    //public static System.Collections.Generic.List<Flux.Numerics.BigRational> ToCfes(double n, int maxIterations = 100)
+    //{
+    //  var a = new System.Collections.Generic.List<Flux.Numerics.BigRational>();
+
+    //  var iteration = 0;
+
+    //  int w;
+    //  do
+    //  {
+    //    w = (int)double.Truncate(n);
+    //    var f = n - w;
+
+    //    a.Add(new Flux.Numerics.BigRational(w));
+
+    //    n = 1 / f;
+    //  }
+    //  while (w != 0 && iteration++ < maxIterations);
+
+    //  return a;
+    //}
+
+    //public static Flux.Numerics.BigRational FromCfes(System.Collections.Generic.List<Flux.Numerics.BigRational> cfe)
+    //{
+    //  var m = Flux.Numerics.BigRational.Zero;
+
+    //  for (var i = cfe.Count - 1; i >= 0; i--)
+    //  {
+    //    var c = cfe[i];
+
+    //    m = Flux.Numerics.BigRational.IsZero(m) ? c : c + Flux.Numerics.BigRational.One / m;
+    //  }
+
+    //  return m;
+    //}
+
+    //public static System.Collections.Generic.List<int> Fractions(int p, int q, int maxIterations = 100)
+    //{
+    //  var a = new System.Collections.Generic.List<int>();
+
+    //  var iteration = 0;
+
+    //  while (q != 0 && iteration < maxIterations)
+    //  {
+    //    a.Add(p / q);
+
+    //    (p, q) = (q, p % q);
+
+    //    iteration++;
+    //  }
+
+    //  return a;
+    //}
+
+    #endregion // Stuff
+
     private static void TimedMain(string[] _)
     {
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
+      var (n, p) = (5, 3);
+      var nCp = n.BinomialCoefficient(p);
+
+      System.Console.WriteLine($"Combinations = {nCp}");
+
+      foreach (var l in System.Linq.Enumerable.Range(0, nCp))
+        System.Console.WriteLine($"{l} : [{string.Join(", ", n.PermuteAlgorithm515b(p, l))}]");
+
+      var pg = Flux.Geometry.Shapes.Polygon.RegularPolygon.Create(5, 1);
+
+      var br = Flux.Numerics.BigRational.One;
+
+      var brpd = br.GetPropertyDictionary();
+
+      //System.Console.WriteLine(Flux.Diagnostics.Performance.Measure(() => 100000000000.FastDigitCount(10), 100000000));
+
+      System.Console.WriteLine(string.Join(", ", Flux.AlternatingLoopDirection.TowardsCenter.Loop(0, -2, 50)));
+
+      Flux.Numerics.Constants.GoldenRatio.ToBigRational();
+
+      //var ld = Flux.Locale.GetLocaleData();
+
+      var loc = typeof(Flux.Locale).GetPropertyDictionary();
+
+      var e = new Flux.Geometry.Shapes.Ellipse.EllipseGeometry(11, 7);
+
+      var v = string.Format("{0:N3}", e.GetType().GetProperty("Focus").GetValue(e));
+      //var n = (60L);
+      //var k = 30L;
+
+      ////System.Console.WriteLine(Flux.Diagnostics.Performance.Measure(() => Flux.GenericMath.BinomialCoefficientEx(n, k), 100000000));
+      //System.Console.WriteLine(Flux.Diagnostics.Performance.Measure(() => Flux.GenericMath.BinomialCoefficient(n, k), 100000000));
+
+
+      var s = "te";
+      var t = "This is a simple test with a too too of trial templates.";
+
+      var test = s.RabinKarpIndices(t);
+
+      var rs = t.AsSpan().MainLorentzRepetitions();
+      rs.Sort();
+
       //      System.Console.WriteLine(string.Join(System.Environment.NewLine, typeof(IValueQuantifiable<>).GetDerivedTypes().Select(t => t.Name).Order()));
       //      System.Console.WriteLine();
 
-      //var lbc = LoadBearingCapacityAluExt(.020, .002, .610, 230000000);
-
-      TestDspWithPlot();
+      var fs = Flux.Numerics.BigRational.GenerateContinuedFractionCoefficients(390, 77);
+      var pi = double.Pi;
+      var cfec = (3.141592).GenerateContinuedFractionCoefficients(100);
+      var fcfe = cfec.ToContinuedFractionRepresentationString(Flux.Unicode.UnicodeSpacing.None, true);
+      //var maxccfe = ccfe.Select((e, i) => (e, i)).MaxBy(t2 => t2.Item1);
+      var pcfe = cfec.ParseContinuedFractionCoefficients();
 
       var pc = new Flux.Geometry.CoordinateSystems.PolarCoordinate(new Length(0.700, LengthUnit.Meter).GetUnitValue(LengthUnit.Inch), new Angle(78.5, AngleUnit.Degree).Value);
       var cc = pc.ToCartesianCoordinate();
 
-      var slope = new Flux.Units.Slope(2, 11);
-      var slopeAOI = Flux.Units.Slope.FromAngleOfInclination(14, AngleUnit.Degree);
-      var slopeS = new Flux.Units.Slope(2, 3);
-      var slopeRP = Flux.Units.Slope.FromRoofPitch(3);
-      var gradeGP = Flux.Units.Slope.FromGradePercentage(20);
-      var slopeR = Flux.Units.Slope.FromRatio(new Ratio(2, 11));
+      var slope = new Flux.Numerics.Slope(2, 11);
+      var slopeAOI = Flux.Numerics.Slope.FromAngleOfInclination(14, AngleUnit.Degree);
+      var slopeS = new Flux.Numerics.Slope(2, 3);
+      var slopeRP = Flux.Numerics.Slope.FromRoofPitch(3);
+      var gradeGP = Flux.Numerics.Slope.FromGradePercentage(20);
+      var slopeR = Flux.Numerics.Slope.FromRatio(new Ratio(2, 11));
 
       var x = (1000.0).RescaleLogarithmicToLinear(300, 3000, 10, 12, 2);
       var y = (7.5).RescaleLinearToLogarithmic(0.1, 10, 0.1, 10, 2);

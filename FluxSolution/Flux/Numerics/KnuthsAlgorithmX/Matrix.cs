@@ -77,7 +77,7 @@
       => Search(new System.Collections.Generic.Stack<DataObject>());
 
     public static System.Collections.Generic.IList<string> StringifySolutions(System.Collections.Generic.IEnumerable<System.Collections.Generic.IEnumerable<System.Collections.Generic.IEnumerable<int>>> solutions)
-      => solutions.Select(solution => string.Join(" | ", solution.Select(row => string.Join(", ", row)))).ToArray();
+      => solutions.Select(solution => string.Join(" | ", solution.Select(row => string.Join(Static.CommaSpace, row)))).ToArray();
 
     private System.Collections.Generic.IEnumerable<System.Collections.Generic.IEnumerable<System.Collections.Generic.IList<int>>> Search(System.Collections.Generic.Stack<DataObject> partialSolution)
     {

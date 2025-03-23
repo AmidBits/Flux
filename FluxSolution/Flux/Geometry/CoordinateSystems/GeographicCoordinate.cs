@@ -119,7 +119,7 @@ namespace Flux.Geometry.CoordinateSystems
     }
 
     /// <summary>Returns a bounding box for the specified lat/lon (both in radians) and box radius.</summary>
-    public static bool GetBoundingBox(double lat, double lon, double metersBoxRadius, out double latMin, out double lonMin, out double latMax, out double lonMax, Geometry.Geodesy.EllipsoidReference ellipsoidReference)
+    public static bool GetBoundingBox(double lat, double lon, double metersBoxRadius, out double latMin, out double lonMin, out double latMax, out double lonMax, Geodesy.EllipsoidReference ellipsoidReference)
     {
       metersBoxRadius = double.Max(metersBoxRadius, 1);
 
@@ -433,7 +433,7 @@ namespace Flux.Geometry.CoordinateSystems
     {
       try
       {
-        if (Units.Angle.TryParseDmsNotations(latitudeDms, out var latitudes) && latitudes.Single(e => e is Flux.Geometry.Geodesy.Latitude) is var latitudeAngle && Units.Angle.TryParseDmsNotations(longitudeDms, out var longitudes) && longitudes.Single(e => e is Flux.Geometry.Geodesy.Longitude) is var longitudeAngle)
+        if (Units.Angle.TryParseDmsNotations(latitudeDms, out var latitudes) && latitudes.Single(e => e is Geodesy.Latitude) is var latitudeAngle && Units.Angle.TryParseDmsNotations(longitudeDms, out var longitudes) && longitudes.Single(e => e is Geodesy.Longitude) is var longitudeAngle)
         {
           result = new GeographicCoordinate(latitudeAngle.Value, Units.AngleUnit.Radian, longitudeAngle.Value, Units.AngleUnit.Radian, earthRadius);
           return true;

@@ -28,10 +28,10 @@ namespace Maths
     [TestMethod]
     public void Ellipse()
     {
-      var geometry = new Flux.Geometry.Shapes.Ellipse.EllipseGeometry(5, 7);
+      var geometry = new Flux.Geometry.Shapes.Ellipse.EllipseGeometry(7, 5);
 
-      Assert.AreEqual(5, geometry.A);
-      Assert.AreEqual(7, geometry.B);
+      Assert.AreEqual(7, geometry.A);
+      Assert.AreEqual(5, geometry.B);
     }
 
     [TestMethod]

@@ -85,8 +85,6 @@ namespace Flux.Numerics
     /// <summary>Represents the square root of 2.</summary>
     public const double PythagorasConstant = 1.414213562373095048801688724209698078569671875376948073176679737990732478462;
 
-    public const double RiemannZetaFunction2 = double.Pi * double.Pi / 6;
-
     /// <summary>Represents the square root of 3.</summary>
     public const double TheodorusConstant = 1.732050807568877293527446341505872366942805253810380628055806979451933016909;
   }

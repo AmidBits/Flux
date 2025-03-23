@@ -21,12 +21,12 @@ namespace Flux
 
         if (a[1] <= y)
         {
-          if (b[1] > y && Geometry.Shapes.Line.LineGeometry.SideTest(x, y, a[0], a[1], b[0], b[1]) > 0)
+          if (b[1] > y && Geometry.Shapes.Line.LineGeometry.LineSideTest(x, y, a[0], a[1], b[0], b[1]) > 0)
             wn++;
         }
         else
         {
-          if (b[1] <= y && Geometry.Shapes.Line.LineGeometry.SideTest(x, y, a[0], a[1], b[0], b[1]) < 0)
+          if (b[1] <= y && Geometry.Shapes.Line.LineGeometry.LineSideTest(x, y, a[0], a[1], b[0], b[1]) < 0)
             wn--;
         }
       }
@@ -49,12 +49,12 @@ namespace Flux
 
         if (a[1] <= y)
         {
-          if (b[1] > y && Geometry.Shapes.Line.LineGeometry.SideTest(x, y, a[0], a[1], b[0], b[1]) > 0)
+          if (b[1] > y && Geometry.Shapes.Line.LineGeometry.LineSideTest(x, y, a[0], a[1], b[0], b[1]) > 0)
             wn++;
         }
         else
         {
-          if (b[1] <= y && Geometry.Shapes.Line.LineGeometry.SideTest(x, y, a[0], a[1], b[0], b[1]) < 0)
+          if (b[1] <= y && Geometry.Shapes.Line.LineGeometry.LineSideTest(x, y, a[0], a[1], b[0], b[1]) < 0)
             wn--;
         }
       }
@@ -145,16 +145,16 @@ namespace Flux
     #region ToString..
 
     public static string ToStringXY(this System.Collections.Generic.IEnumerable<System.Runtime.Intrinsics.Vector128<double>> source, string? format, IFormatProvider? formatProvider)
-      => string.Join(@", ", source.Select(v => v.ToStringXY(format, formatProvider)));
+      => string.Join(Static.CommaSpace, source.Select(v => v.ToStringXY(format, formatProvider)));
 
     public static string ToStringXY(this System.Collections.Generic.IEnumerable<System.Runtime.Intrinsics.Vector256<double>> source, string? format, IFormatProvider? formatProvider)
-      => string.Join(@", ", source.Select(v => v.ToStringXY(format, formatProvider)));
+      => string.Join(Static.CommaSpace, source.Select(v => v.ToStringXY(format, formatProvider)));
 
     public static string ToStringXYZ(this System.Collections.Generic.IEnumerable<System.Runtime.Intrinsics.Vector256<double>> source, string? format, IFormatProvider? formatProvider)
-      => string.Join(@", ", source.Select(v => v.ToStringXYZ(format, formatProvider)));
+      => string.Join(Static.CommaSpace, source.Select(v => v.ToStringXYZ(format, formatProvider)));
 
     public static string ToStringXYZW(this System.Collections.Generic.IEnumerable<System.Runtime.Intrinsics.Vector256<double>> source, string? format, IFormatProvider? formatProvider)
-      => string.Join(@", ", source.Select(v => v.ToStringXYZW(format, formatProvider)));
+      => string.Join(Static.CommaSpace, source.Select(v => v.ToStringXYZW(format, formatProvider)));
 
     #endregion ToString..
   }

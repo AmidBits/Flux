@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Em
+  public static partial class GenericMath
   {
     /// <summary>
     /// <para>Returns the <paramref name="value"/> rounded according to the strategy <paramref name="mode"/>.</para>

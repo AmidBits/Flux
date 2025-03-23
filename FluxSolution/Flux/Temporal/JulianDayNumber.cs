@@ -6,7 +6,7 @@ namespace Flux.Temporal
   /// </summary>
   /// <remarks>Julian Day Number is not related to the Julian Calendar. Functionality that compute on the Julian Calendar will have JulianCalendar in the name.</remarks>
   public readonly record struct JulianDayNumber
-    : System.IComparable, System.IComparable<JulianDayNumber>, System.IFormattable, IValueQuantifiable<int>
+    : System.IComparable, System.IComparable<JulianDayNumber>, System.IFormattable, Units.IValueQuantifiable<int>
   {
     public readonly int m_value;
 
@@ -50,14 +50,14 @@ namespace Flux.Temporal
       }
 
       sm = sm.Append(DayOfWeek.ToString());
-      sm = sm.Append(StringOps.CommaSpace);
+      sm = sm.Append(Static.CommaSpace);
 
       var (year, month, day) = GetParts(calendar); // Add 0.5 to the julian date value for date strings, because of the 12 noon convention in a Julian Date.
 
       sm = sm.Append(System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(month));
       sm = sm.Append(' ');
       sm = sm.Append(day);
-      sm = sm.Append(StringOps.CommaSpace);
+      sm = sm.Append(Static.CommaSpace);
       sm = sm.Append(year);
 
       if (year <= 0 && calendar == TemporalCalendar.GregorianCalendar)

@@ -19,7 +19,7 @@ namespace Flux.Geometry.Shapes.Polygon
 
     public override bool IsConvex => true;
 
-    public override double Perimeter => Units.Length.PerimeterOfRegularPolygon(Circumradius, m_vertices.Count);
+    public override double Perimeter => Units.Length.OfRegularPolygonPerimeter(Circumradius, m_vertices.Count);
 
     public override double SurfaceArea => Units.Area.OfRegularPolygon(Circumradius, m_vertices.Count);
 
@@ -62,6 +62,6 @@ namespace Flux.Geometry.Shapes.Polygon
 
     #endregion // Implemented interfaces
 
-    public override string ToString() => ToString(null, null);
+    public override string ToString() => base.ToString(null, null);
   }
 }

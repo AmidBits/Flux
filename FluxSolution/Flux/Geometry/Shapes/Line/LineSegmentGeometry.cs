@@ -22,6 +22,14 @@ namespace Flux.Geometry.Shapes.Line
       m_v2 = System.Runtime.Intrinsics.Vector128.Create(x2, y2);
     }
 
+    public void Deconstruct(out double px, out double py, out double qx, out double qy)
+    {
+      px = m_v1[0];
+      py = m_v1[1];
+      qx = m_v2[0];
+      qy = m_v2[1];
+    }
+
     public System.Runtime.Intrinsics.Vector128<double> V1 => m_v1;
     public System.Runtime.Intrinsics.Vector128<double> V2 => m_v2;
 
@@ -38,19 +46,42 @@ namespace Flux.Geometry.Shapes.Line
 
     #region Static methods
 
-    public static (LineSegmentIntersectTest Outcome, double X, double Y) GivenTwoPointsOnEach(double x1, double y1, double x2, double y2, double x3, double y3, double x4, double y4)
+    public static (double a, double b, double c) GetLineEquationCoefficients(double x0, double y0, double x1, double y1)
     {
-      var sx1x2 = x1 - x2;
-      var sx1x3 = x1 - x3;
-      var sy1y2 = y1 - y2;
-      var sy1y3 = y1 - y3;
-      var sx3x4 = x3 - x4;
-      var sy3y4 = y3 - y4;
+      var a = y0 - y1;
+      var b = x1 - x0;
+      var c = -a * x0 - b * y0;
 
-      var t = sx1x3 * sy3y4 - sy1y3 * sx3x4;
-      var u = sx1x2 * sy1y3 - sy1y2 * sx1x3;
+      var z = double.Sqrt(a * a + b * b);
 
-      var d = sx1x2 * sy3y4 - sy1y2 * sx3x4;
+      return (a / z, b / z, c / z);
+    }
+
+    /// <summary>
+    /// <para><see href="https://en.wikipedia.org/wiki/Line%E2%80%93line_intersection#Given_two_points_on_each_line_segment"/></para>
+    /// </summary>
+    /// <param name="x0"></param>
+    /// <param name="y0"></param>
+    /// <param name="x1"></param>
+    /// <param name="y1"></param>
+    /// <param name="x2"></param>
+    /// <param name="y2"></param>
+    /// <param name="x3"></param>
+    /// <param name="y3"></param>
+    /// <returns></returns>
+    public static (LineSegmentIntersectTest Outcome, double X, double Y) GivenTwoPointsOnEach(double x0, double y0, double x1, double y1, double x2, double y2, double x3, double y3)
+    {
+      var sx0x1 = x0 - x1;
+      var sx0x2 = x0 - x2;
+      var sy0y1 = y0 - y1;
+      var sy0y2 = y0 - y2;
+      var sx2x3 = x2 - x3;
+      var sy2y3 = y2 - y3;
+
+      var t = sx0x2 * sy2y3 - sy0y2 * sx2x3;
+      var u = sx0x1 * sy0y2 - sy0y1 * sx0x2;
+
+      var d = sx0x1 * sy2y3 - sy0y1 * sx2x3;
 
       if (d != 0)
       {
@@ -59,15 +90,15 @@ namespace Flux.Geometry.Shapes.Line
 
         if (t >= 0 && t <= 1)
         {
-          var ptx = x1 + t * (x2 - x1);
-          var pty = y1 + t * (y2 - y1);
+          var ptx = x0 + t * (x1 - x0);
+          var pty = y0 + t * (y1 - y0);
 
           return (LineSegmentIntersectTest.IntersectWithinFirstLineSegment, ptx, pty);
         }
         else if (u >= 0 && u <= 1)
         {
-          var pux = x3 + u * (x4 - x3);
-          var puy = y3 + u * (y4 - y3);
+          var pux = x2 + u * (x3 - x2);
+          var puy = y2 + u * (y3 - y2);
 
           return (LineSegmentIntersectTest.IntersectWithinSecondLineSegment, pux, puy);
         }
@@ -83,23 +114,39 @@ namespace Flux.Geometry.Shapes.Line
       }
     }
 
-    public static (LineSegmentIntersectTest Outcome, System.Numerics.Vector2 Intersection) GivenTwoPointsOnEach(System.Numerics.Vector2 v1, System.Numerics.Vector2 v2, System.Numerics.Vector2 v3, System.Numerics.Vector2 v4)
-    {
-      var (Outcome, X, Y) = GivenTwoPointsOnEach(v1.X, v1.Y, v2.X, v2.Y, v3.X, v3.Y, v4.X, v4.Y);
+    //public static (int Points, double X0, double Y0, double X1, double Y1) IntersectionCircleLineEquation(double r, double a, double b, double c)
+    //{
 
-      return (Outcome, new((float)X, (float)Y));
-    }
+    //  if (c * c > r * r * (a * a + b * b) + 1E-6) // No points:
+    //    return (0, 0, 0, 0, 0);
 
-    public static (LineSegmentIntersectTest Outcome, System.Runtime.Intrinsics.Vector128<double> Intersection) GivenTwoPointsOnEach(System.Runtime.Intrinsics.Vector128<double> v1, System.Runtime.Intrinsics.Vector128<double> v2, System.Runtime.Intrinsics.Vector128<double> v3, System.Runtime.Intrinsics.Vector128<double> v4)
-    {
-      var (Outcome, X, Y) = GivenTwoPointsOnEach(v1[0], v1[1], v2[0], v2[1], v3[0], v3[1], v4[0], v4[1]);
+    //  var x0 = -a * c / (a * a + b * b);
+    //  var y0 = -b * c / (a * a + b * b);
 
-      return (Outcome, System.Runtime.Intrinsics.Vector128.Create(X, Y));
-    }
+    //  if (double.Abs(c * c - r * r * (a * a + b * b)) < 1E-6) // 1 point:
+    //    return (1, x0, y0, 0, 0);
+
+    //  // 2 points:
+
+    //  var d = r * r - c * c / (a * a + b * b);
+    //  var m = double.Sqrt(d / (a * a + b * b));
+
+    //  var x1 = x0 - b * m;
+    //  var y1 = y0 + a * m;
+
+    //  x0 += b * m;
+    //  y0 -= a * m;
+
+    //  return (2, x0, y0, x1, y1);
+    //}
 
     #endregion // Static methods
 
+    #region Implemented interfaces
+
     public string ToString(string? format, IFormatProvider? formatProvider) => GetType().Name;
+
+    #endregion // Implemented interfaces
 
     public override string ToString() => ToString(null, null);
   }

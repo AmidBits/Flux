@@ -71,9 +71,9 @@ namespace Units
     {
       var u = new Flux.Units.Time(1);
 
-      Assert.AreEqual(1000000000, u.GetSiUnitValue(Flux.MetricPrefix.Nano));
-      Assert.AreEqual(1000000, u.GetSiUnitValue(Flux.MetricPrefix.Micro));
-      Assert.AreEqual(1000, u.GetSiUnitValue(Flux.MetricPrefix.Milli));
+      Assert.AreEqual(1000000000, u.GetSiUnitValue(Flux.Units.MetricPrefix.Nano));
+      Assert.AreEqual(1000000, u.GetSiUnitValue(Flux.Units.MetricPrefix.Micro));
+      Assert.AreEqual(1000, u.GetSiUnitValue(Flux.Units.MetricPrefix.Milli));
       Assert.AreEqual(1, u.GetUnitValue(Flux.Units.TimeUnit.Second));
       Assert.AreEqual(0.016666666666666666, u.GetUnitValue(Flux.Units.TimeUnit.Minute));
       Assert.AreEqual(0.0002777777777777778, u.GetUnitValue(Flux.Units.TimeUnit.Hour));

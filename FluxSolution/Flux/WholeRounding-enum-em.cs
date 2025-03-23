@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Em
+  public static partial class GenericMath
   {
     public static TValue RoundWhole<TValue>(this TValue value, WholeRounding mode)
     where TValue : System.Numerics.IFloatingPoint<TValue>

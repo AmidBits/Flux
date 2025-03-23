@@ -29,10 +29,10 @@ namespace Flux.Units
     /// <summary>
     /// <para>Convert the ratio to a fraction. If numerator and/or denominator are not integers, the fraction is approximated.</para>
     /// </summary>
-    public BigRational ToFraction()
+    public Numerics.BigRational ToFraction()
       => double.IsInteger(m_numerator) && double.IsInteger(m_denominator)
       ? new(System.Numerics.BigInteger.CreateChecked(m_numerator), System.Numerics.BigInteger.CreateChecked(m_denominator))
-      : BigRational.ApproximateRational(Value);
+      : Numerics.BigRational.ApproximateRational(Value);
 
     public string ToRatioNotationString(string? format, System.IFormatProvider? formatProvider = null, RatioNotation ratioNotation = RatioNotation.AcolonB)
       => ratioNotation.ToRatioNotationString(m_numerator, m_denominator, format, formatProvider);

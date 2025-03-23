@@ -61,17 +61,17 @@ else {
 
 "LevenshteinDistanceMatrix(`"sitting`", `"kitten`")$([System.Environment]::NewLine)"
 $m = [Flux.Fx]::LevenshteinDistanceMatrix[char]("sitting", "kitten")
-$s = [Flux.Fx]::Rank2ToConsole[int]($m)
+$s = [Flux.Fx]::Rank2ToConsoleString[int]($m)
 "$($s)$([System.Environment]::NewLine)"
 
 "LevenshteinDistanceMatrix(`"Sunday`", `"Saturday`")$([System.Environment]::NewLine)"
 $m = [Flux.Fx]::LevenshteinDistanceMatrix[char]("Sunday", "Saturday")
-$s = [Flux.Fx]::Rank2ToConsole[int]($m)
+$s = [Flux.Fx]::Rank2ToConsoleString[int]($m)
 "$($s)$([System.Environment]::NewLine)"
 
 "Excerpt from ProjectGutenberg's TenThousandWonderfulThings, searching for `"SCANDINAVIA`" in the title.$([System.Environment]::NewLine)"
 
-[Flux.Resource]::CreateGutenbergTenThousandWonderfulThings()
+[Flux.Resources]::GetGutenbergTenThousandWonderfulThings()
 #| Select-Object -Skip 100 -First 100
 | Where-Object {$_.Title -match 'SCANDINAVIA'} | Format-Table
 
@@ -81,8 +81,8 @@ $s = [Flux.Fx]::Rank2ToConsole[int]($m)
 # | Where-Object {$_.Title -match 'SCANDINAVIA'} | Format-Table
 
 "$([System.Environment]::NewLine)Looking through interfaces using reflection."
-[Flux.Locale].Assembly.GetTypes()
- | Where-Object { $_.IsPublic -and $_.IsInterface }
- | Where-Object { $_.ImplementedInterfaces | Where-Object { $_.Name.EndsWith('`1') } | Test-Any }
- | Select-Object FullName, ImplementedInterfaces
- | Sort-Object FullName
+[Flux.Locale]::Assembly.GetTypes()
+| Where-Object { $_.ImplementedInterfaces | Where-Object { $_.Name.StartsWith('IValueQuantifiable') } | Test-Any }
+| Sort-Object Name
+#| Select-Object *
+#| Format-Table

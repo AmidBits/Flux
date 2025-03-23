@@ -1,36 +1,5 @@
-﻿namespace Flux
+﻿namespace Flux.Units
 {
-  #region Extension methods
-
-  public static partial class Em
-  {
-    public static string ToSiFormattedString<TValue>(this TValue source, System.Globalization.CultureInfo? cultureInfo = null)
-      where TValue : System.Numerics.INumber<TValue>
-      => $"{source}";
-    //{
-    //  cultureInfo ??= System.Globalization.CultureInfo.CurrentCulture;
-
-    //  var nfi = (System.Globalization.NumberFormatInfo)cultureInfo.NumberFormat.Clone();
-    //  nfi.NumberGroupSeparator = UnicodeSpacing.ThinSpace.ToSpacingString();
-
-    //  return source.ToString("#,0.#", nfi);
-    //}
-
-    public static System.Collections.Generic.Dictionary<(MetricPrefix, TUnit), string> ToStringsOfSiPrefixes<TValue, TUnit>(this ISiUnitValueQuantifiable<TValue, TUnit> source, bool preferUnicode = false, Unicode.UnicodeSpacing unitSpacing = Unicode.UnicodeSpacing.Space, bool useFullName = false)
-      where TValue : struct, System.Numerics.INumber<TValue>
-      where TUnit : System.Enum
-    {
-      var d = new System.Collections.Generic.Dictionary<(MetricPrefix, TUnit), string>();
-
-      foreach (MetricPrefix mp in System.Enum.GetValues<MetricPrefix>().OrderDescending())
-        d.Add((mp, default(TUnit)!), source.ToSiUnitString(mp, false));
-
-      return d;
-    }
-  }
-
-  #endregion // Extension methods
-
   /// <summary>
   /// <para>This is for quantities and units that follow the SI (International System of Units). This interface enables the International System of Units (SI) to be represented.</para>
   /// <para><see href="https://en.wikipedia.org/wiki/International_System_of_Units"/></para>

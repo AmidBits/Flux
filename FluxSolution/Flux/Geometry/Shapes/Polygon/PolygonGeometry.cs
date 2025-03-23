@@ -707,13 +707,24 @@ namespace Flux.Geometry.Shapes.Polygon
 
       sm = sm.Append(GetType().Name);
 
-      sm = sm.Append($" {{ Vertices = {m_vertices.Count}");
+      sm = sm.Append($" {{");
 
-      foreach (var pi in this.GetPropertyInfos().Where(pi => pi.PropertyType == typeof(double)).OrderBy(pi => pi.Name))
-        if (pi.GetValue(this) is double value)
-          sm = sm.Append($", {pi.Name} = {value.ToString(format, formatProvider)}");
+      try
+      {
+        foreach (var kvp in this.GetPropertyDictionary().Where(kvp => kvp.Key is System.Reflection.PropertyInfo pi))
+        {
+          //.Where(kvp => kvp.Key.MemberType == System.Reflection.MemberTypes.Property).Select(kvp => new System.Collections.Generic.KeyValuePair<System.Reflection.PropertyInfo, object?>((System.Reflection.PropertyInfo)kvp.Key, kvp.Value)).Where(kvp => kvp.Key.PropertyType == typeof(double)).OrderBy(kvp => kvp.Key.Name))
+          if (kvp.Value is double value)
+            sm = sm.Append($", {kvp.Key.Name} = {value.ToString(format, formatProvider)}");
+        }
+      }
+      catch (System.Exception se) { sm = sm.Append(se.Message); }
 
-      sm = sm.Append($" [{m_vertices.ToStringXY(format, formatProvider)}] }}");
+      sm = sm.Append($" Vertices = {m_vertices.Count}");
+
+      sm = sm.Append($" [{m_vertices.ToStringXY(format, formatProvider)}]");
+
+      sm = sm.Append($" }}");
 
       return sm.ToString();
     }

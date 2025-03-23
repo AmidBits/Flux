@@ -9,15 +9,16 @@ namespace Flux.Numerics.Permutations
   public static class KnuthsAlgorithmL
   {
     /// <summary>
-    /// <para>Compute the next permutation of <paramref name="indices"/>, based on it's current state, using Knuth's "Algorithm L".</para>
-    /// <para>The <paramref name="indices"/> is picked up "on the go" so the initial state does not have to be the ordinal indices.</para>
+    /// <para>Generates the next permutation lexicographically after a given permutation. It changes the given permutation in-place. This implementation is Knuth's "Algorithm L".</para>
+    /// <para>The <paramref name="items"/> are picked up "as is" or "on the go" so to speak.</para>
     /// </summary>
-    /// <param name="indices"></param>
-    /// <returns></returns>
+    /// <param name="items"></param>
+    /// <returns>The next permutation of <paramref name="items"/> in lexiographical order.</returns>
     /// <remarks>
-    /// <para>This result is the next permutation in lexiographical order.</para>
+    /// <para></para>
     /// </remarks>
-    public static bool NextPermutation(System.Span<int> indices)
+    public static bool NextPermutation<T>(System.Span<T> items)
+      where T : System.IComparable<T>
     {
       // Knuths
       // 1. Find the largest index j such that a[j] < a[j + 1]. If no such index exists, the permutation is the last permutation.
@@ -27,50 +28,29 @@ namespace Flux.Numerics.Permutations
 
       int largestIndex1 = -1, largestIndex2 = -1, i, j;
 
-      for (i = indices.Length - 2; i >= 0; i--)
-        if (indices[i] < indices[i + 1])
+      for (i = items.Length - 2; i >= 0; i--)
+        if (items[i].CompareTo(items[i + 1]) < 0)
         {
           largestIndex1 = i;
           break;
         }
 
-      if (largestIndex1 < 0) return false;
+      if (largestIndex1 < 0)
+        return false;
 
-      for (j = indices.Length - 1; j >= 0; j--)
-        if (indices[largestIndex1] < indices[j])
+      for (j = items.Length - 1; j >= 0; j--)
+        if (items[largestIndex1].CompareTo(items[j]) < 0)
         {
           largestIndex2 = j;
           break;
         }
 
-      indices.Swap(largestIndex1, largestIndex2);
+      items.Swap(largestIndex1, largestIndex2);
 
-      for (i = largestIndex1 + 1, j = indices.Length - 1; i < j; i++, j--)
-        indices.Swap(i, j);
+      for (i = largestIndex1 + 1, j = items.Length - 1; i < j; i++, j--)
+        items.Swap(i, j);
 
       return true;
-    }
-
-    /// <summary>
-    /// <para>Creates a new sequence of permutations based on the <paramref name="source"/> data.</para>
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="source"></param>
-    /// <returns></returns>
-    /// <remarks>The array is mutated each iteration to reflect the next permutation.</remarks>
-    public static System.Collections.Generic.IEnumerable<T[]> PermuteAlgorithmL<T>(this System.Collections.Generic.IList<T> source)
-    {
-      var sourceCount = source.Count;
-
-      var permutation = new T[sourceCount];
-
-      foreach (var indices in YieldPermutationIndices(sourceCount))
-      {
-        for (var i = sourceCount - 1; i >= 0; i--)
-          permutation[i] = source[indices[i]];
-
-        yield return permutation;
-      }
     }
 
     /// <summary>
@@ -79,13 +59,13 @@ namespace Flux.Numerics.Permutations
     /// <param name="initialIndices"></param>
     /// <returns></returns>
     /// <remarks>The array is mutated each iteration to reflect the next permutation.</remarks>
-    public static System.Collections.Generic.IEnumerable<int[]> YieldPermutationIndices(int[] initialIndices)
+    public static System.Collections.Generic.IEnumerable<int[]> GetPermutationIndices(int[] initialIndices)
     {
       do
       {
         yield return initialIndices;
       }
-      while (NextPermutation(initialIndices));
+      while (NextPermutation<int>(initialIndices));
     }
 
     /// <summary>
@@ -93,7 +73,7 @@ namespace Flux.Numerics.Permutations
     /// </summary>
     /// <param name="numberOfIndices"></param>
     /// <returns></returns>
-    public static System.Collections.Generic.IEnumerable<int[]> YieldPermutationIndices(int numberOfIndices)
-      => YieldPermutationIndices(System.Linq.Enumerable.Range(0, numberOfIndices).ToArray());
+    public static System.Collections.Generic.IEnumerable<int[]> GetPermutationIndices(int numberOfIndices)
+      => GetPermutationIndices(System.Linq.Enumerable.Range(0, numberOfIndices).ToArray());
   }
 }

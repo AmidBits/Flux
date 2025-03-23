@@ -1,76 +1,116 @@
-using Flux.Net;
-
 namespace Flux
 {
   public static class Locale
   {
+    //public static System.Data.DataTable GetLocaleData()
+    //{
+    //  var dt = new System.Data.DataTable("Locale");
+
+    //  dt.Columns.Add("PropertyGroup", typeof(string));
+    //  dt.Columns.Add("PropertyName", typeof(string));
+    //  dt.Columns.Add("PropertyValue", typeof(object));
+
+    //  dt.Rows.Add(["Environment", "ClrVersion", System.Environment.Version]);
+    //  dt.Rows.Add(["Environment", "CurrentDirectory", System.Environment.CurrentDirectory]);
+    //  dt.Rows.Add(["Environment", "MachineName", System.Environment.MachineName]);
+
+    //  foreach (var ev in System.Environment.GetEnvironmentVariables().Cast<System.Collections.DictionaryEntry>())
+    //    dt.Rows.Add(["EnvironmentVariable", (string)ev.Key, (string?)ev.Value]);
+
+    //  foreach (var sf in System.Enum.GetNames<System.Environment.SpecialFolder>())
+    //    dt.Rows.Add(["SpecialFolder", sf, System.Environment.GetFolderPath(System.Enum.Parse<System.Environment.SpecialFolder>(sf))]);
+
+    //  return dt;
+    //}
+
     ///// <summary>
     ///// <para>Gets the file name (without extension) of the process executable from <see cref="System.AppDomain.CurrentDomain"/>[.FriendlyName].</para>
     ///// <para>Gets the file path of the process executable from one (and in order of) <see cref="System.AppDomain.CurrentDomain"/>[.RelativeSearchPath], <see cref="System.AppDomain.CurrentDomain"/>[.BaseDirectory] or <see cref="Locale.Module"/>[.FullyQualifiedName].</para>
     ///// </summary>
     //public static string AppDomainPath => System.AppDomain.CurrentDomain.RelativeSearchPath ?? System.AppDomain.CurrentDomain.BaseDirectory ?? typeof(Locale).Module.FullyQualifiedName;
-    public static (string Name, string Path) AppDomain
-    {
-      get
-      {
-        var cd = System.AppDomain.CurrentDomain;
+    public static string AppDomainName
+      => System.AppDomain.CurrentDomain.FriendlyName;
 
-        return (cd.FriendlyName, cd.BaseDirectory);
-      }
-    }
+    ///// <summary>
+    ///// <para>Gets the file path of the process executable from one (and in order of) <see cref="System.AppDomain.CurrentDomain"/>[.RelativeSearchPath], <see cref="System.AppDomain.CurrentDomain"/>[.BaseDirectory] or <see cref="Locale.Module"/>[.FullyQualifiedName].</para>
+    ///// </summary>
+    //public static string AppDomainPath => System.AppDomain.CurrentDomain.RelativeSearchPath ?? System.AppDomain.CurrentDomain.BaseDirectory ?? typeof(Locale).Module.FullyQualifiedName;
+    public static string AppDomainPath
+      => System.AppDomain.CurrentDomain.BaseDirectory;
 
     /// <summary>
     /// <para>The Flux assembly.</para>
     /// </summary>
-    public static System.Reflection.Assembly Assembly => typeof(Locale).Assembly;
+    public static System.Reflection.Assembly Assembly
+      => typeof(Locale).Assembly;
 
     /// <summary>
     /// <para>Gets the version of the common language runtime (CLR).</para>
     /// </summary>
     /// <remarks>The information is derived from <see cref="System.Environment.Version"/>.</remarks>
-    public static System.Version ClrVersion => System.Environment.Version;
+    public static System.Version ClrVersion
+      => System.Environment.Version;
 
     /// <summary>
     /// <para>Gets the fully qualified path of the current working directory.</para>
     /// </summary>
     /// <remarks>The information is from <see cref="System.Environment.CurrentDirectory"/>.</remarks>
-    public static string CurrentDirectory => System.Environment.CurrentDirectory;
+    public static string CurrentDirectory
+      => System.Environment.CurrentDirectory;
 
     /// <summary>
     /// <para>Gets the fully qualified DNS host name (including domain name, if the computer is registered in a domain) for local computer and a list of IP addresses associated with the host.</para>
     /// </summary>
     /// <remarks>The information is derived from <see cref="System.Net.Dns.GetHostEntry(System.Net.Dns.GetHostName())"/>.</remarks>
-    public static (string Name, System.Net.IPAddress[] Addresses) DnsHostEntry
-    {
-      get
-      {
-        var hostEntry = System.Net.Dns.GetHostEntry(System.Net.Dns.GetHostName());
-
-        return (hostEntry.HostName, hostEntry.AddressList);
-      }
-    }
+    public static System.Net.IPAddress[] DnsHostAddresses
+      => System.Net.Dns.GetHostEntry(System.Net.Dns.GetHostName()).AddressList;
 
     /// <summary>
-    /// <para>Gets the current platform identifier and version.</para>
+    /// <para>Gets a list of IP addresses associated with the host.</para>
+    /// </summary>
+    /// <remarks>The information is derived from <see cref="System.Net.Dns.GetHostEntry(System.Net.Dns.GetHostName())"/>.</remarks>
+    public static string DnsHostName
+      => System.Net.Dns.GetHostEntry(System.Net.Dns.GetHostName()).HostName;
+
+    /// <summary>
+    /// <para>Gets the current platform identifier.</para>
     /// </summary>
     /// <remarks>The information is derived from <see cref="System.Environment.OSVersion"/>.</remarks>
-    public static (string PlatformID, System.Version Version, string VersionString) EnvironmentOs
-      => (System.Environment.OSVersion.Platform.ToString(), System.Environment.OSVersion.Version, System.Environment.OSVersion.VersionString);
+    public static System.PlatformID EnvironmentOsPlatform
+      => System.Environment.OSVersion.Platform;
+
+    /// <summary>
+    /// <para>Gets the current platform version.</para>
+    /// </summary>
+    /// <remarks>The information is derived from <see cref="System.Environment.OSVersion"/>.</remarks>
+    public static System.Version EnvironmentOsVersion
+      => System.Environment.OSVersion.Version;
 
     /// <summary>
     /// <para>Creates a new <see cref="System.Collections.Generic.IDictionary{string, string?}"/> with all environment variable keys and values from <see cref="System.Environment.GetEnvironmentVariables()"/>.</para>
     /// </summary>
     public static System.Collections.Generic.IDictionary<string, string?> EnvironmentVariables
-      => Environment.GetEnvironmentVariables().Cast<System.Collections.DictionaryEntry>().ToSortedDictionary((e, i) => (string)e.Key, (e, i) => (string?)e.Value);
+      => System.Environment.GetEnvironmentVariables().Cast<System.Collections.DictionaryEntry>().ToSortedDictionary((e, i) => (string)e.Key, (e, i) => (string?)e.Value);
 
+    /// <summary>
+    /// <para>Obtains the global IP address of the system.</para>
+    /// <para>A global IP address is the address that the system has on the outside of the local area network.</para>
+    /// </summary>
     public static System.Net.IPAddress GlobalAddress
-      => MyIpAddresses.TryGetMyGlobalAddress(out var myGlobalAddress) ? myGlobalAddress : myGlobalAddress;
+      => Net.MyIpAddresses.TryGetMyGlobalAddress(out var myGlobalAddress) ? myGlobalAddress : myGlobalAddress;
 
+    /// <summary>
+    /// <para>Gets the local IP address of the system.</para>
+    /// <para>A local IP address is </para>
+    /// </summary>
     public static System.Net.IPAddress LocalAddress
-      => MyIpAddresses.TryGetMyLocalAddress(out var myLocalAddress) ? myLocalAddress : myLocalAddress;
+      => Net.MyIpAddresses.TryGetMyLocalAddress(out var myLocalAddress) ? myLocalAddress : myLocalAddress;
 
+    /// <summary>
+    /// <para>Gets all local IP addresses of the system.</para>
+    /// </summary>
     public static System.Net.IPAddress[] LocalAddresses
-      => MyIpAddresses.TryGetMyLocalAddressesViaNics(out var myLocalAddressesViaNics) ? myLocalAddressesViaNics : myLocalAddressesViaNics;
+      => Net.MyIpAddresses.TryGetMyLocalAddressesViaNics(out var myLocalAddressesViaNics) ? myLocalAddressesViaNics : myLocalAddressesViaNics;
 
     /// <summary>
     /// <para>Gets the NETBIOS name of this local computer.</para>
@@ -127,42 +167,70 @@ namespace Flux
     //  .ToArray();
 
     /// <summary>
-    /// <para>Gets the computer domain-name and host-name of the local computer.</para>
+    /// <para>Gets the computer domain-name of the local computer.</para>
     /// </summary>
     /// <remarks>The information is derived from <see cref="System.Net.NetworkInformation.IPGlobalProperties.GetIPGlobalProperties()"/>.</remarks>
-    public static (string DomainName, string HostName) NetworkGlobalProperties
-    {
-      get
-      {
-        var ipgp = System.Net.NetworkInformation.IPGlobalProperties.GetIPGlobalProperties();
-
-        return (ipgp.DomainName, ipgp.HostName);
-      }
-    }
+    public static string NicDomainName
+      => System.Net.NetworkInformation.IPGlobalProperties.GetIPGlobalProperties().DomainName;
 
     /// <summary>
-    /// <para>Gets the new-line strings for operating systems.</para>
+    /// <para>Gets the computer host-name of the local computer.</para>
+    /// </summary>
+    /// <remarks>The information is derived from <see cref="System.Net.NetworkInformation.IPGlobalProperties.GetIPGlobalProperties()"/>.</remarks>
+    public static string NicHostName
+      => System.Net.NetworkInformation.IPGlobalProperties.GetIPGlobalProperties().HostName;
+
+    /// <summary>
+    /// <para>Gets the new-line for the older Macintosh operating system.</para>
     /// </summary>
     /// <remarks>The "Macintosh" new-line is for older Apple operating systems.</remarks>
-    public static (char Macintosh, char Unix, string Windows) NewLines { get; } = ('\r', '\n', "\r\n");
+    public static char NewLineMacintosh
+      => '\r';
 
     /// <summary>
-    /// <para>Gets the "OneDrive" (personal), "OneDriveCommercial" and "OneDriveConsumer" paths for the current process.</para>
+    /// <para>Gets the new-line for the Unix operating system.</para>
+    /// </summary>
+    public static char NewLineUnix
+      => '\n';
+
+    /// <summary>
+    /// <para>Gets the new-line for the Windows operating system.</para>
+    /// </summary>
+    public static string NewLineWindows
+      => "\r\n";
+
+    /// <summary>
+    /// <para>Gets the "OneDrive" (personal) path for the current process.</para>
     /// </summary>
     /// <remarks>The information is derived from <see cref="System.Environment.GetEnvironmentVariable(string)"/></remarks>
-    public static (string? OneDrive, string? OneDriveCommercial, string? OneDriveConsumer) OneDrivePaths
-      => (System.Environment.GetEnvironmentVariable("OneDrive"), System.Environment.GetEnvironmentVariable("OneDriveCommercial"), System.Environment.GetEnvironmentVariable("OneDriveConsumer"));
+    public static string? OneDrivePath { get; }
+      = System.Environment.GetEnvironmentVariable("OneDrive");
 
-    ///// <summary>
-    ///// <para>Gets an array of PlatformID strings, enumerated from <see cref="System.PlatformID"/>.</para>
-    ///// </summary>
-    //public static string[] PlatformIDs { get; } = System.Enum.GetValues<System.PlatformID>().Select(pid => pid.ToString()).Order().ToArray();
+    /// <summary>
+    /// <para>Gets the "OneDriveCommercial" path for the current process.</para>
+    /// </summary>
+    /// <remarks>The information is derived from <see cref="System.Environment.GetEnvironmentVariable(string)"/></remarks>
+    public static string? OneDrivePathCommercial
+      => System.Environment.GetEnvironmentVariable("OneDriveCommercial");
+
+    /// <summary>
+    /// <para>Gets the "OneDriveConsumer" path for the current process.</para>
+    /// </summary>
+    /// <remarks>The information is derived from <see cref="System.Environment.GetEnvironmentVariable(string)"/></remarks>
+    public static string? OneDrivePathConsumer
+      => System.Environment.GetEnvironmentVariable("OneDriveConsumer");
+
+    /// <summary>
+    /// <para>Gets an array of PlatformID strings, enumerated from <see cref="System.PlatformID"/>.</para>
+    /// </summary>
+    public static System.PlatformID[] PlatformIDs => System.Enum.GetValues<System.PlatformID>().OrderBy(pid => pid.ToString()).ToArray();
 
     /// <summary>
     /// <para>Gets an array of platform strings.</para>
     /// </summary>
     /// <remarks>The information is derived from <see cref="System.OperatingSystem"/>.</remarks>
-    public static string[] Platforms { get; } = typeof(System.OperatingSystem).GetMethods().Where(mi => mi.ReturnType == typeof(bool) && mi.GetParameters().Length == 0 && mi.Name.StartsWith("Is")).Select(mi => mi.Name[2..]).Order().ToArray();
+    public static string[] Platforms
+      => typeof(System.OperatingSystem).GetMethods().Where(mi => mi.ReturnType == typeof(bool) && mi.GetParameters().Length == 0 && mi.Name.StartsWith("Is")).Select(mi => mi.Name[2..]).Order().ToArray();
 
     /// <summary>
     /// <para>Gets the number of processors on which the threads in this process can be scheduled to run.</para>
@@ -173,7 +241,8 @@ namespace Flux
     /// </remarks>
     [System.Runtime.Versioning.SupportedOSPlatform("linux")]
     [System.Runtime.Versioning.SupportedOSPlatform("windows")]
-    public static int ProcessorAffinityCount => System.Numerics.BitOperations.PopCount((ulong)System.Diagnostics.Process.GetCurrentProcess().ProcessorAffinity);
+    public static int ProcessorAffinityCount
+      => System.Numerics.BitOperations.PopCount((ulong)System.Diagnostics.Process.GetCurrentProcess().ProcessorAffinity);
 
     ///// <summary>
     ///// <para>Gets the public IP address.</para>
@@ -191,7 +260,7 @@ namespace Flux
     /// <para>Gets the title and version of the .NET-installation on which a process is running.</para>
     /// </summary>
     /// <remarks>The information is derived from <see cref="System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription"/>.</remarks>
-    public static (string Title, System.Version Version) RuntimeFramework
+    public static string RuntimeFrameworkTitle
     {
       get
       {
@@ -199,33 +268,66 @@ namespace Flux
 
         var i = s.LastIndexOf(' ');
 
-        var title = i >= -1 ? s[..i].TrimEnd() : s;
-
-        if (!(i >= -1 && System.Version.TryParse(s[i..].TrimStart(), out var version))) version = new();
-
-        return (title, version);
+        return i >= -1 ? s[..i].TrimEnd() : s;
       }
     }
 
     /// <summary>
-    /// <para>Gets the architecture, title and version of the runtime-OS on which the process is running.</para>
+    /// <para>Gets the title and version of the .NET-installation on which a process is running.</para>
     /// </summary>
-    /// <remarks>The information is derived from <see cref="System.Runtime.InteropServices.RuntimeInformation.OSArchitecture"/> and <see cref="System.Runtime.InteropServices.RuntimeInformation.OSDescription"/>.</remarks>
-    public static (string Architecture, string Title, System.Version Version) RuntimeOs
+    /// <remarks>The information is derived from <see cref="System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription"/>.</remarks>
+    public static System.Version RuntimeFrameworkVersion
     {
       get
       {
-        var architecture = System.Runtime.InteropServices.RuntimeInformation.OSArchitecture.ToString();
+        var s = System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription.Trim();
 
+        var i = s.LastIndexOf(' ');
+
+        if (!(i >= -1 && System.Version.TryParse(s[i..].TrimStart(), out var version))) version = new();
+
+        return version;
+      }
+    }
+
+    /// <summary>
+    /// <para>Gets the architecture on which the process is running.</para>
+    /// </summary>
+    /// <remarks>The information is derived from <see cref="System.Runtime.InteropServices.RuntimeInformation.OSArchitecture"/>.</remarks>
+    public static string RuntimeOsArchitecture
+      => System.Runtime.InteropServices.RuntimeInformation.OSArchitecture.ToString();
+
+    /// <summary>
+    /// <para>Gets the title of the runtime-OS on which the process is running.</para>
+    /// </summary>
+    /// <remarks>The information is derived from <see cref="System.Runtime.InteropServices.RuntimeInformation.OSDescription"/>.</remarks>
+    public static string RuntimeOsTitle
+    {
+      get
+      {
         var s = System.Runtime.InteropServices.RuntimeInformation.OSDescription.Trim();
 
         var i = s.LastIndexOf(' ');
 
-        var title = i > -1 ? s[..i].TrimEnd() : s;
+        return i > -1 ? s[..i].TrimEnd() : s;
+      }
+    }
+
+    /// <summary>
+    /// <para>Gets the version of the runtime-OS on which the process is running.</para>
+    /// </summary>
+    /// <remarks>The information is derived from <see cref="System.Runtime.InteropServices.RuntimeInformation.OSDescription"/>.</remarks>
+    public static System.Version RuntimeOsVersion
+    {
+      get
+      {
+        var s = System.Runtime.InteropServices.RuntimeInformation.OSDescription.Trim();
+
+        var i = s.LastIndexOf(' ');
 
         if (!(i > -1 && System.Version.TryParse(s[i..].TrimStart(), out var version))) version = new();
 
-        return (architecture, title, version);
+        return version;
       }
     }
 
@@ -233,25 +335,39 @@ namespace Flux
     /// <para>Creates a <see cref="System.Collections.Generic.IDictionary{string, string}"/> with all environment special folders (names and paths).</para>
     /// </summary>
     /// <remarks>The information is derived from <see cref="System.Environment.SpecialFolder"/>.</remarks>
-    public static System.Collections.Generic.IDictionary<string, string> SpecialFolders
-      => System.Enum.GetNames<System.Environment.SpecialFolder>().ToSortedDictionary((e, i) => e, (e, i) => System.Environment.GetFolderPath(System.Enum.Parse<System.Environment.SpecialFolder>(e)));
+    public static System.Collections.Generic.IDictionary<string, string> SpecialFolders { get; }
+      = System.Enum.GetNames<System.Environment.SpecialFolder>().ToSortedDictionary((e, i) => e, (e, i) => System.Environment.GetFolderPath(System.Enum.Parse<System.Environment.SpecialFolder>(e)));
 
     /// <summary>
     /// <para>Gets the current number of ticks, and the frequency as the number of ticks per seconds, from the timer mechanism.</para>
     /// </summary>
     /// <remarks>The information is derived from <see cref="System.Diagnostics.Stopwatch"/>.</remarks>
-    public static (long Counter, long Frequency) Stopwatch
-      => (System.Diagnostics.Stopwatch.GetTimestamp(), System.Diagnostics.Stopwatch.Frequency);
+    public static long StopwatchCounter
+      => System.Diagnostics.Stopwatch.GetTimestamp();
 
     /// <summary>
-    /// <para>Gets the system OS platform and version.</para>
+    /// <para>Gets the frequency as the number of ticks per seconds, from the timer mechanism.</para>
+    /// </summary>
+    /// <remarks>The information is derived from <see cref="System.Diagnostics.Stopwatch"/>.</remarks>
+    public static long StopwatchFrequency
+      => System.Diagnostics.Stopwatch.Frequency;
+
+    /// <summary>
+    /// <para>Gets the system OS platform.</para>
     /// </summary>
     /// <remarks>The information comes from <see cref="System.OperatingSystem"/>.</remarks>
-    public static (string Platform, System.Version Version) SystemOs
+    public static string SystemOsPlatform
+      => Platforms.First(System.OperatingSystem.IsOSPlatform);
+
+    /// <summary>
+    /// <para>Gets the system OS version.</para>
+    /// </summary>
+    /// <remarks>The information comes from <see cref="System.OperatingSystem"/>.</remarks>
+    public static System.Version SystemOsVersion
     {
       get
       {
-        var platform = Platforms.First(System.OperatingSystem.IsOSPlatform);
+        var platform = SystemOsPlatform;
 
         var major = 0;
         while (major < int.MaxValue && System.OperatingSystem.IsOSPlatformVersionAtLeast(platform, major + 1))
@@ -269,9 +385,7 @@ namespace Flux
         while (revision < int.MaxValue && System.OperatingSystem.IsOSPlatformVersionAtLeast(platform, major, minor, build, revision + 1))
           revision++;
 
-        var version = new System.Version(major, minor, build, revision);
-
-        return (platform, version);
+        return new System.Version(major, minor, build, revision);
       }
     }
 
@@ -279,20 +393,28 @@ namespace Flux
     /// <para>Gets the path of the current user's temporary folder.</para>
     /// </summary>
     /// <remarks>The information is from <see cref="System.IO.Path.GetTempPath()"/>.</remarks>
-    public static string TempPath => System.IO.Path.GetTempPath();
+    public static string TempPath
+      => System.IO.Path.GetTempPath();
 
     /// <summary>
     /// <para>Gets the user-domain-name (associated with the current user) and user-name (associated with the current thread).</para>
     /// </summary>
-    /// <remarks>The information is from <see cref="System.Environment"/>.</remarks>
-    public static (string DomainName, string Name) User
-      => (System.Environment.UserDomainName, System.Environment.UserName);
+    /// <remarks>The information is from <see cref="System.Environment.UserDomainName"/>.</remarks>
+    public static string UserDomainName
+      => System.Environment.UserDomainName;
+
+    /// <summary>
+    /// <para>Gets the user-name (associated with the current thread).</para>
+    /// </summary>
+    /// <remarks>The information is from <see cref="System.Environment.UserName"/>.</remarks>
+    public static string UserName
+      => System.Environment.UserName;
 
     /// <summary>
     /// <para>Creates a <see cref="System.Collections.Generic.IDictionary{string, object?}"/> with all <see cref="Flux.Locale"/> properties (names and values).</para>
     /// </summary>
     /// <returns></returns>
     public static System.Collections.Generic.IDictionary<string, object?> GetProperties()
-      => Fx.GetPropertyInfos(typeof(Locale)).ToOrderedDictionary((e, i) => e.Name, (e, i) => e.GetValue(null));
+      => typeof(Locale).GetPropertyDictionary().ToOrderedDictionary((kvp, i) => kvp.Key.Name, (kvp, i) => kvp.Value);
   }
 }

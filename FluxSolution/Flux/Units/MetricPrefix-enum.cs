@@ -1,4 +1,4 @@
-namespace Flux
+namespace Flux.Units
 {
   /// <summary>
   /// <para>The MetricPrefix enum represents the SI metrix prefix decimal (base 10) multiples.</para>

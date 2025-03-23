@@ -14,6 +14,8 @@ namespace Flux.Geometry.Shapes.Ellipse
 
     public EllipseGeometry(double a, double b)
     {
+      if (a < b) throw new System.ArgumentException("The ellipse geometry structure requires the semi-major axis (A) to be greater-than-or-equal-to the semi-minor axis (B).");
+
       m_a = a;
       m_b = b;
     }
@@ -25,22 +27,29 @@ namespace Flux.Geometry.Shapes.Ellipse
     /// <summary>The semi-minor or b-axis of the ellipse.</summary>
     public double B => m_b;
 
+    /// <summary>
+    /// <para>The points (±focus, 0) are called foci, denoted c. These points are extremely important in astronomy, since planets follow elliptical orbits with the sun at a focus, not with the sun at the center.</para>
+    /// <para>Elliptical rooms have amazing acoustic properties. If you whisper at one focus of such a room, the sound waves from your voice will bounce off the walls and converge at the other focus -- that's why it is called a focus. The same goes for light reflecting off elliptical mirrors.</para>
+    /// <para><see href="https://en.wikipedia.org/wiki/Focus_(geometry)"/></para>
+    /// </summary>
+    public double Focus => double.Sqrt(m_a * m_a - m_b * m_b);
+
     /// <summary>Returns the approximate circumference of an ellipse based on the two semi-axis or radii a and b (the order of the arguments do not matter). Uses Ramanujans second approximation.</summary>
-    public double Perimeter => Units.Length.PerimeterOfEllipse(m_a, m_b);
+    public double Circumference => Units.Length.OfEllipsePerimeter(m_a, m_b);
 
     /// <summary>Returns the area of an ellipse based on two semi-axes or radii a and b (the order of the arguments do not matter).</summary>
     public double SurfaceArea => Units.Area.OfEllipse(m_a, m_b);
 
     /// <summary>Returns whether a point (<paramref name="x"/>, <paramref name="y"/>) is inside the optionally rotated (<paramref name="rotationAngle"/> in radians, the default 0 equals no rotation) ellipse.</summary>
-    public bool Contains(double x, double y, double rotationAngle = 0) => PointInEllipse(m_a, m_b, x, y, rotationAngle);
+    public bool Contains(double x, double y, double rotationAngle = 0) => EllipseContainsPoint(m_a, m_b, x, y, rotationAngle);
 
     /// <summary>
-    /// <para>The linear eccentricity of an ellipse or hyperbola, denoted c (or sometimes f or e), is the distance between its center and either of its two foci.</para>
-    /// <see href="https://en.wikipedia.org/wiki/Eccentricity_(mathematics)"/>
-    /// <see href="https://en.wikipedia.org/wiki/Focus_(geometry)"/>
+    /// <para>The linear eccentricity of an ellipse or hyperbola, denoted c (or sometimes f or e), is the distance between its center and either of its two foci. This is the same as the <see cref="Focus"/> property.</para>
+    /// <para><see href="https://en.wikipedia.org/wiki/Eccentricity_(mathematics)"/></para>
+    /// <para><see href="https://en.wikipedia.org/wiki/Focus_(geometry)"/></para>
     /// </summary>
     /// <remarks>In the case of ellipses and hyperbolas the linear eccentricity is sometimes called the half-focal separation.</remarks>
-    public double GetLinearEccentricity() => double.Sqrt((m_a * m_a) - (m_b * m_b));
+    public double GetLinearEccentricity() => Focus;
 
     /// <summary>
     /// <para>First eccentricity.</para>
@@ -48,7 +57,7 @@ namespace Flux.Geometry.Shapes.Ellipse
     /// <see href="https://en.wikipedia.org/wiki/Eccentricity_(mathematics)"/>
     /// <see href="https://en.wikipedia.org/wiki/Focus_(geometry)"/>
     /// </summary>
-    public double GetFirstEccentricity() => double.Sqrt(1 - (m_b * m_b) / (m_a * m_a));
+    public double GetFirstEccentricity() => Focus / m_a;
 
     /// <summary>
     /// <para>Second eccentricity.</para>
@@ -145,18 +154,39 @@ namespace Flux.Geometry.Shapes.Ellipse
     /// <summary>
     /// <para>Returns whether a point (<paramref name="x"/>, <paramref name="y"/>) is inside the optionally rotated (<paramref name="rotationAngle"/> in radians, the default 0 equals no rotation) ellipse with the the two specified semi-axes or radii (<paramref name="a"/>, <paramref name="b"/>). The ellipse <paramref name="a"/> and <paramref name="b"/> correspond to same axes as <paramref name="x"/> and <paramref name="y"/> of the point, respectively.</para>
     /// </summary>
-    public static bool PointInEllipse(double a, double b, double x, double y, double rotationAngle = 0)
+    public static bool EllipseContainsPoint(double a, double b, double x, double y, double rotationAngle = 0)
       => double.Cos(rotationAngle) is var cos && double.Sin(rotationAngle) is var sin && double.Pow(cos * x + sin * y, 2) / (a * a) + double.Pow(sin * x - cos * y, 2) / (b * b) <= 1;
 
     #endregion // Static methods
 
     #region Implemented interfaces
 
-    public string ToString(string? format, IFormatProvider? formatProvider)
+    public static bool TryConvertToPrimitiveNumber<T>(T source, out object result)
+    {
+      try
+      {
+        if (source.IsPrimitiveTypeOfInteger() && System.Convert.ToInt64(source) is long i64)
+        {
+          result = i64;
+          return true;
+        }
+        else if (source.IsPrimitiveTypeOfFloatingPoint() && System.Convert.ToDouble(source) is double d64)
+        {
+          result = d64;
+          return true;
+        }
+      }
+      catch { }
+
+      result = default!;
+      return false;
+    }
+
+    public string ToString(string? format, IFormatProvider? provider)
     {
       format ??= "N3";
 
-      return $"{GetType().Name} {{ A = {m_a.ToString(format, formatProvider)}, B = {m_b.ToString(format, formatProvider)}, Perimeter = {Perimeter.ToString(format, formatProvider)}, SurfaceArea = {SurfaceArea.ToString(format, formatProvider)} }}";
+      return $"{GetType().Name} {{ A = {m_a.ToString(format, provider)}, B = {m_b.ToString(format, provider)}, Focus = ±{Focus.ToString(format, provider)} Circumference = {Circumference.ToString(format, provider)}, SurfaceArea = {SurfaceArea.ToString(format, provider)} }}";
     }
 
     #endregion // Implemented interfaces

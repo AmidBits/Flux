@@ -171,7 +171,7 @@ namespace Flux.Units
 
     public static string GetSiUnitName(MetricPrefix prefix, bool preferPlural) => prefix.GetMetricPrefixName() + GetUnitName(TimeUnit.Second, preferPlural);
 
-    public static string GetSiUnitSymbol(MetricPrefix prefix, bool preferUnicode) => prefix.GetMetricPrefixSymbol(preferUnicode) + GetUnitSymbol(TimeUnit.Second, preferUnicode);
+    public static string GetSiUnitSymbol(MetricPrefix prefix, bool preferUnicode = false) => prefix.GetMetricPrefixSymbol(preferUnicode) + GetUnitSymbol(TimeUnit.Second, preferUnicode);
 
     public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertTo(m_value, prefix);
 
@@ -218,7 +218,7 @@ namespace Flux.Units
 
     public static string GetUnitName(TimeUnit unit, bool preferPlural) => unit.ToString().ToPluralUnitName(preferPlural);
 
-    public static string GetUnitSymbol(TimeUnit unit, bool preferUnicode)
+    public static string GetUnitSymbol(TimeUnit unit, bool preferUnicode = false)
       => unit switch
       {
         TimeUnit.Second => "s",

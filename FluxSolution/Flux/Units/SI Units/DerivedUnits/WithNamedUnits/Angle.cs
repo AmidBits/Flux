@@ -512,9 +512,9 @@
             decimalDegrees = -decimalDegrees;
 
           if (g4.Success && (g4.Value[0] is 'N' or 'S'))
-            list.Add(new Geometry.Geodesy.Latitude(decimalDegrees));
+            list.Add(new Geodesy.Latitude(decimalDegrees));
           else if (g4.Success && (g4.Value[0] is 'E' or 'W'))
-            list.Add(new Geometry.Geodesy.Longitude(decimalDegrees));
+            list.Add(new Geodesy.Longitude(decimalDegrees));
           else
             throw new System.InvalidOperationException();
         }
@@ -537,7 +537,7 @@
     /// <returns></returns>
     /// <exception cref="NotImplementedException"></exception>
     /// <exception cref="System.ArgumentOutOfRangeException"></exception>
-    public static string ToStringDmsNotation(double decimalDegrees, AngleDmsNotation dmsNotation, Geometry.Geodesy.CompassCardinalAxis axis, int decimalPoints = -1, Unicode.UnicodeSpacing componentSpacing = Unicode.UnicodeSpacing.None)
+    public static string ToStringDmsNotation(double decimalDegrees, AngleDmsNotation dmsNotation, Geodesy.CompassCardinalAxis axis, int decimalPoints = -1, Unicode.UnicodeSpacing componentSpacing = Unicode.UnicodeSpacing.None)
     {
       var (degrees, decimalMinutes, minutes, decimalSeconds) = ConvertDecimalDegreesToSexagesimalUnitSubdivisions(decimalDegrees);
 

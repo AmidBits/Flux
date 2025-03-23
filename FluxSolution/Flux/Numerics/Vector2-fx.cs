@@ -43,7 +43,7 @@ namespace Flux
     /// <param name="semiAxes"></param>
     /// <returns></returns>
     public static double EllipsePerimeter(this System.Numerics.Vector2 semiAxes)
-      => Units.Length.PerimeterOfEllipse(semiAxes.X, semiAxes.Y);
+      => Units.Length.OfEllipsePerimeter(semiAxes.X, semiAxes.Y);
 
     /// <summary>
     /// <para>Creates a elliptical polygon with random vertices from the specified number of segments, width, height and an optional random variance unit interval (toward 0 = least random, toward 1 = most random).</para>

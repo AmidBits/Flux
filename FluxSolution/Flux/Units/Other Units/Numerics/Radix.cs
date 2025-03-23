@@ -308,9 +308,11 @@ namespace Flux.Units
     public double ToDecimalFraction<TNumber>(TNumber source)
       where TNumber : System.Numerics.IBinaryInteger<TNumber>
     {
-      source.FastDigitCount(m_value, out var pow);
+      var fil = source.FastDigitCount(m_value);
 
-      return double.CreateChecked(source) / (double)pow;
+      var fip = m_value.FastIntegerPow(fil, UniversalRounding.HalfTowardZero, out var _);
+
+      return double.CreateChecked(source) / double.CreateChecked(fip);
     }
 
     /// <summary>

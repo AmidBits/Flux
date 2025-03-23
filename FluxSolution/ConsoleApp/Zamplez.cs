@@ -147,7 +147,7 @@ namespace ConsoleApp
       {
         var rng = new System.Random();
 
-        var amb = new Flux.Numerics.AmbOps.Amb();
+        var amb = new Flux.AmbOperator.Amb();
 
         #region Flow & Measurements
         rng.Shuffle(m_ap);
@@ -199,12 +199,12 @@ namespace ConsoleApp
       hints.WriteToConsole();
       System.Console.WriteLine();
 
-      var amb = new Flux.Numerics.AmbOps.Amb();
+      var amb = new Flux.AmbOperator.Amb();
 
       var domain = new[] { 1, 2, 3, 4, 5 };
-      var terms = new System.Collections.Generic.Dictionary<Flux.Numerics.AmbOps.IValue<int>, string>();
+      var terms = new System.Collections.Generic.Dictionary<Flux.AmbOperator.IValue<int>, string>();
 
-      Flux.Numerics.AmbOps.IValue<int> Term(string name)
+      Flux.AmbOperator.IValue<int> Term(string name)
       {
         var x = amb.Choose(domain);
         terms.Add(x, name);
@@ -212,33 +212,33 @@ namespace ConsoleApp
       }
       ;
 
-      void AreUnique(params Flux.Numerics.AmbOps.IValue<int>[] values) => amb.Require(() => values.Select(v => v.Value).Distinct().Count() == 5);
-      void IsSame(Flux.Numerics.AmbOps.IValue<int> left, Flux.Numerics.AmbOps.IValue<int> right) => amb.Require(() => left.Value == right.Value);
-      void IsLeftOf(Flux.Numerics.AmbOps.IValue<int> left, Flux.Numerics.AmbOps.IValue<int> right) => amb.Require(() => right.Value - left.Value == 1);
-      void IsIn(Flux.Numerics.AmbOps.IValue<int> attrib, int house) => amb.Require(() => attrib.Value == house);
-      void IsNextTo(Flux.Numerics.AmbOps.IValue<int> left, Flux.Numerics.AmbOps.IValue<int> right) => amb.Require(() => System.Math.Abs(left.Value - right.Value) == 1);
+      void AreUnique(params Flux.AmbOperator.IValue<int>[] values) => amb.Require(() => values.Select(v => v.Value).Distinct().Count() == 5);
+      void IsSame(Flux.AmbOperator.IValue<int> left, Flux.AmbOperator.IValue<int> right) => amb.Require(() => left.Value == right.Value);
+      void IsLeftOf(Flux.AmbOperator.IValue<int> left, Flux.AmbOperator.IValue<int> right) => amb.Require(() => right.Value - left.Value == 1);
+      void IsIn(Flux.AmbOperator.IValue<int> attrib, int house) => amb.Require(() => attrib.Value == house);
+      void IsNextTo(Flux.AmbOperator.IValue<int> left, Flux.AmbOperator.IValue<int> right) => amb.Require(() => System.Math.Abs(left.Value - right.Value) == 1);
 
-      Flux.Numerics.AmbOps.IValue<int> english = Term(nameof(english)), swede = Term(nameof(swede)), dane = Term(nameof(dane)), norwegian = Term(nameof(norwegian)), german = Term(nameof(german));
+      Flux.AmbOperator.IValue<int> english = Term(nameof(english)), swede = Term(nameof(swede)), dane = Term(nameof(dane)), norwegian = Term(nameof(norwegian)), german = Term(nameof(german));
       AreUnique(english, swede, german, dane, norwegian); // Unique values.
       IsIn(norwegian, 1); // 10
 
-      Flux.Numerics.AmbOps.IValue<int> red = Term(nameof(red)), green = Term(nameof(green)), white = Term(nameof(white)), blue = Term(nameof(blue)), yellow = Term(nameof(yellow));
+      Flux.AmbOperator.IValue<int> red = Term(nameof(red)), green = Term(nameof(green)), white = Term(nameof(white)), blue = Term(nameof(blue)), yellow = Term(nameof(yellow));
       AreUnique(red, green, white, blue, yellow); // Unique values.
       IsNextTo(norwegian, blue); // 15
       IsLeftOf(green, white); // 5
       IsSame(english, red); // 2
 
-      Flux.Numerics.AmbOps.IValue<int> tea = Term(nameof(tea)), coffee = Term(nameof(coffee)), milk = Term(nameof(milk)), beer = Term(nameof(beer)), water = Term(nameof(water));
+      Flux.AmbOperator.IValue<int> tea = Term(nameof(tea)), coffee = Term(nameof(coffee)), milk = Term(nameof(milk)), beer = Term(nameof(beer)), water = Term(nameof(water));
       AreUnique(tea, coffee, milk, beer, water); // Unique values.
       IsIn(milk, 3); // 9
       IsSame(dane, tea); // 4
       IsSame(green, coffee); // 6
 
-      Flux.Numerics.AmbOps.IValue<int> dog = Term(nameof(dog)), cat = Term(nameof(cat)), birds = Term(nameof(birds)), horse = Term(nameof(horse)), zebra = Term(nameof(zebra));
+      Flux.AmbOperator.IValue<int> dog = Term(nameof(dog)), cat = Term(nameof(cat)), birds = Term(nameof(birds)), horse = Term(nameof(horse)), zebra = Term(nameof(zebra));
       AreUnique(dog, cat, birds, horse, zebra); // Unique values.
       IsSame(swede, dog); // 3
 
-      Flux.Numerics.AmbOps.IValue<int> pallmall = Term(nameof(pallmall)), dunhill = Term(nameof(dunhill)), blend = Term(nameof(blend)), bluemaster = Term(nameof(bluemaster)), prince = Term(nameof(prince));
+      Flux.AmbOperator.IValue<int> pallmall = Term(nameof(pallmall)), dunhill = Term(nameof(dunhill)), blend = Term(nameof(blend)), bluemaster = Term(nameof(bluemaster)), prince = Term(nameof(prince));
       AreUnique(pallmall, dunhill, bluemaster, prince, blend); // Unique values.
       IsSame(pallmall, birds); // 7
       IsSame(dunhill, yellow); // 8
@@ -342,9 +342,9 @@ namespace ConsoleApp
 
       //      n = 0;
       //      var nlpow2 = n.NextLargerPowerOf2();
-      var np2TowardsZero = (int)n.RoundToNearest(Flux.UniversalRounding.WholeTowardZero, Flux.BitOps.Pow2TowardZero(n, false), Flux.BitOps.Pow2AwayFromZero(n, false));
+      var np2TowardsZero = (int)n.RoundToNearest(Flux.UniversalRounding.WholeTowardZero, n.Pow2TowardZero(false), n.Pow2AwayFromZero(false));
       System.Console.WriteLine($" Pow2TowardsZero = {np2TowardsZero}");
-      var np2AwayFromZero = (int)n.RoundToNearest(Flux.UniversalRounding.WholeAwayFromZero, Flux.BitOps.Pow2TowardZero(n, false), Flux.BitOps.Pow2AwayFromZero(n, false));
+      var np2AwayFromZero = (int)n.RoundToNearest(Flux.UniversalRounding.WholeAwayFromZero, n.Pow2TowardZero(false), n.Pow2AwayFromZero(false));
       System.Console.WriteLine($"Pow2AwayFromZero = {np2AwayFromZero}");
 
       var birbits = n.ReverseBits();
@@ -383,7 +383,7 @@ namespace ConsoleApp
       System.Console.WriteLine(nameof(RunColors));
       System.Console.WriteLine();
 
-      var argb = new Flux.Colors.Argb(new System.Random().GetRandomBytes(4));
+      var argb = Flux.Color.FromRandom();
 
       //rgb = new Flux.Colors.Rgb(0xF0, 0xC8, 0x0E);
       //rgb = new Flux.Colors.Rgb(0xB4, 0x30, 0xE5);
@@ -393,20 +393,20 @@ namespace ConsoleApp
       //rgb = new Flux.Media.Colors.Rgb(0xFE, 0xFE, 0xFE);
 
       System.Console.WriteLine($"{argb}");
-      var hue = argb.RGB.GetHue(out var _, out var _, out var r, out var g, out var b, out var chroma);
-      argb.RGB.GetSecondaryChromaAndHue(out var chroma2, out var hue2);
-      var cmyk = argb.ToAcmyk();
-      System.Console.WriteLine($"{cmyk} ({cmyk.ToArgb()})");
+      var hue = argb.ComputeHue(out var a, out var r, out var g, out var b, out var _, out var _, out var chroma);
+      var (chroma2, hue2) = argb.ComputeSecondaryChromaAndHue();
+      var acmyk = argb.ToAcmyk();
+      System.Console.WriteLine($"{acmyk} ({Flux.Color.FromAcmyk(acmyk.A, acmyk.C, acmyk.M, acmyk.Y, acmyk.K)})");
       var ahsi = argb.ToAhsi();
-      System.Console.WriteLine($"{ahsi} ({ahsi.ToArgb()})");
+      System.Console.WriteLine($"{ahsi} ({Flux.Color.FromAhsi(ahsi.A, ahsi.H, ahsi.S, ahsi.I)})");
       var ahsl = argb.ToAhsl();
-      System.Console.WriteLine($"{ahsl} ({ahsl.ToArgb()}) ({ahsl.ToAhsv()})");
+      System.Console.WriteLine($"{ahsl} ({Flux.Color.FromAhsi(ahsl.A, ahsl.H, ahsl.S, ahsl.L)}) ({Flux.Color.ConvertHslToHsv(ahsl.H, ahsl.S, ahsl.L)})");
       var ahsv = argb.ToAhsv();
-      System.Console.WriteLine($"{ahsv} ({ahsv.ToArgb()}) ({ahsv.ToAhsl()})");// ({hsv.ToAhwb()})");
+      System.Console.WriteLine($"{ahsv} ({Flux.Color.FromAhsi(ahsv.A, ahsv.H, ahsv.S, ahsv.V)}) (HSL: {Flux.Color.ConvertHsvToHsl(ahsv.H, ahsv.S, ahsv.V)}) (HWB: {Flux.Color.ConvertHsvToHwb(ahsv.H, ahsv.S, ahsv.V)})");
       var ahwb = argb.ToAhwb();
-      System.Console.WriteLine($"{ahwb} ({ahwb.ToArgb()}) ({ahwb.ToAhsv()})");
+      System.Console.WriteLine($"{ahwb} ({Flux.Color.FromAhwb(ahwb.A, ahwb.H, ahwb.W, ahwb.B)}) ({Flux.Color.ConvertHwbToHsv(ahwb.H, ahwb.W, ahwb.B)})");
 
-      System.Console.WriteLine($"{argb.ToHtmlHexString()} | {(r * 100):N1}%, {(g * 100):N1}%, {(b * 100):N1}% | {hue:N1}, {hue2} | {(chroma * 100):N1}, {(chroma2 * 100):N1} | {(ahsv.HSV.Value * 100):N1}%, {(ahsl.HSL.Lightness * 100):N1}%, {(ahsi.HSI.Intensity * 100):N1}% | Y={argb.RGB.GetLuma601()} | {(ahsv.HSV.Saturation * 100):N1}%, {(ahsl.HSL.Saturation * 100):N1}%, {(ahsi.HSI.Saturation * 100):N1}%");
+      System.Console.WriteLine($"{argb.ToHtmlHexString()} | {(r * 100):N1}%, {(g * 100):N1}%, {(b * 100):N1}% | {hue:N1}, {hue2} | {(chroma * 100):N1}, {(chroma2 * 100):N1} | {(ahsv.V * 100):N1}%, {(ahsl.L * 100):N1}%, {(ahsi.I * 100):N1}% | Y={argb.ComputeLuma601()} | {(ahsv.S * 100):N1}%, {(ahsl.S * 100):N1}%, {(ahsi.S * 100):N1}%");
       System.Console.WriteLine();
     }
 
@@ -579,17 +579,27 @@ namespace ConsoleApp
       System.Console.WriteLine(nameof(RunLocale));
       System.Console.WriteLine();
 
-      System.Console.WriteLine($"{nameof(Flux.Locale.AppDomain)} = \"{Flux.Locale.AppDomain}\"");
+      System.Console.WriteLine($"{nameof(Flux.Locale.AppDomainName)} = \"{Flux.Locale.AppDomainName}\"");
+      System.Console.WriteLine($"{nameof(Flux.Locale.AppDomainPath)} = \"{Flux.Locale.AppDomainPath}\"");
       System.Console.WriteLine($"{nameof(Flux.Locale.ClrVersion)} = \"{Flux.Locale.ClrVersion}\"");
-      System.Console.WriteLine($"{nameof(Flux.Locale.DnsHostEntry)} = \"{Flux.Locale.DnsHostEntry}\"");
-      System.Console.WriteLine($"{nameof(Flux.Locale.EnvironmentOs)} = \"{Flux.Locale.EnvironmentOs}\"");
-      System.Console.WriteLine($"{nameof(Flux.Locale.RuntimeFramework)} = \"{Flux.Locale.RuntimeFramework}\"");
+      System.Console.WriteLine($"{nameof(Flux.Locale.DnsHostAddresses)} = \"{Flux.Locale.DnsHostAddresses}\"");
+      System.Console.WriteLine($"{nameof(Flux.Locale.DnsHostName)} = \"{Flux.Locale.DnsHostName}\"");
+      System.Console.WriteLine($"{nameof(Flux.Locale.EnvironmentOsPlatform)} = \"{Flux.Locale.EnvironmentOsPlatform}\"");
+      System.Console.WriteLine($"{nameof(Flux.Locale.EnvironmentOsVersion)} = \"{Flux.Locale.EnvironmentOsVersion}\"");
+      System.Console.WriteLine($"{nameof(Flux.Locale.RuntimeFrameworkTitle)} = \"{Flux.Locale.RuntimeFrameworkTitle}\"");
+      System.Console.WriteLine($"{nameof(Flux.Locale.RuntimeFrameworkVersion)} = \"{Flux.Locale.RuntimeFrameworkVersion}\"");
       System.Console.WriteLine($"{nameof(Flux.Locale.MachineName)} = \"{Flux.Locale.MachineName}\"");
-      System.Console.WriteLine($"{nameof(Flux.Locale.NetworkGlobalProperties)} = \"{Flux.Locale.NetworkGlobalProperties}\"");
-      System.Console.WriteLine($"{nameof(Flux.Locale.RuntimeOs)} = \"{Flux.Locale.RuntimeOs}\"");
-      System.Console.WriteLine($"{nameof(Flux.Locale.SystemOs)} = \"{Flux.Locale.SystemOs}\"");
-      System.Console.WriteLine($"{nameof(Flux.Locale.Stopwatch)} = \"{Flux.Locale.Stopwatch}\"");
-      System.Console.WriteLine($"{nameof(Flux.Locale.User)} = \"{Flux.Locale.User}\"");
+      System.Console.WriteLine($"{nameof(Flux.Locale.NicDomainName)} = \"{Flux.Locale.NicDomainName}\"");
+      System.Console.WriteLine($"{nameof(Flux.Locale.NicHostName)} = \"{Flux.Locale.NicHostName}\"");
+      System.Console.WriteLine($"{nameof(Flux.Locale.RuntimeOsArchitecture)} = \"{Flux.Locale.RuntimeOsArchitecture}\"");
+      System.Console.WriteLine($"{nameof(Flux.Locale.RuntimeOsTitle)} = \"{Flux.Locale.RuntimeOsTitle}\"");
+      System.Console.WriteLine($"{nameof(Flux.Locale.RuntimeOsVersion)} = \"{Flux.Locale.RuntimeOsVersion}\"");
+      System.Console.WriteLine($"{nameof(Flux.Locale.SystemOsPlatform)} = \"{Flux.Locale.SystemOsPlatform}\"");
+      System.Console.WriteLine($"{nameof(Flux.Locale.SystemOsVersion)} = \"{Flux.Locale.SystemOsVersion}\"");
+      System.Console.WriteLine($"{nameof(Flux.Locale.StopwatchCounter)} = \"{Flux.Locale.StopwatchCounter}\"");
+      System.Console.WriteLine($"{nameof(Flux.Locale.StopwatchFrequency)} = \"{Flux.Locale.StopwatchFrequency}\"");
+      System.Console.WriteLine($"{nameof(Flux.Locale.UserDomainName)} = \"{Flux.Locale.UserDomainName}\"");
+      System.Console.WriteLine($"{nameof(Flux.Locale.UserName)} = \"{Flux.Locale.UserName}\"");
       System.Console.WriteLine();
     }
 
@@ -645,7 +655,7 @@ namespace ConsoleApp
         .Append(typeof(Flux.Units.Rate<Flux.Units.Length, Flux.Units.Time>))
         .OrderBy(t => t.Name)
         .Where(t => !t.IsInterface && !t.Name.Contains("Fraction"))
-        .Select(q => q.Name + " = " + (q.CreateInstance()?.ToString() ?? "Null"))));
+        .Select(q => q.Name + " = " + (q.CreateDefaultValue()?.ToString() ?? "Null"))));
     }
 
     #endregion
@@ -724,11 +734,11 @@ namespace ConsoleApp
 
       public static void ShowCase()
       {
-        var rules = new Flux.RulesEngine.RulesDictionary
+        var rules = new Flux.Model.RulesEngine.RulesDictionary
         {
-          { "AgeLimit", new Flux.RulesEngine.Rule(nameof(Age), nameof(System.Linq.Expressions.BinaryExpression.GreaterThan), 20) },
-          { "NameRequirement", new Flux.RulesEngine.Rule(nameof(Name), nameof(System.Linq.Expressions.BinaryExpression.Equal), "John") },
-          { "CountryOfBirth", new Flux.RulesEngine.Rule(nameof(BirthCountry), nameof(System.Linq.Expressions.BinaryExpression.Equal), "Canada") }
+          { "AgeLimit", new Flux.Model.RulesEngine.Rule(nameof(Age), nameof(System.Linq.Expressions.BinaryExpression.GreaterThan), 20) },
+          { "NameRequirement", new Flux.Model.RulesEngine.Rule(nameof(Name), nameof(System.Linq.Expressions.BinaryExpression.Equal), "John") },
+          { "CountryOfBirth", new Flux.Model.RulesEngine.Rule(nameof(BirthCountry), nameof(System.Linq.Expressions.BinaryExpression.Equal), "Canada") }
         };
 
         foreach (var rule in rules)

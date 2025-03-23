@@ -8,7 +8,7 @@ namespace Flux
 
     /// <summary>Returns the maximum IP address in the specified MulticastV4 block.</summary>
     public static System.Net.IPAddress GetMaxIPAddress(this Net.IPv4.MulticastV4Block source)
-      => new(BitOps.ReverseBytes((uint)GetMaxValue(source)));
+      => new(GetMaxValue(source).ReverseBytes());
 
     /// <summary>Returns the maximum address (big endian) in the specified MulticastV4 block.</summary>
     public static long GetMaxValue(this Net.IPv4.MulticastV4Block source)
@@ -16,7 +16,7 @@ namespace Flux
 
     /// <summary>Returns the minimum IP address in the specified MulticastV4 block.</summary>
     public static System.Net.IPAddress GetMinIPAddress(this Net.IPv4.MulticastV4Block source)
-      => new(BitOps.ReverseBytes((uint)GetMinValue(source)));
+      => new(GetMinValue(source).ReverseBytes());
 
     /// <summary>Returns the minimum address (big endian) in the specified MulticastV4 block.</summary>
     public static long GetMinValue(this Net.IPv4.MulticastV4Block source)
