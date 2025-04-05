@@ -4,7 +4,7 @@
   {
     /// <summary></summary>
     /// <remarks>The quaternion must be normalized.</remarks>
-    public static Geometry.Rotations.AxisAngle ToAxisAngle(this System.Numerics.Quaternion source)
+    public static EuclideanRotations.AxisAngle ToAxisAngle(this System.Numerics.Quaternion source)
     {
       var n = System.Numerics.Quaternion.Normalize(source); // If w>1 acos and sqrt will produce errors, this will not happen if quaternion is normalized.
 
@@ -16,12 +16,12 @@
       var s = double.Sqrt(1 - w * w); // Assuming quaternion normalized then w is less than 1, so term always positive.
 
       if (s < 0.001) // Test to avoid divide by zero. If s close to zero then direction of axis not important.
-        return new(1, Units.LengthUnit.Meter, 0, Units.LengthUnit.Meter, 0, Units.LengthUnit.Meter, angle, Units.AngleUnit.Radian); // If it is important that axis is normalised then replace with x=1; y=z=0;
+        return new(angle, Units.AngleUnit.Radian, 1, Units.LengthUnit.Meter, 0, Units.LengthUnit.Meter, 0, Units.LengthUnit.Meter); // If it is important that axis is normalised then replace with x=1; y=z=0;
 
-      return new(n.X / s, Units.LengthUnit.Meter, n.Y / s, Units.LengthUnit.Meter, n.Z / s, Units.LengthUnit.Meter, angle, Units.AngleUnit.Radian);
+      return new(angle, Units.AngleUnit.Radian, n.X / s, Units.LengthUnit.Meter, n.Y / s, Units.LengthUnit.Meter, n.Z / s, Units.LengthUnit.Meter);
     }
 
-    public static Geometry.Rotations.EulerAngles ToEulerAngles(this System.Numerics.Quaternion source) // yaw (Z), pitch (Y), roll (X)
+    public static EuclideanRotations.EulerAngles ToEulerAngles(this System.Numerics.Quaternion source) // yaw (Z), pitch (Y), roll (X)
     {
       var x = source.X;
       var y = source.Y;

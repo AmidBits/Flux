@@ -29,21 +29,21 @@
       return (sign, exponentUnbiased, mantissa53);
     }
 
-    [System.Obsolete("This functionality exists only for specific use.", false)]
-    public static (long IeeeIntegerPart, double IeeeFractionalPart, long IeeeFractionalPartAsWhole) GetPartsIeee(this double source)
-    {
-      var (ieeeSign, ieeeExponentUnbiased, ieeeMantissa53) = source.GetIeeeParts(out var _, out var _, out var _);
+    //[System.Obsolete("This functionality exists only for specific use.", false)]
+    //public static (long IeeeIntegerPart, double IeeeFractionalPart, long IeeeFractionalPartAsWhole) GetPartsIeee(this double source)
+    //{
+    //  var (ieeeSign, ieeeExponentUnbiased, ieeeMantissa53) = source.GetIeeeParts(out var _, out var _, out var _);
 
-      var exponentScaleValue = 1L << int.Abs(ieeeExponentUnbiased - 52); // Used to scale the full-mantissa below.
+    //  var exponentScaleValue = 1L << int.Abs(ieeeExponentUnbiased - 52); // Used to scale the full-mantissa below.
 
-      var integerPart = ieeeSign * ieeeMantissa53 / exponentScaleValue; // This is the same as ( sign * full-mantissa * 2^(6-52) ).
+    //  var integerPart = ieeeSign * ieeeMantissa53 / exponentScaleValue; // This is the same as ( sign * full-mantissa * 2^(6-52) ).
 
-      var fractionalPart = source - integerPart; // Get the fractional part by subtracting the integer-part.
+    //  var fractionalPart = source - integerPart; // Get the fractional part by subtracting the integer-part.
 
-      var fractionalPartAsWhole = double.Round(fractionalPart * (long)System.Numerics.BigInteger.Pow(10, 15 - (int)integerPart.DigitCount(10))); // Rounding because truncating potentially distort the last digit.
+    //  var fractionalPartAsWhole = double.Round(fractionalPart * (long)System.Numerics.BigInteger.Pow(10, 15 - (int)integerPart.DigitCount(10))); // Rounding because truncating potentially distort the last digit.
 
-      return (integerPart, fractionalPart, (long)fractionalPartAsWhole);
-    }
+    //  return (integerPart, fractionalPart, (long)fractionalPartAsWhole);
+    //}
 
     /// <summary>
     /// <para>Get the <paramref name="integralPart"/> and the <paramref name="fractionalPart"/> of the <paramref name="source"/>.</para>

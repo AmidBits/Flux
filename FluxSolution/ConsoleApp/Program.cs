@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Buffers;
 using System.Collections;
 using System.Collections.Immutable;
 using System.Data;
@@ -14,6 +15,7 @@ using System.Text.RegularExpressions;
 using System.Xml.XPath;
 using Flux;
 using Flux.DataStructures.UnionFind;
+using Flux.Numerics;
 using Flux.Probabilities;
 using Flux.Text;
 using Flux.Units;
@@ -205,90 +207,9 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
-      var (n, p) = (5, 3);
-      var nCp = n.BinomialCoefficient(p);
-
-      System.Console.WriteLine($"Combinations = {nCp}");
-
-      foreach (var l in System.Linq.Enumerable.Range(0, nCp))
-        System.Console.WriteLine($"{l} : [{string.Join(", ", n.PermuteAlgorithm515b(p, l))}]");
-
-      var pg = Flux.Geometry.Shapes.Polygon.RegularPolygon.Create(5, 1);
-
-      var br = Flux.Numerics.BigRational.One;
-
-      var brpd = br.GetPropertyDictionary();
-
-      //System.Console.WriteLine(Flux.Diagnostics.Performance.Measure(() => 100000000000.FastDigitCount(10), 100000000));
-
-      System.Console.WriteLine(string.Join(", ", Flux.AlternatingLoopDirection.TowardsCenter.Loop(0, -2, 50)));
-
-      Flux.Numerics.Constants.GoldenRatio.ToBigRational();
-
-      //var ld = Flux.Locale.GetLocaleData();
-
-      var loc = typeof(Flux.Locale).GetPropertyDictionary();
-
-      var e = new Flux.Geometry.Shapes.Ellipse.EllipseGeometry(11, 7);
-
-      var v = string.Format("{0:N3}", e.GetType().GetProperty("Focus").GetValue(e));
-      //var n = (60L);
-      //var k = 30L;
-
-      ////System.Console.WriteLine(Flux.Diagnostics.Performance.Measure(() => Flux.GenericMath.BinomialCoefficientEx(n, k), 100000000));
-      //System.Console.WriteLine(Flux.Diagnostics.Performance.Measure(() => Flux.GenericMath.BinomialCoefficient(n, k), 100000000));
-
-
-      var s = "te";
-      var t = "This is a simple test with a too too of trial templates.";
-
-      var test = s.RabinKarpIndices(t);
-
-      var rs = t.AsSpan().MainLorentzRepetitions();
-      rs.Sort();
-
-      //      System.Console.WriteLine(string.Join(System.Environment.NewLine, typeof(IValueQuantifiable<>).GetDerivedTypes().Select(t => t.Name).Order()));
-      //      System.Console.WriteLine();
-
-      var fs = Flux.Numerics.BigRational.GenerateContinuedFractionCoefficients(390, 77);
-      var pi = double.Pi;
-      var cfec = (3.141592).GenerateContinuedFractionCoefficients(100);
-      var fcfe = cfec.ToContinuedFractionRepresentationString(Flux.Unicode.UnicodeSpacing.None, true);
-      //var maxccfe = ccfe.Select((e, i) => (e, i)).MaxBy(t2 => t2.Item1);
-      var pcfe = cfec.ParseContinuedFractionCoefficients();
-
-      var pc = new Flux.Geometry.CoordinateSystems.PolarCoordinate(new Length(0.700, LengthUnit.Meter).GetUnitValue(LengthUnit.Inch), new Angle(78.5, AngleUnit.Degree).Value);
-      var cc = pc.ToCartesianCoordinate();
-
-      var slope = new Flux.Numerics.Slope(2, 11);
-      var slopeAOI = Flux.Numerics.Slope.FromAngleOfInclination(14, AngleUnit.Degree);
-      var slopeS = new Flux.Numerics.Slope(2, 3);
-      var slopeRP = Flux.Numerics.Slope.FromRoofPitch(3);
-      var gradeGP = Flux.Numerics.Slope.FromGradePercentage(20);
-      var slopeR = Flux.Numerics.Slope.FromRatio(new Ratio(2, 11));
-
-      var x = (1000.0).RescaleLogarithmicToLinear(300, 3000, 10, 12, 2);
-      var y = (7.5).RescaleLinearToLogarithmic(0.1, 10, 0.1, 10, 2);
-
-
-      //var sm = new SpanMaker<char>("Hello--World");
-      //sm = sm.Replace(c => c == '-', "Covid");
-
-      //var os = new Flux.Statistics.RunningStatistics();
-      //os.AddRange([2, 3, 5, 7, 11, 13]);
-      //os.Add(17);
-      //os.Add(19);
-      //os.Add(23);
-      //os.Add(29);
-      //os.Add(31);
-
-      //var n = new double[] { 9, 27, 63, 81, 90 };
-
-      //var (madMean, madMedian) = n.MeanMedianAbsoluteDeviation();
-
       //var s = "-41 ° 26 '46″ N79 ° 58 ′ 56 ″W";
       //s = "a 123b45c";
-      //var x = s.ToSpanMaker().ReplaceRegex(@"\d+", s => int.TryParse(s, System.Globalization.NumberStyles.Integer, null, out var r) ? r.ToOrdinalIndicatorString() : "UGH!");
+      //var x = s.ToSpanMaker().InsertOrdinalIndicatorSuffix();
 
       //s = "Z̤͔ͧ̑̓ä͖̭̈̇lͮ̒ͫǧ̗͚̚o̙̔ͮ̇͐̇";
       //s = "Powerلُلُصّبُلُلصّبُررً ॣ ॣh ॣ ॣ冗\r\n🏳0🌈️\r\nజ్ఞ‌ా";

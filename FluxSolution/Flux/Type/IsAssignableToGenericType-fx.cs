@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class FxType
   {
     /// <summary>
     /// <para>Determines whether <paramref name="source"/> is assignable to the <paramref name="genericType"/>.</para>

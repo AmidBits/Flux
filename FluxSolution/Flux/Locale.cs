@@ -415,6 +415,6 @@ namespace Flux
     /// </summary>
     /// <returns></returns>
     public static System.Collections.Generic.IDictionary<string, object?> GetProperties()
-      => typeof(Locale).GetPropertyDictionary().ToOrderedDictionary((kvp, i) => kvp.Key.Name, (kvp, i) => kvp.Value);
+      => typeof(Locale).GetMemberDictionary(null).ToOrderedDictionary((kvp, i) => kvp.Key.Name, (kvp, i) => kvp.Value);
   }
 }

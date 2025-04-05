@@ -59,6 +59,4 @@ Build-Playlist "Lindeman" ("Comedy") "*Lindeman*.mp3"
 
 Build-Playlist "Talk & Comedy" ("Comedy")
 
-Build-Playlist "Theme Music" ("Tracks\ThemeMusic")
-
 Build-Playlist "X-mas Music" ("Tracks\X-mas")

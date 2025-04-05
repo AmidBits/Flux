@@ -119,7 +119,7 @@ namespace Flux
     //    }
 
     /// <summary>
-    /// <para>Appends ordinal extensions (e.g. rd, th, etc.) to any sequence of digits (e.g. 3, 12, etc.) in a <see cref="SpanMaker{T}"/>.</para>
+    /// <para>Appends ordinal extensions (e.g. rd, th, etc.) after any sequence of digits (e.g. 3, 12, etc.) in a <see cref="SpanMaker{T}"/>.</para>
     /// <para><see href="https://en.wikipedia.org/wiki/Ordinal_indicator"/></para>
     /// </summary>
     public static SpanMaker<char> InsertOrdinalIndicatorSuffix(this SpanMaker<char> source)
@@ -205,7 +205,7 @@ namespace Flux
     /// <param name="source"></param>
     /// <returns></returns>
     public static SpanMaker<char> RemoveAllMarkupTags(this SpanMaker<char> source)
-      => source.ReplaceRegex(RegexAllMarkupTags().ToString(), ros => string.Empty);
+      => source.RemoveRegex(RegexAllMarkupTags().ToString());
 
     /// <summary>
     /// <para>Replaces all markup tags with the result of <paramref name="replacementSelector"/> in a <see cref="SpanMaker{T}"/>.</para>

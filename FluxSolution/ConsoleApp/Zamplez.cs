@@ -396,17 +396,17 @@ namespace ConsoleApp
       var hue = argb.ComputeHue(out var a, out var r, out var g, out var b, out var _, out var _, out var chroma);
       var (chroma2, hue2) = argb.ComputeSecondaryChromaAndHue();
       var acmyk = argb.ToAcmyk();
-      System.Console.WriteLine($"{acmyk} ({Flux.Color.FromAcmyk(acmyk.A, acmyk.C, acmyk.M, acmyk.Y, acmyk.K)})");
+      System.Console.WriteLine($"{acmyk} ({Flux.Color.FromAcmyk(acmyk.Alpha, acmyk.Cyan, acmyk.Magenta, acmyk.Yellow, acmyk.Key)})");
       var ahsi = argb.ToAhsi();
-      System.Console.WriteLine($"{ahsi} ({Flux.Color.FromAhsi(ahsi.A, ahsi.H, ahsi.S, ahsi.I)})");
+      System.Console.WriteLine($"{ahsi} ({Flux.Color.FromAhsi(ahsi.Alpha, ahsi.Hue, ahsi.Saturation, ahsi.Intensity)})");
       var ahsl = argb.ToAhsl();
-      System.Console.WriteLine($"{ahsl} ({Flux.Color.FromAhsi(ahsl.A, ahsl.H, ahsl.S, ahsl.L)}) ({Flux.Color.ConvertHslToHsv(ahsl.H, ahsl.S, ahsl.L)})");
+      System.Console.WriteLine($"{ahsl} ({Flux.Color.FromAhsi(ahsl.Alpha, ahsl.Hue, ahsl.Saturation, ahsl.Lightness)}) ({Flux.Color.ConvertHslToHsv(ahsl.Hue, ahsl.Saturation, ahsl.Lightness)})");
       var ahsv = argb.ToAhsv();
-      System.Console.WriteLine($"{ahsv} ({Flux.Color.FromAhsi(ahsv.A, ahsv.H, ahsv.S, ahsv.V)}) (HSL: {Flux.Color.ConvertHsvToHsl(ahsv.H, ahsv.S, ahsv.V)}) (HWB: {Flux.Color.ConvertHsvToHwb(ahsv.H, ahsv.S, ahsv.V)})");
+      System.Console.WriteLine($"{ahsv} ({Flux.Color.FromAhsi(ahsv.Alpha, ahsv.Hue, ahsv.Saturation, ahsv.Value)}) (HSL: {Flux.Color.ConvertHsvToHsl(ahsv.Hue, ahsv.Saturation, ahsv.Value)}) (HWB: {Flux.Color.ConvertHsvToHwb(ahsv.Hue, ahsv.Saturation, ahsv.Value)})");
       var ahwb = argb.ToAhwb();
-      System.Console.WriteLine($"{ahwb} ({Flux.Color.FromAhwb(ahwb.A, ahwb.H, ahwb.W, ahwb.B)}) ({Flux.Color.ConvertHwbToHsv(ahwb.H, ahwb.W, ahwb.B)})");
+      System.Console.WriteLine($"{ahwb} ({Flux.Color.FromAhwb(ahwb.Alpha, ahwb.Hue, ahwb.White, ahwb.Black)}) ({Flux.Color.ConvertHwbToHsv(ahwb.Hue, ahwb.White, ahwb.Black)})");
 
-      System.Console.WriteLine($"{argb.ToHtmlHexString()} | {(r * 100):N1}%, {(g * 100):N1}%, {(b * 100):N1}% | {hue:N1}, {hue2} | {(chroma * 100):N1}, {(chroma2 * 100):N1} | {(ahsv.V * 100):N1}%, {(ahsl.L * 100):N1}%, {(ahsi.I * 100):N1}% | Y={argb.ComputeLuma601()} | {(ahsv.S * 100):N1}%, {(ahsl.S * 100):N1}%, {(ahsi.S * 100):N1}%");
+      System.Console.WriteLine($"{argb.ToHtmlHexString()} | {(r * 100):N1}%, {(g * 100):N1}%, {(b * 100):N1}% | {hue:N1}, {hue2} | {(chroma * 100):N1}, {(chroma2 * 100):N1} | {(ahsv.Value * 100):N1}%, {(ahsl.Lightness * 100):N1}%, {(ahsi.Intensity * 100):N1}% | Y={argb.ComputeLuma601()} | {(ahsv.Saturation * 100):N1}%, {(ahsl.Saturation * 100):N1}%, {(ahsi.Saturation * 100):N1}%");
       System.Console.WriteLine();
     }
 
@@ -415,15 +415,15 @@ namespace ConsoleApp
     #region RunCoordinateSystems
 
     /// <summary>This is a reference coordinate for Madrid, Spain, which is antipodal to Takapau, New Zeeland.</summary>
-    public static Flux.Geometry.CoordinateSystems.GeographicCoordinate MadridSpain => new(40.416944, Flux.Units.AngleUnit.Degree, -3.703333, Flux.Units.AngleUnit.Degree, 650);
+    public static Flux.CoordinateSystems.GeographicCoordinate MadridSpain => new(40.416944, Flux.Units.AngleUnit.Degree, -3.703333, Flux.Units.AngleUnit.Degree, 650);
 
     /// <summary>This is a reference coordinate for Takapau, New Zeeland, which is antipodal to Madrid, Spain.</summary>
-    public static Flux.Geometry.CoordinateSystems.GeographicCoordinate TakapauNewZealand => new(-40.033333, Flux.Units.AngleUnit.Degree, 176.35, Flux.Units.AngleUnit.Degree, 235);
+    public static Flux.CoordinateSystems.GeographicCoordinate TakapauNewZealand => new(-40.033333, Flux.Units.AngleUnit.Degree, 176.35, Flux.Units.AngleUnit.Degree, 235);
 
     /// <summary>This is a reference point for Phoenix, Arizona, USA, from where the C# version of this library originated.</summary>
-    public static Flux.Geometry.CoordinateSystems.GeographicCoordinate PhoenixAzUsa => new(33.448333, Flux.Units.AngleUnit.Degree, -112.073889, Flux.Units.AngleUnit.Degree, 331);
+    public static Flux.CoordinateSystems.GeographicCoordinate PhoenixAzUsa => new(33.448333, Flux.Units.AngleUnit.Degree, -112.073889, Flux.Units.AngleUnit.Degree, 331);
     /// <summary>This is a reference point for Tucson, Arizona, USA, from where the C# version of this library originated.</summary>
-    public static Flux.Geometry.CoordinateSystems.GeographicCoordinate TucsonAzUsa => new(32.221667, Flux.Units.AngleUnit.Degree, -110.926389, Flux.Units.AngleUnit.Degree, 728);
+    public static Flux.CoordinateSystems.GeographicCoordinate TucsonAzUsa => new(32.221667, Flux.Units.AngleUnit.Degree, -110.926389, Flux.Units.AngleUnit.Degree, 728);
 
     /// <summary>Run the coordinate systems zample.</summary>
     public static void RunCoordinateSystems()
@@ -437,7 +437,7 @@ namespace ConsoleApp
       Draw(TakapauNewZealand, nameof(TakapauNewZealand));
       Draw(TucsonAzUsa, nameof(TucsonAzUsa));
 
-      static void Draw(Flux.Geometry.CoordinateSystems.GeographicCoordinate gc, System.ReadOnlySpan<char> label)
+      static void Draw(Flux.CoordinateSystems.GeographicCoordinate gc, System.ReadOnlySpan<char> label)
       {
         Flux.Console.WriteInformationLine($"{label.ToString()}:");
 
@@ -551,7 +551,7 @@ namespace ConsoleApp
     /// <summary>Run the coordinate systems zample.</summary>
     public static void RunAvlTree()
     {
-      var bst = Flux.DataStructures.BinaryTrees.Immutable.ImmutableAvlTree<int, string>.Empty;
+      var bst = Flux.DataStructures.Immutable.ImmutableAvlTree<int, string>.Empty;
 
       for (var index = 0; bst.GetCount() < 16; index++)
       {

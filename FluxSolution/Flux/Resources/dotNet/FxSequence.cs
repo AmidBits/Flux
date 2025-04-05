@@ -10,7 +10,7 @@ namespace Flux
 
       if (e.MoveNext())
       {
-        var pis = e.Current.GetPropertyDictionary().Where(kvp => kvp.Key.MemberType == System.Reflection.MemberTypes.Property).Cast<System.Collections.Generic.KeyValuePair<System.Reflection.PropertyInfo, object?>>().Select(kvp => kvp.Key);
+        var pis = e.Current.GetType().GetMemberDictionary(e.Current).Where(kvp => kvp.Key.MemberType == System.Reflection.MemberTypes.Property).Cast<System.Collections.Generic.KeyValuePair<System.Reflection.PropertyInfo, object?>>().Select(kvp => kvp.Key);
 
         yield return pis.Select(pi => pi.Name).ToArray(); // Return column names once.
 

@@ -7,7 +7,8 @@ namespace Flux.Wpf.IValueConverter
 
     public override object Convert(object value, System.Type targetType, object parameter, System.Globalization.CultureInfo culture)
     {
-      if (value.TryTypeConverter(out var result, null, targetType))
+
+      if (FxObject.TryTypeConverter(value, out var result, null, targetType))
       {
         return result;
       }
@@ -16,7 +17,7 @@ namespace Flux.Wpf.IValueConverter
     }
     public override object ConvertBack(object value, System.Type targetType, object parameter, System.Globalization.CultureInfo culture)
     {
-      if (value.TryTypeConverter(out var result, null, targetType))
+      if (FxObject.TryTypeConverter(value, out var result, null, targetType))
       {
         return result;
       }

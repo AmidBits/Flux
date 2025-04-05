@@ -14,7 +14,7 @@ namespace Flux
     {
       equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
 
-      if (source.IndexOf(c => values.Contains(c, equalityComparer)) is var index && index > -1)
+      if (source.IndexOf(item => values.Contains(item, equalityComparer)) is var index && index > -1)
         return index;
 
       return -1;

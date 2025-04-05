@@ -18,18 +18,21 @@ namespace Flux
 
       var z = new int[source.Length];
 
-      for (int i = 1, l = 0, r = 0; i < source.Length; i++)
+      var l = 0;
+      var r = 0;
+
+      for (var i = 1; i < source.Length; i++)
       {
-        if (i <= r)
-          z[i] = int.Min(r - i + 1, z[i - l]);
+        if (i < r)
+          z[i] = int.Min(r - i, z[i - l]);
 
         while (i + z[i] < source.Length && equalityComparer.Equals(source[z[i]], source[i + z[i]]))
           z[i]++;
 
-        if (i + z[i] - 1 > r)
+        if (i + z[i] > r)
         {
           l = i;
-          r = i + z[i] - 1;
+          r = i + z[i];
         }
       }
 

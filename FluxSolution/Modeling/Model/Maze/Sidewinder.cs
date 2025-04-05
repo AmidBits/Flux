@@ -3,7 +3,7 @@ namespace Flux.Model.Maze
   public sealed class SidewinderMaze
     : AMaze
   {
-    public Geodesy.CompassInterCardinalDirection Diagonal { get; set; } = Geodesy.CompassInterCardinalDirection.NE;
+    public PlanetaryScience.CompassInterCardinalDirection Diagonal { get; set; } = PlanetaryScience.CompassInterCardinalDirection.NE;
 
     public override void CarveMaze(MazeGrid grid)
     {
@@ -33,7 +33,7 @@ namespace Flux.Model.Maze
             run.Clear();
           }
           else
-            cell.ConnectPath(cell.Edges[(int)Geodesy.CompassCardinalDirection.E], true);
+            cell.ConnectPath(cell.Edges[(int)PlanetaryScience.CompassCardinalDirection.E], true);
         }
       }
     }

@@ -7,7 +7,7 @@ namespace Flux
     {
       var dictionary = new System.Collections.Generic.Dictionary<System.Text.Unicode.UnicodeRange, string>();
 
-      foreach (var kvp in typeof(System.Text.Unicode.UnicodeRanges).GetPropertyDictionary().Where(kvp => kvp.Key.Name != nameof(System.Text.Unicode.UnicodeRanges.All) && kvp.Key.Name != nameof(System.Text.Unicode.UnicodeRanges.None)))
+      foreach (var kvp in typeof(System.Text.Unicode.UnicodeRanges).GetMemberDictionary(null).Where(kvp => kvp.Key.Name != nameof(System.Text.Unicode.UnicodeRanges.All) && kvp.Key.Name != nameof(System.Text.Unicode.UnicodeRanges.None)))
         if (kvp.Value is System.Text.Unicode.UnicodeRange ur)
           dictionary.Add(ur, kvp.Key.Name);
 

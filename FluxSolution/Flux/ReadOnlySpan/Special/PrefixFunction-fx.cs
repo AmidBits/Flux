@@ -18,22 +18,22 @@ namespace Flux
     {
       equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
 
-      var p = new int[source.Length];
+      var pi = new int[source.Length];
 
       for (int i = 1; i < source.Length; i++)
       {
-        var j = p[i - 1];
+        var j = pi[i - 1];
 
         while (j > 0 && !equalityComparer.Equals(source[i], source[j]))
-          j = p[j - 1];
+          j = pi[j - 1];
 
         if (equalityComparer.Equals(source[i], source[j]))
           j++;
 
-        p[i] = j;
+        pi[i] = j;
       }
 
-      return p;
+      return pi;
     }
   }
 }

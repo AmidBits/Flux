@@ -71,22 +71,22 @@ namespace WpfApp
           float x = column * width;// + wallWidth * 2F;
           float y = row * height;// + wallWidth * 2F;
 
-          foreach (Flux.Geodesy.CompassCardinalDirection direction in System.Enum.GetValues(typeof(Flux.Geodesy.CompassCardinalDirection)))
+          foreach (Flux.PlanetaryScience.CompassCardinalDirection direction in System.Enum.GetValues(typeof(Flux.PlanetaryScience.CompassCardinalDirection)))
           {
             if (!cell.Edges.ContainsKey((int)direction) || !cell.Paths.ContainsKey((int)direction))
             {
               switch (direction)
               {
-                case Flux.Geodesy.CompassCardinalDirection.N:
+                case Flux.PlanetaryScience.CompassCardinalDirection.N:
                   canvas.Children.Add(CreateLine(x + wallWidth, y, x + width - wallWidthX2, y, System.Windows.Media.Brushes.Green, wallWidth));
                   break;
-                case Flux.Geodesy.CompassCardinalDirection.E:
+                case Flux.PlanetaryScience.CompassCardinalDirection.E:
                   canvas.Children.Add(CreateLine(x + width - wallWidth, y + wallWidth, x + width - wallWidth, y + height - wallWidthX2, System.Windows.Media.Brushes.Yellow, wallWidth * 0.5F));
                   break;
-                case Flux.Geodesy.CompassCardinalDirection.S:
+                case Flux.PlanetaryScience.CompassCardinalDirection.S:
                   canvas.Children.Add(CreateLine(x + wallWidth, y + height - wallWidth, x + width - wallWidthX2, y + height - wallWidth, System.Windows.Media.Brushes.Red, wallWidth));
                   break;
-                case Flux.Geodesy.CompassCardinalDirection.W:
+                case Flux.PlanetaryScience.CompassCardinalDirection.W:
                   canvas.Children.Add(CreateLine(x, y + wallWidth, x, y + height - wallWidthX2, System.Windows.Media.Brushes.Blue, wallWidth));
                   break;
               }

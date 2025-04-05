@@ -13,10 +13,15 @@ namespace Flux
     /// <exception cref="System.ArgumentOutOfRangeException"></exception>
     public static int CommonSuffixLength<T>(this System.ReadOnlySpan<T> source, System.Func<T, bool> predicate, int maxLength = int.MaxValue)
     {
+      System.ArgumentOutOfRangeException.ThrowIfNegativeOrZero(maxLength);
       System.ArgumentNullException.ThrowIfNull(predicate);
 
+      var sourceMaxIndex = source.Length - 1;
+
+      maxLength = int.Min(maxLength, sourceMaxIndex);
+
       var length = 0;
-      for (var sourceIndex = source.Length - 1; sourceIndex >= 0 && length < maxLength && predicate(source[sourceIndex]); sourceIndex--)
+      while (length < maxLength && predicate(source[sourceMaxIndex - length]))
         length++;
       return length;
     }
@@ -33,10 +38,16 @@ namespace Flux
     /// <exception cref="System.ArgumentOutOfRangeException"></exception>
     public static int CommonSuffixLength<T>(this System.ReadOnlySpan<T> source, T value, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null, int maxLength = int.MaxValue)
     {
+      System.ArgumentOutOfRangeException.ThrowIfNegativeOrZero(maxLength);
+
       equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
 
+      var sourceMaxIndex = source.Length - 1;
+
+      maxLength = int.Min(maxLength, sourceMaxIndex);
+
       var length = 0;
-      for (var sourceIndex = source.Length - 1; sourceIndex >= 0 && length < maxLength && equalityComparer.Equals(source[sourceIndex], value); sourceIndex--)
+      while (length < maxLength && equalityComparer.Equals(source[sourceMaxIndex - length], value))
         length++;
       return length;
     }
@@ -55,13 +66,17 @@ namespace Flux
     /// <returns></returns>
     public static int CommonSuffixLength<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> value, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null, int maxLength = int.MaxValue)
     {
+      System.ArgumentOutOfRangeException.ThrowIfNegativeOrZero(maxLength);
+
       equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
 
-      var sourceIndex = source.Length;
-      var targetIndex = value.Length;
+      var sourceMaxIndex = source.Length - 1;
+      var targetMaxIndex = value.Length - 1;
+
+      maxLength = int.Min(maxLength, int.Min(sourceMaxIndex, targetMaxIndex));
 
       var length = 0;
-      while (--sourceIndex >= 0 && --targetIndex >= 0 && length < maxLength && equalityComparer.Equals(source[sourceIndex], value[targetIndex]))
+      while (length < maxLength && equalityComparer.Equals(source[sourceMaxIndex - length], value[targetMaxIndex - length]))
         length++;
       return length;
     }

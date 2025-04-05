@@ -250,11 +250,11 @@ namespace Flux.Units
 
     public double GetUnitValue(LengthUnit unit) => ConvertToUnit(unit, m_value);
 
-    public string ToUnitString(LengthUnit unit = LengthUnit.Meter, string? format = null, System.IFormatProvider? formatProvider = null, bool fullName = false)
+    public string ToUnitString(LengthUnit unit = LengthUnit.Meter, string? format = null, System.IFormatProvider? provider = null, bool fullName = false)
     {
       var value = GetUnitValue(unit);
 
-      return value.ToString(format, formatProvider) + Unicode.UnicodeSpacing.Space.ToSpacingString() + (fullName ? GetUnitName(unit, value.IsConsideredPlural()) : GetUnitSymbol(unit, false));
+      return value.ToString(format, provider) + Unicode.UnicodeSpacing.Space.ToSpacingString() + (fullName ? GetUnitName(unit, value.IsConsideredPlural()) : GetUnitSymbol(unit, false));
     }
 
     #endregion // IUnitValueQuantifiable<>

@@ -13,13 +13,23 @@ namespace Flux
     public static System.Collections.Generic.IEnumerable<TNumber> LoopCustom<TNumber>(this TNumber source, System.Func<TNumber, int, bool> condition, System.Func<TNumber, int, TNumber> iterator)
       where TNumber : System.Numerics.INumber<TNumber>
     {
-      var index = 0;
+      var number = source;
 
-      for (var current = source; condition(current, index); current = iterator(current, index))
+      for (var index = 0; ; index++)
       {
-        yield return current;
+        try
+        {
+          if (!condition(number, index))
+            break;
 
-        index++;
+          number = iterator(number, index);
+        }
+        catch
+        {
+          break;
+        }
+
+        yield return number;
       }
     }
   }

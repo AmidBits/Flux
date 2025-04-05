@@ -317,14 +317,14 @@ namespace Flux
         { source.M41, source.M42, source.M43, source.M44 }
       };
 
-    public static Geometry.Rotations.EulerAngles ToEulerAnglesTaitBryanZYX(this System.Numerics.Matrix4x4 source)
+    public static EuclideanRotations.EulerAngles ToEulerAnglesTaitBryanZYX(this System.Numerics.Matrix4x4 source)
       => new(
         double.Atan2(source.M11, source.M21), Units.AngleUnit.Radian,
         double.Atan2(double.Sqrt(1 - source.M31 * source.M31), -source.M31), Units.AngleUnit.Radian,
         double.Atan2(source.M33, source.M32), Units.AngleUnit.Radian
       );
 
-    public static Geometry.Rotations.EulerAngles ToEulerAnglesProperEulerZXZ(this System.Numerics.Matrix4x4 source)
+    public static EuclideanRotations.EulerAngles ToEulerAnglesProperEulerZXZ(this System.Numerics.Matrix4x4 source)
       => new(
         double.Atan2(-source.M23, source.M13), Units.AngleUnit.Radian,
         double.Atan2(source.M33, double.Sqrt(1 - source.M33 * source.M33)), Units.AngleUnit.Radian,

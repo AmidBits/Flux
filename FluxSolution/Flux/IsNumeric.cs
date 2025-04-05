@@ -1,7 +1,7 @@
 namespace Flux
 {
   /// <summary>This static class was created to not bloat every single object with extension methods for this functionality.</summary>
-  public static partial class Object
+  public static partial class Fx
   {
     /// <summary>Returns whether the source type is a .NET signed number.</summary>
     public static bool IsNumberSigned<T>(this T source)

@@ -1,6 +1,6 @@
 //namespace Flux
 //{
-//  public static partial class Fx
+//  public static partial class TypeFx
 //  {
 //    /// <summary>
 //    /// <see href="https://opentelemetry.io/docs/specs/otel/common/attribute-naming/"/>

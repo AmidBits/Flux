@@ -1,7 +1,8 @@
-﻿namespace Flux.Statistics
+﻿
+namespace Flux.Statistics
 {
   public record class RunningStatistics
-    : System.IEquatable<RunningStatistics>
+    : System.IEquatable<RunningStatistics>, System.IFormattable
   {
     public static readonly RunningStatistics Empty = new();
 
@@ -236,6 +237,33 @@
 
     #endregion Overloaded operators
 
-    public override string? ToString() => $"{GetType().Name} {{ Count = {m_count}, M = [{m_m1}, {m_m2}, {m_m3}, {m_m4}], Min/Max = [{m_min}, {m_max}], Product = {m_product}, Sum = {m_sum} }}";
+    #region Implemented interfaces
+
+    public string ToString(string? format, IFormatProvider? formatProvider)
+    {
+      format ??= "N3";
+
+      var sm = new SpanMaker<char>();
+
+      sm = sm.Append(GetType().Name);
+
+      sm = sm.Append(" { ");
+
+      sm = sm.Append($" Count = {Count}");
+      sm = sm.Append($", Min/Max = [{Minimum.ToDecimalFormattedNumberString(3)}, {Maximum.ToDecimalFormattedNumberString(3)}]");
+      sm = sm.Append($", Mean = {Mean.ToDecimalFormattedNumberString(3)}");
+      sm = sm.Append($", Product = {Product.ToDecimalFormattedNumberString(3)}");
+      sm = sm.Append($", Sum = {Sum.ToDecimalFormattedNumberString(3)}");
+
+      sm = sm.Append($", M* = [{m_m1.ToString(format, formatProvider)}, {m_m2.ToString(format, formatProvider)}, {m_m3.ToString(format, formatProvider)}, {m_m4.ToString(format, formatProvider)}]");
+
+      sm = sm.Append(" }");
+
+      return sm.ToString();
+    }
+
+    #endregion // Implemented interfaces
+
+    public override string? ToString() => ToString(null, null);
   }
 }

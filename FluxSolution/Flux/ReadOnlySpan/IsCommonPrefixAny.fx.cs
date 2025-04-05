@@ -2,6 +2,8 @@ namespace Flux
 {
   public static partial class Fx
   {
+    #region IsCommonPrefixAny
+
     /// <summary>
     /// <para>Returns whether <paramref name="source"/> starts with <paramref name="count"/> of any <paramref name="values"/>. Uses the <paramref name="equalityComparer"/>, or default if null.</para>
     /// </summary>
@@ -24,7 +26,7 @@ namespace Flux
     public static bool IsCommonPrefixAny(this System.ReadOnlySpan<char> source, System.Collections.Generic.IEqualityComparer<char>? equalityComparer, int maxLength, params string[] values)
     {
       for (var valuesIndex = 0; valuesIndex < values.Length; valuesIndex++)
-        if (values[valuesIndex] is var value && source.IsCommonPrefix(value.AsSpan().Slice(0, int.Min(value.Length, maxLength)), equalityComparer))
+        if (values[valuesIndex] is var value && source.IsCommonPrefix(value.AsSpan()[..int.Min(value.Length, maxLength)], equalityComparer))
           return true;
 
       return false;
@@ -38,5 +40,7 @@ namespace Flux
       => source.IsCommonPrefixAny(equalityComparer, int.MaxValue, values);
 
     #endregion // System.Char extension methods
+
+    #endregion // IsCommonPrefixAny
   }
 }

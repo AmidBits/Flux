@@ -135,7 +135,7 @@ namespace Flux.Mechanics
     /// <param name="gravitationalAcceleration"></param>
     /// <param name="earthRadius"></param>
     /// <returns></returns>
-    public static double PlanetaryTrajectoryHeight(double initialAngle, double initialVelocity, double gravitationalAcceleration = Units.Acceleration.StandardGravity, double earthRadius = Geodesy.EllipsoidReference.EarthMeanRadius)
+    public static double PlanetaryTrajectoryHeight(double initialAngle, double initialVelocity, double gravitationalAcceleration = Units.Acceleration.StandardGravity, double earthRadius = PlanetaryScience.ReferenceEllipsoid.EarthMeanRadius)
     {
       var (sin, cos) = double.SinCos(initialAngle);
 
@@ -155,7 +155,7 @@ namespace Flux.Mechanics
     /// <param name="gravitationalAcceleration"></param>
     /// <param name="earthRadius"></param>
     /// <returns></returns>
-    public static double PlanetaryTrajectoryRange(double initialAngle, double initialVelocity, double gravitationalAcceleration = Units.Acceleration.StandardGravity, double earthRadius = Geodesy.EllipsoidReference.EarthMeanRadius)
+    public static double PlanetaryTrajectoryRange(double initialAngle, double initialVelocity, double gravitationalAcceleration = Units.Acceleration.StandardGravity, double earthRadius = PlanetaryScience.ReferenceEllipsoid.EarthMeanRadius)
     {
       var sin = double.Sin(initialAngle);
 
@@ -175,7 +175,7 @@ namespace Flux.Mechanics
     /// <param name="gravitationalAcceleration"></param>
     /// <param name="earthRadius"></param>
     /// <returns></returns>
-    public static double PlanetaryTrajectoryTime(double initialAngle, double initialVelocity, double gravitationalAcceleration = Units.Acceleration.StandardGravity, double earthRadius = Geodesy.EllipsoidReference.EarthMeanRadius)
+    public static double PlanetaryTrajectoryTime(double initialAngle, double initialVelocity, double gravitationalAcceleration = Units.Acceleration.StandardGravity, double earthRadius = PlanetaryScience.ReferenceEllipsoid.EarthMeanRadius)
     {
       var (sin, cos) = double.SinCos(initialAngle);
 

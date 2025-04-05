@@ -6,17 +6,17 @@
   {
     public static readonly EquirectangularProjection Default;
 
-    public Geometry.CoordinateSystems.GeographicCoordinate CenterOfMap { get; init; }
+    public CoordinateSystems.GeographicCoordinate CenterOfMap { get; init; }
     public double StandardParallels { get; init; }
 
-    public System.Numerics.Vector3 ProjectForward(Geometry.CoordinateSystems.GeographicCoordinate project)
+    public System.Numerics.Vector3 ProjectForward(CoordinateSystems.GeographicCoordinate project)
       => new(
         (float)(project.Altitude.Value * (project.Longitude.Value - CenterOfMap.Longitude.Value) * double.Cos(StandardParallels)),
         (float)(project.Altitude.Value * (project.Latitude.Value - CenterOfMap.Latitude.Value)),
         (float)project.Altitude.Value
       );
 
-    public Geometry.CoordinateSystems.GeographicCoordinate ProjectReverse(System.Numerics.Vector3 project)
+    public CoordinateSystems.GeographicCoordinate ProjectReverse(System.Numerics.Vector3 project)
       => new(
         project.X / (project.Z * double.Cos(StandardParallels)) + CenterOfMap.Longitude.Value,
         Units.AngleUnit.Radian,

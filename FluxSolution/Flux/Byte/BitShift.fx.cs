@@ -2,6 +2,14 @@
 //{
 //  public static partial class Fx
 //  {
+//    public static (TSelf target, TSelf overflow) BitShiftLeftWithCarry<TSelf>(this TSelf source, int count)
+//      where TSelf : System.Numerics.IBinaryInteger<TSelf>
+//      => (source << count, source >> (source.GetBitCount() - count));
+
+//    public static (TSelf target, TSelf overflow) BitShiftRightWithCarry<TSelf>(this TSelf source, int count)
+//      where TSelf : System.Numerics.IBinaryInteger<TSelf>
+//      => (source >>> count, (source & TSelf.CreateChecked(count).CreateBitMaskLsbFromBitLength(0)) << (source.GetBitCount() - count));
+
 //    //public static bool BitFlagCarryLsb<TSelf>(this TSelf source)
 //    //  where TSelf : System.Numerics.IBinaryInteger<TSelf>
 //    //  => !TSelf.IsZero(source & TSelf.One);

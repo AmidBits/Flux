@@ -6,7 +6,7 @@
   {
     public static readonly WinkelTripelProjection Default;
 
-    public System.Numerics.Vector3 ProjectForward(Geometry.CoordinateSystems.GeographicCoordinate project)
+    public System.Numerics.Vector3 ProjectForward(CoordinateSystems.GeographicCoordinate project)
     {
       var lat = project.Latitude.Value;
       var lon = project.Longitude.Value;

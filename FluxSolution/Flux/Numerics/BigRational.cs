@@ -52,6 +52,8 @@ namespace Flux.Numerics
     /// </summary>
     public static BigRational GoldenRatio { get; } = new(7540113804746346429L, 4660046610375530309L, false);
 
+    public static BigRational OneHalf { get; } = new(1, 2, false);
+
     /// <summary>
     /// <para>Can be negative, zero and positive.</para>
     /// </summary>

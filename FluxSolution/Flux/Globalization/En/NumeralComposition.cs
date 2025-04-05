@@ -20,7 +20,7 @@ namespace Flux.Globalization.En
     {
       var sm = new SpanMaker<char>();
 
-      var composition = Globalization.En.NumeralComposition.GetCompoundNumbersAndNumerals(System.Numerics.BigInteger.CreateChecked(number)); // The integral part.
+      var composition = GetCompoundNumbersAndNumerals(System.Numerics.BigInteger.CreateChecked(number)); // The integral part.
 
       sm = sm.Append(composition.First().CardinalNumeral);
 
@@ -33,7 +33,7 @@ namespace Flux.Globalization.En
 
         sm = sm.Append(decimalSeparatorWord);
 
-        composition = Globalization.En.NumeralComposition.GetCompoundNumbersAndNumerals(System.Numerics.BigInteger.CreateChecked(decimal.CreateChecked(TSelf.Abs(number)).GetParts().FractionalPartAsWholeNumber)); // The fractional part.
+        composition = GetCompoundNumbersAndNumerals(System.Numerics.BigInteger.CreateChecked(decimal.CreateChecked(TSelf.Abs(number)).GetParts().FractionalPartAsWholeNumber)); // The fractional part.
 
         AppendNumber(ref sm);
       }

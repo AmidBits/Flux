@@ -6,6 +6,7 @@ namespace Flux
     /// <summary>
     /// <para>Get/check the bits of <paramref name="value"/> corresponding with the 1-bits in <paramref name="bitMask"/>.</para>
     /// </summary>
+    [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
     public static bool BitMaskCheckAll<TNumber, TBitMask>(this TNumber value, TBitMask bitMask)
       where TNumber : System.Numerics.IBinaryInteger<TNumber>
       where TBitMask : System.Numerics.IBinaryInteger<TBitMask>
@@ -14,6 +15,7 @@ namespace Flux
     /// <summary>
     /// <para>Get/check the bits of <paramref name="value"/> corresponding with the 1-bits in <paramref name="bitMask"/>.</para>
     /// </summary>
+    [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
     public static bool BitMaskCheckAny<TNumber, TBitMask>(this TNumber value, TBitMask bitMask)
       where TNumber : System.Numerics.IBinaryInteger<TNumber>
       where TBitMask : System.Numerics.IBinaryInteger<TBitMask>
@@ -22,6 +24,7 @@ namespace Flux
     /// <summary>
     /// <para>Clear the bits of <paramref name="value"/> corresponding with the 1-bits in <paramref name="bitMask"/>.</para>
     /// </summary>
+    [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
     public static TNumber BitMaskClear<TNumber, TBitMask>(this TNumber value, TBitMask bitMask)
       where TNumber : System.Numerics.IBinaryInteger<TNumber>
       where TBitMask : System.Numerics.IBinaryInteger<TBitMask>
@@ -30,6 +33,7 @@ namespace Flux
     /// <summary>
     /// <para>Flip the bits of <paramref name="value"/> corresponding with the 1-bits in <paramref name="bitMask"/>.</para>
     /// </summary>
+    [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
     public static TNumber BitMaskFlip<TNumber, TBitMask>(this TNumber value, TBitMask bitMask)
       where TNumber : System.Numerics.IBinaryInteger<TNumber>
       where TBitMask : System.Numerics.IBinaryInteger<TBitMask>
@@ -38,6 +42,7 @@ namespace Flux
     /// <summary>
     /// <para>Flip the bits of <paramref name="value"/> corresponding with the 1-bits in <paramref name="bitMask"/>.</para>
     /// </summary>
+    [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
     public static TNumber BitMaskSet<TNumber, TBitMask>(this TNumber value, TBitMask bitMask)
       where TNumber : System.Numerics.IBinaryInteger<TNumber>
       where TBitMask : System.Numerics.IBinaryInteger<TBitMask>

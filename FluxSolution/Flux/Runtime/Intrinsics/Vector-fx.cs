@@ -255,6 +255,15 @@ namespace Flux
 
     #endregion // CopySign
 
+    /// <summary>
+    /// <para>The cross product for 2-dimensions yield a scalar value.</para>
+    /// </summary>
+    /// <param name="source"></param>
+    /// <param name="target"></param>
+    /// <returns></returns>
+    public static double Cross(this Vector128<double> source, Vector128<double> target)
+      => (source[0] * target[1] - target[0] * source[1]);
+
     /// <summary>Returns the cross product of the vector.</summary>
     /// <remarks>
     /// Cross product of A(x, y, z, _) and B(x, y, z, _) is

@@ -19,7 +19,12 @@ namespace Flux.DataStructures
       m_value = value;
     }
 
-    public readonly void Deconstruct(out int index, out TKey key, out TValue value) { index = m_index; key = m_key; value = m_value; }
+    public readonly void Deconstruct(out int index, out TKey key, out TValue value)
+    {
+      index = m_index;
+      key = m_key;
+      value = m_value;
+    }
 
     /// <summary>
     /// <para>Gets the index in the index/key/value trio.</para>

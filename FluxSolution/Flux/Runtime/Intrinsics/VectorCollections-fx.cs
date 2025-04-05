@@ -4,6 +4,60 @@ namespace Flux
 {
   public static partial class Intrinsics
   {
+    public static System.Runtime.Intrinsics.Vector128<double> ComputeCentroid(this System.Collections.Generic.IEnumerable<System.Runtime.Intrinsics.Vector128<double>> polygon, out double surfaceArea)
+    {
+      surfaceArea = 0.0;
+
+      var centroid = System.Runtime.Intrinsics.Vector128.Create(0.0, 0.0);
+
+      foreach (var (cross12, add12) in polygon.PartitionTuple2(true, (v1, v2, i) => (v1.Cross(v2), v1 + v2)))
+      {
+        surfaceArea += cross12;
+
+        centroid += add12 * cross12;
+      }
+
+      surfaceArea /= 2;
+
+      return centroid / (6 * surfaceArea);
+    }
+
+    public static double ComputePerimeter(this System.Collections.Generic.IEnumerable<System.Runtime.Intrinsics.Vector128<double>> polygon)
+    {
+      var perimeter = 0.0;
+
+      foreach (var sideLength in polygon.PartitionTuple2(true, (v1, v2, i) => (v2 - v1).EuclideanLength()))
+        perimeter += sideLength;
+
+      return perimeter;
+    }
+
+    public static double ComputeSurfaceArea(this System.Collections.Generic.IEnumerable<System.Runtime.Intrinsics.Vector128<double>> polygon)
+    {
+      var surfaceArea = 0.0;
+
+      foreach (var cross in polygon.PartitionTuple2(true, (v1, v2, i) => v1.Cross(v2)))
+        surfaceArea += cross;
+
+      return surfaceArea / 2;
+    }
+
+    public static bool IsConvex(this System.Collections.Generic.IEnumerable<System.Runtime.Intrinsics.Vector128<double>> polygon)
+    {
+      var negative = false;
+      var positive = false;
+
+      foreach (var angle in polygon.PartitionTuple3(2, (leading, midling, trailing, index) => midling.AngleBetween(leading, trailing)))
+      {
+        if (angle < 0) negative = true;
+        else positive = true;
+
+        if (negative && positive) return false;
+      }
+
+      return negative ^ positive;
+    }
+
     #region Contains
 
     /// <summary>Determines the inclusion of a point in the (2D planar) polygon. This Winding Number method counts the number of times the polygon winds around the point. The point is outside only when this "winding number" is 0, otherwise the point is inside.</summary>
@@ -21,12 +75,12 @@ namespace Flux
 
         if (a[1] <= y)
         {
-          if (b[1] > y && Geometry.Shapes.Line.LineGeometry.LineSideTest(x, y, a[0], a[1], b[0], b[1]) > 0)
+          if (b[1] > y && Geometry.Lines.Line.LineSideTest(x, y, a[0], a[1], b[0], b[1]) > 0)
             wn++;
         }
         else
         {
-          if (b[1] <= y && Geometry.Shapes.Line.LineGeometry.LineSideTest(x, y, a[0], a[1], b[0], b[1]) < 0)
+          if (b[1] <= y && Geometry.Lines.Line.LineSideTest(x, y, a[0], a[1], b[0], b[1]) < 0)
             wn--;
         }
       }
@@ -49,12 +103,12 @@ namespace Flux
 
         if (a[1] <= y)
         {
-          if (b[1] > y && Geometry.Shapes.Line.LineGeometry.LineSideTest(x, y, a[0], a[1], b[0], b[1]) > 0)
+          if (b[1] > y && Geometry.Lines.Line.LineSideTest(x, y, a[0], a[1], b[0], b[1]) > 0)
             wn++;
         }
         else
         {
-          if (b[1] <= y && Geometry.Shapes.Line.LineGeometry.LineSideTest(x, y, a[0], a[1], b[0], b[1]) < 0)
+          if (b[1] <= y && Geometry.Lines.Line.LineSideTest(x, y, a[0], a[1], b[0], b[1]) < 0)
             wn--;
         }
       }

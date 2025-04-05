@@ -34,7 +34,7 @@ namespace Flux.Model.Maze
         {
           var cell = grid[row + divideSouthOf, column + i];
 
-          cell.DisconnectPath(cell.Edges[(int)Geodesy.CompassCardinalDirection.S], true);
+          cell.DisconnectPath(cell.Edges[(int)PlanetaryScience.CompassCardinalDirection.S], true);
         }
       }
 
@@ -52,7 +52,7 @@ namespace Flux.Model.Maze
         {
           var cell = grid[row + i, column + divideEastOf];
 
-          cell.DisconnectPath(cell.Edges[(int)Geodesy.CompassRose08Wind.E], true);
+          cell.DisconnectPath(cell.Edges[(int)PlanetaryScience.CompassRose08Wind.E], true);
         }
       }
 

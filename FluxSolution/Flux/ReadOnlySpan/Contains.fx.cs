@@ -12,15 +12,29 @@ namespace Flux
     /// <param name="predicate"></param>
     /// <returns></returns>
     public static bool Contains<T>(this System.ReadOnlySpan<T> source, System.Func<T, bool> predicate)
-    {
-      for (var index = source.Length - 1; index >= 0; index--)
-        if (predicate(source[index]))
-          return true;
+      => source.IndexOf(predicate) > -1;
 
-      return false;
-    }
+    /// <summary>
+    /// <para></para>
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="source"></param>
+    /// <param name="value"></param>
+    /// <param name="equalityComparer"></param>
+    /// <returns></returns>
+    public static bool Contains<T>(this System.ReadOnlySpan<T> source, T value, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
+      => source.IndexOf(value, equalityComparer) > -1;
 
-    public static bool Contains<T>(this System.ReadOnlySpan<T> source, T value, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null) => source.ContainsAny(equalityComparer, value);
+    /// <summary>
+    /// <para></para>
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="source"></param>
+    /// <param name="target"></param>
+    /// <param name="equalityComparer"></param>
+    /// <returns></returns>
+    public static bool Contains<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
+      => source.IndexOf(target, equalityComparer) > -1;
 
     /// <summary>
     /// <para></para>
@@ -30,6 +44,7 @@ namespace Flux
     /// <param name="equalityComparer"></param>
     /// <param name="values"></param>
     /// <returns></returns>
-    public static bool ContainsAny<T>(this System.ReadOnlySpan<T> source, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null, params T[] values) => source.Contains(e => values.Contains(e, equalityComparer));
+    public static bool ContainsAny<T>(this System.ReadOnlySpan<T> source, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null, params T[] values)
+      => source.IndexOfAny(equalityComparer, values) > -1;
   }
 }

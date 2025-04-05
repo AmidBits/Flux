@@ -6,14 +6,14 @@
   {
     public static readonly CassiniProjection Default;
 
-    public System.Numerics.Vector3 ProjectForward(Geometry.CoordinateSystems.GeographicCoordinate project)
+    public System.Numerics.Vector3 ProjectForward(CoordinateSystems.GeographicCoordinate project)
       => new(
         (float)double.Asin(double.Cos(project.Latitude.Value) * double.Sin(project.Longitude.Value)),
         (float)double.Atan(double.Tan(project.Latitude.Value) / double.Cos(project.Longitude.Value)),
         (float)project.Altitude.Value
       );
 
-    public Geometry.CoordinateSystems.GeographicCoordinate ProjectReverse(System.Numerics.Vector3 project)
+    public CoordinateSystems.GeographicCoordinate ProjectReverse(System.Numerics.Vector3 project)
       => new(
         double.Asin(double.Sin(project.Y) * double.Cos(project.X)),
         Units.AngleUnit.Radian,

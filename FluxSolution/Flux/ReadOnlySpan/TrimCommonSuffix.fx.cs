@@ -3,11 +3,10 @@ namespace Flux
   public static partial class Fx
   {
     /// <summary>
-    /// <para>Creates a new read-only-span from <paramref name="source"/> with all matching suffix elements satisfying the <paramref name="predicate"/> removed.</para>
+    /// <para>Slice the <paramref name="source"/> with all matching suffix elements satisfying the <paramref name="predicate"/> removed.</para>
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <param name="source"></param>
-    /// <param name="offset"></param>
     /// <param name="predicate"></param>
     /// <param name="maxTrimLength"></param>
     /// <returns></returns>
@@ -15,11 +14,10 @@ namespace Flux
       => source[..^source.CommonSuffixLength(predicate, maxTrimLength)];
 
     /// <summary>
-    /// <para>Creates a new read-only-span from <paramref name="source"/> with the matching suffix elements from <paramref name="value"/> removed.</para>
+    /// <para>Slice the <paramref name="source"/> with the matching suffix elements from <paramref name="value"/> removed.</para>
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <param name="source"></param>
-    /// <param name="offset"></param>
     /// <param name="value"></param>
     /// <param name="equalityComparer"></param>
     /// <param name="maxTrimLength"></param>
@@ -28,11 +26,10 @@ namespace Flux
       => source[..^source.CommonSuffixLength(value, equalityComparer, maxTrimLength)];
 
     /// <summary>
-    /// <para>Creates a new read-only-span from <paramref name="source"/> with the matching suffix elements from <paramref name="value"/> removed.</para>
+    /// <para>Slice the <paramref name="source"/> with the matching suffix elements from <paramref name="value"/> removed.</para>
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <param name="source"></param>
-    /// <param name="offset"></param>
     /// <param name="value"></param>
     /// <param name="equalityComparer"></param>
     /// <param name="maxTrimLength"></param>

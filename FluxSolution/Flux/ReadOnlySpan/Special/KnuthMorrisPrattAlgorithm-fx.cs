@@ -68,9 +68,7 @@
       while (positionIndex < source.Length)
       {
         if (equalityComparer.Equals(source[positionIndex], source[candidateIndex]))
-        {
           table[positionIndex] = table[candidateIndex];
-        }
         else
         {
           table[positionIndex] = candidateIndex;

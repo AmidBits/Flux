@@ -6,7 +6,7 @@
   {
     public static readonly EqualEarthProjection Default;
 
-    public System.Numerics.Vector3 ProjectForward(Geometry.CoordinateSystems.GeographicCoordinate location)
+    public System.Numerics.Vector3 ProjectForward(CoordinateSystems.GeographicCoordinate location)
     {
       const double A1 = 1.340264;
       const double A2 = -0.081106;
@@ -28,7 +28,7 @@
 
       return new((float)x, (float)y, (float)location.Altitude.Value);
     }
-    public Geometry.CoordinateSystems.GeographicCoordinate ProjectReverse(System.Numerics.Vector3 location)
+    public CoordinateSystems.GeographicCoordinate ProjectReverse(System.Numerics.Vector3 location)
     {
       const double A1 = 1.340264;
       const double A2 = -0.081106;

@@ -1,6 +1,3 @@
-using System.Globalization;
-using System.Runtime.Intrinsics;
-
 namespace Flux
 {
   public static partial class Fx
@@ -65,7 +62,7 @@ namespace Flux
     /// <param name="rng">The random number generator to use, or default if null.</param>
     /// <returns>A new sequence of <typeparamref name="TResult"/>.</returns>
     public static System.Numerics.Vector2[] GenerateEllipseVectors(this System.Numerics.Vector2 source, int count, double radOffset = 0, double maxRandomness = 0, System.Random? rng = null)
-      => Geometry.Shapes.Ellipse.EllipseGeometry.CreatePointsOnEllipse(count, source.X, source.Y, radOffset, 0, 0, maxRandomness, rng).Select(v128 => v128.ToVector2()).ToArray();
+      => Geometry.Ellipses.EllipseFigure.CreatePointsOnEllipse(count, source.X, source.Y, radOffset, 0, 0, maxRandomness, rng).Select(v128 => v128.ToVector2()).ToArray();
 
     /// <summary>
     /// <para>Returns whether a point is inside the circle.</para>
@@ -366,17 +363,17 @@ namespace Flux
       System.ArgumentNullException.ThrowIfNull(a);
       System.ArgumentNullException.ThrowIfNull(b);
 
-      if (Geometry.Shapes.Line.LineGeometry.GivenTwoPointsOnEach(a[a.Count - 1], a[0], b[b.Count - 1], b[0]).Outcome == Geometry.Shapes.Line.LineIntersectTest.LinesIntersect)
+      if (Geometry.Lines.Line.GivenTwoPointsOnEach(a[a.Count - 1], a[0], b[b.Count - 1], b[0]).Outcome == Geometry.Lines.LineIntersectTest.LinesIntersect)
         return true;
 
       for (int i = 1; i < a.Count; i++)
       {
-        if (Geometry.Shapes.Line.LineGeometry.GivenTwoPointsOnEach(a[i - 1], a[i], b[b.Count - 1], b[0]).Outcome == Geometry.Shapes.Line.LineIntersectTest.LinesIntersect)
+        if (Geometry.Lines.Line.GivenTwoPointsOnEach(a[i - 1], a[i], b[b.Count - 1], b[0]).Outcome == Geometry.Lines.LineIntersectTest.LinesIntersect)
           return true;
 
         for (int p = 1; p < b.Count; p++)
         {
-          if (Geometry.Shapes.Line.LineGeometry.GivenTwoPointsOnEach(a[i - 1], a[i], b[p - 1], b[p]).Outcome == Geometry.Shapes.Line.LineIntersectTest.LinesIntersect)
+          if (Geometry.Lines.Line.GivenTwoPointsOnEach(a[i - 1], a[i], b[p - 1], b[p]).Outcome == Geometry.Lines.LineIntersectTest.LinesIntersect)
             return true;
         }
       }

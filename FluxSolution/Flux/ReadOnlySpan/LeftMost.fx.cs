@@ -3,7 +3,7 @@ namespace Flux
   public static partial class Fx
   {
     /// <summary>
-    /// <para>Returns a new <see cref="System.ReadOnlySpan{T}"/> containing the left-most <paramref name="count"/> of elements if available, otherwise as many as there are.</para>
+    /// <para>Slice the <paramref name="source"/> keeping the left-most <paramref name="count"/> of elements if available, otherwise as many as there are.</para>
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <param name="source"></param>

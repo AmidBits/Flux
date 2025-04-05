@@ -2,6 +2,8 @@ namespace Flux
 {
   public static partial class Fx
   {
+    #region IsCommonPrefix
+
     /// <summary>
     /// <para>Indicates whether the <paramref name="source"/> starts with <paramref name="count"/> elements that satisfies the <paramref name="predicate"/>.</para>
     /// </summary>
@@ -47,5 +49,7 @@ namespace Flux
     /// <returns></returns>
     public static bool IsCommonPrefix<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
       => source.IsCommonPrefix(target, target.Length, equalityComparer);
+
+    #endregion // IsCommonPrefix
   }
 }

@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class FxType
   {
     /// <summary>Creates a new sequence with the derived types of the <paramref name="source"/> from the specified <paramref name="typeCollection"/>.</summary>
     public static System.Collections.Generic.IEnumerable<System.Type> GetDerivedTypes(this System.Type source, System.Collections.Generic.IEnumerable<System.Type> typeCollection)

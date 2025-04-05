@@ -35,21 +35,21 @@
 
       return false;
     }
-    public bool Disambiguate() => Disambiguate(0, 0);
-    //{
-    //  try
-    //  {
-    //    Disambiguate(0, 0);
 
-    //    return false;
-    //  }
-    //  catch (System.Exception ex) when (ex.Message == nameof(Disambiguate))
-    //  {
-    //    return true;
-    //  }
-    //}
+    public bool Disambiguate()
+    {
+      try
+      {
+        return Disambiguate(0, 0);
+      }
+      catch
+      {
+        return true;
+      }
+    }
 
-    public void Require(System.Func<bool> predicate) => m_constraints.Add(new Constraint(predicate, m_choices.Count));
+    public void Require(System.Func<bool> predicate)
+      => m_constraints.Add(new Constraint(predicate, m_choices.Count));
 
     public bool RequireFinal(System.Func<bool> predicate)
     {
