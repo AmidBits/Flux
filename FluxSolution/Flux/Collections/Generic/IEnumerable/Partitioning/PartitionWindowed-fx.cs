@@ -33,7 +33,7 @@ namespace Flux
         {
           index = 1;
 
-          queue.Enqueue(new System.Collections.Generic.List<TSource>());
+          queue.Enqueue([]);
         }
 
         foreach (var list in queue)
@@ -41,7 +41,8 @@ namespace Flux
 
         if (queue.Peek().Count == size)
           yield return resultSelector(queue.Dequeue());
-      };
+      }
+      ;
 
       if (includeTrailing)
         while (queue.Count > 0 && queue.Peek().Count > 0)

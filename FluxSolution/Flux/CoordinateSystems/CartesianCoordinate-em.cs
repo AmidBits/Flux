@@ -14,19 +14,19 @@ namespace Flux
     public static CoordinateSystems.CartesianCoordinate ToCartesianCoordinate(this System.Numerics.Vector4 source)
       => new(source.X, source.Y, source.Z, source.W);
 
-    /// <summary>Creates a new <see cref="Geometry.HexCoordinate{TSelf}"/> from a <see cref="Geometry.CoordinateSystems.CartesianCoordinate"/>.</summary>
-    public static CoordinateSystems.HexCoordinate<TResult> ToHexCoordinate<TResult>(this CoordinateSystems.CartesianCoordinate source, UniversalRounding mode, out TResult q, out TResult r, out TResult s)
-      where TResult : System.Numerics.INumber<TResult>
-    {
-      var (x, y, z) = source;
+    ///// <summary>Creates a new <see cref="Geometry.HexCoordinate{TSelf}"/> from a <see cref="Geometry.CoordinateSystems.CartesianCoordinate"/>.</summary>
+    //public static CoordinateSystems.HexCoordinate<TResult> ToHexCoordinate<TResult>(this CoordinateSystems.CartesianCoordinate source, UniversalRounding mode, out TResult q, out TResult r, out TResult s)
+    //  where TResult : System.Numerics.INumber<TResult>
+    //{
+    //  var (x, y, z) = source;
 
-      CoordinateSystems.HexCoordinate.Round<double, TResult>(x, y, z, mode, out q, out r, out s);
+    //  CoordinateSystems.HexCoordinate.Round<double, TResult>(x, y, z, mode, out q, out r, out s);
 
-      return new(
-        q,
-        r,
-        s
-      );
-    }
+    //  return new(
+    //    q,
+    //    r,
+    //    s
+    //  );
+    //}
   }
 }

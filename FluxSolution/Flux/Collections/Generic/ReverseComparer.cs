@@ -3,7 +3,7 @@ namespace Flux.Collections.Generic
   public sealed class ReverseComparer<T>
     : System.Collections.Generic.Comparer<T>
   {
-    private System.Collections.Generic.IComparer<T> m_comparer;
+    private readonly System.Collections.Generic.IComparer<T> m_comparer;
 
     public ReverseComparer(System.Collections.Generic.IComparer<T> comparer) => m_comparer = comparer;
 

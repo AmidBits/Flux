@@ -1,4 +1,4 @@
-namespace Flux.IO.HashGenerators
+namespace Flux.IO.HashGenerators.Specialized
 {
   // https://en.wikipedia.org/wiki/Zobrist_hashing
   public readonly record struct ZobristTable

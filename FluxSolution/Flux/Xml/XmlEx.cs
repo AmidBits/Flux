@@ -2,11 +2,17 @@ namespace Flux.Text
 {
   public static partial class XmlEx
   {
+    [System.Text.RegularExpressions.GeneratedRegex(@"[\u0026\u0027\u0022\u003e\u003c]")]
+    private static partial System.Text.RegularExpressions.Regex RegexXmlEntityCharacters(); // Characters that needs to be escaped.
+
+    [System.Text.RegularExpressions.GeneratedRegex(@"&(amp|apos|quot|gt|lt);")]
+    private static partial System.Text.RegularExpressions.Regex RegexXmlEntities(); // Characters that needs to be escaped.
+
     [System.Text.RegularExpressions.GeneratedRegex(@"[^\u0009\u000A\u000D\u0020-\uD7FF\uE000-\uFFFD]")]
-    private static partial System.Text.RegularExpressions.Regex RegexUnescapedCharacters(); // Characters that needs to be escaped.
+    private static partial System.Text.RegularExpressions.Regex RegexInvalidUnescapedCharacters(); // Characters that needs to be escaped.
 
     [System.Text.RegularExpressions.GeneratedRegex(@"#0x\d{4}#")]
-    private static partial System.Text.RegularExpressions.Regex RegexEscapedCharacters();
+    private static partial System.Text.RegularExpressions.Regex RegexInvalidEscapedCharacters();
 
     public static readonly System.Collections.Generic.Dictionary<char, string> XmlEntityMap = new()
     {
@@ -43,7 +49,7 @@ namespace Flux.Text
 
     /// <summary>Returns an string where all invalid XML characters have been escaped to .</summary>
     public static string EscapeInvalidCharacters(string source)
-      => RegexUnescapedCharacters().Replace(source, (m) => $"#0x{((int)m.Value[0]).ToString(@"X4", System.Globalization.CultureInfo.CurrentCulture)}#");
+      => RegexInvalidUnescapedCharacters().Replace(source, (m) => $"#0x{((int)m.Value[0]).ToString(@"X4", System.Globalization.CultureInfo.CurrentCulture)}#");
 
     /// <summary>Returns whether the string contains any XML entities.</summary>
     public static bool HasXmlEntities(string source)
@@ -78,6 +84,6 @@ namespace Flux.Text
       => source?.Replace(XmlEntityLt, XmlEntityCharLt.ToString(System.Globalization.CultureInfo.CurrentCulture), System.StringComparison.Ordinal).Replace(XmlEntityGt, XmlEntityCharGt.ToString(System.Globalization.CultureInfo.CurrentCulture), System.StringComparison.Ordinal).Replace(XmlEntityQuot, XmlEntityCharQuot.ToString(System.Globalization.CultureInfo.CurrentCulture), System.StringComparison.Ordinal).Replace(XmlEntityApos, XmlEntityCharApos.ToString(System.Globalization.CultureInfo.CurrentCulture), System.StringComparison.Ordinal).Replace(XmlEntityAmp, XmlEntityCharAmp.ToString(System.Globalization.CultureInfo.CurrentCulture), System.StringComparison.Ordinal) ?? throw new System.ArgumentNullException(nameof(source));
     /// <summary>Returns an string where all escaped invalid characters have been restored to invalid XML characters.</summary>
     public static string UnescapeInvalidCharacters(string source)
-      => RegexEscapedCharacters().Replace(source, (m) => $"{(char)int.Parse(m.Value.AsSpan(3, 4), System.Globalization.NumberStyles.Integer, System.Globalization.CultureInfo.CurrentCulture)}");
+      => RegexInvalidEscapedCharacters().Replace(source, (m) => $"{(char)int.Parse(m.Value.AsSpan(3, 4), System.Globalization.NumberStyles.Integer, System.Globalization.CultureInfo.CurrentCulture)}");
   }
 }

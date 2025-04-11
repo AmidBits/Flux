@@ -8,7 +8,7 @@ namespace Flux
     /// </summary>
     public const string ResourcesDirectoryIpa = @"file://\Resources\Dictionaries\Ipa\";
 
-    private static Dictionary<System.Globalization.CultureInfo, System.Data.DataTable> m_cultureInfoDataTables = new Dictionary<System.Globalization.CultureInfo, System.Data.DataTable>();
+    private static readonly Dictionary<System.Globalization.CultureInfo, System.Data.DataTable> m_cultureInfoDataTables = [];
 
     public static System.Data.DataTable GetIpaDictionary(this System.Globalization.CultureInfo source, string directory = ResourcesDirectoryIpa)
     {
@@ -16,7 +16,7 @@ namespace Flux
       {
         if (!source.TryLocateCultureFile(out var fileInfo, directory)) throw new System.InvalidOperationException($"Culture file not found for {source}.");
 
-        using var fileStream = fileInfo?.OpenRead() ?? throw new System.ArgumentNullException(nameof(fileInfo));
+        using var fileStream = fileInfo?.OpenRead() ?? throw new System.NullReferenceException(nameof(fileInfo));
         using var streamReader = new System.IO.StreamReader(fileStream, System.Text.Encoding.UTF8);
 
         dataTable = streamReader.ToDataTable(s => s.Length > 0, line => line.Split('\t'), source.Name);

@@ -1,4 +1,4 @@
-﻿namespace Flux.Dsp
+﻿namespace Flux.Dsp.AudioChannels
 {
   /// <summary>Audio channel subwoofer (low frequency effect).</summary>
   public interface IAudioChannelLowFrequencyEffect<TSelf>

@@ -28,7 +28,7 @@ namespace Flux.Dsp.Oscillators
     public IOscillator? FrequencyModulator { get; set; }
 
     /// <summary>The wave generator used to produce the waveform of the oscillator.</summary>
-    public WaveGenerator.IMonoWaveUiGeneratable? Generator { get; set; }
+    public WaveGenerators.IMonoWaveUiGeneratable? Generator { get; set; }
 
     /// <summary>Indicates whether the sample polarity should be inverted.</summary>
     public bool InvertPolarity { get; set; }
@@ -56,10 +56,10 @@ namespace Flux.Dsp.Oscillators
     public Oscillator? PhaseModulator { get; set; }
 
     /// <summary>Audio processors applied before AM, RM, FM and PM.</summary>
-    public System.Collections.Generic.List<WaveProcessor.IMonoWaveProcessable> PreProcessors { get; }
+    public System.Collections.Generic.List<WaveProcessors.IMonoWaveProcessable> PreProcessors { get; }
 
     /// <summary>Audio processors applied after AM, RM, FM and PM.</summary>
-    public System.Collections.Generic.List<WaveProcessor.IMonoWaveProcessable> PostProcessors { get; }
+    public System.Collections.Generic.List<WaveProcessors.IMonoWaveProcessable> PostProcessors { get; }
 
     /// <summary>Indicates whether the direction of the phase should be reversed.</summary>
     public bool ReversePhase { get; set; }
@@ -87,7 +87,7 @@ namespace Flux.Dsp.Oscillators
     /// <summary>The period of the signal, in seconds. Can be used to set the frequency.</summary>
     public double SignalPeriod { get; private set; }
 
-    public Oscillator(WaveGenerator.IMonoWaveUiGeneratable generator, double frequency, double sampleRate = 44100)
+    public Oscillator(WaveGenerators.IMonoWaveUiGeneratable generator, double frequency, double sampleRate = 44100)
     {
       Generator = generator;
 
@@ -99,7 +99,7 @@ namespace Flux.Dsp.Oscillators
 
       SetState(frequency, sampleRate);
     }
-    public Oscillator() : this(new WaveGenerator.SineWave(), 8.175798915643707, 44100) { }
+    public Oscillator() : this(new WaveGenerators.SineWave(), 8.175798915643707, 44100) { }
 
     /// <summary>Generates the next sample for the oscillator (all operational components are integrated in ths process).</summary>
     public double Next(double? normalizedFrequency)

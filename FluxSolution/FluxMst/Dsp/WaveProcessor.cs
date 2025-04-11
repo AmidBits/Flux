@@ -9,12 +9,12 @@ namespace Dsp
     //private Flux.Dsp.Oscillator.AmplitudeModulator _amplitudeModulator = new Flux.Dsp.WaveModulator.AmplitudeModulator();
     //private Flux.Dsp.WaveModulator.RingModulator _ringModulator = new Flux.Dsp.WaveModulator.RingModulator();
 
-    private Flux.Dsp.WaveProcessor.MonoFolder _folder = new Flux.Dsp.WaveProcessor.MonoFolder() { Multiplier = 2.5 };
-    private Flux.Dsp.WaveProcessor.MonoInverter _inverter = new Flux.Dsp.WaveProcessor.MonoInverter();
-    private Flux.Dsp.WaveProcessor.MonoLagger _lagger = new Flux.Dsp.WaveProcessor.MonoLagger();
-    private Flux.Dsp.WaveProcessor.MonoQuadratic _quadratic = new Flux.Dsp.WaveProcessor.MonoQuadratic() { Exponent = 2 };
-    private Flux.Dsp.WaveProcessor.MonoRectifier _fullWaveRectifier = new Flux.Dsp.WaveProcessor.MonoRectifier(Flux.Dsp.WaveProcessor.MonoRectifierMode.FullWave, 0);
-    private Flux.Dsp.WaveProcessor.MonoRectifier _halfWaveRectifier = new Flux.Dsp.WaveProcessor.MonoRectifier(Flux.Dsp.WaveProcessor.MonoRectifierMode.HalfWave, 0);
+    private Flux.Dsp.WaveProcessors.MonoFolder _folder = new Flux.Dsp.WaveProcessors.MonoFolder() { Multiplier = 2.5 };
+    private Flux.Dsp.WaveProcessors.MonoInverter _inverter = new Flux.Dsp.WaveProcessors.MonoInverter();
+    private Flux.Dsp.WaveProcessors.MonoLagger _lagger = new Flux.Dsp.WaveProcessors.MonoLagger();
+    private Flux.Dsp.WaveProcessors.MonoQuadratic _quadratic = new Flux.Dsp.WaveProcessors.MonoQuadratic() { Exponent = 2 };
+    private Flux.Dsp.WaveProcessors.MonoRectifier _fullWaveRectifier = new Flux.Dsp.WaveProcessors.MonoRectifier(Flux.Dsp.WaveProcessors.MonoRectifierMode.FullWave, 0);
+    private Flux.Dsp.WaveProcessors.MonoRectifier _halfWaveRectifier = new Flux.Dsp.WaveProcessors.MonoRectifier(Flux.Dsp.WaveProcessors.MonoRectifierMode.HalfWave, 0);
 
     private const double _hiPhase = System.Math.PI * 0.75;
     private const double _loPhase = System.Math.PI * 0.25;

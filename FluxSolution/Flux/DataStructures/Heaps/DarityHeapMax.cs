@@ -8,7 +8,7 @@ namespace Flux.DataStructures.Heaps
     : IHeap<TValue>, System.ICloneable, System.Collections.Generic.IReadOnlyCollection<TValue>
     where TValue : System.IComparable<TValue>
   {
-    private int m_arity;
+    private readonly int m_arity;
     private readonly System.Collections.Generic.List<TValue> m_data = new();
 
     public DarityHeapMax(int arity) => m_arity = arity;

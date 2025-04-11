@@ -44,15 +44,15 @@ namespace Flux.Globalization.En
       {
         for (var index = 1; index < composition.Count; index++)
         {
-          var currentComposition = composition.ElementAt(index);
-          var previousComposition = composition.ElementAt(index - 1);
+          var (currentCompoundNumber, currentCardinalNumeral) = composition.ElementAt(index);
+          var (previousCompoundNumber, _) = composition.ElementAt(index - 1);
 
           if (sm.Length > 0)
-            sm = sm.Append(currentComposition.CompoundNumber >= 1 && currentComposition.CompoundNumber <= 9 && previousComposition.CompoundNumber >= 20 && previousComposition.CompoundNumber <= 90 ? '-' : ' ');
+            sm = sm.Append(currentCompoundNumber >= 1 && currentCompoundNumber <= 9 && previousCompoundNumber >= 20 && previousCompoundNumber <= 90 ? '-' : ' ');
 
-          sm = sm.Append(currentComposition.CardinalNumeral);
+          sm = sm.Append(currentCardinalNumeral);
 
-          if (includeAnd && currentComposition.CompoundNumber == 100)
+          if (includeAnd && currentCompoundNumber == 100)
           {
             sm = sm.Append(' ');
             sm = sm.Append("And");

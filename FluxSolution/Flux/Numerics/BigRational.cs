@@ -795,7 +795,7 @@ namespace Flux.Numerics
       if (isBigEndian) System.Buffers.Binary.BinaryPrimitives.WriteInt32BigEndian(target[..4], bytesInNumerator);
       else System.Buffers.Binary.BinaryPrimitives.WriteInt32LittleEndian(target[..4], bytesInNumerator);
 
-      if (!m_numerator.TryWriteBytes(target.Slice(4, bytesInNumerator), out var bytesWrittenNumerator, isUnsigned, isBigEndian))
+      if (!m_numerator.TryWriteBytes(target.Slice(4, bytesInNumerator), out var _, isUnsigned, isBigEndian))
         throw new System.InvalidOperationException();
 
       var bytesInDenominator = m_denominator.GetByteCount();
@@ -803,7 +803,7 @@ namespace Flux.Numerics
       if (isBigEndian) System.Buffers.Binary.BinaryPrimitives.WriteInt32BigEndian(target.Slice(4 + bytesInNumerator, 4), bytesInDenominator);
       else System.Buffers.Binary.BinaryPrimitives.WriteInt32LittleEndian(target.Slice(4 + bytesInNumerator, 4), bytesInDenominator);
 
-      if (!m_denominator.TryWriteBytes(target[(4 + bytesInNumerator + 4)..], out var bytesWrittenDenominator, isUnsigned, isBigEndian))
+      if (!m_denominator.TryWriteBytes(target[(4 + bytesInNumerator + 4)..], out var _, isUnsigned, isBigEndian))
         throw new System.InvalidOperationException();
 
       return 4 + bytesInNumerator + 4 + bytesInDenominator;

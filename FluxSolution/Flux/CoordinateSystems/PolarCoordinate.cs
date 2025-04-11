@@ -51,9 +51,16 @@ namespace Flux.CoordinateSystems
     /// <remarks>The angle is defined to start at 0° from a reference direction, and to increase for rotations in either clockwise (cw) or counterclockwise (ccw) orientation.</remarks>
     public Units.Angle Azimuth { get => new(m_azimuth); init => m_azimuth = value.Value; }
 
-    public CartesianCoordinate ToCartesianCoordinate(bool likeCompass = false)
+    public CartesianCoordinate ToCartesianCoordinate()
     {
-      var (x, y) = likeCompass ? ConvertPolarToCartesian2Ex(m_radius, m_azimuth) : ConvertPolarToCartesian2(m_radius, m_azimuth);
+      var (x, y) = ConvertPolarToCartesian2(m_radius, m_azimuth);
+
+      return new(x, y, 0, 0);
+    }
+
+    public CartesianCoordinate ToCartesianCoordinateEx()
+    {
+      var (x, y) = ConvertPolarToCartesian2Ex(m_radius, m_azimuth);
 
       return new(x, y, 0, 0);
     }

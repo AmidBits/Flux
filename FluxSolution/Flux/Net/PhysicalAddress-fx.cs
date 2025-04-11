@@ -20,12 +20,12 @@ namespace Flux
 
       if (secureOn is not null)
       {
-        magicPacket = System.Buffers.ArrayPool<byte>.Shared.Rent(108).AsSpan().Slice(0, 108);
+        magicPacket = System.Buffers.ArrayPool<byte>.Shared.Rent(108).AsSpan()[..108];
 
         secureOn.CopyTo(magicPacket.Slice(102, 6));
       }
       else // Magic packet without secureOn.
-        magicPacket = System.Buffers.ArrayPool<byte>.Shared.Rent(102).AsSpan().Slice(0, 102);
+        magicPacket = System.Buffers.ArrayPool<byte>.Shared.Rent(102).AsSpan()[..102];
 
       magicPacket[0] = 0xFF;
       magicPacket[1] = 0xFF;
@@ -39,9 +39,9 @@ namespace Flux
       addressBytes.CopyTo(magicPacket.Slice(6, 6)); // Copy once.
       addressBytes.CopyTo(magicPacket.Slice(12, 6)); // Copy twice.
 
-      magicPacket.Slice(6, 12).CopyTo(magicPacket.Slice(18)); // Copy the two to four.
-      magicPacket.Slice(6, 24).CopyTo(magicPacket.Slice(30)); // Copy the four to eight.
-      magicPacket.Slice(6, 48).CopyTo(magicPacket.Slice(54)); // Copy the eight to sixteen.
+      magicPacket.Slice(6, 12).CopyTo(magicPacket[18..]); // Copy the two to four.
+      magicPacket.Slice(6, 24).CopyTo(magicPacket[30..]); // Copy the four to eight.
+      magicPacket.Slice(6, 48).CopyTo(magicPacket[54..]); // Copy the eight to sixteen.
 
       return magicPacket;
     }

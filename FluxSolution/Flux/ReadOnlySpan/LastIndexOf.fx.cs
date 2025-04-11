@@ -52,7 +52,7 @@ namespace Flux
       equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
 
       for (var index = source.Length - target.Length; index >= 0; index--)
-        if (source.Slice(index).IsCommonPrefix(target, equalityComparer))
+        if (source[index..].IsCommonPrefix(target, equalityComparer))
           return index;
 
       return -1;

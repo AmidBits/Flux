@@ -24,8 +24,18 @@ namespace Flux.Units
 
     private readonly double m_value;
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="value"></param>
+    /// <param name="unit"></param>
     public Frequency(double value, FrequencyUnit unit = FrequencyUnit.Hertz) => m_value = ConvertFromUnit(unit, value);
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="prefix"></param>
+    /// <param name="hertz"></param>
     public Frequency(MetricPrefix prefix, double hertz) => m_value = prefix.ConvertTo(hertz, MetricPrefix.Unprefixed);
 
     /// <summary>
@@ -35,16 +45,24 @@ namespace Flux.Units
     /// <param name="wavelength"></param>
     public Frequency(Speed soundVelocity, Length wavelength) : this(soundVelocity.Value / wavelength.Value) { }
 
-    /// <summary>In digital signal processing (DSP), a normalized frequency is a ratio of a variable <see cref="Frequency"/> and a constant frequency associated with a system (e.g. sampling rate).</summary>
+    /// <summary>
+    /// <para>In digital signal processing (DSP), a normalized frequency is a ratio of a variable <see cref="Frequency"/> and a constant frequency associated with a system (e.g. sampling rate).</para>
+    /// </summary>
+    /// <param name="systemFrequency">E.g. sampling rate.</param>
+    /// <returns></returns>
     public Time ComputeNormalizedFrequency(double systemFrequency) => new(1.0 / m_value);
 
-    /// <summary>Creates a new Time instance representing the time it takes to complete one cycle at the frequency.</summary>
+    /// <summary>
+    /// <para>Creates a new Time instance representing the time it takes to complete one cycle at the frequency.</para>
+    /// </summary>
+    /// <returns></returns>
     public Time ComputePeriod() => new(1.0 / m_value);
 
     /// <summary>
     /// <para>Returns the angular velocity from the (rotational) frequency.</para>
     /// <para><see href="https://en.wikipedia.org/wiki/Revolutions_per_minute"/></para>
     /// </summary>
+    /// <returns></returns>
     public AngularFrequency ToAngularVelocity() => new(double.Tau * m_value);
 
     #region Static methods

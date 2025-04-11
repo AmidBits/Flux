@@ -1,5 +1,3 @@
-using System.Linq;
-
 //namespace Flux.Model.Dynamics.ForceGenerators
 //{
 //  public interface IForceGenerator

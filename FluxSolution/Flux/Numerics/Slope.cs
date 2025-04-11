@@ -6,7 +6,7 @@ namespace Flux.Numerics
   /// <para><seealso href="https://en.wikipedia.org/wiki/Grade_(slope)"/></para>
   /// <para><seealso href="https://en.wikipedia.org/wiki/Roof_pitch"/></para>
   /// </summary>
-  public record struct Slope
+  public readonly record struct Slope
     : System.IComparable, System.IComparable<Slope>, System.IFormattable, Units.IValueQuantifiable<double>
   {
     /// <summary>

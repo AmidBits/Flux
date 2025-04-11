@@ -9,7 +9,6 @@ namespace Flux.PlanetaryScience
   /// <para><see href="https://en.wikipedia.org/wiki/World_Geodetic_System"/></para>
   /// </summary>
   public record class ReferenceEllipsoid
-  //: IReferenceEllipsoid
   {
     public const double EarthMeanRadius = 6371008.8;
 

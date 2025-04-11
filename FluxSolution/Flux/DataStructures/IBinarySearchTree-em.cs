@@ -577,9 +577,7 @@ namespace Flux
         {
           leftToRight = !leftToRight;
 
-          var temp = currentLevel;
-          currentLevel = nextLevel;
-          nextLevel = temp;
+          (nextLevel, currentLevel) = (currentLevel, nextLevel);
         }
       }
     }

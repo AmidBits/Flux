@@ -2,7 +2,7 @@ namespace Flux
 {
   public static partial class Em
   {
-    public static System.Collections.Generic.Dictionary<char, char> LatinStrokes = new()
+    private static System.Collections.Generic.Dictionary<char, char> LatinStrokes = new()
     {
       { '\u023A', 'A' }, // Latin Capital Letter A with stroke
       { '\u0243', 'B' }, // Latin Capital Letter B with stroke

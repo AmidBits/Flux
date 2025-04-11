@@ -1,6 +1,4 @@
-using System.Linq;
-
-namespace Flux.IO.ChecksumGenerators.Special
+namespace Flux.IO.ChecksumGenerators.Specialized
 {
   /// <summary>Luhn is a specific purpose checksum algorithm.</summary>
   /// <see href="https://en.wikipedia.org/wiki/Luhn_algorithm"/>

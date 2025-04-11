@@ -42,7 +42,7 @@ namespace Flux.Text.PhoneticAlgorithm.Soundex
       if (sm.Length < MaxCodeLength)
         return sm.Append(MaxCodeLength - sm.Length, '0').ToString();
       if (sm.Length > MaxCodeLength)
-        return sm.AsReadOnlySpan().Slice(0, MaxCodeLength).ToString();
+        return sm.AsReadOnlySpan()[..MaxCodeLength].ToString();
 
       return sm.ToString();
     }

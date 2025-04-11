@@ -13,7 +13,7 @@ namespace Flux
 
       if (pivot)
         for (var i = 0; i < source.Length; i++)
-          array[i] = new T[] { source[i] };
+          array[i] = [source[i]];
       else
         array[0] = source;
 

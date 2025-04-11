@@ -24,7 +24,7 @@ namespace Flux
         if (kvp.Value is System.Collections.Generic.IList<TValue> list)
           switchable.Add(kvp.Key, list);
         else
-          switchable.Add(kvp.Key, new TValue[] { kvp.Value });
+          switchable.Add(kvp.Key, [kvp.Value]);
       }
 
       return switchable;

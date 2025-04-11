@@ -49,9 +49,9 @@ namespace Flux
         where TSource : System.Numerics.IBinaryInteger<TSource>
         where TTarget : System.Numerics.IBinaryInteger<TTarget>
       {
-        var targetLength = (source.Length * sourceBitSize).DivModEnveloped(targetBitSize);
+        var (quotientEnveloped, _) = (source.Length * sourceBitSize).DivModEnveloped(targetBitSize);
 
-        target = new TTarget[targetLength.quotientEnveloped];
+        target = new TTarget[quotientEnveloped];
 
         var sourceIndex = 0;
         var targetIndex = 0;
@@ -82,7 +82,7 @@ namespace Flux
       {
         using var mss = new System.IO.MemoryStream(source);
         var targetLength = (source.Length * 8).DivModEnveloped(targetBitSize);
-        target = new byte[targetLength.quotientEnveloped];
+        target = new byte[targetLength.QuotientEnveloped];
         using var mst = new System.IO.MemoryStream(target);
 
         EncodeToIndices(mss, targetBitSize, mst);

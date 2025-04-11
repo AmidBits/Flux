@@ -2,9 +2,11 @@ namespace Flux
 {
   public static partial class Fx
   {
-    /// <summary>Creates an <see cref="System.Xml.Linq.XNode"/> from an existing <see cref="System.Xml.XmlNode"/>.</summary>
+    /// <summary>Creates a new <see cref="System.Xml.Linq.XNode"/> from an existing <see cref="System.Xml.XmlNode"/>.</summary>
     /// <param name="source">The source <see cref="System.Xml.XmlNode"/>.</param>
-    /// <returns>An <see cref="System.Xml.Linq.XNode"/> containing the XML from an <see cref="System.Xml.XmlNode"/>.</returns>
+    /// <returns>A new <see cref="System.Xml.Linq.XNode"/> containing the XML from a <see cref="System.Xml.XmlNode"/>.</returns>
+    /// <exception cref="System.ArgumentNullException"></exception>
+    /// <exception cref="System.NullReferenceException"></exception>
     public static System.Xml.Linq.XNode ToXNode(this System.Xml.XmlNode source)
     {
       System.ArgumentNullException.ThrowIfNull(source);

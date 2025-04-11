@@ -69,10 +69,10 @@ namespace Flux.CoordinateSystems
     public Units.Length Altitude { get => new(m_altitude); init => m_altitude = value.Value; }
 
     /// <summary>The latitude component of the geographic position. Range from -90.0 (southern hemisphere) to 90.0 degrees (northern hemisphere).</summary>
-    public PlanetaryScience.Latitude Latitude { get => new(m_latitude); init => m_latitude = value.Value; }
+    public PlanetaryScience.Latitude Latitude { get => new(m_latitude, Units.AngleUnit.Radian); init => m_latitude = value.Value; }
 
     /// <summary>The longitude component of the geographic position. Range from -180.0 (western half) to 180.0 degrees (eastern half).</summary>
-    public PlanetaryScience.Longitude Longitude { get => new(m_longitude); init => m_longitude = value.Value; }
+    public PlanetaryScience.Longitude Longitude { get => new(m_longitude, Units.AngleUnit.Radian); init => m_longitude = value.Value; }
 
     /// <summary>The diametrical opposite of the <see cref="GeographicCoordinate"/>, i.e. the opposite side of Earth's surface. This is a plain mathematical antipode.</summary>
     public GeographicCoordinate Antipode
@@ -82,15 +82,15 @@ namespace Flux.CoordinateSystems
         m_altitude
       );
 
-    /// <summary>Creates a new <see cref="CoordinateSystems.SphericalCoordinate"/> from the <see cref="GeographicCoordinate"/>.</summary>
-    public CoordinateSystems.SphericalCoordinate ToSphericalCoordinate()
+    /// <summary>Creates a new <see cref="SphericalCoordinate"/> from the <see cref="GeographicCoordinate"/>.</summary>
+    public SphericalCoordinate ToSphericalCoordinate()
     // Translates the geographic coordinate to spherical coordinate transparently. I cannot recall the reason for the System.Math.PI involvement (see remarks).
     {
       var (lat, lon, alt) = this;
 
       return new(
         alt,
-        lat + (double.Pi / 2),
+        lat + (double.Pi / 2), // Add 90 degrees to convert from [-90..+90] (elevation, lat/lon) to [+0..+180] (inclination).
         lon
       );
     }

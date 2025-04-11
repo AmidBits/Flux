@@ -134,9 +134,8 @@ namespace Flux
         else
         {
           var floor = double.Floor(log10);
-          var iands = System.Enum.GetValues<Units.MetricPrefix>().GetInfimumAndSupremum(mp => (int)mp, int.CreateChecked(floor), true);
 
-          prefix = iands.TowardZeroItem;
+          prefix = System.Enum.GetValues<Units.MetricPrefix>().GetInfimumAndSupremum(mp => (int)mp, int.CreateChecked(floor), true).TowardZeroItem;
         }
 
         var exp = (int)prefix;

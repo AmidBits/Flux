@@ -1,4 +1,4 @@
-﻿namespace Flux.Dsp
+﻿namespace Flux.Dsp.AudioChannels
 {
   /// <summary>Audio channel right height 2.</summary>
   public interface IAudioChannelHeightBackRight<TSelf>

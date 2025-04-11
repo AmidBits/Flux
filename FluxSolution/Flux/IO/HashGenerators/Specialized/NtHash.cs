@@ -1,4 +1,4 @@
-namespace Flux.IO.HashGenerators.Special
+namespace Flux.IO.HashGenerators.Specialized
 {
   /// <summary>An NT hash algorithm, which is basically MD4. This implementation is based on RFC1320.</summary>
   /// <remarks>This is the algorithm used for NTLM (a.k.a. NT hash).</remarks>

@@ -1,5 +1,3 @@
-//using System.Runtime.Intrinsics;
-
 namespace Flux
 {
   public static partial class Intrinsics

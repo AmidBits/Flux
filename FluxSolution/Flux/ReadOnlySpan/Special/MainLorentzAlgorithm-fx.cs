@@ -46,8 +46,8 @@
 
         var nu = n / 2;
         var nv = n - nu;
-        var u = s.Substring(0, nu);
-        var v = s.Substring(nu);
+        var u = s[..nu];
+        var v = s[nu..];
         var ru = string.Concat(u.Reverse());
         var rv = string.Concat(v.Reverse());
 

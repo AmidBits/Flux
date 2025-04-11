@@ -18,7 +18,7 @@ namespace Flux
         var index = vm.Index;
         var length = vm.Length;
 
-        sm.Append(source.Slice(lastEnd, index - lastEnd)); // Append any in-between characters.
+        sm.Append(source[lastEnd..index]); // Append any in-between characters.
 
         sm.Append(new System.Text.Rune(int.Parse(source.Slice(index + 2, length - 2), System.Globalization.NumberStyles.HexNumber)).ToString()); // Append the rune string.
 

@@ -20,12 +20,12 @@ namespace Flux.Model.Knapsack
 
       NumberOfDistinctItems = numberOfDistinctItems;
 
-      if (weights is null) throw new System.ArgumentNullException(nameof(weights));
+      System.ArgumentNullException.ThrowIfNull(weights);
       if (weights.Length <= 0 || weights.Length < NumberOfDistinctItems) throw new System.ArgumentOutOfRangeException(nameof(weights));
 
       Weights = weights;
 
-      if (values is null) throw new System.ArgumentNullException(nameof(values));
+      System.ArgumentNullException.ThrowIfNull(values);
       if (values.Length <= 0 || values.Length < NumberOfDistinctItems) throw new System.ArgumentOutOfRangeException(nameof(values));
 
       Values = values;

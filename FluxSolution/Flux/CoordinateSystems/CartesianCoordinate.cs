@@ -88,11 +88,24 @@ namespace Flux.CoordinateSystems
     {
       var (x, y, z) = this;
 
+      var (radius, azimuth, height) = ConvertCartesian3ToCylindrical(x, y, z);
+
+      return new(radius, azimuth, height);
+    }
+
+    /// <summary>Creates a new <see cref="Geometry.HexCoordinate{TSelf}"/> from a <see cref="Geometry.CoordinateSystems.CartesianCoordinate"/>.</summary>
+    public static HexCoordinate<TResult> ToHexCoordinate<TResult>(CartesianCoordinate source, UniversalRounding mode, out TResult q, out TResult r, out TResult s)
+      where TResult : System.Numerics.INumber<TResult>
+    {
+      var (x, y, z) = source;
+
+      HexCoordinate.Round(x, y, z, mode, out q, out r, out s);
+
       return new(
-            double.Sqrt(x * x + y * y), Units.LengthUnit.Meter,
-            double.Atan2(y, x) % double.Pi, Units.AngleUnit.Radian,
-            z, Units.LengthUnit.Meter
-          );
+        q,
+        r,
+        s
+      );
     }
 
     public System.Drawing.Point ToPoint(UniversalRounding mode) => new(System.Convert.ToInt32(m_v[0].RoundUniversal(mode)), System.Convert.ToInt32(m_v[1].RoundUniversal(mode)));
@@ -100,11 +113,21 @@ namespace Flux.CoordinateSystems
     public System.Drawing.PointF ToPointF() => new((float)m_v[0], (float)m_v[1]);
 
     /// <summary>Creates a new <see cref="PolarCoordinate"/> from a <see cref="CartesianCoordinate"/> and its (X, Y) components.</summary>
-    public PolarCoordinate ToPolarCoordinate(bool likeCompass = false)
+    public PolarCoordinate ToPolarCoordinate()
     {
       var (x, y) = this;
 
-      var (radius, angle) = likeCompass ? PolarCoordinate.ConvertCartesian2ToPolarEx(x, y) : PolarCoordinate.ConvertCartesian2ToPolar(x, y);
+      var (radius, angle) = PolarCoordinate.ConvertCartesian2ToPolar(x, y);
+
+      return new(radius, angle);
+    }
+
+    /// <summary>Creates a new <see cref="PolarCoordinate"/> from a <see cref="CartesianCoordinate"/> and its (X, Y) components.</summary>
+    public PolarCoordinate ToPolarCoordinateEx()
+    {
+      var (x, y) = this;
+
+      var (radius, angle) = PolarCoordinate.ConvertCartesian2ToPolarEx(x, y);
 
       return new(radius, angle);
     }
@@ -114,13 +137,9 @@ namespace Flux.CoordinateSystems
     {
       var (x, y, z) = this;
 
-      var x2y2 = x * x + y * y;
+      var (radius, inclination, azimuth) = ConvertCartesian3ToSpherical(x, y, z);
 
-      return new(
-        double.Sqrt(x2y2 + z * z), Units.LengthUnit.Meter,
-        double.Atan2(double.Sqrt(x2y2), z), Units.AngleUnit.Radian,
-        double.Atan2(y, x), Units.AngleUnit.Radian
-      );
+      return new(radius, inclination, azimuth);
     }
 
     /// <summary>Creates a new <see cref="System.Numerics.Vector2"/> from a <see cref="CoordinateSystems.CartesianCoordinate"/>.</summary>
@@ -169,6 +188,31 @@ namespace Flux.CoordinateSystems
     public System.Runtime.Intrinsics.Vector256<double> ToVector256D3(double w = 0) => System.Runtime.Intrinsics.Vector256.Create(X.Value, Y.Value, Z.Value, w);
 
     #region Static methods
+
+    #region Conversion methods
+
+    /// <summary>Creates a new <see cref="CylindricalCoordinate"/> from a <see cref="CartesianCoordinate"/> and its (X, Y, Z) components.</summary>
+    public static (double radius, double azimuth, double height) ConvertCartesian3ToCylindrical(double x, double y, double z)
+      => (
+        double.Sqrt(x * x + y * y),
+        double.Atan2(y, x) % double.Pi,
+        z
+      );
+
+
+    /// <summary>Creates a new <see cref="SphericalCoordinate"/> from a <see cref="CartesianCoordinate"/> and its (X, Y, Z) components.</summary>
+    public static (double radius, double inclination, double azimuth) ConvertCartesian3ToSpherical(double x, double y, double z)
+    {
+      var x2y2 = x * x + y * y;
+
+      return (
+        double.Sqrt(x2y2 + z * z),
+        double.Atan2(double.Sqrt(x2y2), z),
+        double.Atan2(y, x)
+      );
+    }
+
+    #endregion // Conversion methods
 
     /// <summary>
     /// <para>Converts cartesian 2D (<paramref name="x"/>, <paramref name="y"/>) coordinates to a linear index of a grid with the <paramref name="width"/> (the length of the x-axis).</para>

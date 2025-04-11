@@ -1,4 +1,4 @@
-﻿namespace Flux.Dsp
+﻿namespace Flux.Dsp.AudioChannels
 {
   /// <summary>Audio channel front left.</summary>
   public interface IAudioChannelFrontLeft<TSelf>

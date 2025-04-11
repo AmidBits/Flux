@@ -21,7 +21,7 @@ namespace Flux
 
       foreach (var vm in evm)
       {
-        sm.Append(source.Slice(lastEnd, vm.Index - lastEnd));
+        sm.Append(source[lastEnd..vm.Index]);
 
         var integer
           = int.TryParse(source.Slice(vm.Index + 2, vm.Length - 3), System.Globalization.NumberStyles.Integer, System.Globalization.CultureInfo.InvariantCulture, out var dec)

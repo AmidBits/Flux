@@ -110,7 +110,7 @@ namespace Flux
           if (listBytes.Count > 0)
             ParseBytes(ref sm);
 
-          sm.Append(source.Slice(lastEnd, vm.Index - lastEnd));
+          sm.Append(source[lastEnd..vm.Index]);
         }
 
         var b = int.Parse(source.Slice(vm.Index + 1, vm.Length - 1), System.Globalization.NumberStyles.HexNumber);
@@ -124,7 +124,7 @@ namespace Flux
         ParseBytes(ref sm);
 
       if (lastEnd < source.Length)
-        sm.Append(source.Slice(lastEnd));
+        sm.Append(source[lastEnd..]);
 
       return sm;
 
@@ -134,7 +134,7 @@ namespace Flux
 
         for (var index = 0; index < spanBytes.Length;)
         {
-          System.Text.Rune.DecodeFromUtf8(spanBytes.Slice(index), out var rune, out var bytesConsumed);
+          System.Text.Rune.DecodeFromUtf8(spanBytes[index..], out var rune, out var bytesConsumed);
 
           sm.Append(rune.ToString());
 

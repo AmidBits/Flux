@@ -6,11 +6,11 @@ namespace Dsp
   [TestClass]
   public class WaveGenerator
   {
-    private readonly Flux.Dsp.WaveGenerator.IMonoWaveUiGeneratable m_pulseWave = new Flux.Dsp.WaveGenerator.PulseWave();
-    private readonly Flux.Dsp.WaveGenerator.IMonoWaveUiGeneratable m_sawtoothWave = new Flux.Dsp.WaveGenerator.SawWave();
-    private readonly Flux.Dsp.WaveGenerator.IMonoWaveUiGeneratable m_sineWave = new Flux.Dsp.WaveGenerator.SineWave();
-    private readonly Flux.Dsp.WaveGenerator.IMonoWaveUiGeneratable m_squareWave = new Flux.Dsp.WaveGenerator.SquareWave();
-    private readonly Flux.Dsp.WaveGenerator.IMonoWaveUiGeneratable m_triangleWave = new Flux.Dsp.WaveGenerator.TriangleWave();
+    private readonly Flux.Dsp.WaveGenerators.IMonoWaveUiGeneratable m_pulseWave = new Flux.Dsp.WaveGenerators.PulseWave();
+    private readonly Flux.Dsp.WaveGenerators.IMonoWaveUiGeneratable m_sawtoothWave = new Flux.Dsp.WaveGenerators.SawWave();
+    private readonly Flux.Dsp.WaveGenerators.IMonoWaveUiGeneratable m_sineWave = new Flux.Dsp.WaveGenerators.SineWave();
+    private readonly Flux.Dsp.WaveGenerators.IMonoWaveUiGeneratable m_squareWave = new Flux.Dsp.WaveGenerators.SquareWave();
+    private readonly Flux.Dsp.WaveGenerators.IMonoWaveUiGeneratable m_triangleWave = new Flux.Dsp.WaveGenerators.TriangleWave();
 
     [TestMethod]
     public void PulseWave()

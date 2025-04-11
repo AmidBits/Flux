@@ -2,8 +2,8 @@
 {
   public sealed class Amb
   {
-    private readonly System.Collections.Generic.List<IChoices> m_choices = new();
-    private readonly System.Collections.Generic.List<IConstraint> m_constraints = new();
+    private readonly System.Collections.Generic.List<IChoices> m_choices = [];
+    private readonly System.Collections.Generic.List<IConstraint> m_constraints = [];
 
     public IValue<T> Choose<T>(params T[] choices)
     {

@@ -71,27 +71,9 @@ namespace Flux.CoordinateSystems
     /// <summary>Creates new <see cref="CartesianCoordinate"/> from the <see cref="SphericalCoordinate"/>.</summary>
     public CartesianCoordinate ToCartesianCoordinate()
     {
-      var (si, ci) = double.SinCos(m_inclination);
-      var (sa, ca) = double.SinCos(m_azimuth);
+      var (x, y, z) = ConvertSphericalByInclinationToCartesian3(m_inclination, m_azimuth, m_radius, m_radius, m_radius);
 
-      return new(
-        m_radius * si * ca,
-        m_radius * si * sa,
-        m_radius * ci
-      );
-    }
-
-    /// <summary>Creates cartesian 3D coordinates from the <see cref="SphericalCoordinate"/>.</summary>
-    public (double x, double y, double z) ToCartesianCoordinate3()
-    {
-      var (si, ci) = double.SinCos(m_inclination);
-      var (sa, ca) = double.SinCos(m_azimuth);
-
-      return (
-        m_radius * si * ca,
-        m_radius * si * sa,
-        m_radius * ci
-      );
+      return new(x, y, z);
     }
 
     /// <summary>Creates a new <see cref="CylindricalCoordinate"/> from the <see cref="SphericalCoordinate"/>.</summary>
@@ -119,7 +101,7 @@ namespace Flux.CoordinateSystems
     /// <remarks>All angles in radians.</remarks>
     public System.Numerics.Vector3 ToVector3()
     {
-      var (x, y, z) = ToCartesianCoordinate3();
+      var (x, y, z) = ConvertSphericalByInclinationToCartesian3(m_inclination, m_azimuth, m_radius, m_radius, m_radius);
 
       return new((float)x, (float)y, (float)z);
     }
@@ -138,15 +120,15 @@ namespace Flux.CoordinateSystems
     /// <param name="radiusB"></param>
     /// <param name="radiusC"></param>
     /// <returns></returns>
-    public static (double x, double y, double z) ConvertSphericalByInclinationToCartesianCoordinate3(double inclination, double azimuth, double radiusA, double radiusB, double radiusC)
+    public static (double x, double y, double z) ConvertSphericalByInclinationToCartesian3(double inclination, double azimuth, double radiusA, double radiusB, double radiusC)
     {
-      var (sp, cp) = double.SinCos(inclination);
+      var (si, ci) = double.SinCos(inclination);
       var (sa, ca) = double.SinCos(azimuth);
 
       return (
-        radiusA * sp * ca,
-        radiusB * sp * sa,
-        radiusC * cp
+        radiusA * si * ca,
+        radiusB * si * sa,
+        radiusC * ci
       );
     }
 
@@ -160,15 +142,15 @@ namespace Flux.CoordinateSystems
     /// <param name="radiusB"></param>
     /// <param name="radiusC"></param>
     /// <returns></returns>
-    public static (double x, double y, double z) ConvertSphericalByElevationToCartesianCoordinate3(double latitude, double longitude, double radiusA, double radiusB, double radiusC)
+    public static (double x, double y, double z) ConvertSphericalByElevationToCartesian3(double latitude, double longitude, double radiusA, double radiusB, double radiusC)
     {
-      var (sp, cp) = double.SinCos(latitude);
-      var (sa, ca) = double.SinCos(longitude);
+      var (slat, clat) = double.SinCos(latitude);
+      var (slon, clon) = double.SinCos(longitude);
 
       return (
-        radiusA * cp * ca,
-        radiusB * cp * sa,
-        radiusC * sp
+        radiusA * clat * clon,
+        radiusB * clat * slon,
+        radiusC * slat
       );
     }
 

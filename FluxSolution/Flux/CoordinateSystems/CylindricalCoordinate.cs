@@ -67,24 +67,24 @@ namespace Flux.CoordinateSystems
 
     public CartesianCoordinate ToCartesianCoordinate()
     {
-      var (x, y, z) = ToCartesianCoordinate3();
+      var (x, y, z) = ConvertCylindricalToCartesian3(m_radius, m_azimuth, m_height);
 
-      return new(x, y, z, 0);
+      return new(x, y, z);
     }
 
-    /// <summary>Creates cartesian 3D coordinates from the <see cref="CylindricalCoordinate"/>.</summary>
-    /// <remarks>All angles in radians.</remarks>
-    public (double x, double y, double z) ToCartesianCoordinate3()
-    {
-      var (sin, cos) = double.SinCos(m_azimuth);
-      var r = m_radius;
+    ///// <summary>Creates cartesian 3D coordinates from the <see cref="CylindricalCoordinate"/>.</summary>
+    ///// <remarks>All angles in radians.</remarks>
+    //public (double x, double y, double z) ToCartesianCoordinate3()
+    //{
+    //  var (sin, cos) = double.SinCos(m_azimuth);
+    //  var r = m_radius;
 
-      return (
-        r * cos,
-        r * sin,
-        m_height
-      );
-    }
+    //  return (
+    //    r * cos,
+    //    r * sin,
+    //    m_height
+    //  );
+    //}
 
     /// <summary>Creates a new <see cref="PolarCoordinate"/> from the <see cref="CylindricalCoordinate"/> by removing the third component "height".</summary>
     /// <remarks>All angles in radians.</remarks>
@@ -115,12 +115,30 @@ namespace Flux.CoordinateSystems
     /// <remarks>All angles in radians.</remarks>
     public System.Numerics.Vector3 ToVector3()
     {
-      var (x, y, z) = ToCartesianCoordinate3();
+      var (x, y, z) = ConvertCylindricalToCartesian3(m_radius, m_azimuth, m_height);
 
       return new((float)x, (float)y, (float)z);
     }
 
     #region Static methods
+
+    #region Conversion methods
+
+    /// <summary>Creates cartesian 3D coordinates from the <see cref="CylindricalCoordinate"/>.</summary>
+    /// <remarks>All angles in radians.</remarks>
+    public static (double x, double y, double z) ConvertCylindricalToCartesian3(double radius, double azimuth, double height)
+    {
+      var (sin, cos) = double.SinCos(azimuth);
+      var r = radius;
+
+      return (
+        r * cos,
+        r * sin,
+        height
+      );
+    }
+
+    #endregion // Conversion methods
 
     //public static CylindricalCoordinate FromCartesianCoordinates(double x, double y, double z)
     //{

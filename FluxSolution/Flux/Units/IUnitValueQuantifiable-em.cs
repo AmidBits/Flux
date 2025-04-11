@@ -28,7 +28,7 @@ namespace Flux
       if (!preferPlural) return source; // Do not want plural.
 
       if (source.IndexOf("Per", StringComparison.InvariantCulture) is var index && index > 0)
-        return ConvertUnitNameToPlural(source.Substring(0, index)) + source.Substring(index); // Replace the (singular assumed) unit before the "Per" with a plural version.
+        return ConvertUnitNameToPlural(source[..index]) + source[index..]; // Replace the (singular assumed) unit before the "Per" with a plural version.
 
       return ConvertUnitNameToPlural(source);
 
@@ -46,17 +46,17 @@ namespace Flux
         )
           return "Feet";
 
-        if (unitName.EndsWith("x")
+        if (unitName.EndsWith('x')
           || unitName.Equals("Inch")
         )
           return unitName + "es";
 
         if (
-          unitName.EndsWith("y")
+          unitName.EndsWith('y')
         )
           return unitName + "ies";
 
-        if (!unitName.EndsWith("s"))
+        if (!unitName.EndsWith('s'))
           return unitName + "s";
 
         return unitName;

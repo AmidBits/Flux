@@ -16,10 +16,10 @@ namespace Flux
 
       if (e.MoveNext())
       {
-        ij = new System.Collections.Generic.HashSet<T>(e.Current);
+        ij = new(e.Current);
 
         while (e.MoveNext())
-          ij = new System.Collections.Generic.HashSet<T>(ij.Join(e.Current, outer => outer, inner => inner, (outer, inner) => inner));
+          ij = new(ij.Join(e.Current, outer => outer, inner => inner, (outer, inner) => inner));
       }
 
       return ij;

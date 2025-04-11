@@ -16,6 +16,7 @@ using System.Xml.XPath;
 using Flux;
 using Flux.DataStructures.UnionFind;
 using Flux.Numerics;
+using Flux.Permutations;
 using Flux.Probabilities;
 using Flux.Text;
 using Flux.Units;
@@ -115,8 +116,8 @@ namespace ConsoleApp
 
     private static void TestDspWithPlot()
     {
-      var wg = new Flux.Dsp.WaveGenerator.TriangleWave();
-      var wp = new Flux.Dsp.WaveProcessor.MonoQuadratic(Flux.Dsp.WaveProcessor.MonoQuadraticMode.Symmetric, .75);
+      var wg = new Flux.Dsp.WaveGenerators.TriangleWave();
+      var wp = new Flux.Dsp.WaveProcessors.MonoQuadratic(Flux.Dsp.WaveProcessors.MonoQuadraticMode.Symmetric, .75);
 
       var listx = new System.Collections.Generic.List<double>();
       var lists = new System.Collections.Generic.List<double>();
@@ -206,6 +207,17 @@ namespace ConsoleApp
     {
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
+
+      Zamplez.RunCoordinateSystems(); return;
+
+      var symbols = new int[] { 1, 2, 3 };
+
+      var permutations = symbols.PermutationsKnuthsAlgorithmL().Select(p => p.ToArray()).ToArray();
+
+      //permutations.Order();
+
+      foreach (var p in permutations)
+        System.Console.WriteLine(string.Join(", ", p));
 
       //var s = "-41 ° 26 '46″ N79 ° 58 ′ 56 ″W";
       //s = "a 123b45c";

@@ -144,7 +144,7 @@ namespace Flux
     /// <returns></returns>
     public static (double Chroma2, double Hue2) ComputeSecondaryChromaAndHue(this System.Drawing.Color source)
     {
-      var (a, r, g, b) = source.ToArgbUnitIntervals();
+      var (_, r, g, b) = source.ToArgbUnitIntervals();
 
       var alpha = (2 * r - g - b) / 2;
       var beta = (double.Sqrt(3) / 2) * (g - b);

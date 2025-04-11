@@ -18,7 +18,7 @@ namespace Flux
     /// <param name="unicodeCategoryMajor"></param>
     /// <returns></returns>
     public static Unicode.UnicodeCategoryMajor ParseUnicodeCategoryMajor(this char unicodeCategoryMajor)
-      => (Unicode.UnicodeCategoryMajor)System.Enum.Parse(typeof(Unicode.UnicodeCategoryMajor), unicodeCategoryMajor.ToString(), true);
+      => System.Enum.Parse<Unicode.UnicodeCategoryMajor>(unicodeCategoryMajor.ToString(), true);
 
     /// <summary>
     /// <para>Attemps to parse a <paramref name="unicodeCategoryMajor"/> character into <paramref name="result"/> as a <see cref="UnicodeCategoryMajor"/> enum value.</para>

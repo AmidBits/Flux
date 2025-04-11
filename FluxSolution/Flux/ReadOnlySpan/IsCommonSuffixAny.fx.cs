@@ -24,7 +24,7 @@ namespace Flux
     public static bool IsCommonSuffixAny(this System.ReadOnlySpan<char> source, System.Collections.Generic.IEqualityComparer<char>? equalityComparer, int maxLength, params string[] values)
     {
       for (var valuesIndex = 0; valuesIndex < values.Length; valuesIndex++)
-        if (values[valuesIndex] is var value && source.IsCommonSuffix(value.AsSpan().Slice(0, int.Min(value.Length, maxLength)), equalityComparer))
+        if (values[valuesIndex] is var value && source.IsCommonSuffix(value.AsSpan()[..int.Min(value.Length, maxLength)], equalityComparer))
           return true;
 
       return false;

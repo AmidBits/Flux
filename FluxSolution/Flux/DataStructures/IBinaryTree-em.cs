@@ -561,9 +561,8 @@ namespace Flux
         if (currentLevel.Count == 0)
         {
           leftToRight = !leftToRight;
-          var temp = currentLevel;
-          currentLevel = nextLevel;
-          nextLevel = temp;
+
+          (nextLevel, currentLevel) = (currentLevel, nextLevel);
         }
       }
     }

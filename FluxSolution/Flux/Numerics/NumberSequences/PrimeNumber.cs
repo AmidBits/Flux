@@ -145,8 +145,8 @@ namespace Flux.Numerics
     {
       var two = TValue.CreateChecked(2);
       var three = TValue.CreateChecked(3);
-      var four = TValue.CreateChecked(4);
-      var five = TValue.CreateChecked(5);
+      //var four = TValue.CreateChecked(4);
+      //var five = TValue.CreateChecked(5);
       var six = TValue.CreateChecked(6);
 
       var (quotient, remainder) = TValue.DivRem(value, six);

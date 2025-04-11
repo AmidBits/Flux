@@ -7,7 +7,7 @@
     : System.Attribute
   {
 
-    private string m_dependencyMemberName;
+    private readonly string m_dependencyMemberName;
 
     public DependsOnAttribute(string dependencyMemberName) => m_dependencyMemberName = dependencyMemberName;
 

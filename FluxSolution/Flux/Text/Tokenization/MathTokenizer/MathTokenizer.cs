@@ -256,7 +256,7 @@ namespace Flux.Text.Tokenization
     /// <summary>Creates a new list of <see cref="MathToken"/> from <paramref name="tokens"/>, modifying by merging where unary (not preceeded by a <see cref="MathTokenNumber"/>) negative <see cref="MathTokenOperator"/> are merged with the following <see cref="MathTokenNumber"/></summary>
     /// <param name="tokens"></param>
     /// <returns></returns>
-    private static System.Collections.Generic.List<MathToken> MergeUnaryNegativeOperator(System.Collections.Generic.IList<MathToken> tokens)
+    private static System.Collections.Generic.List<MathToken> MergeUnaryNegativeOperator(System.Collections.Generic.List<MathToken> tokens)
     {
       var list = new System.Collections.Generic.List<MathToken>();
 
