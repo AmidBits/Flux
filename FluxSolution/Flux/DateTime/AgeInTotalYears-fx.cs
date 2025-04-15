@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class DateTimes
   {
     /// <summary>
     /// <para>Determines the age in years (with a decimal point) between the <paramref name="source"/> (e.g. a birth) and the <paramref name="target"/> (e.g. a birthday). The fractional portion of the resulting age-in-total-years is the percentage of the number of days that have passed since the last "birthday" toward the "birthday" that has not yet occured.</para>

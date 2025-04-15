@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class ReadOnlySpans
   {
     /// <summary>
     /// <para>Returns whether <paramref name="source"/> ends with <paramref name="count"/> of any <paramref name="values"/>. Uses the <paramref name="equalityComparer"/>, or default if null.</para>

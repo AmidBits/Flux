@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class FxType
+  public static partial class Types
   {
     /// <summary>
     /// <para>Get the C# keyword alias of basic .NET built-in types.</para>

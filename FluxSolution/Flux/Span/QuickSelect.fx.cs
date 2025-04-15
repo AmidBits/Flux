@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class Spans
   {
     /// <summary>Find the Kth smallest element in an unordered list, between left and right index.</summary>
     /// <see href="https://en.wikipedia.org/wiki/Quickselect"/>

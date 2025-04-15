@@ -11,7 +11,7 @@ namespace Flux
     /// <returns></returns>
     public static System.Collections.Generic.IDictionary<System.Reflection.MemberInfo, object?> GetMemberDictionary(this System.Type source, object? instanceOrStatic = null, System.Reflection.BindingFlags bindingFlags = System.Reflection.BindingFlags.FlattenHierarchy | System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static)
     {
-      var members = new System.Collections.Generic.Dictionary<System.Reflection.MemberInfo, object?>();
+      var members = new DataStructures.OrderedDictionary<System.Reflection.MemberInfo, object?>();
 
       foreach (var mi in source.GetMembers(bindingFlags))
       {

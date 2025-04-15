@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class ReadOnlySpans
   {
     /// <summary>Indicates whether the source is wrapped in the specified characters. E.g. brackets, or parenthesis.</summary>
     public static bool IsWrapped<T>(this System.ReadOnlySpan<T> source, T left, T right, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)

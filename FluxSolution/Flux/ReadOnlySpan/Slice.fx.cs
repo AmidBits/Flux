@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class ReadOnlySpans
   {
     /// <summary>
     /// <para>Creates a new span sliced using <paramref name="slice"/>.</para>

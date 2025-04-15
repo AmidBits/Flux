@@ -13,7 +13,7 @@ namespace Flux
     {
       System.ArgumentNullException.ThrowIfNull(source);
 
-      if (GetFileInfos(directory) is var fileInfos && source.TryLocateCulture(out var dt, fileInfos.Select(fi => fi.FullName)))
+      if (GetFileInfos(directory) is var fileInfos && source.TryLocateCulture(out var dt, fileInfos.Select(fi => fi.FullName).ToArray()))
       {
         fileInfo = fileInfos.First(fi => string.Equals(fi.FullName, dt.Rows[0][0]));
         return true;

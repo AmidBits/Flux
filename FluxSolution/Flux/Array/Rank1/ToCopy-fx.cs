@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class Arrays
   {
     /// <summary>
     /// <para>Creates a new array with <paramref name="count"/> elements from <paramref name="source"/> starting at <paramref name="index"/>. Use <paramref name="preCount"/> and <paramref name="postCount"/> arguments to add surrounding element space in the new array.</para>

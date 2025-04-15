@@ -1,6 +1,6 @@
 //namespace Flux
 //{
-//  public static partial class Fx
+//  public static partial class Spans
 //  {
 //    ///// <summary>
 //    ///// <para>Reverses all elements in the range {<paramref name="index"/>, <paramref name="count"/>}.</para>

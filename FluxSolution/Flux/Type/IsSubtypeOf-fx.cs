@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class FxType
+  public static partial class Types
   {
     /// <summary>
     /// <para>Determines whether the <paramref name="source"/> is a subtype of <paramref name="supertype"/>.</para>

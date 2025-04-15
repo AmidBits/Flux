@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class Chars
   {
     /// <summary>
     /// <para>Folds runes representing characters above ASCII as a reasonable ASCII equivalence. Only characters from certain blocks are converted.</para>

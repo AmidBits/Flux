@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class ReadOnlySpans
   {
     /// <summary>
     /// <para>Indicates whether the <paramref name="source"/> and <paramref name="target"/> are isomorphic. Two sequences are isomorphic if the elements (equal elements must be replaced with the same replacements, in the same positions) in <paramref name="source"/> can be replaced to get the same in <paramref name="target"/>. Uses the specified <paramref name="equalityComparer"/>, or default if null.</para>

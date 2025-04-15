@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class Arrays
   {
     /// <summary>
     /// <para>Swap two values, [<paramref name="a0"/>, <paramref name="a1"/>] and [<paramref name="b0"/>, <paramref name="b1"/>], in <paramref name="source"/>.</para>

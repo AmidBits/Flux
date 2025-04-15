@@ -208,6 +208,52 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
+      //var s = string.Concat(Flux.Fx.AllIpa);
+      //System.Console.WriteLine(s);
+      //s = string.Join(", ", Flux.Fx.AllIpa.Select(s => '"' + string.Join(string.Empty, s.ToCharArray().Select(c => c.CsEscapeEncode(CsEscapeOption.UTF16))) + '"'));
+      //System.Console.WriteLine(s);
+
+      //var text = "atɔʁteatʁavɛʁ";
+
+      //System.Console.WriteLine();
+      //System.Console.WriteLine(string.Join(", ", text.ToCharArray().Select(c => '"' + string.Join(string.Empty, c.CsEscapeEncode(CsEscapeOption.UTF16)) + '"')));
+
+      ////text = text.Replace("'", "ˈ");
+
+      //while (text.Length > 0)
+      //{
+      //  var syms = string.Join(", ", text.ToCharArray().Select(c => '"' + string.Join(string.Empty, c.CsEscapeEncode(CsEscapeOption.UTF16)) + '"'));
+      //  var ipaFound = string.Empty;
+
+      //  foreach (var ipa in Flux.Fx.AllIpa)
+      //  {
+      //    var sipa = string.Join(", ", ipa.ToCharArray().Select(c => '"' + string.Join(string.Empty, c.CsEscapeEncode(CsEscapeOption.UTF16)) + '"'));
+      //    if (text.AsSpan().IsCommonPrefix(ipa))
+      //    {
+      //      ipaFound = ipa;
+
+      //      break;
+      //    }
+      //  }
+
+      //  if (ipaFound.Length > 0)
+      //  {
+      //    System.Console.WriteLine($"IPA: {ipaFound} ({ipaFound.Length})");
+
+      //    text = text.Substring(ipaFound.Length);
+      //  }
+      //  else
+      //  {
+      //    System.Console.WriteLine($"Unidentified: {text[0]} ({text[0].CsEscapeEncode(CsEscapeOption.UTF16)})");
+
+      //    text = text.Substring(1);
+      //  }
+      //}
+
+      //var test = System.Globalization.CultureInfo.CurrentCulture.TryLocateCulture(out var dt, "en", "en-US", "en-GB");
+
+      var svs = Flux.PlanetaryScience.CompassRose32Wind.NbW.GetInfimumAndSupremum();
+
       Zamplez.RunCoordinateSystems(); return;
 
       var symbols = new int[] { 1, 2, 3 };
@@ -220,10 +266,11 @@ namespace ConsoleApp
         System.Console.WriteLine(string.Join(", ", p));
 
       //var s = "-41 ° 26 '46″ N79 ° 58 ′ 56 ″W";
-      //s = "a 123b45c";
-      //var x = s.ToSpanMaker().InsertOrdinalIndicatorSuffix();
+      var s = "a 123b45c";
+      var x = s.ToSpanMaker().InsertOrdinalIndicatorSuffix();
 
-      //s = "Z̤͔ͧ̑̓ä͖̭̈̇lͮ̒ͫǧ̗͚̚o̙̔ͮ̇͐̇";
+      s = "Z̤͔ͧ̑̓ä͖̭̈̇lͮ̒ͫǧ̗͚̚o̙̔ͮ̇͐̇";
+      System.Console.WriteLine(s);
       //s = "Powerلُلُصّبُلُلصّبُررً ॣ ॣh ॣ ॣ冗\r\n🏳0🌈️\r\nజ్ఞ‌ా";
       //var ros = s.ToSpanMakerOfRune().AsReadOnlySpan();
       //var rs = ros.ToSpanMakerOfChar().ToString();

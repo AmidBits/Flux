@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class ReadOnlySpans
   {
     public static string CreateBalancedExpression(System.ReadOnlySpan<char> reOpen, System.ReadOnlySpan<char> reMatch, System.ReadOnlySpan<char> reClose)
       => $"^{reMatch}*(?>(?>(?'balance'{reOpen}){reMatch}*)+(?>(?'-balance'{reClose}){reMatch}*)+)+(?(balance)(?!))$";

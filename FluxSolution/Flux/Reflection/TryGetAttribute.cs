@@ -1,6 +1,6 @@
 ﻿namespace Flux
 {
-  public static partial class FxReflection
+  public static partial class Reflections
   {
     /// <summary>
     /// <para>Attempts to get all (<typeparamref name="TAttribute"/>) attributes of <paramref name="source"/> and indicates whether successful.</para>

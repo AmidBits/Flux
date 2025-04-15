@@ -1,6 +1,6 @@
 ﻿namespace Flux
 {
-  public static partial class Fx
+  public static partial class Doubles
   {
     /// <summary>
     /// <para>Get the three binary IEEE parts of the floating point both as binary (shifted to LSB) and adjusted (see below).</para>

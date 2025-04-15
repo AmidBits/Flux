@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class ReadOnlySpans
   {
     /// <summary>
     /// <para>Computes the Jaro-Winkler distance between <paramref name="source"/> and <paramref name="target"/>, which is a normalized value in the range [0, 1] (from greater to less editing).</para>

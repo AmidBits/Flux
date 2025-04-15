@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class Arrays
   {
     /// <summary>
     /// <para>Asserts the adjacency matrix graph property: two dimensions of symmetrical length.</para>

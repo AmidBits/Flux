@@ -47,6 +47,9 @@
 	    <Generator>TextTemplatingFileGenerator</Generator>
 	    <LastGenOutput>WrapAround.cs</LastGenOutput>
 	  </None>
+	  <None Update="Resources\Dictionaries\Ipa\IPA_unitipa_2020_symbollist.pdf">
+	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+	  </None>
 	</ItemGroup>
 
 </Project>

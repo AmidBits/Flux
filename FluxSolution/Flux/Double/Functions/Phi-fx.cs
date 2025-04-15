@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class Doubles
   {
     /// <summary>Implementation see reference.</summary>
     /// <see href="https://www.johndcook.com/blog/stand_alone_code/"/>

@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class FxType
+  public static partial class Types
   {
     ///// <summary>
     ///// <para>Determines whether the <typeparamref name="T"/> is a primitive (built-in) floating-point type.</para>

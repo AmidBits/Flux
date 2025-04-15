@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class Arrays
   {
     /// <summary>
     /// <para>Create a new array with the elements from <paramref name="source"/> and by inserting <paramref name="count"/> new contiguous strands (of rows or colums) in the specified <paramref name="dimension"/> at the <paramref name="index"/>. All values from the <paramref name="source"/> are copied.</para>

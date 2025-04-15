@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class Arrays
   {
     /// <summary>
     /// <para>Concatenates the <paramref name="source"/> and <paramref name="target"/> in the direction <paramref name="dimension"/>.</para>

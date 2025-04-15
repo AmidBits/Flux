@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class Doubles
   {
     /// <summary>
     /// <para>Coefficients for Lanczos approximation when (g=7, n=9).</para>

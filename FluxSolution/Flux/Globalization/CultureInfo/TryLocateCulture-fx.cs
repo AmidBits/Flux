@@ -32,7 +32,7 @@ namespace Flux
     /// <param name="dataTable"></param>
     /// <param name="texts"></param>
     /// <returns></returns>
-    public static bool TryLocateCulture(this System.Globalization.CultureInfo source, out System.Data.DataTable dataTable, System.Collections.Generic.IEnumerable<string> texts)
+    public static bool TryLocateCulture(this System.Globalization.CultureInfo source, out System.Data.DataTable dataTable, params string[] texts)
     {
       System.ArgumentNullException.ThrowIfNull(source);
 

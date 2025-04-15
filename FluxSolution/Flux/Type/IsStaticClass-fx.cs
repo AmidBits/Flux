@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class FxType
+  public static partial class Types
   {
     /// <summary>Determines whether the type is a static class, based on it being abstract and sealed.</summary>
     public static bool IsStaticClass(this System.Type source)

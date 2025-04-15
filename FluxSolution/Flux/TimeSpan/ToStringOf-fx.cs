@@ -1,6 +1,6 @@
 //namespace Flux
 //{
-//  public static partial class Fx
+//  public static partial class TimeSpans
 //  {
 //    public static string ToStringOf(this System.TimeSpan source)
 //      => string.Join(' ', new string[] {

@@ -1,6 +1,6 @@
 //namespace Flux
 //{
-//  public static partial class Fx
+//  public static partial class Bytes
 //  {
 //    public static (TSelf target, TSelf overflow) BitShiftLeftWithCarry<TSelf>(this TSelf source, int count)
 //      where TSelf : System.Numerics.IBinaryInteger<TSelf>

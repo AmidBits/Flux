@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class Arrays
   {
     /// <summary>
     /// <para>Fill <paramref name="source"/> with the specified <paramref name="pattern"/>, at <paramref name="index0"/>, <paramref name="index1"/> and <paramref name="count0"/> and <paramref name="count1"/>. Using a sort of continuous flow fill.</para>

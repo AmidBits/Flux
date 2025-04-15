@@ -1,20 +1,16 @@
 ﻿namespace Flux.AmbOperator
 {
-  public sealed class Choices<T>
+  public sealed class Choices<T>(params T[] values)
      : IChoices, IValue<T>
   {
-    private readonly T[] Values;
-
-    public Choices(params T[] values) => Values = values;
-
-    public T Value => Values[Index];
+    public T Value => values[Index];
 
     #region Implemented interfaces
 
     // IChoices
     public int Index { get; set; }
 
-    public int Length => Values.Length;
+    public int Length => values.Length;
 
     #endregion Implemented interfaces
 

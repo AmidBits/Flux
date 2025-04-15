@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class ReadOnlySpans
   {
     public static int Utf8SequenceLength(this char source)
       => (source <= 0x7F)

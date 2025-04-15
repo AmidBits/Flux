@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class ReadOnlySpans
   {
     /// <summary>
     /// <para>Returns the number of unfound (not found) and the number of unique elements between <paramref name="source"/> and <paramref name="target"/>. Optionally, with <paramref name="returnIfUnfound"/> = true, the function returns early if there are unfound elements. Uses the specified <paramref name="equalityComparer"/>, or default if null.</para>

@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class Arrays
   {
     /// <summary>
     /// <para>Rotate a two-dimensional array in-place in a counter-clock-wise or clock-wise direction.</para>

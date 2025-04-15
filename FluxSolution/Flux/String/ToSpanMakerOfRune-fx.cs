@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class Strings
   {
     /// <summary>Creates a new <see cref="SpanMaker{T}"/> with the <paramref name="source"/> as content.</summary>
     public static SpanMaker<System.Text.Rune> ToSpanMakerOfRune(this string source)

@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class ReadOnlySpans
   {
     /// <summary>
     /// <para>Given a <paramref name="pattern"/> and a <paramref name="text"/>, determine if the pattern appears in the text and if it does, return the indices of all occurences in <c>O(|pattern| + |text|)</c> time.</para>

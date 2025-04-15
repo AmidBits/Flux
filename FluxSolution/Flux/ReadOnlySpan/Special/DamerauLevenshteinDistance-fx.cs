@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class ReadOnlySpans
   {
     /// <summary>
     /// <para>Computes the true Damerau–Levenshtein distance with adjacent transpositions, between two sequences.</para>

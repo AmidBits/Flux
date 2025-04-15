@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class Arrays
   {
     /// <summary>
     /// <para>Returns a one/two-dimensional or jagged array as a new <see cref="SpanMaker{T}"/>, that can be printed in the console.</para>

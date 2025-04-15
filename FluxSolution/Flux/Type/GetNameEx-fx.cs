@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class Types
   {
     private static bool TryReconstructGenericName(string? name, out string reconstructedName)
     {

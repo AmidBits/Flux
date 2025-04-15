@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class ReadOnlySpans
   {
     /// <summary>
     /// <para>Returns the index in <paramref name="source"/> where the rotation of the <paramref name="target"/> begins, or -1 if not found. Uses the specified <paramref name="equalityComparer"/>, or default if null.</para>

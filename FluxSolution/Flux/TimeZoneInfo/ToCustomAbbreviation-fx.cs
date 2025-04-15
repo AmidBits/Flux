@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class TimeZoneInfos
   {
     [System.Text.RegularExpressions.GeneratedRegex(@"[^\p{Lu}]")]
     private static partial System.Text.RegularExpressions.Regex RegexTimeZoneInfoCustomAbbreviation();

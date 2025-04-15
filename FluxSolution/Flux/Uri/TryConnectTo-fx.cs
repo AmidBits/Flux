@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class Uris
   {
     public static bool TryConnectTo(this System.Uri source)
     {

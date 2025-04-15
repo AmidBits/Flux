@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class Spans
   {
     /// <summary>Capitalize any lower-case character with a lower-case character on the right and a whitespace on the left or that is at the beginning.</summary>
     public static System.Span<char> CapitalizeWords(this System.Span<char> source, System.Globalization.CultureInfo? culture = null)

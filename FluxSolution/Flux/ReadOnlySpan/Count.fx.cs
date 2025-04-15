@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class ReadOnlySpans
   {
     /// <summary>
     /// <para>Computes how many elements satisfying the <paramref name="predicate"/> is found in the <paramref name="source"/>.</para>

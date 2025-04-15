@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class TimeSpans
   {
     public static string ToXsdDurationString(this System.TimeSpan source)
     {

@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class Arrays
   {
     /// <summary>
     /// <para>Creates a new two-dimensional array from the jagged array (i.e. an array of arrays).</para>

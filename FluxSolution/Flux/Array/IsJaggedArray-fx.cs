@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class Arrays
   {
     /// <summary>
     /// <para>Determines whether the <see cref="System.Array"/> is a jagged-array, i.e. an array of arrays.</para>

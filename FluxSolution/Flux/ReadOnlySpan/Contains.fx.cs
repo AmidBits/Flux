@@ -1,8 +1,6 @@
-using System.Drawing;
-
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class ReadOnlySpans
   {
     /// <summary>
     /// <para>Determines if there are any elements satisfying the <paramref name="predicate"/> in the <paramref name="source"/>.</para>

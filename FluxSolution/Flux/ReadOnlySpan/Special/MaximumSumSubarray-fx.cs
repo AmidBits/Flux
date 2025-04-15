@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class ReadOnlySpans
   {
     /// <summary>
     /// <para>Find the maximum sum subarray in <paramref name="source"/>, at <paramref name="startIndex"/> and <paramref name="count"/> values.</para>

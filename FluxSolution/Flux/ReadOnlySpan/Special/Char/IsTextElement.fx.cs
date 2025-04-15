@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class ReadOnlySpans
   {
     /// <summary>
     /// <para>Determines whether the <paramref name="source"/> represents a single text-element not many, i.e. a grapheme not a cluster.</para>

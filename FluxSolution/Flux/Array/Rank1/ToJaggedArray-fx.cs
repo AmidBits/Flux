@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class Arrays
   {
     /// <summary>
     /// <para>Creates a new jagged array with, either <paramref name="source"/> as the one sub-array (horizontal), or pivoted where each element in <paramref name="source"/> becomes one-element sub-arrays (vertical).</para>

@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class Uris
   {
     public static bool TryGetFileInfo(this System.Uri source, out System.IO.FileInfo fileInfo)
     {

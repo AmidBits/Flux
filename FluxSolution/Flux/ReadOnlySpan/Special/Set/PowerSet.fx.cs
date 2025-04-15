@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class ReadOnlySpans
   {
     /// <summary>
     /// <para>Creates a new sequence, a set of all subsets (as lists) of the source set, including the empty set and the source itself.</para>

@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class Arrays
   {
     /// <summary>
     /// <para>Returns the one-dimensional array as a string-builder, that can be printed in the console.</para>

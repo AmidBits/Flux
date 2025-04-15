@@ -8,8 +8,15 @@ namespace Flux.Temporal
     : System.IComparable, System.IComparable<Duration>, System.IFormattable
   {
     public const double AverageDaysInYear = 365.25;
+    public const double AverageDaysInMonth = AverageDaysInYear / MonthsInYear;
 
-    public const double AverageSecondsInYear = SecondsInMinute * MinutesInHour * HoursInDay * AverageDaysInYear; // 31536000;
+    public const double AverageHoursInYear = HoursInDay * AverageDaysInYear;
+    public const double AverageHoursInMonth = AverageHoursInYear / MonthsInYear;
+
+    public const double AverageMinutesInYear = MinutesInHour * AverageHoursInYear;
+    public const double AverageMinutesInMonth = AverageMinutesInYear / MonthsInYear;
+
+    public const double AverageSecondsInYear = SecondsInMinute * AverageMinutesInYear; // 31536000;
     public const double AverageSecondsInMonth = AverageSecondsInYear / MonthsInYear; // 2628000;
 
     public const int DaysInWeek = 7;
@@ -20,11 +27,10 @@ namespace Flux.Temporal
 
     public const int MonthsInYear = 12;
 
-    public const int SecondsInWeek = SecondsInMinute * MinutesInHour * HoursInDay * DaysInWeek;
-    public const int SecondsInDay = SecondsInMinute * MinutesInHour * HoursInDay;
+    public const int SecondsInDay = SecondsInHour * HoursInDay;
     public const int SecondsInHour = SecondsInMinute * MinutesInHour;
-
     public const int SecondsInMinute = 60;
+    public const int SecondsInWeek = SecondsInDay * DaysInWeek;
 
     private readonly int m_years;
     private readonly int m_months;
@@ -52,32 +58,32 @@ namespace Flux.Temporal
     public int Years => m_years;
 
     /// <summary>
-    /// <para>The year component of the <see cref="Duration"/> struct.</para>
+    /// <para>The month component of the <see cref="Duration"/> struct.</para>
     /// </summary>
     public int Months => m_months;
 
     /// <summary>
-    /// <para>The year component of the <see cref="Duration"/> struct.</para>
+    /// <para>The day component of the <see cref="Duration"/> struct.</para>
     /// </summary>
     public int Days => m_days;
 
     /// <summary>
-    /// <para>The year component of the <see cref="Duration"/> struct.</para>
+    /// <para>The hour component of the <see cref="Duration"/> struct.</para>
     /// </summary>
     public int Hours => m_hours;
 
     /// <summary>
-    /// <para>The year component of the <see cref="Duration"/> struct.</para>
+    /// <para>The minute component of the <see cref="Duration"/> struct.</para>
     /// </summary>
     public int Minutes => m_minutes;
 
     /// <summary>
-    /// <para>The year component of the <see cref="Duration"/> struct.</para>
+    /// <para>The second component of the <see cref="Duration"/> struct.</para>
     /// </summary>
     public int Seconds => m_seconds;
 
     /// <summary>
-    /// <para>The year component of the <see cref="Duration"/> struct.</para>
+    /// <para>The fractional (seconds) component of the <see cref="Duration"/> struct.</para>
     /// </summary>
     public double Fractions => m_fractions;
 

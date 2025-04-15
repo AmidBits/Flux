@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class ReadOnlySpans
   {
     /// <summary>
     /// <para>Locate the index, item and value of both the largest element that is less-than(-or-equal) and the smallest element that is greater-than(-or-equal) to the specified reference value (set S) identified by the <paramref name="valueSelector"/> (in set P). Uses the specified comparer (null for default).</para>

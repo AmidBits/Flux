@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class DateTimes
   {
     public static System.DateTime AddDateTimePart(this System.DateTime source, Temporal.DateTimePart part, int count)
       => part switch

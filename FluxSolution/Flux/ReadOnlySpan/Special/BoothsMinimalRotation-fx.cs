@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class ReadOnlySpans
   {
     /// <summary>
     /// <para>Find the rotation of the <paramref name="source"/> possessing the lowest lexicographical order of all such rotation. Uses the specified <paramref name="comparer"/>, or default if null.</para>

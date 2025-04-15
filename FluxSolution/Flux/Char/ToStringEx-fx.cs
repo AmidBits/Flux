@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class Chars
   {
     public static string ToStringEx(this char source)
     {

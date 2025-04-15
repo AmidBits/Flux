@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class DateTimes
   {
     /// <summary>Determines the last day of the month in the source.</summary>
     public static System.DateTime LastDayOfMonth(this System.DateTime source) => new(source.Year, source.Month, System.DateTime.DaysInMonth(source.Year, source.Month));

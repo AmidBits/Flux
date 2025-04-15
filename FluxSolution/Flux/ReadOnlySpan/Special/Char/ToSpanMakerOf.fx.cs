@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class ReadOnlySpans
   {
     /// <summary>
     /// <para>Creates a new <see cref="SpanMaker{T}"/> with the <paramref name="source"/> as content.</para>

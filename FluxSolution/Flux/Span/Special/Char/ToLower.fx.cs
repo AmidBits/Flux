@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class Spans
   {
     /// <summary>
     /// <para>Convert the entire span to lower-case. Uses the specified <paramref name="culture"/>, or current-culture if null.</para>

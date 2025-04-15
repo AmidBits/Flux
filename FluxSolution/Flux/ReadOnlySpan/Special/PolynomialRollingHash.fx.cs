@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class ReadOnlySpans
   {
     /// <summary>
     /// <para><see href="https://cp-algorithms.com/string/string-hashing.html"/></para>

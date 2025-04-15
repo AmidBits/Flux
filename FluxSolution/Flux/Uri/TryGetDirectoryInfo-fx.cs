@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class Uris
   {
     public static bool TryGetDirectoryInfo(this System.Uri source, out System.IO.DirectoryInfo directoryInfo)
     {

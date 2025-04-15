@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class FxType
+  public static partial class Types
   {
     /// <summary>
     /// <para>Uses the built-in <see cref="System.Activator.CreateInstance(Type)"/> to return the default value of <see cref="System.Type"/>.</para>

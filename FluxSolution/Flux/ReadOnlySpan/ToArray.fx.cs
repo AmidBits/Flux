@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class ReadOnlySpans
   {
     /// <summary>
     /// <para>Creates a new <see cref="System.Array"/> with all elements from <paramref name="source"/>, and a <paramref name="preLength"/> and a <paramref name="postLength"/> number of default slots.</para>

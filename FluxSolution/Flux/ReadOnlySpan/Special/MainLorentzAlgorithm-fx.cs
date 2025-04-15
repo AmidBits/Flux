@@ -1,6 +1,6 @@
 ﻿namespace Flux
 {
-  public static partial class Fx
+  public static partial class ReadOnlySpans
   {
     /// <summary>
     /// <para>Find all repetitions. A repetition is two occurrences of a string in a row, i.e. two adjacent sequences (of one or more elements). In other words a repetition can be described by a pair of indices  i&lt;j  such that the substring s[i...j]  consists of two identical strings written after each other.</para>

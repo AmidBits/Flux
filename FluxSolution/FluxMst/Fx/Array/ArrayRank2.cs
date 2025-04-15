@@ -1,7 +1,7 @@
 ﻿using Flux;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace SystemFx
+namespace SystemArrays
 {
   [TestClass]
   public class ArrayRank2
@@ -30,7 +30,7 @@ namespace SystemFx
       System.Console.WriteLine();
 
       inplaceMatrix.Fill(0, 1, 3, 4, 9);
-      System.Console.WriteLine(nameof(Fx.Fill));
+      System.Console.WriteLine(nameof(Arrays.Fill));
       System.Console.WriteLine(inplaceMatrix.Rank2ToConsoleString(cso));
       System.Console.WriteLine();
 
@@ -54,7 +54,7 @@ namespace SystemFx
         { 1, 2, 3 },
       };
 
-      Flux.Fx.FlipInPlace(inplaceMatrix, 0);
+      inplaceMatrix.FlipInPlace(0);
 
       CollectionAssert.AreEqual(expected0, inplaceMatrix);
 
@@ -65,7 +65,7 @@ namespace SystemFx
         { 3, 2, 1 },
       };
 
-      Flux.Fx.FlipInPlace(inplaceMatrix, 1);
+      inplaceMatrix.FlipInPlace(1);
 
       CollectionAssert.AreEqual(expected1, inplaceMatrix);
     }
@@ -94,7 +94,7 @@ namespace SystemFx
       System.Console.WriteLine();
 
       var actual0 = matrix.FlipToCopy(0);
-      System.Console.WriteLine(nameof(Fx.FlipToCopy));
+      System.Console.WriteLine(nameof(Arrays.FlipToCopy));
       System.Console.WriteLine(actual0.Rank2ToConsoleString(cso));
       System.Console.WriteLine();
 
@@ -108,7 +108,7 @@ namespace SystemFx
       };
 
       var actual1 = matrix.FlipToCopy(0);
-      System.Console.WriteLine(nameof(Fx.FlipToCopy));
+      System.Console.WriteLine(nameof(Arrays.FlipToCopy));
       System.Console.WriteLine(actual1.Rank2ToConsoleString(cso));
       System.Console.WriteLine();
 
@@ -140,7 +140,7 @@ namespace SystemFx
       System.Console.WriteLine();
 
       var actual = matrix.InsertToCopy(1, 1, 4, 0);
-      System.Console.WriteLine(nameof(Fx.InsertToCopy));
+      System.Console.WriteLine(nameof(Arrays.InsertToCopy));
       System.Console.WriteLine(actual.Rank2ToConsoleString(cso));
       System.Console.WriteLine();
 
@@ -171,7 +171,7 @@ namespace SystemFx
       System.Console.WriteLine();
 
       var actual = matrix.RemoveToCopy(1, 1);
-      System.Console.WriteLine(nameof(Fx.RemoveToCopy));
+      System.Console.WriteLine(nameof(Arrays.RemoveToCopy));
       System.Console.WriteLine(actual.Rank2ToConsoleString(cso));
       System.Console.WriteLine();
 
@@ -264,7 +264,7 @@ namespace SystemFx
       };
 
       inplaceMatrix.TransposeInPlace();
-      System.Console.WriteLine(nameof(Fx.TransposeInPlace));
+      System.Console.WriteLine(nameof(Arrays.TransposeInPlace));
       System.Console.WriteLine(inplaceMatrix.Rank2ToConsoleString(cso));
       System.Console.WriteLine();
 

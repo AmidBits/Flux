@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class ReadOnlySpans
   {
     /// <summary>
     /// <para>Creates a new <see cref="System.Collections.Generic.List{T}"/> with all elements from <paramref name="source"/>.</para>

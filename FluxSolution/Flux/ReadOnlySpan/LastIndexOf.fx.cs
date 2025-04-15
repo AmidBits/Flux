@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class ReadOnlySpans
   {
     /// <summary>
     /// <para>Reports the last index in <paramref name="source"/> that satisfies the <paramref name="predicate"/>, or -1 if not found.</para>

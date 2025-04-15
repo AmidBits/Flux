@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class Arrays
   {
     /// <summary>
     /// <para>Transpose <paramref name="source"/>, in-place. Both dimensions must be equal in length, i.e. it has to be a square two-dimensional array.</para>

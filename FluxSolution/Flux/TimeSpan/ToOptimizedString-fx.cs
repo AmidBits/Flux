@@ -1,6 +1,6 @@
 //namespace Flux
 //{
-//  public static partial class Fx
+//  public static partial class TimeSpans
 //  {
 //    [System.Text.RegularExpressions.GeneratedRegex(@"^(00.)(00\:)+0+(?=.)")]
 //    private static partial System.Text.RegularExpressions.Regex RegexTimeSpanOptimizedString();

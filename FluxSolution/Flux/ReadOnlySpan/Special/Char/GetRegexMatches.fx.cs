@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class ReadOnlySpans
   {
     /// <summary>
     /// <para>Creates a new list of ranges and sub-strings in <paramref name="source"/> matching <paramref name="regexPattern"/>.</para>

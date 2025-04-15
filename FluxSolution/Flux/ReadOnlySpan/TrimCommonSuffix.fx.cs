@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class ReadOnlySpans
   {
     /// <summary>
     /// <para>Slice the <paramref name="source"/> with all matching suffix elements satisfying the <paramref name="predicate"/> removed.</para>

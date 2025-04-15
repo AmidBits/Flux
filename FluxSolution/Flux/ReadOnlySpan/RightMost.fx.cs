@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class ReadOnlySpans
   {
     /// <summary>
     /// <para>Slice the <paramref name="source"/> keeping the right-most <paramref name="count"/> of elements if available, otherwise as many as there are.</para>

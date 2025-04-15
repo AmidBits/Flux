@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class Strings
   {
     public static System.Collections.Generic.List<Text.TextElement> GetTextElements(this string source, bool reversed = false)
     {

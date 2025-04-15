@@ -1,6 +1,6 @@
 ﻿namespace Flux
 {
-  public static partial class Fx
+  public static partial class ReadOnlySpans
   {
     /// <summary>
     /// <para>Searches a <paramref name="source"/> text for all indices of a <paramref name="target"/> substring. Returns an empty list if not found. Uses the specified <paramref name="equalityComparer"/> (or default if null).</para>

@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class ReadOnlySpans
   {
     /// <summary>
     /// <para>Creates a new sequence of elements that are present either in the source set or in the specified target set, but not both. Uses the specified <paramref name="equalityComparer"/> (or default if null).</para>

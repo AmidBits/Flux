@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class DateTimes
   {
     /// <summary>Determines the two closest DayOfWeek dates before and after the source.</summary>
     public static (System.DateTime closest, System.DateTime secondClosest) DayOfWeekClosest(this System.DateTime source, System.DayOfWeek dayOfWeek, bool unequal)

@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class FxObject
+  public static partial class Objects
   {
     /// <summary>Complement the built-in TypeConverter system.</summary>
     /// <see href="https://docs.microsoft.com/en-us/dotnet/api/system.componentmodel.typeconverter"/>

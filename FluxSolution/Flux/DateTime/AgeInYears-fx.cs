@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class DateTimes
   {
     /// <summary>
     /// <para>Determines the age in integer years between the <paramref name="source"/> (e.g. a birth) and the <paramref name="target"/> (e.g. a birthday).</para>
