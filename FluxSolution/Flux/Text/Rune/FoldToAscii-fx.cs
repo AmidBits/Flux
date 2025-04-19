@@ -1,9 +1,9 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class Runes
   {
     /// <summary>
-    /// <para>Folds runes representing characters above ASCII as a reasonable ASCII equivalence. Only characters from certain blocks are converted.</para>
+    /// <para>Folds runes representing characters above ASCII as a reasonable ASCII equivalent. Only characters from certain blocks are converted.</para>
     /// </summary>
     public static string FoldToAscii(this System.Text.Rune source)
     {

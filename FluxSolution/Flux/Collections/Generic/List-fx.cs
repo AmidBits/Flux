@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class Lists
   {
     /// <summary>
     /// <para>Flux non-allocating conversion (casting) to <see cref="System.ReadOnlySpan{T}"/>.</para>

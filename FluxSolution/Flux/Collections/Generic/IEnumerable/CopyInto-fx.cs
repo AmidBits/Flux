@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class IEnumerables
   {
     public static int CopyInto<T>(this System.Collections.Generic.IEnumerable<T> source, System.Collections.Generic.IList<T> target, int index, int count)
     {

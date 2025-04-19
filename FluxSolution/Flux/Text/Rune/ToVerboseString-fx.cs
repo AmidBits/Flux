@@ -1,8 +1,8 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class Runes
   {
-    public static string ToStringEx(this System.Text.Rune source)
+    public static string ToVerboseString(this System.Text.Rune source)
     {
       var uc = System.Text.Rune.GetUnicodeCategory(source);
 

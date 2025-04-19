@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class StringBuilders
   {
     /// <summary>
     /// <para>Normalize all consecutive instances of characters satisfying the <paramref name="predicate"/> to <paramref name="replacementCharacter"/> in the <paramref name="source"/>.</para>

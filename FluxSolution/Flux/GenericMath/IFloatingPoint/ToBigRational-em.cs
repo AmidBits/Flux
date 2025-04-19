@@ -3,11 +3,11 @@ namespace Flux
   public static partial class GenericMath
 
   {
-    public static Numerics.BigRational ToBigRational<TSelf>(this TSelf value, int maxApproximationIterations = 101)
-      where TSelf : System.Numerics.IFloatingPoint<TSelf>
+    public static Numerics.BigRational ToBigRational<TNumber>(this TNumber value, int maxApproximationIterations = 101)
+      where TNumber : System.Numerics.IFloatingPoint<TNumber>
     {
-      if (TSelf.IsZero(value)) return Numerics.BigRational.Zero;
-      if (TSelf.IsInteger(value)) return new Numerics.BigRational(System.Numerics.BigInteger.CreateChecked(value));
+      if (TNumber.IsZero(value)) return Numerics.BigRational.Zero;
+      if (TNumber.IsInteger(value)) return new Numerics.BigRational(System.Numerics.BigInteger.CreateChecked(value));
 
       var Am = (Item1: System.Numerics.BigInteger.Zero, Item2: System.Numerics.BigInteger.One);
       var Bm = (Item1: System.Numerics.BigInteger.One, Item2: System.Numerics.BigInteger.Zero);
@@ -18,19 +18,19 @@ namespace Flux
       var a = System.Numerics.BigInteger.Zero;
       var b = System.Numerics.BigInteger.Zero;
 
-      if (value > TSelf.One)
+      if (value > TNumber.One)
       {
-        var xW = TSelf.Truncate(value);
+        var xW = TNumber.Truncate(value);
 
         var ar = ToBigRational(value - xW, maxApproximationIterations);
 
         return ar + System.Numerics.BigInteger.CreateChecked(xW);
       }
 
-      for (var counter = 0; counter < maxApproximationIterations && !TSelf.IsZero(value); counter++)
+      for (var counter = 0; counter < maxApproximationIterations && !TNumber.IsZero(value); counter++)
       {
-        var r = TSelf.One / value;
-        var rR = TSelf.Round(r);
+        var r = TNumber.One / value;
+        var rR = TNumber.Round(r);
 
         var rT = System.Numerics.BigInteger.CreateChecked(rR);
 

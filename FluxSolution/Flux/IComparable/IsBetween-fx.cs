@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class IComparables
   {
     /// <summary>
     /// <para>Returns whether the <see cref="System.IComparable{T}"/> <paramref name="source"/> (<typeparamref name="T"/>) is between <paramref name="start"/> and <paramref name="end"/>.</para>

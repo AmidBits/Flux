@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class StringBuilders
   {
     /// <summary>
     /// <para>Normalize all consecutive character instances satisfying the <paramref name="predicate"/> to <paramref name="maxConsecutiveLength"/>.</para>

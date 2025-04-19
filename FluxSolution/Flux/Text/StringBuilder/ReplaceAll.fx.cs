@@ -1,7 +1,22 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class StringBuilders
   {
+    public static System.Text.StringBuilder ReplaceAll(this System.Text.StringBuilder source, int index, int length, System.Func<char, int, bool> predicate, System.Func<char, int, string?> replacementSelector)
+    {
+      System.ArgumentNullException.ThrowIfNull(source);
+      System.ArgumentOutOfRangeException.ThrowIfNegative(index);
+      System.ArgumentOutOfRangeException.ThrowIfNegative(length);
+      System.ArgumentNullException.ThrowIfNull(predicate);
+      System.ArgumentNullException.ThrowIfNull(replacementSelector);
+
+      for (var i = index + length - 1; i >= index; i--)
+        if (source[i] is var c && predicate(c, i) && replacementSelector(c, i) is var r && r is not null)
+          source.Remove(i, 1).Insert(i, r);
+
+      return source;
+    }
+
     /// <summary>
     /// <para>Replace all characters satisfying the <paramref name="predicate"/> using the <paramref name="replacementSelector"/>.</para>
     /// </summary>

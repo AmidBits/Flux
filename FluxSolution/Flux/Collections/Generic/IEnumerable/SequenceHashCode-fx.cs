@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class IEnumerables
   {
     /// <summary>
     /// <para>Computes a hash code, representing all elements in <paramref name="source"/>, using the .NET built-in <see cref="System.HashCode"/> functionality.</para>

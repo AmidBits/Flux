@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class StringBuilders
   {
     /// <summary>
     /// <para>Returns whether <paramref name="count"/> of any <paramref name="values"/> that ends at <paramref name="source"/>[end - <paramref name="offset"/>]. Uses the <paramref name="equalityComparer"/>, or default if null.</para>

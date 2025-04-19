@@ -21,7 +21,7 @@ namespace Flux
 
       foreach (var vm in evm)
       {
-        sm.Append(source[lastEnd..vm.Index]);
+        sm = sm.Append(source[lastEnd..vm.Index]);
 
         var integer
           = int.TryParse(source.Slice(vm.Index + 2, vm.Length - 3), System.Globalization.NumberStyles.Integer, System.Globalization.CultureInfo.InvariantCulture, out var dec)
@@ -30,7 +30,7 @@ namespace Flux
           ? hex
           : throw new System.InvalidOperationException();
 
-        sm.Append(new System.Text.Rune(integer).ToString());
+        sm = sm.Append(new System.Text.Rune(integer).ToString());
 
         lastEnd = vm.Index + vm.Length;
       }
@@ -46,7 +46,7 @@ namespace Flux
     /// <param name="asHexadecimal"></param>
     /// <returns></returns>
     public static string HtmlEncode(this char source, bool asHexadecimal = false)
-      => asHexadecimal ? $"&#x{(int)source:X4};" : $"&#{(int)source};";
+      => new System.Text.Rune(source).HtmlEncode(asHexadecimal);
 
     /// <summary>
     /// <para>HTML encoding refers to HTML entities.</para>
@@ -68,7 +68,7 @@ namespace Flux
     {
       var sm = new SpanMaker<char>();
       foreach (var rune in source.EnumerateRunes())
-        sm.Append(rune.HtmlEncode(asHexadecimal));
+        sm = sm.Append(rune.HtmlEncode(asHexadecimal));
       return sm;
     }
   }

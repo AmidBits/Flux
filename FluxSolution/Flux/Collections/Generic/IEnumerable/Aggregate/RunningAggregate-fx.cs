@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class IEnumerables
   {
     /// <summary>
     /// <para>Applies an running accumulator over a sequence. I.e. statistics is computed as the aggregator is running its course.</para>

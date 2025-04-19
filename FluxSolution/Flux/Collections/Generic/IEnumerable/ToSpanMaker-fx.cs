@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class IEnumerables
   {
     public static SpanMaker<T> ToSpanMaker<T>(this System.Collections.Generic.IEnumerable<T> source)
     {

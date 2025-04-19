@@ -1,4 +1,4 @@
-namespace Flux.Text.PhoneticAlgorithm.Soundex
+namespace Flux.PhoneticAlgorithm.Soundex
 {
   /// <summary>Soundex is a phonetic algorithm for indexing names by sound, as pronounced in English.</summary>
   /// <see href="https://en.wikipedia.org/wiki/Soundex"/>

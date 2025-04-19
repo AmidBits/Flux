@@ -10,12 +10,9 @@ namespace Flux
 
         if (source.IsFile)
         {
-          var localPath = source.LocalPath;
+          var directoryPath = source.LocalPath.AsSpan().TrimCommonPrefix('/').ToString();
 
-          if (localPath.StartsWith('/'))
-            localPath = localPath[1..];
-
-          directoryInfo = new System.IO.DirectoryInfo(localPath);
+          directoryInfo = new System.IO.DirectoryInfo(directoryPath);
 
           if (directoryInfo.Exists) // Check and fall through on non-existent.
             return true;

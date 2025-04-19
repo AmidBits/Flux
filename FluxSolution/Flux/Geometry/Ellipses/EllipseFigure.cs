@@ -5,7 +5,7 @@ namespace Flux.Geometry.Ellipses
   /// <see href="https://en.wikipedia.org/wiki/Ellipse"/>
   /// </summary>
   public readonly record struct EllipseFigure
-    : IFormattable
+    : IFormattable, IFigurable
   {
     public static EllipseFigure Unit { get; } = new(1, 1);
 
@@ -35,13 +35,16 @@ namespace Flux.Geometry.Ellipses
     public double Focus => double.Sqrt(m_a * m_a - m_b * m_b);
 
     /// <summary>Returns the approximate circumference of an ellipse based on the two semi-axis or radii a and b (the order of the arguments do not matter). Uses Ramanujans second approximation.</summary>
-    public double Circumference => Units.Length.OfEllipsePerimeter(m_a, m_b);
+    public double Perimeter => Units.Length.OfEllipsePerimeter(m_a, m_b);
 
     /// <summary>Returns the area of an ellipse based on two semi-axes or radii a and b (the order of the arguments do not matter).</summary>
     public double SurfaceArea => Units.Area.OfEllipse(m_a, m_b);
 
     /// <summary>Returns whether a point (<paramref name="x"/>, <paramref name="y"/>) is inside the optionally rotated (<paramref name="rotationAngle"/> in radians, the default 0 equals no rotation) ellipse.</summary>
-    public bool Contains(double x, double y, double rotationAngle = 0) => EllipseContainsPoint(m_a, m_b, x, y, rotationAngle);
+    public bool Contains(double x, double y, double rotationAngle) => EllipseContainsPoint(m_a, m_b, x, y, rotationAngle);
+
+    /// <summary>Returns whether a point (<paramref name="x"/>, <paramref name="y"/>) is inside the optionally rotated (<paramref name="rotationAngle"/> in radians, the default 0 equals no rotation) ellipse.</summary>
+    public bool Contains(double x, double y) => Contains(x, y, 0);
 
     /// <summary>
     /// <para>The linear eccentricity of an ellipse or hyperbola, denoted c (or sometimes f or e), is the distance between its center and either of its two foci. This is the same as the <see cref="Focus"/> property.</para>
@@ -118,6 +121,34 @@ namespace Flux.Geometry.Ellipses
         double.Sin(rotationAngle) * b
       );
 
+    /// <summary>
+    /// <para>I actually don't remember what this is for... ha ha ha!</para>
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="source"></param>
+    /// <param name="result"></param>
+    /// <returns></returns>
+    public static bool TryConvertToPrimitiveNumber<T>(T source, out object result)
+    {
+      try
+      {
+        if ((source?.GetType().IsIntegerNumericType(true) ?? false) && Convert.ToInt64(source) is long i64)
+        {
+          result = i64;
+          return true;
+        }
+        else if ((source?.GetType().IsIntegerNumericType(true) ?? false) && Convert.ToDouble(source) is double d64)
+        {
+          result = d64;
+          return true;
+        }
+      }
+      catch { }
+
+      result = default!;
+      return false;
+    }
+
     #endregion // Conversion methods
 
     /// <summary>
@@ -192,32 +223,11 @@ namespace Flux.Geometry.Ellipses
 
     #region Implemented interfaces
 
-    public static bool TryConvertToPrimitiveNumber<T>(T source, out object result)
-    {
-      try
-      {
-        if ((source?.GetType().IsPrimitiveTypeOfInteger() ?? false) && Convert.ToInt64(source) is long i64)
-        {
-          result = i64;
-          return true;
-        }
-        else if ((source?.GetType().IsPrimitiveTypeOfFloatingPoint() ?? false) && Convert.ToDouble(source) is double d64)
-        {
-          result = d64;
-          return true;
-        }
-      }
-      catch { }
-
-      result = default!;
-      return false;
-    }
-
     public string ToString(string? format, IFormatProvider? provider)
     {
       format ??= "N3";
 
-      return $"{GetType().Name} {{ A = {m_a.ToString(format, provider)}, B = {m_b.ToString(format, provider)}, Focus = ±{Focus.ToString(format, provider)}, Circumference = {Circumference.ToString(format, provider)}, SurfaceArea = {SurfaceArea.ToString(format, provider)} }}";
+      return $"{GetType().Name} {{ A = {m_a.ToString(format, provider)}, B = {m_b.ToString(format, provider)}, Focus = ±{Focus.ToString(format, provider)}, Circumference = {Perimeter.ToString(format, provider)}, SurfaceArea = {SurfaceArea.ToString(format, provider)} }}";
     }
 
     #endregion // Implemented interfaces

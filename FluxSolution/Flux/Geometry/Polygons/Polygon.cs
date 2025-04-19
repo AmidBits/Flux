@@ -1,7 +1,7 @@
 namespace Flux.Geometry.Polygons
 {
   public record class Polygon
-    : System.IFormattable
+    : System.IFormattable, IFigurable
   {
     protected readonly System.Collections.Generic.List<System.Runtime.Intrinsics.Vector128<double>> m_vertices;
 
@@ -50,6 +50,9 @@ namespace Flux.Geometry.Polygons
     //public virtual double Circumradius => m_vertices.Max(v => v.EuclideanLength());
 
     //public virtual double Inradius => /*SurfaceArea / SemiPerimeter;  //*/m_vertices.PartitionTuple2(true, (l, r, i) => (l, r)).Select(pair => pair.l.Lerp(pair.r, 0.5)).Min(v => v.EuclideanLength());
+
+    public virtual bool Contains(double x, double y)
+      => m_vertices.Contains(x, y) != 0;
 
     /// <summary>
     /// <para>Determines whether the polygon is convex. (2D/3D)</para>

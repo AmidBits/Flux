@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class IEnumerables
   {
     /// <summary>
     /// <para>Compute the medoid of <paramref name="source"/>, also return the <paramref name="index"/> and the <paramref name="count"/> of elements as output parameters.</para>

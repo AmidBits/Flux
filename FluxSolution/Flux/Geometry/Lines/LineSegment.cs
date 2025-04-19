@@ -159,7 +159,12 @@ namespace Flux.Geometry.Lines
 
     #region Implemented interfaces
 
-    public string ToString(string? format, IFormatProvider? formatProvider) => GetType().Name;
+    public string ToString(string? format, IFormatProvider? formatProvider)
+    {
+      format ??= "N3";
+
+      return $"{GetType().Name} {{ X1 = {X1.ToString(format, formatProvider)}, Y1 = {Y1.ToString(format, formatProvider)}, X2 = {X2.ToString(format, formatProvider)}, Y2 = {Y2.ToString(format, formatProvider)} }}";
+    }
 
     #endregion // Implemented interfaces
 

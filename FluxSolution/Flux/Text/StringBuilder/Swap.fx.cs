@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class StringBuilders
   {
     /// <summary>
     /// <para>Swap the two values specified by <paramref name="indexA"/> and <paramref name="indexB"/>.</para>

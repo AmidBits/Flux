@@ -13,6 +13,7 @@ namespace Flux
     /// <param name="monthlyInterestRate">The monthly interest rate. Since the quoted yearly percentage rate is not a compounded rate, the monthly percentage rate is simply the yearly percentage rate divided by 12.</param>
     /// <param name="numberOfPaymentPeriods">The number of payment periods. (E.g. the number of monthly payments, called the loan's term.)</param>
     /// <returns>The monthly payment (c).</returns>
+    [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
     public static TNumber AmortizedMonthlyPayment<TNumber>(this TNumber principalAmount, TNumber monthlyInterestRate, TNumber numberOfPaymentPeriods)
       where TNumber : System.Numerics.IFloatingPoint<TNumber>, System.Numerics.IPowerFunctions<TNumber>
       => monthlyInterestRate * principalAmount / (TNumber.One - (TNumber.One / TNumber.Pow(TNumber.One + monthlyInterestRate, numberOfPaymentPeriods)));
@@ -31,6 +32,7 @@ namespace Flux
     /// <param name="compoundingFrequency">The compounding frequency (1: annually, 12: monthly, 52: weekly, 365: daily).</param>
     /// <param name="overallLengthOfTime">The overall length of time the interest is applied (expressed using the same time units as <paramref name="compoundingFrequency"/>, usually years).</param>
     /// <returns>The accumulative compound interest of <paramref name="nominalInterestRate"/>.</returns>
+    [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
     public static TNumber CompoundInterest<TNumber>(this TNumber nominalInterestRate, TNumber compoundingFrequency, TNumber overallLengthOfTime)
       where TNumber : System.Numerics.IFloatingPoint<TNumber>, System.Numerics.IPowerFunctions<TNumber>
       => TNumber.Pow(TNumber.One + (nominalInterestRate / compoundingFrequency), overallLengthOfTime * compoundingFrequency);

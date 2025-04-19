@@ -2,6 +2,12 @@ namespace Flux
 {
   public static partial class Strings
   {
+    /// <summary>
+    /// <para>Gets a list of <see cref="Text.TextElement"/>s from <paramref name="source"/>, optionally in a <paramref name="reversed"/> order.</para>
+    /// </summary>
+    /// <param name="source"></param>
+    /// <param name="reversed"></param>
+    /// <returns></returns>
     public static System.Collections.Generic.List<Text.TextElement> GetTextElements(this string source, bool reversed = false)
     {
       var list = new System.Collections.Generic.List<Text.TextElement>();

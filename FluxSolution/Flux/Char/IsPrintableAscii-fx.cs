@@ -8,6 +8,6 @@ namespace Flux
     /// <param name="source"></param>
     /// <returns></returns>
     public static bool IsPrintableAscii(this char source)
-      => source is >= '\u0020' and <= '\u007E';
+      => new System.Text.Rune(source).IsPrintableAscii();
   }
 }

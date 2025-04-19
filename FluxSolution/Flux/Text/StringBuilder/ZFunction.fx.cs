@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class StringBuilders
   {
     /// <summary>
     /// <para>The Z-function for this string-builder is an array of length n where the i-th character is equal to the greatest number of characters starting from the position i that coincide with the first characters of <paramref name="source"/>.</para>

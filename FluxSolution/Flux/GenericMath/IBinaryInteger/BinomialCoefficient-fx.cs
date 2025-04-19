@@ -37,8 +37,10 @@ namespace Flux
 
           return c;
         }
-      else if (k.Equals(TNumber.Zero) || k.Equals(n)) return TNumber.One; // 1 if (k == 0 || k == n)
-      else return TNumber.Zero; // 0 if (k < 0 || k > n)
+      else if (k.Equals(TNumber.Zero) || k.Equals(n))
+        return TNumber.One; // 1 if (k == 0 || k == n)
+
+      return TNumber.Zero; // 0 if (k < 0 || k > n)
     }
 
     //public static int BinomialCoefficient(this int n, int k)

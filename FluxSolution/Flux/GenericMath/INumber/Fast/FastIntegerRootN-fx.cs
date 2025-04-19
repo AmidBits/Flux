@@ -1,6 +1,6 @@
 ﻿namespace Flux
 {
-  public static partial class GenericMath
+  public static partial class GenericMathFast
   {
     /// <summary>
     /// <para></para>
@@ -9,21 +9,15 @@
     /// </summary>
     /// <typeparam name="TNumber"></typeparam>
     /// <typeparam name="TNth"></typeparam>
-    /// <param name="number"></param>
-    /// <param name="nth"></param>
-    /// <param name="mode"></param>
-    /// <param name="rootn"></param>
-    /// <returns>The resulting integer-nth-root.</returns>
+    /// <param name="number">The number whose nth root to compute.</param>
+    /// <param name="nth">The degree of the root to compute.</param>
+    /// <param name="mode">The integer rounding strategy to use.</param>
+    /// <param name="rootn">The actual floating-point root-n as an out parameter.</param>
+    /// <returns>The integer root-n of number.</returns>
+    [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
     public static TNumber FastIntegerRootN<TNumber, TNth>(this TNumber number, TNth nth, UniversalRounding mode, out double rootn)
       where TNumber : System.Numerics.INumber<TNumber>
       where TNth : System.Numerics.IBinaryInteger<TNth>
-    {
-      checked
-      {
-        rootn = double.RootN(double.CreateChecked(TNumber.Abs(number)), int.CreateChecked(nth));
-
-        return TNumber.CopySign(TNumber.CreateChecked(rootn.RoundUniversal(mode)), number);
-      }
-    }
+      => checked(TNumber.CopySign(TNumber.CreateChecked((rootn = double.RootN(double.CreateChecked(TNumber.Abs(number)), int.CreateChecked(nth))).RoundUniversal(mode)), number));
   }
 }

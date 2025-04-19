@@ -208,69 +208,21 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
-      //var s = string.Concat(Flux.Fx.AllIpa);
-      //System.Console.WriteLine(s);
-      //s = string.Join(", ", Flux.Fx.AllIpa.Select(s => '"' + string.Join(string.Empty, s.ToCharArray().Select(c => c.CsEscapeEncode(CsEscapeOption.UTF16))) + '"'));
-      //System.Console.WriteLine(s);
+      var tcp = "STARlink".AsSpan().TrimCommonPrefix(char.IsUpper);
 
-      //var text = "atɔʁteatʁavɛʁ";
-
-      //System.Console.WriteLine();
-      //System.Console.WriteLine(string.Join(", ", text.ToCharArray().Select(c => '"' + string.Join(string.Empty, c.CsEscapeEncode(CsEscapeOption.UTF16)) + '"')));
-
-      ////text = text.Replace("'", "ˈ");
-
-      //while (text.Length > 0)
-      //{
-      //  var syms = string.Join(", ", text.ToCharArray().Select(c => '"' + string.Join(string.Empty, c.CsEscapeEncode(CsEscapeOption.UTF16)) + '"'));
-      //  var ipaFound = string.Empty;
-
-      //  foreach (var ipa in Flux.Fx.AllIpa)
-      //  {
-      //    var sipa = string.Join(", ", ipa.ToCharArray().Select(c => '"' + string.Join(string.Empty, c.CsEscapeEncode(CsEscapeOption.UTF16)) + '"'));
-      //    if (text.AsSpan().IsCommonPrefix(ipa))
-      //    {
-      //      ipaFound = ipa;
-
-      //      break;
-      //    }
-      //  }
-
-      //  if (ipaFound.Length > 0)
-      //  {
-      //    System.Console.WriteLine($"IPA: {ipaFound} ({ipaFound.Length})");
-
-      //    text = text.Substring(ipaFound.Length);
-      //  }
-      //  else
-      //  {
-      //    System.Console.WriteLine($"Unidentified: {text[0]} ({text[0].CsEscapeEncode(CsEscapeOption.UTF16)})");
-
-      //    text = text.Substring(1);
-      //  }
-      //}
-
-      //var test = System.Globalization.CultureInfo.CurrentCulture.TryLocateCulture(out var dt, "en", "en-US", "en-GB");
-
-      var svs = Flux.PlanetaryScience.CompassRose32Wind.NbW.GetInfimumAndSupremum();
-
-      Zamplez.RunCoordinateSystems(); return;
-
-      var symbols = new int[] { 1, 2, 3 };
-
-      var permutations = symbols.PermutationsKnuthsAlgorithmL().Select(p => p.ToArray()).ToArray();
-
-      //permutations.Order();
-
-      foreach (var p in permutations)
-        System.Console.WriteLine(string.Join(", ", p));
+      var n = System.Int32.CreateChecked(9);
+      object o = n;
+      var isfp = o.GetType().IsFloatingPointNumericType(true);
+      var isni = o.GetType().IsIntegerNumericType(true);
+      var isns = o.GetType().IsSignedNumericType(true);
+      var isnu = o.GetType().IsUnsignedNumericType(true);
 
       //var s = "-41 ° 26 '46″ N79 ° 58 ′ 56 ″W";
-      var s = "a 123b45c";
-      var x = s.ToSpanMaker().InsertOrdinalIndicatorSuffix();
+      //var s = "a 123b45c";
+      //var x = s.ToSpanMaker().InsertOrdinalIndicatorSuffix();
 
-      s = "Z̤͔ͧ̑̓ä͖̭̈̇lͮ̒ͫǧ̗͚̚o̙̔ͮ̇͐̇";
-      System.Console.WriteLine(s);
+      //s = "Z̤͔ͧ̑̓ä͖̭̈̇lͮ̒ͫǧ̗͚̚o̙̔ͮ̇͐̇";
+      //System.Console.WriteLine(s);
       //s = "Powerلُلُصّبُلُلصّبُررً ॣ ॣh ॣ ॣ冗\r\n🏳0🌈️\r\nజ్ఞ‌ా";
       //var ros = s.ToSpanMakerOfRune().AsReadOnlySpan();
       //var rs = ros.ToSpanMakerOfChar().ToString();
@@ -279,7 +231,14 @@ namespace ConsoleApp
       //var sl = s.Length;
       //var t = s.GetTextElements();
       //var tl = t.Count;
-
+      var fi = new System.IO.FileInfo(@"file://\Resources\Ucd\UnicodeData.txt");
+      var urix = new System.Uri(@"file://\Resources\Ucd\UnicodeData.txt");
+      var cd = System.Environment.CurrentDirectory;
+      var pc = System.IO.Path.Combine(cd, urix.LocalPath);
+      var fi2 = new System.IO.FileInfo(urix.LocalPath.AsSpan().TrimCommonPrefix('/').ToString());
+      var tgfi = urix.TryGetFileInfo(out var fileInfo);
+      //C:\Users\Rob\source\repos\AmidBits\Flux\FluxSolution\ConsoleApp\bin\Debug\net9.0\Flux\Resources\Data\Ucd_UnicodeText.txt
+      //using var fs = new System.IO.FileStream(urix.LocalPath.StartsWith(@"/") ? urix.LocalPath[1..] : urix.LocalPath, System.IO.FileMode.Open);
     }
 
     #region Eliza example

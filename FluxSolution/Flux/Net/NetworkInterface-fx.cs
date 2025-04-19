@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class NetworkInterfaces
   {
     /// <summary>
     /// <para>Creates a new string with the MAC-address of the network interface.</para>

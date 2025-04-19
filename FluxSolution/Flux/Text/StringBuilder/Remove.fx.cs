@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class StringBuilders
   {
     /// <summary>
     /// <span>Removes the characters from <paramref name="startIndex"/> on to the end of the <paramref name="source"/>.</span>

@@ -1,6 +1,6 @@
 ﻿namespace Flux
 {
-  public static partial class Fx
+  public static partial class Environment
   {
     /// <summary>
     /// <para>Returns a <see cref="System.IO.DirectoryInfo"/> object for the specified <see cref="System.Environment.SpecialFolder"/>.</para>

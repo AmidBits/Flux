@@ -6,21 +6,21 @@ namespace Flux
     /// <para>Determines if <paramref name="value"/> is a power of <paramref name="radix"/>.</para>
     /// </summary>
     /// <remarks>This version also handles negative values simply by mirroring the corresponding positive value. Zero return as false.</remarks>
-    public static bool IsIntegerPowOf<TNumber, TRadix>(this TNumber number, TRadix radix)
+    public static bool IsIntegerPowOf<TNumber, TRadix>(this TNumber value, TRadix radix)
       where TNumber : System.Numerics.IBinaryInteger<TNumber>
       where TRadix : System.Numerics.IBinaryInteger<TRadix>
     {
       if (radix == TRadix.CreateChecked(2)) // Special case for binary numbers, we can use dedicated IsPow2().
-        return TNumber.IsPow2(number);
+        return TNumber.IsPow2(value);
 
       try
       {
         var powOfRadix = TNumber.CreateChecked(Units.Radix.AssertWithin(radix));
 
-        while (powOfRadix < number)
+        while (powOfRadix < value)
           powOfRadix = TNumber.CreateChecked(powOfRadix * powOfRadix);
 
-        return powOfRadix == number;
+        return powOfRadix == value;
       }
       catch { }
 

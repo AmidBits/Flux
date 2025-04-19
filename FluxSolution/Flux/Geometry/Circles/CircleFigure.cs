@@ -5,7 +5,7 @@ namespace Flux.Geometry.Circles
   /// <see href="https://en.wikipedia.org/wiki/Circle"/>
   /// </summary>
   public readonly record struct CircleFigure
-    : IFormattable
+    : IFormattable, IFigurable
   {
     public static CircleFigure Unit { get; } = new(1);
 
@@ -16,7 +16,7 @@ namespace Flux.Geometry.Circles
     /// <summary>
     /// <para>The circumference (perimeter) of the circle.</para>
     /// </summary>
-    public double Circumference => Units.Length.OfCirclePerimeter(m_radius);
+    public double Perimeter => Units.Length.OfCirclePerimeter(m_radius);
 
     /// <summary>
     /// <para>The radius of the circle.</para>
@@ -95,7 +95,7 @@ namespace Flux.Geometry.Circles
     {
       format ??= "N3";
 
-      return $"{GetType().Name} {{ Radius = {m_radius.ToString(format, provider)}, Circumference = {Circumference.ToString(format, provider)}, SurfaceArea = {SurfaceArea.ToString(format, provider)} }}";
+      return $"{GetType().Name} {{ Radius = {m_radius.ToString(format, provider)}, Circumference = {Perimeter.ToString(format, provider)}, SurfaceArea = {SurfaceArea.ToString(format, provider)} }}";
     }
 
     #endregion // Implemented interfaces

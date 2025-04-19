@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class GenericMath
+  public static partial class BitOps
   {
     /// <summary>
     /// <para>Swap adjacent 1-bits (single bits).</para>

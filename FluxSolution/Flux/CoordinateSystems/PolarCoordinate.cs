@@ -112,20 +112,34 @@ namespace Flux.CoordinateSystems
     /// <para><see href="https://en.wikipedia.org/wiki/Rotation_matrix#In_two_dimensions"/></para>
     /// </summary>
     public static (double radius, double azimuth) ConvertCartesian2ToPolar(double x, double y)
-      => new(
+    {
+      var azimuth = double.Atan2(y, x);
+
+      if (azimuth < 0)
+        azimuth += double.Tau;
+
+      return (
         double.Sqrt(x * x + y * y),
-        double.Atan2(y, x)
+        azimuth
       );
+    }
 
     /// <summary>
     /// <para>Creates a <see cref="PolarCoordinate"/> from the cartesian 2D coordinates (x, y) where 'center-up' is 'zero' (i.e. neutral-x and positive-y) to a clockwise rotation angle [0, PI*2] (i.e. radians). Looking at the face of a clock, this goes clockwise from and to 12 o'clock.</para>
     /// <para><see href="https://en.wikipedia.org/wiki/Rotation_matrix#In_two_dimensions"/></para>
     /// </summary>
     public static (double radius, double azimuth) ConvertCartesian2ToPolarEx(double x, double y)
-      => (
+    {
+      var azimuth = double.Atan2(x, y); // Ex version is atan2(x,y) instead of atan2(y,x).
+
+      if (azimuth < 0)
+        azimuth += double.Tau;
+
+      return (
         double.Sqrt(x * x + y * y),
-        double.Atan2(x, y) is var atan2 && atan2 < 0 ? double.Tau + atan2 : atan2
+        azimuth
       );
+    }
 
     /// <summary>
     /// <para>Convert the polar coordinate [0, Tau(2*Pi)] (i.e. radians) where 'zero' azimuth is 'right-center' (i.e. positive-x and neutral-y) to a cartesian 2D coordinate (x, y). Looking at the face of a clock, this goes counter-clockwise from and to 3 o'clock.</para>
@@ -143,7 +157,11 @@ namespace Flux.CoordinateSystems
     /// <para><see href="https://en.wikipedia.org/wiki/Rotation_matrix#In_two_dimensions"/></para>
     /// </summary>
     public static (double x, double y) ConvertPolarToCartesian2Ex(double radius, double azimuth)
-      => ConvertPolarToCartesian2(radius, (double.Tau * 1.25) - (azimuth % double.Tau) is var h && h > double.Tau ? h - double.Tau : h);
+    {
+      var (sin, cos) = double.SinCos(azimuth);
+
+      return (radius * sin, radius * cos); // Ex version is (r*sin,r*cos) instead of (r*cos,r*sin).
+    }
 
     #endregion // Conversion methods
 

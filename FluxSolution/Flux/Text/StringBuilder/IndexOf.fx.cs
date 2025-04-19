@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class StringBuilders
   {
     public static int IndexOf(this System.Text.StringBuilder source, int offset, System.Func<char, bool> predicate)
     {

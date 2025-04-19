@@ -14,7 +14,7 @@ namespace FluxMst.Colors
     public void CmykToRgb()
     {
       var expected = System.Drawing.Color.FromArgb(0, 41, 31, 20);
-      var actual = Flux.Color.FromAcmyk(0, 0.20, 0.40, 0.60, 0.80);
+      var actual = Flux.Colors.FromAcmyk(0, 0.20, 0.40, 0.60, 0.80);
       Assert.AreEqual(expected, actual);
     }
 
@@ -22,16 +22,16 @@ namespace FluxMst.Colors
     public void HsiToRgb()
     {
       var expected = System.Drawing.Color.FromArgb(0, 115, 58, 57);
-      var actual = Flux.Color.FromAhsi(0, 0.20, 0.25, 0.30);
+      var actual = Flux.Colors.FromAhsi(0, 0.20, 0.25, 0.30);
       Assert.AreEqual(expected, actual);
     }
 
     [TestMethod]
     public void HslToHsv()
     {
-      var expected = Flux.Color.FromAhsv(0, 0.2, 0.40000000000000013, 0.375);
-      var (H, S, V) = Flux.Color.ConvertHslToHsv(0.20, 0.25, 0.30);
-      var actual = Flux.Color.FromAhsv(0, H, S, V);
+      var expected = Flux.Colors.FromAhsv(0, 0.2, 0.40000000000000013, 0.375);
+      var (H, S, V) = Flux.Colors.ConvertHslToHsv(0.20, 0.25, 0.30);
+      var actual = Flux.Colors.FromAhsv(0, H, S, V);
       Assert.AreEqual(expected, actual);
     }
 
@@ -110,7 +110,7 @@ namespace FluxMst.Colors
     public void RgbToGrayscaleAverage()
     {
       var argb = System.Drawing.Color.FromArgb(67, 137, 207);
-      var grayscale_average_actual = argb.ToGrayscale(Flux.Color.GrayscaleMethod.Average);
+      var grayscale_average_actual = argb.ToGrayscale(Flux.Colors.GrayscaleMethod.Average);
       var grayscale_average_expected = System.Drawing.Color.FromArgb(22, 45, 69);
       Assert.AreEqual(grayscale_average_expected, grayscale_average_actual);
     }
@@ -119,7 +119,7 @@ namespace FluxMst.Colors
     public void RgbToGrayscaleLuminosity601()
     {
       var rgb = System.Drawing.Color.FromArgb(67, 137, 207);
-      var grayscale_luminosity_actual = rgb.ToGrayscale(Flux.Color.GrayscaleMethod.Luminosity601);
+      var grayscale_luminosity_actual = rgb.ToGrayscale(Flux.Colors.GrayscaleMethod.Luminosity601);
       var grayscale_luminosity_expected = System.Drawing.Color.FromArgb(20, 80, 22);
       Assert.AreEqual(grayscale_luminosity_expected, grayscale_luminosity_actual);
     }
@@ -128,7 +128,7 @@ namespace FluxMst.Colors
     public void RgbToGrayscaleLuminosity709()
     {
       var argb = System.Drawing.Color.FromArgb(67, 137, 207);
-      var grayscale_lightness_actual = argb.ToGrayscale(Flux.Color.GrayscaleMethod.Luminosity709);
+      var grayscale_lightness_actual = argb.ToGrayscale(Flux.Colors.GrayscaleMethod.Luminosity709);
       var grayscale_lightness_expected = System.Drawing.Color.FromArgb(14, 98, 14);
       Assert.AreEqual(grayscale_lightness_expected, grayscale_lightness_actual);
     }

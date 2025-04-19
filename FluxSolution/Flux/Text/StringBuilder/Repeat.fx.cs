@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class StringBuilders
   {
     /// <summary>
     /// <span>Extends the content of the <paramref name="source"/> by repeating the content <paramref name="count"/> times.</span>

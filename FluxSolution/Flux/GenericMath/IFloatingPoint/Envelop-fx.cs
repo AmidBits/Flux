@@ -10,6 +10,7 @@
     /// <param name="value"></param>
     /// <returns></returns>
     /// <remarks>Like truncate, envelop is a symmetric biased around 0 type rounding.</remarks>
+    [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
     public static TNumber Envelop<TNumber>(this TNumber value)
         where TNumber : System.Numerics.IFloatingPoint<TNumber>
         => TNumber.IsNegative(value) ? TNumber.Floor(value) : TNumber.Ceiling(value);

@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class StringBuilders
   {
     /// <summary>Uncapitalize any upper-case character with a lower case character on the right and, a whitespace on the left or that is at the beginning.</summary>
     public static System.Text.StringBuilder UncapitalizeWords(this System.Text.StringBuilder source, System.Globalization.CultureInfo? culture = null)

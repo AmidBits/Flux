@@ -12,15 +12,15 @@ namespace Numerics
     [TestMethod]
     public void BitFlagCarryLsb()
     {
-      Assert.AreEqual(true, 0xFFFFFFFFU.BitFlagCarryLsb());
-      Assert.AreEqual(false, 0.BitFlagCarryLsb());
+      Assert.AreEqual(true, 0xFFFFFFFFU.BitGetLsb());
+      Assert.AreEqual(false, 0.BitGetLsb());
     }
 
     [TestMethod]
     public void BitFlagCarryMsb()
     {
-      Assert.AreEqual(true, 0xFFFFFFFFU.BitFlagCarryMsb());
-      Assert.AreEqual(false, 0.BitFlagCarryMsb());
+      Assert.AreEqual(true, 0xFFFFFFFFU.BitGetMsb());
+      Assert.AreEqual(false, 0.BitGetMsb());
     }
 
     #endregion // BitFlags
@@ -46,19 +46,19 @@ namespace Numerics
     [TestMethod]
     public void BitIndexClear()
     {
-      Assert.AreEqual(0x2U, 0x6U.BitIndexClear(2));
+      Assert.AreEqual(0x2U, 0x6U.BitClear(2));
     }
 
     [TestMethod]
     public void BitIndexFlip()
     {
-      Assert.AreEqual(4, 0.BitIndexFlip(2));
+      Assert.AreEqual(4, 0.BitFlip(2));
     }
 
     [TestMethod]
     public void BitIndexGet()
     {
-      Assert.AreEqual(true, 0x6U.BitIndexCheck(2));
+      Assert.AreEqual(true, 0x6U.BitGet(2));
     }
 
     [TestMethod]
@@ -74,7 +74,7 @@ namespace Numerics
     [TestMethod]
     public void BitIndexSet()
     {
-      Assert.AreEqual(0x4U, 0b00000000U.BitIndexSet(2));
+      Assert.AreEqual(0x4U, 0b00000000U.BitSet(2));
     }
 
     #endregion // BitIndex

@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class IComparables
   {
     public static int CompareToDefault<T>(this T source)
       where T : System.IComparable<T>

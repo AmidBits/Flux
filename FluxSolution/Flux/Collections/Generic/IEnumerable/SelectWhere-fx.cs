@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class IEnumerables
   {
     /// <summary>
     /// <para>Yields a new sequence of elements from <paramref name="source"/> based on <paramref name="selector"/> and <paramref name="predicate"/>.</para>

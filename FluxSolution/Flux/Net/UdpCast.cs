@@ -125,7 +125,7 @@ namespace Flux.Net
 
       var id = $"{{{name}&{guid}}}";
 
-      MyIpAddresses.TryGetMyLocalAddress(out var myLocalAddress);
+      IPAddresses.TryGetMyLocalAddress(out var myLocalAddress);
 
       var localIp = new System.Net.IPEndPoint(myLocalAddress, multicastAddress.Port);
 

@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class StringBuilders
   {
     /// <summary>Inserts a space in front of any single upper case character, except the first one in the string.</summary>
     public static System.Text.StringBuilder PrefixCapWords(this System.Text.StringBuilder source, char prefix = ' ')

@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class CultureInfos
   {
     /// <summary>
     /// <para>Indicates whether the character is the letter 'Y' or 'y', i.e. ignore case.</para>

@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class StringBuilders
   {
     /// <summary>
     /// <para>Creates a new <see cref="SpanMaker{T}"/> from the characters in source.</para>

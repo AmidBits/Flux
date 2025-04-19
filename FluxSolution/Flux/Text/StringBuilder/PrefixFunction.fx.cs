@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class StringBuilders
   {
     /// <summary>
     /// <para>The Prefix function for this string-builder is an array of length n, where p[i] is the length of the longest proper prefix of the substring <paramref name="source"/>[0...i] which is also a suffix of this substring.</para>

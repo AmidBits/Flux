@@ -97,20 +97,20 @@ namespace Flux
     /// <para>A global IP address is the address that the system has on the outside of the local area network.</para>
     /// </summary>
     public static System.Net.IPAddress GlobalAddress
-      => Net.MyIpAddresses.TryGetMyGlobalAddress(out var myGlobalAddress) ? myGlobalAddress : myGlobalAddress;
+      => Net.IPAddresses.TryGetMyGlobalAddress(out var myGlobalAddress) ? myGlobalAddress : myGlobalAddress;
 
     /// <summary>
     /// <para>Gets the local IP address of the system.</para>
     /// <para>A local IP address is </para>
     /// </summary>
     public static System.Net.IPAddress LocalAddress
-      => Net.MyIpAddresses.TryGetMyLocalAddress(out var myLocalAddress) ? myLocalAddress : myLocalAddress;
+      => Net.IPAddresses.TryGetMyLocalAddress(out var myLocalAddress) ? myLocalAddress : myLocalAddress;
 
     /// <summary>
     /// <para>Gets all local IP addresses of the system.</para>
     /// </summary>
     public static System.Net.IPAddress[] LocalAddresses
-      => Net.MyIpAddresses.TryGetMyLocalAddressesViaNics(out var myLocalAddressesViaNics) ? myLocalAddressesViaNics : myLocalAddressesViaNics;
+      => Net.IPAddresses.TryGetMyLocalAddressesViaNics(out var myLocalAddressesViaNics) ? myLocalAddressesViaNics : myLocalAddressesViaNics;
 
     /// <summary>
     /// <para>Gets the NETBIOS name of this local computer.</para>

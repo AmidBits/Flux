@@ -8,17 +8,17 @@ namespace Flux
     /// <para><see href="https://en.wikipedia.org/wiki/Average_absolute_deviation"/></para>
     /// </summary>
     /// <typeparam name="TNumber"></typeparam>
-    /// <param name="source"></param>
+    /// <param name="values"></param>
     /// <returns></returns>
-    public static (double MeanAbsoluteDeviation, double MedianAbsoluteDeviation) MeanMedianAbsoluteDeviation<TNumber>(this System.Collections.Generic.IList<TNumber> source)
+    public static (double MeanAbsoluteDeviation, double MedianAbsoluteDeviation) MeanMedianAbsoluteDeviation<TNumber>(this System.Collections.Generic.IList<TNumber> values)
       where TNumber : System.Numerics.INumber<TNumber>
     {
-      var mmo = new Statistics.OnlineMeanMedianMode<TNumber>(source);
+      var mmo = new Statistics.OnlineMeanMedianMode<TNumber>(values);
 
       var madMean = 0d;
       var madMedian = 0d;
 
-      foreach (var value in source.Select(v => double.CreateChecked(v)))
+      foreach (var value in values.Select(v => double.CreateChecked(v)))
       {
         madMean += double.Abs(value - mmo.Mean);
         madMedian += double.Abs(value - mmo.Median);

@@ -1,6 +1,6 @@
 namespace Flux.Net
 {
-  public static class MyIpAddresses
+  public static class IPAddresses
   {
     /// <summary>
     /// <para>There is really only one way to do this reliably, and that is to call out to certain sites that reply with your global/public IP address.</para>

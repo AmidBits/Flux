@@ -3,29 +3,29 @@ namespace Flux
   // <seealso cref="http://aggregate.org/MAGIC/"/>
   // <seealso cref="http://graphics.stanford.edu/~seander/bithacks.html"/>
 
-  public static partial class GenericMath
+  public static partial class BitOps
   {
     /// <summary>
     /// <para>Recursively "folds" all 1-bits into lower (right) bits, by taking the most-significant-1-bits (MS1B) and OR it with (MS1B - 1), ending with bottom (right) bits (from MS1B on) set to 1.</para>
-    /// <para>The process yields a bit vector with the same most-significant-1-bit as <paramref name="source"/>, and all 1's below it.</para>
+    /// <para>The process yields a bit vector with the same most-significant-1-bit as <paramref name="value"/>, and all 1's below it.</para>
     /// </summary>
     /// <returns>All bits set from MS1B down, or -1 (all bits) if the value is less than zero.</returns>
-    public static TNumber BitFoldLsb<TNumber>(this TNumber source)
+    public static TNumber BitFoldLsb<TNumber>(this TNumber value)
       where TNumber : System.Numerics.IBinaryInteger<TNumber>
-      => TNumber.IsZero(source)
-      ? source
-      : (((source.MostSignificant1Bit() - TNumber.One) << 1) | TNumber.One);
+      => TNumber.IsZero(value)
+      ? value
+      : (((value.MostSignificant1Bit() - TNumber.One) << 1) | TNumber.One);
 
     /// <summary>
     /// <para>Recursively "folds" all 1-bits into upper (left) bits, ending with top (left) bits (from LS1B on) set to 1.</para>
-    /// <para>The process yields a bit vector with the same least-significant-1-bit as <paramref name="source"/>, and all 1's above it.</para>
+    /// <para>The process yields a bit vector with the same least-significant-1-bit as <paramref name="value"/>, and all 1's above it.</para>
     /// </summary>
     /// <returns>All bits set from LS1B up, or -1 if the value is less than zero.</returns>
-    public static TNumber BitFoldMsb<TNumber>(this TNumber source)
+    public static TNumber BitFoldMsb<TNumber>(this TNumber value)
       where TNumber : System.Numerics.IBinaryInteger<TNumber>
-      => TNumber.IsZero(source)
-      ? source
-      : (source is System.Numerics.BigInteger ? TNumber.CreateChecked(source.GetBitCount()).CreateBitMaskLsbFromBitLength() : ~TNumber.Zero) << source.GetTrailingZeroCount();
+      => TNumber.IsZero(value)
+      ? value
+      : (value is System.Numerics.BigInteger ? TNumber.CreateChecked(value.GetBitCount()).CreateBitMaskLsbFromBitLength() : ~TNumber.Zero) << value.GetTrailingZeroCount();
     //var tzc = value.GetTrailingZeroCount();
     //return BitFoldRight(value << value.GetLeadingZeroCount()) >> tzc << tzc;
 

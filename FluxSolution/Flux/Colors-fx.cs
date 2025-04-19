@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Color
+  public static partial class Colors
   {
     public enum GrayscaleMethod
     {

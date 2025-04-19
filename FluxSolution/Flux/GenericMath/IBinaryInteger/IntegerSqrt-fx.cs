@@ -14,7 +14,7 @@ namespace Flux
     {
       value.AssertNonNegativeNumber();
 
-      if (TryFastIntegerSqrt(value, UniversalRounding.WholeTowardZero, out TNumber isqrt, out var _)) // Testing!
+      if (value.TryFastIntegerSqrt(UniversalRounding.WholeTowardZero, out TNumber isqrt, out var _)) // Testing!
         return isqrt;
 
       var x0 = TNumber.One << (value.GetShortestBitLength() / 2 + 1); // The least power of two bigger than the square value.
@@ -37,6 +37,7 @@ namespace Flux
     /// <param name="value">The square value to find the square-<paramref name="root"/> of.</param>
     /// <param name="root">The resulting square-root of <paramref name="value"/>.</param>
     /// <returns>Whether the <paramref name="value"/> is the integer (not necessarily perfect) square of <paramref name="root"/>.</returns>
+    [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
     public static bool IsIntegerSqrt<TNumber>(this TNumber value, TNumber root)
       where TNumber : System.Numerics.IBinaryInteger<TNumber>
     => value >= (root * root) // If GTE to square of root.
@@ -50,6 +51,7 @@ namespace Flux
     /// <param name="root">The resulting square-root of <paramref name="value"/>.</param>
     /// <returns>Whether the <paramref name="value"/> is a perfect square of <paramref name="root"/>.</returns>
     /// <remarks>Not using "y == (x * x)" because risk of overflow.</remarks>
+    [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
     public static bool IsPerfectIntegerSqrt<TNumber>(this TNumber value, TNumber root)
       where TNumber : System.Numerics.IBinaryInteger<TNumber>
       => value == (root * root);

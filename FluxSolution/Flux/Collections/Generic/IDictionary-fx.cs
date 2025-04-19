@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class Dictionaries
   {
     public static System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TValue, TKey>> FlipPairs<TKey, TValue>(this System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, TValue>> source)
       => source.GroupBy(kvp => kvp.Value).SelectMany(g => g.Select(gi => System.Collections.Generic.KeyValuePair.Create(gi.Value, gi.Key)));

@@ -383,7 +383,7 @@ namespace ConsoleApp
       System.Console.WriteLine(nameof(RunColors));
       System.Console.WriteLine();
 
-      var argb = Flux.Color.FromRandom();
+      var argb = Flux.Colors.FromRandom();
 
       //rgb = new Flux.Colors.Rgb(0xF0, 0xC8, 0x0E);
       //rgb = new Flux.Colors.Rgb(0xB4, 0x30, 0xE5);
@@ -396,15 +396,15 @@ namespace ConsoleApp
       var hue = argb.ComputeHue(out var a, out var r, out var g, out var b, out var _, out var _, out var chroma);
       var (chroma2, hue2) = argb.ComputeSecondaryChromaAndHue();
       var acmyk = argb.ToAcmyk();
-      System.Console.WriteLine($"{acmyk} ({Flux.Color.FromAcmyk(acmyk.Alpha, acmyk.Cyan, acmyk.Magenta, acmyk.Yellow, acmyk.Key)})");
+      System.Console.WriteLine($"{acmyk} ({Flux.Colors.FromAcmyk(acmyk.Alpha, acmyk.Cyan, acmyk.Magenta, acmyk.Yellow, acmyk.Key)})");
       var ahsi = argb.ToAhsi();
-      System.Console.WriteLine($"{ahsi} ({Flux.Color.FromAhsi(ahsi.Alpha, ahsi.Hue, ahsi.Saturation, ahsi.Intensity)})");
+      System.Console.WriteLine($"{ahsi} ({Flux.Colors.FromAhsi(ahsi.Alpha, ahsi.Hue, ahsi.Saturation, ahsi.Intensity)})");
       var ahsl = argb.ToAhsl();
-      System.Console.WriteLine($"{ahsl} ({Flux.Color.FromAhsi(ahsl.Alpha, ahsl.Hue, ahsl.Saturation, ahsl.Lightness)}) ({Flux.Color.ConvertHslToHsv(ahsl.Hue, ahsl.Saturation, ahsl.Lightness)})");
+      System.Console.WriteLine($"{ahsl} ({Flux.Colors.FromAhsi(ahsl.Alpha, ahsl.Hue, ahsl.Saturation, ahsl.Lightness)}) ({Flux.Colors.ConvertHslToHsv(ahsl.Hue, ahsl.Saturation, ahsl.Lightness)})");
       var ahsv = argb.ToAhsv();
-      System.Console.WriteLine($"{ahsv} ({Flux.Color.FromAhsi(ahsv.Alpha, ahsv.Hue, ahsv.Saturation, ahsv.Value)}) (HSL: {Flux.Color.ConvertHsvToHsl(ahsv.Hue, ahsv.Saturation, ahsv.Value)}) (HWB: {Flux.Color.ConvertHsvToHwb(ahsv.Hue, ahsv.Saturation, ahsv.Value)})");
+      System.Console.WriteLine($"{ahsv} ({Flux.Colors.FromAhsi(ahsv.Alpha, ahsv.Hue, ahsv.Saturation, ahsv.Value)}) (HSL: {Flux.Colors.ConvertHsvToHsl(ahsv.Hue, ahsv.Saturation, ahsv.Value)}) (HWB: {Flux.Colors.ConvertHsvToHwb(ahsv.Hue, ahsv.Saturation, ahsv.Value)})");
       var ahwb = argb.ToAhwb();
-      System.Console.WriteLine($"{ahwb} ({Flux.Color.FromAhwb(ahwb.Alpha, ahwb.Hue, ahwb.White, ahwb.Black)}) ({Flux.Color.ConvertHwbToHsv(ahwb.Hue, ahwb.White, ahwb.Black)})");
+      System.Console.WriteLine($"{ahwb} ({Flux.Colors.FromAhwb(ahwb.Alpha, ahwb.Hue, ahwb.White, ahwb.Black)}) ({Flux.Colors.ConvertHwbToHsv(ahwb.Hue, ahwb.White, ahwb.Black)})");
 
       System.Console.WriteLine($"{argb.ToHtmlHexString()} | {(r * 100):N1}%, {(g * 100):N1}%, {(b * 100):N1}% | {hue:N1}, {hue2} | {(chroma * 100):N1}, {(chroma2 * 100):N1} | {(ahsv.Value * 100):N1}%, {(ahsl.Lightness * 100):N1}%, {(ahsi.Intensity * 100):N1}% | Y={argb.ComputeLuma601()} | {(ahsv.Saturation * 100):N1}%, {(ahsl.Saturation * 100):N1}%, {(ahsi.Saturation * 100):N1}%");
       System.Console.WriteLine();
@@ -614,7 +614,7 @@ namespace ConsoleApp
       System.Console.WriteLine(nameof(RunPhoneticAlgorithms));
       System.Console.WriteLine();
 
-      var ipaes = typeof(Flux.Text.PhoneticAlgorithm.IPhoneticAlgorithmEncodable).GetDerivedTypes().Select(t => (Flux.Text.PhoneticAlgorithm.IPhoneticAlgorithmEncodable)System.Activator.CreateInstance(t));
+      var ipaes = typeof(Flux.PhoneticAlgorithm.IPhoneticAlgorithmEncodable).GetDerivedTypes().Select(t => (Flux.PhoneticAlgorithm.IPhoneticAlgorithmEncodable)System.Activator.CreateInstance(t));
       var names = new string[] { "Dougal", "Glinde", "Plumridge", "Simak", "Webberley", "Ashcraft", "Ashcroft", "Asicroft", "Schmidt", "Schneider", "Lloyd", "Pfister" };
 
       foreach (var ipae in ipaes)

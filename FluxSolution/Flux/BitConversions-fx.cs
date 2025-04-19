@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class BitConversions
   {
     #region Read values from a byte buffer
 

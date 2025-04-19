@@ -4,9 +4,9 @@ namespace Flux
   {
     /// <summary>
     /// <para>Determines whether <paramref name="source"/> is assignable to the <paramref name="genericType"/>.</para>
-    /// <see href="https://stackoverflow.com/a/1075059/3178666"/>
+    /// <para><see href="https://stackoverflow.com/a/1075059/3178666"/></para>
+    /// <example>var isUnsignedNumber = typeof(int).IsAssignableToGenericType(typeof(System.Numerics.IUnsignedNumber&lt;>));</example>
     /// </summary>
-    // <example>var isUnsignedNumber = typeof(int).IsAssignableToGenericType(typeof(System.Numerics.IUnsignedNumber<>));</example>
     public static bool IsAssignableToGenericType(this System.Type source, System.Type genericType)
     {
       if (source.IsGenericType && source.GetGenericTypeDefinition() == genericType)

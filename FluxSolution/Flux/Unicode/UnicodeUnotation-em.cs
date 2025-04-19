@@ -32,16 +32,14 @@ namespace Flux
     /// <para>Convert the character to the string representation format "U+XXXX" (at least 4 hex characters, more if needed).</para>
     /// </summary>
     /// <param name="source"></param>
-    /// <param name="asHexadecimal"></param>
     /// <returns></returns>
     public static string UnicodeUnotationEncode(this char source)
-      => $"U+{(int)source:X4}";
+      => new System.Text.Rune(source).UnicodeUnotationEncode();
 
     /// <summary>
     /// <para>Convert the Unicode codepoint to the string representation format "U+XXXX" (at least 4 hex characters, more if needed).</para>
     /// </summary>
     /// <param name="source"></param>
-    /// <param name="asHexadecimal"></param>
     /// <returns></returns>
     public static string UnicodeUnotationEncode(this System.Text.Rune source)
       => $"U+{source.Value:X4}";

@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class IEnumerables
   {
     /// <summary>
     /// <para>Compute the mean, median and mode of all elements in <paramref name="source"/>. This version uses a <see cref="Statistics.OnlineMeanMedianMode{TSelf}"/> with double heaps and a histogram.</para>

@@ -1,11 +1,12 @@
 namespace Flux
 {
-  public static partial class GenericMath
+  public static partial class BitOps
   {
     /// <summary>
     /// <para>Converts a binary number to a reflected binary Gray code.</para>
     /// <see href="https://en.wikipedia.org/wiki/Gray_code"/>
     /// </summary>
+    [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
     public static TNumber BinaryToGray<TNumber>(this TNumber value)
       where TNumber : System.Numerics.IBinaryInteger<TNumber>
       => value ^ (value >>> 1);

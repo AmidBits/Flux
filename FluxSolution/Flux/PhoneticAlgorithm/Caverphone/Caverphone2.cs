@@ -1,4 +1,4 @@
-﻿namespace Flux.Text.PhoneticAlgorithm.Caverphone
+﻿namespace Flux.PhoneticAlgorithm.Caverphone
 {
   /// <summary>Implements the Caverphone 2.0 algorithm</summary>
   // https://en.wikipedia.org/wiki/Caverphone

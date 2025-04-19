@@ -1,6 +1,6 @@
 //namespace Flux
 //{
-//  public static partial class Fx
+//  public static partial class CultureInfos
 //  {
 //    public static System.Collections.Generic.IEnumerable<string> LoadCultureFile(this System.Globalization.CultureInfo source, string directory, System.Text.Encoding? encoding = null)
 //    {

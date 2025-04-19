@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class StringBuilders
   {
     /// <summary>
     /// <para>Indicates whether there are <paramref name="count"/> elements satisfying the <paramref name="predicate"/> at <paramref name="source"/>[<paramref name="offset"/>].</para>

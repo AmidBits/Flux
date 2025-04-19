@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class StringBuilders
   {
     /// <summary>
     /// <para>Splits a <see cref="System.Text.StringBuilder"/> into substrings based on the specified <paramref name="predicate"/> and <paramref name="options"/>.</para>

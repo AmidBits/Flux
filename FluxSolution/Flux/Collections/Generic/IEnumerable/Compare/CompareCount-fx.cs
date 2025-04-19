@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class IEnumerables
   {
     /// <summary>
     /// <para>Compares the number of elements in <paramref name="source"/> that satisfies the <paramref name="predicate"/> (all elements if null) against the specified <paramref name="count"/>.</para>

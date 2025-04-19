@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class Runes
   {
     /// <summary>
     /// <para>The set of Unicode character categories containing non-rendering, unknown, or incomplete characters.</para>
@@ -19,7 +19,8 @@ namespace Flux
     /// </summary>
     /// <param name="source"></param>
     /// <returns></returns>
-    public static bool IsPrintableAscii(this System.Text.Rune source) => ((char)source.Value).IsPrintableAscii();
+    public static bool IsPrintableAscii(this System.Text.Rune source)
+      => source.Value is >= '\u0020' and <= '\u007E';
 
     /// <summary>
     /// <para>Returns whether a rune (Unicode codepoint) is a "printable" character. There is no simple solution, so please read the entire blurb of this method.</para>

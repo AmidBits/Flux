@@ -1,6 +1,6 @@
 //namespace Flux
 //{
-//  public static partial class Fx
+//  public static partial class StringBuilders
 //  {
 //    /// <summary>
 //    /// <para>Returns whether <paramref name="maxLength"/> (or the actual length if less) characters of <paramref name="value"/> are found at the <paramref name="sourceIndex"/> in the <paramref name="source"/>.</para>

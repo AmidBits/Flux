@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class CultureInfos
   {
     /// <summary>Contains all English graphemes from the 'main system' and the rest including the minor patterns and oddities.</summary>
     private static readonly string[][][] Graphemes_en = new string[][][]

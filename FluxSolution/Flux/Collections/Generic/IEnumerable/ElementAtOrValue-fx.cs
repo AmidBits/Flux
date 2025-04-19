@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class IEnumerables
   {
     /// <summary>
     /// <para>Returns a tuple with the item and <paramref name="index"/> if available, otherwise <paramref name="value"/> and index = -1.</para>

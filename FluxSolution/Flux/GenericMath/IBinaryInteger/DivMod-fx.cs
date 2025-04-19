@@ -12,7 +12,15 @@ namespace Flux
     /// <returns></returns>
     public static (TInteger QuotientEnveloped, TInteger Remainder) DivModEnveloped<TInteger>(this TInteger dividend, TInteger divisor)
       where TInteger : System.Numerics.INumber<TInteger>
-      => dividend / divisor is var q && dividend % divisor is var r && TInteger.IsZero(r) ? (q, r) : TInteger.IsNegative(q) ? (q - TInteger.One, r) : (q + TInteger.One, r);
+    {
+      var q = dividend / divisor;
+      var r = dividend % divisor;
+
+      if (TInteger.IsZero(r))
+        return (q, r);
+
+      return TInteger.IsNegative(q) ? (q - TInteger.One, r) : (q + TInteger.One, r);
+    }
 
     /// <summary>
     /// <para>Euclidean division, where the remainder is always positive.</para>
@@ -26,7 +34,14 @@ namespace Flux
     /// <returns></returns>
     public static (TNumber Quotient, TNumber Remainder) DivModEuclidean<TNumber>(this TNumber dividend, TNumber divisor)
       where TNumber : System.Numerics.IBinaryInteger<TNumber>
-      => TNumber.DivRem(dividend, divisor) is var (q, r) && TNumber.IsNegative(r) ? (divisor > TNumber.Zero) ? (q - TNumber.One, r + divisor) : (q + TNumber.One, r - divisor) : (q, r);
+    {
+      var (q, r) = TNumber.DivRem(dividend, divisor);
+
+      if (TNumber.IsNegative(r))
+        return (divisor > TNumber.Zero) ? (q - TNumber.One, r + divisor) : (q + TNumber.One, r - divisor);
+
+      return (q, r);
+    }
 
     /// <summary>
     /// <para>Floored division, where the remainder has the same sign as the divisor.</para>
@@ -39,6 +54,13 @@ namespace Flux
     /// <returns></returns>
     public static (TNumber Quotient, TNumber Remainder) DivModFloor<TNumber>(this TNumber dividend, TNumber divisor)
       where TNumber : System.Numerics.IBinaryInteger<TNumber>
-      => TNumber.DivRem(dividend, divisor) is var (q, r) && ((r > TNumber.Zero && TNumber.IsNegative(divisor)) || (TNumber.IsNegative(r) && divisor > TNumber.Zero)) ? (q - TNumber.One, r + divisor) : (q, r);
+    {
+      var (q, r) = TNumber.DivRem(dividend, divisor);
+
+      if ((r > TNumber.Zero && TNumber.IsNegative(divisor)) || (TNumber.IsNegative(r) && divisor > TNumber.Zero))
+        return (q - TNumber.One, r + divisor);
+
+      return (q, r);
+    }
   }
 }

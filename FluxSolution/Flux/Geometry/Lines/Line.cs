@@ -131,12 +131,13 @@ namespace Flux.Geometry.Lines
     //public static float SideTest(System.Numerics.Vector2 testV, System.Numerics.Vector2 v1, System.Numerics.Vector2 v2)
     //  => (v2.X - v1.X) * (testV.Y - v1.Y) - (v2.Y - v1.Y) * (testV.X - v1.X);
 
-    ///// <summary>
-    ///// <para>Returns the sign indicating whether the point is Left|On|Right of an infinite line. Through point1 and point2 the result has the meaning: greater than 0 is to the left of the line, equal to 0 is on the line, less than 0 is to the right of the line. (This is also known as an IsLeft function.)</para>
-    ///// </summary>
-    ///// <returns>On left side if greater than zero, on right side if less than zero, and on the line if zero.</returns>
-    //public static double SideTest(System.Runtime.Intrinsics.Vector128<double> testV, System.Runtime.Intrinsics.Vector128<double> v1, System.Runtime.Intrinsics.Vector128<double> v2)
-    //  => (v2[0] - v1[0]) * (testV[1] - v1[1]) - (v2[1] - v1[1]) * (testV[0] - v1[0]);
+    /// <summary>
+    /// <para>Returns the sign indicating whether the point is Left|On|Right of an infinite line. Through point1 and point2 the result has the meaning: greater than 0 is to the left of the line, equal to 0 is on the line, less than 0 is to the right of the line. (This is also known as an IsLeft function.)</para>
+    /// </summary>
+    /// <returns>On left side if greater than zero, on right side if less than zero, and on the line if zero.</returns>
+    public static double LineSideTest(System.Runtime.Intrinsics.Vector128<double> testV, System.Runtime.Intrinsics.Vector128<double> v0, System.Runtime.Intrinsics.Vector128<double> v1)
+      => (v1 - v0).Cross(testV - v0); // The 2D cross product of v1-to-v0 and testV-to-v0.
+    //=> LineSideTest(testV[0], testV[1], v0[0], v0[1], v1[0], v1[1]);
 
     /// <summary>
     /// <para>Returns the slope of a line/edge, between point(<paramref name="x0"/>, <paramref name="y0"/>) and point(<paramref name="x1"/>, <paramref name="y1"/>). The slope is the change in y divided by the corresponding change in x. Basically slope represents vertial change divided by horizontal change, or rise divided by run.</para>

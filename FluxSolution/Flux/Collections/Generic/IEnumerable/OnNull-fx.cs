@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class IEnumerables
   {
     /// <summary>Throws an exception if <paramref name="source"/> is null. Deferred execution.</summary>
     /// <exception cref="System.ArgumentNullException"/>

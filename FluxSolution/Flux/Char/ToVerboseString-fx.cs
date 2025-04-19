@@ -2,7 +2,7 @@ namespace Flux
 {
   public static partial class Chars
   {
-    public static string ToStringEx(this char source)
+    public static string ToVerboseString(this char source)
     {
       var uc = char.GetUnicodeCategory(source);
 

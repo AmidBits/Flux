@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class CultureInfos
   {
     public static System.ReadOnlySpan<char> GetConsonantsOf(this System.Globalization.CultureInfo source)
     {

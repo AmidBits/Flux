@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class StringBuilders
   {
     /// <summary>
     /// <para>Remove all characters satisfying the <paramref name="predicate"/> from the <paramref name="source"/>.</para>

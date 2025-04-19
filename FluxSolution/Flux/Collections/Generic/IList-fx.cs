@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class ILists
   {
     /// <summary>Creates a new sequence of all pair indices for which values when added equals the specified sum.</summary>
     public static System.Collections.Generic.IEnumerable<(TSelf, TSelf)> GetPairsEqualToSum<TSelf>(this System.Collections.Generic.IList<TSelf> source, TSelf sum)

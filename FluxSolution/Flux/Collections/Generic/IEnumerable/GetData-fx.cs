@@ -1,6 +1,6 @@
 //namespace Flux
 //{
-//  public static partial class Fx
+//  public static partial class IEnumerables
 //  {
 //    /// <summary>
 //    /// <para>Creates a new sequence of "rows", i.e. arrays containing fields. The first row contains field names, the second row contains field types and then come the rows of field values.</para>

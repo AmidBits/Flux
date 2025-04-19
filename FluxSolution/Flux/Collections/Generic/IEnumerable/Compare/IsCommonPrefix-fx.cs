@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class IEnumerables
   {
     /// <summary>
     /// <para>Determines whether the source sequence begins with the target sequence. Uses the specified equality comparer.</para>

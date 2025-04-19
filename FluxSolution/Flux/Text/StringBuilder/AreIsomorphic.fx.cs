@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class StringBuilders
   {
     /// <summary>
     /// <para>Indicates whether the <paramref name="source"/> and <paramref name="target"/> are isomorphic. Two sequences are isomorphic if the characters (equal characters must be replaced with the same replacements, in the same positions) in <paramref name="source"/> can be replaced to get <paramref name="target"/>.</para>

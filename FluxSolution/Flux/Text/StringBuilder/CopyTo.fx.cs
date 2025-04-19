@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class StringBuilders
   {
     public static void CopyTo(this System.Text.StringBuilder source, int sourceStartIndex, System.Collections.Generic.IList<char> target, int targetStartIndex, int count)
     {

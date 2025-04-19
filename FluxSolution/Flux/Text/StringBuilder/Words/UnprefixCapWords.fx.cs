@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class StringBuilders
   {
     /// <summary>Join CamelCase of words separated by the specified predicate. The first character</summary>
     public static System.Text.StringBuilder UnprefixCapWords(this System.Text.StringBuilder source, char prefix = ' ')

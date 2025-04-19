@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class GenericMath
+  public static partial class BitOps
   {
 
     /// <summary>
@@ -57,6 +57,7 @@ namespace Flux
     /// <returns></returns>
     /// <remarks>This is a specialized version for <see cref="System.Numerics.BigInteger"/> which has a dynamic bit-storage.</remarks>
     /// <remarks><c>PLEASE NOTE THAT THE FIRST ARGUMENT (<paramref name="bitLength"/> for extension method) IS THE NUMBER OF BITS (to account for).</c></remarks>
+    [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
     public static TBitLength CreateBitMaskLsbFromBitLength<TBitLength>(this TBitLength bitLength, int trailingZeroBitCount)
       where TBitLength : System.Numerics.IBinaryInteger<TBitLength>
       => CreateBitMaskLsbFromBitLength(bitLength) << trailingZeroBitCount;
@@ -83,6 +84,7 @@ namespace Flux
     /// <param name="bitLength">Can be up to the number of storage bits (bit-count) available in <typeparamref name="TBitLength"/>.</param>
     /// <returns></returns>
     /// <remarks><c>PLEASE NOTE THAT THE FIRST ARGUMENT (<paramref name="bitLength"/> for extension method) IS THE NUMBER OF BITS (to account for).</c></remarks>
+    [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
     public static TBitLength CreateBitMaskMsbFromBitLength<TBitLength>(this TBitLength bitLength)
       where TBitLength : System.Numerics.IBinaryInteger<TBitLength>
       => CreateBitMaskLsbFromBitLength(bitLength) << (bitLength.GetBitCount() - int.CreateChecked(bitLength));

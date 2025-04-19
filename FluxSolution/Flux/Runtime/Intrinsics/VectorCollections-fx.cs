@@ -58,27 +58,33 @@ namespace Flux
 
     #region Contains
 
-    /// <summary>Determines the inclusion of a point in the (2D planar) polygon. This Winding Number method counts the number of times the polygon winds around the point. The point is outside only when this "winding number" is 0, otherwise the point is inside.</summary>
-    /// <see cref="http://geomalgorithms.com/a03-_inclusion.html#wn_PnPoly"/>
+    /// <summary>
+    /// <para>Determines the inclusion of a point in the (2D planar) polygon. This Winding Number method counts the number of times the polygon winds around the point. The point is outside only when this "winding number" is 0, otherwise the point is inside.</para>
+    /// <para><see href=https://en.wikipedia.org/wiki/Point_in_polygon"/></para>
+    /// </summary>
     public static int Contains(this System.Collections.Generic.IList<System.Runtime.Intrinsics.Vector128<double>> polygon, double x, double y)
     {
       System.ArgumentNullException.ThrowIfNull(polygon);
 
-      int wn = 0;
+      var xy = System.Runtime.Intrinsics.Vector128.Create(x, y);
 
-      for (int i = 0; i < polygon.Count; i++)
+      var wn = 0;
+
+      for (var i = 0; i < polygon.Count; i++)
       {
         var a = polygon[i];
-        var b = (i == polygon.Count - 1 ? polygon[0] : polygon[i + 1]);
+        var b = (i == polygon.Count - 1) ? polygon[0] : polygon[i + 1];
 
         if (a[1] <= y)
         {
-          if (b[1] > y && Geometry.Lines.Line.LineSideTest(x, y, a[0], a[1], b[0], b[1]) > 0)
+          //if (b[1] > y && Geometry.Lines.Line.LineSideTest(x, y, a[0], a[1], b[0], b[1]) > 0)
+          if (b[1] > y && Geometry.Lines.Line.LineSideTest(xy, a, b) > 0)
             wn++;
         }
         else
         {
-          if (b[1] <= y && Geometry.Lines.Line.LineSideTest(x, y, a[0], a[1], b[0], b[1]) < 0)
+          //if (b[1] <= y && Geometry.Lines.Line.LineSideTest(x, y, a[0], a[1], b[0], b[1]) < 0)
+          if (b[1] <= y && Geometry.Lines.Line.LineSideTest(xy, a, b) < 0)
             wn--;
         }
       }

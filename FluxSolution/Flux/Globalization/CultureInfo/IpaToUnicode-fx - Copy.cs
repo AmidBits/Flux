@@ -1,6 +1,6 @@
 //namespace Flux
 //{
-//  public static partial class Fx
+//  public static partial class CultureInfos
 //  {
 //    public static string[] ConsonantsPulmonic = ["\u0070", "\u0062", "\u0074", "\u0064", "\u0288", "\u0256", "\u0063", "\u025F", "\u006B", "\u0261", "\u0071", "\u0262", "\u0294", "\u006D", "\u0271", "\u006E", "\u0273", "\u0272", "\u014B", "\u0274", "\u0299", "\u0072", "\u0280", "\u027E", "\u027D", "\u0278", "\u03B2", "\u0066", "\u0076", "\u03B8", "\u00F0", "\u0073", "\u007A", "\u0283", "\u0292", "\u0282", "\u0290", "\u00E7", "\u029D", "\u0078", "\u0263", "\u03C7", "\u0281", "\u0127", "\u0295", "\u0068", "\u0266", "\u026C", "\u026E", "\u028B", "\u0279", "\u027B", "\u006A", "\u0270", "\u006C", "\u026D", "\u028E", "\u029F", "\u2C71", "\u026B"];
 //    public static string[] ConsonantsNonPulmonic = ["\u0298", "\u01C0", "\u01C3", "\u01C2", "\u01C1", "\u0253", "\u0257", "\u0284", "\u0260", "\u029B", "\u02BC", "\u0070\u02BC", "\u0074\u02BC", "\u006B\u02BC", "\u0073\u02BC"];

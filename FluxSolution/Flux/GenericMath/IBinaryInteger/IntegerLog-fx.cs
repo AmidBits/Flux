@@ -14,7 +14,14 @@ namespace Flux
     public static TNumber IntegerLogAwayFromZero<TNumber, TRadix>(this TNumber value, TRadix radix)
       where TNumber : System.Numerics.IBinaryInteger<TNumber>
       where TRadix : System.Numerics.IBinaryInteger<TRadix>
-      => TNumber.CopySign(TNumber.Abs(IntegerLogTowardZero(value, radix)) is var tz && value.IsIntegerPowOf(radix) ? tz : tz + TNumber.One, value);
+    {
+      var tz = TNumber.Abs(IntegerLogTowardZero(value, radix));
+
+      if (!value.IsIntegerPowOf(radix))
+        tz++;
+
+      return TNumber.CopySign(tz, value);
+    }
 
     /// <summary>
     /// <para>Integer-log mitigates approximations with floating point logs.</para>

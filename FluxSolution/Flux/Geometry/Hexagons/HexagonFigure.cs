@@ -6,7 +6,7 @@ namespace Flux.Geometry.Hexagons
   /// </summary>
   /// <remarks>The hexagon is essentially a specialized 6-point circle.</remarks>
   public readonly record struct HexagonFigure
-    : System.IFormattable
+    : System.IFormattable, IFigurable
   {
     public const double RadiusRatio = 0.8660254037844386;
 

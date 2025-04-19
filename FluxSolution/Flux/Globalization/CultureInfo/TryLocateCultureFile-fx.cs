@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class CultureInfos
   {
     /// <summary>
     /// <para>Try to locate a <paramref name="fileInfo"/> in <paramref name="directory"/> that matches the <paramref name="source"/>.</para>
