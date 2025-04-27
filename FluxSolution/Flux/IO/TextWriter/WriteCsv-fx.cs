@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class Streams
   {
     /// <summary>
     /// <para>Writes a jagged array as CSV (tabular) <paramref name="data"/> to the <paramref name="writer"/>.</para>

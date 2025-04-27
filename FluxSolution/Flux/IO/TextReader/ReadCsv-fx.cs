@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class Streams
   {
     /// <summary>
     /// <para>Creates a sequence of fields derived using <see cref="Microsoft.VisualBasic.FileIO.TextFieldParser"/>.</para>

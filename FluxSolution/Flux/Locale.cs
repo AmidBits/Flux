@@ -35,8 +35,8 @@ namespace Flux
     ///// <para>Gets the file path of the process executable from one (and in order of) <see cref="System.AppDomain.CurrentDomain"/>[.RelativeSearchPath], <see cref="System.AppDomain.CurrentDomain"/>[.BaseDirectory] or <see cref="Locale.Module"/>[.FullyQualifiedName].</para>
     ///// </summary>
     //public static string AppDomainPath => System.AppDomain.CurrentDomain.RelativeSearchPath ?? System.AppDomain.CurrentDomain.BaseDirectory ?? typeof(Locale).Module.FullyQualifiedName;
-    public static string AppDomainPath
-      => System.AppDomain.CurrentDomain.BaseDirectory;
+    public static System.IO.DirectoryInfo AppDomainPath
+      => new System.IO.DirectoryInfo(System.AppDomain.CurrentDomain.BaseDirectory);
 
     /// <summary>
     /// <para>The Flux assembly.</para>
@@ -55,8 +55,8 @@ namespace Flux
     /// <para>Gets the fully qualified path of the current working directory.</para>
     /// </summary>
     /// <remarks>The information is from <see cref="System.Environment.CurrentDirectory"/>.</remarks>
-    public static string CurrentDirectory
-      => System.Environment.CurrentDirectory;
+    public static System.IO.DirectoryInfo CurrentDirectory
+      => new System.IO.DirectoryInfo(System.Environment.CurrentDirectory);
 
     /// <summary>
     /// <para>Gets the fully qualified DNS host name (including domain name, if the computer is registered in a domain) for local computer and a list of IP addresses associated with the host.</para>
@@ -203,22 +203,22 @@ namespace Flux
     /// <para>Gets the "OneDrive" (personal) path for the current process.</para>
     /// </summary>
     /// <remarks>The information is derived from <see cref="System.Environment.GetEnvironmentVariable(string)"/></remarks>
-    public static string? OneDrivePath { get; }
-      = System.Environment.GetEnvironmentVariable("OneDrive");
+    public static System.IO.DirectoryInfo OneDrivePath { get; }
+      = new System.IO.DirectoryInfo(System.Environment.GetEnvironmentVariable("OneDrive")!);
 
     /// <summary>
     /// <para>Gets the "OneDriveCommercial" path for the current process.</para>
     /// </summary>
     /// <remarks>The information is derived from <see cref="System.Environment.GetEnvironmentVariable(string)"/></remarks>
-    public static string? OneDrivePathCommercial
-      => System.Environment.GetEnvironmentVariable("OneDriveCommercial");
+    public static System.IO.DirectoryInfo OneDrivePathCommercial
+      => new System.IO.DirectoryInfo(System.Environment.GetEnvironmentVariable("OneDriveCommercial")!);
 
     /// <summary>
     /// <para>Gets the "OneDriveConsumer" path for the current process.</para>
     /// </summary>
     /// <remarks>The information is derived from <see cref="System.Environment.GetEnvironmentVariable(string)"/></remarks>
-    public static string? OneDrivePathConsumer
-      => System.Environment.GetEnvironmentVariable("OneDriveConsumer");
+    public static System.IO.DirectoryInfo OneDrivePathConsumer
+      => new System.IO.DirectoryInfo(System.Environment.GetEnvironmentVariable("OneDriveConsumer")!);
 
     /// <summary>
     /// <para>Gets an array of PlatformID strings, enumerated from <see cref="System.PlatformID"/>.</para>
@@ -393,8 +393,8 @@ namespace Flux
     /// <para>Gets the path of the current user's temporary folder.</para>
     /// </summary>
     /// <remarks>The information is from <see cref="System.IO.Path.GetTempPath()"/>.</remarks>
-    public static string TempPath
-      => System.IO.Path.GetTempPath();
+    public static System.IO.DirectoryInfo TempPath
+      => new System.IO.DirectoryInfo(System.IO.Path.GetTempPath());
 
     /// <summary>
     /// <para>Gets the user-domain-name (associated with the current user) and user-name (associated with the current thread).</para>

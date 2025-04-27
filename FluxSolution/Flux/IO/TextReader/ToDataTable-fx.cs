@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class Streams
   {
     /// <summary>
     /// <para>Creates a new <see cref="System.Data.DataTable"/> from the content in the <paramref name="source"/> <see cref="System.IO.TextReader"/> using <paramref name="predicate"/> and <paramref name="resultSelector"/>. The <paramref name="tableName"/> (defaults to "DataTable") and <paramref name="columnNames"/> (defaults to "Column_n") are optional.</para>

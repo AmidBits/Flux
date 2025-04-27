@@ -2,6 +2,20 @@ namespace Flux
 {
   public static partial class BitConversions
   {
+
+    public static System.Numerics.BigInteger ReadBigInteger(this System.ReadOnlySpan<byte> buffer, Endianess endianess)
+      => new System.Numerics.BigInteger(buffer, false, endianess == Endianess.BigEndian);
+
+    public static int WriteBytes(this System.Numerics.BigInteger value, System.Span<byte> buffer, Endianess endianess)
+    {
+      var count = value.GetByteCount();
+
+      if (!value.TryWriteBytes(buffer[..count], out var bytesWritten, false, endianess == Endianess.BigEndian))
+        throw new System.InvalidOperationException();
+
+      return count;
+    }
+
     #region Read values from a byte buffer
 
     /// <summary>
@@ -131,6 +145,7 @@ namespace Flux
     /// <summary>
     /// <para>Reads a <see cref="System.IntPtr.Size"/>-byte (4-bytes in a 32-bit process, 8-bytes in a 64-bit process, etc.) <paramref name="buffer"/> to a <see cref="System.IntPtr"/> using the specified <paramref name="endianess"/>.</para>
     /// </summary>
+    /// <remarks>This is machine dependent, so it is NOT universal. Be mindful.</remarks>
     /// <param name="buffer"></param>
     /// <param name="endianess"></param>
     /// <returns></returns>
@@ -240,6 +255,7 @@ namespace Flux
     /// <summary>
     /// <para>Reads a <see cref="System.UIntPtr.Size"/>-byte (4-bytes in a 32-bit process, 8-bytes in a 64-bit process, etc.) <paramref name="buffer"/> to a <see cref="System.UIntPtr"/> using the specified <paramref name="endianess"/>.</para>
     /// </summary>
+    /// <remarks>This is machine dependent, so it is NOT universal. Be mindful.</remarks>
     /// <param name="buffer"></param>
     /// <param name="endianess"></param>
     /// <returns></returns>
@@ -267,6 +283,28 @@ namespace Flux
       else throw new System.ArgumentOutOfRangeException(nameof(endianess));
 
       return value;
+    }
+
+    /// <summary>
+    /// <para>Reads <paramref name="buffer"/>.Length into <paramref name="bytes"/>.</para>
+    /// </summary>
+    /// <param name="buffer"></param>
+    /// <param name="endianess"></param>
+    /// <param name="bytes"></param>
+    /// <returns></returns>
+    private static int ReadBytes(this System.ReadOnlySpan<byte> buffer, Endianess endianess, out byte[] bytes)
+    {
+      bytes = new byte[buffer.Length];
+
+      if (endianess == Endianess.BigEndian)
+        for (var i = 0; i < buffer.Length; i++)
+          bytes[bytes.Length - i - 1] = buffer[i];
+      else if (endianess == Endianess.LittleEndian)
+        for (var i = buffer.Length - 1; i >= 0; i--)
+          bytes[bytes.Length - i - 1] = buffer[i];
+      else throw new System.ArgumentOutOfRangeException(nameof(endianess));
+
+      return bytes.Length;
     }
 
     #endregion // Read values from a byte buffer

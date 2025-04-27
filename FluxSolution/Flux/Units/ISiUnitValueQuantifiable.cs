@@ -48,6 +48,7 @@
     /// <param name="prefix"></param>
     /// <param name="fullName"></param>
     /// <returns></returns>
-    string ToSiUnitString(MetricPrefix prefix/*, TUnit unit*/, bool fullName);
+    //string ToSiUnitString(MetricPrefix prefix/*, TUnit unit*/, bool fullName);
+    string ToSiUnitString(MetricPrefix prefix, string? format, System.IFormatProvider? formatProvider, bool fullName);
   }
 }

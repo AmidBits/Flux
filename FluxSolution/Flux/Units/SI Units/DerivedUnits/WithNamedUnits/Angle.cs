@@ -631,8 +631,10 @@
 
     public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertTo(m_value, prefix);
 
-    public string ToSiUnitString(MetricPrefix prefix, bool fullName = false)
-      => GetSiUnitValue(prefix).ToSiFormattedString() + Unicode.UnicodeSpacing.ThinSpace.ToSpacingString() + (fullName ? GetSiUnitName(prefix, GetSiUnitValue(prefix).IsConsideredPlural()) : GetSiUnitSymbol(prefix, false));
+    public string ToSiUnitString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null, bool fullName = false)
+      => GetSiUnitValue(prefix).ToSiFormattedString(format, formatProvider)
+      + Unicode.UnicodeSpacing.ThinSpace.ToSpacingString()
+      + (fullName ? GetSiUnitName(prefix, GetSiUnitValue(prefix).IsConsideredPlural()) : GetSiUnitSymbol(prefix, false));
 
     #endregion // ISiUnitValueQuantifiable<>
 
@@ -664,7 +666,8 @@
         _ => value / GetUnitFactor(unit),
       };
 
-    public static double ConvertUnit(double value, AngleUnit from, AngleUnit to) => ConvertToUnit(to, ConvertFromUnit(from, value));
+    public static double ConvertUnit(double value, AngleUnit from, AngleUnit to)
+      => ConvertToUnit(to, ConvertFromUnit(from, value));
 
     public static double GetUnitFactor(AngleUnit unit)
       => unit switch
@@ -679,7 +682,8 @@
         _ => throw new System.NotImplementedException()
       };
 
-    public static string GetUnitName(AngleUnit unit, bool preferPlural) => unit.ToString().ToPluralUnitName(preferPlural);
+    public static string GetUnitName(AngleUnit unit, bool preferPlural)
+      => unit.ToString().ToPluralUnitName(preferPlural);
 
     public static string GetUnitSymbol(AngleUnit unit, bool preferUnicode)
       => unit switch
@@ -696,14 +700,14 @@
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
-    public double GetUnitValue(AngleUnit unit) => ConvertToUnit(unit, m_value);
+    public double GetUnitValue(AngleUnit unit)
+      => ConvertToUnit(unit, m_value);
 
     public string ToUnitString(AngleUnit unit = AngleUnit.Radian, string? format = null, System.IFormatProvider? formatProvider = null, bool fullName = false)
       => GetUnitValue(unit).ToString(format, formatProvider)
-      + (
-        fullName
-        ? Unicode.UnicodeSpacing.Space.ToSpacingString() + GetUnitName(unit, GetUnitValue(unit).IsConsideredPlural())
-        : (unit.HasUnitSpacing(true) ? Unicode.UnicodeSpacing.Space : Unicode.UnicodeSpacing.None).ToSpacingString() + GetUnitSymbol(unit, true)
+      + (fullName
+      ? Unicode.UnicodeSpacing.Space.ToSpacingString() + GetUnitName(unit, GetUnitValue(unit).IsConsideredPlural())
+      : (unit.HasUnitSpacing(true) ? Unicode.UnicodeSpacing.Space : Unicode.UnicodeSpacing.None).ToSpacingString() + GetUnitSymbol(unit, true)
       );
 
     #endregion // IUnitValueQuantifiable<>

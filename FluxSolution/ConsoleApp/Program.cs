@@ -203,19 +203,182 @@ namespace ConsoleApp
 
     #endregion // Stuff
 
+    private static void MakeParentTable(System.Data.DataSet dataSet)
+    {
+      // Create a new DataTable.
+      System.Data.DataTable table = new("ParentTable");
+      // Declare variables for DataColumn and DataRow objects.
+      DataColumn column;
+      DataRow row;
+
+      // Create new DataColumn, set DataType,
+      // ColumnName and add to DataTable.
+      column = new();
+      column.DataType = System.Type.GetType("System.Int32");
+      column.ColumnName = "id";
+      column.ReadOnly = true;
+      column.Unique = true;
+      // Add the Column to the DataColumnCollection.
+      table.Columns.Add(column);
+
+      // Create second column.
+      column = new();
+      column.DataType = System.Type.GetType("System.String");
+      column.ColumnName = "ParentItem";
+      column.AutoIncrement = false;
+      column.Caption = "ParentItem";
+      column.ReadOnly = false;
+      column.Unique = false;
+      // Add the column to the table.
+      table.Columns.Add(column);
+
+      // Make the ID column the primary key column.
+      DataColumn[] PrimaryKeyColumns = new DataColumn[1];
+      PrimaryKeyColumns[0] = table.Columns["id"];
+      table.PrimaryKey = PrimaryKeyColumns;
+
+      // Instantiate the DataSet variable.
+      //dataSet = new DataSet();
+      // Add the new DataTable to the DataSet.
+      dataSet.Tables.Add(table);
+
+      // Create three new DataRow objects and add
+      // them to the DataTable
+      for (int i = 0; i <= 2; i++)
+      {
+        row = table.NewRow();
+        row["id"] = i;
+        row["ParentItem"] = "ParentItem " + i;
+        table.Rows.Add(row);
+      }
+    }
+
+    private static void MakeChildTable(System.Data.DataSet dataSet)
+    {
+      // Create a new DataTable.
+      DataTable table = new("childTable");
+      DataColumn column;
+      DataRow row;
+
+      // Create first column and add to the DataTable.
+      column = new DataColumn();
+      column.DataType = System.Type.GetType("System.Int32");
+      column.ColumnName = "ChildID";
+      column.AutoIncrement = true;
+      column.Caption = "ID";
+      column.ReadOnly = true;
+      column.Unique = true;
+
+      // Add the column to the DataColumnCollection.
+      table.Columns.Add(column);
+
+      // Create second column.
+      column = new();
+      column.DataType = System.Type.GetType("System.String");
+      column.ColumnName = "ChildItem";
+      column.AutoIncrement = false;
+      column.Caption = "ChildItem";
+      column.ReadOnly = false;
+      column.Unique = false;
+      table.Columns.Add(column);
+
+      // Create third column.
+      column = new();
+      column.DataType = System.Type.GetType("System.Int32");
+      column.ColumnName = "ParentID";
+      column.AutoIncrement = false;
+      column.Caption = "ParentID";
+      column.ReadOnly = false;
+      column.Unique = false;
+      table.Columns.Add(column);
+
+      dataSet.Tables.Add(table);
+
+      // Create three sets of DataRow objects,
+      // five rows each, and add to DataTable.
+      for (int i = 0; i <= 4; i++)
+      {
+        row = table.NewRow();
+        row["childID"] = i;
+        row["ChildItem"] = "Item " + i;
+        row["ParentID"] = 0;
+        table.Rows.Add(row);
+      }
+      for (int i = 0; i <= 4; i++)
+      {
+        row = table.NewRow();
+        row["childID"] = i + 5;
+        row["ChildItem"] = "Item " + i;
+        row["ParentID"] = 1;
+        table.Rows.Add(row);
+      }
+      for (int i = 0; i <= 4; i++)
+      {
+        row = table.NewRow();
+        row["childID"] = i + 10;
+        row["ChildItem"] = "Item " + i;
+        row["ParentID"] = 2;
+        table.Rows.Add(row);
+      }
+    }
+
     private static void TimedMain(string[] _)
     {
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
+      var mg = new Flux.Units.Mass(1);
+      var rat = 1.0;
+      var gias = Flux.Units.MetricPrefix.Giga.GetInfimumAndSupremum(rat, true);
+
+      var ss = Flux.Units.MetricPrefix.Giga.ConvertToShortScale();
+
+      var mass = new Flux.Units.Mass(1, MassUnit.Tonne);
+      var massens = mass.ToUnitString(MassUnit.Gram);
+      var (Prefix, Value) = mass.GetUnitValue(MassUnit.Gram).GetEngineeringNotationProperties();
+      var sius = mass.ToSiUnitString(Prefix);
+
+      var ta = typeof(Flux.Units.MassUnit).TryGetAttribute<Flux.Units.UnitValueQuantifieableAttribute<MassUnit>>(out var ea);
+      var tea = Flux.Units.MassUnit.Gram.TryGetEnumAttribute<Flux.Units.UnitAttribute>(out var eca);
+
+      Zamplez.RunReflection();
+      return;
+
+      System.Data.DataSet dataSet = new();
+
+      MakeParentTable(dataSet);
+      MakeChildTable(dataSet);
+
+      using var sw = System.IO.File.CreateText(System.IO.Path.Combine(Flux.Locale.TempPath.FullName, "test.urgf"));
+
+      dataSet.WriteUrgf(sw);
+
+      sw.Close();
+
+      using var sr = System.IO.File.OpenText(System.IO.Path.Combine(Flux.Locale.TempPath.FullName, "test.urgf"));
+
+      var urgfr = new Flux.UrgfReader(sr);
+
+      string unit = string.Empty;
+      while (urgfr.MoveNext())
+        unit = urgfr.Current;
+
+      sr.Close();
+
+      //dataSet
 
       var tcp = "STARlink".AsSpan().TrimCommonPrefix(char.IsUpper);
 
-      var n = System.Int32.CreateChecked(9);
+      var n = System.Numerics.BigInteger.CreateChecked(-9);
       object o = n;
-      var isfp = o.GetType().IsFloatingPointNumericType(true);
-      var isni = o.GetType().IsIntegerNumericType(true);
-      var isns = o.GetType().IsSignedNumericType(true);
-      var isnu = o.GetType().IsUnsignedNumericType(true);
+      var isfp = o.GetType().IsFloatingPointNumericType(false);
+      var isni = o.GetType().IsIntegerNumericType(false);
+      var isns = o.GetType().IsSignedNumericType(false);
+      var isnu = o.GetType().IsUnsignedNumericType(false);
+
+      var bytes = new byte[10];
+
+      var c = n.WriteBytes(bytes, Endianess.LittleEndian);
+      var bi = bytes.AsSpan()[..c].ReadBigInteger(Endianess.LittleEndian);
 
       //var s = "-41 ° 26 '46″ N79 ° 58 ′ 56 ″W";
       //var s = "a 123b45c";
@@ -233,8 +396,9 @@ namespace ConsoleApp
       //var tl = t.Count;
       var fi = new System.IO.FileInfo(@"file://\Resources\Ucd\UnicodeData.txt");
       var urix = new System.Uri(@"file://\Resources\Ucd\UnicodeData.txt");
+      urix.TryGetFileInfo(out var fix);
       var cd = System.Environment.CurrentDirectory;
-      var pc = System.IO.Path.Combine(cd, urix.LocalPath);
+      var pc = new System.IO.FileInfo(System.IO.Path.Join(cd, urix.LocalPath));
       var fi2 = new System.IO.FileInfo(urix.LocalPath.AsSpan().TrimCommonPrefix('/').ToString());
       var tgfi = urix.TryGetFileInfo(out var fileInfo);
       //C:\Users\Rob\source\repos\AmidBits\Flux\FluxSolution\ConsoleApp\bin\Debug\net9.0\Flux\Resources\Data\Ucd_UnicodeText.txt

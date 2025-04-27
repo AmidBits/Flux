@@ -2,6 +2,13 @@ namespace Flux
 {
   public static partial class Fx
   {
+    public static string ToUrgfString(this System.Data.DataColumn source) => source.ColumnName;
+    public static string ToUrgfString(this System.Data.DataColumnCollection source) => string.Join('\u001F', source.Cast<System.Data.DataColumn>().Select(dc => dc.ColumnName));
+    public static string ToUrgfString(this System.Data.DataRow source) => string.Join('\u001F', source.ItemArray);
+    public static string ToUrgfString(this System.Data.DataRowCollection source) => string.Join('\u001E', source.Cast<System.Data.DataRow>().Select(dr => dr.ToUrgfString()));
+    public static string ToUrgfString(this System.Data.DataTable source) => source.Columns.ToUrgfString() + '\u001E' + source.Rows.ToUrgfString();
+    public static string ToUrgfString(this System.Data.DataTableCollection source) => string.Join('\u001D', source.Cast<System.Data.DataTable>().Select(dt => dt.ToUrgfString()));
+
     public static int GetColumnOrdinalIndex(this System.Data.DataTable source, string columnName)
       => source.Columns[columnName]?.Ordinal ?? throw new System.ArgumentOutOfRangeException(nameof(columnName));
 

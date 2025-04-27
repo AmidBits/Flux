@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class Streams
   {
     public static System.Collections.Generic.IEnumerable<TResult> ReadLines<TResult>(this System.IO.TextReader source, System.Func<string, bool> predicate, System.Func<string, TResult> resultSelector)
     {

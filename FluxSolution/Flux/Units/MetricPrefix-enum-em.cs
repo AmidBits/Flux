@@ -2,11 +2,13 @@ namespace Flux
 {
   public static partial class Em
   {
-    public static System.Numerics.BigInteger ActualValue(this Units.MetricPrefix source)
-      => System.Numerics.BigInteger.Pow(10, (int)source);
-
+    /// <summary>
+    /// <para></para>
+    /// </summary>
+    /// <param name="source"></param>
+    /// <returns></returns>
     public static string? ConvertToShortScale(this Units.MetricPrefix source)
-      => Globalization.En.NumeralComposition.ShortScaleDictionary.TryGetValue(source.ActualValue(), out var shortScaleName) ? shortScaleName : null;
+      => Globalization.En.NumeralComposition.ShortScaleDictionary.TryGetValue(source.GetMetricPrefixValue(), out var shortScaleName) ? shortScaleName : null;
 
     /// <summary>
     /// <para>Convert <paramref name="value"/> from <paramref name="source"/> prefix to <paramref name="target"/> prefix with a choice of <paramref name="dimensions"/> (1 is default, 2 for squares and 3 for cubes).</para>
@@ -31,30 +33,6 @@ namespace Flux
       => value * double.Pow(10, (int)source - (int)target);
 
     /// <summary>
-    /// <para>Derives the appropriate prefix for engineering notation.</para>
-    /// </summary>
-    /// <typeparam name="TSource"></typeparam>
-    /// <param name="source"></param>
-    /// <param name="forceTriples"></param>
-    /// <returns></returns>
-    public static Units.MetricPrefix GetEngineeringNotationPrefix<TSource>(this TSource source, bool forceTriples = true)
-      where TSource : System.Numerics.INumber<TSource>
-    {
-      if (TSource.IsZero(source))
-        return Units.MetricPrefix.Unprefixed;
-
-      var log = int.CreateChecked(TSource.Abs(source).FastIntegerLog(10, UniversalRounding.WholeToNegativeInfinity, out var _));
-
-      if (forceTriples && log > -3 && log < 3)
-        return (Units.MetricPrefix)log.Spread(-3, 3, HalfRounding.Random);
-
-      if (TSource.IsNegative(source) && log.TruncRem(3) is var (tq, r))
-        return (Units.MetricPrefix)((tq + int.Sign(r)) * 3);
-
-      return (Units.MetricPrefix)(log / 3 * 3);
-    }
-
-    /// <summary>
     /// <para>Find the infimum (the largest that is less than) and supremum (the smallest that is greater than) prefixes with adjusted value of the specified <paramref name="source"/> prefix and <paramref name="value"/>.</para>
     /// </summary>
     /// <param name="source"></param>
@@ -67,17 +45,29 @@ namespace Flux
 
       var adjustedValue = source.ConvertTo(value, Units.MetricPrefix.Unprefixed);
 
-      var (InfimumIndex, InfimumItem, InfimumValue, SupremumIndex, SupremumItem, SupremumValue) = metricPrefixes.AsReadOnlySpan().InfimumAndSupremum(adjustedValue, e => T.CopySign(T.Pow(T.CreateChecked(10), T.Abs(T.CreateChecked((int)e))), T.CreateChecked((int)e)), proper);
+      var (_, InfimumItem, _, _, SupremumItem, _) = metricPrefixes.AsReadOnlySpan().GetInfimumAndSupremum(adjustedValue, e => T.CopySign(T.Pow(T.CreateChecked(10), T.Abs(T.CreateChecked((int)e))), T.CreateChecked((int)e)), proper);
 
-      var ltValue = Units.MetricPrefix.Unprefixed.ConvertTo(value, InfimumItem);
-      var gtValue = Units.MetricPrefix.Unprefixed.ConvertTo(value, SupremumItem);
+      var ltValue = source.ConvertTo(value, InfimumItem);
+      var gtValue = source.ConvertTo(value, SupremumItem);
 
       return (ltValue, InfimumItem, gtValue, SupremumItem);
     }
 
+    /// <summary>
+    /// <para>Gets the name of a <see cref="Units.MetricPrefix"/> by means of the [enum-constant].ToString() method.</para>
+    /// </summary>
+    /// <remarks>The <see cref="Units.MetricPrefix.Unprefixed"/> is an exception and returns <see cref="string.Empty"/>.</remarks>
+    /// <param name="source"></param>
+    /// <returns></returns>
     public static string GetMetricPrefixName(this Units.MetricPrefix source)
-      => source != Units.MetricPrefix.Unprefixed ? source.ToString() : string.Empty;
+      => (source != Units.MetricPrefix.Unprefixed) ? source.ToString() : string.Empty;
 
+    /// <summary>
+    /// <para>Gets the standardized symbol of a <see cref="Units.MetricPrefix"/>.</para>
+    /// </summary>
+    /// <param name="source"></param>
+    /// <param name="preferUnicode">When true, use Unicode codepoints when available, otherwise regular letters are used.</param>
+    /// <returns></returns>
     public static string GetMetricPrefixSymbol(this Units.MetricPrefix source, bool preferUnicode)
       => source switch
       {
@@ -109,103 +99,12 @@ namespace Flux
         _ => string.Empty,
       };
 
-    #region Engineering notation
-
-    public static (Units.MetricPrefix prefix, double value) GetEngineeringNotationProperties<TSelf>(this TSelf source, bool restrictToTriplets = true)
-      where TSelf : System.Numerics.INumber<TSelf>
-    {
-      var prefix = Units.MetricPrefix.Unprefixed;
-
-      var number = double.CreateChecked(source);
-
-      if (!TSelf.IsZero(source))
-      {
-        var abs = double.Abs(number);
-        var log10 = double.Log10(abs);
-
-        if (restrictToTriplets)
-        {
-          var div3 = log10 / 3;
-          var floor = double.Floor(div3);
-          var mul3 = floor * 3;
-
-          prefix = (Units.MetricPrefix)int.CreateChecked(mul3);
-        }
-        else
-        {
-          var floor = double.Floor(log10);
-
-          prefix = System.Enum.GetValues<Units.MetricPrefix>().GetInfimumAndSupremum(mp => (int)mp, int.CreateChecked(floor), true).TowardZeroItem;
-        }
-
-        var exp = (int)prefix;
-        var pow = double.Pow(10, -exp);
-
-        number *= pow;
-      }
-
-      return (prefix, number);
-    }
-
     /// <summary>
-    /// <para>Creates a new string, representing the <paramref name="source"/> number in engineering notation, with options of <paramref name="spacing"/>, <paramref name="format"/> and <paramref name="formatProvider"/>.</para>
-    /// <para><see href="https://en.wikipedia.org/wiki/Engineering_notation"/></para>
+    /// <para>Gets the numerical value of a <see cref="Units.MetricPrefix"/>.</para>
     /// </summary>
-    /// <typeparam name="TSelf"></typeparam>
     /// <param name="source"></param>
-    /// <param name="spacing"></param>
     /// <returns></returns>
-    public static string ToEngineeringNotationString<TSelf>(this TSelf source, string? unit = null, string? format = null, System.IFormatProvider? formatProvider = null, Unicode.UnicodeSpacing spacing = Unicode.UnicodeSpacing.ThinSpace, bool tripletsOnly = true)
-      where TSelf : System.Numerics.INumber<TSelf>
-    {
-      if (TSelf.IsZero(source)) return "0";
-
-      var sm = new SpanMaker<char>();
-
-      var number = double.CreateChecked(source);
-
-      var (prefix, value) = source.GetEngineeringNotationProperties(tripletsOnly);
-
-      var exp = (int)prefix;
-      var pow = double.Pow(10, -exp);
-
-      sm = sm.Append(value.ToString(format, formatProvider));
-
-      var symbol = prefix.GetMetricPrefixSymbol(false);
-
-      if (symbol.Length > 0 is var hasSymbol && !string.IsNullOrWhiteSpace(unit) is var hasUnit && (hasSymbol || hasUnit))
-      {
-        sm = sm.Append(spacing.ToSpacingString());
-
-        if (hasSymbol)
-          sm = sm.Append(symbol);
-
-        if (hasUnit)
-          sm = sm.Append(unit);
-      }
-
-      return sm.ToString();
-    }
-
-    //public static string GetNumberWithUnitPrefix(this double number, int power = 1)
-    //{
-    //  char[] incPrefixes = new[] { 'k', 'M', 'G', 'T', 'P', 'E', 'Z', 'Y' };
-    //  char[] decPrefixes = new[] { 'm', 'µ', 'n', 'p', 'f', 'a', 'z', 'y' };
-
-    //  var degree = (int)double.Floor(double.Log10(double.Abs(number)) / (3 * (double)power));
-    //  var scaled = number * double.Pow(1000, -(degree * power));
-
-    //  char? prefix = null;
-
-    //  switch (double.Sign(degree))
-    //  {
-    //    case 1: prefix = incPrefixes[degree - 1]; break;
-    //    case -1: prefix = decPrefixes[-degree - 1]; break;
-    //  }
-
-    //  return scaled.ToString() + ' ' + prefix;
-    //}
-
-    #endregion // Engineering notation
+    public static System.Numerics.BigInteger GetMetricPrefixValue(this Units.MetricPrefix source)
+      => System.Numerics.BigInteger.Pow(10, (int)source);
   }
 }

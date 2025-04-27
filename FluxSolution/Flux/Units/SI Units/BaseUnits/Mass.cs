@@ -73,18 +73,28 @@ namespace Flux.Units
     public int CompareTo(Mass other) => m_value.CompareTo(other.m_value);
 
     // IFormattable
-    public string ToString(string? format, System.IFormatProvider? formatProvider) => ToSiUnitString(MetricPrefix.Kilo);
+    public string ToString(string? format, System.IFormatProvider? formatProvider)
+      => ToSiUnitString(MetricPrefix.Kilo);
 
     #region ISiUnitValueQuantifiable<>
 
-    public static string GetSiUnitName(MetricPrefix prefix, bool preferPlural) => prefix.GetMetricPrefixName() + GetUnitName(MassUnit.Gram, preferPlural);
+    public static string GetSiUnitName(MetricPrefix prefix, bool preferPlural)
+      => prefix.GetMetricPrefixName() + GetUnitName(MassUnit.Gram, preferPlural);
 
-    public static string GetSiUnitSymbol(MetricPrefix prefix, bool preferUnicode) => prefix.GetMetricPrefixSymbol(preferUnicode) + GetUnitSymbol(MassUnit.Gram, preferUnicode);
+    public static string GetSiUnitSymbol(MetricPrefix prefix, bool preferUnicode)
+      => prefix.GetMetricPrefixSymbol(preferUnicode) + GetUnitSymbol(MassUnit.Gram, preferUnicode);
 
-    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Kilo.ConvertTo(m_value, prefix);
+    public double GetSiUnitValue(MetricPrefix prefix)
+      => MetricPrefix.Kilo.ConvertTo(m_value, prefix);
 
-    public string ToSiUnitString(MetricPrefix prefix, bool fullName = false)
-      => GetSiUnitValue(prefix).ToSiFormattedString() + Unicode.UnicodeSpacing.ThinSpace.ToSpacingString() + (fullName ? GetSiUnitName(prefix, GetSiUnitValue(prefix).IsConsideredPlural()) : GetSiUnitSymbol(prefix, false));
+    public string ToSiUnitString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null, bool fullName = false)
+    {
+      var value = GetSiUnitValue(prefix);
+
+      return value.ToSiFormattedString(format, formatProvider)
+        + Unicode.UnicodeSpacing.ThinSpace.ToSpacingString()
+        + (fullName ? GetSiUnitName(prefix, value.IsConsideredPlural()) : GetSiUnitSymbol(prefix, false));
+    }
 
     #endregion // ISiUnitValueQuantifiable<>
 
@@ -106,10 +116,12 @@ namespace Flux.Units
         _ => value / GetUnitFactor(unit),
       };
 
-    public static double ConvertUnit(double value, MassUnit from, MassUnit to) => ConvertToUnit(to, ConvertFromUnit(from, value));
+    public static double ConvertUnit(double value, MassUnit from, MassUnit to)
+      => ConvertToUnit(to, ConvertFromUnit(from, value));
 
     public static double GetUnitFactor(MassUnit unit)
-      => unit switch
+      =>
+      unit switch
       {
         MassUnit.Kilogram => 1,
 
@@ -121,7 +133,8 @@ namespace Flux.Units
         _ => throw new System.NotImplementedException()
       };
 
-    public static string GetUnitName(MassUnit unit, bool preferPlural) => unit.ToString().ToPluralUnitName(preferPlural);
+    public static string GetUnitName(MassUnit unit, bool preferPlural)
+      => unit.ToString().ToPluralUnitName(preferPlural);
 
     public static string GetUnitSymbol(MassUnit unit, bool preferUnicode)
       => unit switch
@@ -134,10 +147,17 @@ namespace Flux.Units
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
-    public double GetUnitValue(MassUnit unit) => ConvertToUnit(unit, m_value);
+    public double GetUnitValue(MassUnit unit)
+      => ConvertToUnit(unit, m_value);
 
     public string ToUnitString(MassUnit unit = MassUnit.Kilogram, string? format = null, System.IFormatProvider? formatProvider = null, bool fullName = false)
-      => GetUnitValue(unit).ToString(format, formatProvider) + Unicode.UnicodeSpacing.Space.ToSpacingString() + (fullName ? GetUnitName(unit, GetUnitValue(unit).IsConsideredPlural()) : GetUnitSymbol(unit, false));
+    {
+      var value = GetUnitValue(unit);
+
+      return value.ToString(format, formatProvider)
+        + Unicode.UnicodeSpacing.Space.ToSpacingString()
+        + (fullName ? GetUnitName(unit, value.IsConsideredPlural()) : GetUnitSymbol(unit, false));
+    }
 
     #endregion // IUnitValueQuantifiable<>
 

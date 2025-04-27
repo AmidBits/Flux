@@ -182,8 +182,14 @@ namespace Flux.Units
 
     public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertTo(m_value, prefix);
 
-    public string ToSiUnitString(MetricPrefix prefix, bool fullName = false)
-      => GetSiUnitValue(prefix).ToSiFormattedString() + Unicode.UnicodeSpacing.ThinSpace.ToSpacingString() + (fullName ? GetSiUnitName(prefix, GetSiUnitValue(prefix).IsConsideredPlural()) : GetSiUnitSymbol(prefix, false));
+    public string ToSiUnitString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null, bool fullName = false)
+    {
+      var value = GetSiUnitValue(prefix);
+
+      return value.ToSiFormattedString(format, formatProvider)
+        + Unicode.UnicodeSpacing.ThinSpace.ToSpacingString()
+        + (fullName ? GetSiUnitName(prefix, value.IsConsideredPlural()) : GetSiUnitSymbol(prefix, false));
+    }
 
     #endregion // ISiUnitValueQuantifiable<>
 
@@ -248,13 +254,16 @@ namespace Flux.Units
        _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
      };
 
-    public double GetUnitValue(LengthUnit unit) => ConvertToUnit(unit, m_value);
+    public double GetUnitValue(LengthUnit unit)
+      => ConvertToUnit(unit, m_value);
 
     public string ToUnitString(LengthUnit unit = LengthUnit.Meter, string? format = null, System.IFormatProvider? provider = null, bool fullName = false)
     {
       var value = GetUnitValue(unit);
 
-      return value.ToString(format, provider) + Unicode.UnicodeSpacing.Space.ToSpacingString() + (fullName ? GetUnitName(unit, value.IsConsideredPlural()) : GetUnitSymbol(unit, false));
+      return value.ToString(format, provider)
+        + Unicode.UnicodeSpacing.Space.ToSpacingString()
+        + (fullName ? GetUnitName(unit, value.IsConsideredPlural()) : GetUnitSymbol(unit, false));
     }
 
     #endregion // IUnitValueQuantifiable<>

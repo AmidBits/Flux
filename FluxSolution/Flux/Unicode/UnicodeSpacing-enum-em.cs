@@ -3,24 +3,6 @@
   public static partial class Em
   {
     /// <summary>
-    /// <para>Append the selected <paramref name="spacing"/> to a string.</para>
-    /// </summary>
-    /// <param name="source"></param>
-    /// <param name="spacing"></param>
-    /// <returns></returns>
-    public static string AppendUnicodeSpacing(this string source, Unicode.UnicodeSpacing spacing = Unicode.UnicodeSpacing.Space)
-      => source + spacing.ToSpacingString();
-
-    /// <summary>
-    /// <para>Prepend the selected <paramref name="spacing"/> to a string.</para>
-    /// </summary>
-    /// <param name="source"></param>
-    /// <param name="spacing"></param>
-    /// <returns></returns>
-    public static string PrependUnicodeSpacing(this string source, Unicode.UnicodeSpacing spacing = Unicode.UnicodeSpacing.Space)
-      => spacing.ToSpacingString() + source;
-
-    /// <summary>
     /// <para>Create a string containing the string representation of <paramref name="spacing"/>.</para>
     /// </summary>
     /// <param name="spacing"></param>

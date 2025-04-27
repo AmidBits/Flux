@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class Streams
   {
     /// <summary>
     /// <para>Writes a jagged array as URGF (tabular) <paramref name="data"/> to the <paramref name="writer"/>.</para>
@@ -22,6 +22,48 @@ namespace Flux
           writer.Write(record[u]);
         }
       }
+    }
+
+    public static void WriteUrgf(this System.Data.DataSet dataSet, System.IO.TextWriter textWriter)
+    {
+      for (var gi = 0; gi < dataSet.Tables.Count; gi++)
+      {
+        if (gi > 0) textWriter.Write((char)Unicode.UnicodeInformationSeparator.GroupSeparator);
+
+        var group = dataSet.Tables[gi];
+
+        for (var ui = 0; ui < group.Columns.Count; ui++)
+        {
+          if (ui > 0) textWriter.Write((char)Unicode.UnicodeInformationSeparator.UnitSeparator);
+
+          var unit = group.Columns[ui];
+
+          textWriter.Write(unit.ColumnName);
+        }
+
+        for (var ri = 0; ri < group.Rows.Count; ri++)
+        {
+          textWriter.Write((char)Unicode.UnicodeInformationSeparator.RecordSeparator);
+
+          var record = group.Rows[ri];
+
+          textWriter.Write(string.Join((char)Unicode.UnicodeInformationSeparator.UnitSeparator, record.ItemArray));
+        }
+      }
+
+      //for (var r = 0; r < data.Length; r++)
+      //{
+      //  if (r > 0) writer.Write((char)Unicode.UnicodeInformationSeparator.RecordSeparator);
+
+      //  var record = data[r];
+
+      //  for (var u = 0; u < record.Length; u++)
+      //  {
+      //    if (u > 0) writer.Write((char)Unicode.UnicodeInformationSeparator.UnitSeparator);
+
+      //    writer.Write(record[u]);
+      //  }
+      //}
     }
   }
 }

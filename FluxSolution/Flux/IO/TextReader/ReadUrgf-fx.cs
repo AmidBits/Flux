@@ -1,22 +1,67 @@
 namespace Flux
 {
-  //public enum UrgfState
-  //{
-  //  Uninitialized,
-  //  StartOfStream,
-  //  StartOfFile,
-  //  StartOfGroup,
-  //  StartOfRecord,
-  //  StartOfUnit,
-  //  EndOfUnit,
-  //  EndOfRecord,
-  //  EndOfGroup,
-  //  EndOfFile,
-  //  EndOfStream,
-  //}
+  public enum UrgfState
+  {
+    Uninitialized = -3,
+    StartOfStream = -2,
+    EndOfStream = -1,
+    /// <summary>
+    /// <para>The control character u001c (named <c>Information Separator Four</c>) is represented by the Unicode codepoint U+001C.</para>
+    /// <para>A separator of files or databases.</para>
+    /// </summary>
+    FileSeparator = '\u001C',
+    /// <summary>
+    /// <para>The control character u001d (named <c>Information Separator Three</c>) is represented by the Unicode codepoint U+001D.</para>
+    /// <para>A separator of groups, tables or record-sets (i.e. a collection of records, e.g. rows).</para>
+    /// </summary>
+    GroupSeparator = '\u001D',
+    /// <summary>
+    /// <para>The control character u001e (named <c>Information Separator Two</c>) is represented by the Unicode codepoint U+001E.</para>
+    /// <para>A separator of records, rows, lines, etc.</para>
+    /// </summary>
+    RecordSeparator = '\u001E',
+    /// <summary>
+    /// <para>The control character u001f (named <c>Information Separator One</c>) is represented by the Unicode codepoint U+001F.</para>
+    /// <para>A separator of units, columns, fields, etc.</para>
+    /// </summary>
+    UnitSeparator = '\u001F',
+  }
 
   public class UrgfReader
   {
+    System.IO.TextReader m_textReader;
+
+    int m_nextRead = (int)UrgfState.Uninitialized;
+    System.Text.StringBuilder m_nextUnit = new System.Text.StringBuilder();
+
+    public UrgfReader(System.IO.TextReader textReader) => m_textReader = textReader;
+
+    public UrgfState State => (UrgfState)m_nextRead;
+
+    public string Current => m_nextUnit.ToString();
+
+    public bool MoveNext()
+    {
+      if (m_nextRead == -3)
+        m_nextRead = -2;
+      else if (m_nextRead == -1)
+        return false;
+
+      m_nextRead = '\0';
+      m_nextUnit.Clear();
+
+      while (true)
+      {
+        m_nextRead = m_textReader.Read();
+
+        if (m_nextRead is '\u001F' or '\u001E' or '\u001D' or '\u001C' or < 0) break;
+
+        m_nextUnit.Append((char)m_nextRead);
+      }
+
+      return m_nextRead > 0;
+    }
+
     public System.Collections.Generic.List<System.Data.DataSet> Read(string filePath)
     {
       using var sr = System.IO.File.OpenText(filePath);
@@ -135,7 +180,7 @@ namespace Flux
             for (var index = dataTable.Columns.Count; index < list.Count; index++)
               dataTable.Columns.Add(index.ToSingleOrdinalColumnName());
 
-            dataTable.Rows.Add(list);
+            dataTable.Rows.Add(list.ToArray());
           }
           while (read != -1 && read != (int)Unicode.UnicodeInformationSeparator.GroupSeparator && read != (int)Unicode.UnicodeInformationSeparator.FileSeparator);
 

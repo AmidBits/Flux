@@ -1,17 +1,17 @@
-﻿using System.Reflection;
+﻿//using System.Reflection;
 
 namespace Flux
 {
   public static partial class Em
   {
-    public static T GetDefaultValue<T>()
-      where T : struct, System.Enum
-    {
-      if (typeof(T).GetCustomAttribute<System.ComponentModel.DefaultValueAttribute>(inherit: false) is var a && a is not null)
-        return (T)(a.Value ?? default(T));
+    //public static T GetDefaultValue<T>()
+    //  where T : struct, System.Enum
+    //{
+    //  if (typeof(T).GetCustomAttribute<System.ComponentModel.DefaultValueAttribute>(inherit: false) is var a && a is not null)
+    //    return (T)(a.Value ?? default(T));
 
-      return default;
-    }
+    //  return default;
+    //}
 
     public static System.Collections.Generic.Dictionary<TUnit, TValue> GetUnitValueAll<TValue, TUnit>(this Units.IUnitValueQuantifiable<TValue, TUnit> source)
       where TValue : System.IEquatable<TValue>

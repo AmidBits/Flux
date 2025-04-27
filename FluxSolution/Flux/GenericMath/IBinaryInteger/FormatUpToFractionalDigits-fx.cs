@@ -13,6 +13,13 @@ namespace Flux
       where TInteger : System.Numerics.IBinaryInteger<TInteger>
       => value is < 1 or > 339
       ? throw new System.ArgumentOutOfRangeException(nameof(value))
-      : "0." + new string('#', 339);
+      : "0." + new string('#', int.CreateChecked(value));
+
+    public static System.Globalization.NumberFormatInfo GetSiNumberFormatInfo(Flux.Unicode.UnicodeSpacing unicodeSpacing = Flux.Unicode.UnicodeSpacing.ThinSpace)
+    {
+      var nfi = (System.Globalization.NumberFormatInfo)System.Globalization.CultureInfo.InvariantCulture.NumberFormat.Clone();
+      nfi.NumberGroupSeparator = unicodeSpacing.ToSpacingString();
+      return nfi;
+    }
   }
 }
