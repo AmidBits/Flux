@@ -12,7 +12,7 @@ namespace Flux.Units
 
     public LinearChargeDensity(double value, LinearChargeDensityUnit unit = LinearChargeDensityUnit.CoulombPerMeter) => m_value = ConvertFromUnit(unit, value);
 
-    public LinearChargeDensity(MetricPrefix prefix, double coulombPerMeter) => m_value = prefix.ConvertTo(coulombPerMeter, MetricPrefix.Unprefixed);
+    public LinearChargeDensity(MetricPrefix prefix, double coulombPerMeter) => m_value = prefix.ChangePrefix(coulombPerMeter, MetricPrefix.Unprefixed);
 
     #region Static methods
 
@@ -56,7 +56,7 @@ namespace Flux.Units
 
     public static string GetSiUnitSymbol(MetricPrefix prefix, bool preferUnicode) => prefix.GetMetricPrefixSymbol(preferUnicode) + GetUnitSymbol(LinearChargeDensityUnit.CoulombPerMeter, preferUnicode);
 
-    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertTo(m_value, prefix);
+    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ChangePrefix(m_value, prefix);
 
     public string ToSiUnitString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null, bool fullName = false)
       => GetSiUnitValue(prefix).ToSiFormattedString(format, formatProvider) + Unicode.UnicodeSpacing.ThinSpace.ToSpacingString() + (fullName ? GetSiUnitName(prefix, GetSiUnitValue(prefix).IsConsideredPlural()) : GetSiUnitSymbol(prefix, false));

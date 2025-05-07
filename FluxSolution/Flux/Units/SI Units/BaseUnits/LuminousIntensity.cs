@@ -5,7 +5,7 @@ namespace Flux.Units
   /// <para><see href="https://en.wikipedia.org/wiki/Luminous_intensity"/></para>
   /// </summary>
   public readonly record struct LuminousIntensity
-    : System.IComparable, System.IComparable<LuminousIntensity>, System.IFormattable, ISiUnitValueQuantifiable<double, LuminousIntensityUnit>
+    : System.IComparable, System.IComparable<LuminousIntensity>, System.IEquatable<LuminousIntensity>, System.IFormattable, ISiUnitValueQuantifiable<double, LuminousIntensityUnit>
   {
     private readonly double m_value;
 
@@ -16,7 +16,7 @@ namespace Flux.Units
     /// </summary>
     /// <param name="candela"></param>
     /// <param name="prefix"></param>
-    public LuminousIntensity(MetricPrefix prefix, double candela) => m_value = prefix.ConvertTo(candela, MetricPrefix.Unprefixed);
+    public LuminousIntensity(MetricPrefix prefix, double candela) => m_value = prefix.ChangePrefix(candela, MetricPrefix.Unprefixed);
 
     #region Static methods
     #endregion // Static methods
@@ -59,7 +59,7 @@ namespace Flux.Units
 
     public static string GetSiUnitSymbol(MetricPrefix prefix, bool preferUnicode) => prefix.GetMetricPrefixSymbol(preferUnicode) + GetUnitSymbol(LuminousIntensityUnit.Candela, preferUnicode);
 
-    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertTo(m_value, prefix);
+    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ChangePrefix(m_value, prefix);
 
     public string ToSiUnitString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null, bool fullName = false)
     {

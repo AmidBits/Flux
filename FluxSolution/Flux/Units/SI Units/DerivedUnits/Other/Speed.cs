@@ -23,7 +23,7 @@ namespace Flux.Units
 
     public Speed(double value, SpeedUnit unit = SpeedUnit.MeterPerSecond) => m_value = ConvertFromUnit(unit, value);
 
-    public Speed(MetricPrefix prefix, double meterPerSecond) => m_value = prefix.ConvertTo(meterPerSecond, MetricPrefix.Unprefixed);
+    public Speed(MetricPrefix prefix, double meterPerSecond) => m_value = prefix.ChangePrefix(meterPerSecond, MetricPrefix.Unprefixed);
 
     /// <summary>Create a new instance representing phase velocity from the specified frequency and wavelength.</summary>
     /// <see href="https://en.wikipedia.org/wiki/Phase_velocity"/>
@@ -84,7 +84,7 @@ namespace Flux.Units
 
     public static string GetSiUnitSymbol(MetricPrefix prefix, bool preferUnicode) => prefix.GetMetricPrefixSymbol(preferUnicode) + GetUnitSymbol(SpeedUnit.MeterPerSecond, preferUnicode);
 
-    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertTo(m_value, prefix);
+    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ChangePrefix(m_value, prefix);
 
     public string ToSiUnitString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null, bool fullName = false)
       => GetSiUnitValue(prefix).ToSiFormattedString(format, formatProvider) + Unicode.UnicodeSpacing.ThinSpace.ToSpacingString() + (fullName ? GetSiUnitName(prefix, GetSiUnitValue(prefix).IsConsideredPlural()) : GetSiUnitSymbol(prefix, false));

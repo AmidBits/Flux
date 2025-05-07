@@ -5,7 +5,7 @@ namespace Flux.Units
   /// <para><see href="https://en.wikipedia.org/wiki/Amount_of_substance"/></para>
   /// </summary>
   public readonly record struct AmountOfSubstance
-    : System.IComparable, System.IComparable<AmountOfSubstance>, System.IFormattable, ISiUnitValueQuantifiable<double, AmountOfSubstanceUnit>
+    : System.IComparable, System.IComparable<AmountOfSubstance>, System.IEquatable<AmountOfSubstance>, System.IFormattable, ISiUnitValueQuantifiable<double, AmountOfSubstanceUnit>
   {
     /// <summary>
     /// <para>The exact number of elementary entities in one mole.</para>
@@ -28,7 +28,7 @@ namespace Flux.Units
     /// </summary>
     /// <param name="mole"></param>
     /// <param name="prefix"></param>
-    public AmountOfSubstance(MetricPrefix prefix, double mole) => m_value = prefix.ConvertTo(mole, MetricPrefix.Unprefixed);
+    public AmountOfSubstance(MetricPrefix prefix, double mole) => m_value = prefix.ChangePrefix(mole, MetricPrefix.Unprefixed);
 
     public double NumberOfParticles => m_value * AvogadrosNumber;
 
@@ -73,7 +73,7 @@ namespace Flux.Units
 
     public static string GetSiUnitSymbol(MetricPrefix prefix, bool preferUnicode) => prefix.GetMetricPrefixSymbol(preferUnicode) + GetUnitSymbol(AmountOfSubstanceUnit.Mole, preferUnicode);
 
-    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertTo(m_value, prefix);
+    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ChangePrefix(m_value, prefix);
 
     public string ToSiUnitString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null, bool fullName = false)
     {

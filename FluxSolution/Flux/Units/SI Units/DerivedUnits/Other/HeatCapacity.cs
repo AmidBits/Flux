@@ -18,7 +18,7 @@ namespace Flux.Units
 
     public HeatCapacity(double value, HeatCapacityUnit unit = HeatCapacityUnit.JoulePerKelvin) => m_value = ConvertToUnit(unit, value);
 
-    public HeatCapacity(MetricPrefix prefix, double joulePerKelvin) => m_value = prefix.ConvertTo(joulePerKelvin, MetricPrefix.Unprefixed);
+    public HeatCapacity(MetricPrefix prefix, double joulePerKelvin) => m_value = prefix.ChangePrefix(joulePerKelvin, MetricPrefix.Unprefixed);
 
     #region Static methods
 
@@ -62,7 +62,7 @@ namespace Flux.Units
 
     public static string GetSiUnitSymbol(MetricPrefix prefix, bool preferUnicode) => prefix.GetMetricPrefixSymbol(preferUnicode) + GetUnitSymbol(HeatCapacityUnit.JoulePerKelvin, preferUnicode);
 
-    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertTo(m_value, prefix);
+    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ChangePrefix(m_value, prefix);
 
     public string ToSiUnitString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null, bool fullName = false)
       => GetSiUnitValue(prefix).ToSiFormattedString(format, formatProvider) + Unicode.UnicodeSpacing.ThinSpace.ToSpacingString() + (fullName ? GetSiUnitName(prefix, GetSiUnitValue(prefix).IsConsideredPlural()) : GetSiUnitSymbol(prefix, false));

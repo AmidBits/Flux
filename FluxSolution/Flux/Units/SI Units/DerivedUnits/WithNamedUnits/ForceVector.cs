@@ -14,7 +14,7 @@ namespace Flux.Units
     public ForceVector(double valueX, double valueY, double valueZ, double valueW, ForceUnit unit = ForceUnit.Newton)
       : this(System.Runtime.Intrinsics.Vector256.Create(valueX, valueY, valueZ, valueW), unit) { }
 
-    public ForceVector(MetricPrefix prefix, System.Runtime.Intrinsics.Vector256<double> NewtonSquare) => m_value = prefix.ConvertTo(NewtonSquare, MetricPrefix.Unprefixed);
+    public ForceVector(MetricPrefix prefix, System.Runtime.Intrinsics.Vector256<double> NewtonSquare) => m_value = prefix.ChangePrefix(NewtonSquare, MetricPrefix.Unprefixed);
 
     public ForceVector(MetricPrefix prefix, double NewtonSquareX, double NewtonSquareY, double NewtonSquareZ, double NewtonSquareW)
       : this(prefix, System.Runtime.Intrinsics.Vector256.Create(NewtonSquareX, NewtonSquareY, NewtonSquareZ, NewtonSquareW)) { }
@@ -51,7 +51,7 @@ namespace Flux.Units
 
     public static string GetSiUnitSymbol(MetricPrefix prefix, bool preferUnicode) => prefix.GetMetricPrefixSymbol(preferUnicode) + GetUnitSymbol(ForceUnit.Newton, preferUnicode);
 
-    public System.Runtime.Intrinsics.Vector256<double> GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertTo(m_value, prefix);
+    public System.Runtime.Intrinsics.Vector256<double> GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ChangePrefix(m_value, prefix);
 
     public string ToSiUnitString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null, bool fullName = false)
       => GetSiUnitValue(prefix).ToString() + Unicode.UnicodeSpacing.ThinSpace.ToSpacingString() + (fullName ? GetSiUnitName(prefix, true) : GetSiUnitSymbol(prefix, false));

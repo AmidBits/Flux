@@ -11,7 +11,7 @@ namespace Flux.Units
 
     public Turbidity(double value, TurbidityUnit unit = TurbidityUnit.NephelometricTurbidityUnits) => m_value = ConvertFromUnit(unit, value);
 
-    public Turbidity(MetricPrefix prefix, double nephelometricTurbidityUnits) => m_value = prefix.ConvertTo(nephelometricTurbidityUnits, MetricPrefix.Unprefixed);
+    public Turbidity(MetricPrefix prefix, double nephelometricTurbidityUnits) => m_value = prefix.ChangePrefix(nephelometricTurbidityUnits, MetricPrefix.Unprefixed);
 
     #region Static methods
 

@@ -11,7 +11,7 @@ namespace Flux.Units
 
     public Flow(double value, FlowUnit unit = FlowUnit.CubicMeterPerSecond) => m_value = ConvertFromUnit(unit, value);
 
-    public Flow(MetricPrefix prefix, double cubicMeterPerSecond) => m_value = prefix.ConvertTo(cubicMeterPerSecond, MetricPrefix.Unprefixed);
+    public Flow(MetricPrefix prefix, double cubicMeterPerSecond) => m_value = prefix.ChangePrefix(cubicMeterPerSecond, MetricPrefix.Unprefixed);
 
     public Flow(Volume volume, Time time) : this(volume.Value / time.Value) { }
 
@@ -57,7 +57,7 @@ namespace Flux.Units
 
     public static string GetSiUnitSymbol(MetricPrefix prefix, bool preferUnicode) => prefix.GetMetricPrefixSymbol(preferUnicode) + GetUnitSymbol(FlowUnit.CubicMeterPerSecond, preferUnicode);
 
-    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertTo(m_value, prefix, 3);
+    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ChangePrefix(m_value, prefix, 3);
 
     public string ToSiUnitString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null, bool fullName = false)
       => GetSiUnitValue(prefix).ToSiFormattedString(format, formatProvider) + Unicode.UnicodeSpacing.ThinSpace.ToSpacingString() + (fullName ? GetSiUnitName(prefix, GetSiUnitValue(prefix).IsConsideredPlural()) : GetSiUnitSymbol(prefix, false));

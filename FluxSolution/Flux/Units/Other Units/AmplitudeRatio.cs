@@ -13,7 +13,7 @@ namespace Flux.Units
 
     public AmplitudeRatio(double value, AmplitudeRatioUnit unit = AmplitudeRatioUnit.DecibelVolt) => m_value = ConvertFromUnit(unit, value);
 
-    public AmplitudeRatio(MetricPrefix prefix, double decibelVolt) => m_value = prefix.ConvertTo(decibelVolt, MetricPrefix.Unprefixed);
+    public AmplitudeRatio(MetricPrefix prefix, double decibelVolt) => m_value = prefix.ChangePrefix(decibelVolt, MetricPrefix.Unprefixed);
 
     public PowerRatio ToPowerRatio() => new(double.Pow(m_value, 2));
 

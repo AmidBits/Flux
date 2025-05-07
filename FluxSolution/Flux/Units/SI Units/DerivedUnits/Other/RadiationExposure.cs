@@ -11,7 +11,7 @@ namespace Flux.Units
 
     public RadiationExposure(double value, RadiationExposureUnit unit = RadiationExposureUnit.CoulombPerKilogram) => m_value = ConvertFromUnit(unit, value);
 
-    public RadiationExposure(MetricPrefix prefix, double coulombPerKilogram) => m_value = prefix.ConvertTo(coulombPerKilogram, MetricPrefix.Unprefixed);
+    public RadiationExposure(MetricPrefix prefix, double coulombPerKilogram) => m_value = prefix.ChangePrefix(coulombPerKilogram, MetricPrefix.Unprefixed);
 
     #region Overloaded operators
 
@@ -51,7 +51,7 @@ namespace Flux.Units
 
     public static string GetSiUnitSymbol(MetricPrefix prefix, bool preferUnicode) => prefix.GetMetricPrefixSymbol(preferUnicode) + GetUnitSymbol(RadiationExposureUnit.CoulombPerKilogram, preferUnicode);
 
-    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertTo(m_value, prefix);
+    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ChangePrefix(m_value, prefix);
 
     public string ToSiUnitString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null, bool fullName = false)
       => GetSiUnitValue(prefix).ToSiFormattedString(format, formatProvider) + Unicode.UnicodeSpacing.ThinSpace.ToSpacingString() + (fullName ? GetSiUnitName(prefix, GetSiUnitValue(prefix).IsConsideredPlural()) : GetSiUnitSymbol(prefix, false));

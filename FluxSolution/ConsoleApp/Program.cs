@@ -322,20 +322,49 @@ namespace ConsoleApp
       }
     }
 
+    private static int RevRem(int dividend, int divisor)
+    {
+      var rev = dividend.ReverseRemainderWithZero(divisor, out var rem);
+      if (rev == 0) rev = int.CopySign(divisor, dividend);
+      return rev;
+    }
+
     private static void TimedMain(string[] _)
     {
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
+
+      //var range = 5;
+      //for (var value = -15; value <= 15; value++)
+      //{
+      //  var rev0 = RevRem(value, range);
+      //  var rev = value.ReverseRemainder(range, out var rem);
+      //  if (rev == 0) rev = int.CopySign(range, value);
+      //  System.Console.WriteLine($"{value:D2} / {range:D2} : {rem:D2} : {rev:D2} ({rev0:D2})");
+      //}
+
+      var minValue = -2;
+      var maxValue = 4;
+      var range = maxValue - minValue;
+      for (var value = -15; value <= 15; value++)
+        System.Console.WriteLine($"{value:D2} / {(maxValue - minValue):D2} ({minValue:D2}, {maxValue:D2}) : [{value.WrapAround(minValue, maxValue):D2}] : [{value.WrapAroundHalfOpenMax(minValue, maxValue):D2}) : ({value.WrapAroundHalfOpenMin(minValue, maxValue):D2}]");
+
+      var tester = (1803).ToEngineeringNotationString("g");
+
+
       var mg = new Flux.Units.Mass(1);
-      var rat = 1.0;
-      var gias = Flux.Units.MetricPrefix.Giga.GetInfimumAndSupremum(rat, true);
+      var rat = 0.91;
+      var ump = Flux.Units.MetricPrefix.Kilo;
+      var umpv = ump.GetMetricPrefixValue();
+      var gias = ump.GetInfimumAndSupremum(rat, false);
+      var tecncs = umpv.ToEnglishCardinalNumeralCompoundString();
+      var ss = ump.ToShortScaleString();
+      var ens = ((int)umpv * rat).ToEngineeringNotationString();
 
-      var ss = Flux.Units.MetricPrefix.Giga.ConvertToShortScale();
-
-      var mass = new Flux.Units.Mass(1, MassUnit.Tonne);
+      var mass = new Flux.Units.Mass(rat, MassUnit.Tonne);
       var massens = mass.ToUnitString(MassUnit.Gram);
       var (Prefix, Value) = mass.GetUnitValue(MassUnit.Gram).GetEngineeringNotationProperties();
-      var sius = mass.ToSiUnitString(Prefix);
+      var sius = mass.ToSiUnitString(Flux.Units.MetricPrefix.Hecto);
 
       var ta = typeof(Flux.Units.MassUnit).TryGetAttribute<Flux.Units.UnitValueQuantifieableAttribute<MassUnit>>(out var ea);
       var tea = Flux.Units.MassUnit.Gram.TryGetEnumAttribute<Flux.Units.UnitAttribute>(out var eca);

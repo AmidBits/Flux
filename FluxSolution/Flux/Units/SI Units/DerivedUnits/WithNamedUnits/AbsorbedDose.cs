@@ -11,7 +11,7 @@ namespace Flux.Units
 
     public AbsorbedDose(double value, AbsorbedDoseUnit unit = AbsorbedDoseUnit.Gray) => m_value = ConvertFromUnit(unit, value);
 
-    public AbsorbedDose(MetricPrefix prefix, double gray) => m_value = prefix.ConvertTo(gray, MetricPrefix.Unprefixed);
+    public AbsorbedDose(MetricPrefix prefix, double gray) => m_value = prefix.ChangePrefix(gray, MetricPrefix.Unprefixed);
 
     #region Overloaded operators
 
@@ -51,7 +51,7 @@ namespace Flux.Units
 
     public static string GetSiUnitSymbol(MetricPrefix prefix, bool preferUnicode) => prefix.GetMetricPrefixSymbol(preferUnicode) + GetUnitSymbol(AbsorbedDoseUnit.Gray, preferUnicode);
 
-    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertTo(m_value, prefix);
+    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ChangePrefix(m_value, prefix);
 
     public string ToSiUnitString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null, bool fullName = false)
       => GetSiUnitValue(prefix).ToSiFormattedString(format, formatProvider)

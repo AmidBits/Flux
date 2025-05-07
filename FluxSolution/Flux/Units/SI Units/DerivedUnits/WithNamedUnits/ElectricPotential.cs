@@ -11,7 +11,7 @@ namespace Flux.Units
 
     public ElectricPotential(double value, ElectricPotentialUnit unit = ElectricPotentialUnit.Volt) => m_value = ConvertFromUnit(unit, value);
 
-    public ElectricPotential(MetricPrefix prefix, double volt) => m_value = prefix.ConvertTo(volt, MetricPrefix.Unprefixed);
+    public ElectricPotential(MetricPrefix prefix, double volt) => m_value = prefix.ChangePrefix(volt, MetricPrefix.Unprefixed);
 
 
     #region Static methods
@@ -71,7 +71,7 @@ namespace Flux.Units
       _ => prefix.GetMetricPrefixSymbol(preferUnicode) + GetUnitSymbol(ElectricPotentialUnit.Volt, preferUnicode),
     };
 
-    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertTo(m_value, prefix);
+    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ChangePrefix(m_value, prefix);
 
     public string ToSiUnitString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null, bool fullName = false)
     {

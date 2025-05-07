@@ -17,7 +17,7 @@ namespace Flux.Units
 
     public ElectricalResistance(double value, ElectricalResistanceUnit unit = ElectricalResistanceUnit.Ohm) => m_value = ConvertFromUnit(unit, value);
 
-    public ElectricalResistance(MetricPrefix prefix, double ohm) => m_value = prefix.ConvertTo(ohm, MetricPrefix.Unprefixed);
+    public ElectricalResistance(MetricPrefix prefix, double ohm) => m_value = prefix.ChangePrefix(ohm, MetricPrefix.Unprefixed);
 
     public ElectricalConductance ToElectricalConductance() => new(1 / m_value);
 
@@ -84,7 +84,7 @@ namespace Flux.Units
 
     public static string GetSiUnitSymbol(MetricPrefix prefix, bool preferUnicode) => prefix.GetMetricPrefixSymbol(preferUnicode) + GetUnitSymbol(ElectricalResistanceUnit.Ohm, preferUnicode);
 
-    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertTo(m_value, prefix);
+    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ChangePrefix(m_value, prefix);
 
     public string ToSiUnitString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null, bool fullName = false)
     {

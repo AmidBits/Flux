@@ -11,7 +11,7 @@ namespace Flux.Units
 
     public RelativeHumidity(double value, RelativeHumidityUnit unit = RelativeHumidityUnit.Percent) => m_value = ConvertFromUnit(unit, value);
 
-    public RelativeHumidity(MetricPrefix prefix, double percent) => m_value = prefix.ConvertTo(percent, MetricPrefix.Unprefixed);
+    public RelativeHumidity(MetricPrefix prefix, double percent) => m_value = prefix.ChangePrefix(percent, MetricPrefix.Unprefixed);
 
     #region Overloaded operators
 

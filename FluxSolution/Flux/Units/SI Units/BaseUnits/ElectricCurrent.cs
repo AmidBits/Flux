@@ -5,7 +5,7 @@ namespace Flux.Units
   /// <para><see href="https://en.wikipedia.org/wiki/Electric_current"/></para>
   /// </summary>
   public readonly record struct ElectricCurrent
-    : System.IComparable, System.IComparable<ElectricCurrent>, System.IFormattable, ISiUnitValueQuantifiable<double, ElectricCurrentUnit>
+    : System.IComparable, System.IComparable<ElectricCurrent>, System.IEquatable<ElectricCurrent>, System.IFormattable, ISiUnitValueQuantifiable<double, ElectricCurrentUnit>
   {
     private readonly double m_value;
 
@@ -16,7 +16,7 @@ namespace Flux.Units
     /// </summary>
     /// <param name="amperes"></param>
     /// <param name="prefix"></param>
-    public ElectricCurrent(MetricPrefix prefix, double ampere) => m_value = prefix.ConvertTo(ampere, MetricPrefix.Unprefixed);
+    public ElectricCurrent(MetricPrefix prefix, double ampere) => m_value = prefix.ChangePrefix(ampere, MetricPrefix.Unprefixed);
 
     #region Static methods
 
@@ -70,7 +70,7 @@ namespace Flux.Units
 
     public static string GetSiUnitSymbol(MetricPrefix prefix, bool preferUnicode) => prefix.GetMetricPrefixSymbol(preferUnicode) + GetUnitSymbol(ElectricCurrentUnit.Ampere, preferUnicode);
 
-    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertTo(m_value, prefix);
+    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ChangePrefix(m_value, prefix);
 
     public string ToSiUnitString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null, bool fullName = false)
     {

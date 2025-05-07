@@ -15,7 +15,7 @@ namespace Flux.Units
     /// <param name="unit">The notation in parts per notation.</param>
     public PartsPerNotation(double parts, PartsPerNotationUnit unit = PartsPerNotationUnit.Percent) => m_parts = ConvertToUnit(unit, parts);
 
-    public PartsPerNotation(MetricPrefix prefix, double percent) => m_parts = prefix.ConvertTo(percent, MetricPrefix.Unprefixed);
+    public PartsPerNotation(MetricPrefix prefix, double percent) => m_parts = prefix.ChangePrefix(percent, MetricPrefix.Unprefixed);
 
     #region Static methods
     #endregion Static methods

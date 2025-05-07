@@ -3,14 +3,6 @@ namespace Flux
   public static partial class Em
   {
     /// <summary>
-    /// <para></para>
-    /// </summary>
-    /// <param name="source"></param>
-    /// <returns></returns>
-    public static string? ConvertToShortScale(this Units.MetricPrefix source)
-      => Globalization.En.NumeralComposition.ShortScaleDictionary.TryGetValue(source.GetMetricPrefixValue(), out var shortScaleName) ? shortScaleName : null;
-
-    /// <summary>
     /// <para>Convert <paramref name="value"/> from <paramref name="source"/> prefix to <paramref name="target"/> prefix with a choice of <paramref name="dimensions"/> (1 is default, 2 for squares and 3 for cubes).</para>
     /// </summary>
     /// <param name="source"></param>
@@ -18,19 +10,35 @@ namespace Flux
     /// <param name="target"></param>
     /// <param name="dimensions"></param>
     /// <returns></returns>
-    public static T ConvertTo<T>(this Units.MetricPrefix source, T value, Units.MetricPrefix target, int dimensions)
-      where T : System.Numerics.INumber<T>, System.Numerics.IPowerFunctions<T>
-      => value * T.Pow(T.Pow(T.CreateChecked(10), T.CreateChecked((int)source) - T.CreateChecked((int)target)), T.CreateChecked(dimensions));
+    public static T ChangePrefix<T>(this Units.MetricPrefix source, T value, Units.MetricPrefix target, int dimensions = 1)
+      where T : System.Numerics.INumberBase<T>, System.Numerics.IPowerFunctions<T>
+    {
+      System.ArgumentOutOfRangeException.ThrowIfNegativeOrZero(dimensions);
 
-    public static T ConvertTo<T>(this Units.MetricPrefix source, T value, Units.MetricPrefix target)
-      where T : System.Numerics.INumber<T>, System.Numerics.IPowerFunctions<T>
-      => value * T.Pow(T.CreateChecked(10), T.CreateChecked((int)source) - T.CreateChecked((int)target));
+      var multiplier = T.Pow(T.CreateChecked(10), T.CreateChecked((int)source) - T.CreateChecked((int)target));
 
-    public static System.Runtime.Intrinsics.Vector256<double> ConvertTo(this Units.MetricPrefix source, System.Runtime.Intrinsics.Vector256<double> value, Units.MetricPrefix target, int dimensions)
-      => value * double.Pow(double.Pow(10, (int)source - (int)target), dimensions);
+      if (dimensions > 1) multiplier = T.Pow(multiplier, T.CreateChecked(dimensions));
 
-    public static System.Runtime.Intrinsics.Vector256<double> ConvertTo(this Units.MetricPrefix source, System.Runtime.Intrinsics.Vector256<double> value, Units.MetricPrefix target)
-      => value * double.Pow(10, (int)source - (int)target);
+      return value * multiplier;
+    }
+
+    //public static T ConvertTo<T>(this Units.MetricPrefix source, T value, Units.MetricPrefix target)
+    //  where T : System.Numerics.INumber<T>, System.Numerics.IPowerFunctions<T>
+    //  => value * T.Pow(T.CreateChecked(10), T.CreateChecked((int)source) - T.CreateChecked((int)target));
+
+    public static System.Runtime.Intrinsics.Vector256<double> ChangePrefix(this Units.MetricPrefix source, System.Runtime.Intrinsics.Vector256<double> value, Units.MetricPrefix target, int dimensions = 1)
+    {
+      System.ArgumentOutOfRangeException.ThrowIfNegativeOrZero(dimensions);
+
+      var multiplier = double.Pow(10, (int)source - (int)target);
+
+      if (dimensions > 1) multiplier = double.Pow(multiplier, dimensions);
+
+      return value * multiplier;
+    }
+
+    //public static System.Runtime.Intrinsics.Vector256<double> ConvertTo(this Units.MetricPrefix source, System.Runtime.Intrinsics.Vector256<double> value, Units.MetricPrefix target)
+    //  => value * double.Pow(10, (int)source - (int)target);
 
     /// <summary>
     /// <para>Find the infimum (the largest that is less than) and supremum (the smallest that is greater than) prefixes with adjusted value of the specified <paramref name="source"/> prefix and <paramref name="value"/>.</para>
@@ -43,12 +51,12 @@ namespace Flux
     {
       var metricPrefixes = System.Enum.GetValues<Units.MetricPrefix>();
 
-      var adjustedValue = source.ConvertTo(value, Units.MetricPrefix.Unprefixed);
+      var adjustedValue = source.ChangePrefix(value, Units.MetricPrefix.Unprefixed);
 
       var (_, InfimumItem, _, _, SupremumItem, _) = metricPrefixes.AsReadOnlySpan().GetInfimumAndSupremum(adjustedValue, e => T.CopySign(T.Pow(T.CreateChecked(10), T.Abs(T.CreateChecked((int)e))), T.CreateChecked((int)e)), proper);
 
-      var ltValue = source.ConvertTo(value, InfimumItem);
-      var gtValue = source.ConvertTo(value, SupremumItem);
+      var ltValue = source.ChangePrefix(value, InfimumItem);
+      var gtValue = source.ChangePrefix(value, SupremumItem);
 
       return (ltValue, InfimumItem, gtValue, SupremumItem);
     }
@@ -106,5 +114,13 @@ namespace Flux
     /// <returns></returns>
     public static System.Numerics.BigInteger GetMetricPrefixValue(this Units.MetricPrefix source)
       => System.Numerics.BigInteger.Pow(10, (int)source);
+
+    /// <summary>
+    /// <para>Gets a short-scale string if available, otherwise <see cref="string.Empty"/>.</para>
+    /// </summary>
+    /// <param name="source"></param>
+    /// <returns></returns>
+    public static string ToShortScaleString(this Units.MetricPrefix source)
+      => Globalization.En.NumeralComposition.ShortScaleDictionary.TryGetValue(source.GetMetricPrefixValue(), out var shortScaleName) ? shortScaleName : string.Empty;
   }
 }

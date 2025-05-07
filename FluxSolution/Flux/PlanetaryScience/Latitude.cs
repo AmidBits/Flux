@@ -22,7 +22,7 @@ namespace Flux.PlanetaryScience
     private readonly Units.Angle m_angle;
 
     private Latitude(double angleDeg)
-      => m_angle = new(angleDeg.FoldBackAndForth(MinValue, MaxValue), Units.AngleUnit.Degree);
+      => m_angle = new(angleDeg.FoldAcross(MinValue, MaxValue), Units.AngleUnit.Degree);
 
     /// <summary>Creates a new <see cref="Latitude"/> from the specified <paramref name="angle"/>.</summary>
     public Latitude(Units.Angle angle)

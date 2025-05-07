@@ -11,7 +11,7 @@ namespace Flux.Units
 
     public ElectricalConductance(double value, ElectricalConductanceUnit unit = ElectricalConductanceUnit.Siemens) => m_value = ConvertFromUnit(unit, value);
 
-    public ElectricalConductance(MetricPrefix prefix, double siemens) => m_value = prefix.ConvertTo(siemens, MetricPrefix.Unprefixed);
+    public ElectricalConductance(MetricPrefix prefix, double siemens) => m_value = prefix.ChangePrefix(siemens, MetricPrefix.Unprefixed);
 
     public ElectricalResistance ToElectricResistance() => new(1 / m_value);
 
@@ -56,7 +56,7 @@ namespace Flux.Units
 
     public static string GetSiUnitSymbol(MetricPrefix prefix, bool preferUnicode) => prefix.GetMetricPrefixSymbol(preferUnicode) + GetUnitSymbol(ElectricalConductanceUnit.Siemens, preferUnicode);
 
-    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertTo(m_value, prefix);
+    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ChangePrefix(m_value, prefix);
 
     public string ToSiUnitString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null, bool fullName = false)
     {

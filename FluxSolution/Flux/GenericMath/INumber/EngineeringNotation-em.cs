@@ -3,7 +3,8 @@ namespace Flux
   public static partial class EngineeringNotation
   {
     /// <summary>
-    /// <para></para>
+    /// <para>Gets a prefix and value representing the engineering notation of <paramref name="source"/> and optionally whether to <paramref name="restrictToTriplets"/>.</para>
+    /// <example><code>var (p, v) = (1803).GetEngineeringNotationProperties(); // (p: "k", v: 1.803)</code></example>
     /// </summary>
     /// <typeparam name="TSelf"></typeparam>
     /// <param name="source"></param>
@@ -29,8 +30,9 @@ namespace Flux
     }
 
     /// <summary>
-    /// <para>Creates a new string, representing the <paramref name="source"/> number in engineering notation, with options of <paramref name="spacing"/>, <paramref name="format"/> and <paramref name="formatProvider"/>.</para>
+    /// <para>Creates a string representation of the <paramref name="source"/> number in engineering notation, with options of <paramref name="format"/>, <paramref name="formatProvider"/>, <paramref name="spacing"/> and <paramref name="restrictToTriplets"/>.</para>
     /// <para><see href="https://en.wikipedia.org/wiki/Engineering_notation"/></para>
+    /// <example><code>var v = (1803).ToEngineeringNotationString("g"); // v == "1.803 kg"</code></example>
     /// </summary>
     /// <typeparam name="TSelf"></typeparam>
     /// <param name="source"></param>
@@ -38,9 +40,9 @@ namespace Flux
     /// <param name="format"></param>
     /// <param name="formatProvider"></param>
     /// <param name="spacing"></param>
-    /// <param name="tripletsOnly"></param>
+    /// <param name="restrictToTriplets"></param>
     /// <returns></returns>
-    public static string ToEngineeringNotationString<TSelf>(this TSelf source, string? unit = null, string? format = null, System.IFormatProvider? formatProvider = null, Unicode.UnicodeSpacing spacing = Unicode.UnicodeSpacing.ThinSpace, bool tripletsOnly = true)
+    public static string ToEngineeringNotationString<TSelf>(this TSelf source, string? unit = null, string? format = null, System.IFormatProvider? formatProvider = null, Unicode.UnicodeSpacing spacing = Unicode.UnicodeSpacing.ThinSpace, bool restrictToTriplets = true)
       where TSelf : System.Numerics.INumber<TSelf>
     {
       if (TSelf.IsZero(source))
@@ -48,7 +50,7 @@ namespace Flux
 
       var sm = new SpanMaker<char>();
 
-      var (prefix, value) = source.GetEngineeringNotationProperties(tripletsOnly);
+      var (prefix, value) = source.GetEngineeringNotationProperties(restrictToTriplets);
 
       sm = sm.Append(value.ToString(format, formatProvider));
 

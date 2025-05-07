@@ -12,7 +12,7 @@ namespace Flux.Units
     public MagneticFluxStrengthVector(double valueX, double valueY, double valueZ, double valueW, MagneticFluxStrengthUnit unit = MagneticFluxStrengthUnit.AmperePerMeter)
       : this(System.Runtime.Intrinsics.Vector256.Create(valueX, valueY, valueZ, valueW), unit) { }
 
-    public MagneticFluxStrengthVector(MetricPrefix prefix, System.Runtime.Intrinsics.Vector256<double> AmperePerMeterSquare) => m_value = prefix.ConvertTo(AmperePerMeterSquare, MetricPrefix.Unprefixed);
+    public MagneticFluxStrengthVector(MetricPrefix prefix, System.Runtime.Intrinsics.Vector256<double> AmperePerMeterSquare) => m_value = prefix.ChangePrefix(AmperePerMeterSquare, MetricPrefix.Unprefixed);
 
     public MagneticFluxStrengthVector(MetricPrefix prefix, double AmperePerMeterSquareX, double AmperePerMeterSquareY, double AmperePerMeterSquareZ, double AmperePerMeterSquareW)
       : this(prefix, System.Runtime.Intrinsics.Vector256.Create(AmperePerMeterSquareX, AmperePerMeterSquareY, AmperePerMeterSquareZ, AmperePerMeterSquareW)) { }
@@ -49,7 +49,7 @@ namespace Flux.Units
 
     public static string GetSiUnitSymbol(MetricPrefix prefix, bool preferUnicode) => prefix.GetMetricPrefixSymbol(preferUnicode) + GetUnitSymbol(MagneticFluxStrengthUnit.AmperePerMeter, preferUnicode);
 
-    public System.Runtime.Intrinsics.Vector256<double> GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertTo(m_value, prefix);
+    public System.Runtime.Intrinsics.Vector256<double> GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ChangePrefix(m_value, prefix);
 
     public string ToSiUnitString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null, bool fullName = false)
       => GetSiUnitValue(prefix).ToString() + Unicode.UnicodeSpacing.ThinSpace.ToSpacingString() + (fullName ? GetSiUnitName(prefix, true) : GetSiUnitSymbol(prefix, false));

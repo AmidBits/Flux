@@ -11,7 +11,7 @@ namespace Flux.Units
 
     public Wavelength(double value, WavelengthUnit unit = WavelengthUnit.MeterPerRadian) => m_value = ConvertToUnit(unit, value);
 
-    public Wavelength(MetricPrefix prefix, double meterPerRadian) => m_value = prefix.ConvertTo(meterPerRadian, MetricPrefix.Unprefixed);
+    public Wavelength(MetricPrefix prefix, double meterPerRadian) => m_value = prefix.ChangePrefix(meterPerRadian, MetricPrefix.Unprefixed);
 
     public Wavelength(Speed phaseSpeed, Frequency frequency) : this(phaseSpeed.Value / frequency.Value) { }
 
@@ -59,7 +59,7 @@ namespace Flux.Units
 
     public static string GetSiUnitSymbol(MetricPrefix prefix, bool preferUnicode) => prefix.GetMetricPrefixSymbol(preferUnicode) + GetUnitSymbol(WavelengthUnit.MeterPerRadian, preferUnicode);
 
-    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertTo(m_value, prefix);
+    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ChangePrefix(m_value, prefix);
 
     public string ToSiUnitString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null, bool fullName = false)
       => GetSiUnitValue(prefix).ToSiFormattedString(format, formatProvider) + Unicode.UnicodeSpacing.ThinSpace.ToSpacingString() + (fullName ? GetSiUnitName(prefix, GetSiUnitValue(prefix).IsConsideredPlural()) : GetSiUnitSymbol(prefix, false));

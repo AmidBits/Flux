@@ -11,7 +11,7 @@ namespace Flux.Units
 
     public SurfaceTension(double value, SurfaceTensionUnit unit = SurfaceTensionUnit.NewtonPerMeter) => m_value = ConvertToUnit(unit, value);
 
-    public SurfaceTension(MetricPrefix prefix, double newtonPerMeter) => m_value = prefix.ConvertTo(newtonPerMeter, MetricPrefix.Unprefixed);
+    public SurfaceTension(MetricPrefix prefix, double newtonPerMeter) => m_value = prefix.ChangePrefix(newtonPerMeter, MetricPrefix.Unprefixed);
 
     public SurfaceTension(Force force, Length length) : this(force.Value / length.Value) { }
 
@@ -59,7 +59,7 @@ namespace Flux.Units
 
     public static string GetSiUnitSymbol(MetricPrefix prefix, bool preferUnicode) => prefix.GetMetricPrefixSymbol(preferUnicode) + GetUnitSymbol(SurfaceTensionUnit.NewtonPerMeter, preferUnicode);
 
-    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertTo(m_value, prefix);
+    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ChangePrefix(m_value, prefix);
 
     public string ToSiUnitString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null, bool fullName = false)
       => GetSiUnitValue(prefix).ToSiFormattedString(format, formatProvider) + Unicode.UnicodeSpacing.ThinSpace.ToSpacingString() + (fullName ? GetSiUnitName(prefix, GetSiUnitValue(prefix).IsConsideredPlural()) : GetSiUnitSymbol(prefix, false));

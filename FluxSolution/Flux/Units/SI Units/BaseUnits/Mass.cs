@@ -5,7 +5,7 @@ namespace Flux.Units
   /// <para><see href="https://en.wikipedia.org/wiki/Mass"/></para>
   /// </summary>
   public readonly record struct Mass
-    : System.IComparable, System.IComparable<Mass>, System.IFormattable, ISiUnitValueQuantifiable<double, MassUnit>
+    : System.IComparable, System.IComparable<Mass>, System.IEquatable<Mass>, System.IFormattable, ISiUnitValueQuantifiable<double, MassUnit>
   {
     /// <summary>
     /// <para>In particle physics, the electron mass (symbol: me) is the mass of a stationary electron, also known as the invariant mass of the electron. It is one of the fundamental constants of physics.</para>
@@ -36,7 +36,7 @@ namespace Flux.Units
     /// <remarks>Mass is the only </remarks>
     /// <param name="gram"></param>
     /// <param name="prefix"></param>
-    public Mass(MetricPrefix prefix, double gram) => m_value = prefix.ConvertTo(gram, MetricPrefix.Kilo);
+    public Mass(MetricPrefix prefix, double gram) => m_value = prefix.ChangePrefix(gram, MetricPrefix.Kilo);
 
     public Mass(Force force, Acceleration acceleration) => m_value = force.Value / acceleration.Value;
 
@@ -85,7 +85,7 @@ namespace Flux.Units
       => prefix.GetMetricPrefixSymbol(preferUnicode) + GetUnitSymbol(MassUnit.Gram, preferUnicode);
 
     public double GetSiUnitValue(MetricPrefix prefix)
-      => MetricPrefix.Kilo.ConvertTo(m_value, prefix);
+      => MetricPrefix.Kilo.ChangePrefix(m_value, prefix);
 
     public string ToSiUnitString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null, bool fullName = false)
     {

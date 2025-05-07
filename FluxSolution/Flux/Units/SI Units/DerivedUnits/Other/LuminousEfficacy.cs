@@ -18,7 +18,7 @@ namespace Flux.Units
 
     public LuminousEfficacy(double value, LuminousEfficacyUnit unit = LuminousEfficacyUnit.LumenPerWatt) => m_value = ConvertFromUnit(unit, value);
 
-    public LuminousEfficacy(MetricPrefix prefix, double lumenPerWatt) => m_value = prefix.ConvertTo(lumenPerWatt, MetricPrefix.Unprefixed);
+    public LuminousEfficacy(MetricPrefix prefix, double lumenPerWatt) => m_value = prefix.ChangePrefix(lumenPerWatt, MetricPrefix.Unprefixed);
 
     public LuminousEfficacy(Energy energy, Angle angle) : this(energy.Value / angle.Value) { }
 
@@ -64,7 +64,7 @@ namespace Flux.Units
 
     public static string GetSiUnitSymbol(MetricPrefix prefix, bool preferUnicode) => prefix.GetMetricPrefixSymbol(preferUnicode) + GetUnitSymbol(LuminousEfficacyUnit.LumenPerWatt, preferUnicode);
 
-    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertTo(m_value, prefix);
+    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ChangePrefix(m_value, prefix);
 
     public string ToSiUnitString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null, bool fullName = false)
       => GetSiUnitValue(prefix).ToSiFormattedString(format, formatProvider) + Unicode.UnicodeSpacing.ThinSpace.ToSpacingString() + (fullName ? GetSiUnitName(prefix, GetSiUnitValue(prefix).IsConsideredPlural()) : GetSiUnitSymbol(prefix, false));

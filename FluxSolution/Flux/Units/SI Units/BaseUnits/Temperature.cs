@@ -5,7 +5,7 @@ namespace Flux.Units
   /// <para><see href="https://en.wikipedia.org/wiki/Temperature"/></para>
   /// </summary>
   public readonly record struct Temperature
-    : System.IComparable, System.IComparable<Temperature>, System.IFormattable, ISiUnitValueQuantifiable<double, TemperatureUnit>
+    : System.IComparable, System.IComparable<Temperature>, System.IEquatable<Temperature>, System.IFormattable, ISiUnitValueQuantifiable<double, TemperatureUnit>
   {
     /// <summary>
     /// <para>Absolute zero is 0 degree Kelvin, or -273.15 degree Celsius.</para>
@@ -19,7 +19,7 @@ namespace Flux.Units
 
     public Temperature(double value, TemperatureUnit unit = TemperatureUnit.Kelvin) => m_value = ConvertFromUnit(unit, value);
 
-    public Temperature(MetricPrefix prefix, double kelvin) => m_value = prefix.ConvertTo(kelvin, MetricPrefix.Unprefixed);
+    public Temperature(MetricPrefix prefix, double kelvin) => m_value = prefix.ChangePrefix(kelvin, MetricPrefix.Unprefixed);
 
     #region Static methods
 
@@ -92,7 +92,7 @@ namespace Flux.Units
 
     public static string GetSiUnitSymbol(MetricPrefix prefix, bool preferUnicode) => prefix.GetMetricPrefixSymbol(preferUnicode) + GetUnitSymbol(TemperatureUnit.Kelvin, preferUnicode);
 
-    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertTo(m_value, prefix);
+    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ChangePrefix(m_value, prefix);
 
     public string ToSiUnitString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null, bool fullName = false)
     {

@@ -18,7 +18,7 @@ namespace Flux.Units
 
     public ElectricCharge(double value, ElectricChargeUnit unit = ElectricChargeUnit.Coulomb) => m_value = ConvertFromUnit(unit, value);
 
-    public ElectricCharge(MetricPrefix prefix, double coulomb) => m_value = prefix.ConvertTo(coulomb, MetricPrefix.Unprefixed);
+    public ElectricCharge(MetricPrefix prefix, double coulomb) => m_value = prefix.ChangePrefix(coulomb, MetricPrefix.Unprefixed);
 
     #region Overloaded operators
 
@@ -58,7 +58,7 @@ namespace Flux.Units
 
     public static string GetSiUnitSymbol(MetricPrefix prefix, bool preferUnicode) => prefix.GetMetricPrefixSymbol(preferUnicode) + GetUnitSymbol(ElectricChargeUnit.Coulomb, preferUnicode);
 
-    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertTo(m_value, prefix);
+    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ChangePrefix(m_value, prefix);
 
     public string ToSiUnitString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null, bool fullName = false)
     {

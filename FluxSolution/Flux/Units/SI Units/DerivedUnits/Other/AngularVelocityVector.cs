@@ -12,7 +12,7 @@ namespace Flux.Units
     public AngularVelocityVector(double valueX, double valueY, double valueZ, double valueW, AngularFrequencyUnit unit = AngularFrequencyUnit.RadianPerSecond)
       : this(System.Runtime.Intrinsics.Vector256.Create(valueX, valueY, valueZ, valueW), unit) { }
 
-    public AngularVelocityVector(MetricPrefix prefix, System.Runtime.Intrinsics.Vector256<double> RadianPerSecondSquare) => m_value = prefix.ConvertTo(RadianPerSecondSquare, MetricPrefix.Unprefixed);
+    public AngularVelocityVector(MetricPrefix prefix, System.Runtime.Intrinsics.Vector256<double> RadianPerSecondSquare) => m_value = prefix.ChangePrefix(RadianPerSecondSquare, MetricPrefix.Unprefixed);
 
     public AngularVelocityVector(MetricPrefix prefix, double RadianPerSecondSquareX, double RadianPerSecondSquareY, double RadianPerSecondSquareZ, double RadianPerSecondSquareW)
       : this(prefix, System.Runtime.Intrinsics.Vector256.Create(RadianPerSecondSquareX, RadianPerSecondSquareY, RadianPerSecondSquareZ, RadianPerSecondSquareW)) { }
@@ -49,7 +49,7 @@ namespace Flux.Units
 
     public static string GetSiUnitSymbol(MetricPrefix prefix, bool preferUnicode) => prefix.GetMetricPrefixSymbol(preferUnicode) + GetUnitSymbol(AngularFrequencyUnit.RadianPerSecond, preferUnicode);
 
-    public System.Runtime.Intrinsics.Vector256<double> GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertTo(m_value, prefix);
+    public System.Runtime.Intrinsics.Vector256<double> GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ChangePrefix(m_value, prefix);
 
     public string ToSiUnitString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null, bool fullName = false)
       => GetSiUnitValue(prefix).ToString() + Unicode.UnicodeSpacing.ThinSpace.ToSpacingString() + (fullName ? GetSiUnitName(prefix, true) : GetSiUnitSymbol(prefix, false));

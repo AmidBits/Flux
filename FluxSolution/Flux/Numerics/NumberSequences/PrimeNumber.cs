@@ -46,7 +46,7 @@ namespace Flux.Numerics
       //if (TValue.CreateChecked(5) is var five && TValue.Abs(value) < five)
       //  return primeMultipleTowardZero = primeMultipleAwayFromZero = TValue.Zero;
 
-      var rev = value.ReverseRemainder(TValue.CreateChecked(6), out var rem);
+      var rev = value.ReverseRemainderWithZero(TValue.CreateChecked(6), out var rem);
 
       primeMultipleTowardZero = value - rem;
       primeMultipleAwayFromZero = value + rev;

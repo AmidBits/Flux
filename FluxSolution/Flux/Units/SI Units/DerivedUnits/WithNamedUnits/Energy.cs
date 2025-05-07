@@ -11,7 +11,7 @@ namespace Flux.Units
 
     public Energy(double value, EnergyUnit unit = EnergyUnit.Joule) => m_value = ConvertFromUnit(unit, value);
 
-    public Energy(MetricPrefix prefix, double joule) => m_value = prefix.ConvertTo(joule, MetricPrefix.Unprefixed);
+    public Energy(MetricPrefix prefix, double joule) => m_value = prefix.ChangePrefix(joule, MetricPrefix.Unprefixed);
 
     public Energy(Pressure pressure, Volume volumn) => m_value = pressure.Value * volumn.Value;
 
@@ -57,7 +57,7 @@ namespace Flux.Units
 
     public static string GetSiUnitSymbol(MetricPrefix prefix, bool preferUnicode) => prefix.GetMetricPrefixSymbol(preferUnicode) + GetUnitSymbol(EnergyUnit.Joule, preferUnicode);
 
-    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertTo(m_value, prefix);
+    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ChangePrefix(m_value, prefix);
 
     public string ToSiUnitString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null, bool fullName = false)
     {

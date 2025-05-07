@@ -18,7 +18,7 @@
 
     public Angle(double value, AngleUnit unit = AngleUnit.Radian) => m_value = ConvertFromUnit(unit, value);
 
-    public Angle(MetricPrefix prefix, double radian) => m_value = prefix.ConvertTo(radian, MetricPrefix.Unprefixed);
+    public Angle(MetricPrefix prefix, double radian) => m_value = prefix.ChangePrefix(radian, MetricPrefix.Unprefixed);
 
     public double InDegrees => double.RadiansToDegrees(m_value);
 
@@ -232,7 +232,7 @@
     /// <param name="angle"></param>
     /// <returns></returns>
     /// <remarks>Values outside the interval [-90, +90] are folded, i.e. +100 = +80, -100 = -80, etc.</remarks>
-    public static Angle AsLatitude(Angle angle) => new(angle.Value.FoldBackAndForth(double.Pi / -2, double.Pi / 2));
+    public static Angle AsLatitude(Angle angle) => new(angle.Value.FoldAcross(double.Pi / -2, double.Pi / 2));
 
     /// <summary>
     /// <para>Creates a longitude <see cref="Angle"/> from <paramref name="value"/> and <paramref name="unit"/>, i.e. a value in the interval [-90, +90].</para>
@@ -629,7 +629,7 @@
 
     public static string GetSiUnitSymbol(MetricPrefix prefix, bool preferUnicode) => prefix.GetMetricPrefixSymbol(preferUnicode) + GetUnitSymbol(AngleUnit.Radian, preferUnicode);
 
-    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertTo(m_value, prefix);
+    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ChangePrefix(m_value, prefix);
 
     public string ToSiUnitString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null, bool fullName = false)
       => GetSiUnitValue(prefix).ToSiFormattedString(format, formatProvider)

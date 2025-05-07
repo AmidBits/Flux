@@ -9,7 +9,7 @@ namespace Flux.Units
 
     public AngularAcceleration(double value, AngularAccelerationUnit unit = AngularAccelerationUnit.RadianPerSecondSquared) => m_value = ConvertFromUnit(unit, value);
 
-    public AngularAcceleration(MetricPrefix prefix, double radianPerSecondSquared) => m_value = prefix.ConvertTo(radianPerSecondSquared, MetricPrefix.Unprefixed);
+    public AngularAcceleration(MetricPrefix prefix, double radianPerSecondSquared) => m_value = prefix.ChangePrefix(radianPerSecondSquared, MetricPrefix.Unprefixed);
 
     /// <summary>
     /// <para>Creates a new angular acceleration from the length (magnitude) of <paramref name="vector"/> and <paramref name="unit"/>.</para>
@@ -63,7 +63,7 @@ namespace Flux.Units
 
     public static string GetSiUnitSymbol(MetricPrefix prefix, bool preferUnicode) => prefix.GetMetricPrefixSymbol(preferUnicode) + GetUnitSymbol(AngularAccelerationUnit.RadianPerSecondSquared, preferUnicode);
 
-    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertTo(m_value, prefix);
+    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ChangePrefix(m_value, prefix);
 
     public string ToSiUnitString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null, bool fullName = false)
       => GetSiUnitValue(prefix).ToSiFormattedString(format, formatProvider) + Unicode.UnicodeSpacing.ThinSpace.ToSpacingString() + (fullName ? GetSiUnitName(prefix, GetSiUnitValue(prefix).IsConsideredPlural()) : GetSiUnitSymbol(prefix, false));

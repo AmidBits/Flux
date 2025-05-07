@@ -11,7 +11,7 @@ namespace Flux.Units
 
     public Pressure(double value, PressureUnit unit = PressureUnit.Pascal) => m_value = ConvertFromUnit(unit, value);
 
-    public Pressure(MetricPrefix prefix, double pascal) => m_value = prefix.ConvertTo(pascal, MetricPrefix.Unprefixed);
+    public Pressure(MetricPrefix prefix, double pascal) => m_value = prefix.ChangePrefix(pascal, MetricPrefix.Unprefixed);
 
     #region Static methods
     #endregion Static methods
@@ -54,7 +54,7 @@ namespace Flux.Units
 
     public static string GetSiUnitSymbol(MetricPrefix prefix, bool preferUnicode) => prefix.GetMetricPrefixSymbol(preferUnicode) + GetUnitSymbol(PressureUnit.Pascal, preferUnicode);
 
-    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertTo(m_value, prefix);
+    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ChangePrefix(m_value, prefix);
 
     public string ToSiUnitString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null, bool fullName = false)
     {

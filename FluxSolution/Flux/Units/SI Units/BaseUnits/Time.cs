@@ -5,7 +5,7 @@ namespace Flux.Units
   /// <para><see href="https://en.wikipedia.org/wiki/Time"/></para>
   /// </summary>
   public readonly record struct Time
-    : System.IComparable, System.IComparable<Time>, System.IFormattable, ISiUnitValueQuantifiable<double, TimeUnit>
+    : System.IComparable, System.IComparable<Time>, System.IEquatable<Time>, System.IFormattable, ISiUnitValueQuantifiable<double, TimeUnit>
   {
     ///// <summary>Amount of time in one picosecond.</summary>
     //public static readonly Time Picosecond = new(MetricPrefix.Pico, 1);
@@ -39,7 +39,7 @@ namespace Flux.Units
     /// </summary>
     /// <param name="seconds"></param>
     /// <param name="prefix"></param>
-    public Time(MetricPrefix prefix, double seconds) => m_value = prefix.ConvertTo(seconds, MetricPrefix.Unprefixed);
+    public Time(MetricPrefix prefix, double seconds) => m_value = prefix.ChangePrefix(seconds, MetricPrefix.Unprefixed);
 
     /// <summary>Creates a new instance from the specified <paramref name="timeSpan"/>.</summary>
     public Time(System.TimeSpan timeSpan) : this(timeSpan.TotalSeconds, TimeUnit.Second) { }
@@ -173,7 +173,7 @@ namespace Flux.Units
 
     public static string GetSiUnitSymbol(MetricPrefix prefix, bool preferUnicode = false) => prefix.GetMetricPrefixSymbol(preferUnicode) + GetUnitSymbol(TimeUnit.Second, preferUnicode);
 
-    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertTo(m_value, prefix);
+    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ChangePrefix(m_value, prefix);
 
     public string ToSiUnitString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null, bool fullName = false)
       => GetSiUnitValue(prefix).ToSiFormattedString(format, formatProvider) + Unicode.UnicodeSpacing.ThinSpace.ToSpacingString() + (fullName ? GetSiUnitName(prefix, GetSiUnitValue(prefix).IsConsideredPlural()) : GetSiUnitSymbol(prefix, false));
