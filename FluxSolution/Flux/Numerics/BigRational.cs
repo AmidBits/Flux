@@ -1,3 +1,5 @@
+using Flux.Units;
+
 namespace Flux.Numerics
 {
   // A rational number (commonly called a fraction) is a ratio between two integers. For example (3/6) = (2/4) = (1/2)
@@ -27,7 +29,6 @@ namespace Flux.Numerics
     , System.Numerics.IDecrementOperators<BigRational>
     , System.Numerics.IDivisionOperators<BigRational, BigRational, BigRational>, System.Numerics.IDivisionOperators<BigRational, System.Numerics.BigInteger, BigRational>
     , System.Numerics.IEqualityOperators<BigRational, BigRational, bool>
-    //, System.Numerics.IFloatingPoint<BigRational> // Need to implement this.
     , System.Numerics.IFloatingPointConstants<BigRational>
     , System.Numerics.IIncrementOperators<BigRational>
     //, System.Numerics.ILogarithmicFunctions<BigRational>
@@ -686,8 +687,13 @@ namespace Flux.Numerics
     public static BigRational Remainder(BigRational a, System.Numerics.BigInteger b)
       => new(a.m_numerator % (a.m_denominator * b), a.m_denominator, true);
 
+    /// <summary>
+    /// <para>Returns the sign of a <see cref="BigRational"/> value.</para>
+    /// </summary>
+    /// <param name="value"></param>
+    /// <returns>-1 if negative, 0 if zero, and 1 if positive.</returns>
     public static int Sign(BigRational value)
-      => value.m_numerator.Sign;
+      => System.Numerics.BigInteger.IsNegative(value.m_numerator) ? -1 : value.m_numerator.IsZero ? 0 : 1;
 
     /// <summary>
     /// <para>Returns the difference between <paramref name="a"/> and <paramref name="b"/>.</para>
@@ -868,7 +874,7 @@ namespace Flux.Numerics
 
     #region System.Numerics.IDecrementOperators<>
 
-    public static BigRational operator --(BigRational value) => value - System.Numerics.BigInteger.One;
+    public static BigRational operator --(BigRational value) => Subtract(value, System.Numerics.BigInteger.One);
 
     #endregion
 
@@ -891,7 +897,7 @@ namespace Flux.Numerics
 
     #region System.Numerics.IIncrementOperators<>
 
-    public static BigRational operator ++(BigRational value) => value + System.Numerics.BigInteger.One;
+    public static BigRational operator ++(BigRational value) => Add(value, System.Numerics.BigInteger.One);
 
     #endregion
 
@@ -1035,7 +1041,7 @@ namespace Flux.Numerics
 
     #region System.Numerics.ISignedNumber<>
 
-    public static BigRational NegativeOne { get; } = new(System.Numerics.BigInteger.MinusOne);
+    public static BigRational NegativeOne { get; } = Negate(One);
 
     #endregion
 
@@ -1099,9 +1105,9 @@ namespace Flux.Numerics
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? formatProvider)
       => IsProperFraction(this)
-      ? Units.RatioNotation.AslashB.ToRatioNotationString(m_numerator, m_denominator, format, formatProvider)
+      ? Ratio.ToRatioNotationString(Units.RatioNotation.AslashB, m_numerator.ToString(format, formatProvider), m_denominator.ToString(format, formatProvider))
       : TryGetMixedParts(this, out var wholeNumber, out var properNumerator, out var properDenominator)
-      ? $"{wholeNumber} {Units.RatioNotation.AslashB.ToRatioNotationString(properNumerator, properDenominator, format, formatProvider)}"
+      ? $"{wholeNumber} {Ratio.ToRatioNotationString(Units.RatioNotation.AslashB, properNumerator.ToString(format, formatProvider), properDenominator.ToString(format, formatProvider))}"
       : m_numerator.ToString(); // It is a whole number and we return a simple integer string.
 
     #region IValueQuantifiable<>

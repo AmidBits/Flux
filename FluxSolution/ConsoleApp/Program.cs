@@ -2,6 +2,7 @@
 using System.Buffers;
 using System.Collections;
 using System.Collections.Immutable;
+using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
 using System.Linq;
@@ -322,17 +323,20 @@ namespace ConsoleApp
       }
     }
 
-    private static int RevRem(int dividend, int divisor)
-    {
-      var rev = dividend.ReverseRemainderWithZero(divisor, out var rem);
-      if (rev == 0) rev = int.CopySign(divisor, dividend);
-      return rev;
-    }
-
     private static void TimedMain(string[] _)
     {
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
+
+
+      var db = new byte[16];
+      var nbi = System.Numerics.BigInteger.Parse("0A0B0C0D0E0F090807060504", System.Globalization.NumberStyles.HexNumber);
+      var nbis = nbi.ToString($"B{nbi.GetBitCount()}");
+      var dbf = ((decimal)nbi).TryWriteToBuffer(db, Endianess.LittleEndian, out var bytesWritten);
+
+      var cdv = (Flux.Units.MetricPrefix)typeof(Flux.Units.MetricPrefix).CreateDefaultValue();
+      var att = typeof(Flux.Units.MetricPrefix).GetAttribute<DefaultValueAttribute>();
+
 
       //var range = 5;
       //for (var value = -15; value <= 15; value++)
@@ -407,7 +411,7 @@ namespace ConsoleApp
       var bytes = new byte[10];
 
       var c = n.WriteBytes(bytes, Endianess.LittleEndian);
-      var bi = bytes.AsSpan()[..c].ReadBigInteger(Endianess.LittleEndian);
+      var bi = bytes.AsReadOnlySpan()[..c].ReadBigInteger(Endianess.LittleEndian);
 
       //var s = "-41 ° 26 '46″ N79 ° 58 ′ 56 ″W";
       //var s = "a 123b45c";
@@ -466,7 +470,7 @@ namespace ConsoleApp
 
       bool exit = false;
 
-      Random rnd = new();
+      System.Random rnd = new();
 
       while (!exit)
       {

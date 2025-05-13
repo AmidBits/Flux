@@ -15,26 +15,6 @@
     where TValue : System.IEquatable<TValue>//, System.IComparable<TValue> // System.Numerics.INumber<TValue> // System.Numerics.INumber<TValue>
     where TUnit : System.Enum
   {
-    static TUnit SiBasePrefix { get; } = default!;
-
-    static TUnit SiUnprefixedUnit { get; } = default!;
-
-    /// <summary>
-    /// <para>Gets the name of the <paramref name="prefix"/> with the <typeparamref name="TUnit"/> and whether to <paramref name="preferPlural"/>.</para>
-    /// </summary>
-    /// <param name="prefix"></param>
-    /// <param name="preferPlural"></param>
-    /// <returns></returns>
-    abstract static string GetSiUnitName(MetricPrefix prefix, /*TUnit unit,*/ bool preferPlural);
-
-    /// <summary>
-    /// <para>Gets the symbol of the <paramref name="prefix"/> with the <typeparamref name="TUnit"/> and whether to <paramref name="preferUnicode"/>.</para>
-    /// </summary>
-    /// <param name="prefix">The prefix to project.</param>
-    /// <param name="preferUnicode"></param>
-    /// <returns></returns>
-    abstract static string GetSiUnitSymbol(MetricPrefix prefix, /*TUnit unit,*/ bool preferUnicode);
-
     /// <summary>
     /// <para>Gets the value of the quantity for the specified <paramref name="prefix"/>.</para>
     /// </summary>
@@ -46,9 +26,9 @@
     /// <para>Creates a new string of the SI quantity for the <paramref name="prefix"/> and whether to use symbols or <paramref name="fullName"/>.</para>
     /// </summary>
     /// <param name="prefix"></param>
-    /// <param name="fullName"></param>
+    /// <param name="format"></param>
+    /// <param name="formatProvider"></param>
     /// <returns></returns>
-    //string ToSiUnitString(MetricPrefix prefix/*, TUnit unit*/, bool fullName);
-    string ToSiUnitString(MetricPrefix prefix, string? format, System.IFormatProvider? formatProvider, bool fullName);
+    string ToSiUnitString(MetricPrefix prefix/*, TUnit unit*/, string? format, System.IFormatProvider? formatProvider);
   }
 }

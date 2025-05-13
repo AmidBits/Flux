@@ -11,8 +11,9 @@ namespace Flux
       => source.IsSystemNullable()
       ? IsSignedNumericType(System.Nullable.GetUnderlyingType(source)!)
       : source is not null
+      && !source.IsEnum
       && (!isPrimitive || source.IsPrimitive)
-      && !source.IsEnum && (
+      && (
         System.Type.GetTypeCode(source)
         is System.TypeCode.Decimal
         or System.TypeCode.Double
@@ -39,8 +40,9 @@ namespace Flux
       => source.IsSystemNullable()
       ? IsUnsignedNumericType(System.Nullable.GetUnderlyingType(source)!)
       : source is not null
+      && !source.IsEnum
       && (!isPrimitive || source.IsPrimitive)
-      && !source.IsEnum && (
+      && (
         System.Type.GetTypeCode(source)
         is System.TypeCode.Byte
         or System.TypeCode.Char // Even though char is not a number, per se, it does derive from System.Numerics.[numeric]<> interfaces, so we check it here instead of deferring to the slower but inevitable match below by IsAssignableToGenericType(..).
@@ -56,13 +58,13 @@ namespace Flux
     /// <para>Indicates whether the source type is a .NET floating-point numeric type.</para>
     /// </summary>
     /// <param name="source"></param>
+    /// <param name="isPrimitive"></param>
     /// <returns></returns>
     public static bool IsFloatingPointNumericType(this System.Type source, bool isPrimitive = false)
       => source.IsSystemNullable()
       ? IsFloatingPointNumericType(System.Nullable.GetUnderlyingType(source)!) // Wrapped into System.Nullable<>, so call itself again with the underlying-type.
       : source is not null
       && (!isPrimitive || source.IsPrimitive) // Only verify primitive, if asked for it.
-      && !source.IsEnum // Enum is NOT considered a numeric type, even though it cannot represent anything but a primitive number. Too much ambiguity, so user has to handle it to their needs.
       && (
         System.Type.GetTypeCode(source)
         is System.TypeCode.Decimal
@@ -76,14 +78,16 @@ namespace Flux
     /// <summary>
     /// <para>Indicates whether the source type is a .NET integer numeric type.</para>
     /// </summary>
+    /// <remarks>This method does not consider <see cref="System.Enum"/> to be an integer numeric type.</remarks>
     /// <param name="source"></param>
+    /// <param name="isPrimitive">If true then the integer numeric type also has to be a .NET primitive, otherwise any integer numeric type is accepted.</param>
     /// <returns></returns>
     public static bool IsIntegerNumericType(this System.Type source, bool isPrimitive = false)
       => source.IsSystemNullable()
       ? IsIntegerNumericType(System.Nullable.GetUnderlyingType(source)!) // Wrapped into System.Nullable<>, so call itself again with the underlying-type.
       : source is not null
-      && (!isPrimitive || source.IsPrimitive) // Only verify primitive, if asked for it.
       && !source.IsEnum // Enum is NOT considered a numeric type, even though it cannot represent anything but a primitive number. Too much ambiguity, so user has to handle it to their needs.
+      && (!isPrimitive || source.IsPrimitive) // Only verify primitive, if asked for it.
       && (
         System.Type.GetTypeCode(source)
         is System.TypeCode.Byte

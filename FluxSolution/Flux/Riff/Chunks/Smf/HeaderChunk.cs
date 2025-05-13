@@ -10,7 +10,7 @@ namespace Flux.Riff.Chunks.Smf
   {
     public const string ID = @"MThd";
 
-    public Format Format { get => (Format)m_buffer.AsReadOnlySpan(8).ReadUInt16(Endianess.BigEndian); set => ((ushort)value).WriteBytes(m_buffer.AsSpan(8), Endianess.BigEndian); }
+    public Format Format { get => (Format)m_buffer.AsReadOnlySpan(8).ReadUInt16(Endianess.BigEndian); set => ((ushort)value).TryWriteToBuffer(m_buffer.AsSpan(8), Endianess.BigEndian, out var _); }
     [System.CLSCompliant(false)] public ushort Tracks { get => m_buffer.AsReadOnlySpan(10).ReadUInt16(Endianess.BigEndian); set { value.WriteBytes(m_buffer.AsSpan(10), Endianess.BigEndian); } }
     public short Division { get => m_buffer.AsReadOnlySpan(12).ReadInt16(Endianess.BigEndian); set { value.WriteBytes(m_buffer.AsSpan(12), Endianess.BigEndian); } }
 

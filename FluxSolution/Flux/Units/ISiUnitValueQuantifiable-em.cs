@@ -28,14 +28,14 @@
     //return source.ToString(33.FormatUpToFractionalDigits(), nfi);
     //}
 
-    public static System.Collections.Generic.Dictionary<(Units.MetricPrefix, TUnit), string> ToStringsOfSiPrefixes<TValue, TUnit>(this Units.ISiUnitValueQuantifiable<TValue, TUnit> source, bool preferUnicode = false, Unicode.UnicodeSpacing unitSpacing = Unicode.UnicodeSpacing.Space, bool fullNames = false)
+    public static System.Collections.Generic.Dictionary<(Units.MetricPrefix, TUnit), string> ToStringsOfSiPrefixes<TValue, TUnit>(this Units.ISiUnitValueQuantifiable<TValue, TUnit> source)
       where TValue : struct, System.Numerics.INumber<TValue>
       where TUnit : System.Enum
     {
       var d = new System.Collections.Generic.Dictionary<(Units.MetricPrefix, TUnit), string>();
 
       foreach (Units.MetricPrefix mp in System.Enum.GetValues<Units.MetricPrefix>().OrderDescending())
-        d.Add((mp, default(TUnit)!), source.ToSiUnitString(mp, null, null, fullNames));
+        d.Add((mp, default(TUnit)!), source.ToSiUnitString(mp, null, null));
 
       return d;
     }

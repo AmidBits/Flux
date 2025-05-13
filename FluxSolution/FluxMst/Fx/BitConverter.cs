@@ -27,9 +27,9 @@ namespace SystemFx
     [TestMethod]
     public void BigEndianWriteBytesDecimal()
     {
-      byte[] expected = new byte[] { 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+      byte[] expected = new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 };
       byte[] actual = new byte[expected.Length];
-      System.Decimal.One.WriteBytes(actual, Flux.Endianess.BigEndian);
+      System.Decimal.One.TryWriteToBuffer(actual, Flux.Endianess.BigEndian, out var _);
       CollectionAssert.AreEqual(expected, actual);
     }
 
@@ -47,7 +47,7 @@ namespace SystemFx
     {
       byte[] expected = new byte[] { 63, 128, 0, 0 };
       byte[] actual = new byte[expected.Length];
-      1F.WriteBytes(actual, Endianess.BigEndian);
+      1F.TryWriteToBuffer(actual, Endianess.BigEndian, out var _);
       CollectionAssert.AreEqual(expected, actual);
     }
 
@@ -146,7 +146,7 @@ namespace SystemFx
     {
       byte[] expected = new byte[] { 0, 0, 128, 63 };
       byte[] actual = new byte[expected.Length];
-      1F.WriteBytes(actual, Endianess.LittleEndian);
+      1F.TryWriteToBuffer(actual, Endianess.LittleEndian, out var _);
       CollectionAssert.AreEqual(expected, actual);
     }
 

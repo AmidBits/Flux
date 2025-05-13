@@ -152,7 +152,7 @@
 
           do
           {
-            ship = new Vessel(size, new System.Drawing.Point(Randomness.NumberGenerators.Crypto.Next(gridSize.X), Randomness.NumberGenerators.Crypto.Next(gridSize.Y)), (VesselOrientation)Randomness.NumberGenerators.Crypto.Next(2));
+            ship = new Vessel(size, new System.Drawing.Point(Randomness.NumberGenerators.SscRng.Shared.Next(gridSize.X), Randomness.NumberGenerators.SscRng.Shared.Next(gridSize.Y)), (VesselOrientation)Randomness.NumberGenerators.SscRng.Shared.Next(2));
           }
           while (!ship.IsValid(gridSize) || ships.Any(s => Intersects(ship, s)));
 

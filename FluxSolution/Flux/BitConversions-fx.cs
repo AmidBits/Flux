@@ -2,7 +2,6 @@ namespace Flux
 {
   public static partial class BitConversions
   {
-
     public static System.Numerics.BigInteger ReadBigInteger(this System.ReadOnlySpan<byte> buffer, Endianess endianess)
       => new System.Numerics.BigInteger(buffer, false, endianess == Endianess.BigEndian);
 
@@ -285,27 +284,27 @@ namespace Flux
       return value;
     }
 
-    /// <summary>
-    /// <para>Reads <paramref name="buffer"/>.Length into <paramref name="bytes"/>.</para>
-    /// </summary>
-    /// <param name="buffer"></param>
-    /// <param name="endianess"></param>
-    /// <param name="bytes"></param>
-    /// <returns></returns>
-    private static int ReadBytes(this System.ReadOnlySpan<byte> buffer, Endianess endianess, out byte[] bytes)
-    {
-      bytes = new byte[buffer.Length];
+    ///// <summary>
+    ///// <para>Reads <paramref name="buffer"/>.Length into <paramref name="bytes"/>.</para>
+    ///// </summary>
+    ///// <param name="buffer"></param>
+    ///// <param name="endianess"></param>
+    ///// <param name="bytes"></param>
+    ///// <returns></returns>
+    //private static int ReadBytes(this System.ReadOnlySpan<byte> buffer, Endianess endianess, out byte[] bytes)
+    //{
+    //  bytes = new byte[buffer.Length];
 
-      if (endianess == Endianess.BigEndian)
-        for (var i = 0; i < buffer.Length; i++)
-          bytes[bytes.Length - i - 1] = buffer[i];
-      else if (endianess == Endianess.LittleEndian)
-        for (var i = buffer.Length - 1; i >= 0; i--)
-          bytes[bytes.Length - i - 1] = buffer[i];
-      else throw new System.ArgumentOutOfRangeException(nameof(endianess));
+    //  if (endianess == Endianess.BigEndian)
+    //    for (var i = 0; i < buffer.Length; i++)
+    //      bytes[bytes.Length - i - 1] = buffer[i];
+    //  else if (endianess == Endianess.LittleEndian)
+    //    for (var i = buffer.Length - 1; i >= 0; i--)
+    //      bytes[bytes.Length - i - 1] = buffer[i];
+    //  else throw new System.ArgumentOutOfRangeException(nameof(endianess));
 
-      return bytes.Length;
-    }
+    //  return bytes.Length;
+    //}
 
     #endregion // Read values from a byte buffer
 
@@ -335,7 +334,7 @@ namespace Flux
     /// <param name="buffer"></param>
     /// <param name="endianess"></param>
     public static void WriteBytes(this char value, System.Span<byte> buffer, Endianess endianess)
-      => unchecked((ushort)value).WriteBytes(buffer, endianess);
+      => System.UInt128.CreateChecked(unchecked((ushort)value)).WriteBuffer(buffer, endianess);
 
     /// <summary>
     /// <para>Writes a <see cref="System.Decimal"/> to a 16-byte <paramref name="buffer"/> using the specified <paramref name="endianess"/>.</para>
@@ -362,26 +361,26 @@ namespace Flux
       }
     }
 
-    /// <summary>
-    /// <para>Writes a <see cref="System.DateTime"/> to an 8-byte <paramref name="buffer"/> using the specified <paramref name="endianess"/>.</para>
-    /// </summary>
-    /// <param name="value"></param>
-    /// <param name="buffer"></param>
-    /// <param name="endianess"></param>
-    public static void WriteBytes(this System.DateTime value, System.Span<byte> buffer, Endianess endianess)
-      => value.Ticks.WriteBytes(buffer, endianess);
+    ///// <summary>
+    ///// <para>Writes a <see cref="System.DateTime"/> to an 8-byte <paramref name="buffer"/> using the specified <paramref name="endianess"/>.</para>
+    ///// </summary>
+    ///// <param name="value"></param>
+    ///// <param name="buffer"></param>
+    ///// <param name="endianess"></param>
+    //public static void WriteBytes(this System.DateTime value, System.Span<byte> buffer, Endianess endianess)
+    //  => value.Ticks.WriteBytes(buffer, endianess);
 
-    /// <summary>
-    /// <para>Writes a <see cref="System.DateTimeOffset"/> to a 16-byte <paramref name="buffer"/> using the specified <paramref name="endianess"/>.</para>
-    /// </summary>
-    /// <param name="value"></param>
-    /// <param name="buffer"></param>
-    /// <param name="endianess"></param>
-    public static void WriteBytes(this System.DateTimeOffset value, System.Span<byte> buffer, Endianess endianess)
-    {
-      value.DateTime.WriteBytes(buffer[..8], endianess);
-      value.Offset.WriteBytes(buffer.Slice(8, 8), endianess);
-    }
+    ///// <summary>
+    ///// <para>Writes a <see cref="System.DateTimeOffset"/> to a 16-byte <paramref name="buffer"/> using the specified <paramref name="endianess"/>.</para>
+    ///// </summary>
+    ///// <param name="value"></param>
+    ///// <param name="buffer"></param>
+    ///// <param name="endianess"></param>
+    //public static void WriteBytes(this System.DateTimeOffset value, System.Span<byte> buffer, Endianess endianess)
+    //{
+    //  value.DateTime.WriteBytes(buffer[..8], endianess);
+    //  value.Offset.WriteBytes(buffer.Slice(8, 8), endianess);
+    //}
 
     /// <summary>
     /// <para>Writes a <see cref="System.Double"/> to an 8-byte <paramref name="buffer"/> using the specified <paramref name="endianess"/>.</para>
@@ -389,24 +388,20 @@ namespace Flux
     /// <param name="value"></param>
     /// <param name="buffer"></param>
     /// <param name="endianess"></param>
-    public static void WriteBytes(this System.Double value, System.Span<byte> buffer, Endianess endianess)
-      => System.BitConverter.DoubleToInt64Bits(value).WriteBytes(buffer, endianess);
+    public static void WriteBytes(this double value, System.Span<byte> buffer, Endianess endianess)
+      => System.UInt128.CreateChecked(System.BitConverter.DoubleToUInt64Bits(value)).WriteBuffer(buffer, endianess);
 
-    /// <summary>
-    /// <para>Writes a <see cref="System.Guid"/> to a 16-byte <paramref name="buffer"/> using the specified <paramref name="endianess"/>.</para>
-    /// </summary>
-    /// <param name="value"></param>
-    /// <param name="buffer"></param>
-    /// <param name="endianess"></param>
-    public static void WriteBytes(this System.Guid value, System.Span<byte> buffer, Endianess endianess)
-    {
-#if NET8_0_OR_GREATER
-      if (!value.TryWriteBytes(buffer, endianess == Endianess.BigEndian, out var bytesWritten) || bytesWritten != 16)
-        throw new System.InvalidOperationException();
-#else
-      value.TryWriteBytes(buffer);
-#endif
-    }
+    ///// <summary>
+    ///// <para>Writes a <see cref="System.Guid"/> to a 16-byte <paramref name="buffer"/> using the specified <paramref name="endianess"/>.</para>
+    ///// </summary>
+    ///// <param name="value"></param>
+    ///// <param name="buffer"></param>
+    ///// <param name="endianess"></param>
+    //public static void WriteBytes(this System.Guid value, System.Span<byte> buffer, Endianess endianess)
+    //{
+    //  if (!value.TryWriteBytes(buffer, endianess == Endianess.BigEndian, out var bytesWritten) || bytesWritten != 16)
+    //    throw new System.InvalidOperationException();
+    //}
 
     /// <summary>
     /// <para>Writes a <see cref="System.Int16"/> to a 2-byte <paramref name="buffer"/> using the specified <paramref name="endianess"/>.</para>
@@ -415,7 +410,7 @@ namespace Flux
     /// <param name="buffer"></param>
     /// <param name="endianess"></param>
     public static void WriteBytes(this short value, System.Span<byte> buffer, Endianess endianess)
-      => unchecked((ushort)value).WriteBytes(buffer, endianess);
+      => System.UInt128.CreateChecked(unchecked((ushort)value)).WriteBuffer(buffer, endianess);
 
     /// <summary>
     /// <para>Writes a <see cref="System.Int32"/> to a 4-byte <paramref name="buffer"/> using the specified <paramref name="endianess"/>.</para>
@@ -424,7 +419,7 @@ namespace Flux
     /// <param name="buffer"></param>
     /// <param name="endianess"></param>
     public static void WriteBytes(this int value, System.Span<byte> buffer, Endianess endianess)
-      => unchecked((uint)value).WriteBytes(buffer, endianess);
+      => System.UInt128.CreateChecked(unchecked((uint)value)).WriteBuffer(buffer, endianess);
 
     /// <summary>
     /// <para>Writes a <see cref="System.Int64"/> to an 8-byte <paramref name="buffer"/> using the specified <paramref name="endianess"/>.</para>
@@ -433,7 +428,7 @@ namespace Flux
     /// <param name="buffer"></param>
     /// <param name="endianess"></param>
     public static void WriteBytes(this long value, System.Span<byte> buffer, Endianess endianess)
-      => unchecked((ulong)value).WriteBytes(buffer, endianess);
+      => System.UInt128.CreateChecked(unchecked((ulong)value)).WriteBuffer(buffer, endianess);
 
     /// <summary>
     /// <para>Writes a <see cref="System.IntPtr"/> to a <see cref="System.IntPtr.Size"/>-byte (4-bytes in a 32-bit process, 8-bytes in a 64-bit process, etc.) <paramref name="buffer"/> using the specified <paramref name="endianess"/>.</para>
@@ -442,7 +437,7 @@ namespace Flux
     /// <param name="buffer"></param>
     /// <param name="endianess"></param>
     public static void WriteBytes(this nint value, System.Span<byte> buffer, Endianess endianess)
-      => unchecked((nuint)value).WriteBytes(buffer, endianess);
+      => System.UInt128.CreateChecked(unchecked((nuint)value)).WriteBuffer(buffer, endianess);
 
     /// <summary>
     /// <para>Writes a <see cref="System.Int128"/> to a 16-byte <paramref name="buffer"/> using the specified <paramref name="endianess"/>.</para>
@@ -451,7 +446,7 @@ namespace Flux
     /// <param name="buffer"></param>
     /// <param name="endianess"></param>
     public static void WriteBytes(this System.Int128 value, System.Span<byte> buffer, Endianess endianess)
-      => unchecked((System.UInt128)value).WriteBytes(buffer, endianess);
+      => unchecked((System.UInt128)value).WriteBuffer(buffer, endianess);
 
     /// <summary>
     /// <para>Writes a <see cref="System.SByte"/> to a 1-byte <paramref name="buffer"/>.</para>
@@ -469,16 +464,23 @@ namespace Flux
     /// <param name="buffer"></param>
     /// <param name="endianess"></param>
     public static void WriteBytes(this float value, System.Span<byte> buffer, Endianess endianess)
-      => System.BitConverter.SingleToInt32Bits(value).WriteBytes(buffer, endianess);
+      => System.UInt128.CreateChecked(System.BitConverter.SingleToUInt32Bits(value)).WriteBuffer(buffer[int.Min(buffer.Length, 4)..], endianess);
 
-    /// <summary>
-    /// <para>Writes a <see cref="System.TimeSpan"/> to an 8-byte <paramref name="buffer"/> using the specified <paramref name="endianess"/>.</para>
-    /// </summary>
-    /// <param name="value"></param>
-    /// <param name="buffer"></param>
-    /// <param name="endianess"></param>
-    public static void WriteBytes(this System.TimeSpan value, System.Span<byte> buffer, Endianess endianess)
-      => value.Ticks.WriteBytes(buffer, endianess);
+    //public static void WriteBytes<T>(this T value, System.Span<byte> buffer, Endianess endianess)
+    //  where T : System.Numerics.IFloatingPoint<T>
+    //{
+    //  ((5) as System.Numerics.IFloatingPoint<T>)?.Try(,)
+    //  value.WriteLittleEndian(buffer);
+    //}
+
+    ///// <summary>
+    ///// <para>Writes a <see cref="System.TimeSpan"/> to an 8-byte <paramref name="buffer"/> using the specified <paramref name="endianess"/>.</para>
+    ///// </summary>
+    ///// <param name="value"></param>
+    ///// <param name="buffer"></param>
+    ///// <param name="endianess"></param>
+    //public static void WriteBytes(this System.TimeSpan value, System.Span<byte> buffer, Endianess endianess)
+    //  => value.Ticks.WriteBytes(buffer, endianess);
 
     /// <summary>
     /// <para>Writes a <see cref="System.UInt16"/> to a 2-byte <paramref name="buffer"/> using the specified <paramref name="endianess"/>.</para>
@@ -488,21 +490,22 @@ namespace Flux
     /// <param name="endianess"></param>
     [System.CLSCompliant(false)]
     public static void WriteBytes(this ushort value, System.Span<byte> buffer, Endianess endianess)
-    {
-      if (buffer.Length < 2) throw new System.ArgumentOutOfRangeException(nameof(buffer));
+      => WriteBuffer(value, buffer[..int.Min(buffer.Length, 2)], endianess);
+    //{
+    //  if (buffer.Length < 2) throw new System.ArgumentOutOfRangeException(nameof(buffer));
 
-      if (endianess == Endianess.BigEndian)
-      {
-        buffer[1] = (byte)value;
-        buffer[0] = (byte)(value >> 8);
-      }
-      else if (endianess == Endianess.LittleEndian)
-      {
-        buffer[0] = (byte)value;
-        buffer[1] = (byte)(value >> 8);
-      }
-      else throw new System.ArgumentOutOfRangeException(nameof(endianess));
-    }
+    //  if (endianess == Endianess.BigEndian)
+    //  {
+    //    buffer[1] = (byte)value;
+    //    buffer[0] = (byte)(value >> 8);
+    //  }
+    //  else if (endianess == Endianess.LittleEndian)
+    //  {
+    //    buffer[0] = (byte)value;
+    //    buffer[1] = (byte)(value >> 8);
+    //  }
+    //  else throw new System.ArgumentOutOfRangeException(nameof(endianess));
+    //}
 
     /// <summary>
     /// <para>Writes a <see cref="System.UInt32"/> to a 4-byte <paramref name="buffer"/> using the specified <paramref name="endianess"/>.</para>
@@ -512,25 +515,26 @@ namespace Flux
     /// <param name="endianess"></param>
     [System.CLSCompliant(false)]
     public static void WriteBytes(this uint value, System.Span<byte> buffer, Endianess endianess)
-    {
-      if (buffer.Length < 4) throw new System.ArgumentOutOfRangeException(nameof(buffer));
+      => WriteBuffer(value, buffer[..int.Min(buffer.Length, 4)], endianess);
+    //{
+    //  if (buffer.Length < 4) throw new System.ArgumentOutOfRangeException(nameof(buffer));
 
-      if (endianess == Endianess.BigEndian)
-      {
-        buffer[3] = (byte)value;
-        buffer[2] = (byte)(value >> 8);
-        buffer[1] = (byte)(value >> 16);
-        buffer[0] = (byte)(value >> 24);
-      }
-      else if (endianess == Endianess.LittleEndian)
-      {
-        buffer[0] = (byte)value;
-        buffer[1] = (byte)(value >> 8);
-        buffer[2] = (byte)(value >> 16);
-        buffer[3] = (byte)(value >> 24);
-      }
-      else throw new System.ArgumentOutOfRangeException(nameof(endianess));
-    }
+    //  if (endianess == Endianess.BigEndian)
+    //  {
+    //    buffer[3] = (byte)value;
+    //    buffer[2] = (byte)(value >> 8);
+    //    buffer[1] = (byte)(value >> 16);
+    //    buffer[0] = (byte)(value >> 24);
+    //  }
+    //  else if (endianess == Endianess.LittleEndian)
+    //  {
+    //    buffer[0] = (byte)value;
+    //    buffer[1] = (byte)(value >> 8);
+    //    buffer[2] = (byte)(value >> 16);
+    //    buffer[3] = (byte)(value >> 24);
+    //  }
+    //  else throw new System.ArgumentOutOfRangeException(nameof(endianess));
+    //}
 
     /// <summary>
     /// <para>Writes a <see cref="System.UInt64"/> to an 8-byte <paramref name="buffer"/> using the specified <paramref name="endianess"/>.</para>
@@ -540,33 +544,34 @@ namespace Flux
     /// <param name="endianess"></param>
     [System.CLSCompliant(false)]
     public static void WriteBytes(this ulong value, System.Span<byte> buffer, Endianess endianess)
-    {
-      if (buffer.Length < 8) throw new System.ArgumentOutOfRangeException(nameof(buffer));
+      => WriteBuffer(value, buffer[..int.Min(buffer.Length, 8)], endianess);
+    //{
+    //  if (buffer.Length < 8) throw new System.ArgumentOutOfRangeException(nameof(buffer));
 
-      if (endianess == Endianess.BigEndian)
-      {
-        buffer[7] = (byte)value;
-        buffer[6] = (byte)(value >> 8);
-        buffer[5] = (byte)(value >> 16);
-        buffer[4] = (byte)(value >> 24);
-        buffer[3] = (byte)(value >> 32);
-        buffer[2] = (byte)(value >> 40);
-        buffer[1] = (byte)(value >> 48);
-        buffer[0] = (byte)(value >> 56);
-      }
-      else if (endianess == Endianess.LittleEndian)
-      {
-        buffer[0] = (byte)value;
-        buffer[1] = (byte)(value >> 8);
-        buffer[2] = (byte)(value >> 16);
-        buffer[3] = (byte)(value >> 24);
-        buffer[4] = (byte)(value >> 32);
-        buffer[5] = (byte)(value >> 40);
-        buffer[6] = (byte)(value >> 48);
-        buffer[7] = (byte)(value >> 56);
-      }
-      else throw new System.ArgumentOutOfRangeException(nameof(endianess));
-    }
+    //  if (endianess == Endianess.BigEndian)
+    //  {
+    //    buffer[7] = (byte)value;
+    //    buffer[6] = (byte)(value >> 8);
+    //    buffer[5] = (byte)(value >> 16);
+    //    buffer[4] = (byte)(value >> 24);
+    //    buffer[3] = (byte)(value >> 32);
+    //    buffer[2] = (byte)(value >> 40);
+    //    buffer[1] = (byte)(value >> 48);
+    //    buffer[0] = (byte)(value >> 56);
+    //  }
+    //  else if (endianess == Endianess.LittleEndian)
+    //  {
+    //    buffer[0] = (byte)value;
+    //    buffer[1] = (byte)(value >> 8);
+    //    buffer[2] = (byte)(value >> 16);
+    //    buffer[3] = (byte)(value >> 24);
+    //    buffer[4] = (byte)(value >> 32);
+    //    buffer[5] = (byte)(value >> 40);
+    //    buffer[6] = (byte)(value >> 48);
+    //    buffer[7] = (byte)(value >> 56);
+    //  }
+    //  else throw new System.ArgumentOutOfRangeException(nameof(endianess));
+    //}
 
     /// <summary>
     /// <para>Writes a <see cref="System.UInt128"/> to a 16-byte <paramref name="buffer"/> using the specified <paramref name="endianess"/>.</para>
@@ -576,49 +581,50 @@ namespace Flux
     /// <param name="endianess"></param>
     [System.CLSCompliant(false)]
     public static void WriteBytes(this System.UInt128 value, System.Span<byte> buffer, Endianess endianess)
-    {
-      if (buffer.Length < 16) throw new System.ArgumentOutOfRangeException(nameof(buffer));
+      => WriteBuffer(value, buffer, endianess);
+    //{
+    //  if (buffer.Length < 16) throw new System.ArgumentOutOfRangeException(nameof(buffer));
 
-      if (endianess == Endianess.BigEndian)
-      {
-        buffer[15] = (byte)value;
-        buffer[14] = (byte)(value >> 8);
-        buffer[13] = (byte)(value >> 16);
-        buffer[12] = (byte)(value >> 24);
-        buffer[11] = (byte)(value >> 32);
-        buffer[10] = (byte)(value >> 40);
-        buffer[9] = (byte)(value >> 48);
-        buffer[8] = (byte)(value >> 56);
-        buffer[7] = (byte)(value >> 64);
-        buffer[6] = (byte)(value >> 72);
-        buffer[5] = (byte)(value >> 80);
-        buffer[4] = (byte)(value >> 88);
-        buffer[3] = (byte)(value >> 96);
-        buffer[2] = (byte)(value >> 104);
-        buffer[1] = (byte)(value >> 112);
-        buffer[0] = (byte)(value >> 120);
-      }
-      else if (endianess == Endianess.LittleEndian)
-      {
-        buffer[0] = (byte)value;
-        buffer[1] = (byte)(value >> 8);
-        buffer[2] = (byte)(value >> 16);
-        buffer[3] = (byte)(value >> 24);
-        buffer[4] = (byte)(value >> 32);
-        buffer[5] = (byte)(value >> 40);
-        buffer[6] = (byte)(value >> 48);
-        buffer[7] = (byte)(value >> 56);
-        buffer[8] = (byte)(value >> 64);
-        buffer[9] = (byte)(value >> 72);
-        buffer[10] = (byte)(value >> 80);
-        buffer[11] = (byte)(value >> 88);
-        buffer[12] = (byte)(value >> 96);
-        buffer[13] = (byte)(value >> 104);
-        buffer[14] = (byte)(value >> 112);
-        buffer[15] = (byte)(value >> 120);
-      }
-      else throw new System.ArgumentOutOfRangeException(nameof(endianess));
-    }
+    //  if (endianess == Endianess.BigEndian)
+    //  {
+    //    buffer[15] = (byte)value;
+    //    buffer[14] = (byte)(value >> 8);
+    //    buffer[13] = (byte)(value >> 16);
+    //    buffer[12] = (byte)(value >> 24);
+    //    buffer[11] = (byte)(value >> 32);
+    //    buffer[10] = (byte)(value >> 40);
+    //    buffer[9] = (byte)(value >> 48);
+    //    buffer[8] = (byte)(value >> 56);
+    //    buffer[7] = (byte)(value >> 64);
+    //    buffer[6] = (byte)(value >> 72);
+    //    buffer[5] = (byte)(value >> 80);
+    //    buffer[4] = (byte)(value >> 88);
+    //    buffer[3] = (byte)(value >> 96);
+    //    buffer[2] = (byte)(value >> 104);
+    //    buffer[1] = (byte)(value >> 112);
+    //    buffer[0] = (byte)(value >> 120);
+    //  }
+    //  else if (endianess == Endianess.LittleEndian)
+    //  {
+    //    buffer[0] = (byte)value;
+    //    buffer[1] = (byte)(value >> 8);
+    //    buffer[2] = (byte)(value >> 16);
+    //    buffer[3] = (byte)(value >> 24);
+    //    buffer[4] = (byte)(value >> 32);
+    //    buffer[5] = (byte)(value >> 40);
+    //    buffer[6] = (byte)(value >> 48);
+    //    buffer[7] = (byte)(value >> 56);
+    //    buffer[8] = (byte)(value >> 64);
+    //    buffer[9] = (byte)(value >> 72);
+    //    buffer[10] = (byte)(value >> 80);
+    //    buffer[11] = (byte)(value >> 88);
+    //    buffer[12] = (byte)(value >> 96);
+    //    buffer[13] = (byte)(value >> 104);
+    //    buffer[14] = (byte)(value >> 112);
+    //    buffer[15] = (byte)(value >> 120);
+    //  }
+    //  else throw new System.ArgumentOutOfRangeException(nameof(endianess));
+    //}
 
     /// <summary>
     /// <para>Writes a <see cref="System.UIntPtr"/> to a <see cref="System.UIntPtr.Size"/>-byte (4-bytes in a 32-bit process, 8-bytes in a 64-bit process, etc.) <paramref name="buffer"/> using the specified <paramref name="endianess"/>.</para>
@@ -631,7 +637,7 @@ namespace Flux
       => WriteBuffer(value, buffer[..nuint.Size], endianess);
 
     /// <summary>
-    /// <para>Writes a <paramref name="value"/> of <paramref name="buffer"/>.Length bytes (i.e. 4 bytes = the lower 32-bits of <paramref name="value"/>, or 8 bytes = the lower 64-bits of <paramref name="value"/>).</para>
+    /// <para>Writes a <paramref name="value"/> of <paramref name="buffer"/>.Length bytes, i.e. dynamically (i.e. 4 bytes = the lower 32-bits of <paramref name="value"/>, or 8 bytes = the lower 64-bits of <paramref name="value"/>).</para>
     /// </summary>
     /// <param name="value"></param>
     /// <param name="buffer"></param>
@@ -640,21 +646,130 @@ namespace Flux
     [System.CLSCompliant(false)]
     public static void WriteBuffer(this System.UInt128 value, System.Span<byte> buffer, Endianess endianess)
     {
+      var maxIndex = buffer.Length - 1;
+
       if (endianess == Endianess.BigEndian)
-        for (var i = buffer.Length - 1; i >= 0; i--)
-        {
-          buffer[i] = (byte)(value & 0xff);
-          value >>= 8;
-        }
+      {
+        var bitsBelow = maxIndex * 8;
+        for (var i = maxIndex; i >= 0; i--)
+          buffer[i] = (byte)((value >> (bitsBelow - (i * 8))) & 0xff);
+      }
       else if (endianess == Endianess.LittleEndian)
-        for (var i = 0; i < buffer.Length; i++)
-        {
-          buffer[i] = (byte)(value & 0xff);
-          value >>= 8;
-        }
+        for (var i = maxIndex; i >= 0; i--)
+          buffer[i] = (byte)((value >> (i * 8)) & 0xff);
       else throw new System.ArgumentOutOfRangeException(nameof(endianess));
     }
 
     #endregion // Write values to a byte buffer
+
+    public static bool TryReadFromBuffer(this System.Span<byte> buffer, Endianess endianess, out System.Decimal value)
+    {
+      try
+      {
+        var byteParts = new byte[16].AsSpan();
+
+        buffer.CopyTo(byteParts);
+
+        if (endianess == Endianess.BigEndian)
+          byteParts.Reverse();
+
+        var intParts = System.Runtime.InteropServices.MemoryMarshal.Cast<byte, int>(byteParts);
+
+        value = new System.Decimal(intParts);
+        return true;
+      }
+      catch { }
+
+      value = default!;
+      return false;
+    }
+
+    public static bool TryReadFromBuffer(this System.Span<byte> buffer, Endianess endianess, out System.Double value)
+    {
+      try
+      {
+        if (TryReadFromBuffer(buffer, endianess, out ulong uint64))
+        {
+          value = System.BitConverter.UInt64BitsToDouble(uint64);
+          return true;
+        }
+      }
+      catch { }
+
+      value = default;
+      return false;
+    }
+
+    public static bool TryReadFromBuffer(this System.Span<byte> buffer, Endianess endianess, out System.Single value)
+    {
+      try
+      {
+        if (TryReadFromBuffer(buffer, endianess, out uint uint32))
+        {
+          value = System.BitConverter.UInt32BitsToSingle(uint32);
+          return true;
+        }
+      }
+      catch { }
+
+      value = default;
+      return false;
+    }
+
+    public static bool TryReadFromBuffer<T>(this System.ReadOnlySpan<byte> buffer, Endianess endianess, out T value)
+      where T : System.Numerics.IBinaryInteger<T>
+    {
+      if (endianess == Endianess.LittleEndian)
+        return T.TryReadLittleEndian(buffer, typeof(T).IsUnsignedNumericType(), out value);
+      else if (endianess == Endianess.BigEndian)
+        return T.TryReadBigEndian(buffer, typeof(T).IsUnsignedNumericType(), out value);
+      else
+      {
+        value = default!;
+        return false;
+      }
+    }
+
+    public static bool TryWriteToBuffer(this System.Decimal value, System.Span<byte> buffer, Endianess endianess, out int bytesWritten)
+    {
+      try
+      {
+        var intParts = System.Decimal.GetBits(value);
+
+        var byteParts = System.Runtime.InteropServices.MemoryMarshal.AsBytes<int>(intParts);
+
+        if (endianess == Endianess.BigEndian)
+          byteParts.Reverse();
+
+        byteParts.CopyTo(buffer);
+
+        bytesWritten = byteParts.Length;
+        return true;
+      }
+      catch { }
+
+      bytesWritten = 0;
+      return false;
+    }
+
+    public static bool TryWriteToBuffer(this System.Double value, System.Span<byte> buffer, Endianess endianess, out int bytesWritten)
+      => System.BitConverter.DoubleToUInt64Bits(value).TryWriteToBuffer(buffer, endianess, out bytesWritten);
+
+    public static bool TryWriteToBuffer(this System.Single value, System.Span<byte> buffer, Endianess endianess, out int bytesWritten)
+      => System.BitConverter.SingleToUInt32Bits(value).TryWriteToBuffer(buffer, endianess, out bytesWritten);
+
+    public static bool TryWriteToBuffer<T>(this T value, System.Span<byte> buffer, Endianess endianess, out int bytesWritten)
+      where T : System.Numerics.IBinaryInteger<T>
+    {
+      if (endianess == Endianess.LittleEndian)
+        return value.TryWriteLittleEndian(buffer, out bytesWritten);
+      else if (endianess == Endianess.BigEndian)
+        return value.TryWriteBigEndian(buffer, out bytesWritten);
+      else
+      {
+        bytesWritten = 0;
+        return false;
+      }
+    }
   }
 }

@@ -163,9 +163,9 @@ namespace Flux.Geometry.Ellipses
     /// <param name="maxRandomness"></param>
     /// <param name="rng"></param>
     /// <returns></returns>
-    public static IEnumerable<System.Runtime.Intrinsics.Vector128<double>> CreatePointsOnEllipse(int count, double a = 1, double b = 1, double arcOffset = 0, double translateX = 0, double translateY = 0, double maxRandomness = 0, Random? rng = null)
+    public static IEnumerable<System.Runtime.Intrinsics.Vector128<double>> CreatePointsOnEllipse(int count, double a = 1, double b = 1, double arcOffset = 0, double translateX = 0, double translateY = 0, double maxRandomness = 0, System.Random? rng = null)
     {
-      rng ??= Random.Shared;
+      rng ??= System.Random.Shared;
 
       var arc = double.Tau / count;
 
@@ -194,9 +194,9 @@ namespace Flux.Geometry.Ellipses
     /// <param name="maxRandomness"></param>
     /// <param name="rng"></param>
     /// <returns></returns>
-    public static IEnumerable<System.Runtime.Intrinsics.Vector128<double>> CreatePointsOnEllipseEx(int count, double a = 1, double b = 1, double arcOffset = 0, double translateX = 0, double translateY = 0, double maxRandomness = 0, Random? rng = null)
+    public static IEnumerable<System.Runtime.Intrinsics.Vector128<double>> CreatePointsOnEllipseEx(int count, double a = 1, double b = 1, double arcOffset = 0, double translateX = 0, double translateY = 0, double maxRandomness = 0, System.Random? rng = null)
     {
-      rng ??= Random.Shared;
+      rng ??= System.Random.Shared;
 
       var arc = double.Tau / count;
 

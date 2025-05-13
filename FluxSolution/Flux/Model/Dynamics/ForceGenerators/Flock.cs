@@ -229,7 +229,7 @@ namespace Flux.Model.Dynamics.ForceGenerators
 
       if (Disabled) return;
 
-      body.Force += (Weight * body.Mass) * new System.Numerics.Vector3((float)Randomness.NumberGenerators.Crypto.NextDouble() - 0.5f, (float)Randomness.NumberGenerators.Crypto.NextDouble() - 0.5f, (float)Randomness.NumberGenerators.Crypto.NextDouble() - 0.5f);
+      body.Force += (Weight * body.Mass) * new System.Numerics.Vector3((float)Randomness.NumberGenerators.SscRng.Shared.NextDouble() - 0.5f, (float)Randomness.NumberGenerators.SscRng.Shared.NextDouble() - 0.5f, (float)Randomness.NumberGenerators.SscRng.Shared.NextDouble() - 0.5f);
     }
   }
 }

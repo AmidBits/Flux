@@ -68,7 +68,7 @@ namespace Flux
     /// <param name="source"></param>
     /// <returns></returns>
     public static string GetMetricPrefixName(this Units.MetricPrefix source)
-      => (source != Units.MetricPrefix.Unprefixed) ? source.ToString() : string.Empty;
+      => (source != Units.MetricPrefix.Unprefixed ? source.ToString() : string.Empty);
 
     /// <summary>
     /// <para>Gets the standardized symbol of a <see cref="Units.MetricPrefix"/>.</para>
@@ -76,7 +76,7 @@ namespace Flux
     /// <param name="source"></param>
     /// <param name="preferUnicode">When true, use Unicode codepoints when available, otherwise regular letters are used.</param>
     /// <returns></returns>
-    public static string GetMetricPrefixSymbol(this Units.MetricPrefix source, bool preferUnicode)
+    public static string GetMetricPrefixSymbol(this Units.MetricPrefix source, bool preferUnicode = false)
       => source switch
       {
         Units.MetricPrefix.Unprefixed => string.Empty,
@@ -95,7 +95,7 @@ namespace Flux
         Units.MetricPrefix.Deci => "d",
         Units.MetricPrefix.Centi => "c",
         Units.MetricPrefix.Milli => "m",
-        Units.MetricPrefix.Micro => preferUnicode ? "\u03BC" : "\u00B5",
+        Units.MetricPrefix.Micro => preferUnicode ? "\u03BC" : "µ",
         Units.MetricPrefix.Nano => "n",
         Units.MetricPrefix.Pico => "p",
         Units.MetricPrefix.Femto => "f",

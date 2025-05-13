@@ -2,7 +2,7 @@ namespace Flux.Security.Cryptography
 {
   // http://burtleburtle.net/bob/rand/isaacafa.html
   public sealed class Isaac
-    : Randomness.Rng32.IsaacRandom
+    : Randomness.NumberGenerators.IsaacRandom
   {
     public byte[] Vernam(string text)
     {
@@ -10,7 +10,7 @@ namespace Flux.Security.Cryptography
 
       for (var i = 0; i < text.Length; i++)
       {
-        var character = (char)(SampleUInt32() % 95 + 32);
+        var character = (char)(Next() % 95 + 32);
 
         bytes[i] = (byte)(character ^ text[i]);
       }
