@@ -6,6 +6,6 @@ namespace Flux
     public static bool IsSingleDigit<TNumber, TRadix>(this TNumber value, TRadix radix)
       where TNumber : System.Numerics.IBinaryInteger<TNumber>
       where TRadix : System.Numerics.IBinaryInteger<TRadix>
-      => TNumber.Abs(value) < TNumber.CreateChecked(Units.Radix.AssertWithin(radix));
+      => TNumber.Abs(value) < TNumber.CreateChecked(Units.Radix.AssertMember(radix));
   }
 }

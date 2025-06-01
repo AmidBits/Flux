@@ -9,7 +9,7 @@ namespace Flux
     /// <param name="equalityComparer"></param>
     /// <param name="values"></param>
     /// <returns></returns>
-    public static int LastIndexOfAny<T>(this System.ReadOnlySpan<T> source, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null, params T[] values)
+    public static int LastIndexOfAny<T>(this System.ReadOnlySpan<T> source, System.Collections.Generic.IEqualityComparer<T>? equalityComparer, params T[] values)
     {
       equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
 

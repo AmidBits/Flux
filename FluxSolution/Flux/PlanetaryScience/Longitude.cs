@@ -14,7 +14,7 @@ namespace Flux.PlanetaryScience
     private readonly Units.Angle m_angle;
 
     private Longitude(double angleDeg)
-      => m_angle = new(angleDeg.WrapAround(MinValue, MaxValue), Units.AngleUnit.Degree);
+      => m_angle = new(angleDeg.WrapAroundClosed(MinValue, MaxValue), Units.AngleUnit.Degree);
 
     /// <summary>Creates a new <see cref="Longitude"/> from the specified <paramref name="angle"/>.</summary>
     public Longitude(Units.Angle angle)

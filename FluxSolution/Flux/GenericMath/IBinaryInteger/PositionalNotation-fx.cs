@@ -19,7 +19,7 @@ namespace Flux
 
       try
       {
-        var rdx = TNumber.CreateChecked(Units.Radix.AssertWithin(radix));
+        var rdx = TNumber.CreateChecked(Units.Radix.AssertMember(radix));
 
         while (!TNumber.IsZero(value))
         {
@@ -52,7 +52,7 @@ namespace Flux
 
       try
       {
-        var rdx = TNumber.CreateChecked(Units.Radix.AssertWithin(radix));
+        var rdx = TNumber.CreateChecked(Units.Radix.AssertMember(radix));
 
         for (var index = 0; index < positionalNotationIndices.Count; index++)
         {
@@ -265,7 +265,7 @@ namespace Flux
       where TNumber : System.Numerics.IBinaryInteger<TNumber>
       where TRadix : System.Numerics.IBinaryInteger<TRadix>
     {
-      var rdx = int.CreateChecked(Units.Radix.AssertWithin(radix));
+      var rdx = int.CreateChecked(Units.Radix.AssertMember(radix));
 
       if (rdx == 2)
         return value.ToBinaryString(minLength, alphabet);
@@ -308,7 +308,7 @@ namespace Flux
     public static System.ReadOnlySpan<char> ToSubscriptString<TValue, TRadix>(this TValue value, TRadix radix, int minLength = 1)
       where TValue : System.Numerics.IBinaryInteger<TValue>
       where TRadix : System.Numerics.IBinaryInteger<TRadix>
-      => value.ToRadixString(Units.Radix.AssertWithin(radix, TRadix.CreateChecked(10)), minLength, SubscriptNumerals); // Extra top-limit to radix (only 10 characters in subscript alphabet).
+      => value.ToRadixString(Units.Radix.AssertMember(radix, TRadix.CreateChecked(10)), minLength, SubscriptNumerals); // Extra top-limit to radix (only 10 characters in subscript alphabet).
 
     public const string SuperscriptNumerals = "\u2070\u00B9\u00B2\u00B3\u2074\u2075\u2076\u2077\u2078\u2079";
 
@@ -324,6 +324,6 @@ namespace Flux
     public static System.ReadOnlySpan<char> ToSuperscriptString<TSelf, TRadix>(this TSelf value, TRadix radix, int minLength = 1)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
       where TRadix : System.Numerics.IBinaryInteger<TRadix>
-      => value.ToRadixString(Units.Radix.AssertWithin(radix, TRadix.CreateChecked(10)), minLength, SuperscriptNumerals); // Extra top-limit to radix (only 10 characters in superscript alphabet).
+      => value.ToRadixString(Units.Radix.AssertMember(radix, TRadix.CreateChecked(10)), minLength, SuperscriptNumerals); // Extra top-limit to radix (only 10 characters in superscript alphabet).
   }
 }

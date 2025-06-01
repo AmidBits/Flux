@@ -45,7 +45,7 @@ namespace Flux
       && (
         System.Type.GetTypeCode(source)
         is System.TypeCode.Byte
-        or System.TypeCode.Char // Even though char is not a number, per se, it does derive from System.Numerics.[numeric]<> interfaces, so we check it here instead of deferring to the slower but inevitable match below by IsAssignableToGenericType(..).
+        or System.TypeCode.Char
         or System.TypeCode.UInt16
         or System.TypeCode.UInt32
         or System.TypeCode.UInt64

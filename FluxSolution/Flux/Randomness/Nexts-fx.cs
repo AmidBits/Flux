@@ -1,5 +1,7 @@
 //Implement this (down a bit in the article) : https://stackoverflow.com/questions/218060/random-gaussian-variables
 
+using System.Numerics;
+
 namespace Flux
 {
   public static partial class RandomExtensions
@@ -7,65 +9,25 @@ namespace Flux
     // https://docs.microsoft.com/en-us/dotnet/api/system.random?view=netstandard-2.0
 
     /// <summary>
-    /// <para>Generates a a non-negative random BigInteger limited in size by the specified <paramref name="maxBitLength"/> (bit-length is used since BigInteger can basically represent an unlimited sized integer).</para>
+    /// <para>Generates a a non-negative random <see cref="System.Numerics.BigInteger"/>, limited in size by the specified <paramref name="maxBitLength"/>.</para>
+    /// <para>Since <see cref="System.Numerics.BigInteger"/> is a variable sized type of integer, one has to specify the maximum number of bits to utilize when generating (rather than specifying a maximum value.</para>
+    /// <para>To generate a <see cref="System.Numerics.BigInteger"/> limited by a maximumValue (exclusive) use <see cref="NextNumber{TNumber}(Random, TNumber)"/>.</para>
+    /// <para>To generate a <see cref="System.Numerics.BigInteger"/> limited by a range [minimumValue, maximumValue) use <see cref="NextNumber{TNumber}(Random, TNumber, TNumber)"/>.</para>
     /// </summary>
     /// <param name="source"></param>
     /// <param name="maxBitLength"></param>
     /// <returns></returns>
-    /// <exception cref="System.ArgumentOutOfRangeException"></exception>
     public static System.Numerics.BigInteger NextBigInteger(this System.Random source, int maxBitLength)
     {
       System.ArgumentNullException.ThrowIfNull(source);
+      System.ArgumentOutOfRangeException.ThrowIfNegativeOrZero(maxBitLength);
 
-      if (maxBitLength <= 0) throw new System.ArgumentOutOfRangeException(nameof(maxBitLength));
+      var byteCount = int.CreateChecked(double.Ceiling(maxBitLength / 8.0));
 
-      var (quotient, remainder) = int.DivRem(maxBitLength, 8);
-
-      var byteCount = quotient + (remainder > 0 ? 1 : 0);
-      var bitMask = (System.Numerics.BigInteger.One << maxBitLength) - 1;
-
-      return new System.Numerics.BigInteger(GetRandomBytes(source, byteCount), true) & bitMask;
+      return new System.Numerics.BigInteger(GetRandomBytes(source, byteCount), true) >> (byteCount * 8 - maxBitLength);
     }
 
-    /// <summary>
-    /// <para>Returns a non-negative random BigInteger that is less than the specified <paramref name="maxValue"/>.</para>
-    /// </summary>
-    /// <param name="source"></param>
-    /// <param name="maxValue"></param>
-    /// <returns></returns>
-    /// <exception cref="System.ArgumentOutOfRangeException"></exception>
-    public static System.Numerics.BigInteger NextBigInteger(this System.Random source, System.Numerics.BigInteger maxValue)
-    {
-      System.ArgumentNullException.ThrowIfNull(source);
-
-      if (maxValue <= 0) throw new System.ArgumentOutOfRangeException(nameof(maxValue)); // Ensured positive integer, no padding byte for BigInteger.
-
-      System.Numerics.BigInteger value;
-
-      var bitLength = (int)maxValue.GetBitLength();
-
-      do
-      {
-        value = NextBigInteger(source, bitLength);
-      }
-      while (value >= maxValue); // If value is greater or equal to the specified maxValue, maintain uniform distribution by re-running if value is greater-than-or-equal to maxValue (a fifty-fifty situation).
-
-      return value;
-    }
-
-    /// <summary>
-    /// <para>Returns a random BigInteger that is within a specified range, i.e. greater or equal to <paramref name="minValue"/> and less than <paramref name="maxValue"/>.</para>
-    /// </summary>
-    /// <param name="source"></param>
-    /// <param name="minValue"></param>
-    /// <param name="maxValue"></param>
-    /// <returns></returns>
-    public static System.Numerics.BigInteger NextBigInteger(this System.Random source, System.Numerics.BigInteger minValue, System.Numerics.BigInteger maxValue)
-    {
-      System.ArgumentNullException.ThrowIfNull(source);
-
-      return System.Numerics.BigInteger.Min(minValue, maxValue) + source.NextBigInteger(System.Numerics.BigInteger.Abs(maxValue - minValue));
-    }
+    #region NextBoolean
 
     /// <summary>
     /// <para>Generates a new random boolean value.</para>
@@ -73,11 +35,7 @@ namespace Flux
     /// <param name="source"></param>
     /// <returns></returns>
     public static bool NextBoolean(this System.Random source)
-    {
-      System.ArgumentNullException.ThrowIfNull(source);
-
-      return source.Next(2) == 1;
-    }
+      => source.NextBoolean(0.5);
 
     /// <summary>
     /// <para>Generates a new boolean value with the specified <paramref name="probability"/> of being true. This function can be called a Bernoulli trial.</para>
@@ -85,12 +43,16 @@ namespace Flux
     /// <param name="source"></param>
     /// <param name="probability"></param>
     /// <returns></returns>
-    public static bool NextBoolean(this System.Random source, double probability = 0.5)
+    public static bool NextBoolean(this System.Random source, double probability)
     {
       System.ArgumentNullException.ThrowIfNull(source);
+      System.ArgumentOutOfRangeException.ThrowIfNegative(probability);
+      System.ArgumentOutOfRangeException.ThrowIfGreaterThan(probability, 1);
 
       return source.NextDouble() < probability;
     }
+
+    #endregion // NextBoolean
 
     /// <summary>
     /// <para><remarks>Apply inverse of the Cauchy distribution function to a random sample.</remarks></para>
@@ -109,6 +71,8 @@ namespace Flux
 
       return mu + scale * double.TanPi(NextUniform(source) - 0.5);
     }
+
+    #region NextDateTime
 
     /// <summary>
     /// <para>Returns a new random System.DateTime in the interval [<see cref="System.DateTime.MinValue"/>, <see cref="System.DateTime.MaxValue"/>).</para>
@@ -133,11 +97,18 @@ namespace Flux
     public static System.DateTime NextDateTime(this System.Random source, System.DateTime minValue, System.DateTime maxValue)
     {
       System.ArgumentNullException.ThrowIfNull(source);
-
-      if (minValue >= maxValue) throw new System.ArgumentOutOfRangeException(nameof(minValue));
+      System.ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(minValue, maxValue);
 
       return new(source.NextInt64(minValue.Ticks, maxValue.Ticks));
     }
+
+    #endregion // NextDateTime
+
+    #region NextNumber
+
+    public static TNumber NextNumber<TNumber>(this System.Random source)
+      where TNumber : System.Numerics.INumber<TNumber>, System.Numerics.IMinMaxValue<TNumber>
+      => NextNumber(source, TNumber.MaxValue);
 
     /// <summary>
     /// <para>Returns a non-negative random <typeparamref name="TNumber"/> in the interval [0, <paramref name="maxValue"/>).</para>
@@ -151,10 +122,11 @@ namespace Flux
       where TNumber : System.Numerics.INumber<TNumber>
     {
       System.ArgumentNullException.ThrowIfNull(source);
+      System.ArgumentOutOfRangeException.ThrowIfNegativeOrZero(maxValue);
 
-      if (maxValue <= TNumber.Zero) throw new System.ArgumentOutOfRangeException(nameof(maxValue));
-
-      return TNumber.CreateChecked(source.NextDouble() * double.CreateChecked(maxValue));
+      while (true)
+        if (TNumber.CreateChecked(source.NextDouble() * double.CreateChecked(maxValue)) is var value && TNumber.IsPositive(value) && value < maxValue)
+          return value;
     }
 
     /// <summary>
@@ -170,11 +142,14 @@ namespace Flux
       where TNumber : System.Numerics.INumber<TNumber>
     {
       System.ArgumentNullException.ThrowIfNull(source);
-
-      if (minValue >= maxValue) throw new System.ArgumentOutOfRangeException(nameof(minValue));
+      System.ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(minValue, maxValue);
 
       return minValue + source.NextNumber(maxValue - minValue);
     }
+
+    #endregion // NextNumber
+
+    #region NextDouble
 
     /// <summary>
     /// <para>Creates a new non-negative random double in the interval [0, <paramref name="maxValue"/>).</para>
@@ -186,8 +161,7 @@ namespace Flux
     public static double NextDouble(this System.Random source, double maxValue)
     {
       System.ArgumentNullException.ThrowIfNull(source);
-
-      if (maxValue <= 0) throw new System.ArgumentOutOfRangeException(nameof(maxValue));
+      System.ArgumentOutOfRangeException.ThrowIfNegativeOrZero(maxValue);
 
       return source.NextDouble() * maxValue;
     }
@@ -203,11 +177,14 @@ namespace Flux
     public static double NextDouble(this System.Random source, double minValue, double maxValue)
     {
       System.ArgumentNullException.ThrowIfNull(source);
-
-      if (minValue >= maxValue) throw new System.ArgumentOutOfRangeException(nameof(minValue));
+      System.ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(minValue, maxValue);
 
       return minValue + source.NextDouble(maxValue - minValue);
     }
+
+    #endregion // NextDouble
+
+    #region NextExponential
 
     /// <summary>
     /// <para>Get exponential random sample with mean = 1.</para>
@@ -236,6 +213,8 @@ namespace Flux
 
       return mu * NextExponential(source);
     }
+
+    #endregion // NextExponential
 
     /// <summary>
     /// <para>Generates a pseudo-random number using the Box-Muller sampling method by generating pairs of independent standard normal random variables.</para>
@@ -362,11 +341,12 @@ namespace Flux
     public static double NextNormal(this System.Random source, double mean, double sigma)
     {
       System.ArgumentNullException.ThrowIfNull(source);
-
-      if (sigma <= 0) throw new System.ArgumentOutOfRangeException(nameof(sigma));
+      System.ArgumentOutOfRangeException.ThrowIfNegativeOrZero(sigma);
 
       return mean + sigma * NextNormal(source);
     }
+
+    #region NextTimeSpan
 
     /// <summary>
     /// <para>Creates a new random System.TimeSpan in the interval [<see cref="System.TimeSpan.MinValue"/>, <see cref="System.TimeSpan.MaxValue"/>).</para>
@@ -397,41 +377,46 @@ namespace Flux
       return new(source.NextInt64(minValue.Ticks, maxValue.Ticks));
     }
 
-    /// <summary>
-    /// <para>Creates a new random System.UInt32 in the interval [0, <see cref="System.UInt32.MaxValue"/>), but will never return <see cref="System.UInt32.MaxValue"/>.</para>
-    /// </summary>
-    /// <param name="source"></param>
-    /// <returns></returns>
-    [System.CLSCompliant(false)]
-    public static uint NextUInt32(this System.Random source)
-    {
-      System.ArgumentNullException.ThrowIfNull(source);
+    #endregion // NextTimeSpan
 
-      var uint32 = System.UInt32.MaxValue;
+    ///// <summary>
+    ///// <para>Creates a new random System.UInt32 in the interval [0, <see cref="System.UInt32.MaxValue"/>), but will never return <see cref="System.UInt32.MaxValue"/>.</para>
+    ///// </summary>
+    ///// <param name="source"></param>
+    ///// <returns></returns>
+    //[System.CLSCompliant(false)]
+    //public static uint NextUInt32(this System.Random source)
+    //{
+    //  System.ArgumentNullException.ThrowIfNull(source);
 
-      while (uint32 == System.UInt32.MaxValue)
-        uint32 = System.BitConverter.ToUInt32(GetRandomBytes(source, 4), 0);
+    //  return System.BitConverter.ToUInt32(GetRandomBytes(source, 4), 0) is var next && next != System.UInt32.MaxValue ? next : NextUInt32(source);
+    //}
 
-      return uint32;
-    }
+    ///// <summary>
+    ///// <para>Creates a new random System.UInt64 in the interval [0, <see cref="System.UInt64.MaxValue"/>), but will never return <see cref="System.UInt64.MaxValue"/>.</para>
+    ///// </summary>
+    ///// <param name="source"></param>
+    ///// <returns></returns>
+    //[System.CLSCompliant(false)]
+    //public static ulong NextUInt64(this System.Random source)
+    //{
+    //  System.ArgumentNullException.ThrowIfNull(source);
 
-    /// <summary>
-    /// <para>Creates a new random System.UInt64 in the interval [0, <see cref="System.UInt64.MaxValue"/>), but will never return <see cref="System.UInt64.MaxValue"/>.</para>
-    /// </summary>
-    /// <param name="source"></param>
-    /// <returns></returns>
-    [System.CLSCompliant(false)]
-    public static ulong NextUInt64(this System.Random source)
-    {
-      System.ArgumentNullException.ThrowIfNull(source);
+    //  return System.BitConverter.ToUInt64(GetRandomBytes(source, 8), 0) is var next && next != System.UInt64.MaxValue ? next : NextUInt64(source);
+    //}
 
-      var uint64 = System.UInt64.MaxValue;
+    ///// <summary>
+    ///// <para>Creates a new random System.UInt128 in the interval [0, <see cref="System.UInt128.MaxValue"/>), but will never return <see cref="System.UInt128.MaxValue"/>.</para>
+    ///// </summary>
+    ///// <param name="source"></param>
+    ///// <returns></returns>
+    //[System.CLSCompliant(false)]
+    //public static System.UInt128 NextUInt128(this System.Random source)
+    //{
+    //  System.ArgumentNullException.ThrowIfNull(source);
 
-      while (uint64 == System.UInt64.MaxValue)
-        uint64 = System.BitConverter.ToUInt64(GetRandomBytes(source, 8), 0);
-
-      return uint64;
-    }
+    //  return System.BitConverter.ToUInt128(GetRandomBytes(source, 16), 0) is var next && next != System.UInt128.MaxValue ? next : NextUInt128(source);
+    //}
 
     /// <summary>
     /// <para>Produce a uniform random sample from the open interval (0, 1), i.e. the method will not return either end point.</para>
@@ -442,7 +427,9 @@ namespace Flux
     {
       System.ArgumentNullException.ThrowIfNull(source);
 
-      return source.NextDouble() is var sample && sample > 0 && sample < 1 ? sample : double.Epsilon;
+      while (true)
+        if (source.NextDouble() is var value && value > 0 && value < 1)
+          return value;
     }
 
     /// <summary>

@@ -7,9 +7,9 @@
     private double m_dutyCycle;
 
     /// <summary>The duty cycle (pulse width) in the range [0, 2PI].</summary>
-    public double DutyCycle { get => m_dutyCycle; set => m_dutyCycle = value.WrapAround(0.0, 1.0); }
+    public double DutyCycle { get => m_dutyCycle; set => m_dutyCycle = value.WrapAroundClosed(0.0, 1.0); }
 
-    public PulseWave(double dutyCycle) => m_dutyCycle = dutyCycle.WrapAround(0.0, 1.0);
+    public PulseWave(double dutyCycle) => m_dutyCycle = dutyCycle.WrapAroundClosed(0.0, 1.0);
 
     public PulseWave() : this(0.5) { }
 

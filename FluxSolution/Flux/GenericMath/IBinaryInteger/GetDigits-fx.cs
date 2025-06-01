@@ -7,7 +7,7 @@ namespace Flux
       where TNumber : System.Numerics.IBinaryInteger<TNumber>
       where TRadix : System.Numerics.IBinaryInteger<TRadix>
     {
-      var rdx = TNumber.CreateChecked(Units.Radix.AssertWithin(radix));
+      var rdx = TNumber.CreateChecked(Units.Radix.AssertMember(radix));
 
       if (TNumber.IsNegative(value))
         value = TNumber.Abs(value);
@@ -32,7 +32,7 @@ namespace Flux
       where TNumber : System.Numerics.IBinaryInteger<TNumber>
       where TRadix : System.Numerics.IBinaryInteger<TRadix>
     {
-      var rdx = TNumber.CreateChecked(Units.Radix.AssertWithin(radix));
+      var rdx = TNumber.CreateChecked(Units.Radix.AssertMember(radix));
 
       if (TNumber.IsNegative(value))
         value = TNumber.Abs(value);

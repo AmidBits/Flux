@@ -14,14 +14,17 @@ namespace Flux.Randomness.NumberGenerators
 
     private System.UInt128 m_state;
 
-    private Lecuyer128(System.UInt128 seed) => m_state = (seed << 1) | 1;
-    public Lecuyer128() : this(((System.UInt128)System.Diagnostics.Stopwatch.GetTimestamp() << 64) | (System.UInt128)System.Diagnostics.Stopwatch.GetTimestamp()) { }
+    private Lecuyer128(System.UInt128 seed) => m_state = unchecked((seed << 1) | 1);
+    public Lecuyer128() : this(((System.UInt128)System.Diagnostics.Stopwatch.GetTimestamp().ReverseBits()) | (System.UInt128)System.Diagnostics.Stopwatch.GetTimestamp()) { }
 
     internal override ulong SampleUInt64()
     {
-      m_state *= m_multiplier;
+      unchecked
+      {
+        m_state *= m_multiplier;
 
-      return unchecked((ulong)(m_state >> 64));
+        return (ulong)(m_state >> 64);
+      }
     }
 
     //public override int Next()

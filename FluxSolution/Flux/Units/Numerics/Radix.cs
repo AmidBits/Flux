@@ -19,7 +19,7 @@ namespace Flux.Units
 
     private readonly int m_value;
 
-    public Radix(int radix) => m_value = IntervalNotation.Closed.AssertWithinInterval(radix, MinValue, MaxValue, nameof(radix));
+    public Radix(int radix) => m_value = Interval<int>.AssertMember(radix, MinValue, MaxValue, IntervalNotation.Closed, nameof(radix));
 
     #region Radix methods
 
@@ -29,7 +29,7 @@ namespace Flux.Units
     public TNumber DigitCount<TNumber>(TNumber value)
       where TNumber : System.Numerics.IBinaryInteger<TNumber>
     {
-      var rdx = TNumber.CreateChecked(Units.Radix.AssertWithin(m_value));
+      var rdx = TNumber.CreateChecked(Units.Radix.AssertMember(m_value));
 
       var count = TNumber.Zero;
 
@@ -50,7 +50,7 @@ namespace Flux.Units
     public TNumber DigitSum<TNumber>(TNumber value)
       where TNumber : System.Numerics.IBinaryInteger<TNumber>
     {
-      var rdx = TNumber.CreateChecked(Units.Radix.AssertWithin(m_value));
+      var rdx = TNumber.CreateChecked(Units.Radix.AssertMember(m_value));
 
       var sum = TNumber.Zero;
 
@@ -218,7 +218,7 @@ namespace Flux.Units
     public bool IsJumbled<TNumber>(TNumber value)
       where TNumber : System.Numerics.IBinaryInteger<TNumber>
     {
-      var rdx = TNumber.CreateChecked(Units.Radix.AssertWithin(m_value));
+      var rdx = TNumber.CreateChecked(Units.Radix.AssertMember(m_value));
 
       while (!TNumber.IsZero(value))
       {
@@ -364,19 +364,19 @@ namespace Flux.Units
     /// <para>Asserts that the <paramref name="radix"/> with an <paramref name="alternativeMaxRadix"/> is valid, i.e. an integer in the range [<see cref="MinValue"/>, <paramref name="alternativeMaxRadix"/>], and throws an exception if it's not.</para>
     /// </summary>
     /// <exception cref="System.ArgumentOutOfRangeException"></exception>
-    public static TSelf AssertWithin<TSelf>(TSelf radix, TSelf alternativeMaxRadix, IntervalNotation notation = IntervalNotation.Closed, string? paramName = null)
+    public static TSelf AssertMember<TSelf>(TSelf radix, TSelf alternativeMaxRadix, IntervalNotation intervalNotation = IntervalNotation.Closed, string? paramName = null)
       where TSelf : System.Numerics.INumber<TSelf>
-      => IsWithin(radix, alternativeMaxRadix, notation)
+      => Interval<TSelf>.IsMember(radix, TSelf.CreateChecked(MinValue), alternativeMaxRadix, intervalNotation)
       ? radix
-      : throw new System.ArgumentOutOfRangeException(paramName ?? nameof(radix), $"The radix ({radix}) is out of range: {notation.ToNotationString(TSelf.CreateChecked(MinValue), alternativeMaxRadix)}.");
+      : throw new System.ArgumentOutOfRangeException(paramName ?? nameof(radix), $"The radix ({radix}) is out of range: {Interval<TSelf>.ToIntervalNotationString(TSelf.CreateChecked(MinValue), alternativeMaxRadix, intervalNotation)}.");
 
     /// <summary>
     /// <para>Asserts that the <paramref name="radix"/> is valid, i.e. an integer in the range [<see cref="MinValue"/>, <see cref="MaxValue"/>], and throws an exception if it's not.</para>
     /// </summary>
     /// <exception cref="System.ArgumentOutOfRangeException"></exception>
-    public static TSelf AssertWithin<TSelf>(TSelf radix, IntervalNotation notation = IntervalNotation.Closed, string? paramName = null)
+    public static TSelf AssertMember<TSelf>(TSelf radix, IntervalNotation notation = IntervalNotation.Closed, string? paramName = null)
       where TSelf : System.Numerics.INumber<TSelf>
-      => AssertWithin(radix, TSelf.CreateChecked(MaxValue), notation, paramName);
+      => AssertMember(radix, TSelf.CreateChecked(MaxValue), notation, paramName);
 
     /// <summary>
     /// <para>Gets the count, the sum, whether it is jumbled, is a power of, the number reversed, the place values, and the reverse digits, of <paramref name="value"/> using base <paramref name="radix"/>.</para>
@@ -385,7 +385,7 @@ namespace Flux.Units
       where TNumber : System.Numerics.IBinaryInteger<TNumber>
       where TRadix : System.Numerics.IBinaryInteger<TRadix>
     {
-      var rdx = TNumber.CreateChecked(Units.Radix.AssertWithin(radix));
+      var rdx = TNumber.CreateChecked(Units.Radix.AssertMember(radix));
 
       var count = TNumber.Zero;
       var isJumbled = true;
@@ -424,18 +424,18 @@ namespace Flux.Units
     }
 
     /// <summary>
-    /// <para>Determines whether the <paramref name="radix"/> is within <see cref="Radix"/> constrained by the specified <paramref name="notation"/> and the <paramref name="alternativeMaxRadix"/>.</para>
+    /// <para>Determines whether the <paramref name="radix"/> is within <see cref="Radix"/> constrained by the specified <paramref name="intervalNotation"/> and the <paramref name="alternativeMaxRadix"/>.</para>
     /// </summary>
-    public static bool IsWithin<TSelf>(TSelf radix, TSelf alternativeMaxRadix, IntervalNotation notation = IntervalNotation.Closed)
+    public static bool IsMember<TSelf>(TSelf radix, TSelf alternativeMaxRadix, IntervalNotation intervalNotation = IntervalNotation.Closed)
       where TSelf : System.Numerics.INumber<TSelf>
-      => TSelf.IsInteger(radix) && TSelf.CreateChecked(MinValue) is var minRadix && alternativeMaxRadix >= minRadix && notation.IsWithinInterval(radix, minRadix, alternativeMaxRadix);
+      => TSelf.IsInteger(radix) && TSelf.CreateChecked(MinValue) is var minRadix && alternativeMaxRadix >= minRadix && Interval<TSelf>.IsMember(radix, minRadix, alternativeMaxRadix, intervalNotation);
 
     /// <summary>
     /// <para>Determines whether the <paramref name="radix"/> is within <see cref="Radix"/> constrained by the specified <paramref name="notation"/>.</para>
     /// </summary>
-    public static bool IsWithin<TSelf>(TSelf radix, IntervalNotation notation = IntervalNotation.Closed)
+    public static bool IsMember<TSelf>(TSelf radix, IntervalNotation notation = IntervalNotation.Closed)
       where TSelf : System.Numerics.INumber<TSelf>
-      => IsWithin(radix, TSelf.CreateChecked(MaxValue), notation);
+      => IsMember(radix, TSelf.CreateChecked(MaxValue), notation);
 
     #endregion Static methods
 

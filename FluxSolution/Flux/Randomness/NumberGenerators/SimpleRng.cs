@@ -39,8 +39,9 @@ namespace Flux.Randomness.NumberGenerators
           m_z = 362436069;
           break;
         case SeedEnum.TimerMechanism:
-          m_w = (uint)((ulong)System.Diagnostics.Stopwatch.GetTimestamp() & 0xFFFFFFFF);
-          m_z = (uint)((ulong)System.Diagnostics.Stopwatch.GetTimestamp() & 0xFFFFFFFF);
+          var t = (uint)System.Diagnostics.Stopwatch.GetTimestamp();
+          m_w = t;
+          m_z = t.ReverseBits();
           break;
       }
     }

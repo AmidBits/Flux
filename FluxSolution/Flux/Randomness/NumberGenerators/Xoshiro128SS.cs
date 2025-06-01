@@ -26,12 +26,8 @@ namespace Flux.Randomness.NumberGenerators
       m_state2 = (uint)(state23 & 0xFFFF_FFFF);
       m_state3 = (uint)(state23 >> 32);
     }
-    public Xoshiro128SS(long seed)
-      : this(unchecked((ulong)seed))
-    { }
-    public Xoshiro128SS()
-      : this(System.Diagnostics.Stopwatch.GetTimestamp())
-    { }
+    public Xoshiro128SS(long seed) : this(unchecked((ulong)seed)) { }
+    public Xoshiro128SS() : this(System.Diagnostics.Stopwatch.GetTimestamp()) { }
 
     internal override uint SampleUInt32()
     {

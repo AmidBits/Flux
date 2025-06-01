@@ -102,8 +102,8 @@ namespace Flux
 
       var result = bitMask;
 
-      for (var i = q - 1; i > 0; i--) // Loop bit-count divided by count (minus one, hence we skip equal-to zero in the condition) times.
-        result = bitMask | (result << bitMaskLength); // Shift the mask count bits and | (or) in count most-significant-bits from bit-mask.
+      for (var i = q - 1; i > 0; i--) // Loop bit-count divided by count (minus one) times, hence we skip equal-to zero in the condition.
+        result = bitMask | (result << bitMaskLength); // Shift the mask count bits and | (OR) in count most-significant-bits from bit-mask.
 
       if (r > 0)
         result |= (bitMask & TBitMask.CreateChecked((1 << r) - 1)) << (bitLength - r);
@@ -124,8 +124,8 @@ namespace Flux
 
       var result = bitMask;
 
-      for (var i = q - 1; i > 0; i--) // Loop bit-count divided by count (minus one, hence we skip equal-to zero in the condition) times.
-        result = bitMask | (result << bitMaskLength); // Shift the mask count bits and | (or) in count most-significant-bits from bit-mask.
+      for (var i = q - 1; i > 0; i--) // Loop bit-count divided by count (minus one) times, hence we skip equal-to zero in the condition.
+        result = bitMask | (result << bitMaskLength); // Shift the mask count bits and | (OR) in count most-significant-bits from bit-mask.
 
       if (r > 0)
         result = (result << r) | (bitMask >>> (bitMaskLength - r));

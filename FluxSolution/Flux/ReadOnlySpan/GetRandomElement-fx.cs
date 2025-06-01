@@ -2,6 +2,8 @@ namespace Flux
 {
   public static partial class ReadOnlySpans
   {
+    #region GetRandomElement
+
     /// <summary>
     /// <para>Returns a random element from the <paramref name="source"/>. Uses the specified <paramref name="rng"/>, or <see cref="System.Random.Shared"/> if null.</para>
     /// </summary>
@@ -33,5 +35,7 @@ namespace Flux
       result = default!;
       return false;
     }
+
+    #endregion // GetRandomElement
   }
 }

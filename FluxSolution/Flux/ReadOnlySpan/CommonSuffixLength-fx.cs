@@ -8,23 +8,35 @@ namespace Flux
     /// <typeparam name="T"></typeparam>
     /// <param name="source"></param>
     /// <param name="predicate"></param>
-    /// <param name="maxLength"></param>
+    /// <param name="maxTestLength"></param>
     /// <returns></returns>
     /// <exception cref="System.ArgumentOutOfRangeException"></exception>
-    public static int CommonSuffixLength<T>(this System.ReadOnlySpan<T> source, System.Func<T, bool> predicate, int maxLength = int.MaxValue)
+    public static int CommonSuffixLength<T>(this System.ReadOnlySpan<T> source, System.Func<T, int, bool> predicate, int maxTestLength = int.MaxValue)
     {
-      System.ArgumentOutOfRangeException.ThrowIfNegativeOrZero(maxLength);
+      System.ArgumentOutOfRangeException.ThrowIfNegativeOrZero(maxTestLength);
       System.ArgumentNullException.ThrowIfNull(predicate);
 
       var sourceMaxIndex = source.Length - 1;
 
-      maxLength = int.Min(maxLength, sourceMaxIndex);
+      maxTestLength = int.Min(maxTestLength, sourceMaxIndex);
 
       var length = 0;
-      while (length < maxLength && predicate(source[sourceMaxIndex - length]))
+      while (length < maxTestLength && predicate(source[sourceMaxIndex - length], length))
         length++;
       return length;
     }
+
+    /// <summary>
+    /// <para>Finds the length of any common suffix shared between <paramref name="source"/> and the <paramref name="predicate"/>.</para>
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="source"></param>
+    /// <param name="predicate"></param>
+    /// <param name="maxTestLength"></param>
+    /// <returns></returns>
+    /// <exception cref="System.ArgumentOutOfRangeException"></exception>
+    public static int CommonSuffixLength<T>(this System.ReadOnlySpan<T> source, System.Func<T, bool> predicate, int maxTestLength = int.MaxValue)
+      => CommonSuffixLength(source, (e, i) => predicate(e), maxTestLength);
 
     /// <summary>
     /// <para>Finds the length of any common suffix shared between <paramref name="source"/> and <paramref name="value"/>. Uses the specified <paramref name="equalityComparer"/>, or default if null.</para>
@@ -32,22 +44,22 @@ namespace Flux
     /// <typeparam name="T"></typeparam>
     /// <param name="source"></param>
     /// <param name="value"></param>
-    /// <param name="maxLength"></param>
+    /// <param name="maxTestLength"></param>
     /// <param name="equalityComparer"></param>
     /// <returns></returns>
     /// <exception cref="System.ArgumentOutOfRangeException"></exception>
-    public static int CommonSuffixLength<T>(this System.ReadOnlySpan<T> source, T value, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null, int maxLength = int.MaxValue)
+    public static int CommonSuffixLength<T>(this System.ReadOnlySpan<T> source, T value, int maxTestLength = int.MaxValue, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
     {
-      System.ArgumentOutOfRangeException.ThrowIfNegativeOrZero(maxLength);
+      System.ArgumentOutOfRangeException.ThrowIfNegativeOrZero(maxTestLength);
 
       equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
 
       var sourceMaxIndex = source.Length - 1;
 
-      maxLength = int.Min(maxLength, sourceMaxIndex);
+      maxTestLength = int.Min(maxTestLength, sourceMaxIndex);
 
       var length = 0;
-      while (length < maxLength && equalityComparer.Equals(source[sourceMaxIndex - length], value))
+      while (length < maxTestLength && equalityComparer.Equals(source[sourceMaxIndex - length], value))
         length++;
       return length;
     }
@@ -64,7 +76,7 @@ namespace Flux
     /// <param name="maxLength"></param>
     /// <param name="equalityComparer"></param>
     /// <returns></returns>
-    public static int CommonSuffixLength<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> value, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null, int maxLength = int.MaxValue)
+    public static int CommonSuffixLength<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> value, int maxLength, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
     {
       System.ArgumentOutOfRangeException.ThrowIfNegativeOrZero(maxLength);
 
@@ -80,5 +92,17 @@ namespace Flux
         length++;
       return length;
     }
+
+    /// <summary>
+    /// <para>Simulating a built-in version of a CommonSuffixLength extension (akin to the actual built-in CommonPrefixLength extension).</para>
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="source"></param>
+    /// <param name="value"></param>
+    /// <param name="maxLength"></param>
+    /// <param name="equalityComparer"></param>
+    /// <returns></returns>
+    public static int CommonSuffixLength<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> value, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
+      => CommonSuffixLength(source, value, int.MaxValue, equalityComparer);
   }
 }

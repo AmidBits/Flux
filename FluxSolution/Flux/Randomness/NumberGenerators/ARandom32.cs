@@ -1,13 +1,12 @@
 namespace Flux.Randomness.NumberGenerators
 {
   /// <summary>
-  /// <para>A simple 32-bit random number generator based on George Marsaglia's MWC (multiply with carry) generator.</para>
+  /// <para>An abstract base class for 32-bit random number generators.</para>
   /// </summary>
-  /// <remarks>Although it is very simple, it passes Marsaglia's DIEHARD series of random number generator tests.</remarks>
   public abstract class ARandom32
     : System.Random
   {
-    internal abstract uint SampleUInt32();
+    #region System.Random overrides
 
     public override int Next()
       => Next(int.MaxValue);
@@ -43,8 +42,37 @@ namespace Flux.Randomness.NumberGenerators
       }
     }
 
+    #endregion // System.Random overrides
+
+    //internal static uint GenerateSeedUInt32()
+    //{
+    //  unchecked
+    //  {
+    //    var t = (ulong)System.Diagnostics.Stopwatch.GetTimestamp();
+
+    //    var tr = t.ReverseBits();
+
+    //    t = (t ^ tr) | t;
+
+    //    return (uint)(t >> 16);
+    //  }
+    //}
+
+    //internal static int GenerateSeedInt32()
+    //  => unchecked((int)(GenerateSeedUInt32() & 0x7FFF_FFFF));
+
+    internal abstract uint SampleUInt32();
+
+    private const double SampleFactor = 1.0 / (1UL << 32);
+
     protected override double Sample()
-    //=> double.CreateChecked(Next()) / double.CreateChecked(int.MaxValue);
-    => double.CreateChecked(SampleUInt32() >> 8) / double.CreateChecked(1U << 24);
+      => SampleUInt32() * SampleFactor;
+    //{
+    //  while (true)
+    //    if (double.CreateChecked(SampleUInt32()) / MaxSample is var sample && sample < 1d)
+    //      return sample;
+    //}
+    //return double.CreateChecked(SampleUInt32() >> 1) / double.CreateChecked(int.MaxValue);
+    //=> double.CreateChecked(SampleUInt32() >> 8) / double.CreateChecked(1U << 23);
   }
 }

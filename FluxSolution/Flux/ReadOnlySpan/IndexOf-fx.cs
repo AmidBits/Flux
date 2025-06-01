@@ -9,16 +9,26 @@ namespace Flux
     /// <param name="source"></param>
     /// <param name="predicate"></param>
     /// <returns></returns>
-    public static int IndexOf<T>(this System.ReadOnlySpan<T> source, System.Func<T, bool> predicate)
+    public static int IndexOf<T>(this System.ReadOnlySpan<T> source, System.Func<T, int, bool> predicate)
     {
       System.ArgumentNullException.ThrowIfNull(predicate);
 
       for (var index = 0; index < source.Length; index++)
-        if (predicate(source[index]))
+        if (predicate(source[index], index))
           return index;
 
       return -1;
     }
+
+    /// <summary>
+    /// <para>Reports the first index in <paramref name="source"/> that satisfies the <paramref name="predicate"/>, or -1 if not found.</para>
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="source"></param>
+    /// <param name="predicate"></param>
+    /// <returns></returns>
+    public static int IndexOf<T>(this System.ReadOnlySpan<T> source, System.Func<T, bool> predicate)
+      => source.IndexOf((e, i) => predicate(e));
 
     /// <summary>
     /// <para>Reports the first index of the specified <paramref name="value"/> in <paramref name="source"/>, or -1 if not found. Uses the specified <paramref name="equalityComparer"/>, or default if null.</para>

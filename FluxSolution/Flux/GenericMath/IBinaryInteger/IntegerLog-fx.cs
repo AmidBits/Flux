@@ -39,7 +39,7 @@ namespace Flux
       if (value.TryFastIntegerLog(radix, UniversalRounding.WholeTowardZero, out TNumber ilog, out var _)) // Testing!
         return ilog;
 
-      var rdx = TNumber.CreateChecked(Units.Radix.AssertWithin(radix));
+      var rdx = TNumber.CreateChecked(Units.Radix.AssertMember(radix));
 
       if (!TNumber.IsZero(value)) // If not zero...
       {

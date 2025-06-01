@@ -21,7 +21,7 @@ namespace Flux
       {
         prefix = double.Log10(double.Abs(number)) is var log10 && restrictToTriplets
         ? (Units.MetricPrefix)int.CreateChecked(double.Floor(log10 / 3) * 3)
-        : System.Enum.GetValues<Units.MetricPrefix>().GetInfimumAndSupremum(mp => (int)mp, int.CreateChecked(double.Floor(log10)), true).TowardZeroItem;
+        : System.Enum.GetValues<Units.MetricPrefix>().GetInfimumAndSupremum(mp => (int)mp, int.CreateChecked(double.Floor(log10)), true).InfimumItem;
 
         number *= double.Pow(10, -(int)prefix);
       }

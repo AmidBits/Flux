@@ -15,7 +15,7 @@
       where TRadix : System.Numerics.IBinaryInteger<TRadix>
       => TNumber.IsZero(value)
       ? value
-      : TNumber.CopySign(TNumber.CreateChecked(double.Log(double.CreateChecked(TNumber.Abs(value)), double.CreateChecked(Units.Radix.AssertWithin(radix))).Envelop()), value);
+      : TNumber.CopySign(TNumber.CreateChecked(double.Log(double.CreateChecked(TNumber.Abs(value)), double.CreateChecked(Units.Radix.AssertMember(radix))).Envelop()), value);
 
     /// <summary>
     /// <para></para>
@@ -52,6 +52,6 @@
       where TRadix : System.Numerics.IBinaryInteger<TRadix>
       => TNumber.IsZero(value)
       ? value
-      : TNumber.CopySign(TNumber.CreateChecked(double.Truncate(double.Log(double.CreateChecked(TNumber.Abs(value)), double.CreateChecked(Units.Radix.AssertWithin(radix))))), value);
+      : TNumber.CopySign(TNumber.CreateChecked(double.Truncate(double.Log(double.CreateChecked(TNumber.Abs(value)), double.CreateChecked(Units.Radix.AssertMember(radix))))), value);
   }
 }

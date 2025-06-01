@@ -5,7 +5,7 @@ namespace Flux
     #region TrimCommonPrefix
 
     /// <summary>
-    /// <para>Slice the <paramref name="source"/> with all matching prefix elements satisfying the <paramref name="predicate"/> removed.</para>
+    /// <para>Slice the <paramref name="source"/> with <paramref name="maxTrimLength"/> of matching prefix elements satisfying the <paramref name="predicate"/> removed.</para>
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <param name="source"></param>
@@ -16,7 +16,7 @@ namespace Flux
       => source[source.CommonPrefixLength(predicate, maxTrimLength)..];
 
     /// <summary>
-    /// <para>Slice the <paramref name="source"/> with the matching prefix elements from <paramref name="value"/> removed.</para>
+    /// <para>Slice the <paramref name="source"/> with <paramref name="maxTrimLength"/> of prefix elements matching <paramref name="value"/> removed.</para>
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <param name="source"></param>
@@ -24,8 +24,8 @@ namespace Flux
     /// <param name="equalityComparer"></param>
     /// <param name="maxTrimLength"></param>
     /// <returns></returns>
-    public static System.ReadOnlySpan<T> TrimCommonPrefix<T>(this System.ReadOnlySpan<T> source, T value, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null, int maxTrimLength = int.MaxValue)
-      => source[source.CommonPrefixLength(value, equalityComparer, maxTrimLength)..];
+    public static System.ReadOnlySpan<T> TrimCommonPrefix<T>(this System.ReadOnlySpan<T> source, T value, int maxTrimLength = int.MaxValue, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
+      => source[source.CommonPrefixLength(value, maxTrimLength, equalityComparer)..];
 
     /// <summary>
     /// <para>Slice the <paramref name="source"/> with the matching prefix elements from <paramref name="value"/> removed.</para>
@@ -36,8 +36,8 @@ namespace Flux
     /// <param name="equalityComparer"></param>
     /// <param name="maxTrimLength"></param>
     /// <returns></returns>
-    public static System.ReadOnlySpan<T> TrimCommonPrefix<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> value, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null, int maxTrimLength = int.MaxValue)
-      => source[source.CommonPrefixLength(value, equalityComparer, maxTrimLength)..];
+    public static System.ReadOnlySpan<T> TrimCommonPrefix<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> value, int maxTrimLength = int.MaxValue, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
+      => source[source.CommonPrefixLength(value, maxTrimLength, equalityComparer)..];
 
     #endregion // TrimCommonPrefix
   }

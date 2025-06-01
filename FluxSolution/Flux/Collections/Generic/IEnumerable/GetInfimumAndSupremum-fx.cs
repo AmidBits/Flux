@@ -3,9 +3,10 @@ namespace Flux
   public static partial class IEnumerables
   {
     /// <summary>
-    /// <para>Gets the nearest ("less-than" and "greater-than", optionally with "-or-equal") elements and indices to <paramref name="referenceValue"/>, as evaluated by the <paramref name="valueSelector"/>, in <paramref name="source"/>. Uses the specified <paramref name="comparer"/> (default if null).</para>
+    /// <para>Gets the nearest ("less-than" and "greater-than", optionally with "-or-equal") elements and indices to the singleton set {<paramref name="referenceValue"/>}, as evaluated by the <paramref name="valueSelector"/>, in <paramref name="source"/>. Uses the specified <paramref name="comparer"/> (default if null).</para>
     /// <para>The infimum of a (singleton in this case) subset <paramref name="referenceValue"/> of a set <paramref name="source"/> is the greatest element in <paramref name="source"/> that is less-than-or-equal <paramref name="referenceValue"/>. If <paramref name="proper"/> is <see langword="true"/> then infimum will never be equal.</para>
     /// <para>The supremum of a (singleton in this case) subset <paramref name="referenceValue"/> of a set <paramref name="source"/> is the least element in <paramref name="source"/> that is greater-than-or-equal <paramref name="referenceValue"/>. If <paramref name="proper"/> is <see langword="true"/> then supremum will never be equal.</para>
+    /// <para><see href="https://en.wikipedia.org/wiki/Infimum_and_supremum"/></para>
     /// </summary>
     /// <typeparam name="TSource"></typeparam>
     /// <typeparam name="TValue"></typeparam>
@@ -16,20 +17,20 @@ namespace Flux
     /// <param name="comparer">Uses the specified comparer, or default if null.</param>
     /// <returns></returns>
     /// <exception cref="System.ArgumentNullException"/>
-    public static (int TowardZeroIndex, TSource? TowardZeroItem, TValue? TowardZeroValue, int AwayFromZeroIndex, TSource? AwayFromZeroItem, TValue? AwayFromValue) GetInfimumAndSupremum<TSource, TValue>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, TValue> valueSelector, TValue referenceValue, bool proper, System.Collections.Generic.IComparer<TValue>? comparer = null)
+    public static (int InfimumIndex, TSource? InfimumItem, TValue? InfimumValue, int SupremumIndex, TSource? SupremumItem, TValue? SupremumValue) GetInfimumAndSupremum<TSource, TValue>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, TValue> valueSelector, TValue referenceValue, bool proper, System.Collections.Generic.IComparer<TValue>? comparer = null)
     {
       System.ArgumentNullException.ThrowIfNull(source);
       System.ArgumentNullException.ThrowIfNull(valueSelector);
 
       comparer ??= System.Collections.Generic.Comparer<TValue>.Default;
 
-      var tzIndex = -1;
-      var tzItem = default(TSource);
-      var tzValue = referenceValue;
+      var infIndex = -1;
+      var infItem = default(TSource);
+      var infValue = referenceValue;
 
-      var afzIndex = -1;
-      var afzItem = default(TSource);
-      var afzValue = referenceValue;
+      var supIndex = -1;
+      var supItem = default(TSource);
+      var supValue = referenceValue;
 
       var index = 0;
 
@@ -39,24 +40,24 @@ namespace Flux
 
         var cmp = comparer.Compare(value, referenceValue);
 
-        if ((!proper ? cmp <= 0 : cmp < 0) && (tzIndex < 0 || comparer.Compare(value, tzValue) > 0))
+        if ((!proper ? cmp <= 0 : cmp < 0) && (infIndex < 0 || comparer.Compare(value, infValue) > 0))
         {
-          tzIndex = index;
-          tzItem = item;
-          tzValue = value;
+          infIndex = index;
+          infItem = item;
+          infValue = value;
         }
 
-        if ((!proper ? cmp >= 0 : cmp > 0) && (afzIndex < 0 || comparer.Compare(value, afzValue) < 0))
+        if ((!proper ? cmp >= 0 : cmp > 0) && (supIndex < 0 || comparer.Compare(value, supValue) < 0))
         {
-          afzIndex = index;
-          afzItem = item;
-          afzValue = value;
+          supIndex = index;
+          supItem = item;
+          supValue = value;
         }
 
         index++;
       }
 
-      return (tzIndex, tzItem, tzValue, afzIndex, afzItem, afzValue);
+      return (infIndex, infItem, infValue, supIndex, supItem, supValue);
     }
   }
 }

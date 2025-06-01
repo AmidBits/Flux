@@ -2,16 +2,25 @@ namespace Flux.Numerics
 {
   public static partial class NumberSequence
   {
-    public static TValue PrimeCandidate<TValue>(this TValue value, UniversalRounding mode, out TValue primeCandidateTowardZero, out TValue primeCandidateAwayFromZero)
-      where TValue : System.Numerics.IBinaryInteger<TValue>
+    /// <summary>
+    /// <para>A prime candidate is a number that is either -1 or +1 of a prime multiple, which is a multiple of 6. Obviously all prime candidates are not prime numbers, hence the name, but all prime numbers are prime candidates.</para>
+    /// </summary>
+    /// <typeparam name="TInteger"></typeparam>
+    /// <param name="value"></param>
+    /// <param name="mode"></param>
+    /// <param name="primeCandidateTowardZero"></param>
+    /// <param name="primeCandidateAwayFromZero"></param>
+    /// <returns></returns>
+    public static TInteger PrimeCandidate<TInteger>(this TInteger value, UniversalRounding mode, out TInteger primeCandidateTowardZero, out TInteger primeCandidateAwayFromZero)
+      where TInteger : System.Numerics.IBinaryInteger<TInteger>
     {
-      var absValue = TValue.Abs(value);
+      var absValue = TInteger.Abs(value);
 
-      if (absValue > TValue.CreateChecked(5))
+      if (absValue > TInteger.CreateChecked(5))
       {
         var pmn = PrimeMultiple(value, mode, out var primeMultipleTowardZero, out var primeMultipleAwayFromZero);
 
-        var copySignOne = TValue.CopySign(TValue.One, value);
+        var copySignOne = TInteger.CopySign(TInteger.One, value);
 
         if (primeMultipleTowardZero == primeMultipleAwayFromZero)
         {
@@ -24,68 +33,77 @@ namespace Flux.Numerics
           primeCandidateAwayFromZero = primeMultipleAwayFromZero - copySignOne;
         }
       }
-      else if (absValue == TValue.One) // Yields a 2-tuple : 1 = (-2, 2) or -1 = (2, -2).
+      else if (absValue == TInteger.One) // Yields a 2-tuple : 1 = (-2, 2) or -1 = (2, -2).
       {
-        primeCandidateAwayFromZero = TValue.CopySign(TValue.CreateChecked(2), value);
+        primeCandidateAwayFromZero = TInteger.CopySign(TInteger.CreateChecked(2), value);
         primeCandidateTowardZero = -primeCandidateAwayFromZero;
       }
-      else if (absValue == TValue.CreateChecked(4)) // Yields value = 2-tuple : 4 = (3, 5) or -4 = (-3, -5).
+      else if (absValue == TInteger.CreateChecked(4)) // Yields value = 2-tuple : 4 = (3, 5) or -4 = (-3, -5).
       {
-        primeCandidateTowardZero = TValue.CopySign(TValue.CreateChecked(3), value);
-        primeCandidateAwayFromZero = TValue.CopySign(TValue.CreateChecked(5), value);
+        primeCandidateTowardZero = TInteger.CopySign(TInteger.CreateChecked(3), value);
+        primeCandidateAwayFromZero = TInteger.CopySign(TInteger.CreateChecked(5), value);
       }
       else // Yields 2-tuples of any values : 5 or -5, 3 or -3, 2 or -2 or 0.
         return primeCandidateTowardZero = primeCandidateAwayFromZero = value;
 
-      return TValue.CopySign(value.RoundToNearest(mode, primeCandidateTowardZero, primeCandidateAwayFromZero), value);
+      return TInteger.CopySign(value.RoundToNearest(mode, primeCandidateTowardZero, primeCandidateAwayFromZero), value);
     }
 
-    public static TValue PrimeMultiple<TValue>(this TValue value, UniversalRounding mode, out TValue primeMultipleTowardZero, out TValue primeMultipleAwayFromZero)
-      where TValue : System.Numerics.IBinaryInteger<TValue>
+    /// <summary>
+    /// <para>A prime multiple (in this context) is a number that is a multiple of six (6) since all prime numbers (except for 2 and 3) are either a ('multiple of 6' - 1) or a ('multiple of 6' + 1). Four (4) is also an exception because technically it is also a prime multiple since 3 (4 - 1) and 5 (4 + 1) are prime numbers.</para>
+    /// </summary>
+    /// <typeparam name="TInteger"></typeparam>
+    /// <param name="value"></param>
+    /// <param name="mode"></param>
+    /// <param name="primeMultipleTowardZero"></param>
+    /// <param name="primeMultipleAwayFromZero"></param>
+    /// <returns></returns>
+    public static TInteger PrimeMultiple<TInteger>(this TInteger value, UniversalRounding mode, out TInteger primeMultipleTowardZero, out TInteger primeMultipleAwayFromZero)
+      where TInteger : System.Numerics.IBinaryInteger<TInteger>
     {
       //if (TValue.CreateChecked(5) is var five && TValue.Abs(value) < five)
       //  return primeMultipleTowardZero = primeMultipleAwayFromZero = TValue.Zero;
 
-      var rev = value.ReverseRemainderWithZero(TValue.CreateChecked(6), out var rem);
+      var rev = value.ReverseRemainderWithZero(TInteger.CreateChecked(6), out var rem);
 
       primeMultipleTowardZero = value - rem;
       primeMultipleAwayFromZero = value + rev;
 
-      return TValue.CopySign(value.RoundToNearest(mode, primeMultipleTowardZero, primeMultipleAwayFromZero), value);
+      return TInteger.CopySign(value.RoundToNearest(mode, primeMultipleTowardZero, primeMultipleAwayFromZero), value);
     }
 
     /// <summary>
     /// <para>Creates a new sequence of ascending potential primes, greater-than-or-equal-to the specified <paramref name="value"/>.</para>
     /// </summary>
-    public static System.Collections.Generic.IEnumerable<TValue> GetAscendingPrimeCandidates<TValue>(this TValue value)
-      where TValue : System.Numerics.IBinaryInteger<TValue>
+    public static System.Collections.Generic.IEnumerable<TInteger> GetAscendingPrimeCandidates<TInteger>(this TInteger value)
+      where TInteger : System.Numerics.IBinaryInteger<TInteger>
     {
-      if (TValue.CreateChecked(2) is var two && value <= two)
+      if (TInteger.CreateChecked(2) is var two && value <= two)
         yield return two;
 
-      if (TValue.CreateChecked(3) is var three && value <= three)
+      if (TInteger.CreateChecked(3) is var three && value <= three)
         yield return three;
 
-      if (TValue.CreateChecked(5) is var five && value <= five)
+      if (TInteger.CreateChecked(5) is var five && value <= five)
         value = five;
 
-      var six = TValue.CreateChecked(6);
+      var six = TInteger.CreateChecked(6);
 
-      var (quotient, remainder) = TValue.DivRem(value, six);
+      var (quotient, remainder) = TInteger.DivRem(value, six);
 
-      var multiple = (quotient + (remainder > TValue.One ? TValue.One : TValue.Zero)) * six;
+      var multiple = (quotient + (remainder > TInteger.One ? TInteger.One : TInteger.Zero)) * six;
 
-      if (remainder <= TValue.One) // Or, either between two potential primes or on right of a % 6 value. E.g. 12 or 13.
+      if (remainder <= TInteger.One) // Or, either between two potential primes or on right of a % 6 value. E.g. 12 or 13.
       {
-        yield return multiple + TValue.One;
+        yield return multiple + TInteger.One;
 
         multiple += six;
       }
 
       while (true)
       {
-        yield return multiple - TValue.One;
-        yield return multiple + TValue.One;
+        yield return multiple - TInteger.One;
+        yield return multiple + TInteger.One;
 
         multiple += six;
       }
@@ -94,62 +112,62 @@ namespace Flux.Numerics
     /// <summary>
     /// <para>Creates a new sequence ascending prime numbers, greater-than-or-equal-to the specified <paramref name="value"/>.</para>
     /// </summary>
-    public static System.Collections.Generic.IEnumerable<TValue> GetAscendingPrimes<TValue>(this TValue value)
-      where TValue : System.Numerics.IBinaryInteger<TValue>
+    public static System.Collections.Generic.IEnumerable<TInteger> GetAscendingPrimes<TInteger>(this TInteger value)
+      where TInteger : System.Numerics.IBinaryInteger<TInteger>
       => GetAscendingPrimeCandidates(value).AsParallel().AsOrdered().Where(IsPrimeNumber);
 
     /// <summary>Creates a new sequence of descending potential primes, less than the specified <paramref name="value"/>.</summary>
-    public static System.Collections.Generic.IEnumerable<TValue> GetDescendingPrimeCandidates<TValue>(this TValue value)
-      where TValue : System.Numerics.IBinaryInteger<TValue>
+    public static System.Collections.Generic.IEnumerable<TInteger> GetDescendingPrimeCandidates<TInteger>(this TInteger value)
+      where TInteger : System.Numerics.IBinaryInteger<TInteger>
     {
-      if (TValue.CreateChecked(5) is var five && value >= five)
+      if (TInteger.CreateChecked(5) is var five && value >= five)
       {
-        var six = TValue.CreateChecked(6);
+        var six = TInteger.CreateChecked(6);
 
-        var (quotient, remainder) = TValue.DivRem(value, six);
+        var (quotient, remainder) = TInteger.DivRem(value, six);
 
-        var multiple = (quotient + (remainder == five ? TValue.One : TValue.Zero)) * six;
+        var multiple = (quotient + (remainder == five ? TInteger.One : TInteger.Zero)) * six;
 
-        if (remainder == TValue.Zero || remainder == five) // Or, either between two potential primes or on left of (startAt % 6). E.g. 11 or 12.
+        if (remainder == TInteger.Zero || remainder == five) // Or, either between two potential primes or on left of (startAt % 6). E.g. 11 or 12.
         {
-          yield return multiple - TValue.One;
+          yield return multiple - TInteger.One;
 
           multiple -= six;
         }
 
         while (multiple >= six)
         {
-          yield return multiple + TValue.One;
-          yield return multiple - TValue.One;
+          yield return multiple + TInteger.One;
+          yield return multiple - TInteger.One;
 
           multiple -= six;
         }
       }
 
-      if (TValue.CreateChecked(3) is var three && value >= three)
+      if (TInteger.CreateChecked(3) is var three && value >= three)
         yield return three;
 
-      if (TValue.CreateChecked(2) is var two && value >= two)
+      if (TInteger.CreateChecked(2) is var two && value >= two)
         yield return two;
     }
 
     /// <summary>
     /// <para>Creates a new sequence descending prime numbers, less-than-or-equal-to the specified <paramref name="value"/>.</para>
     /// </summary>
-    public static System.Collections.Generic.IEnumerable<TValue> GetDescendingPrimes<TValue>(this TValue value)
-      where TValue : System.Numerics.IBinaryInteger<TValue>
+    public static System.Collections.Generic.IEnumerable<TInteger> GetDescendingPrimes<TInteger>(this TInteger value)
+      where TInteger : System.Numerics.IBinaryInteger<TInteger>
       => GetDescendingPrimeCandidates(value).AsParallel().AsOrdered().Where(IsPrimeNumber);
 
-    public static System.Collections.Generic.IEnumerable<TValue> GetClosestPrimeCandidates<TValue>(TValue value)
-      where TValue : System.Numerics.IBinaryInteger<TValue>
+    public static System.Collections.Generic.IEnumerable<TInteger> GetClosestPrimeCandidates<TInteger>(TInteger value)
+      where TInteger : System.Numerics.IBinaryInteger<TInteger>
     {
-      var two = TValue.CreateChecked(2);
-      var three = TValue.CreateChecked(3);
+      var two = TInteger.CreateChecked(2);
+      var three = TInteger.CreateChecked(3);
       //var four = TValue.CreateChecked(4);
       //var five = TValue.CreateChecked(5);
-      var six = TValue.CreateChecked(6);
+      var six = TInteger.CreateChecked(6);
 
-      var (quotient, remainder) = TValue.DivRem(value, six);
+      var (quotient, remainder) = TInteger.DivRem(value, six);
 
       var lo = quotient * six;
       var hi = lo + six;
@@ -171,12 +189,12 @@ namespace Flux.Numerics
       {
         while (true)
         {
-          yield return hi - TValue.One;
-          if (lo >= six) yield return lo + TValue.One;
-          else if (TValue.IsZero(lo)) yield return three;
-          yield return hi + TValue.One;
-          if (lo >= six) yield return lo - TValue.One;
-          else if (TValue.IsZero(lo)) yield return two;
+          yield return hi - TInteger.One;
+          if (lo >= six) yield return lo + TInteger.One;
+          else if (TInteger.IsZero(lo)) yield return three;
+          yield return hi + TInteger.One;
+          if (lo >= six) yield return lo - TInteger.One;
+          else if (TInteger.IsZero(lo)) yield return two;
           hi += six;
           lo -= six;
         }
@@ -185,34 +203,34 @@ namespace Flux.Numerics
       {
         while (true)
         {
-          if (lo > TValue.Zero) yield return lo + TValue.One;
-          else if (TValue.IsZero(lo)) yield return three;
-          yield return hi - TValue.One;
-          if (lo > TValue.Zero) yield return lo - TValue.One;
-          else if (TValue.IsZero(lo)) yield return two;
-          yield return hi + TValue.One;
+          if (lo > TInteger.Zero) yield return lo + TInteger.One;
+          else if (TInteger.IsZero(lo)) yield return three;
+          yield return hi - TInteger.One;
+          if (lo > TInteger.Zero) yield return lo - TInteger.One;
+          else if (TInteger.IsZero(lo)) yield return two;
+          yield return hi + TInteger.One;
           lo -= six;
           hi += six;
         }
       }
     }
 
-    public static System.Collections.Generic.IEnumerable<TValue> GetClosestPrimes<TValue>(TValue value)
-      where TValue : System.Numerics.IBinaryInteger<TValue>
+    public static System.Collections.Generic.IEnumerable<TInteger> GetClosestPrimes<TInteger>(TInteger value)
+      where TInteger : System.Numerics.IBinaryInteger<TInteger>
       => GetClosestPrimeCandidates(value).AsParallel().AsOrdered().Where(IsPrimeNumber);
 
     /// <summary>Returns a sequence of cousine primes, each of which is a pair of primes that differ by four.</summary>
     /// <see href="https://en.wikipedia.org/wiki/Cousin_prime"/>
-    public static System.Collections.Generic.IEnumerable<(TValue, TValue)> GetCousinePrimes<TValue>(TValue startAt)
-      where TValue : System.Numerics.IBinaryInteger<TValue>
+    public static System.Collections.Generic.IEnumerable<(TInteger, TInteger)> GetCousinePrimes<TInteger>(TInteger startAt)
+      where TInteger : System.Numerics.IBinaryInteger<TInteger>
     {
       foreach (var (leading, midling, trailing) in GetAscendingPrimes(startAt).PartitionTuple3(0, (leading, midling, trailing, index) => (leading, midling, trailing)))
       {
-        if (midling - leading == TValue.CreateChecked(4))
+        if (midling - leading == TInteger.CreateChecked(4))
         {
           yield return (leading, midling);
         }
-        else if (trailing - leading == TValue.CreateChecked(4))
+        else if (trailing - leading == TInteger.CreateChecked(4))
         {
           yield return (leading, trailing);
         }
@@ -225,33 +243,33 @@ namespace Flux.Numerics
     /// <param name="value">The target for locating the bounds.</param>
     /// <returns></returns>
     /// <remarks>Any value below 2, simply returns 2 for both infimum and supremum.</remarks>
-    public static (TValue Infimum, TValue Supremum) GetInfimumAndSupremumOfPrimeCandidates<TValue>(TValue value)
-      where TValue : System.Numerics.IBinaryInteger<TValue>
-      => TValue.CreateChecked(2) is var two && value <= two // If the value is two, or less.
+    public static (TInteger Infimum, TInteger Supremum) GetPrimeCandidatesInfimumAndSupremum<TInteger>(TInteger value)
+      where TInteger : System.Numerics.IBinaryInteger<TInteger>
+      => TInteger.CreateChecked(2) is var two && value <= two // If the value is two-or-less.
       ? (two, two)
-      : TValue.CreateChecked(3) is var three && value == three // If the value is three.
+      : TInteger.CreateChecked(3) is var three && value == three // If the value is three.
       ? (three, three)
-      : (value % TValue.CreateChecked(6) is var r && r == TValue.Zero) || value == TValue.CreateChecked(4) // It's between two potential primes, e.g. the value = 3]4[5, the remainder = 5]6[7 or 11]12[13 (examples).
-      ? (value - TValue.One, value + TValue.One)
-      : TValue.CreateChecked(5) is var five && (r == TValue.One || r == five) // If the remainder is either a one or a five, i.e. a potential prime.
+      : value == TInteger.CreateChecked(4) || (value % TInteger.CreateChecked(6) is var r && TInteger.IsZero(r))  // It's between two potential primes, e.g. the value = 3]4[5, the remainder = 5]6[7 or 11]12[13 (examples).
+      ? (value - TInteger.One, value + TInteger.One)
+      : TInteger.CreateChecked(5) is var five && (r == TInteger.One || r == five) // If the remainder is either a one or a five, i.e. a potential prime.
       ? (value, value)
-      : (value - r + TValue.One, value - r + five); // Otherwise locate the potential prime using the remainder.
+      : (value - r + TInteger.One, value - r + five); // Otherwise locate the potential prime using the remainder.
 
     /// <summary>Results in an ascending sequence of gaps between prime numbers starting with the specified value.</summary>
-    public static System.Collections.Generic.IEnumerable<TValue> GetPrimeGaps<TValue>(TValue startAt)
-      where TValue : System.Numerics.IBinaryInteger<TValue>
+    public static System.Collections.Generic.IEnumerable<TInteger> GetPrimeGaps<TInteger>(TInteger startAt)
+      where TInteger : System.Numerics.IBinaryInteger<TInteger>
       => GetAscendingPrimes(startAt).PartitionTuple2(false, (leading, trailing, index) => trailing - leading);
 
     /// <summary>Returns a sequence of prime quadruplets, each of which is a set of four primes of the form {p, p+2, p+6, p+8}.</summary>
     /// <see href="https://en.wikipedia.org/wiki/Prime_quadruplet"/>
-    public static System.Collections.Generic.IEnumerable<(TValue, TValue, TValue, TValue)> GetPrimeQuadruplets<TValue>(TValue startAt)
-      where TValue : System.Numerics.IBinaryInteger<TValue>
+    public static System.Collections.Generic.IEnumerable<(TInteger, TInteger, TInteger, TInteger)> GetPrimeQuadruplets<TInteger>(TInteger startAt)
+      where TInteger : System.Numerics.IBinaryInteger<TInteger>
     {
-      var two = TValue.CreateChecked(2);
-      var six = TValue.CreateChecked(6);
-      var eight = TValue.CreateChecked(8);
+      var two = TInteger.CreateChecked(2);
+      var six = TInteger.CreateChecked(6);
+      var eight = TInteger.CreateChecked(8);
 
-      var list = new System.Collections.Generic.List<TValue>();
+      var list = new System.Collections.Generic.List<TInteger>();
 
       foreach (var primeNumber in GetAscendingPrimes(startAt))
       {
@@ -269,16 +287,16 @@ namespace Flux.Numerics
 
     /// <summary>Returns a sequence of prime quintuplets, each of which is a set of four primes of the form {p, p+2, p+6, p+8} and {p-4 or p+12}.</summary>
     /// <see href="https://en.wikipedia.org/wiki/Prime_quadruplet#Prime_quintuplets"/>
-    public static System.Collections.Generic.IEnumerable<(TValue, TValue, TValue, TValue, TValue)> GetPrimeQuintuplets<TValue>(TValue startAt)
-      where TValue : System.Numerics.IBinaryInteger<TValue>
+    public static System.Collections.Generic.IEnumerable<(TInteger, TInteger, TInteger, TInteger, TInteger)> GetPrimeQuintuplets<TInteger>(TInteger startAt)
+      where TInteger : System.Numerics.IBinaryInteger<TInteger>
     {
-      var two = TValue.CreateChecked(2);
-      var four = TValue.CreateChecked(4);
-      var six = TValue.CreateChecked(6);
-      var eight = TValue.CreateChecked(8);
-      var twelve = TValue.CreateChecked(12);
+      var two = TInteger.CreateChecked(2);
+      var four = TInteger.CreateChecked(4);
+      var six = TInteger.CreateChecked(6);
+      var eight = TInteger.CreateChecked(8);
+      var twelve = TInteger.CreateChecked(12);
 
-      var list = new System.Collections.Generic.List<TValue>();
+      var list = new System.Collections.Generic.List<TInteger>();
 
       foreach (var primeNumber in GetAscendingPrimes(startAt))
       {
@@ -298,16 +316,16 @@ namespace Flux.Numerics
 
     /// <summary>Returns a sequence of prime sextuplets, each of which is a set of six primes of the form {p-4, p, p+2, p+6, p+8, p+12}.</summary>
     /// <see href="https://en.wikipedia.org/wiki/Prime_quadruplet#Prime_sextuplets"/>
-    public static System.Collections.Generic.IEnumerable<(TValue, TValue, TValue, TValue, TValue, TValue)> GetPrimeSextuplets<TValue>(TValue startAt)
-      where TValue : System.Numerics.IBinaryInteger<TValue>
+    public static System.Collections.Generic.IEnumerable<(TInteger, TInteger, TInteger, TInteger, TInteger, TInteger)> GetPrimeSextuplets<TInteger>(TInteger startAt)
+      where TInteger : System.Numerics.IBinaryInteger<TInteger>
     {
-      var two = TValue.CreateChecked(2);
-      var four = TValue.CreateChecked(4);
-      var six = TValue.CreateChecked(6);
-      var eight = TValue.CreateChecked(8);
-      var twelve = TValue.CreateChecked(12);
+      var two = TInteger.CreateChecked(2);
+      var four = TInteger.CreateChecked(4);
+      var six = TInteger.CreateChecked(6);
+      var eight = TInteger.CreateChecked(8);
+      var twelve = TInteger.CreateChecked(12);
 
-      var list = new System.Collections.Generic.List<TValue>();
+      var list = new System.Collections.Generic.List<TInteger>();
 
       foreach (var primeNumber in GetAscendingPrimes(startAt))
       {
@@ -325,51 +343,56 @@ namespace Flux.Numerics
 
     /// <summary>Returns a sequence of prime triplets, each of which is a set of three prime numbers of the form (p, p + 2, p + 6) or (p, p + 4, p + 6).</summary>
     /// <see href="https://en.wikipedia.org/wiki/Prime_triplet"/>
-    public static System.Collections.Generic.IEnumerable<(TValue, TValue, TValue)> GetPrimeTriplets<TValue>(TValue startAt)
-      where TValue : System.Numerics.IBinaryInteger<TValue>
-      => 0 is var index ? GetAscendingPrimes(startAt).PartitionTuple3(0, (leading, midling, trailing, index) => (leading, midling, trailing)).Where((t) => t.trailing - t.leading is var gap3to1 && gap3to1 == TValue.CreateChecked(6) && t.midling - t.leading is var gap2to1 && (gap2to1 == TValue.CreateChecked(2) || gap2to1 == TValue.CreateChecked(4))) : throw new System.Exception();
+    public static System.Collections.Generic.IEnumerable<(TInteger, TInteger, TInteger)> GetPrimeTriplets<TInteger>(TInteger startAt)
+      where TInteger : System.Numerics.IBinaryInteger<TInteger>
+      => 0 is var index ? GetAscendingPrimes(startAt).PartitionTuple3(0, (leading, midling, trailing, index) => (leading, midling, trailing)).Where((t) => t.trailing - t.leading is var gap3to1 && gap3to1 == TInteger.CreateChecked(6) && t.midling - t.leading is var gap2to1 && (gap2to1 == TInteger.CreateChecked(2) || gap2to1 == TInteger.CreateChecked(4))) : throw new System.Exception();
 
     /// <summary>Returns a sequence of super-primes, which is a subsequence of prime numbers that occupy prime-numbered positions within the sequence of all prime numbers.</summary>
     /// <see href="https://en.wikipedia.org/wiki/Super-prime"/>
-    public static System.Collections.Generic.IEnumerable<TValue> GetSuperPrimes<TValue>(TValue startAt)
-      where TValue : System.Numerics.IBinaryInteger<TValue>
+    public static System.Collections.Generic.IEnumerable<TInteger> GetSuperPrimes<TInteger>(TInteger startAt)
+      where TInteger : System.Numerics.IBinaryInteger<TInteger>
       => GetAscendingPrimes(startAt).Where((p, i) => IsPrimeNumber(i + 1));
 
     /// <summary>Returns a sequence of teim primes, each of which is a pair of primes that differ by two.</summary>
     /// <see href="https://en.wikipedia.org/wiki/Twin_prime"/>
-    public static System.Collections.Generic.IEnumerable<(TValue, TValue)> GetTwinPrimes<TValue>(TValue startAt)
-      where TValue : System.Numerics.IBinaryInteger<TValue>
-      => GetAscendingPrimes(startAt).PartitionTuple2(false, (leading, trailing, index) => (leading, trailing)).Where((t) => t.trailing - t.leading == TValue.CreateChecked(2));
+    public static System.Collections.Generic.IEnumerable<(TInteger, TInteger)> GetTwinPrimes<TInteger>(TInteger startAt)
+      where TInteger : System.Numerics.IBinaryInteger<TInteger>
+      => GetAscendingPrimes(startAt).PartitionTuple2(false, (leading, trailing, index) => (leading, trailing)).Where((t) => t.trailing - t.leading == TInteger.CreateChecked(2));
 
     /// <summary>Indicates whether the prime value is also an additive prime.</summary>
     /// <param name="primeNumber">A prime value. If this value is not a prime value, the result is unpredictable.</param>
     /// <see href="https://en.wikipedia.org/wiki/List_of_prime_numbers#Additive_primes"/>
-    public static bool IsAlsoAdditivePrime(System.Numerics.BigInteger primeNumber)
+    public static bool IsAlsoAdditivePrime<TInteger>(this TInteger primeNumber)
+      where TInteger : System.Numerics.IBinaryInteger<TInteger>
       => IsPrimeNumber(primeNumber.DigitSum(10));
 
     /// <summary>Indicates whether the prime value is also a congruent modulo prime.</summary>
     /// <param name="primeNumber">A prime value. If this value is not a prime value, the result is unpredictable.</param>
-    public static bool IsAlsoCongruentModuloPrime(System.Numerics.BigInteger primeNumber, System.Numerics.BigInteger a, System.Numerics.BigInteger d)
-      => (primeNumber % a == d);
+    public static bool IsAlsoCongruentModuloPrime<TInteger>(this TInteger primeNumber, TInteger a, TInteger d)
+      where TInteger : System.Numerics.IBinaryInteger<TInteger>
+      => primeNumber % a == d;
 
     /// <summary>Indicates whether the prime value is also an Eisenstein prime.</summary>
     /// <param name="primeNumber">A prime value. If this value is not a prime value, the result is unpredictable.</param>
     /// <see href="https://en.wikipedia.org/wiki/Eisenstein_prime"/>
-    public static bool IsAlsoEisensteinPrime(System.Numerics.BigInteger primeNumber)
-      => IsAlsoCongruentModuloPrime(primeNumber, 3, 2);
+    public static bool IsAlsoEisensteinPrime<TInteger>(this TInteger primeNumber)
+      where TInteger : System.Numerics.IBinaryInteger<TInteger>
+      => IsAlsoCongruentModuloPrime(primeNumber, TInteger.CreateChecked(3), TInteger.CreateChecked(2));
 
     /// <summary>Indicates whether the prime value is also a Gaussian prime.</summary>
     /// <param name="primeNumber">A prime value. If this value is not a prime value, the result is unpredictable.</param>
     /// <see href="https://en.wikipedia.org/wiki/Gaussian_integer#Gaussian_primes"/>
-    public static bool IsAlsoGaussianPrime(System.Numerics.BigInteger primeNumber)
-      => IsAlsoCongruentModuloPrime(primeNumber, 4, 3);
+    public static bool IsAlsoGaussianPrime<TInteger>(this TInteger primeNumber)
+      where TInteger : System.Numerics.IBinaryInteger<TInteger>
+      => IsAlsoCongruentModuloPrime(primeNumber, TInteger.CreateChecked(4), TInteger.CreateChecked(3));
 
     /// <summary>Indicates whether the prime value is also a left truncatable prime.</summary>
     /// <param name="primeNumber">A prime value. If this value is not a prime value, the result is unpredictable.</param>
     /// <see href="https://en.wikipedia.org/wiki/Truncatable_prime"/>
-    public static bool IsAlsoLeftTruncatablePrime(System.Numerics.BigInteger primeNumber)
+    public static bool IsAlsoLeftTruncatablePrime<TInteger>(this TInteger primeNumber)
+      where TInteger : System.Numerics.IBinaryInteger<TInteger>
     {
-      var text = primeNumber.ToString(System.Globalization.CultureInfo.InvariantCulture);
+      var text = primeNumber.ToString(null, System.Globalization.CultureInfo.InvariantCulture);
 
       if (text.IndexOf('0', System.StringComparison.Ordinal) > -1)
       {
@@ -392,20 +415,23 @@ namespace Flux.Numerics
     /// <summary>Indicates whether the prime value is also a Pythagorean prime.</summary>
     /// <param name="primeNumber">A prime value. If this value is not a prime value, the result is unpredictable.</param>
     /// <see href="https://en.wikipedia.org/wiki/Pythagorean_prime"/>
-    public static bool IsAlsoPythagoreanPrime(System.Numerics.BigInteger primeNumber)
-      => IsAlsoCongruentModuloPrime(primeNumber, 4, 1);
+    public static bool IsAlsoPythagoreanPrime<TInteger>(this TInteger primeNumber)
+      where TInteger : System.Numerics.IBinaryInteger<TInteger>
+      => IsAlsoCongruentModuloPrime(primeNumber, TInteger.CreateChecked(4), TInteger.CreateChecked(1));
 
     /// <summary>Indicates whether the prime value is also a safe prime prime.</summary>
     /// <param name="primeNumber">A prime value. If this value is not a prime value, the result is unpredictable.</param>
     /// <see href="https://en.wikipedia.org/wiki/Safe_prime"/>
-    public static bool IsAlsoSafePrime(System.Numerics.BigInteger primeNumber)
-      => IsPrimeNumber((primeNumber - 1) / 2);
+    public static bool IsAlsoSafePrime<TInteger>(this TInteger primeNumber)
+      where TInteger : System.Numerics.IBinaryInteger<TInteger>
+      => IsPrimeNumber((primeNumber - TInteger.One) / TInteger.CreateChecked(2));
 
     /// <summary>Indicates whether the prime value is also a Sophie Germain prime.</summary>
     /// <param name="primeNumber">A prime value. If this value is not a prime value, the result is unpredictable.</param>
     /// <see href="https://en.wikipedia.org/wiki/Sophie_Germain_prime"/>
-    public static bool IsAlsoSophieGermainPrime(System.Numerics.BigInteger primeNumber)
-      => IsPrimeNumber((primeNumber * 2) + 1);
+    public static bool IsAlsoSophieGermainPrime<TInteger>(this TInteger primeNumber)
+      where TInteger : System.Numerics.IBinaryInteger<TInteger>
+      => IsPrimeNumber((primeNumber * TInteger.CreateChecked(2)) + TInteger.One);
 
     ///// <summary>Indicates whether a specified value is a prime candidate.</summary>
 
@@ -432,24 +458,24 @@ namespace Flux.Numerics
     /// <para><see href="https://en.wikipedia.org/wiki/Primality_test"/></para>
     /// <para><seealso href="https://en.wikipedia.org/wiki/Prime_number"/></para>
     /// </summary>
-    public static bool IsPrimeNumber<TValue>(this TValue value)
-      where TValue : System.Numerics.IBinaryInteger<TValue>
+    public static bool IsPrimeNumber<TInteger>(this TInteger value)
+      where TInteger : System.Numerics.IBinaryInteger<TInteger>
     {
-      var two = TValue.CreateChecked(2);
-      var three = TValue.CreateChecked(3);
+      var two = TInteger.CreateChecked(2);
+      var three = TInteger.CreateChecked(3);
 
       if (value <= three)
         return value >= two;
 
-      if (TValue.IsZero(value % two) || TValue.IsZero(value % three))
+      if (TInteger.IsZero(value % two) || TInteger.IsZero(value % three))
         return false;
 
       var limit = value.IntegerSqrt();
 
-      var six = TValue.CreateChecked(6);
+      var six = TInteger.CreateChecked(6);
 
-      for (var k = TValue.CreateChecked(5); k <= limit; k += six)
-        if (TValue.IsZero(value % k) || TValue.IsZero(value % (k + two)))
+      for (var k = TInteger.CreateChecked(5); k <= limit; k += six)
+        if (TInteger.IsZero(value % k) || TInteger.IsZero(value % (k + two)))
           return false;
 
       return true;

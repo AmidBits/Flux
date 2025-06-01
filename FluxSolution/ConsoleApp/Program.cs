@@ -204,6 +204,8 @@ namespace ConsoleApp
 
     #endregion // Stuff
 
+    #region Mock DataTables
+
     private static void MakeParentTable(System.Data.DataSet dataSet)
     {
       // Create a new DataTable.
@@ -323,19 +325,12 @@ namespace ConsoleApp
       }
     }
 
+    #endregion // Mock DataTables
+
     private static void TimedMain(string[] _)
     {
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
-
-
-      var db = new byte[16];
-      var nbi = System.Numerics.BigInteger.Parse("0A0B0C0D0E0F090807060504", System.Globalization.NumberStyles.HexNumber);
-      var nbis = nbi.ToString($"B{nbi.GetBitCount()}");
-      var dbf = ((decimal)nbi).TryWriteToBuffer(db, Endianess.LittleEndian, out var bytesWritten);
-
-      var cdv = (Flux.Units.MetricPrefix)typeof(Flux.Units.MetricPrefix).CreateDefaultValue();
-      var att = typeof(Flux.Units.MetricPrefix).GetAttribute<DefaultValueAttribute>();
 
 
       //var range = 5;
@@ -349,9 +344,12 @@ namespace ConsoleApp
 
       var minValue = -2;
       var maxValue = 4;
+
+      var five = (-2).WrapAroundHalfOpenMinimum(minValue, maxValue);
+
       var range = maxValue - minValue;
       for (var value = -15; value <= 15; value++)
-        System.Console.WriteLine($"{value:D2} / {(maxValue - minValue):D2} ({minValue:D2}, {maxValue:D2}) : [{value.WrapAround(minValue, maxValue):D2}] : [{value.WrapAroundHalfOpenMax(minValue, maxValue):D2}) : ({value.WrapAroundHalfOpenMin(minValue, maxValue):D2}]");
+        System.Console.WriteLine($"{value:D2} / {(maxValue - minValue):D2} ({minValue:D2}, {maxValue:D2}) : [{value.WrapAroundClosed(minValue, maxValue):D2}] : [{value.WrapAroundHalfOpenMaximum(minValue, maxValue):D2}) : ({value.WrapAroundHalfOpenMinimum(minValue, maxValue):D2}]");
 
       var tester = (1803).ToEngineeringNotationString("g");
 

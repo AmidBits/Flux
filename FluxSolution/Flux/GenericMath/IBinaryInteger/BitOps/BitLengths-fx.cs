@@ -3,6 +3,26 @@ namespace Flux
   public static partial class BitOps
   {
     /// <summary>
+    /// <para>A bit-count is the number of storage bits for the type <typeparamref name="TBitLength"/>.</para>
+    /// </summary>
+    /// <typeparam name="TBitLength"></typeparam>
+    /// <param name="source"></param>
+    /// <returns></returns>
+    public static TBitLength ConvertBitLengthToBitCount<TBitLength>(this TBitLength source)
+      where TBitLength : System.Numerics.IBinaryInteger<TBitLength>
+      => source.ConvertBitLengthToByteCount() * TBitLength.CreateChecked(8);
+
+    /// <summary>
+    /// <para>A byte-count is the number of storage bytes for the type <typeparamref name="TBitLength"/>.</para>
+    /// </summary>
+    /// <typeparam name="TBitLength"></typeparam>
+    /// <param name="source"></param>
+    /// <returns></returns>
+    public static TBitLength ConvertBitLengthToByteCount<TBitLength>(this TBitLength source)
+      where TBitLength : System.Numerics.IBinaryInteger<TBitLength>
+      => TBitLength.CreateChecked(double.Ceiling(double.CreateChecked(source) / 8));
+
+    /// <summary>
     /// <para>Gets the size, in bits, of the shortest two's-complement representation, if <paramref name="value"/> is positive. If <paramref name="value"/> is negative, the bit-length represents the storage size of the <typeparamref name="TNumber"/>, based on byte-count (times 8).</para>
     /// </summary>
     /// <remarks>

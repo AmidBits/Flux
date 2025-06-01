@@ -1,5 +1,8 @@
 namespace Flux
 {
+  /// <summary>
+  /// <para>Represents a slice that has a start index and a length.</para>
+  /// </summary>
   public readonly record struct Slice
     : System.IComparable, System.IComparable<Slice>, System.IFormattable
   {
@@ -11,25 +14,41 @@ namespace Flux
       m_index = index;
       m_length = length;
     }
-    public Slice(System.Range range, int length)
-      => (m_index, m_length) = range.GetOffsetAndLength(length);
+    public Slice(System.Range range, int collectionLength)
+      => (m_index, m_length) = range.GetOffsetAndLength(collectionLength);
 
     public readonly void Deconstruct(out int index, out int length) { index = m_index; length = m_length; }
 
     public int Index => m_index;
     public int Length => m_length;
 
-    public int GetMaxIndex() => m_index + m_length - 1;
-    public int GetFollowingIndex() => m_index + m_length;
+    /// <summary>
+    /// <para>The first index of a <see cref="Slice"/>.</para>
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <returns></returns>
+    public T GetMinIndex<T>()
+      where T : System.Numerics.IBinaryInteger<T>
+      => T.CreateChecked(m_index);
+
+    /// <summary>
+    /// <para>The last index of a <see cref="Slice"/>.</para>
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <returns></returns>
+    public T GetMaxIndex<T>()
+      where T : System.Numerics.IBinaryInteger<T>
+      => T.CreateChecked(m_index + m_length - 1);
 
     public Interval<T> ToInterval<T>()
       where T : System.Numerics.IBinaryInteger<T>
-      => new(T.CreateChecked(m_index), T.CreateChecked(m_index + m_length - 1));
+      => new(GetMinIndex<T>(), GetMaxIndex<T>());
 
-    public Interval<int> ToInterval() => ToInterval<int>();
+    public Interval<int> ToInterval()
+      => ToInterval<int>();
 
     public System.Range ToRange()
-      => new(m_index, m_index + m_length);
+      => new(GetMinIndex<int>(), GetMaxIndex<int>());
 
     #region Static methods
 

@@ -339,14 +339,14 @@ namespace Flux
       = System.Enum.GetNames<System.Environment.SpecialFolder>().ToSortedDictionary((e, i) => e, (e, i) => System.Environment.GetFolderPath(System.Enum.Parse<System.Environment.SpecialFolder>(e)));
 
     /// <summary>
-    /// <para>Gets the current number of ticks, and the frequency as the number of ticks per seconds, from the timer mechanism.</para>
+    /// <para>Gets the current number of ticks in the timer mechanism.</para>
     /// </summary>
     /// <remarks>The information is derived from <see cref="System.Diagnostics.Stopwatch"/>.</remarks>
     public static long StopwatchCounter
       => System.Diagnostics.Stopwatch.GetTimestamp();
 
     /// <summary>
-    /// <para>Gets the frequency as the number of ticks per seconds, from the timer mechanism.</para>
+    /// <para>Gets the frequency of the timer mechanism as the number of ticks per seconds.</para>
     /// </summary>
     /// <remarks>The information is derived from <see cref="System.Diagnostics.Stopwatch"/>.</remarks>
     public static long StopwatchFrequency

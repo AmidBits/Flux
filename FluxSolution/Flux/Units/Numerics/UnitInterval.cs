@@ -14,11 +14,11 @@ namespace Flux.Units
 
     private readonly double m_value;
 
-    public UnitInterval(double unitInterval, IntervalNotation notation)
+    public UnitInterval(double unitInterval, IntervalNotation intervalNotation)
     {
-      m_value = notation.AssertWithinInterval(unitInterval, MinValue, MaxValue, nameof(unitInterval));
+      m_value = Interval<double>.AssertMember(unitInterval, MinValue, MaxValue, intervalNotation, nameof(unitInterval));
 
-      m_notation = notation;
+      m_notation = intervalNotation;
     }
     public UnitInterval(double unitInterval) : this(unitInterval, IntervalNotation.Closed) { }
 
@@ -30,20 +30,20 @@ namespace Flux.Units
     #region Static methods
 
     /// <summary>
-    /// <para>Asserts that the <paramref name="unitInterval"/> is within <see cref="UnitInterval"/> constrained by the specified <paramref name="notation"/>. If not, it throws an exception.</para>
+    /// <para>Asserts that the <paramref name="unitInterval"/> is within <see cref="UnitInterval"/> constrained by the specified <paramref name="intervalNotation"/>. If not, it throws an exception.</para>
     /// </summary>
     /// <exception cref="System.ArgumentOutOfRangeException"></exception>
-    public static TSelf AssertWithin<TSelf>(TSelf unitInterval, IntervalNotation notation, string? paramName = null)
+    public static TSelf AssertMember<TSelf>(TSelf unitInterval, IntervalNotation intervalNotation, string? paramName = null)
       where TSelf : System.Numerics.INumber<TSelf>
-      => notation.AssertWithinInterval(unitInterval, TSelf.CreateChecked(MinValue), TSelf.CreateChecked(MaxValue), paramName ?? nameof(unitInterval));
+      => Interval<TSelf>.AssertMember(unitInterval, TSelf.CreateChecked(MinValue), TSelf.CreateChecked(MaxValue), intervalNotation, paramName ?? nameof(unitInterval));
 
     /// <summary>
-    /// <para>Returns whether the <paramref name="unitInterval"/> is within <see cref="UnitInterval"/> constrained by the specified <paramref name="notation"/>.</para>
+    /// <para>Returns whether the <paramref name="unitInterval"/> is within <see cref="UnitInterval"/> constrained by the specified <paramref name="intervalNotation"/>.</para>
     /// </summary>
     /// <exception cref="System.ArgumentOutOfRangeException"></exception>
-    public static bool IsWithin<TSelf>(TSelf unitInterval, IntervalNotation notation)
+    public static bool IsMember<TSelf>(TSelf unitInterval, IntervalNotation intervalNotation)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
-      => notation.IsWithinInterval(unitInterval, TSelf.CreateChecked(MinValue), TSelf.CreateChecked(MaxValue));
+      => Interval<TSelf>.IsMember(unitInterval, TSelf.CreateChecked(MinValue), TSelf.CreateChecked(MaxValue), intervalNotation);
 
     #endregion Static methods
 

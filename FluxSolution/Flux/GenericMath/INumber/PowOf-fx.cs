@@ -14,7 +14,7 @@
     public static TNumber PowOfAwayFromZero<TNumber, TRadix>(this TNumber value, TRadix radix, bool unequal = false)
       where TNumber : System.Numerics.INumber<TNumber>
       where TRadix : System.Numerics.IBinaryInteger<TRadix>
-      => TNumber.CreateChecked(Units.Radix.AssertWithin(radix)) is var r && TNumber.IsZero(value)
+      => TNumber.CreateChecked(Units.Radix.AssertMember(radix)) is var r && TNumber.IsZero(value)
       ? value
       : TNumber.CopySign(TNumber.Abs(value) is var v && r.FastIntegerPow(v.FastIntegerLog(r, UniversalRounding.WholeTowardZero, out var _), UniversalRounding.WholeTowardZero, out var _) is var p && (p == v ? p : p * r) is var afz && (unequal || !TNumber.IsInteger(value)) && afz == v ? afz * r : afz, value);
 
@@ -49,7 +49,7 @@
     public static TNumber PowOfTowardZero<TNumber, TRadix>(this TNumber value, TRadix radix, bool unequal = false)
       where TNumber : System.Numerics.INumber<TNumber>
       where TRadix : System.Numerics.IBinaryInteger<TRadix>
-      => TNumber.CreateChecked(Units.Radix.AssertWithin(radix)) is var r && TNumber.IsZero(value)
+      => TNumber.CreateChecked(Units.Radix.AssertMember(radix)) is var r && TNumber.IsZero(value)
       ? value
       : TNumber.CopySign(TNumber.Abs(value) is var v && r.FastIntegerPow(v.FastIntegerLog(r, UniversalRounding.WholeTowardZero, out var _), UniversalRounding.WholeTowardZero, out var _) is var p && (unequal && TNumber.IsInteger(value)) && p == v ? p / r : p, value);
   }
