@@ -16,13 +16,19 @@ namespace Flux
       var dt = new System.Data.DataTable();
 
       for (var i1 = 0; i1 < sourceLength1; i1++)
-        dt.Columns.Add(
-          (customColumnNames.Length > i1 ? customColumnNames[i1] : null) // First choice, use custom column name.
-          ?? (sourceHasColumnNames ? source[0, i1]?.ToString() : null) // Second choice, if the parameter 'sourceHasColumnNames' is true, use source value.
-          ?? i1.ToSingleOrdinalColumnName() // Third choice, use generic name with index.
-        );
+      {
+        var columnName = default(string);
 
-      for (var i0 = (sourceHasColumnNames ? 1 : 0); i0 < sourceLength0; i0++)
+        if (sourceHasColumnNames) // First choice, if the parameter 'sourceHasColumnNames' is true, use source value.
+          columnName = source[0, i1]?.ToString();
+
+        if (i1 < customColumnNames.Length) // Second choice (and possibility of overriding source-column-name), use custom column name.
+          columnName = customColumnNames[i1];
+
+        dt.Columns.Add(columnName ?? i1.ToSingleOrdinalColumnName());
+      }
+
+      for (var i0 = sourceHasColumnNames ? 1 : 0; i0 < sourceLength0; i0++)
       {
         var array = new object[sourceLength1];
         for (var i1 = 0; i1 < sourceLength1; i1++)

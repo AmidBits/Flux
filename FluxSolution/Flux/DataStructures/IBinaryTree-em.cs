@@ -5,33 +5,36 @@ namespace Flux
     /// <summary>
     /// <para>Computes the number of nodes in a <see cref="Flux.DataStructures.IBinaryTree{TValue}"/>.</para>
     /// </summary>
-    public static int GetCount<TValue>(this DataStructures.IBinaryTree<TValue> source)
+    public static int GetNodeCount<TValue>(this DataStructures.IBinaryTree<TValue> source)
       => source.IsEmpty
       ? 0
-      : source.Left.GetCount() + 1 + source.Right.GetCount();
+      : source.Left.GetNodeCount() + 1 + source.Right.GetNodeCount();
 
     /// <summary>
     /// <para>Computes the diameter (or width) of a <see cref="Flux.DataStructures.IBinaryTree{TValue}"/> structure.</para>
     /// <see href="https://www.geeksforgeeks.org/diameter-of-a-binary-tree/"/>
     /// </summary>
-    /// <remarks>The diameter (or width) is defined as the number of nodes on the longest path between two end nodes.</remarks>
+    /// <remarks>
+    /// <para>The diameter (or width) is defined as the number of nodes on the longest path between two end nodes.</para>
+    /// <para>Consider diameter of a circle and height is sort of like the radius.</para>
+    /// </remarks>
     public static int GetDiameter<TValue>(this DataStructures.IBinaryTree<TValue> source)
     {
-      var height = 0;
+      var maxHeight = 0;
 
-      return GetDiameter(source, ref height);
+      return GetDiameter(source, ref maxHeight);
 
-      static int GetDiameter(DataStructures.IBinaryTree<TValue> source, ref int height)
+      static int GetDiameter(DataStructures.IBinaryTree<TValue> source, ref int maxHeight)
       {
         var leftHeight = 0; // Height of left subtree.
         var rightHeight = 0; // Height of right subtree.
 
-        if (source.IsEmpty) return height = 0; // The diameter is also 0.
+        if (source.IsEmpty) return maxHeight = 0; // The diameter is also 0.
 
         var leftDiameter = GetDiameter(source.Left, ref leftHeight); // Get the leftHeight and store the returned leftDiameter.
         var rightDiameter = GetDiameter(source.Right, ref rightHeight); // Get the rightHeight and store the returned rightDiameter.
 
-        height = int.Max(leftHeight, rightHeight) + 1; // Height of current node is max of heights of left and right subtrees plus 1.
+        maxHeight = int.Max(leftHeight, rightHeight) + 1; // Height of current node is max of heights of left and right subtrees plus 1.
 
         return int.Max(leftHeight + rightHeight + 1, int.Max(leftDiameter, rightDiameter));
       }
@@ -47,22 +50,21 @@ namespace Flux
     /// <para>Computes the max-depth (or height) of a <see cref="Flux.DataStructures.IBinaryTree{TValue}"/> structure.</para>
     /// <see href="https://www.geeksforgeeks.org/find-the-maximum-depth-or-height-of-a-tree/"/>
     /// </summary>
-    /// <remarks>The max-depth (or height) of the tree is the number of vertices in the tree from the root to the deepest node.</remarks>
-    public static int GetMaxDepth<TValue>(this DataStructures.IBinaryTree<TValue> source)
+    /// <remarks>The max-depth (or height) of the tree is the number of node levels in the tree from the root to the deepest node.</remarks>
+    public static int GetMaxHeight<TValue>(this DataStructures.IBinaryTree<TValue> source)
       => source.IsEmpty
       ? 0
-      : 1 + int.Max(
-          source.Left.GetMaxDepth(),
-          source.Right.GetMaxDepth()
-        );
+      : 1 + int.Max(source.Left.GetMaxHeight(), source.Right.GetMaxHeight());
 
     /// <summary>
     /// <para>Computes the tree-sum of a <see cref="Flux.DataStructures.IBinaryTree{TValue}"/> structure.</para>
     /// <see href="https://www.geeksforgeeks.org/check-if-a-given-binary-tree-is-sumtree/"/>
     /// </summary>
-    public static TSummable GetTreeSum<TValue, TSummable>(this DataStructures.IBinaryTree<TValue> source, System.Func<TValue, TSummable> summableSelector)
-      where TSummable : System.Numerics.INumber<TSummable>
-      => source.IsEmpty ? TSummable.Zero : source.Left.GetTreeSum(summableSelector) + summableSelector(source.Value) + source.Right.GetTreeSum(summableSelector);
+    public static TSum GetTreeSum<TValue, TSum>(this DataStructures.IBinaryTree<TValue> source, System.Func<TValue, TSum> sumSelector)
+      where TSum : System.Numerics.INumber<TSum>
+      => source.IsEmpty
+      ? TSum.Zero
+      : sumSelector(source.Value) + source.Left.GetTreeSum(sumSelector) + source.Right.GetTreeSum(sumSelector);
 
     /// <summary>Indicates whether a <see cref="Flux.DataStructures.IBinaryTree{TValue}"/> is a binary-search-tree considering only its <typeparamref name="TValue"/> property. Returns false if <paramref name="source"/> or any sub-nodes violates the BST property (considering only <typeparamref name="TValue"/>).</summary>
     /// <param name="minValue">The minimum value for the type.</param>

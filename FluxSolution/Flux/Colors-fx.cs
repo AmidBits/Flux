@@ -246,6 +246,7 @@ namespace Flux
 
     /// <summary>
     /// <para>Creates a new <see cref="System.Drawing.Color"/> from AHSI unit values.</para>
+    /// <para><see href="https://stackoverflow.com/a/69334106/3178666"/></para>
     /// </summary>
     /// <param name="alpha"></param>
     /// <param name="hue"></param>
@@ -254,9 +255,10 @@ namespace Flux
     /// <returns></returns>
     public static System.Drawing.Color FromAhsi(double alpha, double hue, double saturation, double intensity)
     {
-      var c = 3 * intensity * saturation / (1 + (1 - double.Abs((hue / 60 % 2) - 1)));
-      var h = hue / 60;
-      var x = c * (1 - double.Abs((h % 2) - 1));
+      var h = hue / 60.0;
+      var z = 1.0 - System.Math.Abs(h % 2 - 1);
+      var c = (3 * intensity * saturation) / (1 + z);
+      var x = c * z;
 
       var m = intensity * (1 - saturation);
 
@@ -290,6 +292,13 @@ namespace Flux
           r += c;
           b += x;
           break;
+      }
+
+      if (double.Max(r, double.Max(g, b)) is var max && max > 1)
+      {
+        r /= max;
+        g /= max;
+        b /= max;
       }
 
       return System.Drawing.Color.FromArgb(

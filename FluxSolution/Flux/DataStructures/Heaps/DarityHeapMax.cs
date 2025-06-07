@@ -9,7 +9,7 @@ namespace Flux.DataStructures.Heaps
     where TValue : System.IComparable<TValue>
   {
     private readonly int m_arity;
-    private readonly System.Collections.Generic.List<TValue> m_data = new();
+    private readonly System.Collections.Generic.List<TValue> m_data = [];
 
     public DarityHeapMax(int arity) => m_arity = arity;
 

@@ -54,6 +54,7 @@ namespace Flux
     /// <para>An array is arbitrary in terms of e.g. rows and columns, so one can consider dimension 0 as the row dimension and dimension 1 as the column dimension, making it a row-major scenario.</para>
     /// <para>If data appears as [column, row] (so to speak), use <see cref="TransposeInPlace{T}(T[,])"/> or <see cref="TransposeToCopy{T}(T[,])"/> to make them [row, column].</para>
     /// </remarks>
-    public static void FlipToCopy<T>(this T[,] source, ArrayDimensionLabel dimension) => source.FlipToCopy((int)dimension);
+    public static void FlipToCopy<T>(this T[,] source, ArrayDimensionLabel dimension)
+      => source.FlipToCopy((int)dimension);
   }
 }

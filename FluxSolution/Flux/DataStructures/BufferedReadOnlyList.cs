@@ -5,12 +5,10 @@ namespace Flux.DataStructures
     : Disposable, System.Collections.Generic.IReadOnlyList<T>
   {
     private System.Collections.Generic.IEnumerator<T>? m_enumerator;
-    private readonly System.Collections.Generic.List<T> m_buffer = new();
-#if NET9_0_OR_GREATER
+
+    private readonly System.Collections.Generic.List<T> m_buffer = [];
+
     private readonly System.Threading.Lock m_lock = new();
-#else
-    private readonly object m_lock = new();
-#endif
 
     public BufferedReadOnlyList(System.Collections.Generic.IEnumerator<T> collection) => m_enumerator = collection;
     public BufferedReadOnlyList(System.Collections.Generic.IEnumerable<T> collection) : this(collection.GetEnumerator()) { }

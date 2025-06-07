@@ -13,7 +13,7 @@
 
     public QuickFind(System.Collections.Generic.IEnumerable<TKey> values)
     {
-      m_values = new(values);
+      m_values = [.. values];
 
       m_sets = new int[m_values.Count];
       m_sizes = new int[m_values.Count];

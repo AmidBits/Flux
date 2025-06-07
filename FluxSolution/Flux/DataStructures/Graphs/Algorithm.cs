@@ -77,6 +77,17 @@
     }
 
     /// <summary>
+    /// <para>The Bellman–Ford algorithm is an algorithm that computes shortest paths from a single source vertex to all of the other vertices in a weighted digraph.[1] It is slower than Dijkstra's algorithm for the same problem, but more versatile, as it is capable of handling graphs in which some of the edge weights are negative numbers.</para>
+    /// <para>This implementation can handle negative weights.</para>
+    /// <para><see href="https://en.wikipedia.org/wiki/Bellman%E2%80%93Ford_algorithm"/></para>
+    /// </summary>
+    /// <param name="source"></param>
+    /// <param name="origin"></param>
+    /// <returns></returns>
+    public static (double[] Distance, int[] Predecessor) BellmanFordShortestPaths(IGraph<int, double> source, int origin)
+      => BellmanFordShortestPaths(source.GetVertices().Select(v => v.x).ToArray(), source.GetEdges().ToArray(), origin);
+
+    /// <summary>
     /// <para>Dijkstra's algorithm is an algorithm for finding the shortest paths between nodes in a weighted graph, which may represent, for example, a road network.</para>
     /// <para>This implementation cannot handle negative weights.</para>
     /// <para><see href="https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm"/></para>
@@ -134,5 +145,16 @@
 
       return (dist, prev);
     }
+
+    /// <summary>
+    /// <para>Dijkstra's algorithm is an algorithm for finding the shortest paths between nodes in a weighted graph, which may represent, for example, a road network.</para>
+    /// <para>This implementation cannot handle negative weights.</para>
+    /// <para><see href="https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm"/></para>
+    /// </summary>
+    /// <param name="source"></param>
+    /// <param name="origin"></param>
+    /// <returns></returns>
+    public static (double[] Distance, int[] Predecessor) DijkstraShortestPaths(IGraph<int, double> source, int origin)
+      => DijkstraShortestPaths(source.GetVertices().Select(v => v.x).ToArray(), source.GetEdges().ToArray(), origin);
   }
 }

@@ -10,7 +10,7 @@
 
     public QuickUnion(System.Collections.Generic.IEnumerable<TKey> values)
     {
-      m_values = new(values);
+      m_values = [.. values];
 
       m_parents = new int[Values.Count];
 

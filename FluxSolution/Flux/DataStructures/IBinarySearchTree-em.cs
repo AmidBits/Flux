@@ -189,6 +189,47 @@ namespace Flux
         return valueSelector(source.Key, source.Value);
     }
 
+    //public static SpanMaker<char> ToConsoleBlock<TKey, TValue>(this DataStructures.IBinarySearchTree<TKey, TValue> source)
+    //  where TKey : System.IComparable<TKey>
+    //{
+    //  const string padUpRight = "\u2514\u2500\u2500";
+    //  const string padVerticalRight = "\u251C\u2500\u2500";
+    //  const string padVertical = "\u2502  ";
+    //  const string padSpaces = "   ";
+
+    //  var sm = new SpanMaker<char>();
+    //  TraversePreOrder(source, string.Empty, string.Empty, ref sm);
+    //  return sm;
+
+    //  void TraverseNodes(DataStructures.IBinaryTree<TValue> node, string padding, string pointer, bool hasRightSibling, ref SpanMaker<char> sm)
+    //  {
+    //    if (node.IsEmpty)
+    //      return;
+
+    //    sm.Append(1, padding);
+    //    sm.Append(1, pointer);
+    //    sm.Append(1, $"{node.Value}");
+    //    sm.Append(1, System.Environment.NewLine);
+
+    //    var paddingForBoth = padding + (hasRightSibling ? padVertical : padSpaces);
+
+    //    TraverseNodes(node.Left, paddingForBoth, node.Right.IsEmpty ? padVerticalRight : padUpRight, !node.Right.IsEmpty, ref sm);
+    //    TraverseNodes(node.Right, paddingForBoth, padUpRight, false, ref sm);
+    //  }
+
+    //  void TraversePreOrder(DataStructures.IBinaryTree<TValue> root, string padding, string pointer, ref SpanMaker<char> sm)
+    //  {
+    //    if (root.IsEmpty)
+    //      return;
+
+    //    sm.Append(1, $"{root.Value}");
+    //    sm.Append(1, System.Environment.NewLine);
+
+    //    TraverseNodes(root.Left, string.Empty, root.Right.IsEmpty ? padVerticalRight : padUpRight, !root.Right.IsEmpty, ref sm);
+    //    TraverseNodes(root.Right, string.Empty, padUpRight, false, ref sm);
+    //  }
+    //}
+
     /// <summary>
     /// <para>Breadth-first search (BFS), level order. Traversal yields the binary tree levels starting with the root, then its two possible children, then their children, and so on "in generations".</para>
     /// <para>Contrasting with depth-first order is breadth-first order, which always attempts to visit the node closest to the root that it has not already visited. See breadth-first search for more information. Also called a level-order traversal.</para>

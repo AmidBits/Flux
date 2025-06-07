@@ -5,7 +5,7 @@ namespace Flux
     /// <summary>
     /// <para>Create a new array with <paramref name="count"/> elements removed from the <paramref name="source"/> starting at <paramref name="index"/>.</para>
     /// </summary>
-    public static T[] RemoveoCopy<T>(this T[] source, int index, int count)
+    public static T[] RemoveCopy<T>(this T[] source, int index, int count)
     {
       System.ArgumentNullException.ThrowIfNull(source);
 

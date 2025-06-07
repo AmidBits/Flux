@@ -553,7 +553,7 @@ namespace ConsoleApp
     {
       var bst = Flux.DataStructures.Immutable.ImmutableAvlTree<int, string>.Empty;
 
-      for (var index = 0; bst.GetCount() < 16; index++)
+      for (var index = 0; bst.GetNodeCount() < 16; index++)
       {
         var r = System.Security.Cryptography.RandomNumberGenerator.GetInt32(0, 31);
 

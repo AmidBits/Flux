@@ -18,7 +18,7 @@ namespace Flux.DataStructures
       => Values.Sum();
 
     /// <summary>Determines if the PMF is normalized.</summary>
-    public bool IsNormalized()
+    public bool IsNormalized
       => Total == TProbability.One;
 
     public TProbability Mean()
@@ -48,10 +48,13 @@ namespace Flux.DataStructures
     /// <summary>Creates a new PMF with all values normalized.</summary>
     public void Normalize()
     {
-      var factor = TProbability.One / Total;
+      if (!IsNormalized)
+      {
+        var factor = TProbability.One / Total;
 
-      foreach (var key in Keys.ToList())
-        this[key] *= factor;
+        foreach (var key in Keys.ToList())
+          this[key] *= factor;
+      }
     }
 
     /// <summary>Get the PMF (probability) of the <paramref name="key"/> if it exists, otherwise zero.</summary>

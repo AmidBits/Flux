@@ -24,14 +24,13 @@ namespace Flux
     //}
 
     /// <summary>Returns the data table as a new sequence of grid-like formatted strings, that can be printed in the console.</summary>
-    public static string ToConsoleString(this System.Data.DataView source, ConsoleFormatOptions? options = null)
+    public static string ToConsoleString(this System.Data.DataTable source, ConsoleFormatOptions? options = null)
     {
       System.ArgumentNullException.ThrowIfNull(source);
-      System.ArgumentNullException.ThrowIfNull(source.Table);
 
       options ??= ConsoleFormatOptions.Default;
 
-      if (source.Count == 0) throw new System.ArgumentOutOfRangeException(nameof(source), "The DataView is empty.");
+      if (source.Rows.Count == 0) throw new System.ArgumentOutOfRangeException(nameof(source), "The DataView is empty.");
 
       var sm = new SpanMaker<char>();
 
@@ -39,15 +38,15 @@ namespace Flux
 
       #region MaxWidths
 
-      var maxWidths = new int[source.Table.Columns.Count];
+      var maxWidths = new int[source.Columns.Count];
 
-      for (var r = source.Table.Rows.Count - 1; r >= 0; r--)
+      for (var r = source.Rows.Count - 1; r >= 0; r--)
         for (var c = maxWidths.Length - 1; c >= 0; c--)
-          maxWidths[c] = int.Max(maxWidths[c], $"{source.Table.Rows[r][c]}".Length);
+          maxWidths[c] = int.Max(maxWidths[c], $"{source.Rows[r][c]}".Length);
 
       if (options.IncludeColumnNames)
         for (var c = maxWidths.Length - 1; c >= 0; c--)
-          maxWidths[c] = int.Max(maxWidths[c], source.Table.Columns[c].ColumnName.Length);
+          maxWidths[c] = int.Max(maxWidths[c], source.Columns[c].ColumnName.Length);
 
       var maxWidth = maxWidths.Max();
 
@@ -63,18 +62,18 @@ namespace Flux
 
       if (options.IncludeColumnNames)
       {
-        sm = sm.AppendLine(string.Format(horizontalLineFormat, source!.Table!.Columns.Cast<System.Data.DataColumn>().Select((e, i) => options.CenterContent ? new SpanMaker<char>(e.ColumnName).PadEven(maxWidths[i], " ", " ").ToString() : e.ColumnName).ToArray()));
+        sm = sm.AppendLine(string.Format(horizontalLineFormat, source.Columns.Cast<System.Data.DataColumn>().Select((e, i) => options.CenterContent ? new SpanMaker<char>(e.ColumnName).PadEven(maxWidths[i], " ", " ").ToString() : e.ColumnName).ToArray()));
 
         if (verticalLine is not null)
           sm = sm.AppendLine(verticalLine);
       }
 
-      for (var r = 0; r < source.Count; r++)
+      for (var r = 0; r < source.Rows.Count; r++)
       {
         if (verticalLine is not null && r > 0)
           sm = sm.AppendLine(verticalLine);
 
-        var values = source[r].Row.ItemArray is var array && options.CenterContent ? array.Select((e, i) => new SpanMaker<char>($"{e}").PadEven(maxWidths[i], ' ', ' ').ToString()).ToArray() : array;
+        var values = source.Rows[r].ItemArray is var array && options.CenterContent ? array.Select((e, i) => new SpanMaker<char>($"{e}").PadEven(maxWidths[i], ' ', ' ').ToString()).ToArray() : array;
 
         sm = sm.AppendLine(string.Format(horizontalLineFormat, values));
       }

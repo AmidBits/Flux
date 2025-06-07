@@ -51,6 +51,7 @@ namespace Flux
     /// <param name="dimension">The direction of the concatenation.</param>
     /// <returns></returns>
     /// <exception cref="System.ArgumentOutOfRangeException"></exception>
-    public static T[,] ConcatToCopy<T>(this T[,] source, T[,] target, ArrayDimensionLabel dimension) => source.ConcatToCopy(target, (int)dimension);
+    public static T[,] ConcatToCopy<T>(this T[,] source, T[,] target, ArrayDimensionLabel dimension)
+      => source.ConcatToCopy(target, (int)dimension);
   }
 }

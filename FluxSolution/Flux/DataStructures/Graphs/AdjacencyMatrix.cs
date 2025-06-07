@@ -14,9 +14,9 @@
     private int[,] m_matrix;
 
     /// <summary>The values of vertices.</summary>
-    private readonly System.Collections.Generic.Dictionary<int, TVertexValue> m_vertexValues = new();
+    private readonly System.Collections.Generic.Dictionary<int, TVertexValue> m_vertexValues = [];
     /// <summary>The values of edges.</summary>
-    private readonly System.Collections.Generic.Dictionary<(int, int), TEdgeValue> m_edgeValues = new();
+    private readonly System.Collections.Generic.Dictionary<(int, int), TEdgeValue> m_edgeValues = [];
 
     public AdjacencyMatrix(int[,] matrix) => m_matrix = (int[,])matrix.AssertDimensionallySymmetrical(out var _);
 

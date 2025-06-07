@@ -12,7 +12,7 @@
 
     private BitArray64(long bitLength)
     {
-      if (bitLength < 0) throw new System.ArgumentOutOfRangeException(nameof(bitLength));
+      System.ArgumentOutOfRangeException.ThrowIfNegative(bitLength);
 
       m_bitArray = new ulong[((bitLength - 1L) / 64) + 1];
       m_bitLength = bitLength;

@@ -8,7 +8,7 @@ namespace Flux.DataStructures.Heaps
     : IHeap<TValue>, System.ICloneable, System.Collections.Generic.IReadOnlyCollection<TValue>
     where TValue : System.IComparable<TValue>
   {
-    private readonly System.Collections.Generic.List<TValue> m_data = new();
+    private readonly System.Collections.Generic.List<TValue> m_data = [];
 
     public BinaryHeapMax() { }
     public BinaryHeapMax(System.Collections.Generic.IEnumerable<TValue> collection)
