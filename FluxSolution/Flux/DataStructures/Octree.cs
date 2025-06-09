@@ -1,126 +1,189 @@
 //using System.Linq;
 
-//namespace Flux.DataStructures
-//{
-//  public interface IOctree
-//  {
-//    Geometry.CartesianCoordinate3<int> Position { get; set; }
-//  }
+namespace Flux.DataStructures
+{
+  public interface IOctree<TNumber>
+    where TNumber : System.Numerics.ISignedNumber<TNumber>, System.Numerics.IMinMaxValue<TNumber>
+  {
+    TNumber X { get; }
+    TNumber Y { get; }
+    TNumber Z { get; }
+  }
 
-//  /// <summary></summary>
-//  public sealed class Octree<T>
-//    where T : IOctree
-//  {
-//    public Geometry.CartesianCoordinate3<int> BoundaryHigh { get; private set; }
-//    public Geometry.CartesianCoordinate3<int> BoundaryLow { get; private set; }
+  public sealed class Octree<TNumber>
+    : IOctree<TNumber>
+    where TNumber : System.Numerics.ISignedNumber<TNumber>, System.Numerics.IMinMaxValue<TNumber>
+  {
+    public static Octree<TNumber> Zero => new(TNumber.Zero, TNumber.Zero, TNumber.Zero, TNumber.MaxValue);
 
-//    private readonly System.Collections.Generic.IList<T> m_items = new System.Collections.Generic.List<T>();
-//    public System.Collections.Generic.IReadOnlyList<T> Items => (System.Collections.Generic.IReadOnlyList<T>)m_items;
+    private readonly TNumber m_x;
+    private readonly TNumber m_y;
+    private readonly TNumber m_z;
 
-//    public int MaximumItems { get; set; }
+    private readonly TNumber m_size;
 
-//    private readonly System.Collections.Generic.IList<Octree<T>> m_subNodes = new System.Collections.Generic.List<Octree<T>>();
-//    public System.Collections.Generic.IReadOnlyList<Octree<T>> SubNodes => (System.Collections.Generic.IReadOnlyList<Octree<T>>)m_subNodes;
+    private int m_maxItems = 8;
 
-//    public Octree(Geometry.CartesianCoordinate3<int> boundaryLow, Geometry.CartesianCoordinate3<int> boundaryHigh)
-//    {
-//      BoundaryLow = boundaryLow;
-//      BoundaryHigh = boundaryHigh;
+    private readonly System.Collections.Generic.IList<IOctree<TNumber>> m_items = [];
 
-//      MaximumItems = 1;
-//    }
+    private readonly System.Collections.Generic.IList<Octree<TNumber>> m_subNodes = [];
 
-//    public bool InScope(Geometry.CartesianCoordinate3<int> position)
-//      => position.X >= BoundaryLow.X && position.X <= BoundaryHigh.X && position.Y >= BoundaryLow.Y && position.Y <= BoundaryHigh.Y && position.Z >= BoundaryLow.Z && position.Z <= BoundaryHigh.Z;
+    private Octree(TNumber x, TNumber y, TNumber z, TNumber size)
+    {
+      m_x = x;
+      m_y = y;
+      m_z = z;
 
-//    public bool InsertItem(T item)
-//    {
-//      if (InScope(item.Position))
-//      {
-//        if (m_subNodes.Count == 0)
-//        {
-//          m_items.Add(item);
+      m_size = size;
+    }
 
-//          if (m_items.Count > MaximumItems)
-//          {
-//            if (m_items.Select(i => i.Position).Distinct().Count() > 1)
-//            {
-//              if (System.Math.Abs(BoundaryHigh.X - BoundaryLow.X) > 1 && System.Math.Abs(BoundaryHigh.Y - BoundaryLow.Y) > 1 && System.Math.Abs(BoundaryHigh.Z - BoundaryLow.Z) > 1) // Should be || (OR) instead of && (AND)?
-//              {
-//                SubDistributeItems();
-//              }
-//            }
-//          }
-//        }
-//        else
-//        {
-//          foreach (var node in m_subNodes)
-//          {
-//            if (node.InsertItem(item))
-//            {
-//              break;
-//            }
-//          }
-//        }
+    public TNumber X => m_x;
+    public TNumber Y => m_y;
+    public TNumber Z => m_z;
 
-//        return true;
-//      }
+    public int MaxItems { get => m_maxItems; set => m_maxItems = value; }
 
-//      return false;
-//    }
+    public System.Collections.Generic.IReadOnlyList<IOctree<TNumber>> Items => (System.Collections.Generic.IReadOnlyList<IOctree<TNumber>>)m_items;
 
-//    public TResult SearchNodes<TResult>(TResult seed, System.Func<Octree<T>, TResult, TResult> aggregator)
-//    {
-//      if (aggregator is null) throw new System.ArgumentNullException(nameof(aggregator));
+    public System.Collections.Generic.IReadOnlyList<Octree<TNumber>> SubNodes => (System.Collections.Generic.IReadOnlyList<Octree<TNumber>>)m_subNodes;
 
-//      seed = aggregator(this, seed);
+    //public bool InScope(Geometry.CartesianCoordinate3<int> position)
+    //  => position.X >= m_x && position.X <= BoundaryHigh.X && position.Y >= BoundaryLow.Y && position.Y <= BoundaryHigh.Y && position.Z >= BoundaryLow.Z && position.Z <= BoundaryHigh.Z;
 
-//      if (m_subNodes.Count > 0)
-//      {
-//        foreach (var node in m_subNodes)
-//        {
-//          seed = node.SearchNodes(seed, aggregator);
-//        }
-//      }
+    //public record class Node
+    //  : IOctree<TNumber>
+    //{
+    //  private readonly TNumber m_x;
+    //  private readonly TNumber m_y;
+    //  private readonly TNumber m_z;
 
-//      return seed;
-//    }
+    //  public Node(TNumber x, TNumber y, TNumber z)
+    //  {
+    //    m_x = x;
+    //    m_y = y;
+    //    m_z = z;
+    //  }
 
-//    public void SubDistributeItems()
-//    {
-//      if (m_subNodes.Count == 0)
-//      {
-//        var midPoint = new Geometry.CartesianCoordinate3<int>((BoundaryLow.X + BoundaryHigh.X) / 2, (BoundaryLow.Y + BoundaryHigh.Y) / 2, (BoundaryLow.Z + BoundaryHigh.Z) / 2);
+    //  public TNumber X => m_x;
+    //  public TNumber Y => m_y;
+    //  public TNumber Z => m_z;
+    //}
+  }
 
-//        m_subNodes.Add(new Octree<T>(new Geometry.CartesianCoordinate3<int>(midPoint.X, midPoint.Y, midPoint.Z), new Geometry.CartesianCoordinate3<int>(BoundaryHigh.X, BoundaryHigh.Y, BoundaryHigh.Z)));
-//        m_subNodes.Add(new Octree<T>(new Geometry.CartesianCoordinate3<int>(BoundaryLow.X, midPoint.Y, midPoint.Z), new Geometry.CartesianCoordinate3<int>(midPoint.X - 1, BoundaryHigh.Y, BoundaryHigh.Z)));
-//        m_subNodes.Add(new Octree<T>(new Geometry.CartesianCoordinate3<int>(BoundaryLow.X, BoundaryLow.Y, midPoint.Z), new Geometry.CartesianCoordinate3<int>(midPoint.X - 1, midPoint.Y - 1, BoundaryHigh.Z)));
-//        m_subNodes.Add(new Octree<T>(new Geometry.CartesianCoordinate3<int>(midPoint.X, BoundaryLow.Y, midPoint.Z), new Geometry.CartesianCoordinate3<int>(BoundaryHigh.X, midPoint.Y - 1, BoundaryHigh.Z)));
-//        m_subNodes.Add(new Octree<T>(new Geometry.CartesianCoordinate3<int>(midPoint.X, midPoint.Y, BoundaryLow.Z), new Geometry.CartesianCoordinate3<int>(BoundaryHigh.X, BoundaryHigh.Y, midPoint.Z - 1)));
-//        m_subNodes.Add(new Octree<T>(new Geometry.CartesianCoordinate3<int>(BoundaryLow.X, midPoint.Y, BoundaryLow.Z), new Geometry.CartesianCoordinate3<int>(midPoint.X - 1, BoundaryHigh.Y, midPoint.Z - 1)));
-//        m_subNodes.Add(new Octree<T>(new Geometry.CartesianCoordinate3<int>(BoundaryLow.X, BoundaryLow.Y, BoundaryLow.Z), new Geometry.CartesianCoordinate3<int>(midPoint.X - 1, midPoint.Y - 1, midPoint.Z - 1)));
-//        m_subNodes.Add(new Octree<T>(new Geometry.CartesianCoordinate3<int>(midPoint.X, BoundaryLow.Y, BoundaryLow.Z), new Geometry.CartesianCoordinate3<int>(BoundaryHigh.X, midPoint.Y - 1, midPoint.Z - 1)));
-//      }
+  //  /// <summary></summary>
+  //  public sealed class Octree<T>
+  //    where T : IOctree
+  //  {
+  //    public Geometry.CartesianCoordinate3<int> BoundaryHigh { get; private set; }
+  //    public Geometry.CartesianCoordinate3<int> BoundaryLow { get; private set; }
 
-//      if (m_items.Count > 0)
-//      {
-//        while (m_items.Count > 0)
-//        {
-//          var item = m_items.ElementAt(0);
+  //    private readonly System.Collections.Generic.IList<T> m_items = new System.Collections.Generic.List<T>();
+  //    public System.Collections.Generic.IReadOnlyList<T> Items => (System.Collections.Generic.IReadOnlyList<T>)m_items;
 
-//          foreach (var node in m_subNodes)
-//          {
-//            if (node.InsertItem(item))
-//            {
-//              m_items.RemoveAt(0);
+  //    public int MaximumItems { get; set; }
 
-//              break;
-//            }
-//          }
-//        }
+  //    private readonly System.Collections.Generic.IList<Octree<T>> m_subNodes = new System.Collections.Generic.List<Octree<T>>();
+  //    public System.Collections.Generic.IReadOnlyList<Octree<T>> SubNodes => (System.Collections.Generic.IReadOnlyList<Octree<T>>)m_subNodes;
 
-//        m_items.Clear();
-//      }
-//    }
-//  }
-//}
+  //    public Octree(Geometry.CartesianCoordinate3<int> boundaryLow, Geometry.CartesianCoordinate3<int> boundaryHigh)
+  //    {
+  //      BoundaryLow = boundaryLow;
+  //      BoundaryHigh = boundaryHigh;
+
+  //      MaximumItems = 1;
+  //    }
+
+  //    public bool InScope(Geometry.CartesianCoordinate3<int> position)
+  //      => position.X >= BoundaryLow.X && position.X <= BoundaryHigh.X && position.Y >= BoundaryLow.Y && position.Y <= BoundaryHigh.Y && position.Z >= BoundaryLow.Z && position.Z <= BoundaryHigh.Z;
+
+  //    public bool InsertItem(T item)
+  //    {
+  //      if (InScope(item.Position))
+  //      {
+  //        if (m_subNodes.Count == 0)
+  //        {
+  //          m_items.Add(item);
+
+  //          if (m_items.Count > MaximumItems)
+  //          {
+  //            if (m_items.Select(i => i.Position).Distinct().Count() > 1)
+  //            {
+  //              if (System.Math.Abs(BoundaryHigh.X - BoundaryLow.X) > 1 && System.Math.Abs(BoundaryHigh.Y - BoundaryLow.Y) > 1 && System.Math.Abs(BoundaryHigh.Z - BoundaryLow.Z) > 1) // Should be || (OR) instead of && (AND)?
+  //              {
+  //                SubDistributeItems();
+  //              }
+  //            }
+  //          }
+  //        }
+  //        else
+  //        {
+  //          foreach (var node in m_subNodes)
+  //          {
+  //            if (node.InsertItem(item))
+  //            {
+  //              break;
+  //            }
+  //          }
+  //        }
+
+  //        return true;
+  //      }
+
+  //      return false;
+  //    }
+
+  //    public TResult SearchNodes<TResult>(TResult seed, System.Func<Octree<T>, TResult, TResult> aggregator)
+  //    {
+  //      if (aggregator is null) throw new System.ArgumentNullException(nameof(aggregator));
+
+  //      seed = aggregator(this, seed);
+
+  //      if (m_subNodes.Count > 0)
+  //      {
+  //        foreach (var node in m_subNodes)
+  //        {
+  //          seed = node.SearchNodes(seed, aggregator);
+  //        }
+  //      }
+
+  //      return seed;
+  //    }
+
+  //    public void SubDistributeItems()
+  //    {
+  //      if (m_subNodes.Count == 0)
+  //      {
+  //        var midPoint = new Geometry.CartesianCoordinate3<int>((BoundaryLow.X + BoundaryHigh.X) / 2, (BoundaryLow.Y + BoundaryHigh.Y) / 2, (BoundaryLow.Z + BoundaryHigh.Z) / 2);
+
+  //        m_subNodes.Add(new Octree<T>(new Geometry.CartesianCoordinate3<int>(midPoint.X, midPoint.Y, midPoint.Z), new Geometry.CartesianCoordinate3<int>(BoundaryHigh.X, BoundaryHigh.Y, BoundaryHigh.Z)));
+  //        m_subNodes.Add(new Octree<T>(new Geometry.CartesianCoordinate3<int>(BoundaryLow.X, midPoint.Y, midPoint.Z), new Geometry.CartesianCoordinate3<int>(midPoint.X - 1, BoundaryHigh.Y, BoundaryHigh.Z)));
+  //        m_subNodes.Add(new Octree<T>(new Geometry.CartesianCoordinate3<int>(BoundaryLow.X, BoundaryLow.Y, midPoint.Z), new Geometry.CartesianCoordinate3<int>(midPoint.X - 1, midPoint.Y - 1, BoundaryHigh.Z)));
+  //        m_subNodes.Add(new Octree<T>(new Geometry.CartesianCoordinate3<int>(midPoint.X, BoundaryLow.Y, midPoint.Z), new Geometry.CartesianCoordinate3<int>(BoundaryHigh.X, midPoint.Y - 1, BoundaryHigh.Z)));
+  //        m_subNodes.Add(new Octree<T>(new Geometry.CartesianCoordinate3<int>(midPoint.X, midPoint.Y, BoundaryLow.Z), new Geometry.CartesianCoordinate3<int>(BoundaryHigh.X, BoundaryHigh.Y, midPoint.Z - 1)));
+  //        m_subNodes.Add(new Octree<T>(new Geometry.CartesianCoordinate3<int>(BoundaryLow.X, midPoint.Y, BoundaryLow.Z), new Geometry.CartesianCoordinate3<int>(midPoint.X - 1, BoundaryHigh.Y, midPoint.Z - 1)));
+  //        m_subNodes.Add(new Octree<T>(new Geometry.CartesianCoordinate3<int>(BoundaryLow.X, BoundaryLow.Y, BoundaryLow.Z), new Geometry.CartesianCoordinate3<int>(midPoint.X - 1, midPoint.Y - 1, midPoint.Z - 1)));
+  //        m_subNodes.Add(new Octree<T>(new Geometry.CartesianCoordinate3<int>(midPoint.X, BoundaryLow.Y, BoundaryLow.Z), new Geometry.CartesianCoordinate3<int>(BoundaryHigh.X, midPoint.Y - 1, midPoint.Z - 1)));
+  //      }
+
+  //      if (m_items.Count > 0)
+  //      {
+  //        while (m_items.Count > 0)
+  //        {
+  //          var item = m_items.ElementAt(0);
+
+  //          foreach (var node in m_subNodes)
+  //          {
+  //            if (node.InsertItem(item))
+  //            {
+  //              m_items.RemoveAt(0);
+
+  //              break;
+  //            }
+  //          }
+  //        }
+
+  //        m_items.Clear();
+  //      }
+  //    }
+  //  }
+}

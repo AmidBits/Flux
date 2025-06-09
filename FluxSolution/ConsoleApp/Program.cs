@@ -333,6 +333,11 @@ namespace ConsoleApp
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
 
+      var v = new Flux.CartesianCoordinate<int>(-2);
+      var (x, y) = v;
+
+      var vabs = System.Numerics.Vector.Abs(v.Vector);
+
       //var range = 5;
       //for (var value = -15; value <= 15; value++)
       //{

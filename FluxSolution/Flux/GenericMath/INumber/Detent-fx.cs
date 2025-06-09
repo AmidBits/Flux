@@ -1,5 +1,30 @@
 namespace Flux
 {
+  public readonly record struct CartesianCoordinate<TNumber>
+    where TNumber : System.Numerics.INumber<TNumber>
+  {
+    public readonly System.Numerics.Vector<TNumber> m_vector;
+
+    public CartesianCoordinate(TNumber x) => m_vector = new System.Numerics.Vector<TNumber>(x);
+    public CartesianCoordinate(TNumber x, TNumber y) => m_vector = VectorT.Create(x, y);
+    public CartesianCoordinate(TNumber x, TNumber y, TNumber z) => m_vector = VectorT.Create(x, y, z);
+    public CartesianCoordinate(TNumber x, TNumber y, TNumber z, TNumber w) => m_vector = VectorT.Create(x, y, z, w);
+
+    public readonly System.Numerics.Vector<TNumber> Vector => m_vector;
+
+    public readonly TNumber X => m_vector[0];
+    public readonly TNumber Y => m_vector[1];
+    public readonly TNumber Z => m_vector[2];
+    public readonly TNumber W => m_vector[3];
+
+    public void Deconstruct(out TNumber x) { x = m_vector[0]; }
+    public void Deconstruct(out TNumber x, out TNumber y) { x = m_vector[0]; y = m_vector[1]; }
+    public void Deconstruct(out TNumber x, out TNumber y, out TNumber z) { x = m_vector[0]; y = m_vector[1]; z = m_vector[2]; }
+    public void Deconstruct(out TNumber x, out TNumber y, out TNumber z, out TNumber w) { x = m_vector[0]; y = m_vector[1]; z = m_vector[2]; w = m_vector[3]; }
+
+    public readonly CoordinateSystems.CartesianCoordinate ToCartesianCoordinate() => new(double.CreateChecked(m_vector[0]), double.CreateChecked(m_vector[1]), double.CreateChecked(m_vector[2]));
+  }
+
   public static partial class GenericMath
   {
     /// <summary>

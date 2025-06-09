@@ -5,9 +5,12 @@ namespace Flux.DataStructures
     System.Drawing.Point Position { get; set; }
   }
 
-  /// <summary></summary>
-  /// <seealso cref="https://www.geeksforgeeks.org/quad-tree/"/> 
-  /// <seealso cref="https://jimkang.com/quadtreevis/"/>
+  /// <summary>
+  /// <para></para>
+  /// <para><see href="https://en.wikipedia.org/wiki/Quadtree"/></para>
+  /// <para><seealso href="https://www.geeksforgeeks.org/quad-tree/"/></para> 
+  /// <para><seealso href="https://jimkang.com/quadtreevis/"/></para>
+  /// </summary>
   public sealed class Quadtree<T>
     where T : IQuadtree
   {
