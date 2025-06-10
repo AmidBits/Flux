@@ -24,9 +24,7 @@ namespace Flux
     {
       System.ArgumentNullException.ThrowIfNull(source);
 
-      if (rank < 1) throw new System.ArgumentOutOfRangeException(nameof(rank));
-
-      return source.Rank == rank;
+      return rank < 1 ? throw new System.ArgumentOutOfRangeException(nameof(rank)) : source.Rank == rank;
     }
   }
 }

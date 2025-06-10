@@ -91,29 +91,29 @@ namespace Flux
       where T : System.Numerics.INumber<T>
       => System.Numerics.Vector.Sum(System.Numerics.Vector.Multiply(source, source));
 
-    public static int GetQuadrant<TNumber>(this System.Numerics.Vector<TNumber> source, System.Numerics.Vector<TNumber> center)
-      where TNumber : System.Numerics.INumber<TNumber>
-    {
-      var s0 = source[0];
-      var c0 = center[0];
-      var s1 = source[1];
-      var c1 = center[1];
-
-      return s1 >= c1 ? (s0 >= c0 ? 0 : 1) : (s0 >= c0 ? 3 : 2);
-    }
-
     public static int GetOctant<TNumber>(this System.Numerics.Vector<TNumber> source, System.Numerics.Vector<TNumber> center)
       where TNumber : System.Numerics.INumber<TNumber>
-    {
-      var s0 = source[0];
-      var c0 = center[0];
-      var s1 = source[1];
-      var c1 = center[1];
-      var s2 = source[2];
-      var c2 = center[2];
+      => source[2] < center[2] ? (source[1] < center[1] ? (source[0] < center[0] ? 5 : 4) : (source[0] < center[0] ? 6 : 7)) : (source[1] < center[1] ? (source[0] < center[0] ? 2 : 3) : (source[0] < center[0] ? 1 : 0));
 
-      return s2 >= c2 ? (s1 >= c1 ? (s0 >= c0 ? 0 : 1) : (s0 >= c0 ? 3 : 2)) : (s1 >= c1 ? (s0 >= c0 ? 7 : 6) : (s0 >= c0 ? 4 : 5));
-    }
+    public static int GetOctantNegativeAs1<T>(this System.Numerics.Vector<T> source, System.Numerics.Vector<T> center)
+      where T : System.Numerics.INumber<T>
+      => source.GetQuadrantNegativeAs1(center) + (source[2] < center[2] ? 4 : 0);
+
+    public static int GetOctantPositiveAs1<T>(this System.Numerics.Vector<T> source, System.Numerics.Vector<T> center)
+      where T : System.Numerics.INumber<T>
+      => source.GetQuadrantPositiveAs1(center) + (source[2] >= center[2] ? 4 : 0);
+
+    public static int GetQuadrant<TNumber>(this System.Numerics.Vector<TNumber> source, System.Numerics.Vector<TNumber> center)
+      where TNumber : System.Numerics.INumber<TNumber>
+      => source[1] < center[1] ? (source[0] < center[0] ? 2 : 3) : (source[0] < center[0] ? 1 : 0);
+
+    public static int GetQuadrantNegativeAs1<T>(this System.Numerics.Vector<T> source, System.Numerics.Vector<T> center)
+      where T : System.Numerics.INumber<T>
+      => (source[0] < center[0] ? 1 : 0) + (source[1] < center[1] ? 2 : 0);
+
+    public static int GetQuadrantPositiveAs1<T>(this System.Numerics.Vector<T> source, System.Numerics.Vector<T> center)
+      where T : System.Numerics.INumber<T>
+      => (source[0] >= center[0] ? 1 : 0) + (source[1] >= center[1] ? 2 : 0);
 
     /// <summary>
     /// <para>Compute the Manhattan length (or magnitude) of a <see cref="System.Numerics.Vector{T}"/>. A.k.a. the Manhattan distance (i.e. from 0,0,0).</para>

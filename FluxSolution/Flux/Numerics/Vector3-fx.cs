@@ -42,6 +42,23 @@ namespace Flux
     public static float DotProductEx(this System.Numerics.Vector3 a, System.Numerics.Vector3 b)
       => (float)(System.Numerics.Vector3.Dot(a, b) / double.Sqrt(a.LengthSquared() * b.LengthSquared()));
 
+    public static int GetOctant(this System.Numerics.Vector3 source, System.Numerics.Vector3 center)
+      => source.X < center.X is var xneg && source.Y < center.Y is var yneg && source.Z < center.Z ? (yneg ? (xneg ? 5 : 4) : (xneg ? 6 : 7)) : (yneg ? (xneg ? 2 : 3) : (xneg ? 1 : 0));
+
+    public static int GetOctantPositiveAs1(this System.Numerics.Vector3 source, System.Numerics.Vector3 center)
+      => (source.X > center.X ? 1 : 0) + (source.Y > center.Y ? 2 : 0) + (source.Z > center.Z ? 4 : 0);
+
+    /// <summary>Returns the orthant (octant) of the 3D vector using the specified <paramref name="center"/> and orthant <paramref name="numbering"/>.</summary>
+    /// <see href="https://en.wikipedia.org/wiki/Orthant"/>
+    public static int GetOrthantNumber(this System.Numerics.Vector3 source, System.Numerics.Vector3 center, Geometry.OrthantNumbering numbering)
+      => numbering switch
+      {
+        Geometry.OrthantNumbering.Traditional => source.GetOctant(center),
+        Geometry.OrthantNumbering.BinaryNegativeAs1 => (source.X < center.X ? 1 : 0) + (source.Y < center.Y ? 2 : 0) + (source.Z < center.Z ? 4 : 0),
+        Geometry.OrthantNumbering.BinaryPositiveAs1 => source.GetOctantPositiveAs1(center),
+        _ => throw new System.ArgumentOutOfRangeException(nameof(numbering))
+      };
+
     /// <summary>Compute the Manhattan length (or magnitude) of the vector. Known as the Manhattan distance (i.e. from 0,0,0).</summary>
     /// <see href="https://en.wikipedia.org/wiki/Taxicab_geometry"/>
     public static float ManhattanLength(this System.Numerics.Vector3 source, float edgeLength = 1)
@@ -50,17 +67,6 @@ namespace Flux
     /// <summary>Lerp is a normalized linear interpolation between point a (unit interval = 0.0) and point b (unit interval = 1.0).</summary>
     public static System.Numerics.Vector3 Nlerp(this System.Numerics.Vector3 source, System.Numerics.Vector3 target, float mu)
       => System.Numerics.Vector3.Normalize(System.Numerics.Vector3.Lerp(source, target, mu));
-
-    /// <summary>Returns the orthant (quadrant) of the 2D vector using the specified center and orthant numbering.</summary>
-    /// <see href="https://en.wikipedia.org/wiki/Orthant"/>
-    public static int OrthantNumber(this System.Numerics.Vector3 source, System.Numerics.Vector3 center, Geometry.OrthantNumbering numbering)
-      => numbering switch
-      {
-        Geometry.OrthantNumbering.Traditional => source.Z >= center.Z ? (source.Y >= center.Y ? (source.X >= center.X ? 0 : 1) : (source.X >= center.X ? 3 : 2)) : (source.Y >= center.Y ? (source.X >= center.X ? 7 : 6) : (source.X >= center.X ? 4 : 5)),
-        Geometry.OrthantNumbering.BinaryNegativeAs1 => (source.X >= center.X ? 0 : 1) + (source.Y >= center.Y ? 0 : 2) + (source.Z >= center.Z ? 0 : 4),
-        Geometry.OrthantNumbering.BinaryPositiveAs1 => (source.X < center.X ? 0 : 1) + (source.Y < center.Y ? 0 : 2) + (source.Z < center.Z ? 0 : 4),
-        _ => throw new System.ArgumentOutOfRangeException(nameof(numbering))
-      };
 
     /// <summary>Always works if the input is non-zero. Does not require the input to be normalised, and does not normalise the output.</summary>
     /// <see cref="http://lolengine.net/blog/2013/09/21/picking-orthogonal-vector-combing-coconuts"/>

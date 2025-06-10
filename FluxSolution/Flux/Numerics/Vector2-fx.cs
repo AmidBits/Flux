@@ -64,6 +64,12 @@ namespace Flux
     public static System.Numerics.Vector2[] GenerateEllipseVectors(this System.Numerics.Vector2 source, int count, double radOffset = 0, double maxRandomness = 0, System.Random? rng = null)
       => Geometry.Ellipses.EllipseFigure.CreatePointsOnEllipse(count, source.X, source.Y, radOffset, 0, 0, maxRandomness, rng).Select(v128 => v128.ToVector2()).ToArray();
 
+    public static int GetQuadrant(this System.Numerics.Vector2 source, System.Numerics.Vector2 center)
+      => source.X < center.X is var xneg && source.Y < center.Y ? (xneg ? 2 : 3) : (xneg ? 1 : 0);
+
+    public static int GetQuadrantPositiveAs1(this System.Numerics.Vector2 source, System.Numerics.Vector2 center)
+      => (source.X > center.X ? 1 : 0) + (source.Y > center.Y ? 2 : 0);
+
     /// <summary>
     /// <para>Returns whether a point is inside the circle.</para>
     /// </summary>
@@ -123,9 +129,9 @@ namespace Flux
     public static int OrthantNumber(this System.Numerics.Vector2 source, System.Numerics.Vector2 center, Geometry.OrthantNumbering numbering)
       => numbering switch
       {
-        Geometry.OrthantNumbering.Traditional => source.Y >= center.Y ? (source.X >= center.X ? 0 : 1) : (source.X >= center.X ? 3 : 2),
-        Geometry.OrthantNumbering.BinaryNegativeAs1 => (source.X >= center.X ? 0 : 1) + (source.Y >= center.Y ? 0 : 2),
-        Geometry.OrthantNumbering.BinaryPositiveAs1 => (source.X < center.X ? 0 : 1) + (source.Y < center.Y ? 0 : 2),
+        Geometry.OrthantNumbering.Traditional => source.GetQuadrant(center),
+        Geometry.OrthantNumbering.BinaryNegativeAs1 => (source.X < center.X ? 1 : 0) + (source.Y < center.Y ? 2 : 0),
+        Geometry.OrthantNumbering.BinaryPositiveAs1 => (source.X > center.X ? 1 : 0) + (source.Y > center.Y ? 2 : 0),
         _ => throw new System.ArgumentOutOfRangeException(nameof(numbering))
       };
 
