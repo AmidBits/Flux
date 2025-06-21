@@ -1,4 +1,4 @@
-﻿namespace Flux.Numerics.KnuthsAlgorithmX
+﻿namespace Flux.Numerics.KnuthsAlgorithmX // Algorithm X is an algorithm for solving the exact cover problem.
 {
   /// <summary>
   /// <para></para>

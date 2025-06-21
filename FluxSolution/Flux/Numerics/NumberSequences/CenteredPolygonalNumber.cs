@@ -10,22 +10,22 @@ namespace Flux.Numerics
     /// <typeparam name="TSelf"></typeparam>
     /// <param name="numberOfSides"></param>
     /// <returns></returns>
-    public static System.Collections.Generic.IEnumerable<(TSelf minCenteredNumber, TSelf maxCenteredNumber, TSelf count)> GetLayers<TSelf>(TSelf numberOfSides)
+    public static System.Collections.Generic.IEnumerable<(TSelf minCenteredNumber, TSelf maxCenteredNumber, TSelf count)> GetCenteredPolygonalLayers<TSelf>(TSelf numberOfSides)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
       yield return (TSelf.One, TSelf.One, TSelf.One);
 
-      foreach (var v in GetSequence(numberOfSides).PartitionTuple2(false, (min, max, index) => (min, max)))
+      foreach (var v in GetCenteredPolygonalNumberSequence(numberOfSides).PartitionTuple2(false, (min, max, index) => (min, max)))
         yield return (v.min + TSelf.One, v.max, v.max - v.min);
     }
 
     /// <summary></summary>
     /// <see href="https://en.wikipedia.org/wiki/Centered_polygonal_number"/>
-    public static TSelf GetNumber<TSelf>(TSelf index, TSelf numberOfSides)
+    public static TSelf GetCenteredPolygonalNumber<TSelf>(TSelf index, TSelf numberOfSides)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
-      if (index < TSelf.Zero) throw new System.ArgumentOutOfRangeException(nameof(index));
-      if (numberOfSides < TSelf.CreateChecked(3)) throw new System.ArgumentOutOfRangeException(nameof(numberOfSides));
+      System.ArgumentOutOfRangeException.ThrowIfNegative(index);
+      System.ArgumentOutOfRangeException.ThrowIfLessThan(numberOfSides, TSelf.CreateChecked(3));
 
       var two = TSelf.CreateChecked(2);
 
@@ -35,11 +35,11 @@ namespace Flux.Numerics
     /// <summary></summary>
     /// <see href="https://en.wikipedia.org/wiki/Centered_polygonal_number"/>
     /// <remarks>This function runs indefinitely, if allowed.</remarks>
-    public static System.Collections.Generic.IEnumerable<TSelf> GetSequence<TSelf>(TSelf numberOfSides)
+    public static System.Collections.Generic.IEnumerable<TSelf> GetCenteredPolygonalNumberSequence<TSelf>(TSelf numberOfSides)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
     {
       for (var index = TSelf.Zero; ; index++)
-        yield return GetNumber(index, numberOfSides);
+        yield return GetCenteredPolygonalNumber(index, numberOfSides);
     }
   }
 }

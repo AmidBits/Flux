@@ -1,4 +1,4 @@
-var m = new Flux.KnuthsAlgorithmX.Matrix(7);
+var m = new Flux.Numerics.KnuthsAlgorithmX.Matrix(7);
 
 m.AddRows(new[]
 {

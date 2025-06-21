@@ -332,6 +332,15 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
+      var isList = Flux.Units.Angle.TryParseDmsNotations("32° 13′ 18″ N, 110° 55′ 35″ W", out var list);
+
+
+      var a = new int[] { 1, 2, 3 };
+      var b = new int[20];
+
+      b.FillWith(0, 2, a);
+
+
 
       var v = new Flux.CartesianCoordinate<int>(-2);
       var (x, y) = v;
@@ -384,13 +393,13 @@ namespace ConsoleApp
       MakeParentTable(dataSet);
       MakeChildTable(dataSet);
 
-      using var sw = System.IO.File.CreateText(System.IO.Path.Combine(Flux.Locale.TempPath.FullName, "test.urgf"));
+      using var sw = System.IO.File.CreateText(System.IO.Path.Combine(System.IO.Path.GetTempPath(), "test.urgf"));
 
       dataSet.WriteUrgf(sw);
 
       sw.Close();
 
-      using var sr = System.IO.File.OpenText(System.IO.Path.Combine(Flux.Locale.TempPath.FullName, "test.urgf"));
+      using var sr = System.IO.File.OpenText(System.IO.Path.Combine(System.IO.Path.GetTempPath(), "test.urgf"));
 
       var urgfr = new Flux.UrgfReader(sr);
 

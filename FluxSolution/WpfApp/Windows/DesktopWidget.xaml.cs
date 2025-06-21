@@ -177,12 +177,12 @@ namespace WpfApp
       var properties = new System.Collections.Generic.List<System.Collections.Generic.KeyValuePair<string, object>>();
 
       //properties.Add(new KeyValuePair<string, object>(@"Computer Domain Name", Locale.ComputerDomainName));
-      properties.Add(new System.Collections.Generic.KeyValuePair<string, object>(@"Computer Name", Flux.Locale.MachineName));
+      properties.Add(new System.Collections.Generic.KeyValuePair<string, object>(@"Computer Name", System.Environment.MachineName));
 
       //properties.Add(new KeyValuePair<string, object>(@"User Domain Name", Locale.UserDomainName));
-      properties.Add(new System.Collections.Generic.KeyValuePair<string, object>(@"User Name", Flux.Locale.UserName));
+      properties.Add(new System.Collections.Generic.KeyValuePair<string, object>(@"User Name", System.Environment.UserName));
 
-      properties.Add(new System.Collections.Generic.KeyValuePair<string, object>(@"Operating System", Flux.Locale.EnvironmentOsPlatform));
+      properties.Add(new System.Collections.Generic.KeyValuePair<string, object>(@"Operating System", System.Environment.OSVersion.Platform));
 
       var nicsUpWithGateways = System.Net.NetworkInformation.NetworkInterface.GetAllNetworkInterfaces().Where(nic => nic.OperationalStatus == System.Net.NetworkInformation.OperationalStatus.Up && nic.GetIPProperties().GatewayAddresses.Any()).ToArray();
 

@@ -57,23 +57,25 @@ else {
 "Flux.Locale.GetProperties(): (This dictionary is compiled from various sources within the system. They can also be accessed as properties of the Flux.Locale, using the same names as the keys in the dictionary.)"
 [Flux.Locale]::GetProperties() | Format-Table
 
+return;
+
 # "Prime numbers: $([Flux.NumberSequences.PrimeNumber]::GetAscendingPrimes[int](2) | Select-Object -First 25 | Join-String -Separator ',')$([System.Environment]::NewLine)"
 
 "LevenshteinDistanceMatrix(`"sitting`", `"kitten`")$([System.Environment]::NewLine)"
-$m = [Flux.Fx]::LevenshteinDistanceMatrix[char]("sitting", "kitten")
-$s = [Flux.Fx]::Rank2ToConsoleString[int]($m)
+$m = [Flux.ReadOnlySpans]::LevenshteinDistanceMatrix[char]("sitting", "kitten")
+$s = [Flux.Arrays]::Rank2ToConsoleString[int]($m)
 "$($s)$([System.Environment]::NewLine)"
 
 "LevenshteinDistanceMatrix(`"Sunday`", `"Saturday`")$([System.Environment]::NewLine)"
-$m = [Flux.Fx]::LevenshteinDistanceMatrix[char]("Sunday", "Saturday")
-$s = [Flux.Fx]::Rank2ToConsoleString[int]($m)
+$m = [Flux.ReadOnlySpans]::LevenshteinDistanceMatrix[char]("Sunday", "Saturday")
+$s = [Flux.Arrays]::Rank2ToConsoleString[int]($m)
 "$($s)$([System.Environment]::NewLine)"
 
 "Excerpt from ProjectGutenberg's TenThousandWonderfulThings, searching for `"SCANDINAVIA`" in the title.$([System.Environment]::NewLine)"
 
 [Flux.Resources]::GetGutenbergTenThousandWonderfulThings()
 #| Select-Object -Skip 100 -First 100
-| Where-Object {$_.Title -match 'SCANDINAVIA'} | Format-Table
+| Where-Object {$_[0] -match 'SCANDINAVIA'} | Format-Table
 
 # $book = Flux.Resources.ProjectGutenberg.TenThousandWonderfulThings
 # $book.AcquireDataTable($null) 
@@ -81,8 +83,8 @@ $s = [Flux.Fx]::Rank2ToConsoleString[int]($m)
 # | Where-Object {$_.Title -match 'SCANDINAVIA'} | Format-Table
 
 "$([System.Environment]::NewLine)Looking through interfaces using reflection."
-[Flux.Locale]::Assembly.GetTypes()
+@([Flux.Locale]::Assembly.GetTypes()
 | Where-Object { $_.ImplementedInterfaces | Where-Object { $_.Name.StartsWith('IValueQuantifiable') } | Test-Any }
-| Sort-Object Name
-#| Select-Object *
+| Select-Object Name)
+#| Sort-Object Name
 #| Format-Table

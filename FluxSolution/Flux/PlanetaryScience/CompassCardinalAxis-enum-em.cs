@@ -16,7 +16,7 @@ namespace Flux
       {
         PlanetaryScience.CompassCardinalAxis.EastWest => isNegative ? PlanetaryScience.CompassCardinalDirection.W : PlanetaryScience.CompassCardinalDirection.E,
         PlanetaryScience.CompassCardinalAxis.NorthSouth => isNegative ? PlanetaryScience.CompassCardinalDirection.S : PlanetaryScience.CompassCardinalDirection.N,
-        _ => throw new NotImplementedException()
+        _ => throw new System.NotImplementedException()
       };
   }
 }

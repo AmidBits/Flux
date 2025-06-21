@@ -103,8 +103,8 @@ namespace Flux.PlanetaryScience
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? formatProvider)
       => format is not null
-      ? Units.Angle.TryConvertFormatToDmsNotation(format, out var dmsFormat)
-        ? ToDmsNotationString(dmsFormat)
+      ? Units.Angle.TryConvertFormatToDmsNotation(format, out var dmsNotation)
+        ? ToDmsNotationString(dmsNotation)
         : m_angle.ToUnitString(Units.AngleUnit.Degree, format, formatProvider)
       : ToDmsNotationString();
 

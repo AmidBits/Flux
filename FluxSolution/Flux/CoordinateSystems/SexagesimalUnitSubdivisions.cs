@@ -1,7 +1,21 @@
-﻿//namespace Flux
+﻿//using Flux.PlanetaryScience;
+
+//namespace Flux
 //{
 //  public static partial class SexagesimalUnitSubdivisions
 //  {
+//    public static int ConvertLatitudeOrLongitudeToUnitSign(char latitudeOrLongitude)
+//      => latitudeOrLongitude is 'N' or 'E'
+//      ? 1
+//      : latitudeOrLongitude is 'S' or 'W'
+//      ? -1
+//      : throw new System.ArgumentOutOfRangeException(nameof(latitudeOrLongitude));
+
+//    public static (CompassCardinalDirection Latitude, CompassCardinalDirection Longitude) ConvertUnitSignToCardinalDirection(int unitSign)
+//      => unitSign >= 0
+//      ? (CompassCardinalDirection.N, CompassCardinalDirection.E)
+//      : (CompassCardinalDirection.S, CompassCardinalDirection.W);
+
 //    /// <summary>
 //    /// <para>Convert the traditional sexagsimal unit subdivisions, a.k.a. DMS notation, to decimal degrees.</para>
 //    /// <para>One degree is divided into 60 minutes (of arc), a.k.a. arcminutes, and one minute into 60 seconds (of arc), a.k.a. arcseconds, represented by degree sign, single prime and double prime.</para>
@@ -123,7 +137,7 @@
 //    /// <para><seealso href="https://en.wikipedia.org/wiki/Geographic_coordinate_conversion#Change_of_units_and_format"/></para>
 //    /// </summary>
 //    /// <exception cref="System.ArgumentOutOfRangeException"></exception>
-//    public static string ToStringDms(double decimalDegrees, Units.AngleDmsNotation dmsNotation, Geometry.Geodesy.CompassCardinalAxis axis, int decimalPoints = -1, Unicode.UnicodeSpacing componentSpacing = Unicode.UnicodeSpacing.None)
+//    public static string ToStringDms(double decimalDegrees, Units.AngleDmsNotation dmsNotation, PlanetaryScience.CompassCardinalAxis axis, int decimalPoints = -1, Unicode.UnicodeSpacing componentSpacing = Unicode.UnicodeSpacing.None)
 //    {
 //      var (degrees, decimalMinutes, minutes, decimalSeconds) = ConvertDecimalDegreesToSexagesimalUnitSubdivisions(decimalDegrees);
 
@@ -177,13 +191,13 @@
 //      {
 //        if (ParseLatitudeRegex().Match(degreesMinutesSeconds) is var m && m.Success)
 //        {
-//          if (m.Groups["Degrees"] is var g1 && g1.Success && double.TryParse(g1.Value.AsSpan().TrimCommonSuffix(0, c => !char.IsDigit(c)), out var degrees))
+//          if (m.Groups["Degrees"] is var g1 && g1.Success && double.TryParse(g1.Value.AsSpan().TrimCommonSuffix(c => !char.IsDigit(c)), out var degrees))
 //            decimalDegrees += degrees;
 
-//          if (m.Groups["Minutes"] is var g2 && g2.Success && double.TryParse(g2.Value.AsSpan().TrimCommonSuffix(0, c => !char.IsDigit(c)), out var minutes))
+//          if (m.Groups["Minutes"] is var g2 && g2.Success && double.TryParse(g2.Value.AsSpan().TrimCommonSuffix(c => !char.IsDigit(c)), out var minutes))
 //            decimalDegrees += minutes / 60;
 
-//          if (m.Groups["Seconds"] is var g3 && g3.Success && double.TryParse(g3.Value.AsSpan().TrimCommonSuffix(0, c => !char.IsDigit(c)), out var seconds))
+//          if (m.Groups["Seconds"] is var g3 && g3.Success && double.TryParse(g3.Value.AsSpan().TrimCommonSuffix(c => !char.IsDigit(c)), out var seconds))
 //            decimalDegrees += seconds / 3600;
 
 //          if (m.Groups["Direction"] is var g4 && g4.Success && g4.Value[0] == 'S')
@@ -208,13 +222,13 @@
 //      {
 //        if (ParseLongitudeRegex().Match(degreesMinutesSeconds) is var m && m.Success)
 //        {
-//          if (m.Groups["Degrees"] is var g1 && g1.Success && double.TryParse(g1.Value.AsSpan().TrimCommonSuffix(0, c => !char.IsDigit(c)), out var degrees))
+//          if (m.Groups["Degrees"] is var g1 && g1.Success && double.TryParse(g1.Value.AsSpan().TrimCommonSuffix(c => !char.IsDigit(c)), out var degrees))
 //            decimalDegrees += degrees;
 
-//          if (m.Groups["Minutes"] is var g2 && g2.Success && double.TryParse(g2.Value.AsSpan().TrimCommonSuffix(0, c => !char.IsDigit(c)), out var minutes))
+//          if (m.Groups["Minutes"] is var g2 && g2.Success && double.TryParse(g2.Value.AsSpan().TrimCommonSuffix(c => !char.IsDigit(c)), out var minutes))
 //            decimalDegrees += minutes / 60;
 
-//          if (m.Groups["Seconds"] is var g3 && g3.Success && double.TryParse(g3.Value.AsSpan().TrimCommonSuffix(0, c => !char.IsDigit(c)), out var seconds))
+//          if (m.Groups["Seconds"] is var g3 && g3.Success && double.TryParse(g3.Value.AsSpan().TrimCommonSuffix(c => !char.IsDigit(c)), out var seconds))
 //            decimalDegrees += seconds / 3600;
 
 //          if (m.Groups["Direction"] is var g4 && g4.Success && g4.Value[0] == 'W')

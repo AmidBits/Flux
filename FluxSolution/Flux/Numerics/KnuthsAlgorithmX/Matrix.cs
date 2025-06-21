@@ -1,7 +1,7 @@
-﻿namespace Flux.Numerics.KnuthsAlgorithmX
+﻿namespace Flux.Numerics.KnuthsAlgorithmX // Algorithm X is an algorithm for solving the exact cover problem.
 {
   /*
-      var m = new Flux.KnuthsAlgorithmX.Matrix(7);
+      var m = new Flux.Numerics.KnuthsAlgorithmX.Matrix(7);
 
       m.AddRows(new[]
       {
@@ -22,7 +22,7 @@
    */
 
   /// <summary>
-  /// <para>An algorithm for solving the exact cover problem. It is a straightforward recursive, nondeterministic, depth-first, backtracking algorithm used by Donald Knuth to demonstrate an efficient implementation called DLX, which uses the dancing links technique.</para>
+  /// <para>Algorithm X is an algorithm for solving the exact cover problem. It is a straightforward recursive, nondeterministic, depth-first, backtracking algorithm used by Donald Knuth to demonstrate an efficient implementation called DLX, which uses the dancing links technique.</para>
   /// <para>The exact cover problem is represented in Algorithm X by an incidence matrix A consisting of 0s and 1s. The goal is to select a subset of the rows such that the digit 1 appears in each column exactly once.</para>
   /// <para><see cref="https://en.wikipedia.org/wiki/Knuth%27s_Algorithm_X"/></para>
   /// <para><see href="https://github.com/dimchansky/AlgorithmX/tree/master"/></para>
@@ -55,7 +55,7 @@
 
         foreach (var columnIndex in orderedColumnsRow)
         {
-          if (columnIndex <= lastElement) throw new ArgumentException("Column indexes aren't growing strictly.");
+          if (columnIndex <= lastElement) throw new System.ArgumentException("Column indexes aren't growing strictly.");
 
           lastElement = columnIndex;
 

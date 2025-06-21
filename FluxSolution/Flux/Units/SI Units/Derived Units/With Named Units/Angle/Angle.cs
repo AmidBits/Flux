@@ -78,7 +78,7 @@
     /// <param name="seconds"></param>
     /// <returns></returns>
     public static double ConvertSexagesimalUnitSubdivisionsToDecimalDegrees(double degrees, double minutes, double seconds)
-      => degrees + minutes / 60 + seconds / 3600;
+      => degrees + minutes / 60d + seconds / 3600d;
 
     ///// <summary>Convert the angle specified in arcminutes to radians.</summary>
     //public static double ConvertArcminuteToRadian(double arcminAngle) => arcminAngle / 3437.7467707849396;
@@ -473,7 +473,7 @@
 
     #endregion Trigonometry static methods
 
-    [System.Text.RegularExpressions.GeneratedRegex(@"(?<Degrees>\d*\.?\d+\s*[\u00B0\u02DA\u030A])\s*(?<Minutes>\d*\.?\d+\s*[\u2032\u0027\u02B9\u00B4])?\s*(?<Seconds>\d*\.?\d+\s*[\u2033\u0022\u02BA\u301E\u201D\u3003])?\s*(?<Direction>[ENWS])?")]
+    [System.Text.RegularExpressions.GeneratedRegex(@"(?<Degrees>\d*\.?\d+\s*[\u00B0\u02DA\u030A]?)\s*(?<Minutes>\d*\.?\d+\s*[\u2032\u0027\u02B9\u00B4])?\s*(?<Seconds>\d*\.?\d+\s*[\u2033\u0022\u02BA\u301E\u201D\u3003])?\s*(?<Direction>[ENWS])?")]
     private static partial System.Text.RegularExpressions.Regex ParseDmsNotationRegex();
 
     /// <summary>
@@ -508,7 +508,7 @@
           if (m.Groups["Seconds"] is var g3 && g3.Success && double.TryParse(g3.Value.AsSpan().TrimCommonSuffix(c => !char.IsDigit(c)), out var seconds))
             decimalDegrees += seconds / 3600;
 
-          if (m.Groups["Direction"] is var g4 && g4.Success && (g4.Value[0] == 'S' || g4.Value[0] == 'W'))
+          if (m.Groups["Direction"] is var g4 && g4.Success && g4.Length == 1 && g4.Value[0] is 'S' or 'W')
             decimalDegrees = -decimalDegrees;
 
           if (g4.Success && (g4.Value[0] is 'N' or 'S'))

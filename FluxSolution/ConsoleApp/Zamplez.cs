@@ -118,11 +118,6 @@ namespace ConsoleApp
 
     #region RunAmbOperator
 
-    private readonly static System.Numerics.BigInteger[] m_ap = Flux.Numerics.NumberSequence.GetAscendingPrimes(System.Numerics.BigInteger.CreateChecked(2)).Take(100).ToArray(); // Primes.
-    private readonly static int[] m_rn = System.Linq.Enumerable.Range(0, 100).ToArray(); // Rational.
-    private readonly static int[] m_en = System.Linq.Enumerable.Range(1, 200).Where(i => (i & 1) == 0).ToArray(); // Even.
-    private readonly static int[] m_on = System.Linq.Enumerable.Range(1, 200).Where(i => (i & 1) != 0).ToArray(); // Odd.
-
     /// <summary>Run the amb operator zample.</summary>
     public static void RunAmbOperator()
     {
@@ -147,6 +142,11 @@ namespace ConsoleApp
       {
         var rng = new System.Random();
 
+        var m_ap = Flux.Numerics.NumberSequence.GetAscendingPrimes(2).Take(100).ToArray(); // Primes.
+        var m_rn = System.Linq.Enumerable.Range(0, 100).ToArray(); // Rational.
+        var m_en = System.Linq.Enumerable.Range(1, 200).Where(i => (i & 1) == 0).ToArray(); // Even.
+        var m_on = System.Linq.Enumerable.Range(1, 200).Where(i => (i & 1) != 0).ToArray(); // Odd.
+
         var amb = new Flux.AmbOperator.Amb();
 
         #region Flow & Measurements
@@ -163,13 +163,13 @@ namespace ConsoleApp
         var y = amb.Choose(m_rn);
         var z = amb.Choose(m_en);
         var w = amb.Choose(m_on);
-        var answer = 29;
+        var answer = 291;
 
-        amb.RequireFinal(() => x.Value + y.Value + z.Value + w.Value == answer);
+        var isRequireFinal = amb.RequireFinal(() => x.Value + y.Value * z.Value - w.Value == answer);
+        System.Console.WriteLine($"{nameof(amb.RequireFinal)} == {isRequireFinal} : {x} + ({y} * {z}) - {w} == {answer}");
 
-        //System.Console.WriteLine($"{nameof(amb.Disambiguate)}: {amb.Disambiguate()}");
-
-        System.Console.WriteLine($"{x} + {y} + {z} + {w} == {answer}");
+        var isDisambiguate = amb.Disambiguate();
+        System.Console.WriteLine($"{nameof(amb.Disambiguate)} == {isDisambiguate}");
       }
     }
 
@@ -579,27 +579,47 @@ namespace ConsoleApp
       System.Console.WriteLine(nameof(RunLocale));
       System.Console.WriteLine();
 
-      System.Console.WriteLine($"{nameof(Flux.Locale.AppDomainName)} = \"{Flux.Locale.AppDomainName}\"");
-      System.Console.WriteLine($"{nameof(Flux.Locale.AppDomainPath)} = \"{Flux.Locale.AppDomainPath}\"");
-      System.Console.WriteLine($"{nameof(Flux.Locale.ClrVersion)} = \"{Flux.Locale.ClrVersion}\"");
-      System.Console.WriteLine($"{nameof(Flux.Locale.DnsHostAddresses)} = \"{Flux.Locale.DnsHostAddresses}\"");
-      System.Console.WriteLine($"{nameof(Flux.Locale.DnsHostName)} = \"{Flux.Locale.DnsHostName}\"");
-      System.Console.WriteLine($"{nameof(Flux.Locale.EnvironmentOsPlatform)} = \"{Flux.Locale.EnvironmentOsPlatform}\"");
-      System.Console.WriteLine($"{nameof(Flux.Locale.EnvironmentOsVersion)} = \"{Flux.Locale.EnvironmentOsVersion}\"");
+      System.Console.WriteLine($"AppDomainDirectory = \"{new System.IO.DirectoryInfo(System.AppDomain.CurrentDomain.BaseDirectory)}\"");
+      System.Console.WriteLine($"AppDomainName = \"{System.AppDomain.CurrentDomain.FriendlyName}\"");
+
+      System.Console.WriteLine($"ClrVersion = \"{System.Environment.Version}\"");
+
+      System.Console.WriteLine($"CurrentDirectory = \"{new System.IO.DirectoryInfo(System.Environment.CurrentDirectory)}\"");
+
+      System.Console.WriteLine($"DnsHostAddresses = \"{string.Join(", ", System.Net.Dns.GetHostEntry(System.Net.Dns.GetHostName()).AddressList.Select(a => a.ToString()))}\"");
+      System.Console.WriteLine($"DnsHostName = \"{System.Net.Dns.GetHostEntry(System.Net.Dns.GetHostName()).HostName}\"");
+
+      System.Console.WriteLine($"EnvironmentOsPlatform = \"{System.Environment.OSVersion.Platform}\"");
+      System.Console.WriteLine($"EnvironmentOsVersion = \"{System.Environment.OSVersion.Version}\"");
+
+      System.Console.WriteLine($"MachineName = \"{System.Environment.MachineName}\"");
+
+      System.Console.WriteLine($"NicDomainName = \"{System.Net.NetworkInformation.IPGlobalProperties.GetIPGlobalProperties().DomainName}\"");
+      System.Console.WriteLine($"NicHostName = \"{System.Net.NetworkInformation.IPGlobalProperties.GetIPGlobalProperties().HostName}\"");
+
+      System.Console.WriteLine($"OneDriveDirectory = \"{new System.IO.DirectoryInfo(System.Environment.GetEnvironmentVariable("OneDrive")!)}\"");
+      System.Console.WriteLine($"OneDriveDirectoryCommercial = \"{new System.IO.DirectoryInfo(System.Environment.GetEnvironmentVariable("OneDriveCommercial")!)}\"");
+      System.Console.WriteLine($"OneDriveDirectoryConsumer = \"{new System.IO.DirectoryInfo(System.Environment.GetEnvironmentVariable("OneDriveConsumer")!)}\"");
+
+      System.Console.WriteLine($"OSArchitecture = \"{System.Runtime.InteropServices.RuntimeInformation.OSArchitecture.ToString()}\"");
+
       System.Console.WriteLine($"{nameof(Flux.Locale.RuntimeFrameworkTitle)} = \"{Flux.Locale.RuntimeFrameworkTitle}\"");
       System.Console.WriteLine($"{nameof(Flux.Locale.RuntimeFrameworkVersion)} = \"{Flux.Locale.RuntimeFrameworkVersion}\"");
-      System.Console.WriteLine($"{nameof(Flux.Locale.MachineName)} = \"{Flux.Locale.MachineName}\"");
-      System.Console.WriteLine($"{nameof(Flux.Locale.NicDomainName)} = \"{Flux.Locale.NicDomainName}\"");
-      System.Console.WriteLine($"{nameof(Flux.Locale.NicHostName)} = \"{Flux.Locale.NicHostName}\"");
-      System.Console.WriteLine($"{nameof(Flux.Locale.RuntimeOsArchitecture)} = \"{Flux.Locale.RuntimeOsArchitecture}\"");
+
       System.Console.WriteLine($"{nameof(Flux.Locale.RuntimeOsTitle)} = \"{Flux.Locale.RuntimeOsTitle}\"");
       System.Console.WriteLine($"{nameof(Flux.Locale.RuntimeOsVersion)} = \"{Flux.Locale.RuntimeOsVersion}\"");
+
       System.Console.WriteLine($"{nameof(Flux.Locale.SystemOsPlatform)} = \"{Flux.Locale.SystemOsPlatform}\"");
       System.Console.WriteLine($"{nameof(Flux.Locale.SystemOsVersion)} = \"{Flux.Locale.SystemOsVersion}\"");
-      System.Console.WriteLine($"{nameof(Flux.Locale.StopwatchCounter)} = \"{Flux.Locale.StopwatchCounter}\"");
-      System.Console.WriteLine($"{nameof(Flux.Locale.StopwatchFrequency)} = \"{Flux.Locale.StopwatchFrequency}\"");
-      System.Console.WriteLine($"{nameof(Flux.Locale.UserDomainName)} = \"{Flux.Locale.UserDomainName}\"");
-      System.Console.WriteLine($"{nameof(Flux.Locale.UserName)} = \"{Flux.Locale.UserName}\"");
+
+      System.Console.WriteLine($"StopwatchCounter = \"{System.Diagnostics.Stopwatch.GetTimestamp()}\"");
+      System.Console.WriteLine($"StopwatchFrequency = \"{System.Diagnostics.Stopwatch.Frequency}\"");
+
+      System.Console.WriteLine($"TemporaryDirectory = \"{new System.IO.DirectoryInfo(System.IO.Path.GetTempPath())}\"");
+
+      System.Console.WriteLine($"UserDomainName = \"{System.Environment.UserDomainName}\"");
+      System.Console.WriteLine($"UserName = \"{System.Environment.UserName}\"");
+
       System.Console.WriteLine();
     }
 

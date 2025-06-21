@@ -1,5 +1,3 @@
-using Flux.Units;
-
 namespace Flux.Numerics
 {
   // A rational number (commonly called a fraction) is a ratio between two integers. For example (3/6) = (2/4) = (1/2)
@@ -1105,9 +1103,9 @@ namespace Flux.Numerics
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? formatProvider)
       => IsProperFraction(this)
-      ? Ratio.ToRatioNotationString(Units.RatioNotation.AslashB, m_numerator.ToString(format, formatProvider), m_denominator.ToString(format, formatProvider))
+      ? Units.Ratio.ToRatioNotationString(Units.RatioNotation.AslashB, m_numerator.ToString(format, formatProvider), m_denominator.ToString(format, formatProvider))
       : TryGetMixedParts(this, out var wholeNumber, out var properNumerator, out var properDenominator)
-      ? $"{wholeNumber} {Ratio.ToRatioNotationString(Units.RatioNotation.AslashB, properNumerator.ToString(format, formatProvider), properDenominator.ToString(format, formatProvider))}"
+      ? $"{wholeNumber} {Units.Ratio.ToRatioNotationString(Units.RatioNotation.AslashB, properNumerator.ToString(format, formatProvider), properDenominator.ToString(format, formatProvider))}"
       : m_numerator.ToString(); // It is a whole number and we return a simple integer string.
 
     #region IValueQuantifiable<>

@@ -16,14 +16,17 @@ namespace Flux
     {
       System.ArgumentOutOfRangeException.ThrowIfZero(stepSize);
 
-      TNumber number;
-
-      for (var index = TNumber.Zero; ; index++)
+      checked
       {
-        try { number = checked(source + index * stepSize); }
-        catch { break; }
+        TNumber number;
 
-        yield return number;
+        for (var index = TNumber.Zero; ; index++)
+        {
+          try { number = source + index * stepSize; }
+          catch { break; }
+
+          yield return number;
+        }
       }
     }
   }

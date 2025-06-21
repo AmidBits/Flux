@@ -34,7 +34,7 @@ namespace Flux.Net.Services.GitHub
     {
       using var hc = new System.Net.Http.HttpClient();
 
-      hc.DefaultRequestHeaders.UserAgent.Add(new System.Net.Http.Headers.ProductInfoHeaderValue(Locale.AppDomainName, Locale.ClrVersion.ToString()));
+      hc.DefaultRequestHeaders.UserAgent.Add(new System.Net.Http.Headers.ProductInfoHeaderValue(System.AppDomain.CurrentDomain.FriendlyName, System.Environment.Version.ToString()));
 
       foreach (var content in System.Text.Json.JsonSerializer.Deserialize<System.Collections.Generic.Dictionary<string, object>[]>(hc.GetStringAsync(uri).Result, new System.Text.Json.JsonSerializerOptions()) ?? throw new System.NullReferenceException())
       {

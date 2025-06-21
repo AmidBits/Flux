@@ -14,7 +14,7 @@ namespace Flux
     /// <param name="count">The number of numbers in the sequence.</param>
     /// <returns></returns>
     /// <exception cref="System.ArgumentOutOfRangeException"></exception>
-    public static System.Collections.Generic.IEnumerable<TNumber> LoopPivot<TNumber, TCount>(this TNumber source, CoordinateSystems.EgocentricCoordinateCenter center, TNumber stepSize, TCount count)
+    public static System.Collections.Generic.IEnumerable<TNumber> LoopPivot<TNumber, TCount>(this TNumber source, CoordinateSystems.ReferenceRelativeOrientationTAf center, TNumber stepSize, TCount count)
       where TNumber : System.Numerics.INumber<TNumber>
       where TCount : System.Numerics.IBinaryInteger<TCount>
     {
@@ -23,7 +23,7 @@ namespace Flux
 
       switch (center)
       {
-        case CoordinateSystems.EgocentricCoordinateCenter.AwayFrom:
+        case CoordinateSystems.ReferenceRelativeOrientationTAf.AwayFrom:
           if (TCount.IsOddInteger(count)) stepSize = -stepSize;
 
           for (var index = TCount.One; index <= count; index++)
@@ -34,7 +34,7 @@ namespace Flux
             stepSize = -stepSize;
           }
           break;
-        case CoordinateSystems.EgocentricCoordinateCenter.Toward:
+        case CoordinateSystems.ReferenceRelativeOrientationTAf.Toward:
           source += stepSize * TNumber.CreateChecked(count).TruncRem(TNumber.One + TNumber.One).TruncatedQuotient; // Setup the inital outer edge value for inward iteration.
 
           for (var index = count - TCount.One; index >= TCount.Zero; index--)

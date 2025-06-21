@@ -60,11 +60,11 @@ namespace Flux
       {
         case 0:
           if (pattern.Length > 0)
-            Fill(target, index, 0, count, target.GetLength(1), pattern);
+            FillWith(target, index, 0, count, target.GetLength(1), pattern);
           break;
         case 1:
           if (pattern.Length > 0)
-            Fill(target, 0, index, target.GetLength(0), count, pattern);
+            FillWith(target, 0, index, target.GetLength(0), count, pattern);
           break;
         default:
           throw new System.ArgumentOutOfRangeException(nameof(dimension));

@@ -2,6 +2,14 @@ namespace Flux
 {
   public static partial class Em
   {
+    /// <summary>
+    /// <para></para>
+    /// <para><see href="https://en.wikipedia.org/wiki/Continued_fraction"/></para>
+    /// </summary>
+    /// <typeparam name="TNumber"></typeparam>
+    /// <param name="source"></param>
+    /// <param name="maxCount"></param>
+    /// <returns></returns>
     public static System.Collections.Generic.List<System.Numerics.BigInteger> GenerateContinuedFractionCoefficients<TNumber>(this TNumber source, int maxCount)
       where TNumber : System.Numerics.IFloatingPoint<TNumber>
     {
@@ -22,6 +30,13 @@ namespace Flux
       return a;
     }
 
+    /// <summary>
+    /// <para></para>
+    /// <para><see href="https://en.wikipedia.org/wiki/Continued_fraction"/></para>
+    /// </summary>
+    /// <typeparam name="TInteger"></typeparam>
+    /// <param name="source"></param>
+    /// <returns></returns>
     public static Numerics.BigRational ParseContinuedFractionCoefficients<TInteger>(this System.Collections.Generic.List<TInteger> source)
       where TInteger : System.Numerics.IBinaryInteger<TInteger>
     {
@@ -86,6 +101,15 @@ namespace Flux
     //  return new(a, b);
     //}
 
+    /// <summary>
+    /// <para></para>
+    /// <para><see href="https://en.wikipedia.org/wiki/Continued_fraction"/></para>
+    /// </summary>
+    /// <typeparam name="TInteger"></typeparam>
+    /// <param name="source"></param>
+    /// <param name="spacing"></param>
+    /// <param name="showAsIrrational"></param>
+    /// <returns></returns>
     public static string ToContinuedFractionRepresentationString<TInteger>(this System.Collections.Generic.List<TInteger> source, Unicode.UnicodeSpacing spacing = Unicode.UnicodeSpacing.Space, bool showAsIrrational = false)
       where TInteger : System.Numerics.IBinaryInteger<TInteger>
     {
