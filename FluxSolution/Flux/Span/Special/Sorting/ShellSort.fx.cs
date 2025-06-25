@@ -10,8 +10,8 @@ namespace Flux
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <param name="source"></param>
-    /// <param name="comparer"></param>
-    /// <param name="gapSequence"></param>
+    /// <param name="comparer">Set to <see cref="System.Collections.Generic.Comparer{T}.Default"/> if null.</param>
+    /// <param name="gapSequence">Set to <see cref="ShellSortMarcinCiuraGapSequence"/> if null.</param>
     public static void ShellSort<T>(this System.Span<T> source, System.Collections.Generic.IComparer<T>? comparer = null, int[]? gapSequence = null)
     {
       gapSequence ??= ShellSortMarcinCiuraGapSequence;

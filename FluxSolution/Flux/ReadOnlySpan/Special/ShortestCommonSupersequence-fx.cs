@@ -3,7 +3,7 @@ namespace Flux
   public static partial class ReadOnlySpans
   {
     /// <summary>
-    /// <para>Find the length of the shortest common supersequence (SCS) between two sequences.</para>
+    /// <para>Find the length of the shortest common supersequence (SCS) between two sequences, by creating a dynamic programming matrix.</para>
     /// <para><see href="https://en.wikipedia.org/wiki/Shortest_common_supersequence_problem"/></para>
     /// <para><seealso cref="http://rosettacode.org/wiki/Shortest_common_supersequence#C"/></para>
     /// <para><see href="https://www.techiedelight.com/shortest-common-supersequence-finding-scs/"/></para>
@@ -19,45 +19,23 @@ namespace Flux
     {
       equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
 
-      matrix = ShortestCommonSupersequenceMatrix(source, target, out var length, equalityComparer);
-
-      return length;
-    }
-
-    /// <summary>
-    /// <para>Create a dynamic programming matrix of shortest common supersequence (SCS) between two sequences.</para>
-    /// <para><see href="https://en.wikipedia.org/wiki/Shortest_common_supersequence_problem"/></para>
-    /// <para><seealso cref="http://rosettacode.org/wiki/Shortest_common_supersequence#C"/></para>
-    /// <para><see href="https://www.techiedelight.com/shortest-common-supersequence-finding-scs/"/></para>
-    /// <remarks>This is the same routine as longest common subsequence (LCS).</remarks>
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="source"></param>
-    /// <param name="target"></param>
-    /// <param name="lengthScs"></param>
-    /// <param name="equalityComparer"></param>
-    /// <returns></returns>
-    public static int[,] ShortestCommonSupersequenceMatrix<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, out int lengthScs, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
-    {
-      equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
-
       var sourceLength = source.Length;
       var targetLength = target.Length;
 
-      var scsg = new int[sourceLength + 1, targetLength + 1];
+      matrix = new int[sourceLength + 1, targetLength + 1];
 
       for (int si = sourceLength - 1; si >= 0; si--)
-        scsg[si, 0] = si;
+        matrix[si, 0] = si;
       for (int ti = targetLength - 1; ti >= 0; ti--)
-        scsg[0, ti] = ti;
+        matrix[0, ti] = ti;
 
       for (var si = 0; si < sourceLength; si++)
         for (var ti = 0; ti < targetLength; ti++)
-          scsg[si + 1, ti + 1] = equalityComparer.Equals(source[si], target[ti]) ? scsg[si, ti] + 1 : int.Min(scsg[si, ti + 1], scsg[si + 1, ti]) + 1;
+          matrix[si + 1, ti + 1] = equalityComparer.Equals(source[si], target[ti]) ? matrix[si, ti] + 1 : int.Min(matrix[si, ti + 1], matrix[si + 1, ti]) + 1;
 
-      lengthScs = scsg[source.Length, target.Length];
+      var length = matrix[source.Length, target.Length];
 
-      return scsg;
+      return length;
     }
 
     /// <summary>
@@ -76,7 +54,7 @@ namespace Flux
     {
       equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
 
-      matrix = ShortestCommonSupersequenceMatrix(source, target, out var _, equalityComparer);
+      ShortestCommonSupersequenceLength(source, target, out matrix, equalityComparer);
 
       return GetSupersequence(matrix, source, target, source.Length, target.Length, equalityComparer);
 

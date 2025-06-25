@@ -350,7 +350,7 @@ namespace NetFx.ReadOnlySpan.Special
       var text1 = "abcbdab".AsSpan();
       var text2 = "bdcaba".AsSpan();
       var expectedLength = 9;
-      text1.ShortestCommonSupersequenceMatrix(text2, out var actualLength);
+      var actualLength = text1.ShortestCommonSupersequenceLength(text2, out var _);
       Assert.AreEqual(expectedLength, actualLength);
     }
 

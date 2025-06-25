@@ -15,15 +15,7 @@ namespace Flux.Dsp.WaveProcessors
       {
         m_exponent = double.Clamp(value, -1, 1);
 
-        m_exponentExpanded = 0;
-
-        if (m_exponent is > Numerics.Constants.Epsilon1E7 or < -Numerics.Constants.Epsilon1E7)
-        {
-          if (m_exponent < 0)
-            m_exponentExpanded = m_exponent + 1.11;
-          else if (m_exponent > 0)
-            m_exponentExpanded = m_exponent * 11.1;
-        }
+        m_exponentExpanded = ModifyExponent(m_exponent);
       }
     }
 
@@ -36,9 +28,16 @@ namespace Flux.Dsp.WaveProcessors
       : this(MonoQuadraticMode.Asymmetric, 0)
     { }
 
-    private double Asymmetric(double wave, double exponentIndex) => double.Pow(wave / 2.0 + 0.5, exponentIndex) * 2.0 - 1.0;
+    private static double ModifyExponent(double exponent)
+      => (exponent < -Numerics.Constants.Epsilon1E7)
+      ? exponent + 1.11
+      : (exponent > Numerics.Constants.Epsilon1E7)
+      ? exponent * 11.1
+      : 0;
 
-    private double Symmetric(double wave, double exponent) => ((double.Pow(exponent, wave + 1.0) - 1.0) / (double.Pow(exponent, 2.0) - 1.0)) * 2.0 - 1.0;
+    private static double Asymmetric(double wave, double exponentIndex) => double.Pow(wave / 2.0 + 0.5, exponentIndex) * 2.0 - 1.0;
+
+    private static double Symmetric(double wave, double exponent) => (double.Pow(exponent, wave + 1.0) - 1.0) / (double.Pow(exponent, 2.0) - 1.0) * 2.0 - 1.0;
 
     public double ProcessMonoWave(double wave)
       => (Mode switch

@@ -2,7 +2,12 @@ namespace Flux
 {
   public static partial class Spans
   {
-    /// <summary>Uncapitalize any upper-case character with a lower case character on the right and, a whitespace on the left or that is at the beginning.</summary>
+    /// <summary>
+    /// <para>Uncapitalize any upper-case rune at the beginning or with a whitespace on the left, and with a lower-case rune on the right.</para>
+    /// </summary>
+    /// <param name="source"></param>
+    /// <param name="culture">Set to <see cref="System.Globalization.CultureInfo.CurrentCulture"/> if null.</param>
+    /// <returns></returns>
     public static System.Span<System.Text.Rune> UncapitalizeWords(this System.Span<System.Text.Rune> source, System.Globalization.CultureInfo? culture = null)
     {
       culture ??= System.Globalization.CultureInfo.CurrentCulture;

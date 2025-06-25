@@ -2,6 +2,9 @@ namespace Flux
 {
   public static partial class ReadOnlySpans
   {
+    public static System.ReadOnlySpan<T> TrimLeft<T>(this System.ReadOnlySpan<T> source, System.Func<T, bool> predicate)
+      => source[source.CommonPrefixLength(predicate)..];
+
     #region TrimCommonPrefix
 
     /// <summary>

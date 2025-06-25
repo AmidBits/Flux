@@ -9,7 +9,7 @@ namespace Flux
     /// <typeparam name="T"></typeparam>
     /// <param name="source"></param>
     /// <param name="type"></param>
-    /// <param name="comparer"></param>
+    /// <param name="comparer">Set to <see cref="System.Collections.Generic.Comparer{T}.Default"/> if null.</param>
     public static void HeapSort<T>(this System.Span<T> source, HeapSortType type, System.Collections.Generic.IComparer<T>? comparer = null)
     {
       comparer ??= System.Collections.Generic.Comparer<T>.Default;

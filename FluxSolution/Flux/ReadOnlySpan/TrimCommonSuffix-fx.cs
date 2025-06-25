@@ -2,6 +2,9 @@ namespace Flux
 {
   public static partial class ReadOnlySpans
   {
+    public static System.ReadOnlySpan<T> TrimRight<T>(this System.ReadOnlySpan<T> source, System.Func<T, bool> predicate)
+      => source[..^source.CommonSuffixLength(predicate)];
+
     /// <summary>
     /// <para>Slice the <paramref name="source"/> with <paramref name="maxTrimLength"/> of matching suffix elements satisfying the <paramref name="predicate"/> removed.</para>
     /// </summary>

@@ -13,27 +13,11 @@
     /// <returns></returns>
     public static int LongestIncreasingSubsequenceLength<T>(this System.ReadOnlySpan<T> source, out int[,] matrix, System.Collections.Generic.IComparer<T>? comparer = null)
     {
-      matrix = LongestAlternatingSubsequenceMatrix(source, out var length, comparer);
-
-      return length;
-    }
-
-    /// <summary>
-    /// <para>The longest increasing subsequence is to find a subsequence of a given sequence where the elements of the subsequence are in sorted order, lowest to highest, and in which the subsequence is as long as possible. Uses the specified comparer.</para>
-    /// <see href="https://en.wikipedia.org/wiki/Longest_increasing_subsequence"/>
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="source"></param>
-    /// <param name="length"></param>
-    /// <param name="comparer"></param>
-    /// <returns></returns>
-    public static int[,] LongestIncreasingSubsequenceMatrix<T>(this System.ReadOnlySpan<T> source, out int length, System.Collections.Generic.IComparer<T>? comparer = null)
-    {
       comparer ??= System.Collections.Generic.Comparer<T>.Default;
 
-      length = 0; // Length is returned in the matrix[0, 0].
+      var length = 0; // Length is returned in the matrix[0, 0].
 
-      var matrix = new int[2, source.Length + 1]; // [0,...] = smallest value indices (M), [1,...] = predecessor indices (P)
+      matrix = new int[2, source.Length + 1]; // [0,...] = smallest value indices (M), [1,...] = predecessor indices (P)
 
       for (var i = 0; i < source.Length; i++)
       {
@@ -61,7 +45,7 @@
           length = newL; // If we found a subsequence longer than any we've found yet, update length.
       }
 
-      return matrix;
+      return length;
     }
 
     /// <summary>
@@ -75,7 +59,7 @@
     /// <returns></returns>
     public static T[] LongestIncreasingSubsequenceValues<T>(this System.ReadOnlySpan<T> source, out int[,] matrix, System.Collections.Generic.IComparer<T>? comparer = null)
     {
-      matrix = LongestIncreasingSubsequenceMatrix(source, out var length, comparer);
+      var length = LongestIncreasingSubsequenceLength(source, out matrix, comparer);
 
       if (length > 0)
       {

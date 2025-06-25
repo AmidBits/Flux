@@ -12,9 +12,11 @@ namespace Flux
     }
 
     /// <summary>In-place swap of two elements by the specified index and the first element.</summary>
-    public static bool SwapFirstWith<T>(this System.Span<T> source, int index) => source.Swap(0, index);
+    public static bool SwapFirstWith<T>(this System.Span<T> source, int index)
+      => source.Swap(0, index);
 
     /// <summary>In-place swap of two elements by the specified index and the last element.</summary>
-    public static bool SwapLastWith<T>(this System.Span<T> source, int index) => source.Swap(index, source.Length - 1);
+    public static bool SwapLastWith<T>(this System.Span<T> source, int index)
+      => source.Swap(index, source.Length - 1);
   }
 }

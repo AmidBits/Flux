@@ -1,4 +1,6 @@
-﻿namespace Flux
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Flux
 {
   public static partial class ReadOnlySpans
   {
@@ -7,7 +9,6 @@
     /// <see href="https://en.wikipedia.org/wiki/Longest_alternating_subsequence"/>
     /// </summary>
     /// <param name="source">Source sequence in which to find the longest alternating subsequence.</param>
-    /// <param name="length">The length of the longest alternating subsequence that was found.</param>
     /// <param name="comparer">Uses the specified comparer, default if null.</param>
     /// <returns>The matrix of the longest alternating subsequence that was found, using dynamic programming.</returns>
     /// <remarks>
@@ -16,28 +17,9 @@
     /// </remarks>
     public static int LongestAlternatingSubsequenceLength<T>(this System.ReadOnlySpan<T> source, out int[,] matrix, System.Collections.Generic.IComparer<T>? comparer = null)
     {
-      matrix = LongestAlternatingSubsequenceMatrix(source, out var length, comparer);
-
-      return length;
-    }
-
-    /// <summary>
-    /// <para>The longest alternating subsequence problem, one wants to find a subsequence of a given <paramref name="source"/> in which the elements are in alternating order, and in which the sequence is as long as possible. Uses the specified <paramref name="comparer"/>, default if null.</para>
-    /// <see href="https://en.wikipedia.org/wiki/Longest_alternating_subsequence"/>
-    /// </summary>
-    /// <param name="source">Source sequence in which to find the longest alternating subsequence.</param>
-    /// <param name="length">The length of the longest alternating subsequence that was found.</param>
-    /// <param name="comparer">Uses the specified comparer, default if null.</param>
-    /// <returns>The matrix of the longest alternating subsequence that was found, using dynamic programming.</returns>
-    /// <remarks>
-    /// <para>Implemented based on the Wiki article.</para>
-    /// <para>This Levenshtein algorithm does not rely on a complete matrix. It only needs two alternating horizontal rows throughout the process.</para>
-    /// </remarks>
-    public static int[,] LongestAlternatingSubsequenceMatrix<T>(this System.ReadOnlySpan<T> source, out int length, System.Collections.Generic.IComparer<T>? comparer = null)
-    {
       comparer ??= System.Collections.Generic.Comparer<T>.Default;
 
-      var matrix = new int[source.Length, 2];
+      matrix = new int[source.Length, 2];
 
       for (var i = 0; i < source.Length; i++) // Initialize BOTH dimensions to 1.
       {
@@ -45,7 +27,7 @@
         matrix[i, 1] = 1; // Length of the longest alternating subsequence ending at index i and last element is smaller than its previous element.
       }
 
-      length = 0;
+      var length = 0;
 
       for (var i = 1; i < source.Length; i++)
       {
@@ -63,7 +45,7 @@
         length = int.Max(length, int.Max(matrix[i, 0], matrix[i, 1]));
       }
 
-      return matrix;
+      return length;
     }
 
     /// <summary>
@@ -80,7 +62,7 @@
     /// </remarks>
     public static T[] LongestAlternatingSubsequenceValues<T>(this System.ReadOnlySpan<T> source, out int[,] matrix, System.Collections.Generic.IComparer<T>? comparer = null)
     {
-      matrix = LongestAlternatingSubsequenceMatrix(source, out var length, comparer);
+      var length = LongestAlternatingSubsequenceLength(source, out matrix, comparer);
 
       if (length > 0)
       {

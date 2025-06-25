@@ -3,8 +3,11 @@ namespace Flux
   public static partial class Spans
   {
     /// <summary>
-    /// <para>Convert the entire span to lower-case. Uses the specified <paramref name="culture"/>, or current-culture if null.</para>
+    /// <para>Convert all chars in the span to lower-case.</para>
     /// </summary>
+    /// <param name="source"></param>
+    /// <param name="culture">Set to <see cref="System.Globalization.CultureInfo.CurrentCulture"/> if null.</param>
+    /// <returns></returns>
     public static System.Span<char> ToLower(this System.Span<char> source, System.Globalization.CultureInfo? culture = null)
     {
       culture ??= System.Globalization.CultureInfo.CurrentCulture;
