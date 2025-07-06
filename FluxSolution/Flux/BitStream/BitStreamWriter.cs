@@ -1,4 +1,3 @@
-
 namespace Flux.IO.BitStream
 {
   public sealed class BitStreamWriter
