@@ -3,11 +3,10 @@ namespace Flux.IO.BitStream
   public sealed class BitStreamWriter
     : System.IO.Stream
   {
-    private ulong m_bitBuffer;
+    private readonly Stream m_baseStream;
 
     private int m_bitCount;
-
-    private readonly Stream m_baseStream;
+    private ulong m_bitBuffer;
 
     public BitStreamWriter(System.IO.Stream baseStream) => m_baseStream = baseStream;
 
