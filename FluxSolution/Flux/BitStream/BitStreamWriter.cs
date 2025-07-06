@@ -1,7 +1,8 @@
 
 namespace Flux.IO.BitStream
 {
-  public sealed class BitStreamWriter : System.IO.Stream
+  public sealed class BitStreamWriter
+    : System.IO.Stream
   {
     private ulong m_bitBuffer;
 
