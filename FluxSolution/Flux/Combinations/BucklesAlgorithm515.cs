@@ -19,9 +19,7 @@ namespace Flux.Combinations
 
       for (var l = 0; l < permutationCount; l++)
       {
-        var indices = GetCombination(source.Length, combinationLength, l);
-
-        indices.Select(index => source[index]).CopyInto(permutation);
+        (source.Length).CombinationAlgorithm515Fill(combinationLength, l, ref permutation);
 
         yield return permutation;
       }
@@ -78,11 +76,52 @@ namespace Flux.Combinations
     /// <para>Note that <paramref name="lexiographicIndex"/> is 1-based.</para>
     /// <para>The <paramref name="alphabetLength"/> is the <see langword="this"/> argument for the extension method.</para>
     /// </remarks>
-    public static TNumber[] GetCombination<TNumber>(this TNumber alphabetLength, TNumber combinationLength, TNumber lexiographicIndex)
+    //public static TNumber[] CombinationAlgorithm515Get<TNumber>(this TNumber alphabetLength, TNumber combinationLength, TNumber lexiographicIndex)
+    //   where TNumber : System.Numerics.IBinaryInteger<TNumber>
+    //{
+    //  var c = new TNumber[int.CreateChecked(combinationLength)];
+
+    //  var x = TNumber.One;
+    //  var r = (alphabetLength - x).BinomialCoefficient(combinationLength - TNumber.One);
+    //  var k = r;
+
+    //  while (k <= lexiographicIndex)
+    //  {
+    //    x += TNumber.One;
+    //    r = (alphabetLength - x).BinomialCoefficient(combinationLength - TNumber.One);
+    //    k += r;
+    //  }
+
+    //  k -= r;
+
+    //  c[0] = x - TNumber.One;
+
+    //  for (var i = TNumber.CreateChecked(2); i < combinationLength; i++)
+    //  {
+    //    x += TNumber.One;
+    //    r = (alphabetLength - x).BinomialCoefficient(combinationLength - i);
+    //    k += r;
+
+    //    while (k <= lexiographicIndex)
+    //    {
+    //      x += TNumber.One;
+    //      r = (alphabetLength - x).BinomialCoefficient(combinationLength - i);
+    //      k += r;
+    //    }
+
+    //    k -= r;
+
+    //    c[int.CreateChecked(i - TNumber.One)] = x - TNumber.One;
+    //  }
+
+    //  c[int.CreateChecked(combinationLength - TNumber.One)] = x + lexiographicIndex - k;
+
+    //  return c;
+    //}
+
+    public static void CombinationAlgorithm515Fill<TNumber>(this TNumber alphabetLength, TNumber combinationLength, TNumber lexiographicIndex, ref TNumber[] combinationArray)
        where TNumber : System.Numerics.IBinaryInteger<TNumber>
     {
-      var c = new TNumber[int.CreateChecked(combinationLength)];
-
       var x = TNumber.One;
       var r = (alphabetLength - x).BinomialCoefficient(combinationLength - TNumber.One);
       var k = r;
@@ -96,7 +135,7 @@ namespace Flux.Combinations
 
       k -= r;
 
-      c[0] = x - TNumber.One;
+      combinationArray[0] = x - TNumber.One;
 
       for (var i = TNumber.CreateChecked(2); i < combinationLength; i++)
       {
@@ -113,12 +152,10 @@ namespace Flux.Combinations
 
         k -= r;
 
-        c[int.CreateChecked(i - TNumber.One)] = x - TNumber.One;
+        combinationArray[int.CreateChecked(i - TNumber.One)] = x - TNumber.One;
       }
 
-      c[int.CreateChecked(combinationLength - TNumber.One)] = x + lexiographicIndex - k;
-
-      return c;
+      combinationArray[int.CreateChecked(combinationLength - TNumber.One)] = x + lexiographicIndex - k;
     }
   }
 }
