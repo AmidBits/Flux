@@ -11,19 +11,19 @@ namespace Flux.Combinations
     /// <param name="source"></param>
     /// <param name="combinationLength"></param>
     /// <returns></returns>
-    public static System.Collections.Generic.IEnumerable<T[]> CombinationsAlgorithm515<T>(this T[] source, int combinationLength)
-    {
-      var permutationCount = CombinationCount(source.Length, combinationLength);
+    //public static System.Collections.Generic.IEnumerable<T[]> CombinationsAlgorithm515<T>(this T[] source, int combinationLength)
+    //{
+    //  var permutationCount = CombinationCount(source.Length, combinationLength);
 
-      var permutation = new T[combinationLength];
+    //  var permutation = new T[combinationLength];
 
-      for (var l = 0; l < permutationCount; l++)
-      {
-        (source.Length).CombinationAlgorithm515Fill(combinationLength, l, ref permutation);
+    //  for (var l = 0; l < permutationCount; l++)
+    //  {
+    //    (source.Length).CombinationFillAlgorithm515(combinationLength, l, ref permutation);
 
-        yield return permutation;
-      }
-    }
+    //    yield return permutation;
+    //  }
+    //}
 
     #endregion // Extension methods
 
@@ -34,9 +34,9 @@ namespace Flux.Combinations
     /// <param name="alphabetLength"></param>
     /// <param name="combinationLength"></param>
     /// <returns></returns>
-    public static TNumber CombinationCount<TNumber>(this TNumber alphabetLength, TNumber combinationLength)
-      where TNumber : System.Numerics.IBinaryInteger<TNumber>
-      => alphabetLength.BinomialCoefficient(combinationLength);
+    //public static TNumber CombinationCount<TNumber>(this TNumber alphabetLength, TNumber combinationLength)
+    //  where TNumber : System.Numerics.IBinaryInteger<TNumber>
+    //  => alphabetLength.BinomialCoefficient(combinationLength);
 
     /// <summary>
     /// <para>Find the permutation for a <paramref name="lexiographicIndex"/> of a subset with <paramref name="combinationLength"/> (P) elements, in a set with <paramref name="alphabetLength"/> (N) elements.</para>
@@ -119,7 +119,7 @@ namespace Flux.Combinations
     //  return c;
     //}
 
-    public static void CombinationAlgorithm515Fill<TNumber>(this TNumber alphabetLength, TNumber combinationLength, TNumber lexiographicIndex, ref TNumber[] combinationArray)
+    public static void CombinationFillAlgorithm515<TNumber>(this TNumber alphabetLength, TNumber combinationLength, TNumber lexiographicIndex, ref TNumber[] combinationArray)
        where TNumber : System.Numerics.IBinaryInteger<TNumber>
     {
       var x = TNumber.One;
