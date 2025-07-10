@@ -119,6 +119,44 @@ namespace Flux.Combinations
     //  return c;
     //}
 
+    public static void CombinationFillAlgorithm515(this System.Span<int> source, int alphabetLength, int lexiographicIndex)
+    {
+      var x = 1;
+      var r = (alphabetLength - x).BinomialCoefficient(source.Length - 1);
+      var k = r;
+      
+      while (k <= lexiographicIndex)
+      {
+        x += 1;
+        r = (alphabetLength - x).BinomialCoefficient(source.Length - 1);
+        k += r;
+      }
+
+      k -= r;
+
+      source[0] = x - 1;
+
+      for (var i = 2; i < source.Length; i++)
+      {
+        x += 1;
+        r = (alphabetLength - x).BinomialCoefficient(source.Length - i);
+        k += r;
+
+        while (k <= lexiographicIndex)
+        {
+          x += 1;
+          r = (alphabetLength - x).BinomialCoefficient(source.Length - i);
+          k += r;
+        }
+
+        k -= r;
+
+        source[i - 1] = x - 1;
+      }
+
+      source[source.Length - 1] = x + lexiographicIndex - k;
+    }
+
     public static void CombinationFillAlgorithm515<TNumber>(this TNumber alphabetLength, TNumber combinationLength, TNumber lexiographicIndex, ref TNumber[] combinationArray)
        where TNumber : System.Numerics.IBinaryInteger<TNumber>
     {
