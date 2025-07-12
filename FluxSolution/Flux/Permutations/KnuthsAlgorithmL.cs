@@ -1,16 +1,10 @@
 namespace Flux.Permutations
 {
-  /// <summary>
-  /// <para>Knuth's "algorithm L" generates all possible permutations of n objects in lexiographical order.</para>
-  /// <para><seealso href="https://en.wikipedia.org/wiki/Permutation"/></para>
-  /// <para><seealso href="https://www-cs-faculty.stanford.edu/~knuth/"/></para>
-  /// </summary>
-  public static class KnuthsAlgorithmL
+  public static class LehmerCode
   {
-  
-	// https://stackoverflow.com/a/24257996
     // https://stackoverflow.com/a/24257996
-    public static int LehmerCodePack(this System.ReadOnlySpan<int> digits, System.ReadOnlySpan<int> radixes)
+    // https://stackoverflow.com/a/24257996
+    public static int Pack(System.ReadOnlySpan<int> digits, System.ReadOnlySpan<int> radixes)
     {
         var n = 0;
         for (var i = 0; i < digits.Length; i++) {
@@ -21,7 +15,7 @@ namespace Flux.Permutations
 
     // https://stackoverflow.com/a/24257996
     // https://stackoverflow.com/a/24257996
-    public static System.Collections.Generic.List<int> LehmerCodeUnpack(int n, System.ReadOnlySpan<int> radixes)
+    public static System.Collections.Generic.List<int> Unpack(int n, System.ReadOnlySpan<int> radixes)
     {
       var digits = new System.Collections.Generic.List<int>();
       for (var i = radixes.Length - 1; i >= 0; i--)
@@ -31,7 +25,15 @@ namespace Flux.Permutations
       }
       return digits;
     }
-    
+  }
+
+  /// <summary>
+  /// <para>Knuth's "algorithm L" generates all possible permutations of n objects in lexiographical order.</para>
+  /// <para><seealso href="https://en.wikipedia.org/wiki/Permutation"/></para>
+  /// <para><seealso href="https://www-cs-faculty.stanford.edu/~knuth/"/></para>
+  /// </summary>
+  public static class KnuthsAlgorithmL
+  {
     #region Extension methods
 
     /// <summary>
