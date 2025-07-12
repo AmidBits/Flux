@@ -8,6 +8,7 @@ namespace Flux.Permutations
   public static class KnuthsAlgorithmL
   {
     // https://stackoverflow.com/a/24257996
+    // https://stackoverflow.com/a/24257996
     public int LehmerCodePack(this System.ReadOnlySpan<int> digits, System.ReadOnlySpan<int> radixes)
     {
         var n = 0;
@@ -17,6 +18,7 @@ namespace Flux.Permutations
         return n;
     }
 
+    // https://stackoverflow.com/a/24257996
     // https://stackoverflow.com/a/24257996
     public System.Collections.Generics.List<int> LehmerCodeUnpack(int n, System.ReadOnlySpan<int> radixes)
     {
