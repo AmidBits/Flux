@@ -119,11 +119,8 @@ namespace Flux.Combinations
     //  return c;
     //}
 
-    public static void CombinationInitAlgorithm515(this System.Span<int> source)
-    {
-      for(var index = source.Length - 1; index >= 0; index--)
-        source[index] = index;
-    }
+    public static void CombinationCountAlgorithm515(this System.Span<int> source, int alphabetLength)
+      => alphabetLength.BinomialCoefficient(source.Length);
 
     public static void CombinationNextAlgorithm515(this System.Span<int> source, int alphabetLength, int lexiographicIndex)
     {
@@ -161,6 +158,12 @@ namespace Flux.Combinations
       }
 
       source[source.Length - 1] = x + lexiographicIndex - k;
+    }
+
+    public static void CombinationResetAlgorithm515(this System.Span<int> source)
+    {
+      for(var index = source.Length - 1; index >= 0; index--)
+        source[index] = index;
     }
 
     public static void CombinationFillAlgorithm515<TNumber>(this TNumber alphabetLength, TNumber combinationLength, TNumber lexiographicIndex, ref TNumber[] combinationArray)
