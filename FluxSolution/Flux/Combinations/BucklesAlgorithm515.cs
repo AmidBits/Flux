@@ -119,6 +119,12 @@ namespace Flux.Combinations
     //  return c;
     //}
 
+    public static void CombinationInitAlgorithm515(this System.Span<int> source)
+    {
+      for(var index = source.Length - 1; index >= 0; index--)
+        source[index] = index;
+    }
+
     public static void CombinationFillAlgorithm515(this System.Span<int> source, int alphabetLength, int lexiographicIndex)
     {
       var x = 1;
