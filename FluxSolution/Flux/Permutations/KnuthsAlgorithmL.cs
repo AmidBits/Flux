@@ -1,32 +1,5 @@
 namespace Flux.Permutations
 {
-  public static class LehmerCode
-  {
-    // https://stackoverflow.com/a/24257996
-    // https://stackoverflow.com/a/24257996
-    public static int Pack(System.ReadOnlySpan<int> digits, System.ReadOnlySpan<int> radixes)
-    {
-        var n = 0;
-        for (var i = 0; i < digits.Length; i++) {
-            n = n * radixes[i] + digits[i];
-        }
-        return n;
-    }
-
-    // https://stackoverflow.com/a/24257996
-    // https://stackoverflow.com/a/24257996
-    public static System.Collections.Generic.List<int> Unpack(int n, System.ReadOnlySpan<int> radixes)
-    {
-      var digits = new System.Collections.Generic.List<int>();
-      for (var i = radixes.Length - 1; i >= 0; i--)
-      {
-          digits.Insert(0, n % radixes[i]);
-          n /= radixes[i];
-      }
-      return digits;
-    }
-  }
-
   /// <summary>
   /// <para>Knuth's "algorithm L" generates all possible permutations of n objects in lexiographical order.</para>
   /// <para><seealso href="https://en.wikipedia.org/wiki/Permutation"/></para>
@@ -103,7 +76,7 @@ namespace Flux.Permutations
       return true;
     }
 
-    public static bool PermutationNextKnuthsAlgorithmL(this System.Span<int> source)
+    public static bool Next(System.Span<int> source)
     {
       // Knuths
       // 1. Find the largest index j such that a[j] < a[j + 1]. If no such index exists, the permutation is the last permutation.
@@ -138,7 +111,7 @@ namespace Flux.Permutations
       return true;
     }    
 
-    public static void PermutationResetKnuthsAlgorithmL(this System.Span<int> source)
+    public static void Reset(System.Span<int> source)
     {
       for(var index = source.Length - 1; index >= 0; index--)
         source[index] = index;
