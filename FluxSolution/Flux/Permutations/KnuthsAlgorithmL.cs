@@ -76,6 +76,47 @@ namespace Flux.Permutations
       return true;
     }
 
+    public static void PermutationInitKnuthsAlgorithmL(this System.Span<int> source)
+    {
+      for(var index = source.Length - 1; index >= 0; index--)
+        source[index] = index;
+    }
+    
+    public static bool PermutationNextKnuthsAlgorithmL(this System.Span<int> source)
+    {
+      // Knuths
+      // 1. Find the largest index j such that a[j] < a[j + 1]. If no such index exists, the permutation is the last permutation.
+      // 2. Find the largest index l such that a[j] < a[l]. Since j + 1 is such an index, l is well defined and satisfies j < l.
+      // 3. Swap a[j] with a[l].
+      // 4. Reverse the sequence from a[j + 1] up to and including the final element a[n].
+
+      int largestIndex1 = -1, largestIndex2 = -1, i, j;
+
+      for (i = items.Length - 2; i >= 0; i--)
+        if (source[i].CompareTo(items[i + 1]) < 0)
+        {
+          largestIndex1 = i;
+          break;
+        }
+
+      if (largestIndex1 < 0)
+        return false;
+
+      for (j = source.Length - 1; j >= 0; j--)
+        if (source[largestIndex1].CompareTo(source[j]) < 0)
+        {
+          largestIndex2 = j;
+          break;
+        }
+
+      source.Swap(largestIndex1, largestIndex2);
+
+      for (i = largestIndex1 + 1, j = source.Length - 1; i < j; i++, j--)
+        source.Swap(i, j);
+
+      return true;
+    }    
+
     /// <summary>
     /// <para>Creates a new sequence of permutations on the <paramref name="initialIndices"/>. The array <paramref name="initialIndices"/> is re-used for each iteration.</para>
     /// </summary>
