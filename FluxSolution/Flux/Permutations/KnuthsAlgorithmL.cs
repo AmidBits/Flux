@@ -76,12 +76,6 @@ namespace Flux.Permutations
       return true;
     }
 
-    public static void PermutationInitKnuthsAlgorithmL(this System.Span<int> source)
-    {
-      for(var index = source.Length - 1; index >= 0; index--)
-        source[index] = index;
-    }
-    
     public static bool PermutationNextKnuthsAlgorithmL(this System.Span<int> source)
     {
       // Knuths
@@ -116,6 +110,12 @@ namespace Flux.Permutations
 
       return true;
     }    
+
+    public static void PermutationResetKnuthsAlgorithmL(this System.Span<int> source)
+    {
+      for(var index = source.Length - 1; index >= 0; index--)
+        source[index] = index;
+    }
 
     /// <summary>
     /// <para>Creates a new sequence of permutations on the <paramref name="initialIndices"/>. The array <paramref name="initialIndices"/> is re-used for each iteration.</para>
