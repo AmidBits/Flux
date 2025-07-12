@@ -7,12 +7,13 @@ namespace Flux.Permutations
   /// </summary>
   public static class KnuthsAlgorithmL
   {
+  
+	// https://stackoverflow.com/a/24257996
     // https://stackoverflow.com/a/24257996
-    // https://stackoverflow.com/a/24257996
-    public int LehmerCodePack(this System.ReadOnlySpan<int> digits, System.ReadOnlySpan<int> radixes)
+    public static int LehmerCodePack(this System.ReadOnlySpan<int> digits, System.ReadOnlySpan<int> radixes)
     {
         var n = 0;
-        for (var i = 0; i < digits.length; i++) {
+        for (var i = 0; i < digits.Length; i++) {
             n = n * radixes[i] + digits[i];
         }
         return n;
@@ -20,10 +21,10 @@ namespace Flux.Permutations
 
     // https://stackoverflow.com/a/24257996
     // https://stackoverflow.com/a/24257996
-    public System.Collections.Generics.List<int> LehmerCodeUnpack(int n, System.ReadOnlySpan<int> radixes)
+    public static System.Collections.Generic.List<int> LehmerCodeUnpack(int n, System.ReadOnlySpan<int> radixes)
     {
-      var digits = new System.Collections.Generics.List<int>();
-      for (var i = radixes.length - 1; i >= 0; i--)
+      var digits = new System.Collections.Generic.List<int>();
+      for (var i = radixes.Length - 1; i >= 0; i--)
       {
           digits.Insert(0, n % radixes[i]);
           n /= radixes[i];
