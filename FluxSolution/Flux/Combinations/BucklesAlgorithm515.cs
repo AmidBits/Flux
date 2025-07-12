@@ -125,7 +125,7 @@ namespace Flux.Combinations
         source[index] = index;
     }
 
-    public static void CombinationFillAlgorithm515(this System.Span<int> source, int alphabetLength, int lexiographicIndex)
+    public static void CombinationNextAlgorithm515(this System.Span<int> source, int alphabetLength, int lexiographicIndex)
     {
       var x = 1;
       var r = (alphabetLength - x).BinomialCoefficient(source.Length - 1);
