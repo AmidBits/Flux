@@ -23,7 +23,7 @@
   
   	public T[] Current => m_stackData;
   
-  	public bool Next()
+  	public bool MoveNext()
   	{
   		if(m_stackIndex == -1)
   		{
