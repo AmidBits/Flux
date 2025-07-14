@@ -1,5 +1,71 @@
 ﻿namespace Flux.Permutations
 {
+  public record class HeapsAlgorithm<T>
+  {
+  	private T[] m_data;
+  	
+  	private T[] m_stackData;
+  	private int m_stackIndex;
+  	private int[] m_stackState;
+  	
+  	public HeapsAlgorithm(T[] data)
+  	{
+  		m_data = new T[data.Length];
+  		
+  		data.CopyTo(m_data.AsSpan());
+  
+  		m_stackState = new int[m_data.Length];
+  
+  		m_stackData = new T[m_data.Length];
+  
+  		Reset();
+  	}
+  
+  	public T[] Current => m_stackData;
+  
+  	public bool Next()
+  	{
+  		if(m_stackIndex == -1)
+  		{
+  			m_stackIndex = 0;
+  			
+  			return true;
+  		}
+  
+  		while (m_stackIndex < m_stackState.Length)
+  		{
+  			if (m_stackState[m_stackIndex] < m_stackIndex)
+  			{
+  				if (int.IsEvenInteger(m_stackIndex))
+  					m_stackData.Swap(0, m_stackIndex);
+  				else
+  					m_stackData.Swap(m_stackState[m_stackIndex], m_stackIndex);
+  
+  				m_stackState[m_stackIndex]++;
+  				m_stackIndex = 1;
+  
+  				return true;
+  			}
+  			else
+  			{
+  				m_stackState[m_stackIndex] = 0;
+  				m_stackIndex++;
+  			}
+  		}
+  			
+  		return false;
+  	}
+  	
+  	public void Reset()
+  	{
+  		m_data.CopyTo(m_stackData.AsSpan());
+  
+  		m_stackIndex = -1;
+  
+  		System.Array.Fill(m_stackState, default);
+  	}
+  }
+
   /// <summary>
   /// <para>Heap's algorithm generates all possible permutations of n objects.</para>
   /// <para>The algorithm minimizes movement: it generates each permutation from the previous one by interchanging a single pair of elements; the other n−2 elements are not disturbed.</para>
