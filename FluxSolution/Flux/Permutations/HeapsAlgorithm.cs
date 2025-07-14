@@ -56,13 +56,24 @@
   		return false;
   	}
   	
-  	public void Reset()
+    public void Reset()
+    {
+      m_data.CopyTo(m_stackData.AsSpan());
+  
+      m_stackIndex = -1;
+  
+      System.Array.Fill(m_stackState, default);
+    }
+  
+  	
+  	public static System.Collections.Generic.IEnumerable<T[]> GetPermutations(T[] data)
   	{
-  		m_data.CopyTo(m_stackData.AsSpan());
+  		var ha = new HeapsAlgorithm<T>(data);
   
-  		m_stackIndex = -1;
-  
-  		System.Array.Fill(m_stackState, default);
+  		while(ha.MoveNext())
+  		{
+  			yield return ha.Current;
+  		}
   	}
   }
 
