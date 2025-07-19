@@ -2,7 +2,7 @@ namespace Flux
 {
   public static class GenericMath // (or BinaryInteger)
   {
-    extension<TInteger>(TInteger value)
+    extension<TInteger>(TInteger n)
       where TNumber : System.Numerics.IBinaryInteger<TNumber>
     {
       /// <summary>
@@ -21,7 +21,7 @@ namespace Flux
       /// <param name="n">Greater than or equal to <paramref name="k"/>.</param>
       /// <param name="k">Greater than or equal to 0.</param>
       /// <returns></returns>
-      public TInteger BinomialCoefficient<TNumber>(TInteger k)
+      public TInteger BinomialCoefficient(TInteger k)
       {
         //if (TNumber.IsNegative(k) || k > n) return TNumber.Zero; // (k < 0 || k > n) = 0
         //else if (TNumber.IsZero(k) || k == n) return TNumber.One; // (k == 0 || k == n) = 1
