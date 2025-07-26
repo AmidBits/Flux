@@ -28,17 +28,17 @@ namespace Flux
     /// <para><see href="https://en.wikipedia.org/wiki/Euclidean_division"/></para>
     /// <para><see href="https://stackoverflow.com/a/20638659/3178666"/></para>
     /// </summary>
-    /// <typeparam name="TNumber"></typeparam>
+    /// <typeparam name="TInteger"></typeparam>
     /// <param name="dividend"></param>
     /// <param name="divisor"></param>
     /// <returns></returns>
-    public static (TNumber Quotient, TNumber Remainder) DivModEuclidean<TNumber>(this TNumber dividend, TNumber divisor)
-      where TNumber : System.Numerics.IBinaryInteger<TNumber>
+    public static (TInteger Quotient, TInteger Remainder) DivModEuclidean<TInteger>(this TInteger dividend, TInteger divisor)
+      where TInteger : System.Numerics.IBinaryInteger<TInteger>
     {
-      var (q, r) = TNumber.DivRem(dividend, divisor);
+      var (q, r) = TInteger.DivRem(dividend, divisor);
 
-      if (TNumber.IsNegative(r))
-        return (divisor > TNumber.Zero) ? (q - TNumber.One, r + divisor) : (q + TNumber.One, r - divisor);
+      if (TInteger.IsNegative(r))
+        return (divisor > TInteger.Zero) ? (q - TInteger.One, r + divisor) : (q + TInteger.One, r - divisor);
 
       return (q, r);
     }
@@ -48,17 +48,17 @@ namespace Flux
     /// <para><see href="https://en.wikipedia.org/wiki/Modulo"/></para>
     /// <para><see href="https://stackoverflow.com/a/20638659/3178666"/></para>
     /// </summary>
-    /// <typeparam name="TNumber"></typeparam>
+    /// <typeparam name="TInteger"></typeparam>
     /// <param name="dividend"></param>
     /// <param name="divisor"></param>
     /// <returns></returns>
-    public static (TNumber Quotient, TNumber Remainder) DivModFloor<TNumber>(this TNumber dividend, TNumber divisor)
-      where TNumber : System.Numerics.IBinaryInteger<TNumber>
+    public static (TInteger Quotient, TInteger Remainder) DivModFloor<TInteger>(this TInteger dividend, TInteger divisor)
+      where TInteger : System.Numerics.IBinaryInteger<TInteger>
     {
-      var (q, r) = TNumber.DivRem(dividend, divisor);
+      var (q, r) = TInteger.DivRem(dividend, divisor);
 
-      if ((r > TNumber.Zero && TNumber.IsNegative(divisor)) || (TNumber.IsNegative(r) && divisor > TNumber.Zero))
-        return (q - TNumber.One, r + divisor);
+      if ((r > TInteger.Zero && TInteger.IsNegative(divisor)) || (TInteger.IsNegative(r) && divisor > TInteger.Zero))
+        return (q - TInteger.One, r + divisor);
 
       return (q, r);
     }
