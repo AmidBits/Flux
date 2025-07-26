@@ -3,7 +3,7 @@ namespace Flux
   public static class GenericMath // (or BinaryInteger)
   {
     extension<TInteger>(TInteger n)
-      where TNumber : System.Numerics.IBinaryInteger<TNumber>
+      where TInteger : System.Numerics.IBinaryInteger<TInteger>
     {
       /// <summary>
       /// <para>The binomial coefficients are the positive integers that occur as coefficients in the binomial theorem. Commonly, a binomial coefficient is indexed by a pair of integers "n >= k >= 0".</para>
@@ -23,26 +23,26 @@ namespace Flux
       /// <returns></returns>
       public TInteger BinomialCoefficient(TInteger k)
       {
-        //if (TNumber.IsNegative(k) || k > n) return TNumber.Zero; // (k < 0 || k > n) = 0
-        //else if (TNumber.IsZero(k) || k == n) return TNumber.One; // (k == 0 || k == n) = 1
+        //if (TInteger.IsNegative(k) || k > n) return TInteger.Zero; // (k < 0 || k > n) = 0
+        //else if (TInteger.IsZero(k) || k == n) return TInteger.One; // (k == 0 || k == n) = 1
   
-        if (k > TNumber.Zero && k < n) // 0 < k < n
+        if (k > TInteger.Zero && k < n) // 0 < k < n
           checked
           {
-            k = TNumber.Min(k, n - k); // Optimize for the loop below.
+            k = TInteger.Min(k, n - k); // Optimize for the loop below.
   
-            var c = TNumber.One;
+            var c = TInteger.One;
   
-            for (var i = TNumber.One; i <= k; i++)
+            for (var i = TInteger.One; i <= k; i++)
               c = c * (n - k + i) / i;
             //c = c * n-- / i;
   
             return c;
           }
-        else if (k.Equals(TNumber.Zero) || k.Equals(n))
-          return TNumber.One; // 1 if (k == 0 || k == n)
+        else if (k.Equals(TInteger.Zero) || k.Equals(n))
+          return TInteger.One; // 1 if (k == 0 || k == n)
   
-        return TNumber.Zero; // 0 if (k < 0 || k > n)
+        return TInteger.Zero; // 0 if (k < 0 || k > n)
       }
     }
   }
