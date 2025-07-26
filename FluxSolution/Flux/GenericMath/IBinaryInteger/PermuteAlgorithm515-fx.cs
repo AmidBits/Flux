@@ -30,7 +30,7 @@ namespace Flux
     /// [2, 3, 4]
     /// ]]></code>
     /// </summary>
-    /// <typeparam name="TNumber"></typeparam>
+    /// <typeparam name="TInteger"></typeparam>
     /// <param name="alphabetLength">The size (N) of the entire set.</param>
     /// <param name="combinationLength">The subset size (K).</param>
     /// <param name="lexiographicalIndex">The 1-based index of the subset (or index array) to generate.</param>
@@ -39,42 +39,42 @@ namespace Flux
     /// <para>Note that <paramref name="lexiographicalIndex"/> is 1-based.</para>
     /// <para>The <paramref name="alphabetLength"/> is the <see langword="this"/> argument for the extension method.</para>
     /// </remarks>
-    public static TNumber[] PermuteAlgorithm515<TNumber>(this TNumber alphabetLength, TNumber combinationLength, TNumber lexiographicalIndex)
-       where TNumber : System.Numerics.IBinaryInteger<TNumber>
+    public static TInteger[] PermuteAlgorithm515<TInteger>(this TInteger alphabetLength, TInteger combinationLength, TInteger lexiographicalIndex)
+       where TInteger : System.Numerics.IBinaryInteger<TInteger>
     {
-      var c = new TNumber[int.CreateChecked(combinationLength)];
-      var x = TNumber.One;
-      var r = (alphabetLength - x).BinomialCoefficient(combinationLength - TNumber.One);
+      var c = new TInteger[int.CreateChecked(combinationLength)];
+      var x = TInteger.One;
+      var r = (alphabetLength - x).BinomialCoefficient(combinationLength - TInteger.One);
       var k = r;
 
       while (k <= lexiographicalIndex)
       {
-        x += TNumber.One;
-        r = (alphabetLength - x).BinomialCoefficient(combinationLength - TNumber.One);
+        x += TInteger.One;
+        r = (alphabetLength - x).BinomialCoefficient(combinationLength - TInteger.One);
         k += r;
       }
       k -= r;
-      c[0] = x - TNumber.One;
+      c[0] = x - TInteger.One;
 
-      for (var i = TNumber.CreateChecked(2); i < combinationLength; i++)
+      for (var i = TInteger.CreateChecked(2); i < combinationLength; i++)
       {
-        x += TNumber.One;
+        x += TInteger.One;
         r = (alphabetLength - x).BinomialCoefficient(combinationLength - i);
         k += r;
 
         while (k <= lexiographicalIndex)
         {
-          x += TNumber.One;
+          x += TInteger.One;
           r = (alphabetLength - x).BinomialCoefficient(combinationLength - i);
           k += r;
         }
 
         k -= r;
 
-        c[int.CreateChecked(i - TNumber.One)] = x - TNumber.One;
+        c[int.CreateChecked(i - TInteger.One)] = x - TInteger.One;
       }
 
-      c[int.CreateChecked(combinationLength - TNumber.One)] = x + lexiographicalIndex - k;
+      c[int.CreateChecked(combinationLength - TInteger.One)] = x + lexiographicalIndex - k;
 
       return c;
     }
