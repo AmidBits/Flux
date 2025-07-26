@@ -7,19 +7,19 @@ namespace Flux
     /// <para><see href="https://en.wikipedia.org/wiki/Factorial"/></para>
     /// </summary>
     /// <remarks>This plain-and-simple iterative version is faster with numbers smaller than 200 or so, but is significantly slower than <see cref="SplitFactorial{TValue}(TValue)"/> on larger numbers.</remarks>
-    /// <typeparam name="TNumber"></typeparam>
+    /// <typeparam name="TInteger"></typeparam>
     /// <param name="value"></param>
     /// <returns></returns>
-    public static TNumber Factorial<TNumber>(this TNumber value)
-    where TNumber : System.Numerics.IBinaryInteger<TNumber>
+    public static TInteger Factorial<TInteger>(this TInteger value)
+    where TInteger : System.Numerics.IBinaryInteger<TInteger>
     {
-      if (TNumber.IsNegative(value))
-        return -Factorial(TNumber.Abs(value));
+      if (TInteger.IsNegative(value))
+        return -Factorial(TInteger.Abs(value));
 
-      if (value <= TNumber.One)
-        return TNumber.One;
+      if (value <= TInteger.One)
+        return TInteger.One;
 
-      var f = TNumber.One;
+      var f = TInteger.One;
 
       if (value > f)
         for (var m = f + f; m <= value; m++)
@@ -34,29 +34,29 @@ namespace Flux
     /// <para><see href="http://www.luschny.de/math/factorial/csharp/FactorialSplit.cs.html"/></para>
     /// </summary>
     /// <remarks>This divide-and-conquer version is faster with numbers larger than 200 or so, but is slower than <see cref="Factorial{TValue}(TValue)"/> on smaller numbers.</remarks>
-    /// <typeparam name="TNumber"></typeparam>
+    /// <typeparam name="TInteger"></typeparam>
     /// <param name="value"></param>
     /// <returns></returns>
-    public static TNumber SplitFactorial<TNumber>(this TNumber value)
-      where TNumber : System.Numerics.IBinaryInteger<TNumber>
+    public static TInteger SplitFactorial<TInteger>(this TInteger value)
+      where TInteger : System.Numerics.IBinaryInteger<TInteger>
     {
-      if (TNumber.IsNegative(value))
-        return -SplitFactorial(TNumber.Abs(value));
+      if (TInteger.IsNegative(value))
+        return -SplitFactorial(TInteger.Abs(value));
 
-      if (value <= TNumber.One)
-        return TNumber.One;
+      if (value <= TInteger.One)
+        return TInteger.One;
 
-      var two = (TNumber.One + TNumber.One);
+      var two = (TInteger.One + TInteger.One);
 
-      var p = TNumber.One;
-      var r = TNumber.One;
-      var currentN = TNumber.One;
+      var p = TInteger.One;
+      var r = TInteger.One;
+      var currentN = TInteger.One;
 
-      var h = TNumber.Zero;
-      var shift = TNumber.Zero;
-      var high = TNumber.One;
+      var h = TInteger.Zero;
+      var shift = TInteger.Zero;
+      var high = TInteger.One;
 
-      var log2n = int.CreateChecked(TNumber.Log2(value));
+      var log2n = int.CreateChecked(TInteger.Log2(value));
 
       checked
       {
@@ -65,10 +65,10 @@ namespace Flux
           shift += h;
           h = value >>> log2n--;
           var len = high;
-          high = (h - TNumber.One) | TNumber.One;
+          high = (h - TInteger.One) | TInteger.One;
           len = (high - len) >>> 1;
 
-          if (len > TNumber.Zero)
+          if (len > TInteger.Zero)
           {
             p *= Product(len);
             r *= p;
@@ -78,12 +78,12 @@ namespace Flux
         return r << int.CreateChecked(shift);
       }
 
-      TNumber Product(TNumber n)
+      TInteger Product(TInteger n)
       {
         checked
         {
           var m = (n >> 1);
-          if (TNumber.IsZero(m)) return (currentN += two);
+          if (TInteger.IsZero(m)) return (currentN += two);
           if (n == two) return (currentN += two) * (currentN += two);
           return Product(n - m) * Product(m);
         }
