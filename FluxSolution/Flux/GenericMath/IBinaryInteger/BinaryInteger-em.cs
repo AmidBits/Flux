@@ -44,6 +44,22 @@ namespace Flux
   
         return TInteger.Zero; // 0 if (k < 0 || k > n)
       }
+
+      public static TInteger CombinationsWithRepeats<TInteger>(this TInteger totalCount, TInteger combinationCount)
+        where TInteger : System.Numerics.IBinaryInteger<TInteger>
+	    => Factorial(combinationCount + totalCount - TInteger.One) / (Factorial(combinationCount) * Factorial(totalCount - TInteger.One));
+    
+	    public static TInteger CombinationsWithoutRepeats<TInteger>(this TInteger totalCount, TInteger combinationCount)
+        where TInteger : System.Numerics.IBinaryInteger<TInteger>
+      => BinomialCoefficient(totalCount, combinationCount);
+
+	    public static TInteger PermutationsWithRepeats<TInteger>(this TInteger totalCount, TInteger permutationCount)
+        where TInteger : System.Numerics.IBinaryInteger<TInteger>
+      => TInteger.CreateChecked(System.Numerics.BigInteger.Pow(System.Numerics.BigInteger.CreateChecked(totalCount), int.CreateChecked(permutationCount)));
+
+      public static TInteger PermutationsWithoutRepeats<TInteger>(this TInteger totalCount, TInteger permutationCount)
+        where TInteger : System.Numerics.IBinaryInteger<TInteger>
+      => Factorial(totalCount) / Factorial(totalCount - permutationCount);
     }
   }
 }
