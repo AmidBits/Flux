@@ -119,19 +119,21 @@ namespace Flux.Combinations
     //  return c;
     //}
 
-    public static void CombinationCountAlgorithm515(this System.Span<int> source, int alphabetLength)
-      => alphabetLength.BinomialCoefficient(source.Length);
+    public static TInteger Count<TInteger>(TInteger alphabetLength, TInteger combinationLength)
+      where TInteger : System.Numerics.IBinaryInteger<TInteger>
+      => alphabetLength.BinomialCoefficient(combinationLength);
 
-    public static void CombinationNextAlgorithm515(this System.Span<int> source, int alphabetLength, int lexiographicIndex)
+	  /*
+    public static void CombinationAt(System.Span<int> originalCombination, int alphabetLength, int lexiographicIndex)
     {
       var x = 1;
-      var r = (alphabetLength - x).BinomialCoefficient(source.Length - 1);
+      var r = Count(alphabetLength - x, originalCombination.Length - 1);
       var k = r;
       
       while (k <= lexiographicIndex)
       {
         x += 1;
-        r = (alphabetLength - x).BinomialCoefficient(source.Length - 1);
+        r = Count(alphabetLength - x, originalCombination.Length - 1);
         k += r;
       }
 
@@ -142,41 +144,42 @@ namespace Flux.Combinations
       for (var i = 2; i < source.Length; i++)
       {
         x += 1;
-        r = (alphabetLength - x).BinomialCoefficient(source.Length - i);
+        r = Count(alphabetLength - x, originalCombination.Length - i);
         k += r;
 
         while (k <= lexiographicIndex)
         {
           x += 1;
-          r = (alphabetLength - x).BinomialCoefficient(source.Length - i);
+          r = Count(alphabetLength - x, originalCombination.Length - i);
           k += r;
         }
 
         k -= r;
 
-        source[i - 1] = x - 1;
+        originalCombination[i - 1] = x - 1;
       }
 
-      source[source.Length - 1] = x + lexiographicIndex - k;
+      source[originalCombination.Length - 1] = x + lexiographicIndex - k;
     }
 
-    public static void CombinationResetAlgorithm515(this System.Span<int> source)
+    public static void Reset(System.Span<int> source)
     {
       for(var index = source.Length - 1; index >= 0; index--)
         source[index] = index;
     }
+	  */
 
-    public static void CombinationFillAlgorithm515<TNumber>(this TNumber alphabetLength, TNumber combinationLength, TNumber lexiographicIndex, ref TNumber[] combinationArray)
+    public static void Create<TNumber>(TNumber alphabetLength, TNumber combinationLength, TNumber lexiographicIndex, ref TNumber[] combinationArray)
        where TNumber : System.Numerics.IBinaryInteger<TNumber>
     {
       var x = TNumber.One;
-      var r = (alphabetLength - x).BinomialCoefficient(combinationLength - TNumber.One);
+      var r = Count(alphabetLength - x, combinationLength - TNumber.One);
       var k = r;
 
       while (k <= lexiographicIndex)
       {
-        x += TNumber.One;
-        r = (alphabetLength - x).BinomialCoefficient(combinationLength - TNumber.One);
+        x++;
+        r = Count(alphabetLength - x, combinationLength - TNumber.One);
         k += r;
       }
 
@@ -186,14 +189,14 @@ namespace Flux.Combinations
 
       for (var i = TNumber.CreateChecked(2); i < combinationLength; i++)
       {
-        x += TNumber.One;
-        r = (alphabetLength - x).BinomialCoefficient(combinationLength - i);
+        x++;
+        r = Count(alphabetLength - x, combinationLength - i);
         k += r;
 
         while (k <= lexiographicIndex)
         {
-          x += TNumber.One;
-          r = (alphabetLength - x).BinomialCoefficient(combinationLength - i);
+          x++;
+          r = Count(alphabetLength - x, combinationLength - i);
           k += r;
         }
 
