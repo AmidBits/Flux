@@ -1,7 +1,7 @@
 namespace Flux.Permutations
 {
   /// <summary>
-  /// <para>Knuth's "algorithm L" generates all possible permutations of n objects in lexiographical order.</para>
+  /// <para>Knuth's "algorithm L" generates all possible permutations (without repeats) of n objects in lexiographical order.</para>
   /// <para><seealso href="https://en.wikipedia.org/wiki/Permutation"/></para>
   /// <para><seealso href="https://www-cs-faculty.stanford.edu/~knuth/"/></para>
   /// </summary>
