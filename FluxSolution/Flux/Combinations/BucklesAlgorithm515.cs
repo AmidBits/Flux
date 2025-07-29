@@ -1,7 +1,7 @@
 namespace Flux.Combinations
 {
 	/// <summary>
-	/// <para>Find the permutation for a <paramref name="lexiographicIndex"/> of a subset with <paramref name="combinationLength"/> (P) elements, in a set with <paramref name="alphabetLength"/> (N) elements.</para>
+	/// <para>Find the combination (without repeats) for a <paramref name="lexiographicIndex"/> of a subset with <paramref name="combinationLength"/> (P) elements, in a set with <paramref name="alphabetLength"/> (N) elements.</para>
 	/// <para>Selects a subset of order <paramref name="combinationLength"/> (P) from a set of order <paramref name="alphabetLength"/> (N). This subroutine finds the combination set of <paramref name="alphabetLength"/> (N) things taken <paramref name="combinationLength"/> (P) at a time for a given <paramref name="lexiographicIndex"/>.</para>
 	/// <para><seealso href="https://github.com/sleeepyjack/alg515"/></para>
 	/// <para><seealso href="https://stackoverflow.com/questions/561/how-to-use-combinations-of-sets-as-test-data#794"/></para>
