@@ -169,25 +169,25 @@ namespace Flux.Combinations
     }
 	  */
 
-    public static void Create<TNumber>(TNumber alphabetLength, TNumber combinationLength, TNumber lexiographicIndex, ref TNumber[] combinationArray)
-       where TNumber : System.Numerics.IBinaryInteger<TNumber>
+    public static void Create<TNumber>(TInteger alphabetLength, TInteger combinationLength, TInteger lexiographicIndex, ref TInteger[] combinationArray)
+       where TInteger : System.Numerics.IBinaryInteger<TInteger>
     {
-      var x = TNumber.One;
-      var r = Count(alphabetLength - x, combinationLength - TNumber.One);
+      var x = TInteger.One;
+      var r = Count(alphabetLength - x, combinationLength - TInteger.One);
       var k = r;
 
       while (k <= lexiographicIndex)
       {
         x++;
-        r = Count(alphabetLength - x, combinationLength - TNumber.One);
+        r = Count(alphabetLength - x, combinationLength - TInteger.One);
         k += r;
       }
 
       k -= r;
 
-      combinationArray[0] = x - TNumber.One;
+      combinationArray[0] = x - TInteger.One;
 
-      for (var i = TNumber.CreateChecked(2); i < combinationLength; i++)
+      for (var i = TInteger.CreateChecked(2); i < combinationLength; i++)
       {
         x++;
         r = Count(alphabetLength - x, combinationLength - i);
@@ -202,10 +202,10 @@ namespace Flux.Combinations
 
         k -= r;
 
-        combinationArray[int.CreateChecked(i - TNumber.One)] = x - TNumber.One;
+        combinationArray[int.CreateChecked(i - TInteger.One)] = x - TInteger.One;
       }
 
-      combinationArray[int.CreateChecked(combinationLength - TNumber.One)] = x + lexiographicIndex - k;
+      combinationArray[int.CreateChecked(combinationLength - TInteger.One)] = x + lexiographicIndex - k;
     }
   }
 }
