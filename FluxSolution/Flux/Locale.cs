@@ -1,3 +1,24 @@
+/*
+		System.Numerics.BigInteger n = 10;
+		System.Numerics.BigInteger r = 3;
+
+		System.Console.WriteLine($"Permutations with repetitions: {System.Numerics.BigInteger.Pow(n, (int)r)}");
+
+		n = 16;
+		r = 3;
+		
+		System.Console.WriteLine($"Permutations without repetitions: {Factorial(n) / Factorial(n - r)}");
+		
+		n = 16;
+		r = 3;
+		
+		System.Console.WriteLine($"Combinations without repetitions: {BinomialCoefficient(n, r)}");
+		
+		n = 5;
+		r = 3;
+		
+		System.Console.WriteLine($"Combinations with repetitions: {Factorial(r + n - 1) / (Factorial(r) * Factorial(n - 1))}");
+*/
 namespace Flux
 {
   public static class Locale
