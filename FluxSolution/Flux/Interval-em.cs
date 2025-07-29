@@ -168,9 +168,23 @@
     /// <typeparam name="T"></typeparam>
     /// <param name="source"></param>
     /// <returns></returns>
-    public static (T Offset, T Length) GetOffsetAndLength<T>(this Interval<T> source)
+    public static (T Offset, T Length) GetOffsetAndLength<T>(this Interval<T> source, IntervalNotation intervalNotation = IntervalNotation.Closed)
       where T : System.Numerics.IBinaryInteger<T>
-      => (source.MinValue, source.MaxValue - source.MinValue + T.One);
+      {
+        var index = int.CreateChecked(source.MinValue);
+        var length = int.CreateChecked(source.MaxValue - source.MinValue);
+        
+        if(intervalNotation is IntervalNotation.HalfOpenLeft or IntervalNotation.Open)
+          index++;
+        
+        if(intervalNotation == IntervalNotation.Closed)
+          length++;
+        else if(intervalNotation == IntervalNotation.Open)
+          length--;
+
+        return (index, length);
+      }
+      //=> (source.MinValue, source.MaxValue - source.MinValue + T.One);
 
     /// <summary>
     /// <para></para>
