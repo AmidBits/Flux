@@ -196,6 +196,9 @@
       {
         var rangeStartIndex = int.CreateChecked(source.MinValue);
         var rangeEndIndex = int.CreateChecked(source.MaxValue);
+
+        if(intervalNotation == IntervalNotation.Open && (rangeEndIndex - rangeStartIndex) == 1)
+          throw new System.ArgumentOutOfRangeException();
         
         if(intervalNotation is IntervalNotation.HalfOpenLeft or IntervalNotation.Open)
           rangeStartIndex++;
@@ -217,14 +220,19 @@
       {
         var sliceIndex = int.CreateChecked(source.MinValue);
         var sliceLength = int.CreateChecked(source.MaxValue - source.MinValue);
-        
+
         if(intervalNotation is IntervalNotation.HalfOpenLeft or IntervalNotation.Open)
           sliceIndex++;
         
         if(intervalNotation == IntervalNotation.Closed)
           sliceLength++;
         else if(intervalNotation == IntervalNotation.Open)
+        {
+          if(sliceLength == 1)
+            throw new System.ArgumentOutOfRangeException();
+
           sliceLength--;
+        }
 
         return new(sliceIndex, sliceLength);
       }
