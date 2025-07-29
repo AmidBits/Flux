@@ -180,7 +180,18 @@
     /// <returns></returns>
     public static System.Range ToRange<T>(this Interval<T> source)
       where T : System.Numerics.IBinaryInteger<T>
-      => new(new(int.CreateChecked(source.MinValue)), new(int.CreateChecked(source.MinValue + (source.MaxValue - source.MinValue - T.One))));
+      {
+        var rangeStartIndex = int.CreateChecked(source.MinValue);
+        var rangeEndIndex = int.CreateChecked(source.MaxValue);
+        
+        if(intervalNotation is IntervalNotation.HalfOpenLeft or IntervalNotation.Open)
+          rangeStartIndex++;
+        
+        if(intervalNotation is IntervalNotation.HalfOpenRight or IntervalNotation.Open)
+          rangeEndIndex--;
+
+        return new(rangeStartIndex, rangeEndIndex);
+      }
 
     /// <summary>
     /// <para></para>
@@ -188,9 +199,22 @@
     /// <typeparam name="T"></typeparam>
     /// <param name="source"></param>
     /// <returns></returns>
-    public static Slice ToSlice<T>(this Interval<T> source)
+    public static Slice ToSlice<T>(this Interval<T> source, IntervalNotation intervalNotation = IntervalNotation.Closed)
       where T : System.Numerics.IBinaryInteger<T>
-      => new(int.CreateChecked(source.MinValue), int.CreateChecked(source.MaxValue - source.MinValue + T.One));
+      {
+        var sliceIndex = int.CreateChecked(source.MinValue);
+        var sliceLength = int.CreateChecked(source.MaxValue - source.MinValue);
+        
+        if(intervalNotation is IntervalNotation.HalfOpenLeft or IntervalNotation.Open)
+          sliceIndex++;
+        
+        if(intervalNotation == IntervalNotation.Closed)
+          sliceLength++;
+        else if(intervalNotation == IntervalNotation.Open)
+          sliceLength--;
+
+        return new(sliceIndex, sliceLength);
+      }
 
     /// <summary>
     /// <para></para>
