@@ -171,8 +171,8 @@
     public static (T Offset, T Length) GetOffsetAndLength<T>(this Interval<T> source, IntervalNotation intervalNotation = IntervalNotation.Closed)
       where T : System.Numerics.IBinaryInteger<T>
       {
-        var index = int.CreateChecked(source.MinValue);
-        var length = int.CreateChecked(source.MaxValue - source.MinValue);
+        var index = source.MinValue;
+        var length = source.MaxValue - source.MinValue;
         
         if(intervalNotation is IntervalNotation.HalfOpenLeft or IntervalNotation.Open)
           index++;
@@ -184,7 +184,6 @@
 
         return (index, length);
       }
-      //=> (source.MinValue, source.MaxValue - source.MinValue + T.One);
 
     /// <summary>
     /// <para></para>
