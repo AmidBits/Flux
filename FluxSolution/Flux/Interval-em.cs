@@ -178,7 +178,7 @@
     /// <typeparam name="T"></typeparam>
     /// <param name="source"></param>
     /// <returns></returns>
-    public static System.Range ToRange<T>(this Interval<T> source)
+    public static System.Range ToRange<T>(this Interval<T> source, IntervalNotation intervalNotation = IntervalNotation.Closed)
       where T : System.Numerics.IBinaryInteger<T>
       {
         var rangeStartIndex = int.CreateChecked(source.MinValue);
