@@ -9,12 +9,12 @@ namespace Flux.Combinations
 	/// <code><![CDATA[
 	/// var(n, p) = (5, 3);
 	/// 
-	/// var nCp = n.BinomialCoefficient(p);
+	/// var nCp = n.BinomialCoefficient(p); // BucklesAlgorithm515.Count(n, p);
 	/// 
 	/// System.Console.WriteLine($"# of distinct combinations: {nCp}");
 	/// 
 	/// foreach (var l in System.Linq.Enumerable.Range(0, nCp))
-	///   System.Console.WriteLine($"{l} : [{string.Join(", ", n.PermuteAlgorithm515b(p, l))}]");
+	///   System.Console.WriteLine($"{l} : [{string.Join(", ", n.PermuteAlgorithm515b(p, l))}]"); // BucklesAlgorithm515.Create(n, p, l, ref arrayOf3);
 	///   
 	/// # of distinct combinations: 10
 	/// [0, 1, 2]
