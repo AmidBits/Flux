@@ -182,6 +182,9 @@
         else if(intervalNotation == IntervalNotation.Open)
           length--;
 
+        if (T.IsZero(length))
+          throw new System.InvalidOperationException();
+        
         return (index, length);
       }
 
@@ -194,19 +197,9 @@
     public static System.Range ToRange<T>(this Interval<T> source, IntervalNotation intervalNotation = IntervalNotation.Closed)
       where T : System.Numerics.IBinaryInteger<T>
       {
-        var rangeStartIndex = int.CreateChecked(source.MinValue);
-        var rangeEndIndex = int.CreateChecked(source.MaxValue);
+        var (index, length) = source.GetOffsetAndLength(intervalNotation);
 
-        if(intervalNotation == IntervalNotation.Open && (rangeEndIndex - rangeStartIndex) == 1)
-          throw new System.ArgumentOutOfRangeException();
-        
-        if(intervalNotation is IntervalNotation.HalfOpenLeft or IntervalNotation.Open)
-          rangeStartIndex++;
-        
-        if(intervalNotation is IntervalNotation.HalfOpenRight or IntervalNotation.Open)
-          rangeEndIndex--;
-
-        return new(rangeStartIndex, rangeEndIndex);
+        return new(int.CreateChecked(index), int.CreateChecked(index + length) - 1);
       }
 
     /// <summary>
@@ -218,23 +211,9 @@
     public static Slice ToSlice<T>(this Interval<T> source, IntervalNotation intervalNotation = IntervalNotation.Closed)
       where T : System.Numerics.IBinaryInteger<T>
       {
-        var sliceIndex = int.CreateChecked(source.MinValue);
-        var sliceLength = int.CreateChecked(source.MaxValue - source.MinValue);
+        var (index, length) = source.GetOffsetAndLength(intervalNotation);
 
-        if(intervalNotation is IntervalNotation.HalfOpenLeft or IntervalNotation.Open)
-          sliceIndex++;
-        
-        if(intervalNotation == IntervalNotation.Closed)
-          sliceLength++;
-        else if(intervalNotation == IntervalNotation.Open)
-        {
-          if(sliceLength == 1)
-            throw new System.ArgumentOutOfRangeException();
-
-          sliceLength--;
-        }
-
-        return new(sliceIndex, sliceLength);
+        return new(int.CreateChecked(index), int.CreateChecked(length));
       }
 
     /// <summary>
