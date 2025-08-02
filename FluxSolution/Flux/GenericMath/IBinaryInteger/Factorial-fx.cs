@@ -2,6 +2,28 @@ namespace Flux
 {
   public static partial class GenericMath
   {
+    // Fix summary, this enables running factorial from value down to a threshold. Prevents double factorial runs for certain scenarios.
+  	public static TInteger Factorial<TInteger>(this TInteger value, TInteger threshold)
+      where TInteger : System.Numerics.IBinaryInteger<TInteger>
+    {
+      if (TInteger.IsNegative(value))
+        return -Factorial(TInteger.Abs(value), threshold);
+  
+      if (value <= TInteger.One)
+        return TInteger.One;
+  
+      if (threshold < TInteger.One)
+      threshold = TInteger.One;
+    
+      var f = threshold;
+  
+      if (value > f)
+        for (var m = value; m > threshold; m--)
+          f *= m;
+  
+      return f;
+    }
+
     /// <summary>
     /// <para>Compute the factorial of the <paramref name="value"/>.</para>
     /// <para><see href="https://en.wikipedia.org/wiki/Factorial"/></para>
