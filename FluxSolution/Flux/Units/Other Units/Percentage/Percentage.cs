@@ -13,7 +13,7 @@
 
     #region Static methods
 
-    public static Percentage ConvertToInversePercentage(Percentage p)
+    public static Percentage ConvertToReversePercentage(Percentage p)
       => new (double.Abs(p.m_value) / (p.m_value + 1));
 
     public static Percentage Parse(System.ReadOnlySpan<char> source, int? significantDigits = null, UniversalRounding mode = UniversalRounding.HalfToEven, System.Globalization.CultureInfo? cultureInfo = null)
