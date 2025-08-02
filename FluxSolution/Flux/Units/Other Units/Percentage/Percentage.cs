@@ -67,13 +67,15 @@
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? formatProvider)
     {
-      format ??= double.IsInteger(m_value * 100) ? "P0" : "P";
+      var percentage = m_value * 100;
+
+      format ??= double.IsInteger(percentage) ? "P0" : "P";
       formatProvider ??= System.Globalization.CultureInfo.CurrentCulture;
 
       if (format.StartsWith('P'))
         return m_value.ToString(format, formatProvider);
       else
-        return (m_value * 100).ToString(format, formatProvider) + '%';
+        return percentage.ToString(format, formatProvider) + '%';
     }
 
     #region IValueQuantifiable<>
