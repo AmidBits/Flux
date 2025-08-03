@@ -59,7 +59,7 @@ namespace Flux
 
       public static TInteger PermutationsWithoutRepeats<TInteger>(TInteger totalCount, TInteger permutationCount)
         where TInteger : System.Numerics.IBinaryInteger<TInteger>
-      => Factorial(totalCount) / Factorial(totalCount - permutationCount);
+      => FactorialRange(totalCount, totalCount - permutationCount);
     }
   }
 }
