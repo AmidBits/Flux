@@ -157,9 +157,9 @@ namespace Flux.Combinations
     //  return c;
     //}
 
-    public static TInteger Count<TInteger>(TInteger alphabetLength, TInteger combinationLength)
+    public static TInteger CountCombinations<TInteger>(TInteger alphabetLength, TInteger combinationLength)
       where TInteger : System.Numerics.IBinaryInteger<TInteger>
-      => alphabetLength.BinomialCoefficient(combinationLength);
+    => alphabetLength.BinomialCoefficient(combinationLength);
 
 	  /*
     public static void CombinationAt(System.Span<int> originalCombination, int alphabetLength, int lexiographicIndex)
@@ -207,9 +207,11 @@ namespace Flux.Combinations
     }
 	  */
 
-    public static void Create<TNumber>(TInteger alphabetLength, TInteger combinationLength, TInteger lexiographicIndex, ref TInteger[] combinationArray)
+    public static void CreateIndices<TInteger>(System.Span<TInteger> combinationArray, TInteger alphabetLength, TInteger lexiographicIndex)
        where TInteger : System.Numerics.IBinaryInteger<TInteger>
     {
+      var combinationLength = TInteger.CreateChecked(combinationArray.Length);
+
       var x = TInteger.One;
       var r = Count(alphabetLength - x, combinationLength - TInteger.One);
       var k = r;
