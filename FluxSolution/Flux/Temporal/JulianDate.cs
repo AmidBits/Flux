@@ -21,6 +21,9 @@ namespace Flux.Temporal
     public JulianDate(int year, int month, int day, int hour, int minute, int second, int millisecond, int microsecond, int nanosecond, TemporalCalendar calendar)
       : this(JulianDayNumber.ConvertDatePartsToJulianDayNumber(year, month, day, calendar) + ConvertTimePartsToTimeOfDay(hour, minute, second, millisecond, microsecond, nanosecond)) { }
 
+    /// <summary>The number of days since the beginning of the Gregorian calendar on October 15, 1582, regarded as Lilian date 1.</summary>
+    public int LilianDate => checked((int)double.Floor(m_value - 2299159.5));
+
     public JulianDate AddDays(int days) => this + days;
     public JulianDate AddHours(int hours) => this + (hours / 24d);
     public JulianDate AddMinutes(int minutes) => this + (minutes / 1440d);
