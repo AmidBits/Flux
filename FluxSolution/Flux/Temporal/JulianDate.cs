@@ -9,6 +9,7 @@ namespace Flux.Temporal
   public readonly record struct JulianDate
     : System.IComparable, System.IComparable<JulianDate>, System.IFormattable, Units.IValueQuantifiable<double>
   {
+    // 8 AD = 1724040 JDN
     public static readonly JulianDate GregorianCalendarEpoch = new(2299160.5); // 1582/10/15 (midnight)
     public static readonly JulianDate JulianCalendarEpoch = new(1718501.5); // -0007/01/01 (midnight)
 
