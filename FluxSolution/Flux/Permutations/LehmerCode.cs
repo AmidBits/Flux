@@ -2,13 +2,13 @@ namespace Flux.Permutations
 {
   public static class LehmerCode
   {
-  	public static System.Collections.Generic.List<T> NthPermutation<T>(T[] atoms, int index, int size)
+  	public static System.Collections.Generic.List<T> NthPermutation<T>(T[] atoms, int permutationIndex, int permutationLength)
   	{
   		var result = new System.Collections.Generic.List<T>();
-  		for (var i = 0; i < size; i++)
+  		for (var i = 0; i < permutationLength; i++)
   		{
-  			var item = index % atoms.Length;
-  			index /= atoms.Length;
+  			var item = permutationIndex % atoms.Length;
+  			permutationIndex /= atoms.Length;
   			result.Add(atoms[item]);
   			RemoveInPlace(ref atoms, item, 1);
   		}
