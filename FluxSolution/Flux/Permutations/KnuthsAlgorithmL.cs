@@ -76,7 +76,7 @@ namespace Flux.Permutations
       return true;
     }
 
-    public static bool Next(System.Span<int> source)
+    public static bool MoveNext(System.Span<int> source)
     {
       // Knuths
       // 1. Find the largest index j such that a[j] < a[j + 1]. If no such index exists, the permutation is the last permutation.
