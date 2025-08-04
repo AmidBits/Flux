@@ -21,7 +21,10 @@
   		Reset();
   	}
   
-  	public T[] Current => m_stackData;
+  	public T[] Current()
+      => m_stackIndex < 0 || m_stackIndex >= m_stackState.Length
+      ? throw new System.InvalidOperationException()
+      : m_stackData;
   
   	public bool MoveNext()
   	{
@@ -64,9 +67,8 @@
   
       System.Array.Fill(m_stackState, default);
     }
-  
-  	
-  	public static System.Collections.Generic.IEnumerable<T[]> GetPermutations(T[] data)
+
+    public static System.Collections.Generic.IEnumerable<T[]> GetPermutations(T[] data)
   	{
   		var ha = new HeapsAlgorithm<T>(data);
   
