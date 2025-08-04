@@ -21,12 +21,12 @@
   		Reset();
   	}
   
-  	public T[] Current()
+    public T[] Current()
       => m_stackIndex < 0 || m_stackIndex >= m_stackState.Length
       ? throw new System.InvalidOperationException()
       : m_stackData;
-  
-  	public bool MoveNext()
+
+    public bool MoveNext()
   	{
   		if(m_stackIndex == -1)
   		{
