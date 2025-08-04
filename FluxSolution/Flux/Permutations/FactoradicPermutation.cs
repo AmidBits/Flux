@@ -2,7 +2,7 @@ namespace Flux
 {
   public static partial class FactoradicPermutation
   { 
-  	public static void CreateIndices(int permutationIndex, ref int[] indicesOfFactoradicRepresentation)
+  	public static void CreateIndices(int permutationIndex, System.Span<int> indicesOfFactoradicRepresentation)
   	{
   		var divisor = 1;
   
@@ -15,11 +15,9 @@ namespace Flux
   
   			divisor *= place;
   		}
+   	}
   
-  		//System.Console.WriteLine($"{string.Join(",", indicesOfFactoradicRepresentation)}");
-  	}
-  
-  	public static void PermuteValues<T>(T[] values, System.ReadOnlySpan<int> indicesOfFactoradicRepresentation)
+  	public static void PermuteValues<T>(System.Span<T> originalValues, System.ReadOnlySpan<int> indicesOfFactoradicRepresentation)
   	{
   		for (var i = 0; i < indicesOfFactoradicRepresentation.Length; i++) // Permute the values array according to the indices.
   		{
@@ -27,12 +25,12 @@ namespace Flux
   
   			if(index != i) // Take the element at index and place it at i, moving the rest up.
   			{
-  				var temp = values[index];
+  				var temp = originalValues[index];
   
   				for(var j = index; j > i; j--)
-  				   values[j] = values[j - 1];
+  				   originalValues[j] = originalValues[j - 1];
   
-  				values[i] = temp;
+  				originalValues[i] = temp;
   			}
   		}
   	}
