@@ -5,6 +5,8 @@ namespace Flux
 
   public static partial class BitOps
   {
+    #region BitFold
+
     /// <summary>
     /// <para>Recursively "folds" all 1-bits into lower (right) bits, by taking the most-significant-1-bits (MS1B) and OR it with (MS1B - 1), ending with bottom (right) bits (from MS1B on) set to 1.</para>
     /// <para>The process yields a bit vector with the same most-significant-1-bit as <paramref name="value"/>, and all 1's below it.</para>
@@ -77,5 +79,6 @@ namespace Flux
 
 #endif
 
+  #endregion
   }
 }
