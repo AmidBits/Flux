@@ -2,6 +2,8 @@ namespace Flux
 {
   public static partial class BitOps
   {
+    #region BitLength
+
     /// <summary>
     /// <para>A bit-count is the number of storage bits for the type <typeparamref name="TBitLength"/>.</para>
     /// </summary>
@@ -43,5 +45,7 @@ namespace Flux
     //public static int GetShortestBitLength<TNumber>(this TNumber source)
     //  where TNumber : System.Numerics.IBinaryInteger<TNumber>
     //  => source.GetShortestBitLength();
+
+    #endregion
   }
 }
