@@ -2,6 +2,8 @@ namespace Flux
 {
   public static partial class BitOps
   {
+    #region Pow2
+
     /// <summary>
     /// <para>Computes the closest power-of-2 in the direction away-from-zero, optionally <paramref name="unequal"/> if <paramref name="value"/> is already a power-of-2.</para>
     /// <example>
@@ -40,5 +42,6 @@ namespace Flux
 
 #endif
 
+  #endregion
   }
 }
