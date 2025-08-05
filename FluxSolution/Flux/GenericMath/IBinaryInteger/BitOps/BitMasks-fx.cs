@@ -2,6 +2,7 @@ namespace Flux
 {
   public static partial class BitOps
   {
+    #region BitMasks
 
     /// <summary>
     /// <para>Get/check the bits of <paramref name="value"/> corresponding with the 1-bits in <paramref name="bitMask"/>.</para>
@@ -164,5 +165,7 @@ namespace Flux
     //public static TValue BitMaskRight<TValue>(this TValue count)
     //  where TValue : System.Numerics.IBinaryInteger<TValue>
     //  => (((TValue.One << (int.CreateChecked(count) - 1)) - TValue.One) << 1) | TValue.One;
+
+    #endregion
   }
 }
