@@ -2,6 +2,8 @@ namespace Flux
 {
   public static partial class BitOps
   {
+    #region Log2
+
     /// <summary>
     /// <para>Computes the ceiling integer-log-2 (a.k.a. ceiling-log-2) of <paramref name="value"/>. The log-2 also serves as the bit (0-based) index + 1 of a power-of-2 <paramref name="value"/>.</para>
     /// </summary>
@@ -40,5 +42,6 @@ namespace Flux
 
 #endif
 
+    #endregion
   }
 }
