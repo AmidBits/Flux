@@ -3,7 +3,7 @@ namespace Flux
 {
   public static partial class Zamples
   {
-    public static void GraphsAdjacencyList()
+    public static void DataStructuresGraphsAdjacencyList()
     {
       var al = new Flux.DataStructures.Graphs.AdjacencyList<int, int>();
 
@@ -33,7 +33,7 @@ namespace Flux
       System.Console.WriteLine(amt.ToConsoleString());
     }
 
-    public static void GraphsAdjacencyMatrix()
+    public static void DataStructuresGraphsAdjacencyMatrix()
     {
       var am = new Flux.DataStructures.Graphs.AdjacencyMatrix<int, int>();
 
