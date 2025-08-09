@@ -35,7 +35,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Compile Update="GenericMath\INumber\WrapAround.cs">
+	  <Compile Update="Numerics\INumber\WrapAround.cs">
 	    <DesignTime>True</DesignTime>
 	    <AutoGen>True</AutoGen>
 	    <DependentUpon>WrapAround.tt</DependentUpon>
@@ -43,7 +43,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <None Update="GenericMath\INumber\WrapAround.tt">
+	  <None Update="Numerics\INumber\WrapAround.tt">
 	    <Generator>TextTemplatingFileGenerator</Generator>
 	    <LastGenOutput>WrapAround.cs</LastGenOutput>
 	  </None>

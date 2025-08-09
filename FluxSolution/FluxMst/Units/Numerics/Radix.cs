@@ -42,15 +42,15 @@ namespace Units
     {
       var expected = new int[] { 1, 0, 1, 0, 0, 0, 1, 1, 1, 0, 1, 1, 0, 1, 0, 0, 0, 0, 1, 0 };
       var actual = 670530.GetDigits(2).ToArray();
-      CollectionAssert.AreEqual(expected, actual, (string)(nameof(Flux.GenericMath.GetDigits) + ".Radix=2"));
+      CollectionAssert.AreEqual(expected, actual, (string)(nameof(Flux.BinaryInteger.GetDigits) + ".Radix=2"));
 
       expected = new int[] { 6, 7, 0, 5, 3, 0 };
       actual = 670530.GetDigits(10).ToArray();
-      CollectionAssert.AreEqual(expected, actual, (string)(nameof(Flux.GenericMath.GetDigits) + ".Radix=10"));
+      CollectionAssert.AreEqual(expected, actual, (string)(nameof(Flux.BinaryInteger.GetDigits) + ".Radix=10"));
 
       expected = new int[] { 10, 3, 11, 4, 2 };
       actual = 670530.GetDigits(16).ToArray();
-      CollectionAssert.AreEqual(expected, actual, (string)(nameof(Flux.GenericMath.GetDigits) + ".Radix=16"));
+      CollectionAssert.AreEqual(expected, actual, (string)(nameof(Flux.BinaryInteger.GetDigits) + ".Radix=16"));
     }
 
     [TestMethod]
@@ -58,15 +58,15 @@ namespace Units
     {
       var expected = new int[] { 0, 1, 0, 0, 0, 0, 1, 0, 1, 1, 0, 1, 1, 1, 0, 0, 0, 1, 0, 1 };
       var actual = 670530.GetDigitsReversed(2).ToArray();
-      CollectionAssert.AreEqual(expected, actual, (string)(nameof(Flux.GenericMath.GetDigits) + ".Radix=2"));
+      CollectionAssert.AreEqual(expected, actual, (string)(nameof(Flux.BinaryInteger.GetDigitsReversed) + ".Radix=2"));
 
       expected = new int[] { 0, 3, 5, 0, 7, 6 };
       actual = 670530.GetDigitsReversed(10).ToArray();
-      CollectionAssert.AreEqual(expected, actual, (string)(nameof(Flux.GenericMath.GetDigits) + ".Radix=10"));
+      CollectionAssert.AreEqual(expected, actual, (string)(nameof(Flux.BinaryInteger.GetDigitsReversed) + ".Radix=10"));
 
       expected = new int[] { 2, 4, 11, 3, 10 };
       actual = 670530.GetDigitsReversed(16).ToArray();
-      CollectionAssert.AreEqual(expected, actual, (string)(nameof(Flux.GenericMath.GetDigits) + ".Radix=16"));
+      CollectionAssert.AreEqual(expected, actual, (string)(nameof(Flux.BinaryInteger.GetDigitsReversed) + ".Radix=16"));
     }
 
     [TestMethod]

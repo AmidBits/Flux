@@ -332,13 +332,32 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
+
+      static void Test()
+      {
+        var a = 4;
+        var b = 2;
+
+        var c = a.BinomialCoefficient(b);
+
+        var adivb = a.Factorial() / b.Factorial();
+
+        var ab = a.Factorial(b);
+
+        var cwor = a.CountCombinationsWithoutRepetition(b);
+        var cwr = a.CountCombinationsWithRepetition(b);
+        var pwor = a.CountPermutationsWithoutRepetition(b);
+        var pwr = a.CountPermutationsWithRepetition(b);
+      }
+      Test();
+
       var isList = Flux.Units.Angle.TryParseDmsNotations("32° 13′ 18″ N, 110° 55′ 35″ W", out var list);
 
 
-      var a = new int[] { 1, 2, 3 };
-      var b = new int[20];
+      //var a = new int[] { 1, 2, 3 };
+      //var b = new int[20];
 
-      b.FillWith(0, 2, a);
+      //b.FillWith(0, 2, a);
 
 
 

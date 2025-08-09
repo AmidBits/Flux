@@ -86,8 +86,8 @@ namespace Flux.Permutations
 
       int largestIndex1 = -1, largestIndex2 = -1, i, j;
 
-      for (i = items.Length - 2; i >= 0; i--)
-        if (source[i].CompareTo(items[i + 1]) < 0)
+      for (i = source.Length - 2; i >= 0; i--)
+        if (source[i].CompareTo(source[i + 1]) < 0)
         {
           largestIndex1 = i;
           break;
@@ -109,11 +109,11 @@ namespace Flux.Permutations
         source.Swap(i, j);
 
       return true;
-    }    
+    }
 
     public static void Reset(System.Span<int> source)
     {
-      for(var index = source.Length - 1; index >= 0; index--)
+      for (var index = source.Length - 1; index >= 0; index--)
         source[index] = index;
     }
 

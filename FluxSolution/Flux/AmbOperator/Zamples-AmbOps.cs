@@ -70,7 +70,7 @@ namespace Flux
         "16. They drink water in a house next to the house where they smoke Blend"
       };
 
-      hints.WriteToConsole();
+      System.Diagnostics.Debug.WriteLine(hints.ToConsole<string>().ToString());
       System.Console.WriteLine();
 
       var amb = new Flux.AmbOperator.Amb();

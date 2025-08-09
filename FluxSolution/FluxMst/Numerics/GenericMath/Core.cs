@@ -38,10 +38,10 @@ namespace Maths
     [TestMethod]
     public void Factorial()
     {
-      Assert.AreEqual(362880, 9.Factorial(), nameof(Flux.GenericMath.Factorial));
-      Assert.AreEqual(362880, 9.SplitFactorial(), nameof(Flux.GenericMath.SplitFactorial));
-      Assert.AreEqual(479001600, 12.Factorial(), nameof(Flux.GenericMath.Factorial));
-      Assert.AreEqual(479001600, 12.SplitFactorial(), nameof(Flux.GenericMath.SplitFactorial));
+      Assert.AreEqual(362880, 9.Factorial(), nameof(Flux.BinaryInteger.Factorial));
+      Assert.AreEqual(362880, 9.SplitFactorial(), nameof(Flux.BinaryInteger.SplitFactorial));
+      Assert.AreEqual(479001600, 12.Factorial(), nameof(Flux.BinaryInteger.Factorial));
+      Assert.AreEqual(479001600, 12.SplitFactorial(), nameof(Flux.BinaryInteger.SplitFactorial));
     }
 
     [TestMethod]

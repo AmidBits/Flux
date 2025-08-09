@@ -170,23 +170,23 @@
     /// <returns></returns>
     public static (T Offset, T Length) GetOffsetAndLength<T>(this Interval<T> source, IntervalNotation intervalNotation = IntervalNotation.Closed)
       where T : System.Numerics.IBinaryInteger<T>
-      {
-        var index = source.MinValue;
-        var length = source.MaxValue - source.MinValue;
-        
-        if(intervalNotation is IntervalNotation.HalfOpenLeft or IntervalNotation.Open)
-          index++;
-        
-        if(intervalNotation == IntervalNotation.Closed)
-          length++;
-        else if(intervalNotation == IntervalNotation.Open)
-          length--;
+    {
+      var index = source.MinValue;
+      var length = source.MaxValue - source.MinValue;
 
-        if (T.IsZero(length))
-          throw new System.InvalidOperationException();
-        
-        return (index, length);
-      }
+      if (intervalNotation is IntervalNotation.HalfLeftOpen or IntervalNotation.Open)
+        index++;
+
+      if (intervalNotation == IntervalNotation.Closed)
+        length++;
+      else if (intervalNotation == IntervalNotation.Open)
+        length--;
+
+      if (T.IsZero(length))
+        throw new System.InvalidOperationException();
+
+      return (index, length);
+    }
 
     /// <summary>
     /// <para></para>
@@ -196,11 +196,11 @@
     /// <returns></returns>
     public static System.Range ToRange<T>(this Interval<T> source, IntervalNotation intervalNotation = IntervalNotation.Closed)
       where T : System.Numerics.IBinaryInteger<T>
-      {
-        var (index, length) = source.GetOffsetAndLength(intervalNotation);
+    {
+      var (index, length) = source.GetOffsetAndLength(intervalNotation);
 
-        return new(int.CreateChecked(index), int.CreateChecked(index + length) - 1);
-      }
+      return new(int.CreateChecked(index), int.CreateChecked(index + length) - 1);
+    }
 
     /// <summary>
     /// <para></para>
@@ -210,11 +210,11 @@
     /// <returns></returns>
     public static Slice ToSlice<T>(this Interval<T> source, IntervalNotation intervalNotation = IntervalNotation.Closed)
       where T : System.Numerics.IBinaryInteger<T>
-      {
-        var (index, length) = source.GetOffsetAndLength(intervalNotation);
+    {
+      var (index, length) = source.GetOffsetAndLength(intervalNotation);
 
-        return new(int.CreateChecked(index), int.CreateChecked(length));
-      }
+      return new(int.CreateChecked(index), int.CreateChecked(length));
+    }
 
     /// <summary>
     /// <para></para>
