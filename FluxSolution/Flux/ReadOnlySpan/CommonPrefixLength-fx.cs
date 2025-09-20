@@ -86,6 +86,9 @@ namespace Flux
       return length;
     }
 
+    public static int CommonPrefixLength<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
+      => CommonPrefixLength(source, target, int.MaxValue, equalityComparer);
+
     #endregion // CommonPrefixLength
   }
 }

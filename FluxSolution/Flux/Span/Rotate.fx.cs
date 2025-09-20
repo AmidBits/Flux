@@ -3,6 +3,8 @@ namespace Flux
 {
   public static partial class Spans
   {
+    #region Rotate
+
     public static void RotateLeft1<T>(this System.Span<T> source)
     {
       var tmp = source[0];
@@ -34,5 +36,7 @@ namespace Flux
       source[..count].Reverse();
       source[count..].Reverse();
     }
+
+    #endregion
   }
 }

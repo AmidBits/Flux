@@ -2,6 +2,8 @@ namespace Flux
 {
   public static partial class ReadOnlySpans
   {
+    #region IsCommonSuffix
+
     /// <summary>
     /// <para>Indicates whether the <paramref name="source"/> ends with <paramref name="length"/> elements that satisfy the <paramref name="predicate"/>.</para>
     /// </summary>
@@ -47,5 +49,7 @@ namespace Flux
     /// <returns></returns>
     public static bool IsCommonSuffix<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
       => source.IsCommonSuffix(target, target.Length, equalityComparer);
+
+    #endregion
   }
 }

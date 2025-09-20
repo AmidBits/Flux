@@ -2,6 +2,8 @@ namespace Flux
 {
   public static partial class ReadOnlySpans
   {
+    #region CommonSuffixLength
+
     /// <summary>
     /// <para>Finds the length of any common suffix shared between <paramref name="source"/> and the <paramref name="predicate"/>.</para>
     /// </summary>
@@ -76,19 +78,19 @@ namespace Flux
     /// <param name="maxLength"></param>
     /// <param name="equalityComparer"></param>
     /// <returns></returns>
-    public static int CommonSuffixLength<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> value, int maxLength, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
+    public static int CommonSuffixLength<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, int maxLength, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
     {
       System.ArgumentOutOfRangeException.ThrowIfNegativeOrZero(maxLength);
 
       equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
 
       var sourceMaxIndex = source.Length - 1;
-      var targetMaxIndex = value.Length - 1;
+      var targetMaxIndex = target.Length - 1;
 
       maxLength = int.Min(maxLength, int.Min(sourceMaxIndex, targetMaxIndex));
 
       var length = 0;
-      while (length < maxLength && equalityComparer.Equals(source[sourceMaxIndex - length], value[targetMaxIndex - length]))
+      while (length < maxLength && equalityComparer.Equals(source[sourceMaxIndex - length], target[targetMaxIndex - length]))
         length++;
       return length;
     }
@@ -102,7 +104,9 @@ namespace Flux
     /// <param name="maxLength"></param>
     /// <param name="equalityComparer"></param>
     /// <returns></returns>
-    public static int CommonSuffixLength<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> value, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
-      => CommonSuffixLength(source, value, int.MaxValue, equalityComparer);
+    public static int CommonSuffixLength<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
+      => CommonSuffixLength(source, target, int.MaxValue, equalityComparer);
+
+    #endregion
   }
 }

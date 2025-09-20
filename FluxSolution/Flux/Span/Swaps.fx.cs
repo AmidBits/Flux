@@ -2,6 +2,8 @@ namespace Flux
 {
   public static partial class Spans
   {
+    #region Swap
+
     /// <summary>In-place swap of two elements by the specified indices.</summary>
     public static bool Swap<T>(this System.Span<T> source, int indexA, int indexB)
     {
@@ -18,5 +20,7 @@ namespace Flux
     /// <summary>In-place swap of two elements by the specified index and the last element.</summary>
     public static bool SwapLastWith<T>(this System.Span<T> source, int index)
       => source.Swap(index, source.Length - 1);
+
+    #endregion
   }
 }

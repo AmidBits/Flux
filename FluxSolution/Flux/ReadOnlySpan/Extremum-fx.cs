@@ -2,6 +2,7 @@ namespace Flux
 {
   public static partial class ReadOnlySpans
   {
+    #region Extremum
     /// <summary>
     /// <para>Locate the index and value of both the minimum element and the maximum element of the sequence. Uses the specified comparer (null for default).</para>
     /// <see href="https://en.wikipedia.org/wiki/Maximum_and_minimum"/>
@@ -49,5 +50,7 @@ namespace Flux
 
       return (minIndex, minItem, minValue, maxIndex, maxItem, maxValue);
     }
+
+    #endregion
   }
 }

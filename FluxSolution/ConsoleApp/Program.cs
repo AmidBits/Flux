@@ -384,6 +384,7 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
+      var span = new int[9].AsSpan();
 
       var gcd = 091575.GreatestCommonDivisor(999999);
       var isc = 100010.IsCoprime(10);

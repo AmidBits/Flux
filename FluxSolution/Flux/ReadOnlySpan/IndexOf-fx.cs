@@ -2,6 +2,8 @@ namespace Flux
 {
   public static partial class ReadOnlySpans
   {
+    #region IndexOf
+
     /// <summary>
     /// <para>Reports the first index in <paramref name="source"/> that satisfies the <paramref name="predicate"/>, or -1 if not found.</para>
     /// </summary>
@@ -69,5 +71,7 @@ namespace Flux
 
       return -1;
     }
+
+    #endregion
   }
 }
