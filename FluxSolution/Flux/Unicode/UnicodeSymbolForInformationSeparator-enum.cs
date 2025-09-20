@@ -1,4 +1,4 @@
-﻿namespace Flux.Unicode
+﻿namespace Flux
 {
   /// <summary>
   /// <para></para>

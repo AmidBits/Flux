@@ -13,7 +13,7 @@ namespace Flux.Dsp.Oscillators
     public double NormalizedFrequency { get; set; }
 
     private double m_offset;
-    public double Offset { get => m_offset; set => m_offset = value.WrapAroundClosed(m_minimumPhase, m_maximumPhase); }
+    public double Offset { get => m_offset; set => m_offset = value.Wrap(m_minimumPhase, m_maximumPhase, IntervalNotation.Closed); }
 
     private double m_phaseModulation;
     /// <summary>The amount [0, 1] of output from the phase modulator to apply.</summary>
@@ -24,7 +24,7 @@ namespace Flux.Dsp.Oscillators
     public Oscillator? PhaseModulator { get; set; }
 
     private double m_position;
-    public double Position { get => m_position; set => m_position = value.WrapAroundClosed(m_minimumPhase, m_maximumPhase); }
+    public double Position { get => m_position; set => m_position = value.Wrap(m_minimumPhase, m_maximumPhase, IntervalNotation.Closed); }
 
     private readonly double m_maximumPhase;
     private readonly double m_minimumPhase;
@@ -76,7 +76,7 @@ namespace Flux.Dsp.Oscillators
       if (Reverse)
         shift = -shift;
 
-      m_position = (m_position + shift).WrapAroundClosed(m_minimumPhase, m_maximumPhase);
+      m_position = (m_position + shift).Wrap(m_minimumPhase, m_maximumPhase, IntervalNotation.Closed);
     }
   }
 }

@@ -3,15 +3,15 @@ namespace Flux
   public static partial class BinaryInteger
   {
     /// <summary>Reverse the digits of the <paramref name="value"/> using base <paramref name="radix"/>, obtaining a new number.</summary>
-    public static TNumber ReverseDigits<TNumber, TRadix>(this TNumber value, TRadix radix)
-      where TNumber : System.Numerics.IBinaryInteger<TNumber>
+    public static TInteger ReverseDigits<TInteger, TRadix>(this TInteger value, TRadix radix)
+      where TInteger : System.Numerics.IBinaryInteger<TInteger>
       where TRadix : System.Numerics.IBinaryInteger<TRadix>
     {
-      var rdx = TNumber.CreateChecked(Units.Radix.AssertMember(radix));
+      var rdx = TInteger.CreateChecked(Units.Radix.AssertMember(radix));
 
-      var reversed = TNumber.Zero;
+      var reversed = TInteger.Zero;
 
-      while (!TNumber.IsZero(value))
+      while (!TInteger.IsZero(value))
       {
         reversed = (reversed * rdx) + (value % rdx);
 

@@ -3,9 +3,9 @@ namespace Flux
   public static partial class Arrays
   {
     /// <summary>
-    /// <para>Create a new jagged array (a single-dimension array of one-dimensional arrays) with all elements from <paramref name="source"/> in <paramref name="dimension"/>-major order (by rows or by column).</para>
+    /// <para>Create a new jagged array from a two-dimensional array. The outer array is created from dimension-0 (rows) and the inner arrays from each dimension-1 (columns).</para>
     /// </summary>
-    /// <remarks>Since an array is arbitrary in terms of e.g. rows and columns, we just adopt a this view, so we'll consider dimension 0 as the row dimension and dimension 1 as the column dimension.</remarks>
+    /// <remarks>Since an two-dimensional array is arbitrary in terms of its dimensions (e.g. rows and columns) and .NET is row-major order, the concept of [row, column] is adopted, i.e. dimension-0 = row, and dimension-1 = column.</remarks>
     public static T[][] ToJaggedArray<T>(this T[,] source, int dimension)
     {
       source.AssertRank(2);

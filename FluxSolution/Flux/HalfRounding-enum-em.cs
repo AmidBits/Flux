@@ -47,56 +47,159 @@ namespace Flux
       return false;
     }
 
+    #region RoundHalfAlternating
+
+    private static bool m_roundHalfAlternatingState; // This is used for internal state.
+
+    /// <summary>
+    /// <para></para>
+    /// <para><see cref="HalfRounding.Alternating"/></para>
+    /// </summary>
+    /// <typeparam name="TFloat"></typeparam>
+    /// <param name="value"></param>
+    /// <returns></returns>
+    public static TFloat RoundHalfAlternating<TFloat>(this TFloat value)
+      where TFloat : System.Numerics.IFloatingPoint<TFloat>
+      => value.RoundHalfAlternating(ref m_roundHalfAlternatingState);
+
+    /// <summary>
+    /// <para></para>
+    /// </summary>
+    /// <typeparam name="TFloat"></typeparam>
+    /// <param name="value"></param>
+    /// <param name="state"></param>
+    /// <returns></returns>
+    public static TFloat RoundHalfAlternating<TFloat>(this TFloat value, ref bool state)
+      where TFloat : System.Numerics.IFloatingPoint<TFloat>
+    {
+      var cmp = value.CompareToFractionMidpoint();
+
+      var floor = TFloat.Floor(value);
+
+      if (cmp < 0)
+        return floor;
+
+      var ceiling = TFloat.Ceiling(value);
+
+      if (cmp > 0)
+        return ceiling;
+
+      return (state = !state) ? floor : ceiling;
+    }
+
+    #endregion // RoundHalfAlternating
+
+    #region RoundHalfRandom
+
     /// <summary>
     /// <para></para>
     /// </summary>
     /// <remarks>
     /// <para><see cref="HalfRounding.HalfToRandom"/></para>
     /// </remarks>
-    /// <typeparam name="TValue"></typeparam>
+    /// <typeparam name="TFloat"></typeparam>
     /// <param name="value"></param>
     /// <param name="rng"></param>
     /// <returns></returns>
-    public static TValue RoundHalfRandom<TValue>(this TValue value, System.Random? rng = null)
-      where TValue : System.Numerics.IFloatingPoint<TValue>
-      => value.CompareToFractionMidpoint() is var comparison
-      && (TValue.Floor(value) is var floor && comparison <= -1)
-      ? floor
-      : (TValue.Ceiling(value) is var ceiling && comparison >= 1)
-      ? ceiling
-      : value.RoundToNearestRandom(floor, ceiling, rng);
+    public static TFloat RoundHalfRandom<TFloat>(this TFloat value)
+      where TFloat : System.Numerics.IFloatingPoint<TFloat>
+      => RoundHalfRandom(value, Flux.Randomness.NumberGenerators.SscRng.Shared);
 
     /// <summary>
     /// <para></para>
+    /// <para><see cref="HalfRounding.Random"/></para>
     /// </summary>
-    /// <typeparam name="TValue"></typeparam>
+    /// <remarks>
+    /// </remarks>
+    /// <typeparam name="TFloat"></typeparam>
     /// <param name="value"></param>
     /// <returns></returns>
-    public static TValue RoundHalfAlternating<TValue>(this TValue value)
-      where TValue : System.Numerics.IFloatingPoint<TValue>
-      => value.CompareToFractionMidpoint() is var cmp
-      && (TValue.Floor(value) is var floor && cmp <= -1)
-      ? floor
-      : (TValue.Ceiling(value) is var ceiling && cmp >= 1)
-      ? ceiling
-      : value.RoundToNearestAlternating(floor, ceiling);
+    public static TFloat RoundHalfRandom<TFloat>(this TFloat value, System.Random rng)
+      where TFloat : System.Numerics.IFloatingPoint<TFloat>
+    {
+      var cmp = value.CompareToFractionMidpoint();
+
+      var floor = TFloat.Floor(value);
+
+      if (cmp < 0)
+        return floor;
+
+      var ceiling = TFloat.Ceiling(value);
+
+      if (cmp > 0)
+        return ceiling;
+
+      return (rng ?? Randomness.NumberGenerators.SscRng.Shared).NextDouble() < 0.5 ? floor : ceiling;
+    }
+
+    #endregion // RoundHalfRandom
+
+    #region RoundHalfToOdd
 
     /// <summary>
     /// <para>Common rounding: round half, bias: odd.</para>
+    /// <para><see cref="HalfRounding.ToOdd"/></para>
     /// </summary>
     /// <remarks>
     /// <para><see cref="HalfRounding.HalfToOdd"/></para>
     /// </remarks>
-    /// <typeparam name="TValue"></typeparam>
+    /// <typeparam name="TFloat"></typeparam>
     /// <param name="value"></param>
     /// <returns></returns>
-    public static TValue RoundHalfToOdd<TValue>(this TValue value)
-      where TValue : System.Numerics.IFloatingPoint<TValue>
-      => value.CompareToFractionMidpoint() is var cmp
-      && (cmp <= -1)
-      ? TValue.Floor(value)
-      : (cmp >= 1)
-      ? TValue.Ceiling(value)
-      : value.RoundWholeToOdd();
+    public static TFloat RoundHalfToOdd<TFloat>(this TFloat value)
+      where TFloat : System.Numerics.IFloatingPoint<TFloat>
+    {
+      var cmp = value.CompareToFractionMidpoint();
+
+      var floor = TFloat.Floor(value);
+
+      if (cmp < 0)
+        return floor;
+
+      var ceiling = TFloat.Ceiling(value);
+
+      if (cmp > 0)
+        return ceiling;
+
+      return TFloat.IsOddInteger(floor) ? floor : ceiling;
+    }
+
+    #endregion // RoundHalfToOdd
+
+    public static (TFloat Floor, TFloat Ceiling) GetFloorAndCeilingWithForgiveness<TFloat>(this TFloat value, double tolerance = 1e-10)
+      where TFloat : System.Numerics.IFloatingPoint<TFloat>
+    {
+      var floor = TFloat.Floor(value);
+      var ceiling = TFloat.Ceiling(value);
+
+      if (floor != ceiling)
+      {
+        var rounded = TFloat.CreateChecked(TFloat.Round(value));
+        var epsilon = TFloat.CreateChecked(tolerance);
+
+        if (value.EqualsWithinTolerance(rounded, epsilon, epsilon))
+        {
+          if (value < rounded)
+            floor = ceiling;
+
+          if (value > rounded)
+            ceiling = floor;
+        }
+      }
+
+      return (floor, ceiling);
+    }
+
+    //public static TFloat RoundWithTolerance<TFloat>(this TFloat value, HalfRounding mode, double tolerance = 1e-10)
+    //  where TFloat : System.Numerics.IFloatingPoint<TFloat>
+    //{
+    //  var rounded = value.RoundHalf(mode);
+    //  var epsilon = TFloat.CreateChecked(tolerance);
+
+    //  if (value.EqualsWithinAbsoluteTolerance(rounded, epsilon) || value.EqualsWithinRelativeTolerance(rounded, epsilon))
+    //    return true;
+
+    //  return false;
+    //}
   }
 }

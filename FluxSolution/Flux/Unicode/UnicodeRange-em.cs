@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Em
+  public static partial class Unicode
   {
     /// <summary>Returns a readonly list with the names and corresponding <see cref="System.Text.Unicode.UnicodeRange"/> objects.</summary>
     private static System.Collections.Generic.Dictionary<System.Text.Unicode.UnicodeRange, string> GetAllUnicodeRanges()

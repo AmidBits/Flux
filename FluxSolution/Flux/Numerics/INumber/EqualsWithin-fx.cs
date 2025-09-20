@@ -1,48 +1,77 @@
 namespace Flux
 {
-  public static partial class Number
+  public static partial class ApproximatelyEqualNumbers
   {
     /// <summary>
-    /// <para>Perform a comparison where the tolerance is the same, no matter how small or large the compared numbers.</para>
+    /// <para>Perform an absolute equality test.</para>
+    /// <para>Absolute equality checks if the absolute difference between <paramref name="value"/> and <paramref name="other"/> is smaller than a predefined <paramref name="absoluteTolerance"/>. This is useful when you want to ensure the numbers are "close enough" without considering their scale.</para>
+    /// <para>Absolute equality is simpler and works well for small numbers or fixed tolerances.</para>
     /// </summary>
     /// <typeparam name="TNumber"></typeparam>
-    /// <param name="a"></param>
-    /// <param name="b"></param>
-    /// <param name="absoluteTolerance"></param>
+    /// <param name="value"></param>
+    /// <param name="other"></param>
+    /// <param name="absoluteTolerance">E.g. 1e-10.</param>
     /// <returns></returns>
-    public static bool EqualsWithinAbsoluteTolerance<TNumber>(this TNumber a, TNumber b, TNumber absoluteTolerance)
+    public static bool EqualsWithinAbsoluteTolerance<TNumber>(this TNumber value, TNumber other, TNumber absoluteTolerance)
       where TNumber : System.Numerics.INumber<TNumber>
-      => a == b
-      || TNumber.Abs(a - b) <= absoluteTolerance;
+      => value == other
+      || TNumber.Abs(value - other) <= absoluteTolerance;
 
     /// <summary>
-    /// <para>Perform a comparison where a tolerance relative to the size of the compared numbers, i.e. a percentage of tolerance.</para>
+    /// <para>Perform a relative equality test.</para>
+    /// <para>Relative equality considers the scale of the numbers by dividing the absolute difference by the magnitude of the numbers. This is useful when comparing numbers that may vary significantly in scale.</para>
+    /// <para>Relative equality is better for large numbers or numbers with varying scales, as it adjusts the tolerance dynamically.</para>
     /// </summary>
     /// <typeparam name="TNumber"></typeparam>
     /// <typeparam name="TRelativeTolerance"></typeparam>
-    /// <param name="a"></param>
-    /// <param name="b"></param>
-    /// <param name="relativeTolerance"></param>
+    /// <param name="value"></param>
+    /// <param name="other"></param>
+    /// <param name="relativeTolerance">E.g. 1e-10.</param>
     /// <returns></returns>
-    public static bool EqualsWithinRelativeTolerance<TNumber, TRelativeTolerance>(this TNumber a, TNumber b, TRelativeTolerance relativeTolerance)
+    public static bool EqualsWithinRelativeTolerance<TNumber, TRelativeTolerance>(this TNumber value, TNumber other, TRelativeTolerance relativeTolerance)
       where TNumber : System.Numerics.INumber<TNumber>
       where TRelativeTolerance : System.Numerics.IFloatingPoint<TRelativeTolerance>
-      => a == b
-      || TRelativeTolerance.CreateChecked(TNumber.Abs(a - b)) <= TRelativeTolerance.CreateChecked(TNumber.Max(TNumber.Abs(a), TNumber.Abs(b))) * relativeTolerance;
+      => value == other
+      || TRelativeTolerance.CreateChecked(TNumber.Abs(value - other)) <= relativeTolerance * TRelativeTolerance.CreateChecked(TNumber.Abs(TNumber.MaxMagnitude(value, other)));
 
     /// <summary>
-    /// <para>Perform a comparison of the difference against <paramref name="radix"/> raised to the power of the specified <paramref name="significantDigits"/> of precision.</para>
-    /// <para>Positive <paramref name="significantDigits"/> means digit tolerance on the right side and negative <paramref name="significantDigits"/> allows for left side tolerance.</para>
-    /// <para><see href="https://stackoverflow.com/questions/9180385/is-this-a-valid-float-comparison-that-accounts-for-a-set-number-of-decimal-place"/></para>
+    /// <para>Perform both an absolute and a relative equality test for more robust comparisons. Returns true if any test is considered equal, otherwise false.</para>
     /// </summary>
-    /// <param name="significantDigits">The tolerance, as a number of decimals (fraction part), considered before finding inequality. Using a negative value allows for left side (integer) tolerance.</param>
-    /// <remarks>
-    /// <para>EqualsWithinSignificantDigits(1000.02, 1000.015, 2, 10); // The difference of abs(<paramref name="a"/> - <paramref name="b"/>) is less than or equal to <paramref name="significantDigits"/> in <paramref name="radix"/>, i.e. 0.01 for radix 10.</para>
-    /// <para>EqualsWithinSignificantDigits(1334.261, 1235.272, -2, 10); // The difference of abs(<paramref name="a"/> - <paramref name="b"/>) is less than or equal to negative <paramref name="significantDigits"/> in <paramref name="radix"/>, i.e. 100 for radix 10.</para>
-    /// </remarks>
-    public static bool EqualsWithinSignificantDigits<TNumber>(this TNumber a, TNumber b, int significantDigits, int radix = 10)
+    /// <typeparam name="TNumber"></typeparam>
+    /// <typeparam name="TRelativeTolerance"></typeparam>
+    /// <param name="value"></param>
+    /// <param name="other"></param>
+    /// <param name="absoluteTolerance">E.g. 1e-10.</param>
+    /// <param name="relativeTolerance">E.g. 1e-10.</param>
+    /// <returns></returns>
+    public static bool EqualsWithinTolerance<TNumber, TRelativeTolerance>(this TNumber value, TNumber other, TNumber absoluteTolerance, TRelativeTolerance relativeTolerance)
       where TNumber : System.Numerics.INumber<TNumber>
-      => a == b
-      || (double.CreateChecked(TNumber.Abs(a - b)) <= double.Pow(Units.Radix.AssertMember(radix), -significantDigits));
+      where TRelativeTolerance : System.Numerics.IFloatingPoint<TRelativeTolerance>
+      => value.EqualsWithinAbsoluteTolerance(other, absoluteTolerance) || value.EqualsWithinRelativeTolerance(other, relativeTolerance);
+
+    /// <summary>
+    /// <para>Perform an equality test involving the most (integer part) or the least (fraction part) <typeparamref name="TSignificantDigits"/> using the specified <paramref name="radix"/>.</para>
+    /// <para>Positive means most <paramref name="significantDigits"/> tolerance on the fraction part.</para>
+    /// <para>Negative means least <paramref name="significantDigits"/> tolerance on the integer part.</para>
+    /// <para><see href="https://stackoverflow.com/questions/9180385/is-this-value-valid-float-comparison-that-accounts-for-value-set-number-of-decimal-place"/></para>
+    /// </summary>
+    /// <typeparam name="TNumber"></typeparam>
+    /// <typeparam name="TSignificantDigits"></typeparam>
+    /// <typeparam name="TRadix"></typeparam>
+    /// <param name="value"></param>
+    /// <param name="other"></param>
+    /// <param name="significantDigits">The tolerance, as the number of significant digits, considered for equality. A positive value for most significant digits on the right side (fraction part). A negative value for least significant digits on the left side (integer part).</param>
+    /// <param name="radix"></param>
+    /// <remarks>
+    /// <para>EqualsWithinSignificantDigits(1000.02, 1000.015, 2, 10); // The difference of abs(<paramref name="value"/> - <paramref name="other"/>) is less than or equal to <paramref name="significantDigits"/> in <paramref name="radix"/>, i.e. 0.01 for radix 10.</para>
+    /// <para>EqualsWithinSignificantDigits(1334.261, 1235.272, -2, 10); // The difference of abs(<paramref name="value"/> - <paramref name="other"/>) is less than or equal to negative <paramref name="significantDigits"/> in <paramref name="radix"/>, i.e. 100 for radix 10.</para>
+    /// </remarks>
+    /// <returns></returns>
+    public static bool EqualsWithinSignificantDigits<TNumber, TSignificantDigits, TRadix>(this TNumber value, TNumber other, TSignificantDigits significantDigits, TRadix radix)
+      where TNumber : System.Numerics.INumber<TNumber>
+      where TSignificantDigits : System.Numerics.IBinaryInteger<TSignificantDigits>
+      where TRadix : System.Numerics.IBinaryInteger<TRadix>
+      => value == other
+      || (double.CreateChecked(TNumber.Abs(value - other)) <= double.Pow(double.CreateChecked(Units.Radix.AssertMember(radix)), -double.CreateChecked(significantDigits)));
   }
 }

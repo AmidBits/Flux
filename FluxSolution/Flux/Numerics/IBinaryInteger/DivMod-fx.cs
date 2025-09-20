@@ -11,14 +11,14 @@ namespace Flux
     /// <param name="divisor"></param>
     /// <returns></returns>
     public static (TInteger QuotientEnveloped, TInteger Remainder) DivModEnveloped<TInteger>(this TInteger dividend, TInteger divisor)
-      where TInteger : System.Numerics.INumber<TInteger>
+      where TInteger : System.Numerics.IBinaryInteger<TInteger>
     {
-      var q = dividend / divisor;
-      var r = dividend % divisor;
+      var (q, r) = TInteger.DivRem(dividend, divisor);
 
       if (TInteger.IsZero(r))
         return (q, r);
 
+      //return (q + TInteger.CopySign(TInteger.One, q), r);
       return TInteger.IsNegative(q) ? (q - TInteger.One, r) : (q + TInteger.One, r);
     }
 

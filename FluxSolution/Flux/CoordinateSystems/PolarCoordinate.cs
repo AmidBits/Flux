@@ -65,7 +65,7 @@ namespace Flux.CoordinateSystems
       return new(x, y, 0, 0);
     }
 
-    public Geometry.Circles.CircleFigure ToCircleGeometry() => new(m_radius);
+    public Numerics.Geometry.Circles.CircleFigure ToCircleGeometry() => new(m_radius);
 
     /// <summary>Creates a new <see cref="CylindricalCoordinate"/> from the <see cref="PolarCoordinate"/> by adding the third component <paramref name="height"/>.</summary>
     /// <remarks>All angles in radians.</remarks>

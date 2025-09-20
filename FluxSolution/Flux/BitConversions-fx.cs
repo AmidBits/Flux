@@ -671,7 +671,7 @@ namespace Flux
         buffer.CopyTo(byteParts);
 
         if (endianess == Endianess.BigEndian)
-          byteParts.Reverse();
+          System.MemoryExtensions.Reverse(byteParts);
 
         var intParts = System.Runtime.InteropServices.MemoryMarshal.Cast<byte, int>(byteParts);
 
@@ -736,10 +736,10 @@ namespace Flux
       {
         var intParts = System.Decimal.GetBits(value);
 
-        var byteParts = System.Runtime.InteropServices.MemoryMarshal.AsBytes<int>(intParts);
+        var byteParts = System.Runtime.InteropServices.MemoryMarshal.AsBytes<int>(intParts).AsSpan();
 
         if (endianess == Endianess.BigEndian)
-          byteParts.Reverse();
+          System.MemoryExtensions.Reverse(byteParts);
 
         byteParts.CopyTo(buffer);
 

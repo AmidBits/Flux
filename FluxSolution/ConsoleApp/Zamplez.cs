@@ -307,7 +307,9 @@ namespace ConsoleApp
       var rtp = value.RoundToNearest(Flux.UniversalRounding.WholeAwayFromZero, rtpTowardsZero, rtpAwayFromZero);
       //var rtp = Flux.Quantities.Radix.PowOf(value, radix, true, Flux.RoundingMode.AwayFromZero, out var rtpTowardsZero, out var rtpAwayFromZero);
 
-      var (q, remainder) = value.AssertNonNegativeNumber().TruncRem(1);
+      System.ArgumentOutOfRangeException.ThrowIfNegative(value);
+
+      var (q, remainder) = value.TruncRem(1);
       var quotient = int.CreateChecked(q);
 
       var p2TowardsZero = quotient.MostSignificant1Bit();
@@ -352,11 +354,11 @@ namespace ConsoleApp
       var birbyts = n.ReverseBytes();
       System.Console.WriteLine($"   Reverse Bytes = {birbyts.ToBinaryString()}");
 
-      var bfl = n.BitFoldMsb();
+      var bfl = n.BitFoldLeft();
       System.Console.WriteLine($"   Bit-Fold Left = {bfl}");
       var bfls = bfl.ToBinaryString();
       System.Console.WriteLine($"       As Binary = {bfls}");
-      var bfr = n.BitFoldLsb();
+      var bfr = n.BitFoldLeft();
       System.Console.WriteLine($"  Bit-Fold Right = {bfr}");
       var bfrs = bfr.ToBinaryString();
       System.Console.WriteLine($"       As Binary = {bfrs}");
@@ -364,10 +366,10 @@ namespace ConsoleApp
       var bln = n.GetBitLength();
       //var l2 = bi.IntegerLog2();
       var ms1b = n.MostSignificant1Bit();
-      var bmr = n.GetBitLength().CreateBitMaskLsbFromBitLength();
+      var bmr = n.GetBitLength().CreateBitMaskRight();
       var bmrs = bmr.ToBinaryString();
       var bmrsl = bmrs.Length;
-      var bml = n.GetBitLength().CreateBitMaskMsbFromBitLength();
+      var bml = n.GetBitLength().CreateBitMaskLeft();
       var bmls = bml.ToBinaryString();
       var bmlsl = bmls.Length;
     }

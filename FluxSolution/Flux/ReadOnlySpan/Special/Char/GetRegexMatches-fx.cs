@@ -8,12 +8,12 @@ namespace Flux
     /// <param name="source"></param>
     /// <param name="regexPattern"></param>
     /// <returns></returns>
-    public static DataStructures.OrderedDictionary<Slice, string> GetRegexMatches(this System.ReadOnlySpan<char> source, string regexPattern)
+    public static DataStructures.OrderedDictionary<Range, string> GetRegexMatches(this System.ReadOnlySpan<char> source, string regexPattern)
     {
-      var dictionary = new DataStructures.OrderedDictionary<Slice, string>();
+      var dictionary = new DataStructures.OrderedDictionary<Range, string>();
       foreach (var vm in new System.Text.RegularExpressions.Regex(regexPattern).EnumerateMatches(source))
-        if (new Slice(vm.Index, vm.Length) is var slice)
-          dictionary.Add(slice, source.Slice(slice).ToString());
+        if (System.Range.FromOffsetAndLength(vm.Index, vm.Length) is var range)
+          dictionary.Add(range, source[range].ToString());
       return dictionary;
     }
   }

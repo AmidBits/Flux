@@ -85,17 +85,17 @@ namespace NetFx.ReadOnlySpan.Special
     [TestMethod]
     public void LongestCommonSubsequence2()
     {
-      Assert.AreEqual(1, m_text1a.AsSpan().LongestCommonSubsequenceLength(m_text1b, m_comparisonOrdinal));
-      Assert.AreEqual(1, m_text1a.AsSpan().LongestCommonSubsequenceLength(m_text1b, m_comparisonOrdinalIgnoreCase));
+      Assert.AreEqual(1, m_text1a.AsSpan().LongestCommonSubsequenceCount(m_text1b, m_comparisonOrdinal));
+      Assert.AreEqual(1, m_text1a.AsSpan().LongestCommonSubsequenceCount(m_text1b, m_comparisonOrdinalIgnoreCase));
 
-      Assert.AreEqual(64, m_text2a.AsSpan().LongestCommonSubsequenceLength(m_text2b, m_comparableIgnoreNonSpace));
-      Assert.AreEqual(4, m_text2a.AsSpan().LongestCommonSubsequenceLength(m_text2b, m_comparerDoNotIgnoreCase));
+      Assert.AreEqual(64, m_text2a.AsSpan().LongestCommonSubsequenceCount(m_text2b, m_comparableIgnoreNonSpace));
+      Assert.AreEqual(4, m_text2a.AsSpan().LongestCommonSubsequenceCount(m_text2b, m_comparerDoNotIgnoreCase));
 
-      Assert.AreEqual(5, m_text3a.AsSpan().LongestCommonSubsequenceLength(m_text3b, m_comparisonOrdinal));
-      Assert.AreEqual(7, m_text3a.AsSpan().LongestCommonSubsequenceLength(m_text3b, m_comparableIgnoreNonSpace));
+      Assert.AreEqual(5, m_text3a.AsSpan().LongestCommonSubsequenceCount(m_text3b, m_comparisonOrdinal));
+      Assert.AreEqual(7, m_text3a.AsSpan().LongestCommonSubsequenceCount(m_text3b, m_comparableIgnoreNonSpace));
 
-      Assert.AreEqual(9, m_text4a.AsSpan().LongestCommonSubsequenceLength(m_text4b, m_comparisonOrdinal));
-      Assert.AreEqual(9, m_text4a.AsSpan().LongestCommonSubsequenceLength(m_text4b, m_comparisonOrdinalIgnoreCase));
+      Assert.AreEqual(9, m_text4a.AsSpan().LongestCommonSubsequenceCount(m_text4b, m_comparisonOrdinal));
+      Assert.AreEqual(9, m_text4a.AsSpan().LongestCommonSubsequenceCount(m_text4b, m_comparisonOrdinalIgnoreCase));
     }
 
     [TestMethod]
@@ -142,7 +142,7 @@ namespace NetFx.ReadOnlySpan.Special
 
       for (var i = 0; i < inputs.Length; i++)
       {
-        var vt = inputs[i].AsSpan().ShortestBalancingSubstring(vocab);
+        var vt = inputs[i].AsSpan().ShortestBalancingSubstringSearch(vocab);
 
         Assert.AreEqual(vt, outputs[i]);
       }

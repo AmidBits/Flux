@@ -46,21 +46,21 @@ namespace Flux
     /// <para>var mi = ModInv(4, 7); // mi = 2, i.e. "2 is the modular multiplicative inverse of 4 (and vice versa), mod 7".</para>
     /// <para>var mi = ModInv(8, 11); // mi = 7, i.e. "7 is the modular inverse of 8, mod 11".</para>
     /// </remarks>
-    public static TNumber ModInv<TNumber>(this TNumber a, TNumber modulus)
-      where TNumber : System.Numerics.IBinaryInteger<TNumber>
+    public static TInteger ModInv<TInteger>(this TInteger a, TInteger modulus)
+      where TInteger : System.Numerics.IBinaryInteger<TInteger>
     {
-      if (TNumber.IsNegative(modulus))
+      if (TInteger.IsNegative(modulus))
         modulus = -modulus;
 
-      if (TNumber.IsNegative(a))
+      if (TInteger.IsNegative(a))
         a = modulus - (-a % modulus);
 
-      var t = TNumber.Zero;
-      var nt = TNumber.One;
+      var t = TInteger.Zero;
+      var nt = TInteger.One;
       var r = modulus;
       var nr = a % modulus;
 
-      while (!TNumber.IsZero(nr))
+      while (!TInteger.IsZero(nr))
       {
         var q = r / nr;
 
@@ -68,10 +68,10 @@ namespace Flux
         (nr, r) = (r - q * nr, nr); // var tmp2 = nr; nr = r - q * nr; r = tmp2;
       }
 
-      if (r > TNumber.One)
-        return -TNumber.One; // No inverse.
+      if (r > TInteger.One)
+        return -TInteger.One; // No inverse.
 
-      if (TNumber.IsNegative(t))
+      if (TInteger.IsNegative(t))
         t += modulus;
 
       return t;
@@ -81,12 +81,12 @@ namespace Flux
     /// <para>Modular multiplication of <paramref name="dividend"/> and <paramref name="divisor"/>.</para>
     /// <see href="https://en.wikipedia.org/wiki/Modular_arithmetic"/>
     /// </summary>
-    public static TNumber MulMod<TNumber>(this TNumber dividend, TNumber divisor, TNumber modulus)
-      where TNumber : System.Numerics.IBinaryInteger<TNumber>
+    public static TInteger MulMod<TInteger>(this TInteger dividend, TInteger divisor, TInteger modulus)
+      where TInteger : System.Numerics.IBinaryInteger<TInteger>
     {
-      dividend.AssertNonNegativeNumber(nameof(dividend));
-      divisor.AssertNonNegativeNumber(nameof(divisor));
-      modulus.AssertNonNegativeNumber(nameof(modulus));
+      System.ArgumentOutOfRangeException.ThrowIfNegative(dividend);
+      System.ArgumentOutOfRangeException.ThrowIfNegative(divisor);
+      System.ArgumentOutOfRangeException.ThrowIfNegative(modulus);
 
       if (dividend >= modulus) dividend %= modulus;
       if (divisor >= modulus) divisor %= modulus;
@@ -95,25 +95,25 @@ namespace Flux
       var c = x * divisor / modulus;
       var r = (dividend * divisor - c * modulus) % modulus;
 
-      return TNumber.IsNegative(r) ? r + modulus : r;
+      return TInteger.IsNegative(r) ? r + modulus : r;
     }
 
     /// <summary>
     /// <para>Modular exponentiation of <paramref name="dividend"/> and <paramref name="divisor"/>.</para>
     /// <see href="https://en.wikipedia.org/wiki/Modular_arithmetic"/>
     /// </summary>
-    public static TNumber PowMod<TNumber>(this TNumber dividend, TNumber divisor, TNumber modulus)
-      where TNumber : System.Numerics.IBinaryInteger<TNumber>
+    public static TInteger PowMod<TInteger>(this TInteger dividend, TInteger divisor, TInteger modulus)
+      where TInteger : System.Numerics.IBinaryInteger<TInteger>
     {
-      dividend.AssertNonNegativeNumber(nameof(dividend));
-      divisor.AssertNonNegativeNumber(nameof(divisor));
-      modulus.AssertNonNegativeNumber(nameof(modulus));
+      System.ArgumentOutOfRangeException.ThrowIfNegative(dividend);
+      System.ArgumentOutOfRangeException.ThrowIfNegative(divisor);
+      System.ArgumentOutOfRangeException.ThrowIfNegative(modulus);
 
-      var r = modulus == TNumber.One ? TNumber.Zero : TNumber.One;
+      var r = modulus == TInteger.One ? TInteger.Zero : TInteger.One;
 
-      while (divisor > TNumber.Zero)
+      while (divisor > TInteger.Zero)
       {
-        if (TNumber.IsOddInteger(divisor)) // if ((b & TValue.One) != TValue.Zero)
+        if (TInteger.IsOddInteger(divisor)) // if ((b & TValue.One) != TValue.Zero)
           r = MulMod(r, dividend, modulus);
 
         divisor >>= 1;

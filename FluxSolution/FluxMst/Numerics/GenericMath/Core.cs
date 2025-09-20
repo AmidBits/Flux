@@ -39,15 +39,21 @@ namespace Maths
     public void Factorial()
     {
       Assert.AreEqual(362880, 9.Factorial(), nameof(Flux.BinaryInteger.Factorial));
-      Assert.AreEqual(362880, 9.SplitFactorial(), nameof(Flux.BinaryInteger.SplitFactorial));
-      Assert.AreEqual(479001600, 12.Factorial(), nameof(Flux.BinaryInteger.Factorial));
-      Assert.AreEqual(479001600, 12.SplitFactorial(), nameof(Flux.BinaryInteger.SplitFactorial));
+      //Assert.AreEqual(362880, 9.SplitFactorial(), nameof(Flux.BinaryInteger.SplitFactorial));
+      Assert.AreEqual(System.Numerics.BigInteger.Parse("8320987112741390144276341183223364380754172606361245952449277696409600000000000000"), new System.Numerics.BigInteger(60).Factorial(), nameof(Flux.BinaryInteger.Factorial));
+      //Assert.AreEqual(479001600, 12.SplitFactorial(), nameof(Flux.BinaryInteger.SplitFactorial));
     }
 
     [TestMethod]
     public void GreatestCommonDivisor()
     {
       Assert.AreEqual(3, 21.GreatestCommonDivisor(6));
+    }
+
+    [TestMethod]
+    public void IntegerRootN()
+    {
+      Assert.AreEqual((3, 3), 27.IntegerRootN(3));
     }
 
     [TestMethod]

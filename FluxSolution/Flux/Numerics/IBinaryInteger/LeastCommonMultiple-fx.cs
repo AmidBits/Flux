@@ -6,9 +6,11 @@ namespace Flux
     /// <see href="https://en.wikipedia.org/wiki/Least_common_multiple"/>
     public static TInteger Lcm<TInteger>(this TInteger a, params TInteger[] other)
       where TInteger : System.Numerics.IBinaryInteger<TInteger>
-      => other.Length >= 1
-      ? a.LeastCommonMultiple(other.Aggregate((b, c) => b.LeastCommonMultiple(c)))
-      : throw new System.ArgumentOutOfRangeException(nameof(other));
+    {
+      System.ArgumentOutOfRangeException.ThrowIfNegativeOrZero(other.Length);
+
+      return a.LeastCommonMultiple(other.Aggregate(LeastCommonMultiple));
+    }
 
     /// <summary>Returns the least common multiple of <paramref name="a"/> and <paramref name="b"/>.</summary>
     /// <see href="https://en.wikipedia.org/wiki/Least_common_multiple"/>

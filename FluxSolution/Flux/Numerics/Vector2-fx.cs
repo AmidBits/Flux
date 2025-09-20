@@ -62,7 +62,7 @@ namespace Flux
     /// <param name="rng">The random number generator to use, or default if null.</param>
     /// <returns>A new sequence of <typeparamref name="TResult"/>.</returns>
     public static System.Numerics.Vector2[] GenerateEllipseVectors(this System.Numerics.Vector2 source, int count, double radOffset = 0, double maxRandomness = 0, System.Random? rng = null)
-      => Geometry.Ellipses.EllipseFigure.CreatePointsOnEllipse(count, source.X, source.Y, radOffset, 0, 0, maxRandomness, rng).Select(v128 => v128.ToVector2()).ToArray();
+      => Numerics.Geometry.Ellipses.EllipseFigure.CreatePointsOnEllipse(count, source.X, source.Y, radOffset, 0, 0, maxRandomness, rng).Select(v128 => v128.ToVector2()).ToArray();
 
     public static int GetQuadrant(this System.Numerics.Vector2 source, System.Numerics.Vector2 center)
       => source.X < center.X is var xneg && source.Y < center.Y ? (xneg ? 2 : 3) : (xneg ? 1 : 0);
@@ -369,17 +369,17 @@ namespace Flux
       System.ArgumentNullException.ThrowIfNull(a);
       System.ArgumentNullException.ThrowIfNull(b);
 
-      if (Geometry.Lines.Line.GivenTwoPointsOnEach(a[a.Count - 1], a[0], b[b.Count - 1], b[0]).Outcome == Geometry.Lines.LineIntersectTest.LinesIntersect)
+      if (Numerics.Geometry.Lines.Line.GivenTwoPointsOnEach(a[a.Count - 1], a[0], b[b.Count - 1], b[0]).Outcome == Numerics.Geometry.Lines.LineIntersectTest.LinesIntersect)
         return true;
 
       for (int i = 1; i < a.Count; i++)
       {
-        if (Geometry.Lines.Line.GivenTwoPointsOnEach(a[i - 1], a[i], b[b.Count - 1], b[0]).Outcome == Geometry.Lines.LineIntersectTest.LinesIntersect)
+        if (Numerics.Geometry.Lines.Line.GivenTwoPointsOnEach(a[i - 1], a[i], b[b.Count - 1], b[0]).Outcome == Numerics.Geometry.Lines.LineIntersectTest.LinesIntersect)
           return true;
 
         for (int p = 1; p < b.Count; p++)
         {
-          if (Geometry.Lines.Line.GivenTwoPointsOnEach(a[i - 1], a[i], b[p - 1], b[p]).Outcome == Geometry.Lines.LineIntersectTest.LinesIntersect)
+          if (Numerics.Geometry.Lines.Line.GivenTwoPointsOnEach(a[i - 1], a[i], b[p - 1], b[p]).Outcome == Numerics.Geometry.Lines.LineIntersectTest.LinesIntersect)
             return true;
         }
       }

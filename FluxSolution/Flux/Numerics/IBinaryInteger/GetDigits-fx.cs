@@ -2,22 +2,22 @@ namespace Flux
 {
   public static partial class BinaryInteger
   {
-    /// <summary>Returns a maximum of <paramref name="count"/> digits (as <typeparamref name="TNumber"/>) of <paramref name="value"/> using base <paramref name="radix"/>.</summary>
-    public static System.Collections.Generic.List<TNumber> GetDigits<TNumber, TRadix>(this TNumber value, TRadix radix)
-      where TNumber : System.Numerics.IBinaryInteger<TNumber>
+    /// <summary>Returns a maximum of <paramref name="count"/> digits (as <typeparamref name="TInteger"/>) of <paramref name="value"/> using base <paramref name="radix"/>.</summary>
+    public static System.Collections.Generic.List<TInteger> GetDigits<TInteger, TRadix>(this TInteger value, TRadix radix)
+      where TInteger : System.Numerics.IBinaryInteger<TInteger>
       where TRadix : System.Numerics.IBinaryInteger<TRadix>
     {
-      var rdx = TNumber.CreateChecked(Units.Radix.AssertMember(radix));
+      var rdx = TInteger.CreateChecked(Units.Radix.AssertMember(radix));
 
-      if (TNumber.IsNegative(value))
-        value = TNumber.Abs(value);
+      if (TInteger.IsNegative(value))
+        value = TInteger.Abs(value);
 
-      var list = new System.Collections.Generic.List<TNumber>();
+      var list = new System.Collections.Generic.List<TInteger>();
 
-      if (TNumber.IsZero(value))
-        list.Add(TNumber.Zero);
+      if (TInteger.IsZero(value))
+        list.Add(TInteger.Zero);
       else
-        while (!TNumber.IsZero(value))
+        while (!TInteger.IsZero(value))
         {
           list.Insert(0, value % rdx);
 
@@ -27,22 +27,22 @@ namespace Flux
       return list;
     }
 
-    /// <summary>Returns a maximum of <paramref name="count"/> digits (as <typeparamref name="TNumber"/>) of <paramref name="value"/> using base <paramref name="radix"/>, in reverse order.</summary>
-    public static System.Collections.Generic.List<TNumber> GetDigitsReversed<TNumber, TRadix>(this TNumber value, TRadix radix)
-      where TNumber : System.Numerics.IBinaryInteger<TNumber>
+    /// <summary>Returns a maximum of <paramref name="count"/> digits (as <typeparamref name="TInteger"/>) of <paramref name="value"/> using base <paramref name="radix"/>, in reverse order.</summary>
+    public static System.Collections.Generic.List<TInteger> GetDigitsReversed<TInteger, TRadix>(this TInteger value, TRadix radix)
+      where TInteger : System.Numerics.IBinaryInteger<TInteger>
       where TRadix : System.Numerics.IBinaryInteger<TRadix>
     {
-      var rdx = TNumber.CreateChecked(Units.Radix.AssertMember(radix));
+      var rdx = TInteger.CreateChecked(Units.Radix.AssertMember(radix));
 
-      if (TNumber.IsNegative(value))
-        value = TNumber.Abs(value);
+      if (TInteger.IsNegative(value))
+        value = TInteger.Abs(value);
 
-      var list = new System.Collections.Generic.List<TNumber>();
+      var list = new System.Collections.Generic.List<TInteger>();
 
-      if (TNumber.IsZero(value))
-        list.Add(TNumber.Zero);
+      if (TInteger.IsZero(value))
+        list.Add(TInteger.Zero);
       else
-        while (!TNumber.IsZero(value))
+        while (!TInteger.IsZero(value))
         {
           list.Add(value % rdx);
 

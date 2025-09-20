@@ -2,7 +2,7 @@
 {
   public static partial class Em
   {
-    public static System.Globalization.NumberFormatInfo GetSiNumberFormatInfo<TValue>(this Units.IValueQuantifiable<TValue> source, Unicode.UnicodeSpacing numberGroupSeparator = Unicode.UnicodeSpacing.ThinSpace)
+    public static System.Globalization.NumberFormatInfo GetSiNumberFormatInfo<TValue>(this Units.IValueQuantifiable<TValue> source, UnicodeSpacing numberGroupSeparator = UnicodeSpacing.ThinSpace)
       where TValue : struct, System.Numerics.INumber<TValue>
     {
       var nfi = (System.Globalization.NumberFormatInfo)System.Globalization.CultureInfo.InvariantCulture.NumberFormat.Clone();
@@ -12,7 +12,7 @@
       return nfi;
     }
 
-    public static string ToSiFormattedString<TValue>(this TValue source, string? format = null, System.IFormatProvider? formatProvider = null, Unicode.UnicodeSpacing numberGroupSeparator = Unicode.UnicodeSpacing.ThinSpace)
+    public static string ToSiFormattedString<TValue>(this TValue source, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing numberGroupSeparator = UnicodeSpacing.ThinSpace)
       where TValue : struct, System.Numerics.INumber<TValue>
       => source.ToString(format, formatProvider);
     //{

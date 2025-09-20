@@ -4,7 +4,13 @@
 		<TargetFramework>net9.0</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
+		<LangVersion>preview</LangVersion>
 	</PropertyGroup>
+
+	<ItemGroup>
+	  <None Remove="Resources\world-map.svg" />
+	  <None Remove="Resources\WorldMapUserControl.xaml" />
+	</ItemGroup>
 
 	<ItemGroup>
 		<Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />

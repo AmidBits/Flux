@@ -50,7 +50,7 @@ namespace Flux.Units
     public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ChangePrefix(m_value, prefix);
 
     public string ToSiUnitString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null)
-      => GetSiUnitValue(prefix).ToSiFormattedString(format, formatProvider) + Unicode.UnicodeSpacing.ThinSpace.ToSpacingString() + prefix.GetMetricPrefixSymbol() + InductanceUnit.Henry.GetUnitSymbol();
+      => GetSiUnitValue(prefix).ToSiFormattedString(format, formatProvider) + UnicodeSpacing.ThinSpace.ToSpacingString() + prefix.GetMetricPrefixSymbol() + InductanceUnit.Henry.GetUnitSymbol();
 
     #endregion // ISiPrefixValueQuantifiable<>
 
@@ -76,12 +76,12 @@ namespace Flux.Units
 
     public double GetUnitValue(InductanceUnit unit) => ConvertToUnit(unit, m_value);
 
-    public string ToUnitString(InductanceUnit unit = InductanceUnit.Henry, string? format = null, System.IFormatProvider? formatProvider = null, bool fullName = false)
+    public string ToUnitString(InductanceUnit unit = InductanceUnit.Henry, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing spacing = UnicodeSpacing.Space, bool fullName = false)
     {
       var value = GetUnitValue(unit);
 
       return value.ToString(format, formatProvider)
-        + Unicode.UnicodeSpacing.Space.ToSpacingString()
+        + spacing.ToSpacingString()
         + (fullName ? unit.GetUnitName(false) : unit.GetUnitSymbol(false));
     }
 

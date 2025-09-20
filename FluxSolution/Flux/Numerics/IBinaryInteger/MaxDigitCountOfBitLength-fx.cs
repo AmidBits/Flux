@@ -21,7 +21,7 @@
       if (TBitLength.IsNegative(bitLength))
         return 0;
 
-      var swar = System.Numerics.BigInteger.CreateChecked(bitLength).CreateBitMaskLsbFromBitLength(); // Create a bit-mask representing the greatest value for the bit-length.
+      var swar = System.Numerics.BigInteger.CreateChecked(bitLength).CreateBitMaskRight(); // Create a bit-mask representing the greatest value for the bit-length.
 
       if (swar.IsSingleDigit(radix)) // If SWAR is less than radix, there is only one digit, otherwise, compute for values higher than radix, and more digits.
         return 1;
@@ -29,7 +29,7 @@
       if (accountForSignBit) // If accounting for a sign-bit, shift the SWAR to properly represent the max of a signed type.
         swar >>>= 1;
 
-      var logc = swar.FastIntegerLog(radix, UniversalRounding.WholeAwayFromZero, out var _);
+      var (logc, _) = swar.FastIntegerLog(radix, out var _);
 
       return int.CreateChecked(logc);
     }

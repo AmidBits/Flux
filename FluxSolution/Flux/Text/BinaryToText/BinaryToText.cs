@@ -68,14 +68,14 @@ namespace Flux
             sourceBitCount += sourceBitSize;
           }
 
-          target[targetIndex++] = TTarget.CreateChecked((sourceBitField >> (sourceBitCount - targetBitSize)) & ((ulong)targetBitSize).CreateBitMaskLsbFromBitLength());
+          target[targetIndex++] = TTarget.CreateChecked((sourceBitField >> (sourceBitCount - targetBitSize)) & ((ulong)targetBitSize).CreateBitMaskRight());
           sourceBitCount -= targetBitSize;
         }
 
         var minCount = int.Min(targetBitSize, sourceBitCount);
 
         if (sourceBitCount > 0)
-          target[targetIndex++] = TTarget.CreateChecked((sourceBitField << (targetBitSize - minCount)) & ((ulong)minCount).CreateBitMaskLsbFromBitLength());
+          target[targetIndex++] = TTarget.CreateChecked((sourceBitField << (targetBitSize - minCount)) & ((ulong)minCount).CreateBitMaskRight());
       }
 
       public static void EncodeToIndices(this byte[] source, int targetBitSize, out byte[] target)

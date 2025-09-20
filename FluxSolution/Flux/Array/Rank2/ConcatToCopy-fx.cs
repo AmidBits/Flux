@@ -16,24 +16,24 @@ namespace Flux
       source.AssertRank(2);
       target.AssertRank(2);
 
-      var sourceLength0 = source.GetLength(0);
-      var sourceLength1 = source.GetLength(1);
-      var targetLength0 = target.GetLength(0);
-      var targetLength1 = target.GetLength(1);
+      var sl0 = source.GetLength(0);
+      var sl1 = source.GetLength(1);
+      var tl0 = target.GetLength(0);
+      var tl1 = target.GetLength(1);
 
       T[,] concat;
 
       switch (dimension)
       {
         case 0:
-          concat = new T[(sourceLength0 + targetLength0), int.Max(sourceLength1, targetLength1)];
-          source.CopyTo(concat, 0, 0, 0, 0, sourceLength0, sourceLength1);
-          target.CopyTo(concat, 0, 0, sourceLength0, 0, targetLength0, targetLength1);
+          concat = new T[(sl0 + tl0), int.Max(sl1, tl1)];
+          source.Copy(concat, 0, 0, 0, 0, sl0, sl1);
+          target.Copy(concat, 0, 0, sl0, 0, tl0, tl1);
           break;
         case 1:
-          concat = new T[int.Max(sourceLength0, targetLength0), (sourceLength1 + targetLength1)];
-          source.CopyTo(concat, 0, 0, 0, 0, sourceLength0, sourceLength1);
-          target.CopyTo(concat, 0, 0, 0, sourceLength1, targetLength0, targetLength1);
+          concat = new T[int.Max(sl0, tl0), (sl1 + tl1)];
+          source.Copy(concat, 0, 0, 0, 0, sl0, sl1);
+          target.Copy(concat, 0, 0, 0, sl1, tl0, tl1);
           break;
         default:
           throw new System.ArgumentOutOfRangeException(nameof(dimension));

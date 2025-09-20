@@ -11,9 +11,7 @@ namespace Flux.Numerics
     /// <returns></returns>
     public static TSelf GetCatalanNumber<TSelf>(TSelf number)
       where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      => number < TSelf.CreateChecked(211)
-      ? (number + number).Factorial() / ((number + TSelf.One).Factorial() * number.Factorial())
-      : (number + number).SplitFactorial() / ((number + TSelf.One).SplitFactorial() * number.SplitFactorial());
+      => (number + number).Factorial() / ((number + TSelf.One).Factorial() * number.Factorial());
 
     /// <summary>
     /// <para>Creates a new sequence with Catalan numbers.</para>

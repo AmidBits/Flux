@@ -13,7 +13,7 @@
 
       var cosLatitude = double.Cos(lat);
 
-      var sinc = Units.Angle.Sincu(double.Acos(cosLatitude * double.Cos(lon / 2)));
+      var sinc = double.Acos(cosLatitude * double.Cos(lon / 2)).Sincu();
 
       var x = 0.5 * (lon * double.Cos(double.Acos(2 / double.Pi)) + ((2 * cosLatitude * double.Sin(lon / 2)) / sinc));
       var y = 0.5 * (lat + (double.Sin(lat) / sinc));

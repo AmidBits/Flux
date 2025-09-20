@@ -11,7 +11,7 @@ namespace Flux
       source.AssertRank(2);
 
       var target = new T[preCount0 + count0 + postCount0, preCount1 + count1 + postCount1];
-      source.CopyTo(target, index0, index1, preCount0, preCount1, count0, count1);
+      source.Copy(target, index0, index1, preCount0, preCount1, count0, count1);
       return target;
     }
   }

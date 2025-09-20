@@ -78,13 +78,13 @@ namespace Flux
         if (a[1] <= y)
         {
           //if (b[1] > y && Geometry.Lines.Line.LineSideTest(x, y, a[0], a[1], b[0], b[1]) > 0)
-          if (b[1] > y && Geometry.Lines.Line.LineSideTest(xy, a, b) > 0)
+          if (b[1] > y && Numerics.Geometry.Lines.Line.LineSideTest(xy, a, b) > 0)
             wn++;
         }
         else
         {
           //if (b[1] <= y && Geometry.Lines.Line.LineSideTest(x, y, a[0], a[1], b[0], b[1]) < 0)
-          if (b[1] <= y && Geometry.Lines.Line.LineSideTest(xy, a, b) < 0)
+          if (b[1] <= y && Numerics.Geometry.Lines.Line.LineSideTest(xy, a, b) < 0)
             wn--;
         }
       }
@@ -107,12 +107,12 @@ namespace Flux
 
         if (a[1] <= y)
         {
-          if (b[1] > y && Geometry.Lines.Line.LineSideTest(x, y, a[0], a[1], b[0], b[1]) > 0)
+          if (b[1] > y && Numerics.Geometry.Lines.Line.LineSideTest(x, y, a[0], a[1], b[0], b[1]) > 0)
             wn++;
         }
         else
         {
-          if (b[1] <= y && Geometry.Lines.Line.LineSideTest(x, y, a[0], a[1], b[0], b[1]) < 0)
+          if (b[1] <= y && Numerics.Geometry.Lines.Line.LineSideTest(x, y, a[0], a[1], b[0], b[1]) < 0)
             wn--;
         }
       }

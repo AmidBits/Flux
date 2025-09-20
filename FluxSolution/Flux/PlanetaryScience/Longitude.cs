@@ -14,7 +14,7 @@ namespace Flux.PlanetaryScience
     private readonly Units.Angle m_angle;
 
     private Longitude(double angleDeg)
-      => m_angle = new(angleDeg.WrapAroundClosed(MinValue, MaxValue), Units.AngleUnit.Degree);
+      => m_angle = new(angleDeg.Wrap(MinValue, MaxValue, IntervalNotation.Closed), Units.AngleUnit.Degree);
 
     /// <summary>Creates a new <see cref="Longitude"/> from the specified <paramref name="angle"/>.</summary>
     public Longitude(Units.Angle angle)
@@ -41,11 +41,12 @@ namespace Flux.PlanetaryScience
 
     public string ToDecimalString() => m_angle.GetUnitValue(Units.AngleUnit.Degree).ToString(6.FormatUpToFractionalDigits());
 
-    //public string ToSexagesimalDegreeString(Units.AngleDmsNotation format = Units.AngleDmsNotation.DegreesMinutesDecimalSeconds, Unicode.UnicodeSpacing componentSpacing = Unicode.UnicodeSpacing.None)
-    //  => Units.Angle.ToStringDmsNotation(m_angle.GetUnitValue(Units.AngleUnit.Degree), format, CompassCardinalAxis.EastWest, -1, componentSpacing);
+    public string ToDmsNotationString()
+    {
+      var (wholeDegrees, _, wholeMinutes, decimalSeconds) = SexagesimalUnitSubdivisions.FromDecimalDegrees(Value);
 
-    public string ToDmsNotationString(Units.AngleDmsNotation dmsNotation = Units.AngleDmsNotation.DegreesMinutesDecimalSeconds, Unicode.UnicodeSpacing componentSpacing = Unicode.UnicodeSpacing.None)
-      => Units.Angle.ToStringDmsNotation(m_angle.GetUnitValue(Units.AngleUnit.Degree), dmsNotation, CompassCardinalAxis.EastWest, -1, componentSpacing);
+      return $"{(int)double.Abs(wholeDegrees):D2}\u00B0{(int)wholeMinutes:D2}\u2032{(int)decimalSeconds:D2}\u2033{(double.IsNegative(wholeDegrees) ? 'W' : 'E')}";
+    }
 
     #region Static methods
 
@@ -63,11 +64,38 @@ namespace Flux.PlanetaryScience
     ////? MinValue + (longitude - MinValue) % (MaxValue - MinValue)
     ////: longitude);
 
-    public static Longitude ParseDmsNotation(string dmsNotation)
-      => Units.Angle.TryParseDmsNotations(dmsNotation, out var dmsNotations) ? (Longitude)dmsNotations.First(e => e is Longitude) : throw new System.InvalidOperationException();
+    [System.Text.RegularExpressions.GeneratedRegex(@"(?<Degrees>\d+)[\s\u00B0\u02DA\u030A]+(?<Minutes>\d+)[\s\u2032\u0027\u02B9\u00B4]+(?<Seconds>\d+)[\s\u2033\u0022\u02BA\u301E\u201D\u3003]+(?<Direction>[EW])")]
+    private static partial System.Text.RegularExpressions.Regex ParseDmsNotationRegex();
 
-    //public static string ToStringDmsNotation(double decimalDegrees, Units.AngleDmsNotation dmsNotation = Units.AngleDmsNotation.DegreesMinutesDecimalSeconds, int decimalPoints = -1, Unicode.UnicodeSpacing componentSpacing = Unicode.UnicodeSpacing.None)
-    //  => Units.Angle.ToStringDmsNotation(decimalDegrees, dmsNotation, CompassCardinalAxis.EastWest, decimalPoints, componentSpacing);
+    /// <summary>
+    /// <para></para>
+    /// <para><see href="https://en.wikipedia.org/wiki/ISO_6709"/></para>
+    /// <para><seealso href="https://en.wikipedia.org/wiki/Degree_(angle)#Subdivisions"/></para>
+    /// <para><seealso href="https://en.wikipedia.org/wiki/Geographic_coordinate_conversion#Change_of_units_and_format"/></para>
+    /// </summary>
+    /// <param name="dmsNotation"></param>
+    /// <returns></returns>
+    /// <exception cref="System.InvalidOperationException"></exception>
+    public static Longitude ParseDmsNotation(string text)
+    {
+      if (ParseDmsNotationRegex().Match(text) is var m && m.Success && m.Groups is var gs)
+      {
+        var decimalDegrees = 0.0;
+
+        decimalDegrees += int.Parse(gs[1].Value, System.Globalization.NumberStyles.Integer);
+        decimalDegrees += int.Parse(gs[2].Value, System.Globalization.NumberStyles.Integer) / 60.0;
+        decimalDegrees += int.Parse(gs[3].Value, System.Globalization.NumberStyles.Integer) / 3600.0;
+
+        if (gs[4].Value[0] is 'W') decimalDegrees = -decimalDegrees;
+
+        System.ArgumentOutOfRangeException.ThrowIfLessThan(decimalDegrees, Longitude.MinValue);
+        System.ArgumentOutOfRangeException.ThrowIfGreaterThan(decimalDegrees, Longitude.MaxValue);
+
+        return new(decimalDegrees);
+      }
+
+      throw new System.InvalidOperationException();
+    }
 
     #endregion Static methods
 
@@ -102,11 +130,7 @@ namespace Flux.PlanetaryScience
 
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? formatProvider)
-      => format is not null
-      ? Units.Angle.TryConvertFormatToDmsNotation(format, out var dmsNotation)
-        ? ToDmsNotationString(dmsNotation)
-        : m_angle.ToUnitString(Units.AngleUnit.Degree, format, formatProvider)
-      : ToDmsNotationString();
+      => ToDmsNotationString();
 
     #region IValueQuantifiable<>
 

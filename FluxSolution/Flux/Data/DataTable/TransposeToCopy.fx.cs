@@ -21,7 +21,7 @@ namespace Flux
       for (var columnIndex = 0; columnIndex < columnCount; columnIndex++)
       {
         var values = new object[rowCount];
-        for (var rowIndex = 0; rowIndex < values.Length; rowIndex++)
+        for (var rowIndex = 0; rowIndex < rowCount; rowIndex++)
           values[rowIndex] = source.Rows[rowIndex][columnIndex];
         target.Rows.Add(values);
       }

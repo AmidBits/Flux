@@ -24,7 +24,6 @@ namespace Flux
     /// <typeparam name="TNumber"></typeparam>
     /// <param name="value"></param>
     /// <returns></returns>
-    [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
     public static TNumber UnitSign<TNumber>(this TNumber value)
       where TNumber : System.Numerics.INumber<TNumber>
       => TNumber.CopySign(TNumber.One, value);

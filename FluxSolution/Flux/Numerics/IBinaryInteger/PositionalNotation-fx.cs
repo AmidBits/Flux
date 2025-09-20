@@ -138,13 +138,11 @@ namespace Flux
 
       if (alphabet.Length < 2) throw new System.ArgumentOutOfRangeException(nameof(alphabet));
 
-      var abs = TInteger.Abs(value);
-
       var indices = new System.Collections.Generic.List<int>();
 
-      for (var bitIndex = int.Min(int.Max(abs.GetBitLength(), minLength), abs.GetBitCount()) - 1; bitIndex >= 0; bitIndex--)
+      for (var bitIndex = int.Min(int.Max(value.GetBitLength(), minLength), value.GetBitCount()) - 1; bitIndex >= 0; bitIndex--)
       {
-        var bitValue = int.CreateChecked((abs >>> bitIndex) & TInteger.One);
+        var bitValue = int.CreateChecked((value >>> bitIndex) & TInteger.One);
 
         if (bitValue > 0 || indices.Count > 0 || bitIndex < minLength)
           indices.Add(bitValue);

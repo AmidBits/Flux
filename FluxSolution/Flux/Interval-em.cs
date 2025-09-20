@@ -23,25 +23,25 @@
     public static Interval<T> GetExtent<T>(this Interval<T> source, IntervalNotation intervalNotation = IntervalNotation.Closed, int magnitude = 1)
       where T : System.Numerics.INumber<T>
     {
-      magnitude.AssertNonNegativeNumber(nameof(magnitude));
+      System.ArgumentOutOfRangeException.ThrowIfNegative(magnitude);
 
-      var (minValue, maxValue) = Interval<T>.AssertValid(source.MinValue, source.MaxValue, intervalNotation);
+      var (minValue, maxValue) = Interval.AssertValid(source.MinValue, source.MaxValue, intervalNotation);
 
       while (--magnitude >= 0)
       {
         if (intervalNotation == IntervalNotation.Closed)
           return source; // Exit early since this will not change regardless of magnitude.
-        else if (intervalNotation == IntervalNotation.HalfRightOpen)
-          maxValue = maxValue.GetInfimum();
-        else if (intervalNotation == IntervalNotation.HalfLeftOpen)
+        else if (intervalNotation == IntervalNotation.HalfOpenLeft)
           minValue = minValue.GetSupremum();
+        else if (intervalNotation == IntervalNotation.HalfOpenRight)
+          maxValue = maxValue.GetInfimum();
         else if (intervalNotation == IntervalNotation.Open)
           (minValue, maxValue) = (minValue.GetSupremum(), maxValue.GetInfimum());
         else
           throw new NotImplementedException(intervalNotation.ToString());
       }
 
-      Interval<T>.AssertValid(minValue, maxValue, IntervalNotation.Closed, "minExtent/maxExtent");
+      Interval.AssertValid(minValue, maxValue, IntervalNotation.Closed, "minExtent/maxExtent");
 
       return new(minValue, maxValue);
     }
@@ -92,18 +92,18 @@
       if (T.IsNegative(minMargin)) throw new System.ArgumentOutOfRangeException(nameof(minMargin));
       if (T.IsNegative(maxMargin)) throw new System.ArgumentOutOfRangeException(nameof(maxMargin));
 
-      var (minValue, maxValue) = Interval<T>.AssertValid(source.MinValue, source.MaxValue);
+      var (minValue, maxValue) = Interval.AssertValid(source.MinValue, source.MaxValue);
 
       var paramName = "minMargin/maxMargin";
 
       if (intervalNotation == IntervalNotation.Closed)
         return source; // No need to re-assert.
       else if (intervalNotation == IntervalNotation.Open)
-        (minValue, maxValue) = Interval<T>.AssertValid(minValue + minMargin, maxValue - maxMargin, IntervalNotation.Closed, paramName);
-      else if (intervalNotation == IntervalNotation.HalfLeftOpen)
-        (minValue, maxValue) = Interval<T>.AssertValid(minValue + minMargin, maxValue, IntervalNotation.Closed, paramName);
-      else if (intervalNotation == IntervalNotation.HalfRightOpen)
-        (minValue, maxValue) = Interval<T>.AssertValid(minValue, maxValue - maxMargin, IntervalNotation.Closed, paramName);
+        (minValue, maxValue) = Interval.AssertValid(minValue + minMargin, maxValue - maxMargin, IntervalNotation.Closed, paramName);
+      else if (intervalNotation == IntervalNotation.HalfOpenLeft)
+        (minValue, maxValue) = Interval.AssertValid(minValue + minMargin, maxValue, IntervalNotation.Closed, paramName);
+      else if (intervalNotation == IntervalNotation.HalfOpenRight)
+        (minValue, maxValue) = Interval.AssertValid(minValue, maxValue - maxMargin, IntervalNotation.Closed, paramName);
       else
         throw new NotImplementedException(intervalNotation.ToString());
 
@@ -174,7 +174,7 @@
       var index = source.MinValue;
       var length = source.MaxValue - source.MinValue;
 
-      if (intervalNotation is IntervalNotation.HalfLeftOpen or IntervalNotation.Open)
+      if (intervalNotation is IntervalNotation.HalfOpenLeft or IntervalNotation.Open)
         index++;
 
       if (intervalNotation == IntervalNotation.Closed)
@@ -191,30 +191,16 @@
     /// <summary>
     /// <para></para>
     /// </summary>
+    /// <remarks>
+    /// <para>The Start property of Range is inclusive, but the End property is exclusive.</para>
+    /// <para>Both the Min and the Max properties on an Interval are inclusive.</para>
+    /// </remarks>
     /// <typeparam name="T"></typeparam>
     /// <param name="source"></param>
     /// <returns></returns>
-    public static System.Range ToRange<T>(this Interval<T> source, IntervalNotation intervalNotation = IntervalNotation.Closed)
+    public static System.Range ToRange<T>(this Interval<T> source)
       where T : System.Numerics.IBinaryInteger<T>
-    {
-      var (index, length) = source.GetOffsetAndLength(intervalNotation);
-
-      return new(int.CreateChecked(index), int.CreateChecked(index + length) - 1);
-    }
-
-    /// <summary>
-    /// <para></para>
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="source"></param>
-    /// <returns></returns>
-    public static Slice ToSlice<T>(this Interval<T> source, IntervalNotation intervalNotation = IntervalNotation.Closed)
-      where T : System.Numerics.IBinaryInteger<T>
-    {
-      var (index, length) = source.GetOffsetAndLength(intervalNotation);
-
-      return new(int.CreateChecked(index), int.CreateChecked(length));
-    }
+      => new(int.CreateChecked(source.MinValue), int.CreateChecked(source.MaxValue) + 1);
 
     /// <summary>
     /// <para></para>
@@ -229,7 +215,7 @@
     {
       var (minValue, maxValue) = source.GetExtent(intervalNotation);
 
-      var cmp = Interval<T>.CompareMemberToInterval(value, minValue, maxValue, intervalNotation);
+      var cmp = Interval.CompareMember(value, minValue, maxValue, intervalNotation);
 
       var addon = value != minValue && value != maxValue ? T.One : T.Zero;
 

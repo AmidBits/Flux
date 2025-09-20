@@ -12,15 +12,15 @@ namespace Numerics
     [TestMethod]
     public void BitFlagCarryLsb()
     {
-      Assert.AreEqual(true, 0xFFFFFFFFU.BitGetLsb());
-      Assert.AreEqual(false, 0.BitGetLsb());
+      Assert.AreEqual(true, 0xFFFFFFFFU.BitGetLs1b());
+      Assert.AreEqual(false, 0.BitGetLs1b());
     }
 
     [TestMethod]
     public void BitFlagCarryMsb()
     {
-      Assert.AreEqual(true, 0xFFFFFFFFU.BitGetMsb());
-      Assert.AreEqual(false, 0.BitGetMsb());
+      Assert.AreEqual(true, 0xFFFFFFFFU.BitGetMs1b());
+      Assert.AreEqual(false, 0.BitGetMs1b());
     }
 
     #endregion // BitFlags
@@ -28,15 +28,15 @@ namespace Numerics
     #region BitFolds
 
     [TestMethod]
-    public void BitFoldToLsb()
+    public void BitFoldToRight()
     {
-      Assert.AreEqual(0b00000000000000000000000001111111U, 0b00000000_01011000U.BitFoldLsb());
+      Assert.AreEqual(0b00000000000000000000000001111111U, 0b00000000_01011000U.BitFoldRight());
     }
 
     [TestMethod]
-    public void BitFoldToMsb()
+    public void BitFoldToLeft()
     {
-      Assert.AreEqual(0b11111111111111111111111111111000U, 0b00000000_10011000U.BitFoldMsb());
+      Assert.AreEqual(0b11111111111111111111111111111000U, 0b00000000_10011000U.BitFoldLeft());
     }
 
     #endregion // BitFolds
@@ -46,19 +46,19 @@ namespace Numerics
     [TestMethod]
     public void BitIndexClear()
     {
-      Assert.AreEqual(0x2U, 0x6U.BitClear(2));
+      Assert.AreEqual(0x2U, 0x6U.ClearBit(2));
     }
 
     [TestMethod]
     public void BitIndexFlip()
     {
-      Assert.AreEqual(4, 0.BitFlip(2));
+      Assert.AreEqual(4, 0.FlipBit(2));
     }
 
     [TestMethod]
     public void BitIndexGet()
     {
-      Assert.AreEqual(true, 0x6U.BitGet(2));
+      Assert.AreEqual(true, 0x6U.GetBit(2));
     }
 
     [TestMethod]
@@ -74,7 +74,7 @@ namespace Numerics
     [TestMethod]
     public void BitIndexSet()
     {
-      Assert.AreEqual(0x4U, 0b00000000U.BitSet(2));
+      Assert.AreEqual(0x4U, 0b00000000U.SetBit(2));
     }
 
     #endregion // BitIndex
@@ -115,13 +115,13 @@ namespace Numerics
     [TestMethod]
     public void CreateBitMaskLsbFromBitLength()
     {
-      Assert.AreEqual(127, 7.CreateBitMaskLsbFromBitLength());
+      Assert.AreEqual(127, 7.CreateBitMaskRight());
     }
 
     [TestMethod]
     public void CreateBitMaskMsbFromBitLength()
     {
-      Assert.AreEqual(-1, 32.CreateBitMaskMsbFromBitLength());
+      Assert.AreEqual(-1, 32.CreateBitMaskLeft());
     }
 
     [TestMethod]
@@ -131,7 +131,7 @@ namespace Numerics
       var templateBitLength = 3;
 
       var expected = 0b1011_0110_1101_1011_0110_1101_1011_0110U;
-      var actual = unchecked((uint)templateBitMask.FillBitMaskLsb(templateBitLength, expected.GetBitLength()));
+      var actual = unchecked((uint)templateBitMask.FillBitMaskRight(templateBitLength, expected.GetBitLength()));
 
       // Debug:
       var e = expected.ToBinaryString();
@@ -147,7 +147,7 @@ namespace Numerics
       var templateBitLength = 3;
 
       var expected = 0b1101_1011_0110_1101_1011_0110_1101_1011U;
-      var actual = unchecked((uint)templateBitMask.FillBitMaskMsb(templateBitLength, expected.GetBitLength()));
+      var actual = unchecked((uint)templateBitMask.FillBitMaskLeft(templateBitLength, expected.GetBitLength()));
 
       // Debug:
       var e = expected.ToBinaryString();
@@ -341,17 +341,17 @@ namespace Numerics
 
     #region ZeroCounts
 
-    [TestMethod]
-    public void GetLeadingZeroCount()
-    {
-      Assert.AreEqual(25, 88.GetLeadingZeroCount());
-    }
+    //[TestMethod]
+    //public void GetLeadingZeroCount()
+    //{
+    //  Assert.AreEqual(25, 88.GetLeadingZeroCount());
+    //}
 
-    [TestMethod]
-    public void GetTrailingZeroCount()
-    {
-      Assert.AreEqual(3, 88.GetTrailingZeroCount());
-    }
+    //[TestMethod]
+    //public void GetTrailingZeroCount()
+    //{
+    //  Assert.AreEqual(3, 88.GetTrailingZeroCount());
+    //}
 
     #endregion // ZeroCounts
   }

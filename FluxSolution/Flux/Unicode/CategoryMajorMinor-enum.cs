@@ -1,4 +1,4 @@
-namespace Flux.Unicode
+namespace Flux
 {
   /// <summary>
   /// <para>This is a directly correlated enum of System.Globalization.UnicodeCategory to ease translation to the abbreviated two character code for the major and minor parts of the System.Globalization.UnicodeCategory enum values.</para>

@@ -12,13 +12,13 @@ namespace Flux
     public static TInteger DropLeastSignificantDigits<TInteger, TRadix>(this TInteger value, TRadix radix, TInteger count)
       where TInteger : System.Numerics.IBinaryInteger<TInteger>
       where TRadix : System.Numerics.IBinaryInteger<TRadix>
-      => value / TInteger.CreateChecked(Units.Radix.AssertMember(radix).FastIntegerPow(count, UniversalRounding.WholeTowardZero, out var _));
+      => value / TInteger.CreateChecked(Units.Radix.AssertMember(radix).FastIntegerPow(count, out var _).IpowTz);
 
     /// <summary>Drop <paramref name="count"/> leading (most significant) digits of <paramref name="value"/> using base <paramref name="radix"/>.</summary>
     public static TInteger DropMostSignificantDigits<TInteger, TRadix>(this TInteger value, TRadix radix, TInteger count)
       where TInteger : System.Numerics.IBinaryInteger<TInteger>
       where TRadix : System.Numerics.IBinaryInteger<TRadix>
-      => value % TInteger.CreateChecked(radix.FastIntegerPow(DigitCount(value, radix) - count, UniversalRounding.WholeTowardZero, out var _));
+      => value % TInteger.CreateChecked(radix.FastIntegerPow(DigitCount(value, radix) - count, out var _).IpowTz);
 
     /// <summary>Retreive <paramref name="count"/> least significant digits of <paramref name="value"/> using base <paramref name="radix"/>.</summary>
     public static TInteger KeepLeastSignificantDigit<TInteger, TRadix>(this TInteger value, TRadix radix)
@@ -30,12 +30,12 @@ namespace Flux
     public static TInteger KeepLeastSignificantDigits<TInteger, TRadix>(this TInteger value, TRadix radix, TInteger count)
       where TInteger : System.Numerics.IBinaryInteger<TInteger>
       where TRadix : System.Numerics.IBinaryInteger<TRadix>
-      => value % TInteger.CreateChecked(Units.Radix.AssertMember(radix).FastIntegerPow(count, UniversalRounding.WholeTowardZero, out var _));
+      => value % TInteger.CreateChecked(Units.Radix.AssertMember(radix).FastIntegerPow(count, out var _).IpowTz);
 
     /// <summary>Drop the leading digit of <paramref name="value"/> using base <paramref name="radix"/>.</summary>
     public static TInteger KeepMostSignificantDigits<TInteger, TRadix>(this TInteger value, TRadix radix, TInteger count)
       where TInteger : System.Numerics.IBinaryInteger<TInteger>
       where TRadix : System.Numerics.IBinaryInteger<TRadix>
-      => value / TInteger.CreateChecked(radix.FastIntegerPow(value.DigitCount(radix) - count, UniversalRounding.WholeTowardZero, out var _));
+      => value / TInteger.CreateChecked(radix.FastIntegerPow(value.DigitCount(radix) - count, out var _).IpowTz);
   }
 }

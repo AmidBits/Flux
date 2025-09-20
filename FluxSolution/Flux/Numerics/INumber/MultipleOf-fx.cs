@@ -9,7 +9,6 @@
     /// <param name="value">The number for which the nearest <paramref name="multiple"/> will be found.</param>
     /// <param name="multiple">The multiple to which <paramref name="value"/> is measured.</param>
     /// <returns></returns>
-    [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
     public static bool IsMultipleOf<TNumber>(this TNumber value, TNumber multiple)
       where TNumber : System.Numerics.INumber<TNumber>
       => TNumber.IsZero(value % multiple);

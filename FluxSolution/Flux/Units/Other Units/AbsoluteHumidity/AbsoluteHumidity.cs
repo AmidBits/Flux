@@ -82,11 +82,11 @@ namespace Flux.Units
 
     public double GetUnitValue(AbsoluteHumidityUnit unit) => ConvertFromUnit(unit, m_value);
 
-    public string ToUnitString(AbsoluteHumidityUnit unit, string? format = null, System.IFormatProvider? formatProvider = null, bool fullName = false)
+    public string ToUnitString(AbsoluteHumidityUnit unit, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing spacing = UnicodeSpacing.Space, bool fullName = false)
     {
       var value = GetUnitValue(unit);
 
-      return value.ToString(format, formatProvider) + Unicode.UnicodeSpacing.Space.ToSpacingString() + (fullName ? unit.GetUnitName(value.IsConsideredPlural()) : unit.GetUnitSymbol(false));
+      return value.ToString(format, formatProvider) + spacing.ToSpacingString() + (fullName ? unit.GetUnitName(value.IsConsideredPlural()) : unit.GetUnitSymbol(false));
     }
 
     #endregion // IUnitValueQuantifiable<>

@@ -13,9 +13,9 @@
     public static TNumber LogOfAwayFromZero<TNumber, TRadix>(this TNumber value, TRadix radix)
       where TNumber : System.Numerics.INumber<TNumber>
       where TRadix : System.Numerics.IBinaryInteger<TRadix>
-      => TNumber.IsZero(value)
-      ? value
-      : TNumber.CopySign(TNumber.CreateChecked(double.Log(double.CreateChecked(TNumber.Abs(value)), double.CreateChecked(Units.Radix.AssertMember(radix))).Envelop()), value);
+      => value <= TNumber.Zero || radix <= TRadix.One
+      ? TNumber.Zero
+      : TNumber.CreateChecked(double.Log(double.CreateChecked(value), double.CreateChecked(radix)).Envelop());
 
     /// <summary>
     /// <para></para>
@@ -50,8 +50,8 @@
     public static TNumber LogOfTowardZero<TNumber, TRadix>(this TNumber value, TRadix radix)
       where TNumber : System.Numerics.INumber<TNumber>
       where TRadix : System.Numerics.IBinaryInteger<TRadix>
-      => TNumber.IsZero(value)
-      ? value
-      : TNumber.CopySign(TNumber.CreateChecked(double.Truncate(double.Log(double.CreateChecked(TNumber.Abs(value)), double.CreateChecked(Units.Radix.AssertMember(radix))))), value);
+      => value <= TNumber.Zero || radix <= TRadix.One
+      ? TNumber.Zero
+      : TNumber.CreateChecked(double.Truncate(double.Log(double.CreateChecked(TNumber.Abs(value)), double.CreateChecked(radix))));
   }
 }

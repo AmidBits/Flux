@@ -172,7 +172,7 @@ namespace Flux.Units
     public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ChangePrefix(m_value, prefix);
 
     public string ToSiUnitString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null)
-      => GetSiUnitValue(prefix).ToSiFormattedString(format, formatProvider) + Unicode.UnicodeSpacing.ThinSpace.ToSpacingString() + prefix.GetMetricPrefixSymbol() + TimeUnit.Second.GetUnitSymbol();
+      => GetSiUnitValue(prefix).ToSiFormattedString(format, formatProvider) + UnicodeSpacing.ThinSpace.ToSpacingString() + prefix.GetMetricPrefixSymbol() + TimeUnit.Second.GetUnitSymbol();
 
     #endregion // ISiUnitValueQuantifiable<>
 
@@ -200,12 +200,12 @@ namespace Flux.Units
 
     public double GetUnitValue(TimeUnit unit) => ConvertToUnit(unit, m_value);
 
-    public string ToUnitString(TimeUnit unit = TimeUnit.Second, string? format = null, System.IFormatProvider? formatProvider = null, bool fullName = false)
+    public string ToUnitString(TimeUnit unit = TimeUnit.Second, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing spacing = UnicodeSpacing.Space, bool fullName = false)
     {
       var value = GetUnitValue(unit);
 
       return value.ToString(format, formatProvider)
-        + Unicode.UnicodeSpacing.Space.ToSpacingString()
+        + spacing.ToSpacingString()
         + (fullName ? unit.GetUnitName(value.IsConsideredPlural()) : unit.GetUnitSymbol(false));
     }
 

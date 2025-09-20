@@ -54,11 +54,8 @@ namespace Flux
       var list = new System.Collections.Generic.List<TInteger>();
 
       var two = TInteger.CreateChecked(2);
-      var three = TInteger.CreateChecked(3);
       var four = TInteger.CreateChecked(4);
-      var five = TInteger.CreateChecked(5);
       var six = TInteger.CreateChecked(6);
-      var seven = TInteger.CreateChecked(7);
 
       var m_primeFactorWheelIncrements = new TInteger[] { four, two, four, two, four, six, two, six };
 
@@ -68,11 +65,15 @@ namespace Flux
         value /= two;
       }
 
+      var three = TInteger.CreateChecked(3);
+
       while (TInteger.IsZero(value % three))
       {
         list.Add(three);
         value /= three;
       }
+
+      var five = TInteger.CreateChecked(5);
 
       while (TInteger.IsZero(value % five))
       {
@@ -80,7 +81,7 @@ namespace Flux
         value /= five;
       }
 
-      TInteger k = seven, k2 = k * k;
+      TInteger k = TInteger.CreateChecked(7), k2 = k * k;
 
       var index = 0;
 

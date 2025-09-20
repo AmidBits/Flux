@@ -5,7 +5,7 @@ namespace Flux
     #region CommonPrefixLength
 
     /// <summary>
-    /// <para>Finds the length of any common prefix shared between <paramref name="source"/> and the <paramref name="predicate"/>.</para>
+    /// <para>Finds the length of any common prefix shared between <paramref name="source"/> and the <paramref name="predicate"/> satisfied.</para>
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <param name="source"></param>
@@ -27,7 +27,7 @@ namespace Flux
     }
 
     /// <summary>
-    /// <para>Finds the length of any common prefix shared between <paramref name="source"/> and the <paramref name="predicate"/>.</para>
+    /// <para>Finds the length of any common prefix shared between <paramref name="source"/> and the <paramref name="predicate"/> satisfied.</para>
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <param name="source"></param>

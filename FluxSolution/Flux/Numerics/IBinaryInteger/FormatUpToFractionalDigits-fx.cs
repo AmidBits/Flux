@@ -15,7 +15,7 @@ namespace Flux
       ? throw new System.ArgumentOutOfRangeException(nameof(value))
       : "0." + new string('#', int.CreateChecked(value));
 
-    public static System.Globalization.NumberFormatInfo GetSiNumberFormatInfo(Flux.Unicode.UnicodeSpacing unicodeSpacing = Flux.Unicode.UnicodeSpacing.ThinSpace)
+    public static System.Globalization.NumberFormatInfo GetSiNumberFormatInfo(UnicodeSpacing unicodeSpacing = UnicodeSpacing.ThinSpace)
     {
       var nfi = (System.Globalization.NumberFormatInfo)System.Globalization.CultureInfo.InvariantCulture.NumberFormat.Clone();
       nfi.NumberGroupSeparator = unicodeSpacing.ToSpacingString();

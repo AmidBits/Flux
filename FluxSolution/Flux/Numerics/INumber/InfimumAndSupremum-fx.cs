@@ -12,7 +12,7 @@ namespace Flux
     public static TNumber GetInfimum<TNumber>(this TNumber value)
       where TNumber : System.Numerics.INumber<TNumber>
     {
-      if (value.GetType().IsIntegerNumericType()) // All integers are the same, and therefor subtract one.
+      if (value.GetType().IsIntegerNumericType(false)) // All integers are the same, and therefor subtract one.
         return checked(value - TNumber.One);
       else if (value is double d) // All floating point types has different structures, and therefor their own bit-decrement.
         return TNumber.CreateChecked(double.BitDecrement(d));
@@ -36,7 +36,7 @@ namespace Flux
     public static TNumber GetSupremum<TNumber>(this TNumber value)
       where TNumber : System.Numerics.INumber<TNumber>
     {
-      if (value.GetType().IsIntegerNumericType()) // All integers are the same, and therefor add one.
+      if (value.GetType().IsIntegerNumericType(false)) // All integers are the same, and therefor add one.
         return checked(value + TNumber.One);
       else if (value is double d) // All floating point types has different structures, and therefor their own bit-increment.
         return TNumber.CreateChecked(double.BitIncrement(d));

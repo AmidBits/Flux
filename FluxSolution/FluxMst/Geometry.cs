@@ -28,7 +28,7 @@ namespace Maths
     [TestMethod]
     public void Ellipse()
     {
-      var geometry = new Flux.Geometry.Ellipses.EllipseFigure(7, 5);
+      var geometry = new Flux.Numerics.Geometry.Ellipses.EllipseFigure(7, 5);
 
       Assert.AreEqual(7, geometry.A);
       Assert.AreEqual(5, geometry.B);
@@ -37,16 +37,16 @@ namespace Maths
     [TestMethod]
     public void GivenTwoPointsOnEachLine()
     {
-      var expected = (Flux.Geometry.Lines.LineIntersectTest.LinesIntersect, 17d / 11d, 14d / 11d);
-      var actual = Flux.Geometry.Lines.Line.GivenTwoPointsOnEach(1, 1, 3, 2, 1, 4, 2, -1);
+      var expected = (Flux.Numerics.Geometry.Lines.LineIntersectTest.LinesIntersect, 17d / 11d, 14d / 11d);
+      var actual = Flux.Numerics.Geometry.Lines.Line.GivenTwoPointsOnEach(1, 1, 3, 2, 1, 4, 2, -1);
       Assert.AreEqual(expected, actual);
     }
 
     [TestMethod]
     public void GivenTwoPointsOnEachLineSegment()
     {
-      var expected = (Flux.Geometry.Lines.LineSegmentIntersectTest.IntersectWithinFirstLineSegment, 17d / 11d, 14d / 11d);
-      var actual = Flux.Geometry.Lines.LineSegment.GivenTwoPointsOnEach(1, 1, 3, 2, 1, 4, 2, -1);
+      var expected = (Flux.Numerics.Geometry.Lines.LineSegmentIntersectTest.IntersectWithinFirstLineSegment, 17d / 11d, 14d / 11d);
+      var actual = Flux.Numerics.Geometry.Lines.LineSegment.GivenTwoPointsOnEach(1, 1, 3, 2, 1, 4, 2, -1);
       Assert.AreEqual(expected, actual);
     }
 

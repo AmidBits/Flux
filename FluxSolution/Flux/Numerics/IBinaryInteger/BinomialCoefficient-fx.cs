@@ -14,33 +14,30 @@ namespace Flux
     /// <para>(k &lt; 0 or k > n) = 0</para>
     /// <para>(k = 0 or k = n) = 1</para>
     /// </remarks>
-    /// <typeparam name="TNumber"></typeparam>
+    /// <typeparam name="TInteger"></typeparam>
     /// <param name="n">The total number of items in the set. Greater than or equal to <paramref name="k"/>.</param>
     /// <param name="k">The number of items to choose. Greater than or equal to 0.</param>
     /// <returns></returns>
-    public static TNumber BinomialCoefficient<TNumber>(this TNumber n, TNumber k)
-       where TNumber : System.Numerics.IBinaryInteger<TNumber>
+    public static TInteger BinomialCoefficient<TInteger>(this TInteger n, TInteger k)
+       where TInteger : System.Numerics.IBinaryInteger<TInteger>
     {
-      //if (TNumber.IsNegative(k) || k > n) return TNumber.Zero; // (k < 0 || k > n) = 0
-      //else if (TNumber.IsZero(k) || k == n) return TNumber.One; // (k == 0 || k == n) = 1
+      if (TInteger.IsNegative(k) || k > n)
+        return TInteger.Zero; // (k < 0 || k > n) = 0
+      else if (TInteger.IsZero(k) || k == n)
+        return TInteger.One; // (k == 0 || k == n) = 1
 
-      if (k > TNumber.Zero && k < n) // 0 < k < n
-        checked
-        {
-          k = TNumber.Min(k, n - k); // Optimize for the loop below.
+      checked
+      {
+        k = TInteger.Min(k, n - k); // Optimize for the loop below.
 
-          var c = TNumber.One;
+        var c = TInteger.One;
 
-          for (var i = TNumber.One; i <= k; i++)
-            c = c * (n - k + i) / i;
-          //c = c * n-- / i;
+        for (var i = TInteger.One; i <= k; i++)
+          c = c * (n - k + i) / i;
+        //c = c * n-- / i;
 
-          return c;
-        }
-      else if (k.Equals(TNumber.Zero) || k.Equals(n))
-        return TNumber.One; // 1 if (k == 0 || k == n)
-
-      return TNumber.Zero; // 0 if (k < 0 || k > n)
+        return c;
+      }
     }
 
     //public static int BinomialCoefficient(this int n, int k)

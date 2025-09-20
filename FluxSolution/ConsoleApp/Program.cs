@@ -5,6 +5,7 @@ using System.Collections.Immutable;
 using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
+using System.Drawing;
 using System.Linq;
 using System.Net.WebSockets;
 using System.Numerics;
@@ -13,11 +14,11 @@ using System.Runtime.CompilerServices;
 using System.Runtime.Intrinsics;
 using System.Security.Cryptography;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Xml.XPath;
 using Flux;
 using Flux.DataStructures.UnionFind;
 using Flux.Numerics;
-using Flux.Permutations;
 using Flux.Probabilities;
 using Flux.Text;
 using Flux.Units;
@@ -327,146 +328,105 @@ namespace ConsoleApp
 
     #endregion // Mock DataTables
 
+    static void TestRankUnrank()
+    {
+      var n = 3;
+      var r = 2;
+      var p = System.Linq.Enumerable.Range(0, n * n).ToArray();
+      var c = p.Length.CountPermutationsWithoutRepetition(n);
+      Flux.Combinatorics.Basics.Permutations.MyrvoldRuskey.Unrank(r, p, n); // 1,7,3,4,8,0,2,6,5,9
+
+      var q = new int[n];
+      //for (var i = 0; i < n; i++)
+      //  q[p[i]] = i;
+
+      Flux.Combinatorics.Basics.Permutations.MyrvoldRuskey.CreateInversePermutation(p, q);
+
+      var r1 = Flux.Combinatorics.Basics.Permutations.MyrvoldRuskey.Rank(p, q, n);
+
+    }
+
+    /// <summary>
+    /// <para><see href="https://stackoverflow.com/a/20446640/3178666"/></para>
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="n"></param>
+    /// <param name="alphabet"></param>
+    /// <returns></returns>
+    public static System.Collections.Generic.List<int> BijectiveNumberSystemToIndices<T>(int n, T[] alphabet)
+    {
+      /*
+      def get_bijective_val(n, alphabet):
+          base = len(alphabet)
+          digits = []
+          while n:
+              remainder = math.ceil(n/base)-1
+              digits.append(n - remainder*base)
+              n = remainder
+          digits.reverse()
+          return "".join(alphabet[digit-1] for digit in digits)
+       */
+
+      var b = alphabet.Length;
+      var digits = new System.Collections.Generic.List<int>();
+      while (n > 0)
+      {
+        var remainder = n.DivModEnveloped(b).QuotientEnveloped - 1;
+        digits.Add((n - remainder * b) - 1);
+        n = remainder;
+      }
+      digits.Reverse();
+      return digits;
+    }
+
     private static void TimedMain(string[] _)
     {
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
 
-      static void Test()
-      {
-        var a = 4;
-        var b = 2;
+      var gcd = 091575.GreatestCommonDivisor(999999);
+      var isc = 100010.IsCoprime(10);
 
-        var c = a.BinomialCoefficient(b);
+      var total = new BigInteger(52);
+      var taken = 5;
 
-        var adivb = a.Factorial() / b.Factorial();
+      var pwr = total.CountPermutationsWithRepetition(taken);
+      var pwor = total.CountPermutationsWithoutRepetition(taken);
+      var cwr = total.CountCombinationsWithRepetition(taken);
+      var cwor = total.CountCombinationsWithoutRepetition(taken);
 
-        var ab = a.Factorial(b);
+      //var atoms = new char[] { 'A', 'B', 'C', 'D' };
+      //var radix = new int[3];
 
-        var cwor = a.CountCombinationsWithoutRepetition(b);
-        var cwr = a.CountCombinationsWithRepetition(b);
-        var pwor = a.CountPermutationsWithoutRepetition(b);
-        var pwr = a.CountPermutationsWithRepetition(b);
-      }
-      Test();
+      //var count = Flux.LehmerCode.GetRadixes<char>(atoms, radix);
 
-      var isList = Flux.Units.Angle.TryParseDmsNotations("32° 13′ 18″ N, 110° 55′ 35″ W", out var list);
+      //var index = new int[radix.Length];
 
+      //var permutation = new char[radix.Length];
 
-      //var a = new int[] { 1, 2, 3 };
-      //var b = new int[20];
+      //System.Console.WriteLine($"{atoms.Length} choose {radix.Length} = {count}");
 
-      //b.FillWith(0, 2, a);
-
-
-
-      var v = new Flux.CartesianCoordinate<int>(-2);
-      var (x, y) = v;
-
-      var vabs = System.Numerics.Vector.Abs(v.Vector);
-
-      //var range = 5;
-      //for (var value = -15; value <= 15; value++)
+      //for (var i = 0; i < count; i++)
       //{
-      //  var rev0 = RevRem(value, range);
-      //  var rev = value.ReverseRemainder(range, out var rem);
-      //  if (rev == 0) rev = int.CopySign(range, value);
-      //  System.Console.WriteLine($"{value:D2} / {range:D2} : {rem:D2} : {rev:D2} ({rev0:D2})");
+      //  System.Console.Write($"{(i + 1):D4} : ");
+
+      //  Flux.LehmerCode.Decode(i, radix, index);
+
+      //  Flux.LehmerCode.Encode(index, radix);
+
+      //  System.Console.Write(string.Join(',', index));
+      //  Flux.LehmerCode.Reindex(index.AsSpan());
+
+      //  System.Console.Write(" : ");
+      //  System.Console.Write(string.Join(',', index));
+
+      //  Flux.LehmerCode.GetPermutationByIndices<char>(atoms, index.AsSpan(), permutation);
+
+      //  System.Console.Write(" : ");
+      //  System.Console.WriteLine(string.Join(',', permutation));
       //}
 
-      var minValue = -2;
-      var maxValue = 4;
-
-      var five = (-2).WrapAroundHalfOpenMinimum(minValue, maxValue);
-
-      var range = maxValue - minValue;
-      for (var value = -15; value <= 15; value++)
-        System.Console.WriteLine($"{value:D2} / {(maxValue - minValue):D2} ({minValue:D2}, {maxValue:D2}) : [{value.WrapAroundClosed(minValue, maxValue):D2}] : [{value.WrapAroundHalfOpenMaximum(minValue, maxValue):D2}) : ({value.WrapAroundHalfOpenMinimum(minValue, maxValue):D2}]");
-
-      var tester = (1803).ToEngineeringNotationString("g");
-
-
-      var mg = new Flux.Units.Mass(1);
-      var rat = 0.91;
-      var ump = Flux.Units.MetricPrefix.Kilo;
-      var umpv = ump.GetMetricPrefixValue();
-      var gias = ump.GetInfimumAndSupremum(rat, false);
-      var tecncs = umpv.ToEnglishCardinalNumeralCompoundString();
-      var ss = ump.ToShortScaleString();
-      var ens = ((int)umpv * rat).ToEngineeringNotationString();
-
-      var mass = new Flux.Units.Mass(rat, MassUnit.Tonne);
-      var massens = mass.ToUnitString(MassUnit.Gram);
-      var (Prefix, Value) = mass.GetUnitValue(MassUnit.Gram).GetEngineeringNotationProperties();
-      var sius = mass.ToSiUnitString(Flux.Units.MetricPrefix.Hecto);
-
-      var ta = typeof(Flux.Units.MassUnit).TryGetAttribute<Flux.Units.UnitValueQuantifieableAttribute<MassUnit>>(out var ea);
-      var tea = Flux.Units.MassUnit.Gram.TryGetEnumAttribute<Flux.Units.UnitAttribute>(out var eca);
-
-      Zamplez.RunReflection();
-      return;
-
-      System.Data.DataSet dataSet = new();
-
-      MakeParentTable(dataSet);
-      MakeChildTable(dataSet);
-
-      using var sw = System.IO.File.CreateText(System.IO.Path.Combine(System.IO.Path.GetTempPath(), "test.urgf"));
-
-      dataSet.WriteUrgf(sw);
-
-      sw.Close();
-
-      using var sr = System.IO.File.OpenText(System.IO.Path.Combine(System.IO.Path.GetTempPath(), "test.urgf"));
-
-      var urgfr = new Flux.UrgfReader(sr);
-
-      string unit = string.Empty;
-      while (urgfr.MoveNext())
-        unit = urgfr.Current;
-
-      sr.Close();
-
-      //dataSet
-
-      var tcp = "STARlink".AsSpan().TrimCommonPrefix(char.IsUpper);
-
-      var n = System.Numerics.BigInteger.CreateChecked(-9);
-      object o = n;
-      var isfp = o.GetType().IsFloatingPointNumericType(false);
-      var isni = o.GetType().IsIntegerNumericType(false);
-      var isns = o.GetType().IsSignedNumericType(false);
-      var isnu = o.GetType().IsUnsignedNumericType(false);
-
-      var bytes = new byte[10];
-
-      var c = n.WriteBytes(bytes, Endianess.LittleEndian);
-      var bi = bytes.AsReadOnlySpan()[..c].ReadBigInteger(Endianess.LittleEndian);
-
-      //var s = "-41 ° 26 '46″ N79 ° 58 ′ 56 ″W";
-      //var s = "a 123b45c";
-      //var x = s.ToSpanMaker().InsertOrdinalIndicatorSuffix();
-
-      //s = "Z̤͔ͧ̑̓ä͖̭̈̇lͮ̒ͫǧ̗͚̚o̙̔ͮ̇͐̇";
-      //System.Console.WriteLine(s);
-      //s = "Powerلُلُصّبُلُلصّبُررً ॣ ॣh ॣ ॣ冗\r\n🏳0🌈️\r\nజ్ఞ‌ా";
-      //var ros = s.ToSpanMakerOfRune().AsReadOnlySpan();
-      //var rs = ros.ToSpanMakerOfChar().ToString();
-      //var ss = s.AsSpan();
-      //var tel = s.AsSpan().ToListOfTextElement().Select(l => l.ToString()).ToList().AsSpan();
-      //var sl = s.Length;
-      //var t = s.GetTextElements();
-      //var tl = t.Count;
-      var fi = new System.IO.FileInfo(@"file://\Resources\Ucd\UnicodeData.txt");
-      var urix = new System.Uri(@"file://\Resources\Ucd\UnicodeData.txt");
-      urix.TryGetFileInfo(out var fix);
-      var cd = System.Environment.CurrentDirectory;
-      var pc = new System.IO.FileInfo(System.IO.Path.Join(cd, urix.LocalPath));
-      var fi2 = new System.IO.FileInfo(urix.LocalPath.AsSpan().TrimCommonPrefix('/').ToString());
-      var tgfi = urix.TryGetFileInfo(out var fileInfo);
-      //C:\Users\Rob\source\repos\AmidBits\Flux\FluxSolution\ConsoleApp\bin\Debug\net9.0\Flux\Resources\Data\Ucd_UnicodeText.txt
-      //using var fs = new System.IO.FileStream(urix.LocalPath.StartsWith(@"/") ? urix.LocalPath[1..] : urix.LocalPath, System.IO.FileMode.Open);
     }
 
     #region Eliza example

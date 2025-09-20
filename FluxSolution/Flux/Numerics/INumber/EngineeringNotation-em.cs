@@ -3,21 +3,21 @@ namespace Flux
   public static partial class EngineeringNotation
   {
     /// <summary>
-    /// <para>Gets a prefix and value representing the engineering notation of <paramref name="source"/> and optionally whether to <paramref name="restrictToTriplets"/>.</para>
+    /// <para>Gets a prefix and value representing the engineering notation of <paramref name="value"/> and optionally whether to <paramref name="restrictToTriplets"/>.</para>
     /// <example><code>var (p, v) = (1803).GetEngineeringNotationProperties(); // (p: "k", v: 1.803)</code></example>
     /// </summary>
-    /// <typeparam name="TSelf"></typeparam>
-    /// <param name="source"></param>
+    /// <typeparam name="TNumber"></typeparam>
+    /// <param name="value"></param>
     /// <param name="restrictToTriplets"></param>
     /// <returns></returns>
-    public static (Units.MetricPrefix EngineeringNotationPrefix, double EngineeringNotationValue) GetEngineeringNotationProperties<TSelf>(this TSelf source, bool restrictToTriplets = true)
-      where TSelf : System.Numerics.INumber<TSelf>
+    public static (Units.MetricPrefix EngineeringNotationPrefix, double EngineeringNotationValue) GetEngineeringNotationProperties<TNumber>(this TNumber value, bool restrictToTriplets = true)
+      where TNumber : System.Numerics.INumber<TNumber>
     {
       var prefix = Units.MetricPrefix.Unprefixed;
 
-      var number = double.CreateChecked(source);
+      var number = double.CreateChecked(value);
 
-      if (!TSelf.IsZero(source))
+      if (!TNumber.IsZero(value))
       {
         prefix = double.Log10(double.Abs(number)) is var log10 && restrictToTriplets
         ? (Units.MetricPrefix)int.CreateChecked(double.Floor(log10 / 3) * 3)
@@ -30,31 +30,31 @@ namespace Flux
     }
 
     /// <summary>
-    /// <para>Creates a string representation of the <paramref name="source"/> number in engineering notation, with options of <paramref name="format"/>, <paramref name="formatProvider"/>, <paramref name="spacing"/> and <paramref name="restrictToTriplets"/>.</para>
+    /// <para>Creates a string representation of the <paramref name="value"/> number in engineering notation, with options of <paramref name="format"/>, <paramref name="formatProvider"/>, <paramref name="spacing"/> and <paramref name="restrictToTriplets"/>.</para>
     /// <para><see href="https://en.wikipedia.org/wiki/Engineering_notation"/></para>
     /// <example><code>var v = (1803).ToEngineeringNotationString("g"); // v == "1.803 kg"</code></example>
     /// </summary>
-    /// <typeparam name="TSelf"></typeparam>
-    /// <param name="source"></param>
+    /// <typeparam name="TNumber"></typeparam>
+    /// <param name="value"></param>
     /// <param name="unit"></param>
     /// <param name="format"></param>
     /// <param name="formatProvider"></param>
     /// <param name="spacing"></param>
     /// <param name="restrictToTriplets"></param>
     /// <returns></returns>
-    public static string ToEngineeringNotationString<TSelf>(this TSelf source, string? unit = null, string? format = null, System.IFormatProvider? formatProvider = null, Unicode.UnicodeSpacing spacing = Unicode.UnicodeSpacing.ThinSpace, bool restrictToTriplets = true)
-      where TSelf : System.Numerics.INumber<TSelf>
+    public static string ToEngineeringNotationString<TNumber>(this TNumber value, string? unit = null, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing spacing = UnicodeSpacing.ThinSpace, bool restrictToTriplets = true)
+      where TNumber : System.Numerics.INumber<TNumber>
     {
-      if (TSelf.IsZero(source))
+      if (TNumber.IsZero(value))
         return '0'.ToString();
 
       var sm = new SpanMaker<char>();
 
-      var (prefix, value) = source.GetEngineeringNotationProperties(restrictToTriplets);
+      var (enp, env) = value.GetEngineeringNotationProperties(restrictToTriplets);
 
-      sm = sm.Append(value.ToString(format, formatProvider));
+      sm = sm.Append(env.ToString(format, formatProvider));
 
-      var symbol = prefix.GetMetricPrefixSymbol(false);
+      var symbol = enp.GetMetricPrefixSymbol(false);
 
       var hasSymbol = symbol.Length > 0;
       var hasUnit = !string.IsNullOrWhiteSpace(unit);

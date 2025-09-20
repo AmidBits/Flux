@@ -11,13 +11,13 @@ namespace Flux
     {
       for (var r = 0; r < data.Length; r++)
       {
-        if (r > 0) writer.Write((char)Unicode.UnicodeInformationSeparator.RecordSeparator);
+        if (r > 0) writer.Write((char)UnicodeInformationSeparator.RecordSeparator);
 
         var record = data[r];
 
         for (var u = 0; u < record.Length; u++)
         {
-          if (u > 0) writer.Write((char)Unicode.UnicodeInformationSeparator.UnitSeparator);
+          if (u > 0) writer.Write((char)UnicodeInformationSeparator.UnitSeparator);
 
           writer.Write(record[u]);
         }
@@ -28,13 +28,13 @@ namespace Flux
     {
       for (var gi = 0; gi < dataSet.Tables.Count; gi++)
       {
-        if (gi > 0) textWriter.Write((char)Unicode.UnicodeInformationSeparator.GroupSeparator);
+        if (gi > 0) textWriter.Write((char)UnicodeInformationSeparator.GroupSeparator);
 
         var group = dataSet.Tables[gi];
 
         for (var ui = 0; ui < group.Columns.Count; ui++)
         {
-          if (ui > 0) textWriter.Write((char)Unicode.UnicodeInformationSeparator.UnitSeparator);
+          if (ui > 0) textWriter.Write((char)UnicodeInformationSeparator.UnitSeparator);
 
           var unit = group.Columns[ui];
 
@@ -43,11 +43,11 @@ namespace Flux
 
         for (var ri = 0; ri < group.Rows.Count; ri++)
         {
-          textWriter.Write((char)Unicode.UnicodeInformationSeparator.RecordSeparator);
+          textWriter.Write((char)UnicodeInformationSeparator.RecordSeparator);
 
           var record = group.Rows[ri];
 
-          textWriter.Write(string.Join((char)Unicode.UnicodeInformationSeparator.UnitSeparator, record.ItemArray));
+          textWriter.Write(string.Join((char)UnicodeInformationSeparator.UnitSeparator, record.ItemArray));
         }
       }
 

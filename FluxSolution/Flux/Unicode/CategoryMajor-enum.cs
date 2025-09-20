@@ -1,4 +1,4 @@
-namespace Flux.Unicode
+namespace Flux
 {
   /// <summary>
   /// <para>This is an aggregate derivation of the System.Globalization.UnicodeCategory (or MajorMinorCode) enum value. The values represents the character of the first letter in the major code name, e.g. 'P' for Puncuation.</para>

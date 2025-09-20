@@ -19,7 +19,7 @@ namespace Flux.IO.BitStream
     public int BitCount => m_bitCount;
 
     /// <summary>The intermediate 64-bit storage buffer.</summary>
-    public long BitField => unchecked((long)(m_bitField & (ulong)m_bitCount.CreateBitMaskLsbFromBitLength()));
+    public long BitField => unchecked((long)(m_bitField & (ulong)m_bitCount.CreateBitMaskRight()));
 
     /// <summary>The total number of bits read through the bit stream.</summary>
     public int TotalReadBits { get; private set; }
@@ -57,7 +57,7 @@ namespace Flux.IO.BitStream
 
       m_bitCount -= actualBitCount;
 
-      var bitField = unchecked((long)((m_bitField >> m_bitCount) & ((ulong)actualBitCount).CreateBitMaskLsbFromBitLength()));
+      var bitField = unchecked((long)((m_bitField >> m_bitCount) & ((ulong)actualBitCount).CreateBitMaskRight()));
 
       TotalReadBits += actualBitCount;
 

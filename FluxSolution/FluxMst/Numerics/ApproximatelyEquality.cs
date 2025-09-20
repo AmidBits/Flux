@@ -27,11 +27,11 @@ namespace Numerics
       Assert.IsFalse((5.5).EqualsWithinSignificantDigits(5, 1, 10));
       Assert.IsTrue((5.5).EqualsWithinSignificantDigits(5, -1, 10));
 
-      Assert.IsFalse((1000.02).EqualsWithinSignificantDigits(1000.015, 3));
-      Assert.IsTrue((1000.02).EqualsWithinSignificantDigits(1000.015, 2));
+      Assert.IsFalse((1000.02).EqualsWithinSignificantDigits(1000.015, 3, 10));
+      Assert.IsTrue((1000.02).EqualsWithinSignificantDigits(1000.015, 2, 10));
 
-      Assert.IsFalse((1334.261).EqualsWithinSignificantDigits(1235.272, -1));
-      Assert.IsTrue((1334.261).EqualsWithinSignificantDigits(1235.272, -2));
+      Assert.IsFalse((1334.261).EqualsWithinSignificantDigits(1235.272, -1, 10));
+      Assert.IsTrue((1334.261).EqualsWithinSignificantDigits(1235.272, -2, 10));
     }
   }
 }

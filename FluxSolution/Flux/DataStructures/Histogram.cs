@@ -18,6 +18,8 @@ namespace Flux.DataStructures
     public Histogram() { }
     public Histogram(System.Collections.Generic.IEnumerable<TKey> collection) => AddRange(collection);
 
+    public System.Collections.Generic.IReadOnlyDictionary<TKey, TFrequency> Data => m_data;
+
     public TFrequency TotalFrequency => m_totalFrequency;
 
     public void Add(TKey key, TFrequency frequency)

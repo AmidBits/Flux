@@ -31,12 +31,12 @@ namespace Flux
     /// <para>Creates an array of generic column-<paramref name="columnNamePrefix"/>s for <paramref name="source"/> amount of columns.</para>
     /// <example><paramref name="source"/> = 3, returns <c>["Column1", "Column2", "Column3"]</c></example>
     /// </summary>
-    /// <typeparam name="TNumber"></typeparam>
+    /// <typeparam name="TInteger"></typeparam>
     /// <param name="source"></param>
     /// <param name="columnNamePrefix"></param>
     /// <returns></returns>
-    public static string[] ToMultipleOrdinalColumnNames<TNumber>(this TNumber source, string columnNamePrefix = "Column")
-      where TNumber : System.Numerics.IBinaryInteger<TNumber>
+    public static string[] ToMultipleOrdinalColumnNames<TInteger>(this TInteger source, string columnNamePrefix = "Column")
+      where TInteger : System.Numerics.IBinaryInteger<TInteger>
     {
       var maxWidth = int.CreateChecked(source.DigitCount(10));
 

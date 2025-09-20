@@ -48,7 +48,7 @@ namespace Flux.Units
     public System.Runtime.Intrinsics.Vector256<double> GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ChangePrefix(m_value, prefix);
 
     public string ToSiUnitString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null)
-      => GetSiUnitValue(prefix).ToString() + Unicode.UnicodeSpacing.ThinSpace.ToSpacingString() + prefix.GetMetricPrefixSymbol() + TorqueUnit.NewtonMeter.GetUnitSymbol();
+      => GetSiUnitValue(prefix).ToString() + UnicodeSpacing.ThinSpace.ToSpacingString() + prefix.GetMetricPrefixSymbol() + TorqueUnit.NewtonMeter.GetUnitSymbol();
 
     #endregion // ISiUnitValueQuantifiable<>
 
@@ -75,8 +75,8 @@ namespace Flux.Units
 
     public System.Runtime.Intrinsics.Vector256<double> GetUnitValue(TorqueUnit unit) => ConvertToUnit(unit, m_value);
 
-    public string ToUnitString(TorqueUnit unit = TorqueUnit.NewtonMeter, string? format = null, System.IFormatProvider? formatProvider = null, bool fullName = false)
-      => GetUnitValue(unit).ToString() + Unicode.UnicodeSpacing.Space.ToSpacingString() + (fullName ? unit.GetUnitName(true) : unit.GetUnitSymbol(false));
+    public string ToUnitString(TorqueUnit unit = TorqueUnit.NewtonMeter, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing spacing = UnicodeSpacing.Space, bool fullName = false)
+      => GetUnitValue(unit).ToString() + spacing.ToSpacingString() + (fullName ? unit.GetUnitName(true) : unit.GetUnitSymbol(false));
 
     #endregion // IUnitValueQuantifiable<>
 

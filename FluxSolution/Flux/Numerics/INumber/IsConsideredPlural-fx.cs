@@ -10,7 +10,6 @@ namespace Flux
     /// <typeparam name="TNumber"></typeparam>
     /// <param name="value"></param>
     /// <returns></returns>
-    [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
     public static bool IsConsideredPlural<TNumber>(this TNumber value)
       where TNumber : System.Numerics.INumber<TNumber>
       => value != TNumber.One || !value.GetType().IsIntegerNumericType(); // Only an integer 1 (not 1.0) is singular, otherwise a number is considered plural.

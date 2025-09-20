@@ -83,7 +83,7 @@ namespace Flux.Units
     public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ChangePrefix(m_value, prefix);
 
     public string ToSiUnitString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null)
-      => GetSiUnitValue(prefix).ToSiFormattedString(format, formatProvider) + Unicode.UnicodeSpacing.ThinSpace.ToSpacingString() + prefix.GetMetricPrefixSymbol() + SpeedUnit.MeterPerSecond.GetUnitSymbol();
+      => GetSiUnitValue(prefix).ToSiFormattedString(format, formatProvider) + UnicodeSpacing.ThinSpace.ToSpacingString() + prefix.GetMetricPrefixSymbol() + SpeedUnit.MeterPerSecond.GetUnitSymbol();
 
     #endregion // ISiUnitValueQuantifiable<>
 
@@ -109,7 +109,7 @@ namespace Flux.Units
 
     public double GetUnitValue(SpeedUnit unit) => ConvertToUnit(unit, m_value);
 
-    public string ToUnitString(SpeedUnit unit = SpeedUnit.MeterPerSecond, string? format = null, System.IFormatProvider? formatProvider = null, bool fullName = false)
+    public string ToUnitString(SpeedUnit unit = SpeedUnit.MeterPerSecond, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing spacing = UnicodeSpacing.Space, bool fullName = false)
     {
       var sm = new SpanMaker<char>();
 
@@ -118,14 +118,14 @@ namespace Flux.Units
       if (unit == SpeedUnit.Mach)
       {
         sm.Append(fullName ? unit.GetUnitName(value.IsConsideredPlural()) : unit.GetUnitSymbol(false));
-        sm.Append(Unicode.UnicodeSpacing.ThinSpace.ToSpacingString());
+        sm.Append(spacing.ToSpacingString());
       }
 
       sm.Append(GetUnitValue(unit).ToString(format, formatProvider));
 
       if (unit != SpeedUnit.Mach)
       {
-        sm.Append(Unicode.UnicodeSpacing.ThinSpace.ToSpacingString());
+        sm.Append(spacing.ToSpacingString());
         sm.Append(fullName ? unit.GetUnitName(value.IsConsideredPlural()) : unit.GetUnitSymbol(false));
       }
 

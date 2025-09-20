@@ -15,15 +15,7 @@ namespace Flux
       return source;
     }
 
-    /// <summary>
-    /// <para>Replace all elements satisfying the <paramref name="predicate"/> with the <paramref name="replacement"/> if after <paramref name="startIndex"/> and <paramref name="length"/>.</para>
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="source"></param>
-    /// <param name="predicate"></param>
-    /// <param name="replacement"></param>
-    /// <returns></returns>
-    public static System.Span<T> Replace<T>(this System.Span<T> source, System.Func<T, int, bool> predicate, T replacement)
-      => source.Replace(predicate, (e, i) => replacement);
+    public static System.Span<T> Replace<T>(this System.Span<T> source, System.Func<T, bool> predicate, System.Func<T, T> replacementSelector)
+      => source.Replace((e, i) => predicate(e), (e, i) => replacementSelector(e));
   }
 }

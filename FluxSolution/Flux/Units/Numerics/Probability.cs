@@ -12,7 +12,7 @@ namespace Flux.Units
 
     private readonly double m_value;
 
-    public Probability(double ratio) => m_value = Interval<double>.AssertMember(ratio, MinValue, MaxValue, IntervalNotation.Closed, nameof(ratio));
+    public Probability(double ratio) => m_value = Interval.AssertMember(ratio, MinValue, MaxValue, IntervalNotation.Closed, nameof(ratio));
 
     /// <summary>
     /// <para>Computes the odds (p / (1 - p)) ratio of the probability.</para>
@@ -29,7 +29,7 @@ namespace Flux.Units
     /// <exception cref="System.ArgumentOutOfRangeException"></exception>
     public static TSelf AssertMember<TSelf>(TSelf probability, IntervalNotation notation, string? paramName = null)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
-      => Interval<TSelf>.AssertMember(probability, TSelf.CreateChecked(MinValue), TSelf.CreateChecked(MaxValue), notation, paramName ?? nameof(probability));
+      => Interval.AssertMember(probability, TSelf.CreateChecked(MinValue), TSelf.CreateChecked(MaxValue), notation, paramName ?? nameof(probability));
 
     /// <summary>
     /// <para>Returns whether the <paramref name="probability"/> is within <see cref="Probability"/> constrained by the specified <paramref name="intervalNotation"/>.</para>
@@ -37,7 +37,7 @@ namespace Flux.Units
     /// <exception cref="System.ArgumentOutOfRangeException"></exception>
     public static bool IsMember<TSelf>(TSelf probability, IntervalNotation intervalNotation)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
-      => Interval<TSelf>.IsMember(probability, TSelf.CreateChecked(MinValue), TSelf.CreateChecked(MaxValue), intervalNotation);
+      => Interval.IsMember(probability, TSelf.CreateChecked(MinValue), TSelf.CreateChecked(MaxValue), intervalNotation);
 
     #region Bernoulli distribution
 

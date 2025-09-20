@@ -66,6 +66,9 @@
       {
         for (var i = count; i <= x; i++)
         {
+          // Trying to replace the InsertToCopy with more modular versions.
+          //m_matrix = m_matrix.Copy0Insert(m_matrix.NewResize(1, 0), i);
+          //m_matrix = m_matrix.Copy1Insert(m_matrix.NewResize(0, 1), i);
           m_matrix = m_matrix.InsertToCopy(0, i, 1, 0); // Add dimension 0 to accomodate the new vertex as a source.
           m_matrix = m_matrix.InsertToCopy(1, i, 1, 0); // Add dimension 1 to accomodate the new vertex as a target.
         }
@@ -98,8 +101,8 @@
       {
         RemoveVertexValue(x);
 
-        m_matrix = m_matrix.RemoveToCopy(0, x); // Add dimension 0 to accomodate vertex values.
-        m_matrix = m_matrix.RemoveToCopy(1, x); // Add dimension 1 to accomodate vertex values.
+        m_matrix = m_matrix.Remove0ToCopy(x); // Add dimension 0 to accomodate vertex values.
+        m_matrix = m_matrix.Remove1ToCopy(x); // Add dimension 1 to accomodate vertex values.
 
         return true;
       }

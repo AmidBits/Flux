@@ -110,7 +110,7 @@ namespace Flux
     /// <param name="spacing"></param>
     /// <param name="showAsIrrational"></param>
     /// <returns></returns>
-    public static string ToContinuedFractionRepresentationString<TInteger>(this System.Collections.Generic.List<TInteger> source, Unicode.UnicodeSpacing spacing = Unicode.UnicodeSpacing.Space, bool showAsIrrational = false)
+    public static string ToContinuedFractionRepresentationString<TInteger>(this System.Collections.Generic.List<TInteger> source, UnicodeSpacing spacing = UnicodeSpacing.Space, bool showAsIrrational = false)
       where TInteger : System.Numerics.IBinaryInteger<TInteger>
     {
       var spacingString = spacing.ToSpacingString();

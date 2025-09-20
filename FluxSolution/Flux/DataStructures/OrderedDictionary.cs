@@ -28,6 +28,57 @@ namespace Flux.DataStructures
           throw new System.InvalidOperationException();
     }
 
+    //public bool TryGetIndexKeyValue(int index, out IndexKeyValueTrio<TKey, TValue> ikv)
+    //{
+    //  try
+    //  {
+    //    ikv = new(index, m_listOfKeys[index], m_listOfValues[index]);
+    //    return true;
+    //  }
+    //  catch { }
+
+    //  ikv = default!;
+    //  return false;
+    //}
+
+    //public bool TryGetIndexKeyValue(TKey key, out IndexKeyValueTrio<TKey, TValue> ikv)
+    //{
+    //  try
+    //  {
+    //    if (m_dictionary.TryGetValue(key, out var value))
+    //    {
+    //      var index = m_listOfValues.IndexOf(value);
+
+    //      // Additional retrieve for key, to make sure we get the stored value, and not the key passed.
+    //      // The equality comparer for the dictionary could for example, be case insensitive which would yield a match between say "key" (searched for) and "Key" (stored).
+    //      key = m_listOfKeys[index];
+
+    //      ikv = new(index, key, value);
+    //      return true;
+    //    }
+    //  }
+    //  catch { }
+
+    //  ikv = default!;
+    //  return false;
+    //}
+
+    //public bool TryGetIndexKeyValue(TValue value, out IndexKeyValueTrio<TKey, TValue> ikv)
+    //{
+    //  try
+    //  {
+    //    var index = m_listOfValues.IndexOf(value);
+    //    var key = m_listOfKeys[index];
+
+    //    ikv = new(index, key, value);
+    //    return true;
+    //  }
+    //  catch { }
+
+    //  ikv = default!;
+    //  return false;
+    //}
+
     public bool TryGetIndexKeyValue(int index, out IndexKeyValueTrio<TKey, TValue> ikv)
     {
       try

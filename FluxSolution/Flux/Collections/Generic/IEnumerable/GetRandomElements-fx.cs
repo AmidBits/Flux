@@ -16,7 +16,7 @@ namespace Flux
     {
       if (maxCount < 1) throw new System.ArgumentOutOfRangeException(nameof(maxCount));
 
-      Units.Probability.AssertMember(probability, IntervalNotation.HalfLeftOpen); // Cannot be zero, but can be one.
+      Units.Probability.AssertMember(probability, IntervalNotation.HalfOpenLeft); // Cannot be zero, but can be one.
 
       rng ??= System.Random.Shared;
 

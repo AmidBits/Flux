@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Em
+  public static partial class Unicode
   {
     /// <summary>
     /// <para>Creates a new sequence with all runes in a <see cref="System.Globalization.UnicodeCategory"/>.</para>
@@ -22,15 +22,15 @@ namespace Flux
     /// <summary>Translates a <see cref="System.Globalization.UnicodeCategory"/> enum value (<paramref name="unicodeCategory"/>) into a <see cref="UnicodeCategoryMajor"/> enum value.</summary>
     /// <example>var allCharactersByCategoryMajorLabel = Unicode.GetUnicodeCategoryCharacters().GroupBy(kv => kv.Key.ToCategoryMajorLabel()).ToDictionary(g => g.Key, g => g.SelectMany(kv => kv.Value).ToList());</example>
 
-    public static Unicode.UnicodeCategoryMajor ToUnicodeCategoryMajor(this System.Globalization.UnicodeCategory unicodeCategory)
+    public static UnicodeCategoryMajor ToUnicodeCategoryMajor(this System.Globalization.UnicodeCategory unicodeCategory)
     {
       var unicodeCategoryName = unicodeCategory.ToString();
 
-      return System.Enum.GetValues<Unicode.UnicodeCategoryMajor>().FirstOrValue(Unicode.UnicodeCategoryMajor.Other, (ucm, i) => unicodeCategoryName.EndsWith(ucm.ToString())).Item;
+      return System.Enum.GetValues<UnicodeCategoryMajor>().FirstOrValue(UnicodeCategoryMajor.Other, (ucm, i) => unicodeCategoryName.EndsWith(ucm.ToString())).Item;
     }
 
     /// <summary>Translates a <see cref="System.Globalization.UnicodeCategory"/> enum value (<paramref name="unicodeCategory"/>) into a <see cref="UnicodeCategoryMajorMinor"/> enum value.</summary>
-    public static Unicode.UnicodeCategoryMajorMinor ToUnicodeCategoryMajorMinor(this System.Globalization.UnicodeCategory unicodeCategory) => (Unicode.UnicodeCategoryMajorMinor)unicodeCategory;
+    public static UnicodeCategoryMajorMinor ToUnicodeCategoryMajorMinor(this System.Globalization.UnicodeCategory unicodeCategory) => (UnicodeCategoryMajorMinor)unicodeCategory;
 
     /// <summary>Creates a new string in a more readable format, e.g. "DecimalDigitNumber" becomes "decimal digit" (i.e. drop the ending Unicode category major, make lower case and add word spacing).</summary>
     public static string ToUnicodeCategoryMinorFriendlyString(this System.Globalization.UnicodeCategory source)

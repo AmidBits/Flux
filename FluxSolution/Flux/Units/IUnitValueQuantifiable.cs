@@ -37,6 +37,6 @@
     /// <param name="formatProvider"></param>
     /// <param name="fullName"></param>
     /// <returns></returns>
-    string ToUnitString(TUnit unit, string? format, System.IFormatProvider? formatProvider, bool fullName);
+    string ToUnitString(TUnit unit, string? format, System.IFormatProvider? formatProvider, UnicodeSpacing spacing, bool fullName);
   }
 }

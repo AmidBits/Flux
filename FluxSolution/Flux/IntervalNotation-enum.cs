@@ -6,16 +6,14 @@ namespace Flux
   /// </summary>
   public enum IntervalNotation
   {
-    /// <summary>A closed interval is an interval which includes all its limit points, and is denoted with square brackets: [left, right]</summary>
+    /// <summary>A closed interval is an interval that includes all its endpoints and is denoted with square brackets: [left, right]</summary>
     /// <remarks>This is the default interval notation.</remarks>
     Closed,
-    /// <summary>A half-open interval includes only one of its endpoints, and is denoted by mixing the notations for open and closed intervals.</summary>
-    /// <remarks>This is a half-left-open interval, i.e exclude the left endpoint: (left, right]</remarks>
-    HalfLeftOpen,
-    /// <summary>A half-open interval includes only one of its endpoints, and is denoted by mixing the notations for open and closed intervals.</summary>
-    /// <remarks>This is a half-right-open interval, i.e exclude the right endpoint: [left, right)</remarks>
-    HalfRightOpen,
-    /// <summary>An open interval excludes both endpoints, and is indicated with parentheses: (left, right)</summary>
+    /// <summary>A half-open interval has two endpoints and includes only one of them. A left-open interval excludes the left endpoint: (left, right]</summary>
+    HalfOpenLeft,
+    /// <summary>A half-open interval has two endpoints and includes only one of them. A right-open interval excludes the right endpoint: [left, right)</summary>
+    HalfOpenRight,
+    /// <summary>An open interval does not include any endpoint, and is indicated with parentheses: (left, right)</summary>
     Open,
   }
 }

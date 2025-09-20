@@ -11,12 +11,11 @@ namespace Flux
     /// <param name="source"></param>
     /// <param name="regexPattern"></param>
     /// <returns></returns>
-    public static DataStructures.OrderedDictionary<Slice, string> GetRegexSplits(this System.ReadOnlySpan<char> source, string regexPattern)
+    public static DataStructures.OrderedDictionary<Range, string> GetRegexSplits(this System.ReadOnlySpan<char> source, string regexPattern)
     {
-      var dictionary = new DataStructures.OrderedDictionary<Slice, string>();
-      foreach (var r in new System.Text.RegularExpressions.Regex(regexPattern).EnumerateSplits(source))
-        if (new Slice(r, source.Length) is var slice)
-          dictionary.Add(slice, source.Slice(slice).ToString());
+      var dictionary = new DataStructures.OrderedDictionary<Range, string>();
+      foreach (var range in new System.Text.RegularExpressions.Regex(regexPattern).EnumerateSplits(source))
+        dictionary.Add(range, source[range].ToString());
       return dictionary;
     }
 

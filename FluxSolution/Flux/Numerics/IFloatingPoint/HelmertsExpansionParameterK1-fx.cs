@@ -5,8 +5,8 @@ namespace Flux
     /// <summary>
     /// <para><see href="https://en.wikipedia.org/wiki/Vincenty%27s_formulae"/></para>
     /// </summary>
-    public static TNumber HelmertsExpansionParameterK1<TNumber>(this TNumber u)
-      where TNumber : System.Numerics.IFloatingPoint<TNumber>, System.Numerics.IRootFunctions<TNumber>
-      => TNumber.Sqrt(TNumber.One + u * u) is var k ? (k - TNumber.One) / (k + TNumber.One) : throw new System.ArithmeticException();
+    public static TFloat HelmertsExpansionParameterK1<TFloat>(this TFloat value)
+      where TFloat : System.Numerics.IFloatingPoint<TFloat>, System.Numerics.IRootFunctions<TFloat>
+      => TFloat.Sqrt(TFloat.One + value * value) is var k ? (k - TFloat.One) / (k + TFloat.One) : throw new System.ArithmeticException();
   }
 }

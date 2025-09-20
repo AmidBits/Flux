@@ -3,11 +3,11 @@ namespace Flux
   public static partial class FloatingPoint
 
   {
-    public static Numerics.BigRational ToBigRational<TNumber>(this TNumber value, int maxApproximationIterations = 101)
-      where TNumber : System.Numerics.IFloatingPoint<TNumber>
+    public static Numerics.BigRational ToBigRational<TFloat>(this TFloat value, int maxApproximationIterations = 101)
+      where TFloat : System.Numerics.IFloatingPoint<TFloat>
     {
-      if (TNumber.IsZero(value)) return Numerics.BigRational.Zero;
-      if (TNumber.IsInteger(value)) return new Numerics.BigRational(System.Numerics.BigInteger.CreateChecked(value));
+      if (TFloat.IsZero(value)) return Numerics.BigRational.Zero;
+      if (TFloat.IsInteger(value)) return new Numerics.BigRational(System.Numerics.BigInteger.CreateChecked(value));
 
       var Am = (Item1: System.Numerics.BigInteger.Zero, Item2: System.Numerics.BigInteger.One);
       var Bm = (Item1: System.Numerics.BigInteger.One, Item2: System.Numerics.BigInteger.Zero);
@@ -18,19 +18,19 @@ namespace Flux
       var a = System.Numerics.BigInteger.Zero;
       var b = System.Numerics.BigInteger.Zero;
 
-      if (value > TNumber.One)
+      if (value > TFloat.One)
       {
-        var xW = TNumber.Truncate(value);
+        var xW = TFloat.Truncate(value);
 
         var ar = ToBigRational(value - xW, maxApproximationIterations);
 
         return ar + System.Numerics.BigInteger.CreateChecked(xW);
       }
 
-      for (var counter = 0; counter < maxApproximationIterations && !TNumber.IsZero(value); counter++)
+      for (var counter = 0; counter < maxApproximationIterations && !TFloat.IsZero(value); counter++)
       {
-        var r = TNumber.One / value;
-        var rR = TNumber.Round(r);
+        var r = TFloat.One / value;
+        var rR = TFloat.Round(r);
 
         var rT = System.Numerics.BigInteger.CreateChecked(rR);
 

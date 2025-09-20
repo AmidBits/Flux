@@ -6,9 +6,11 @@ namespace Flux
     /// <see href="https://en.wikipedia.org/wiki/Greatest_common_divisor"/>
     public static TInteger Gcd<TInteger>(this TInteger a, params TInteger[] other)
       where TInteger : System.Numerics.IBinaryInteger<TInteger>
-      => other.Length >= 1
-      ? a.GreatestCommonDivisor(other.Aggregate((b, c) => b.GreatestCommonDivisor(c)))
-      : throw new System.ArgumentOutOfRangeException(nameof(other));
+    {
+      System.ArgumentOutOfRangeException.ThrowIfNegativeOrZero(other.Length);
+
+      return a.GreatestCommonDivisor(other.Aggregate(GreatestCommonDivisor));
+    }
 
     /// <summary>Returns the greatest common divisor of <paramref name="a"/> and <paramref name="b"/>.</summary>
     /// <see href="https://en.wikipedia.org/wiki/Greatest_common_divisor"/>
@@ -32,8 +34,8 @@ namespace Flux
     public static TInteger GreatestCommonDivisorEx<TInteger>(this TInteger a, TInteger b, out TInteger x, out TInteger y)
       where TInteger : System.Numerics.IBinaryInteger<TInteger>
     {
-      if (a < TInteger.Zero) throw new System.ArgumentOutOfRangeException(nameof(a));
-      if (b < TInteger.Zero) throw new System.ArgumentOutOfRangeException(nameof(b));
+      System.ArgumentOutOfRangeException.ThrowIfNegative(a);
+      System.ArgumentOutOfRangeException.ThrowIfNegative(b);
 
       x = TInteger.One;
       y = TInteger.Zero;

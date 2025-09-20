@@ -28,19 +28,19 @@ namespace Numerics
     [TestMethod]
     public void WrapAround()
     {
-      Assert.AreEqual(2.5, (7.5).WrapAroundClosed(1, 5));
+      Assert.AreEqual(2.5, (7.5).Wrap(1, 5, IntervalNotation.Closed));
     }
 
     [TestMethod]
     public void WrapAroundHalfOpenMax()
     {
-      Assert.AreEqual(-1, new Interval<int>(-2, 2).WrapAround(7, Flux.IntervalNotation.HalfRightOpen));
+      Assert.AreEqual(-1, new Interval<int>(-2, 2).WrapAround(7, Flux.IntervalNotation.HalfOpenRight));
     }
 
     [TestMethod]
     public void WrapAroundHalfOpenMin()
     {
-      Assert.AreEqual(-1, new Interval<int>(-2, 2).WrapAround(7, Flux.IntervalNotation.HalfLeftOpen));
+      Assert.AreEqual(-1, new Interval<int>(-2, 2).WrapAround(7, Flux.IntervalNotation.HalfOpenLeft));
     }
   }
 }

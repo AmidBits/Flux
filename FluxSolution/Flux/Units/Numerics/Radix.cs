@@ -19,7 +19,7 @@ namespace Flux.Units
 
     private readonly int m_value;
 
-    public Radix(int radix) => m_value = Interval<int>.AssertMember(radix, MinValue, MaxValue, IntervalNotation.Closed, nameof(radix));
+    public Radix(int radix) => m_value = Interval.AssertMember(radix, MinValue, MaxValue, IntervalNotation.Closed, nameof(radix));
 
     #region Radix methods
 
@@ -72,12 +72,12 @@ namespace Flux.Units
     /// <summary>Drop <paramref name="count"/> trailing (least significant) digits from <paramref name="value"/> using base <paramref name="radix"/>.</summary>
     public TNumber DropLeastSignificantDigits<TNumber>(TNumber value, TNumber count)
       where TNumber : System.Numerics.IBinaryInteger<TNumber>
-      => value / TNumber.CreateChecked(m_value.FastIntegerPow(count, UniversalRounding.WholeTowardZero, out var _));
+      => value / TNumber.CreateChecked(m_value.FastIntegerPow(count, out var _).IpowTz);
 
     /// <summary>Drop <paramref name="count"/> leading (most significant) digits of <paramref name="value"/> using base <paramref name="radix"/>.</summary>
     public TNumber DropMostSignificantDigits<TNumber>(TNumber value, TNumber count)
       where TNumber : System.Numerics.IBinaryInteger<TNumber>
-      => value % TNumber.CreateChecked(m_value.FastIntegerPow(DigitCount(value) - count, UniversalRounding.WholeTowardZero, out var _));
+      => value % TNumber.CreateChecked(m_value.FastIntegerPow(DigitCount(value) - count, out var _).IpowTz);
 
     /// <summary>Returns a maximum of <paramref name="count"/> digits (as <typeparamref name="TNumber"/>) of <paramref name="value"/> using base <paramref name="radix"/>.</summary>
     public System.Collections.Generic.List<TNumber> GetDigits<TNumber>(TNumber value)
@@ -172,7 +172,7 @@ namespace Flux.Units
     public TNumber IntegerLogTowardZero<TNumber>(TNumber value)
       where TNumber : System.Numerics.IBinaryInteger<TNumber>
     {
-      if (value.TryFastIntegerLog(m_value, UniversalRounding.WholeTowardZero, out TNumber ilog, out var _)) // Testing!
+      if (value.TryFastIntegerLog(m_value, out TNumber ilog, out TNumber _, out var _)) // Testing!
         return ilog;
 
       var rdx = TNumber.CreateChecked(m_value);
@@ -248,12 +248,12 @@ namespace Flux.Units
     /// <summary>Retreive <paramref name="count"/> least significant digits of <paramref name="value"/> using base <paramref name="radix"/>.</summary>
     public TNumber KeepLeastSignificantDigits<TNumber>(TNumber value, TNumber count)
       where TNumber : System.Numerics.IBinaryInteger<TNumber>
-      => value % TNumber.CreateChecked(m_value.FastIntegerPow(count, UniversalRounding.WholeTowardZero, out var _));
+      => value % TNumber.CreateChecked(m_value.FastIntegerPow(count, out var _).IpowTz);
 
     /// <summary>Drop the leading digit of <paramref name="value"/> using base <paramref name="radix"/>.</summary>
     public TNumber KeepMostSignificantDigits<TNumber>(TNumber value, TNumber count)
       where TNumber : System.Numerics.IBinaryInteger<TNumber>
-      => value / TNumber.CreateChecked(m_value.FastIntegerPow(DigitCount(value) - count, UniversalRounding.WholeTowardZero, out var _));
+      => value / TNumber.CreateChecked(m_value.FastIntegerPow(DigitCount(value) - count, out var _).IpowTz);
 
     /// <summary>
     /// <para>Computes the max number of digits that can be represented by the specified <paramref name="bitLength"/> (number of bits) in <paramref name="radix"/> (number base) and whether to <paramref name="accountForSignBit"/>.</para>
@@ -273,7 +273,7 @@ namespace Flux.Units
       if (TBitLength.IsNegative(bitLength))
         return 0;
 
-      var swar = System.Numerics.BigInteger.CreateChecked(bitLength).CreateBitMaskLsbFromBitLength(); // Create a bit-mask representing the greatest value for the bit-length.
+      var swar = System.Numerics.BigInteger.CreateChecked(bitLength).CreateBitMaskRight(); // Create a bit-mask representing the greatest value for the bit-length.
 
       if (swar.IsSingleDigit(m_value)) // If SWAR is less than radix, there is only one digit, otherwise, compute for values higher than radix, and more digits.
         return 1;
@@ -281,7 +281,7 @@ namespace Flux.Units
       if (accountForSignBit) // If accounting for a sign-bit, shift the SWAR to properly represent the max of a signed type.
         swar >>>= 1;
 
-      var logc = swar.FastIntegerLog(m_value, UniversalRounding.WholeAwayFromZero, out var _);
+      var (logc, _) = swar.FastIntegerLog(m_value, out var _);
 
       return int.CreateChecked(logc);
     }
@@ -310,7 +310,7 @@ namespace Flux.Units
     {
       var fil = source.FastDigitCount(m_value);
 
-      var fip = m_value.FastIntegerPow(fil, UniversalRounding.HalfTowardZero, out var _);
+      var fip = m_value.FastIntegerPow(fil, out var _).IpowTz;
 
       return double.CreateChecked(source) / double.CreateChecked(fip);
     }
@@ -366,9 +366,9 @@ namespace Flux.Units
     /// <exception cref="System.ArgumentOutOfRangeException"></exception>
     public static TSelf AssertMember<TSelf>(TSelf radix, TSelf alternativeMaxRadix, IntervalNotation intervalNotation = IntervalNotation.Closed, string? paramName = null)
       where TSelf : System.Numerics.INumber<TSelf>
-      => Interval<TSelf>.IsMember(radix, TSelf.CreateChecked(MinValue), alternativeMaxRadix, intervalNotation)
+      => Interval.IsMember(radix, TSelf.CreateChecked(MinValue), alternativeMaxRadix, intervalNotation)
       ? radix
-      : throw new System.ArgumentOutOfRangeException(paramName ?? nameof(radix), $"The radix ({radix}) is out of range: {Interval<TSelf>.ToIntervalNotationString(TSelf.CreateChecked(MinValue), alternativeMaxRadix, intervalNotation)}.");
+      : throw new System.ArgumentOutOfRangeException(paramName ?? nameof(radix), $"The radix ({radix}) is out of range: {Interval.ToIntervalNotationString(TSelf.CreateChecked(MinValue), alternativeMaxRadix, intervalNotation)}.");
 
     /// <summary>
     /// <para>Asserts that the <paramref name="radix"/> is valid, i.e. an integer in the range [<see cref="MinValue"/>, <see cref="MaxValue"/>], and throws an exception if it's not.</para>
@@ -428,7 +428,7 @@ namespace Flux.Units
     /// </summary>
     public static bool IsMember<TSelf>(TSelf radix, TSelf alternativeMaxRadix, IntervalNotation intervalNotation = IntervalNotation.Closed)
       where TSelf : System.Numerics.INumber<TSelf>
-      => TSelf.IsInteger(radix) && TSelf.CreateChecked(MinValue) is var minRadix && alternativeMaxRadix >= minRadix && Interval<TSelf>.IsMember(radix, minRadix, alternativeMaxRadix, intervalNotation);
+      => TSelf.IsInteger(radix) && TSelf.CreateChecked(MinValue) is var minRadix && alternativeMaxRadix >= minRadix && Interval.IsMember(radix, minRadix, alternativeMaxRadix, intervalNotation);
 
     /// <summary>
     /// <para>Determines whether the <paramref name="radix"/> is within <see cref="Radix"/> constrained by the specified <paramref name="notation"/>.</para>

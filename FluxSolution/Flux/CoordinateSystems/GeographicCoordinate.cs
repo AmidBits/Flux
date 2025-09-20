@@ -169,7 +169,7 @@ namespace Flux.CoordinateSystems
     /// <para>Central angles are subtended by an arc between those two points, and the arc length is the central angle of a circle of radius one (measured in radians). The central angle is also known as the arc's angular distance.</para>
     /// </remarks>
     public static double GetCentralAngleHaversineFormula(double lat1, double lon1, double lat2, double lon2)
-      => Units.Angle.Ahvsin(Units.Angle.Hvsin(lat2 - lat1) + double.Cos(lat1) * double.Cos(lat2) * Units.Angle.Hvsin(lon2 - lon1));
+      => ((lat2 - lat1).Hvsin() + double.Cos(lat1) * double.Cos(lat2) * (lon2 - lon1).Hvsin()).Ahvsin();
 
     /// <summary>
     /// <para>The shortest distance between two points on the surface of a sphere, measured along the surface of the sphere (as opposed to a straight line through the sphere's interior). Multiply by unit radius, e.g. 6371 km or 3959 mi.</para>
@@ -451,9 +451,8 @@ namespace Flux.CoordinateSystems
     #endregion Static members
 
     #region Implemented interfaces
-
     public string ToString(string? format, System.IFormatProvider? formatProvider)
-      => $"<{Latitude.ToDmsNotationString()} {Longitude.ToDmsNotationString()} ({Latitude.ToDecimalString()}, {Longitude.ToDecimalString()}), {Altitude.ToString(format ?? 3.FormatUpToFractionalDigits(), formatProvider)}>";
+      => $"{Latitude.ToDmsNotationString()} {Longitude.ToDmsNotationString()} {Altitude.ToUnitString(Units.LengthUnit.Meter, format ?? "N2", formatProvider, UnicodeSpacing.None)}";
 
     #endregion Implemented interfaces
 

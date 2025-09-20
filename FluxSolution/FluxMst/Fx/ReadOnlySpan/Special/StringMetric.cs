@@ -147,7 +147,7 @@ namespace NetFx.ReadOnlySpan.Special
     public void LongestCommonSubsequence_Default()
     {
       var expected = 7;
-      var actual = source.AsSpan().LongestCommonSubsequenceLength(target);
+      var actual = source.AsSpan().LongestCommonSubsequenceCount(target);
       Assert.AreEqual(expected, actual);
     }
 
@@ -155,7 +155,7 @@ namespace NetFx.ReadOnlySpan.Special
     public void LongestCommonSubsequence_IgnoreCase()
     {
       var expected = 9;
-      var actual = source.AsSpan().LongestCommonSubsequenceLength(target, comparerIgnoreCase);
+      var actual = source.AsSpan().LongestCommonSubsequenceCount(target, comparerIgnoreCase);
       Assert.AreEqual(expected, actual);
     }
 
@@ -163,7 +163,7 @@ namespace NetFx.ReadOnlySpan.Special
     public void LongestCommonSubsequence_IgnoreNonSpace()
     {
       var expected = 8;
-      var actual = source.AsSpan().LongestCommonSubsequenceLength(target, comparerIgnoreNonSpace);
+      var actual = source.AsSpan().LongestCommonSubsequenceCount(target, comparerIgnoreNonSpace);
       Assert.AreEqual(expected, actual);
     }
 
@@ -171,7 +171,7 @@ namespace NetFx.ReadOnlySpan.Special
     public void LongestCommonSubsequence_None()
     {
       var expected = 7;
-      var actual = source.AsSpan().LongestCommonSubsequenceLength(target, comparerNone);
+      var actual = source.AsSpan().LongestCommonSubsequenceCount(target, comparerNone);
       Assert.AreEqual(expected, actual);
     }
 

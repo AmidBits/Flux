@@ -4,7 +4,7 @@
   {
     /// <summary></summary>
     /// <remarks>The quaternion must be normalized.</remarks>
-    public static EuclideanRotations.AxisAngle ToAxisAngle(this System.Numerics.Quaternion source)
+    public static Numerics.EuclideanRotations.AxisAngle ToAxisAngle(this System.Numerics.Quaternion source)
     {
       var n = System.Numerics.Quaternion.Normalize(source); // If w>1 acos and sqrt will produce errors, this will not happen if quaternion is normalized.
 
@@ -21,7 +21,7 @@
       return new(angle, Units.AngleUnit.Radian, n.X / s, Units.LengthUnit.Meter, n.Y / s, Units.LengthUnit.Meter, n.Z / s, Units.LengthUnit.Meter);
     }
 
-    public static EuclideanRotations.EulerAngles ToEulerAngles(this System.Numerics.Quaternion source) // yaw (Z), pitch (Y), roll (X)
+    public static Numerics.EuclideanRotations.EulerAngles ToEulerAngles(this System.Numerics.Quaternion source) // yaw (Z), pitch (Y), roll (X)
     {
       var x = source.X;
       var y = source.Y;

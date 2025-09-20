@@ -183,7 +183,7 @@ namespace NetFx.ReadOnlySpan.Special
       var text1 = "ABCD".AsSpan();
       var text2 = "ACBAD".AsSpan();
       var expected = 3;
-      var actual = text1.LongestCommonSubsequenceLength(text2);
+      var actual = text1.LongestCommonSubsequenceCount(text2);
       Assert.AreEqual(expected, actual);
     }
 
@@ -216,7 +216,7 @@ namespace NetFx.ReadOnlySpan.Special
       var expectedStartIndex = 3;
       var expectedCount = 4;
       var expectedSum = 6;
-      var actualSum = collection.MaximumSumSubarray(out var actualStartIndex, out var actualCount);
+      var (actualStartIndex, actualCount, actualSum) = collection.MaximumSumSubarray();
       Assert.AreEqual(expectedStartIndex, actualStartIndex);
       Assert.AreEqual(expectedCount, actualCount);
       Assert.AreEqual(expectedSum, actualSum);
@@ -340,7 +340,7 @@ namespace NetFx.ReadOnlySpan.Special
       var collection1 = (ReadOnlySpan<int>)new int[] { 'G', 'A', 'A', 'A', 'T', 'A', 'A', 'A' }.AsSpan();
       var collection2 = (ReadOnlySpan<int>)new int[] { 'A', 'C', 'T', 'G' }.AsSpan();
       var expected = (1, 5);
-      var actual = collection1.ShortestBalancingSubstring(collection2);
+      var actual = collection1.ShortestBalancingSubstringSearch(collection2);
       Assert.AreEqual(expected, actual);
     }
 
@@ -350,7 +350,7 @@ namespace NetFx.ReadOnlySpan.Special
       var text1 = "abcbdab".AsSpan();
       var text2 = "bdcaba".AsSpan();
       var expectedLength = 9;
-      var actualLength = text1.ShortestCommonSupersequenceLength(text2, out var _);
+      var actualLength = text1.ShortestCommonSupersequenceCount(text2, out var _);
       Assert.AreEqual(expectedLength, actualLength);
     }
 

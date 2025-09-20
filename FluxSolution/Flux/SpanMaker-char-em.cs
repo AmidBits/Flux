@@ -232,7 +232,7 @@ namespace Flux
       for (var i = rms.Count - 1; i >= 0; i--)
       {
         rms.TryGetIndexKeyValue(i, out var ikv);
-        sm = sm.Insert(ikv.Key.GetMaxIndex<int>() + 1, 1, appendSelector(ikv.Value));
+        sm = sm.Insert(ikv.Key.End.GetOffset(source.Length), 1, appendSelector(ikv.Value));
       }
       return sm;
     }
@@ -253,7 +253,7 @@ namespace Flux
       for (var i = rms.Count - 1; i >= 0; i--)
       {
         rms.TryGetIndexKeyValue(i, out var ikv);
-        sm = sm.Insert(ikv.Key.ToRange().Start.Value, 1, prependSelector(ikv.Value));
+        sm = sm.Insert(ikv.Key.Start.GetOffset(source.Length), 1, prependSelector(ikv.Value));
       }
       return sm;
     }

@@ -170,23 +170,23 @@ namespace Flux
             {
               unit.Clear();
 
-              while ((read = reader.Read()) != -1 && read != (int)Unicode.UnicodeInformationSeparator.UnitSeparator && read != (int)Unicode.UnicodeInformationSeparator.RecordSeparator && read != (int)Unicode.UnicodeInformationSeparator.GroupSeparator && read != (int)Unicode.UnicodeInformationSeparator.FileSeparator)
+              while ((read = reader.Read()) != -1 && read != (int)UnicodeInformationSeparator.UnitSeparator && read != (int)UnicodeInformationSeparator.RecordSeparator && read != (int)UnicodeInformationSeparator.GroupSeparator && read != (int)UnicodeInformationSeparator.FileSeparator)
                 unit = unit.Append((char)read);
 
               list.Add(unit.ToString());
             }
-            while (read != -1 && read != (int)Unicode.UnicodeInformationSeparator.RecordSeparator && read != (int)Unicode.UnicodeInformationSeparator.GroupSeparator && read != (int)Unicode.UnicodeInformationSeparator.FileSeparator);
+            while (read != -1 && read != (int)UnicodeInformationSeparator.RecordSeparator && read != (int)UnicodeInformationSeparator.GroupSeparator && read != (int)UnicodeInformationSeparator.FileSeparator);
 
             for (var index = dataTable.Columns.Count; index < list.Count; index++)
               dataTable.Columns.Add(index.ToSingleOrdinalColumnName());
 
             dataTable.Rows.Add(list.ToArray());
           }
-          while (read != -1 && read != (int)Unicode.UnicodeInformationSeparator.GroupSeparator && read != (int)Unicode.UnicodeInformationSeparator.FileSeparator);
+          while (read != -1 && read != (int)UnicodeInformationSeparator.GroupSeparator && read != (int)UnicodeInformationSeparator.FileSeparator);
 
           dataSet.Tables.Add(dataTable);
         }
-        while (read != -1 && read != (int)Unicode.UnicodeInformationSeparator.FileSeparator);
+        while (read != -1 && read != (int)UnicodeInformationSeparator.FileSeparator);
 
         dataSets.Add(dataSet);
       }
@@ -258,12 +258,12 @@ namespace Flux
 
       while (reader.Read() is var read && read != -1 && (char)read is var c)
       {
-        if (read == (int)Unicode.UnicodeInformationSeparator.UnitSeparator || read == (int)Unicode.UnicodeInformationSeparator.RecordSeparator)
+        if (read == (int)UnicodeInformationSeparator.UnitSeparator || read == (int)UnicodeInformationSeparator.RecordSeparator)
         {
           record.Add(unit.ToString());
           unit.Clear();
 
-          if (read == (int)Unicode.UnicodeInformationSeparator.RecordSeparator)
+          if (read == (int)UnicodeInformationSeparator.RecordSeparator)
           {
             yield return record.ToArray();
             record.Clear();

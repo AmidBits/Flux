@@ -10,15 +10,15 @@ namespace Flux
   ///// <para>In .NET, a grapheme is a text element represented as a sequence of <see cref="System.Char"/> instances, e.g. in a <see cref="System.String"/>.</para>
   ///// <para>A glyph is a visual "image", e.g. in a font, used to represent visual "symbols". One or more glyphs may be used to represent a other constructs.</para>
   ///// </remarks>
-  public static partial class Em
+  public static partial class Unicode
   {
     /// <summary>
     /// <para>Parses a <paramref name="unicodeCategoryMajor"/> character into a <see cref="UnicodeCategoryMajor"/> enum value.</para>
     /// </summary>
     /// <param name="unicodeCategoryMajor"></param>
     /// <returns></returns>
-    public static Unicode.UnicodeCategoryMajor ParseUnicodeCategoryMajor(this char unicodeCategoryMajor)
-      => System.Enum.Parse<Unicode.UnicodeCategoryMajor>(unicodeCategoryMajor.ToString(), true);
+    public static UnicodeCategoryMajor ParseUnicodeCategoryMajor(this char unicodeCategoryMajor)
+      => System.Enum.Parse<UnicodeCategoryMajor>(unicodeCategoryMajor.ToString(), true);
 
     /// <summary>
     /// <para>Attemps to parse a <paramref name="unicodeCategoryMajor"/> character into <paramref name="result"/> as a <see cref="UnicodeCategoryMajor"/> enum value.</para>
@@ -26,7 +26,7 @@ namespace Flux
     /// <param name="unicodeCategoryMajor"></param>
     /// <param name="result"></param>
     /// <returns></returns>
-    public static bool TryParseUnicodeCategoryMajor(this char unicodeCategoryMajor, out Unicode.UnicodeCategoryMajor result)
+    public static bool TryParseUnicodeCategoryMajor(this char unicodeCategoryMajor, out UnicodeCategoryMajor result)
     {
       try
       {

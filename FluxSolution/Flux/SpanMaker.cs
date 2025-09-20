@@ -537,8 +537,8 @@ namespace Flux
       if (length < 0 || index + length > Length) throw new System.ArgumentOutOfRangeException(nameof(length));
     }
 
-    readonly internal void AssertValidSlice(Slice slice)
-      => AssertValidIndexAndLength(slice.Index, slice.Length);
+    //readonly internal void AssertValidSlice(Slice slice)
+    //  => AssertValidIndexAndLength(slice.Index, slice.Length);
 
     #endregion // AssertValid methods
 
@@ -979,7 +979,12 @@ namespace Flux
       }
     }
 
-    public SpanMaker<T> Remove(Slice slice) => Remove(slice.Index, slice.Length);
+    public SpanMaker<T> Remove(Range range)
+    {
+      var (offset, length) = range.GetOffsetAndLength(Length);
+
+      return Remove(offset, length);
+    }
 
     ///// <summary>
     ///// <para>Removes the specified range [index..] of elements from the <see cref="SpanMaker{T}"/>.</para>
@@ -1097,8 +1102,12 @@ namespace Flux
     /// <param name="slice"></param>
     /// <param name="replacement"></param>
     /// <returns></returns>
-    public SpanMaker<T> Replace(Slice slice, System.ReadOnlySpan<T> replacement)
-      => Replace(slice.Index, slice.Length, replacement);
+    public SpanMaker<T> Replace(System.Range range, System.ReadOnlySpan<T> replacement)
+    {
+      var (offset, length) = range.GetOffsetAndLength(Length);
+
+      return Replace(offset, length, replacement);
+    }
 
     /// <summary>
     /// <para>Replaces all elements satisfying the <paramref name="predicate"/> with <paramref name="count"/> of <paramref name="replacement"/> in the <see cref="SpanMaker{T}"/>.</para>

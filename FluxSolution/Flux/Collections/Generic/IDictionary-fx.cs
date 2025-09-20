@@ -12,7 +12,7 @@ namespace Flux
           yield return kvp;
     }
 
-    #region Swich functionality
+    #region Switch functionality
 
     public static System.Collections.Generic.IDictionary<TKey, System.Collections.Generic.IList<TValue>> ToSwitchable<TKey, TValue>(this System.Collections.Generic.IDictionary<TKey, TValue> source)
       where TKey : notnull

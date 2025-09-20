@@ -162,7 +162,7 @@ namespace Flux.Net
       {
         var packet = new string[] { guid.ToString(), name, text };
 
-        var s = string.Join(Unicode.UnicodeSymbolForInformationSeparator.SymbolForUnitSeparator.ToSeparatorString(), packet);
+        var s = string.Join(UnicodeSymbolForInformationSeparator.SymbolForUnitSeparator.ToSeparatorString(), packet);
 
         var bytes = System.Text.UnicodeEncoding.UTF32.GetBytes(s);
 
@@ -173,7 +173,7 @@ namespace Flux.Net
       {
         var s = System.Text.UnicodeEncoding.UTF32.GetString(bytes);
 
-        var packet = s.Split(Unicode.UnicodeSymbolForInformationSeparator.SymbolForUnitSeparator.ToSeparatorString());
+        var packet = s.Split(UnicodeSymbolForInformationSeparator.SymbolForUnitSeparator.ToSeparatorString());
 
         return (System.Guid.Parse(packet[0]), packet[1], packet[2]);
       }

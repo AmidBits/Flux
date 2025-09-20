@@ -28,9 +28,9 @@ namespace Flux
     /// <param name="paramName">Optional parameter name for the exception.</param>
     /// <returns>The <paramref name="value"/>, if a member, otherwise an exception is thrown.</returns>
     /// <exception cref="System.NotImplementedException"></exception>
-    public static T AssertIntervalMember<T>(this IntervalNotation source, T value, T minValue, T maxValue, string? paramName = "value")
-      where T : System.IComparable<T>
-      => Interval<T>.AssertMember(value, minValue, maxValue, source);
+    //public static T AssertIntervalMember<T>(this IntervalNotation source, T value, T minValue, T maxValue, string? paramName = "value")
+    //  where T : System.IComparable<T>
+    //  => Interval.AssertMember(value, minValue, maxValue, source);
     //=> source.IsIntervalMember(value, minValue, maxValue)
     //? value
     //: throw new System.ArgumentOutOfRangeException(paramName ?? nameof(value), $"The value '{value}' is not a member of the interval: {source.ToIntervalNotationString(minValue, maxValue)}.");
@@ -363,10 +363,10 @@ namespace Flux
         return IntervalNotation.Open;
       else if (source == IntervalNotation.Open)
         return IntervalNotation.Closed;
-      else if (source == IntervalNotation.HalfLeftOpen)
-        return IntervalNotation.HalfRightOpen;
-      else if (source == IntervalNotation.HalfRightOpen)
-        return IntervalNotation.HalfLeftOpen;
+      else if (source == IntervalNotation.HalfOpenLeft)
+        return IntervalNotation.HalfOpenRight;
+      else if (source == IntervalNotation.HalfOpenRight)
+        return IntervalNotation.HalfOpenLeft;
       else
         throw new NotImplementedException(source.ToString());
     }
@@ -412,13 +412,13 @@ namespace Flux
 
       while (iterations-- > 0)
       {
-        if (source is IntervalNotation.Closed or IntervalNotation.HalfRightOpen)
+        if (source is IntervalNotation.Closed or IntervalNotation.HalfOpenRight)
           yield return start;
 
         for (var index = start + step; index != stop; index += step)
           yield return index;
 
-        if (source is IntervalNotation.Closed or IntervalNotation.HalfLeftOpen)
+        if (source is IntervalNotation.Closed or IntervalNotation.HalfOpenLeft)
           yield return stop;
       }
     }
@@ -445,9 +445,9 @@ namespace Flux
     /// <exception cref="NotImplementedException"></exception>
     public static char ToIntervalNotationCharLeft(this IntervalNotation source)
     {
-      if (source == IntervalNotation.Closed || source == IntervalNotation.HalfRightOpen)
+      if (source == IntervalNotation.Closed || source == IntervalNotation.HalfOpenRight)
         return '[';
-      else if (source == IntervalNotation.Open || source == IntervalNotation.HalfLeftOpen)
+      else if (source == IntervalNotation.Open || source == IntervalNotation.HalfOpenLeft)
         return '(';
       else
         throw new NotImplementedException();
@@ -461,9 +461,9 @@ namespace Flux
     /// <exception cref="NotImplementedException"></exception>
     public static char ToIntervalNotationCharRight(this IntervalNotation source)
     {
-      if ((source == IntervalNotation.Closed || source == IntervalNotation.HalfLeftOpen))
+      if ((source == IntervalNotation.Closed || source == IntervalNotation.HalfOpenLeft))
         return ']';
-      else if (source == IntervalNotation.Open || source == IntervalNotation.HalfRightOpen)
+      else if (source == IntervalNotation.Open || source == IntervalNotation.HalfOpenRight)
         return ')';
       else
         throw new NotImplementedException();

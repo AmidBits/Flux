@@ -55,7 +55,7 @@ namespace Flux.Units
     public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Kilo.ChangePrefix(m_value, prefix);
 
     public string ToSiUnitString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null)
-      => GetSiUnitValue(prefix).ToSiFormattedString(format, formatProvider) + Unicode.UnicodeSpacing.ThinSpace.ToSpacingString() + prefix.GetMetricPrefixSymbol() + EnergyDensityUnit.JoulePerCubicMeter.GetUnitSymbol();
+      => GetSiUnitValue(prefix).ToSiFormattedString(format, formatProvider) + UnicodeSpacing.ThinSpace.ToSpacingString() + prefix.GetMetricPrefixSymbol() + EnergyDensityUnit.JoulePerCubicMeter.GetUnitSymbol();
 
     #endregion // ISiUnitValueQuantifiable<>
 
@@ -81,11 +81,11 @@ namespace Flux.Units
 
     public double GetUnitValue(EnergyDensityUnit unit) => ConvertToUnit(unit, m_value);
 
-    public string ToUnitString(EnergyDensityUnit unit = EnergyDensityUnit.JoulePerCubicMeter, string? format = null, System.IFormatProvider? formatProvider = null, bool fullName = false)
+    public string ToUnitString(EnergyDensityUnit unit = EnergyDensityUnit.JoulePerCubicMeter, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing spacing = UnicodeSpacing.Space, bool fullName = false)
     {
       var value = GetUnitValue(unit);
 
-      return value.ToString(format, formatProvider) + Unicode.UnicodeSpacing.Space.ToSpacingString() + (fullName ? unit.GetUnitName(value.IsConsideredPlural()) : unit.GetUnitSymbol(false));
+      return value.ToString(format, formatProvider) + spacing.ToSpacingString() + (fullName ? unit.GetUnitName(value.IsConsideredPlural()) : unit.GetUnitSymbol(false));
     }
 
     #endregion // IUnitValueQuantifiable<>

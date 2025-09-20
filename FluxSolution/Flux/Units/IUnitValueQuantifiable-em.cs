@@ -63,13 +63,13 @@ namespace Flux
       }
     }
 
-    public static System.Collections.Generic.Dictionary<TUnit, string> ToUnitStringAll<TValue, TUnit>(this Units.IUnitValueQuantifiable<TValue, TUnit> source, string? format = null, System.IFormatProvider? formatProvider = null, bool preferUnicode = false, Unicode.UnicodeSpacing unitSpacing = Unicode.UnicodeSpacing.Space, bool useFullName = false)
+    public static System.Collections.Generic.Dictionary<TUnit, string> ToUnitStringAll<TValue, TUnit>(this Units.IUnitValueQuantifiable<TValue, TUnit> source, string? format = null, System.IFormatProvider? formatProvider = null, bool preferUnicode = false, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool useFullName = false)
       where TValue : System.IEquatable<TValue>
       where TUnit : System.Enum
     {
       var d = new System.Collections.Generic.Dictionary<TUnit, string>();
       foreach (TUnit unit in System.Enum.GetValues(typeof(TUnit)))
-        d.Add(unit, source.ToUnitString(unit, format, formatProvider, useFullName));
+        d.Add(unit, source.ToUnitString(unit, format, formatProvider, unitSpacing, useFullName));
       return d;
     }
   }

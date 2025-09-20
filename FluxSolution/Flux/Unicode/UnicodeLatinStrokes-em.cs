@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Em
+  public static partial class Unicode
   {
     private static System.Collections.Generic.Dictionary<char, char> LatinStrokes = new()
     {

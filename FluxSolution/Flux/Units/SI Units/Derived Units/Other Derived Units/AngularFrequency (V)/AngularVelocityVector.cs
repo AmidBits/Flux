@@ -48,7 +48,7 @@ namespace Flux.Units
     public System.Runtime.Intrinsics.Vector256<double> GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ChangePrefix(m_value, prefix);
 
     public string ToSiUnitString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null)
-      => GetSiUnitValue(prefix).ToString() + Unicode.UnicodeSpacing.ThinSpace.ToSpacingString() + prefix.GetMetricPrefixSymbol() + AngularFrequencyUnit.RadianPerSecond.GetUnitSymbol();
+      => GetSiUnitValue(prefix).ToString() + UnicodeSpacing.ThinSpace.ToSpacingString() + prefix.GetMetricPrefixSymbol() + AngularFrequencyUnit.RadianPerSecond.GetUnitSymbol();
 
     #endregion // ISiUnitValueQuantifiable<>
 
@@ -75,11 +75,11 @@ namespace Flux.Units
 
     public System.Runtime.Intrinsics.Vector256<double> GetUnitValue(AngularFrequencyUnit unit) => ConvertToUnit(unit, m_value);
 
-    public string ToUnitString(AngularFrequencyUnit unit = AngularFrequencyUnit.RadianPerSecond, string? format = null, System.IFormatProvider? formatProvider = null, bool fullName = false)
+    public string ToUnitString(AngularFrequencyUnit unit = AngularFrequencyUnit.RadianPerSecond, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing spacing = UnicodeSpacing.Space, bool fullName = false)
     {
       var value = GetUnitValue(unit);
 
-      return value.ToString() + Unicode.UnicodeSpacing.Space.ToSpacingString() + (fullName ? unit.GetUnitName(true) : unit.GetUnitSymbol(false));
+      return value.ToString() + spacing.ToSpacingString() + (fullName ? unit.GetUnitName(true) : unit.GetUnitSymbol(false));
     }
 
     #endregion // IUnitValueQuantifiable<>
