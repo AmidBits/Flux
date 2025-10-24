@@ -2,6 +2,8 @@ namespace Flux
 {
   public static partial class IEnumerables
   {
+    #region GetExtremum
+
     /// <summary>
     /// <para>Locate the minimum/maximum elements and indices, as evaluated by the <paramref name="valueSelector"/>, in <paramref name="source"/>. Uses the specified <paramref name="comparer"/> (default if null).</para>
     /// </summary>
@@ -53,5 +55,7 @@ namespace Flux
 
       return (minIndex, minItem, minValue, maxIndex, maxItem, maxValue);
     }
+
+    #endregion
   }
 }

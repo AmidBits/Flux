@@ -1,7 +1,7 @@
 namespace Flux.TabularStream
 {
   public sealed class TabularStreamReader
-    : Data.TabularDataReader
+    : DataReader.TabularDataReader
   {
     private readonly System.IO.StreamReader m_streamReader;
 

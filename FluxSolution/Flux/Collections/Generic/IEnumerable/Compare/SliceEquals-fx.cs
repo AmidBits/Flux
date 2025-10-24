@@ -2,6 +2,8 @@ namespace Flux
 {
   public static partial class IEnumerables
   {
+    #region SliceEquals
+
     /// <summary>Returns whether a sub-sequence of elements in the source equal the target elements. Uses the specified equality comparer.</summary>
     public static bool SliceEquals<T>(this System.Collections.Generic.IEnumerable<T> source, int sourceStartAt, System.Collections.Generic.IEnumerable<T> target, int targetStartAt, int length, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
     {
@@ -27,5 +29,7 @@ namespace Flux
 
       return length == 0;
     }
+
+    #endregion
   }
 }

@@ -48,7 +48,7 @@ namespace Flux
     }
 
     public static System.Data.DataTable CreateGutenbergTenThousandWonderfulThings()
-      => GetGutenbergTenThousandWonderfulThings().ToDataTable(true, "TenThousandWonderfulThings");
+      => GetGutenbergTenThousandWonderfulThings().ToDataTable(true, true, "TenThousandWonderfulThings");
 
     #endregion // Gutenberg TenthousandWonderfulThings
   }

@@ -175,39 +175,39 @@ namespace SystemFx
     [TestMethod]
     public void ToStringFileNameFriendly()
     {
-      Assert.AreEqual(@"19670530 000000 0000000", source.ToStringFileNameFriendly());
-      Assert.AreEqual(@"20170811 000000 0000000", target.ToStringFileNameFriendly());
+      Assert.AreEqual(@"19670530 000000 0000000", source.ToFileNameFriendlyString());
+      Assert.AreEqual(@"20170811 000000 0000000", target.ToFileNameFriendlyString());
     }
 
     [TestMethod]
     public void ToStringISO8601()
     {
-      Assert.AreEqual(@"1967-05-30T00:00:00.0000000", source.ToStringISO8601());
-      Assert.AreEqual(@"2017-08-11T00:00:00.0000000", target.ToStringISO8601());
+      Assert.AreEqual(@"1967-05-30T00:00:00.0000000", source.ToIso8601String());
+      Assert.AreEqual(@"2017-08-11T00:00:00.0000000", target.ToIso8601String());
     }
     [TestMethod]
     public void ToStringISO8601Date()
     {
-      Assert.AreEqual(@"1967-05-30", source.ToStringISO8601Date());
-      Assert.AreEqual(@"2017-08-11", target.ToStringISO8601Date());
+      Assert.AreEqual(@"1967-05-30", source.ToIso8601StringDate());
+      Assert.AreEqual(@"2017-08-11", target.ToIso8601StringDate());
     }
     [TestMethod]
     public void ToStringISO8601Time()
     {
-      Assert.AreEqual(@"00:00", source.ToStringISO8601Time());
-      Assert.AreEqual(@"00:00", target.ToStringISO8601Time());
+      Assert.AreEqual(@"00:00", source.ToIso8601StringTime());
+      Assert.AreEqual(@"00:00", target.ToIso8601StringTime());
     }
     [TestMethod]
     public void ToStringISO8601OrdinalDate()
     {
-      Assert.AreEqual(@"1967-150", source.ToStringISO8601OrdinalDate());
-      Assert.AreEqual(@"2017-223", target.ToStringISO8601OrdinalDate());
+      Assert.AreEqual(@"1967-150", source.ToIso8601StringOrdinalDate());
+      Assert.AreEqual(@"2017-223", target.ToIso8601StringOrdinalDate());
     }
     [TestMethod]
     public void ToStringISO8601WeekDate()
     {
-      Assert.AreEqual(@"1967-W22-2", source.ToStringISO8601WeekDate());
-      Assert.AreEqual(@"2017-W32-5", target.ToStringISO8601WeekDate());
+      Assert.AreEqual(@"1967-W22-2", source.ToIso8601StringWeekDate());
+      Assert.AreEqual(@"2017-W32-5", target.ToIso8601StringWeekDate());
     }
 
     [TestMethod]

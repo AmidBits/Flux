@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 
 using Flux;
+using Flux.Globalization.En;
 using Flux.Units;
 
 namespace ConsoleApp
@@ -142,7 +143,7 @@ namespace ConsoleApp
       {
         var rng = new System.Random();
 
-        var m_ap = Flux.Numerics.NumberSequence.GetAscendingPrimes(2).Take(100).ToArray(); // Primes.
+        var m_ap = 2.GetAscendingPrimes().Take(100).ToArray(); // Primes.
         var m_rn = System.Linq.Enumerable.Range(0, 100).ToArray(); // Rational.
         var m_en = System.Linq.Enumerable.Range(1, 200).Where(i => (i & 1) == 0).ToArray(); // Even.
         var m_on = System.Linq.Enumerable.Range(1, 200).Where(i => (i & 1) != 0).ToArray(); // Odd.
@@ -300,11 +301,11 @@ namespace ConsoleApp
       //var mAwayFromZeropf = value.MultipleOfAwayFromZero(multiple, false);
       //var mAwayFromZeropt = value.MultipleOfAwayFromZero(multiple, true);
 
-      var rtmo = value.MultipleOfNearest(multiple, true, Flux.UniversalRounding.WholeAwayFromZero, out var mTowardsZero, out var mAwayFromZero);
+      //      var rtmo = value.MultipleOfNearest(multiple, true, HalfRounding.AwayFromZero, out var mTowardsZero, out var mAwayFromZero);
 
       var rtpTowardsZero = value.PowOfTowardZero(radix, true);
       var rtpAwayFromZero = value.PowOfAwayFromZero(radix, true);
-      var rtp = value.RoundToNearest(Flux.UniversalRounding.WholeAwayFromZero, rtpTowardsZero, rtpAwayFromZero);
+      var rtp = value.RoundToNearest(Flux.UniversalRounding.IntegralAwayFromZero, rtpTowardsZero, rtpAwayFromZero);
       //var rtp = Flux.Quantities.Radix.PowOf(value, radix, true, Flux.RoundingMode.AwayFromZero, out var rtpTowardsZero, out var rtpAwayFromZero);
 
       System.ArgumentOutOfRangeException.ThrowIfNegative(value);
@@ -344,9 +345,9 @@ namespace ConsoleApp
 
       //      n = 0;
       //      var nlpow2 = n.NextLargerPowerOf2();
-      var np2TowardsZero = (int)n.RoundToNearest(Flux.UniversalRounding.WholeTowardZero, n.Pow2TowardZero(false), n.Pow2AwayFromZero(false));
+      var np2TowardsZero = (int)n.RoundToNearest(Flux.UniversalRounding.IntegralTowardZero, n.Pow2TowardZero(false), n.Pow2AwayFromZero(false));
       System.Console.WriteLine($" Pow2TowardsZero = {np2TowardsZero}");
-      var np2AwayFromZero = (int)n.RoundToNearest(Flux.UniversalRounding.WholeAwayFromZero, n.Pow2TowardZero(false), n.Pow2AwayFromZero(false));
+      var np2AwayFromZero = (int)n.RoundToNearest(Flux.UniversalRounding.IntegralAwayFromZero, n.Pow2TowardZero(false), n.Pow2AwayFromZero(false));
       System.Console.WriteLine($"Pow2AwayFromZero = {np2AwayFromZero}");
 
       var birbits = n.ReverseBits();
@@ -560,7 +561,7 @@ namespace ConsoleApp
         var r = System.Security.Cryptography.RandomNumberGenerator.GetInt32(0, 31);
 
         if (!bst.Contains(r))
-          bst = bst.Add(r, r.ToEnglishCardinalNumeralCompoundString());
+          bst = bst.Add(r, r.ToEnglishWordString());
       }
 
       System.Console.WriteLine(bst.ToConsoleBlock().ToString());
@@ -581,46 +582,51 @@ namespace ConsoleApp
       System.Console.WriteLine(nameof(RunLocale));
       System.Console.WriteLine();
 
-      System.Console.WriteLine($"AppDomainDirectory = \"{new System.IO.DirectoryInfo(System.AppDomain.CurrentDomain.BaseDirectory)}\"");
-      System.Console.WriteLine($"AppDomainName = \"{System.AppDomain.CurrentDomain.FriendlyName}\"");
+      //System.Console.WriteLine(Flux.Locale.GetProperties().ToConsoleString(k => k, v => v.ToString()));
+      //System.Console.WriteLine(Flux.Locale.GetProperties().ToArray().ToConsoleString(k => k, v => v.ToString()));
+      System.Console.WriteLine(Flux.Locale.GetProperties().ToRank2Array().ToConsoleString(ConsoleFormatOptions.Default));
+      //System.Console.WriteLine(Flux.Locale.GetProperties().ToJaggedArray().ToTwoDimensionalArray().Rank2ToConsoleString());
 
-      System.Console.WriteLine($"ClrVersion = \"{System.Environment.Version}\"");
+      //System.Console.WriteLine($"AppDomainDirectory = \"{new System.IO.DirectoryInfo(System.AppDomain.CurrentDomain.BaseDirectory)}\"");
+      //System.Console.WriteLine($"AppDomainName = \"{System.AppDomain.CurrentDomain.FriendlyName}\"");
 
-      System.Console.WriteLine($"CurrentDirectory = \"{new System.IO.DirectoryInfo(System.Environment.CurrentDirectory)}\"");
+      //System.Console.WriteLine($"ClrVersion = \"{System.Environment.Version}\"");
 
-      System.Console.WriteLine($"DnsHostAddresses = \"{string.Join(", ", System.Net.Dns.GetHostEntry(System.Net.Dns.GetHostName()).AddressList.Select(a => a.ToString()))}\"");
-      System.Console.WriteLine($"DnsHostName = \"{System.Net.Dns.GetHostEntry(System.Net.Dns.GetHostName()).HostName}\"");
+      //System.Console.WriteLine($"CurrentDirectory = \"{new System.IO.DirectoryInfo(System.Environment.CurrentDirectory)}\"");
 
-      System.Console.WriteLine($"EnvironmentOsPlatform = \"{System.Environment.OSVersion.Platform}\"");
-      System.Console.WriteLine($"EnvironmentOsVersion = \"{System.Environment.OSVersion.Version}\"");
+      //System.Console.WriteLine($"DnsHostAddresses = \"{string.Join(", ", System.Net.Dns.GetHostEntry(System.Net.Dns.GetHostName()).AddressList.Select(a => a.ToString()))}\"");
+      //System.Console.WriteLine($"DnsHostName = \"{System.Net.Dns.GetHostEntry(System.Net.Dns.GetHostName()).HostName}\"");
 
-      System.Console.WriteLine($"MachineName = \"{System.Environment.MachineName}\"");
+      //System.Console.WriteLine($"EnvironmentOsPlatform = \"{System.Environment.OSVersion.Platform}\"");
+      //System.Console.WriteLine($"EnvironmentOsVersion = \"{System.Environment.OSVersion.Version}\"");
 
-      System.Console.WriteLine($"NicDomainName = \"{System.Net.NetworkInformation.IPGlobalProperties.GetIPGlobalProperties().DomainName}\"");
-      System.Console.WriteLine($"NicHostName = \"{System.Net.NetworkInformation.IPGlobalProperties.GetIPGlobalProperties().HostName}\"");
+      //System.Console.WriteLine($"MachineName = \"{System.Environment.MachineName}\"");
 
-      System.Console.WriteLine($"OneDriveDirectory = \"{new System.IO.DirectoryInfo(System.Environment.GetEnvironmentVariable("OneDrive")!)}\"");
-      System.Console.WriteLine($"OneDriveDirectoryCommercial = \"{new System.IO.DirectoryInfo(System.Environment.GetEnvironmentVariable("OneDriveCommercial")!)}\"");
-      System.Console.WriteLine($"OneDriveDirectoryConsumer = \"{new System.IO.DirectoryInfo(System.Environment.GetEnvironmentVariable("OneDriveConsumer")!)}\"");
+      //System.Console.WriteLine($"NicDomainName = \"{System.Net.NetworkInformation.IPGlobalProperties.GetIPGlobalProperties().DomainName}\"");
+      //System.Console.WriteLine($"NicHostName = \"{System.Net.NetworkInformation.IPGlobalProperties.GetIPGlobalProperties().HostName}\"");
 
-      System.Console.WriteLine($"OSArchitecture = \"{System.Runtime.InteropServices.RuntimeInformation.OSArchitecture.ToString()}\"");
+      //System.Console.WriteLine($"OneDriveDirectory = \"{new System.IO.DirectoryInfo(System.Environment.GetEnvironmentVariable("OneDrive")!)}\"");
+      //System.Console.WriteLine($"OneDriveDirectoryCommercial = \"{new System.IO.DirectoryInfo(System.Environment.GetEnvironmentVariable("OneDriveCommercial")!)}\"");
+      //System.Console.WriteLine($"OneDriveDirectoryConsumer = \"{new System.IO.DirectoryInfo(System.Environment.GetEnvironmentVariable("OneDriveConsumer")!)}\"");
 
-      System.Console.WriteLine($"{nameof(Flux.Locale.RuntimeFrameworkTitle)} = \"{Flux.Locale.RuntimeFrameworkTitle}\"");
-      System.Console.WriteLine($"{nameof(Flux.Locale.RuntimeFrameworkVersion)} = \"{Flux.Locale.RuntimeFrameworkVersion}\"");
+      //System.Console.WriteLine($"OSArchitecture = \"{System.Runtime.InteropServices.RuntimeInformation.OSArchitecture.ToString()}\"");
 
-      System.Console.WriteLine($"{nameof(Flux.Locale.RuntimeOsTitle)} = \"{Flux.Locale.RuntimeOsTitle}\"");
-      System.Console.WriteLine($"{nameof(Flux.Locale.RuntimeOsVersion)} = \"{Flux.Locale.RuntimeOsVersion}\"");
+      //System.Console.WriteLine($"{nameof(Flux.Locale.RuntimeFrameworkTitle)} = \"{Flux.Locale.RuntimeFrameworkTitle}\"");
+      //System.Console.WriteLine($"{nameof(Flux.Locale.RuntimeFrameworkVersion)} = \"{Flux.Locale.RuntimeFrameworkVersion}\"");
 
-      System.Console.WriteLine($"{nameof(Flux.Locale.SystemOsPlatform)} = \"{Flux.Locale.SystemOsPlatform}\"");
-      System.Console.WriteLine($"{nameof(Flux.Locale.SystemOsVersion)} = \"{Flux.Locale.SystemOsVersion}\"");
+      //System.Console.WriteLine($"{nameof(Flux.Locale.RuntimeOsTitle)} = \"{Flux.Locale.RuntimeOsTitle}\"");
+      //System.Console.WriteLine($"{nameof(Flux.Locale.RuntimeOsVersion)} = \"{Flux.Locale.RuntimeOsVersion}\"");
 
-      System.Console.WriteLine($"StopwatchCounter = \"{System.Diagnostics.Stopwatch.GetTimestamp()}\"");
-      System.Console.WriteLine($"StopwatchFrequency = \"{System.Diagnostics.Stopwatch.Frequency}\"");
+      //System.Console.WriteLine($"{nameof(Flux.Locale.SystemOsPlatform)} = \"{Flux.Locale.SystemOsPlatform}\"");
+      //System.Console.WriteLine($"{nameof(Flux.Locale.SystemOsVersion)} = \"{Flux.Locale.SystemOsVersion}\"");
 
-      System.Console.WriteLine($"TemporaryDirectory = \"{new System.IO.DirectoryInfo(System.IO.Path.GetTempPath())}\"");
+      //System.Console.WriteLine($"StopwatchCounter = \"{System.Diagnostics.Stopwatch.GetTimestamp()}\"");
+      //System.Console.WriteLine($"StopwatchFrequency = \"{System.Diagnostics.Stopwatch.Frequency}\"");
 
-      System.Console.WriteLine($"UserDomainName = \"{System.Environment.UserDomainName}\"");
-      System.Console.WriteLine($"UserName = \"{System.Environment.UserName}\"");
+      //System.Console.WriteLine($"TemporaryDirectory = \"{new System.IO.DirectoryInfo(System.IO.Path.GetTempPath())}\"");
+
+      //System.Console.WriteLine($"UserDomainName = \"{System.Environment.UserDomainName}\"");
+      //System.Console.WriteLine($"UserName = \"{System.Environment.UserName}\"");
 
       System.Console.WriteLine();
     }
@@ -636,12 +642,12 @@ namespace ConsoleApp
       System.Console.WriteLine(nameof(RunPhoneticAlgorithms));
       System.Console.WriteLine();
 
-      var ipaes = typeof(Flux.PhoneticAlgorithm.IPhoneticAlgorithmEncodable).GetDerivedTypes().Select(t => (Flux.PhoneticAlgorithm.IPhoneticAlgorithmEncodable)System.Activator.CreateInstance(t));
+      var ipaes = typeof(Flux.PhoneticAlgorithm.IPhoneticallyEncodable).GetDerived().Select(t => (Flux.PhoneticAlgorithm.IPhoneticallyEncodable)System.Activator.CreateInstance(t));
       var names = new string[] { "Dougal", "Glinde", "Plumridge", "Simak", "Webberley", "Ashcraft", "Ashcroft", "Asicroft", "Schmidt", "Schneider", "Lloyd", "Pfister" };
 
       foreach (var ipae in ipaes)
         foreach (var name in names)
-          System.Console.WriteLine($"{ipae?.GetType().Name ?? @"[untyped]"}.\"{name}\", \"{ipae?.EncodePhoneticAlgorithm(name) ?? @"[unnamed]"}\"");
+          System.Console.WriteLine($"{ipae?.GetType().Name ?? @"[untyped]"}.\"{name}\", \"{ipae?.EncodePhonetic(name) ?? @"[unnamed]"}\"");
 
       System.Console.WriteLine();
     }
@@ -667,13 +673,13 @@ namespace ConsoleApp
       static void Write(System.Type type, System.Predicate<System.Type> predicate)
       {
         var ofTypes = typeof(Flux.Locale).Assembly.DefinedTypes.ToList();
-        var derivedTypes = type.GetDerivedTypes(ofTypes).Where(t => predicate(t)).OrderBy(t => t.IsInterface).ThenBy(t => t.Name).ToList();
+        var derivedTypes = type.GetDerived(ofTypes).Where(t => predicate(t)).OrderBy(t => t.IsInterface).ThenBy(t => t.Name).ToList();
         System.Console.WriteLine($"{type.Name} ({derivedTypes.Count}) : {string.Join(", ", derivedTypes.Select(i => i.Name))}");
         System.Console.WriteLine();
       }
 
       System.Console.WriteLine(string.Join(System.Environment.NewLine, typeof(IValueQuantifiable<>)
-        .GetDerivedTypes()
+        .GetDerived()
         .Append(typeof(Flux.Units.Rate<Flux.Units.Length, Flux.Units.Time>))
         .OrderBy(t => t.Name)
         .Where(t => !t.IsInterface && !t.Name.Contains("Fraction"))

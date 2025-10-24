@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace Flux.Dsp.Oscillators
 {
   public record class Oscillator
@@ -40,12 +42,12 @@ namespace Flux.Dsp.Oscillators
     private double m_offset;
     /// <summary>Initial offset of the oscillator phase.</summary>
     /// <see href="https://en.wikipedia.org/wiki/Phase_(waves)"/>
-    public double Offset { get => m_offset; set => m_offset = value.Wrap(-1.0, 1.0, IntervalNotation.Closed); }
+    public double Offset { get => m_offset; set => m_offset = IntervalNotation.Closed.Wrap(value, -1.0, 1.0); }
 
     private double m_phase;
     /// <summary>The position of a point in time (an instant) on the waveform cycle in the range [0, 1].</summary>
     /// <see href="https://en.wikipedia.org/wiki/Phase_(waves)"/>
-    public double Phase { get => m_phase; set => m_phase = value.Wrap(0.0, 1.0, IntervalNotation.Closed); }
+    public double Phase { get => m_phase; set => m_phase = IntervalNotation.Closed.Wrap(value, 0.0, 1.0); }
 
     private double m_phaseModulation;
     /// <summary>The amount [0, 1] of output from the phase modulator to apply.</summary>
@@ -112,14 +114,14 @@ namespace Flux.Dsp.Oscillators
       foreach (var processor in PreProcessors)
         Current = processor.ProcessMonoWave(new Waves.WaveMono<double>(Current)).Wave;
 
-      if (AmplitudeModulator != null && m_amplitudeModulation > Numerics.Constants.EpsilonCpp32)
+      if (AmplitudeModulator != null && m_amplitudeModulation > XtensionSingle.MaxDefaultTolerance)
       {
         Current *= AmplitudeModulator.NextSample() * m_amplitudeModulation + 1;
 
         Current /= m_amplitudeModulation + 1; // Reset the amplitude after AM applied.
       }
 
-      if (RingModulator != null && m_ringModulation > Numerics.Constants.EpsilonCpp32)
+      if (RingModulator != null && m_ringModulation > XtensionSingle.MaxDefaultTolerance)
         Current *= RingModulator.NextSample() * m_ringModulation;
 
       foreach (var processor in PostProcessors)
@@ -130,16 +132,16 @@ namespace Flux.Dsp.Oscillators
 
       var phaseShift = normalizedFrequency.Value; // Normal phase shift for the current frequency.
 
-      if (PhaseModulator != null && m_phaseModulation > Numerics.Constants.EpsilonCpp32)
+      if (PhaseModulator != null && m_phaseModulation > XtensionSingle.MaxDefaultTolerance)
         phaseShift += 0.1 * PhaseModulator.Next(normalizedFrequency.Value) * m_phaseModulation;
 
-      if (FrequencyModulator != null && m_frequencyModulation > Numerics.Constants.EpsilonCpp32)
+      if (FrequencyModulator != null && m_frequencyModulation > XtensionSingle.MaxDefaultTolerance)
         phaseShift += normalizedFrequency.Value * FrequencyModulator.NextSample() * m_frequencyModulation;
 
       if (ReversePhase)
         phaseShift = -phaseShift;
 
-      m_phase = (m_phase + phaseShift).Wrap(0, 1, IntervalNotation.Closed); // Ensure phase wraps within cycle.
+      m_phase = IntervalNotation.Closed.Wrap(m_phase + phaseShift, 0d, 1d); // Ensure phase wraps within cycle.
 
       System.Diagnostics.Debug.Assert(Current >= -1 && Current <= 1);
 

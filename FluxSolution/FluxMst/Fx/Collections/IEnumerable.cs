@@ -129,15 +129,15 @@ namespace Collections.Generic
     //}
 
     [TestMethod]
-    public void SequenceContentEqualByXor()
+    public void SequenceContentEqualHashCode()
     {
       var a = new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
       var b = new int[] { 9, 8, 7, 6, 5, 4, 3, 2, 1 };
       var c = new int[] { 1, 9, 2, 8, 3, 7, 4, 6, 5 };
 
-      Assert.IsTrue(a.SequenceHashCodeByXor() == b.SequenceHashCodeByXor());
-      Assert.IsTrue(a.SequenceHashCodeByXor() == c.SequenceHashCodeByXor());
-      Assert.IsTrue(b.SequenceHashCodeByXor() == c.SequenceHashCodeByXor());
+      Assert.AreNotEqual(b.SequenceHashCode(), a.SequenceHashCode());
+      Assert.AreNotEqual(c.SequenceHashCode(), a.SequenceHashCode());
+      Assert.AreNotEqual(c.SequenceHashCode(), b.SequenceHashCode());
     }
 
     [TestMethod]

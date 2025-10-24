@@ -7,7 +7,7 @@ namespace Flux.DataStructures
   /// <typeparam name="TKey"></typeparam>
   /// <typeparam name="TValue"></typeparam>
   public interface IOrderedDictionary<TKey, TValue>
-    : System.Collections.Generic.IDictionary<TKey, TValue>
+    : System.Collections.Generic.IDictionary<TKey, TValue>, System.Collections.IDictionary
     where TKey : notnull
   {
     /// <summary>

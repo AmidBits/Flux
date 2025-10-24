@@ -3,30 +3,27 @@ namespace Flux
   public static partial class IEnumerables
   {
     /// <summary>
-    /// <para>Compute the medoid of <paramref name="source"/>, also return the <paramref name="index"/> and the <paramref name="count"/> of elements as output parameters.</para>
+    /// <para>Compute the medoid of <paramref name="source"/> and return the result as an output parameter.</para>
     /// <para><see href="http://en.wikipedia.org/wiki/Medoid"/></para>
     /// </summary>
-    /// <typeparam name="TSelf"></typeparam>
+    /// <typeparam name="TNumber"></typeparam>
     /// <param name="source"></param>
-    /// <param name="index"></param>
-    /// <param name="count"></param>
+    /// <param name="medoid"></param>
     /// <returns></returns>
     /// <exception cref="System.ArgumentException"></exception>
-    public static bool TryComputeMedoid<TSelf>(this System.Collections.Generic.IList<TSelf> source, out TSelf result)
-      where TSelf : System.Numerics.INumber<TSelf>, System.Numerics.IMinMaxValue<TSelf>
+    public static bool TryComputeMedoid<TNumber>(this System.Collections.Generic.IList<TNumber> source, out TNumber medoid)
+      where TNumber : System.Numerics.INumber<TNumber>, System.Numerics.IMinMaxValue<TNumber>
     {
-      System.ArgumentNullException.ThrowIfNull(source);
+      medoid = default!;
 
-      result = default!;
-
-      var minTotalDistance = TSelf.MaxValue;
+      var minTotalDistance = TNumber.MaxValue;
 
       var hasResult = false;
 
-      foreach (TSelf candidate in source)
+      foreach (TNumber candidate in source)
         if (source.Sum(t => candidate - t) is var candidateTotalDistance && candidateTotalDistance < minTotalDistance)
         {
-          result = candidate;
+          medoid = candidate;
 
           minTotalDistance = candidateTotalDistance;
 

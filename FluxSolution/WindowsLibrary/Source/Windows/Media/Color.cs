@@ -5,7 +5,7 @@ namespace Flux.Wpf
     /// <summary>Returns a random Windows.UI.Color, optionally randomizeAlpha channel as well.</summary>
     public static System.Windows.Media.Color RandomColor(bool randomizeAlpha = false)
     {
-      var bytes = Randomness.NumberGenerators.SscRng.Shared.GetRandomBytes(4);
+      var bytes = RandomNumberGenerators.SscRng.Shared.GetNextBytes(4);
 
       if (!randomizeAlpha)
       {

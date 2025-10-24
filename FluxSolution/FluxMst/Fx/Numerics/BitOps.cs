@@ -237,7 +237,7 @@ namespace Numerics
       var towardsZero = value.Pow2TowardZero(true);
       var awayFromZero = value.Pow2AwayFromZero(true);
 
-      var actual = 88.RoundToNearest(UniversalRounding.WholeAwayFromZero, towardsZero, awayFromZero);
+      var actual = 88.RoundToNearest(UniversalRounding.IntegralAwayFromZero, towardsZero, awayFromZero);
 
       Assert.AreEqual(128, actual);
     }
@@ -250,7 +250,7 @@ namespace Numerics
       var towardsZero = value.Pow2TowardZero(true);
       var awayFromZero = value.Pow2AwayFromZero(true);
 
-      var actual = 88.RoundToNearest(UniversalRounding.WholeTowardZero, towardsZero, awayFromZero);
+      var actual = 88.RoundToNearest(UniversalRounding.IntegralTowardZero, towardsZero, awayFromZero);
 
       Assert.AreEqual(64, actual);
     }
@@ -263,7 +263,7 @@ namespace Numerics
       var towardsZero = value.Pow2TowardZero(false);
       var awayFromZero = value.Pow2AwayFromZero(false);
 
-      var rounded = 88.RoundToNearest(UniversalRounding.HalfAwayFromZero, towardsZero, awayFromZero);
+      var rounded = 88.RoundToNearest(HalfRounding.AwayFromZero, towardsZero, awayFromZero);
 
       Assert.AreEqual(64, rounded);
 
@@ -279,7 +279,7 @@ namespace Numerics
       var towardsZero = value.Pow2TowardZero(false);
       var awayFromZero = value.Pow2AwayFromZero(false);
 
-      var actual = 88.RoundToNearest(UniversalRounding.WholeTowardZero, towardsZero, awayFromZero);
+      var actual = 88.RoundToNearest(UniversalRounding.IntegralTowardZero, towardsZero, awayFromZero);
 
       Assert.AreEqual(64, actual);
     }
@@ -322,7 +322,7 @@ namespace Numerics
     [TestMethod]
     public void LeastSignificant1BitClear()
     {
-      Assert.AreEqual(0b01010000, 0b01011000.LeastSignificant1BitClear());
+      Assert.AreEqual(0b01010000, 0b01011000.ClearLeastSignificant1Bit());
     }
 
     [TestMethod]
@@ -334,7 +334,7 @@ namespace Numerics
     [TestMethod]
     public void MostSignificant1BitClear()
     {
-      Assert.AreEqual(0b00011000, 0b01011000.MostSignificant1BitClear());
+      Assert.AreEqual(0b00011000, 0b01011000.ClearMostSignificant1Bit());
     }
 
     #endregion // Significant1Bits

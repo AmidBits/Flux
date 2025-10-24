@@ -1,6 +1,7 @@
 ﻿#if NET7_0_OR_GREATER
 using System;
 using Flux;
+using Flux.Globalization.En;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace GenericMath
@@ -11,7 +12,7 @@ namespace GenericMath
     [TestMethod]
     public void ToNamedGroupingString()
     {
-      Assert.AreEqual("Five Hundred Twelve", 512.ToEnglishCardinalNumeralCompoundString().ToString());
+      Assert.AreEqual("Five Hundred Twelve", 512.ToEnglishWordString().ToString());
     }
 
     [TestMethod]

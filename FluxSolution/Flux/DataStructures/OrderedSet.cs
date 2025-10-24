@@ -151,20 +151,20 @@
     }
 
     public bool IsProperSubsetOf(System.Collections.Generic.IEnumerable<TValue> other)
-      => this.SetCounts(other, false) is var (unfoundCount, uniqueCount) && unfoundCount > 0 && uniqueCount == Count;
+      => this.ScanSetCounts(other, false) is var (unfoundCount, uniqueCount) && unfoundCount > 0 && uniqueCount == Count;
 
     public bool IsProperSupersetOf(System.Collections.Generic.IEnumerable<TValue> other)
-      => this.SetCounts(other, true) is var (unfoundCount, uniqueCount) && unfoundCount == 0 && uniqueCount < Count;
+      => this.ScanSetCounts(other, true) is var (unfoundCount, uniqueCount) && unfoundCount == 0 && uniqueCount < Count;
 
     public bool IsSubsetOf(System.Collections.Generic.IEnumerable<TValue> other)
-      => this.SetCounts(other, false) is var (unfoundCount, uniqueCount) && unfoundCount >= 0 && uniqueCount == Count;
+      => this.ScanSetCounts(other, false) is var (unfoundCount, uniqueCount) && unfoundCount >= 0 && uniqueCount == Count;
 
     public bool IsSupersetOf(System.Collections.Generic.IEnumerable<TValue> other) => this.ContainsAll(other);
 
     public bool Overlaps(System.Collections.Generic.IEnumerable<TValue> other) => this.ContainsAny(other);
 
     public bool SetEquals(System.Collections.Generic.IEnumerable<TValue> other)
-      => this.SetCounts(other, true) is var (unfoundCount, uniqueCount) && unfoundCount == 0 && uniqueCount == Count;
+      => this.ScanSetCounts(other, true) is var (unfoundCount, uniqueCount) && unfoundCount == 0 && uniqueCount == Count;
 
     public void SymmetricExceptWith(System.Collections.Generic.IEnumerable<TValue> other)
     {

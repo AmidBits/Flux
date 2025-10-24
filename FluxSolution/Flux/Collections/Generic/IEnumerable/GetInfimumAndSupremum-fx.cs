@@ -2,6 +2,8 @@ namespace Flux
 {
   public static partial class IEnumerables
   {
+    #region GetInfimumAndSupremum
+
     /// <summary>
     /// <para>Gets the nearest ("less-than" and "greater-than", optionally with "-or-equal") elements and indices to the singleton set {<paramref name="referenceValue"/>}, as evaluated by the <paramref name="valueSelector"/>, in <paramref name="source"/>. Uses the specified <paramref name="comparer"/> (default if null).</para>
     /// <para>The infimum of a (singleton in this case) subset <paramref name="referenceValue"/> of a set <paramref name="source"/> is the greatest element in <paramref name="source"/> that is less-than-or-equal <paramref name="referenceValue"/>. If <paramref name="proper"/> is <see langword="true"/> then infimum will never be equal.</para>
@@ -59,5 +61,7 @@ namespace Flux
 
       return (infIndex, infItem, infValue, supIndex, supItem, supValue);
     }
+
+    #endregion
   }
 }

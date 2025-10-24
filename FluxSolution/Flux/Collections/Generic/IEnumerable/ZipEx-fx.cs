@@ -2,6 +2,8 @@ namespace Flux
 {
   public static partial class IEnumerables
   {
+    #region ZipEx
+
     /// <summary>This version of Zip runs over all elements in all sequences.</summary>
     public static System.Collections.Generic.IEnumerable<TResult> ZipEx<T, TResult>(System.Func<T[], TResult> resultSelector, params System.Collections.Generic.IEnumerable<T>[] sequences)
     {
@@ -36,5 +38,7 @@ namespace Flux
           e[index]?.Dispose();
       }
     }
+
+    #endregion
   }
 }

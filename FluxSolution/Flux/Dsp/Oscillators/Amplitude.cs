@@ -63,14 +63,14 @@ namespace Flux.Dsp.Oscillators
       if (InvertPolarity)
         sample = -sample;
 
-      if (AmplitudeModulator != null && m_amplitudeModulation > Numerics.Constants.EpsilonCpp32)
+      if (AmplitudeModulator != null && m_amplitudeModulation > XtensionSingle.MaxDefaultTolerance)
       {
         sample *= AmplitudeModulator.NextSample() * m_amplitudeModulation + 1.0;
 
         sample /= m_amplitudeModulation + 1.0; // Reset the amplitude after AM applied.
       }
 
-      if (RingModulator != null && m_ringModulation > Numerics.Constants.EpsilonCpp32)
+      if (RingModulator != null && m_ringModulation > XtensionSingle.MaxDefaultTolerance)
         sample *= RingModulator.NextSample() * m_ringModulation;
 
       return sample;

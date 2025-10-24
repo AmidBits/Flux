@@ -250,10 +250,10 @@ namespace Flux.Statistics
       sm = sm.Append(" { ");
 
       sm = sm.Append($" Count = {Count}");
-      sm = sm.Append($", Min/Max = [{Minimum.ToDecimalFormattedNumberString(3)}, {Maximum.ToDecimalFormattedNumberString(3)}]");
-      sm = sm.Append($", Mean = {Mean.ToDecimalFormattedNumberString(3)}");
-      sm = sm.Append($", Product = {Product.ToDecimalFormattedNumberString(3)}");
-      sm = sm.Append($", Sum = {Sum.ToDecimalFormattedNumberString(3)}");
+      sm = sm.Append($", Min/Max = [{Minimum.ToStringWithCountDecimals(3)}, {Maximum.ToStringWithCountDecimals(3)}]");
+      sm = sm.Append($", Mean = {Mean.ToStringWithCountDecimals(3)}");
+      sm = sm.Append($", Product = {Product.ToStringWithCountDecimals(3)}");
+      sm = sm.Append($", Sum = {Sum.ToStringWithCountDecimals(3)}");
 
       sm = sm.Append($", M* = [{m_m1.ToString(format, formatProvider)}, {m_m2.ToString(format, formatProvider)}, {m_m3.ToString(format, formatProvider)}, {m_m4.ToString(format, formatProvider)}]");
 

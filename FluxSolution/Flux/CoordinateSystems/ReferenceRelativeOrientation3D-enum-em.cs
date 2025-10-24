@@ -4,11 +4,11 @@
 //{
 
 //  private static string[] SynonymsForBackward = new string[] { "aft", "bow", "back", "stern", "astern", };
-//  private static string[] SynonymsForDown = new string[] { "low", "down", "below", "under", "beneath", "declin", };
+//  private static string[] SynonymsForDown = new string[] { "low", "down", "below", "under", "beneath", "decline", };
 //  private static string[] SynonymsForForward = new string[] { "bow", "prow", "ahead", "front", "forward", };
 //  private static string[] SynonymsForLeft = new string[] { "aport", "left", "port", "sinist", };
 //  private static string[] SynonymsForRight = new string[] { "dext", "right", "starboard", "astarboard" };
-//  private static string[] SynonymsForUp = new string[] { "up", "high", "over", "above", "raise", "inclin", };
+//  private static string[] SynonymsForUp = new string[] { "up", "high", "over", "above", "raise", "incline", };
 
 //  public static bool TryParseEgocentricCoordinateAxes(this string source, out EgocentricCoordinateAxes result)
 //  {

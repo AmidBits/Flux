@@ -28,7 +28,7 @@ namespace Numerics
     [TestMethod]
     public void WrapAround()
     {
-      Assert.AreEqual(2.5, (7.5).Wrap(1, 5, IntervalNotation.Closed));
+      Assert.AreEqual(2.5, IntervalNotation.Closed.Wrap(7.5, 1.0, 5.0));
     }
 
     [TestMethod]

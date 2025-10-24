@@ -22,7 +22,7 @@ namespace Flux
       using var stream = new System.Uri(file).GetStream();
       using var reader = new StreamReader(stream);
 
-      foreach (var fields in reader.ReadCsv())
+      foreach (var fields in reader.ReadCsv(";"))
         yield return fields;
     }
 

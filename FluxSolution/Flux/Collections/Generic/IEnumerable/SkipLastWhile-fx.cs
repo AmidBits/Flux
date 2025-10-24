@@ -2,6 +2,8 @@ namespace Flux
 {
   public static partial class IEnumerables
   {
+    #region SkipLastWhile
+
     /// <summary>Creates a new sequence by skipping the last elements that satisfies the predicate. This version also passes the source index into the predicate.</summary>
     /// <exception cref="System.ArgumentNullException"/>
     public static System.Collections.Generic.IEnumerable<T> SkipLastWhile<T>(this System.Collections.Generic.IEnumerable<T> source, System.Func<T, int, bool> predicate)
@@ -25,5 +27,7 @@ namespace Flux
         }
       }
     }
+
+    #endregion
   }
 }

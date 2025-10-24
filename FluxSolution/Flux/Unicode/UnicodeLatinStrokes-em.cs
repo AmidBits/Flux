@@ -2,6 +2,8 @@ namespace Flux
 {
   public static partial class Unicode
   {
+    #region LatinStrokes
+
     private static System.Collections.Generic.Dictionary<char, char> LatinStrokes = new()
     {
       { '\u023A', 'A' }, // Latin Capital Letter A with stroke
@@ -102,5 +104,7 @@ namespace Flux
 
       return source;
     }
+
+    #endregion
   }
 }

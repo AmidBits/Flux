@@ -91,7 +91,7 @@ namespace Flux.Numerics.EuclideanRotations
     #region Implemented interfaces
 
     public string ToString(string? format, System.IFormatProvider? formatProvider)
-      => $"<{Angle.ToUnitString(Units.AngleUnit.Degree, format ?? 6.FormatUpToFractionalDigits(), formatProvider)}, {X.ToString(format ?? 3.FormatUpToFractionalDigits(), formatProvider)}, {Y.ToString(format ?? 3.FormatUpToFractionalDigits(), formatProvider)}, {Z.ToString(format ?? 3.FormatUpToFractionalDigits(), formatProvider)}>";
+      => $"<{Angle.ToUnitString(Units.AngleUnit.Degree, format ?? 6.GetFormatWithCountDecimals(), formatProvider)}, {X.ToString(format ?? 3.GetFormatWithCountDecimals(), formatProvider)}, {Y.ToString(format ?? 3.GetFormatWithCountDecimals(), formatProvider)}, {Z.ToString(format ?? 3.GetFormatWithCountDecimals(), formatProvider)}>";
 
     #endregion // Implemented interfaces
 

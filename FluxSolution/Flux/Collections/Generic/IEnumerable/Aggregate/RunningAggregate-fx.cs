@@ -20,7 +20,7 @@ namespace Flux
 
       var result = seed;
 
-      foreach (var item in source.ThrowOnNull())
+      foreach (var item in source)
       {
         result = func(result, item, index);
 

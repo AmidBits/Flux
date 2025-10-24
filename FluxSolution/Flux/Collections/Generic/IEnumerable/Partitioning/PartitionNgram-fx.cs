@@ -2,6 +2,8 @@ namespace Flux
 {
   public static partial class IEnumerables
   {
+    #region PartitionNgram
+
     /// <summary>
     /// <para>Partition the sequence as a new sequence of size elements.</para>
     /// <para><see href="https://en.wikipedia.org/wiki/N-gram"/></para>
@@ -43,5 +45,7 @@ namespace Flux
       }
       else throw new System.ArgumentException(@"Insufficient number of elements.", nameof(source));
     }
+
+    #endregion
   }
 }

@@ -7,7 +7,7 @@ namespace Flux.HashGenerators.Specialized
 
     public ZobristTable(int lengthDimension0, int lengthDimension1, int statePermutations)
     {
-      var rng = new Randomness.NumberGenerators.SscRng();
+      var rng = new RandomNumberGenerators.SscRng();
 
       m_table = new ulong[lengthDimension0, lengthDimension1, statePermutations];
 

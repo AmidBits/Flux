@@ -13,19 +13,19 @@ namespace Flux.Services
 
     public void Write(string message)
     {
-      System.IO.File.AppendAllLines(_logFileName, new string[] { $"{System.DateTime.Now.ToStringSqlYyyyMmDdHhMmSsFffffff()} {message}" });
+      System.IO.File.AppendAllLines(_logFileName, new string[] { $"{System.DateTime.Now.ToSqlStringYyyyMmDdHhMmSsFffffff()} {message}" });
     }
 
     public void Write(params string[] messages)
     {
-      System.IO.File.AppendAllLines(_logFileName, messages.Select((m, i) => i == 0 ? $"{System.DateTime.Now.ToStringSqlYyyyMmDdHhMmSsFffffff()} {m}" : $"{m}"));
+      System.IO.File.AppendAllLines(_logFileName, messages.Select((m, i) => i == 0 ? $"{System.DateTime.Now.ToSqlStringYyyyMmDdHhMmSsFffffff()} {m}" : $"{m}"));
     }
 
     public void Write(System.Exception exception)
     {
       System.ArgumentNullException.ThrowIfNull(exception);
 
-      System.IO.File.AppendAllLines(_logFileName, new string[] { $"{System.DateTime.Now.ToStringSqlYyyyMmDdHhMmSsFffffff()} EXCEPTION {exception.Message}", exception.StackTrace ?? @"No StackTrace Available." });
+      System.IO.File.AppendAllLines(_logFileName, new string[] { $"{System.DateTime.Now.ToSqlStringYyyyMmDdHhMmSsFffffff()} EXCEPTION {exception.Message}", exception.StackTrace ?? @"No StackTrace Available." });
     }
   }
 }

@@ -7,7 +7,7 @@ namespace Flux.Dsp.WaveProcessors
   {
     private double m_release = 0.001;
     /// <summary>The amount of attenuation to apply each iteration in order to restore attenuation to full.</summary>
-    public double Release { get => m_release; set => m_release = double.Clamp(value, Numerics.Constants.EpsilonCpp32, 1.0); }
+    public double Release { get => m_release; set => m_release = double.Clamp(value, XtensionSingle.MaxDefaultTolerance, 1.0); }
 
     private double m_autoAttenuation = 1.0;
     /// <summary>The amount of attenuation to apply on the output. This is automatically calculated on sample amplitude overflow.</summary>
@@ -17,7 +17,7 @@ namespace Flux.Dsp.WaveProcessors
     {
       if (m_autoAttenuation < 1.0)
       {
-        m_autoAttenuation = double.Clamp(m_autoAttenuation + m_release, Numerics.Constants.EpsilonCpp32, 1.0);
+        m_autoAttenuation = double.Clamp(m_autoAttenuation + m_release, XtensionSingle.MaxDefaultTolerance, 1.0);
       }
 
       if (sample < -1.0 || sample > 1.0)
@@ -37,7 +37,7 @@ namespace Flux.Dsp.WaveProcessors
     {
       if (m_autoAttenuation < 1.0)
       {
-        m_autoAttenuation = double.Clamp(m_autoAttenuation + m_release, Numerics.Constants.EpsilonCpp32, 1);
+        m_autoAttenuation = double.Clamp(m_autoAttenuation + m_release, XtensionSingle.MaxDefaultTolerance, 1);
       }
 
       if (wave < -1 || wave > 1)

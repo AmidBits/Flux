@@ -1,4 +1,6 @@
 #if DEBUG
+using Flux.Globalization.En;
+
 namespace Flux
 {
   public static partial class Zamples
@@ -12,7 +14,7 @@ namespace Flux
         var r = System.Security.Cryptography.RandomNumberGenerator.GetInt32(0, 31);
 
         if (!bst.Contains(r))
-          bst = bst.Add(r, r.ToEnglishCardinalNumeralCompoundString());
+          bst = bst.Add(r, r.ToEnglishWordString());
       }
 
       System.Console.WriteLine(bst.ToConsoleBlock().ToString());

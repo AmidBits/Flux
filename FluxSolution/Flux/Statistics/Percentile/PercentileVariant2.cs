@@ -14,7 +14,7 @@ namespace Flux.Statistics.Percentile
     {
       System.ArgumentOutOfRangeException.ThrowIfNegative(count);
 
-      Interval.AssertMember(percent, TPercent.Zero, TPercent.One, IntervalNotation.Closed);
+      IntervalNotation.Closed.AssertMember(percent, TPercent.Zero, TPercent.One);
 
       return percent * TPercent.CreateChecked(count - TCount.One) + TPercent.One;
     }

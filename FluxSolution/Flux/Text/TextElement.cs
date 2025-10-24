@@ -6,41 +6,21 @@
   /// </summary>
   public readonly record struct TextElement
   {
-    private readonly System.Collections.Generic.List<char> m_chars;
+    private readonly string m_string;
 
-    public TextElement(System.ReadOnlySpan<char> textElement)
+    public TextElement(string textElement)
     {
       if (!textElement.IsTextElement()) throw new System.InvalidOperationException();
 
-      m_chars = textElement.ToList();
+      m_string = textElement;
     }
 
     /// <summary>Non-allocating <see cref="System.Collections.Generic.IReadOnlyList{T}"/> of <see cref="System.Char"/>. The characters of the TextElement was already populated on init.</summary>
-    public System.Collections.Generic.IReadOnlyList<char> AsReadOnlyListOfChar => m_chars;
+    public System.Collections.Generic.IReadOnlyList<char> AsReadOnlyListOfChar => m_string.ToCharArray();
 
     /// <summary>Non-allocating <see cref="System.ReadOnlySpan{T}"/> of <see cref="System.Char"/>. The characters of the TextElement was already populated on init.</summary>
-    public System.ReadOnlySpan<char> AsReadOnlySpan() => m_chars.AsReadOnlySpan();
+    public System.ReadOnlySpan<char> AsReadOnlySpan() => m_string.AsSpan();
 
-    public override string ToString() => AsReadOnlySpan().ToString();
+    public override string ToString() => m_string;
   }
-
-  //public readonly record struct TextElement
-  //{
-  //  private readonly string m_value;
-
-  //  public TextElement(string value)
-  //  {
-  //    if (System.Globalization.StringInfo.GetNextTextElementLength(value) != value.Length) throw new System.ArgumentOutOfRangeException(nameof(value));
-
-  //    m_value = value;
-  //  }
-
-  //  public string Value => m_value;
-
-  //  public System.Collections.Generic.IReadOnlyList<char> AsReadOnlyListOfChar => m_value.ToCharArray();
-
-  //  public System.ReadOnlySpan<char> AsReadOnlySpan() => m_value.AsSpan();
-
-  //  public override string ToString() => m_value;
-  //}
 }

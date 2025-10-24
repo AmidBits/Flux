@@ -19,7 +19,7 @@ namespace Static
     public void Em_Convert_TypeConverter()
     {
       var expected = "5/30/1967";
-      var actual = Objects.TypeConverter<string>(System.DateTime.Parse(expected), null);
+      var actual = XtensionObject.TypeConverter<string>(System.DateTime.Parse(expected));
 
       Assert.AreEqual(expected, actual);
     }

@@ -18,7 +18,7 @@ namespace Flux.PlanetaryScience
     private readonly Units.Angle m_angle;
 
     private Azimuth(double angleDeg)
-      => m_angle = new(angleDeg.Wrap(MinValue, MaxValue, IntervalNotation.HalfOpenRight), Units.AngleUnit.Degree);
+      => m_angle = new(IntervalNotation.HalfOpenRight.Wrap(angleDeg, MinValue, MaxValue), Units.AngleUnit.Degree);
 
     /// <summary>
     /// <para>Creates a new <see cref="Azimuth"/> from the specified <paramref name="angle"/>.</para>
@@ -192,6 +192,6 @@ namespace Flux.PlanetaryScience
 
     #endregion // Implemented interfaces
 
-    public override string ToString() => ToString(3.FormatUpToFractionalDigits(), null); // Up to three decimals.
+    public override string ToString() => ToString(3.GetFormatWithCountDecimals(), null); // Up to three decimals.
   }
 }

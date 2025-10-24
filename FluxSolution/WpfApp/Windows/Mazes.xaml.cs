@@ -21,11 +21,11 @@ namespace WpfApp
       index = 0;
       comboBoxSeedNumber.Items.Clear();
       comboBoxSeedNumber.Items.Insert(index++, "Rnd");
-      foreach (var pn in Flux.Numerics.NumberSequence.GetAscendingPrimes(2).TakeWhile(p => p < 100))
+      foreach (var pn in 2.GetAscendingPrimes().TakeWhile(p => p < 100))
         comboBoxSeedNumber.Items.Insert(index++, pn.ToString());
       comboBoxSeedNumber.SelectedIndex = 0;
 
-      var scale = 6; // Larger scale = bigger map (larger grid).
+      var scale = 3; // Larger scale = bigger map (larger grid).
 
       var size = new System.Drawing.Point(System.Convert.ToInt32(16d * scale), System.Convert.ToInt32(9d * scale));
 
@@ -154,7 +154,7 @@ namespace WpfApp
       PaintMaze();
     }
 
-    private System.Random CreateRNG()
+    private System.Random GetRandomNumberGenerator()
       => comboBoxSeedNumber.Text is var s && int.TryParse(s, out var n) && n > 0 ? new System.Random(n) : new System.Random();
 
     private void Button_Click_Clear(object sender, RoutedEventArgs e)
@@ -167,56 +167,59 @@ namespace WpfApp
     private void Button_Click_AldousBroder(object sender, RoutedEventArgs e)
     {
       EnableControls(false);
-      CarveMaze(new Flux.Model.Maze.AldusBroderMaze() { RandomNumberGenerator = CreateRNG() });
+      CarveMaze(new Flux.Model.Maze.AldusBroderMaze() { RandomNumberGenerator = GetRandomNumberGenerator() });
       EnableControls(true);
     }
 
     private void Button_Click_BackTracker(object sender, RoutedEventArgs e)
     {
       EnableControls(false);
-      CarveMaze(new Flux.Model.Maze.BackTrackerMaze() { RandomNumberGenerator = CreateRNG() });
+      CarveMaze(new Flux.Model.Maze.BackTrackerMaze() { RandomNumberGenerator = GetRandomNumberGenerator() });
       EnableControls(true);
     }
 
     private void Button_Click_BinaryTree(object sender, RoutedEventArgs e)
     {
       EnableControls(false);
-      CarveMaze(new Flux.Model.Maze.BinaryTreeMaze() { RandomNumberGenerator = CreateRNG() });
+      CarveMaze(new Flux.Model.Maze.BinaryTreeMaze() { RandomNumberGenerator = GetRandomNumberGenerator() });
       EnableControls(true);
     }
 
     private void Button_Click_GrowingTree(object sender, RoutedEventArgs e)
     {
       EnableControls(false);
-      CarveMaze(new Flux.Model.Maze.GrowingTreeMaze() { RandomNumberGenerator = CreateRNG() });
+      CarveMaze(new Flux.Model.Maze.GrowingTreeMaze() { RandomNumberGenerator = GetRandomNumberGenerator() });
       EnableControls(true);
     }
 
     private void Button_Click_HuntAndKill(object sender, RoutedEventArgs e)
     {
       EnableControls(false);
-      CarveMaze(new Flux.Model.Maze.HuntAndKillMaze() { RandomNumberGenerator = CreateRNG() });
+      CarveMaze(new Flux.Model.Maze.HuntAndKillMaze() { RandomNumberGenerator = GetRandomNumberGenerator() });
       EnableControls(true);
     }
 
     private void Button_Click_RecursiveDivision(object sender, RoutedEventArgs e)
     {
       EnableControls(false);
-      CarveMaze(new Flux.Model.Maze.RecursiveDivisionMaze() { RandomNumberGenerator = CreateRNG() });
+      CarveMaze(new Flux.Model.Maze.RecursiveDivisionMaze() { RandomNumberGenerator = GetRandomNumberGenerator() });
       EnableControls(true);
     }
 
     private void Button_Click_SideWinder(object sender, RoutedEventArgs e)
     {
       EnableControls(false);
-      CarveMaze(new Flux.Model.Maze.SidewinderMaze() { RandomNumberGenerator = CreateRNG() });
+      CarveMaze(new Flux.Model.Maze.SidewinderMaze() { RandomNumberGenerator = GetRandomNumberGenerator() });
       EnableControls(true);
     }
 
     private void Button_Click_Walker(object sender, RoutedEventArgs e)
     {
       EnableControls(false);
-      var maze = new Flux.Model.Maze.WalkerCave() { RandomNumberGenerator = CreateRNG() };
+      var maze = new Flux.Model.Maze.WalkerCave() { RandomNumberGenerator = GetRandomNumberGenerator() };
+      //var maze = new Flux.Model.Maze.WalkerCave() { RandomNumberGenerator = new System.Random(48) };
+      //var maze = new Flux.Model.Maze.WalkerCave() { RandomNumberGenerator = new System.Random(170402) };
+      //var maze = new Flux.Model.Maze.WalkerCave() { RandomNumberGenerator = new System.Random(101) };
       CarveMaze(maze);
       EnableControls(true);
       var used = m_grid.Values.Where(c => c.Paths.Count > 0).ToArray();
@@ -227,7 +230,7 @@ namespace WpfApp
     private void Button_Click_Wilsons(object sender, RoutedEventArgs e)
     {
       EnableControls(false);
-      CarveMaze(new Flux.Model.Maze.WilsonsMaze() { RandomNumberGenerator = CreateRNG() });
+      CarveMaze(new Flux.Model.Maze.WilsonsMaze() { RandomNumberGenerator = GetRandomNumberGenerator() });
       EnableControls(true);
     }
 

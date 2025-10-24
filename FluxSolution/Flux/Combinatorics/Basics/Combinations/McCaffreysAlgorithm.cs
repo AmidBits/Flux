@@ -1,7 +1,8 @@
 
-namespace Flux.Combinatorics.Basics.Combinations
+namespace Flux
 {
   /// <summary>
+  /// <para>McCaffrey's combination algoritm.</para>
   /// <para><see href="https://www.redperegrine.net/2021/04/10/software-algorithms-for-k-combinations/"/></para>
   /// </summary>
   public static partial class McCaffreysAlgorithm

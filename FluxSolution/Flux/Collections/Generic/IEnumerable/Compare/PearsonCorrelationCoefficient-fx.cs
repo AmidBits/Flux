@@ -2,6 +2,8 @@ namespace Flux
 {
   public static partial class IEnumerables
   {
+    #region PearsonCorrelationCoefficient
+
     /// <summary>Pearson correlation coefficient (PCC) is a measure of linear correlation between two sets of data. It is the ratio between the covariance of two variables and the product of their standard deviations. Thus, it is essentially a normalized measurement of the covariance, such that the result always has a value between -1 and 1.</summary>
     /// <exception cref="System.ArgumentNullException"/>
     /// <see href="https://en.wikipedia.org/wiki/Pearson_correlation_coefficient"/>
@@ -18,7 +20,7 @@ namespace Flux
       var sumXY = TSelf.Zero;
       var count = TSelf.Zero;
 
-      do
+      while (ex.MoveNext() && ey.MoveNext())
       {
         var vx = valueSelectorX(ex.Current);
         var vy = valueSelectorY(ey.Current);
@@ -30,7 +32,6 @@ namespace Flux
         sumXY += vx * vy;
         count++;
       }
-      while (ex.MoveNext() && ey.MoveNext());
 
       var countP2 = count * count;
 
@@ -41,5 +42,7 @@ namespace Flux
 
       return (covariance / stdX / stdY, covariance);
     }
+
+    #endregion
   }
 }

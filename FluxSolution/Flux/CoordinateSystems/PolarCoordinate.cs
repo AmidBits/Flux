@@ -177,7 +177,7 @@ namespace Flux.CoordinateSystems
     #region Implemented interfaces
 
     public string ToString(string? format, System.IFormatProvider? formatProvider)
-      => $"<{Radius.ToUnitString(format: format ?? 3.FormatUpToFractionalDigits(), provider: formatProvider)}, {Azimuth.ToUnitString(Units.AngleUnit.Degree, format ?? 6.FormatUpToFractionalDigits(), formatProvider)}>";
+      => $"<{Radius.ToUnitString(format: format ?? 3.GetFormatWithCountDecimals(), provider: formatProvider)}, {Azimuth.ToUnitString(Units.AngleUnit.Degree, format ?? 6.GetFormatWithCountDecimals(), formatProvider)}>";
 
     #endregion // Implemented interfaces
 

@@ -12,17 +12,17 @@ namespace SystemFx
     [TestMethod]
     public void ToLowerCase()
     {
-      var expected = @"robert hugo";
-      var actual = @"Robert Hugo".AsSpan().AsSpan().ToLower();
-      Assert.AreEqual(expected, actual.ToString());
+      var expected = @"robert hugo".AsSpan().AsSpan().ToString();
+      var actual = @"Robert Hugo".AsSpan().AsSpan().ToLower().ToString();
+      Assert.AreEqual(expected, actual);
     }
 
     [TestMethod]
     public void ToUpperCase()
     {
       var expected = @"ROBERT HUGO";
-      var actual = @"Robert Hugo".AsSpan().AsSpan().ToUpper();
-      Assert.AreEqual(expected, actual.ToString());
+      var actual = @"Robert Hugo".AsSpan().AsSpan().ToUpper().ToString();
+      Assert.AreEqual(expected, actual);
     }
   }
 }

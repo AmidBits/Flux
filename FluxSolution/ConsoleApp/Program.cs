@@ -17,11 +17,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Xml.XPath;
 using Flux;
-using Flux.DataStructures.UnionFind;
-using Flux.Numerics;
-using Flux.Probabilities;
-using Flux.Text;
-using Flux.Units;
+using Flux.Globalization.En;
 // C# Interactive commands:
 // #r "System.Runtime"
 // #r "System.Runtime.Numerics"
@@ -328,55 +324,76 @@ namespace ConsoleApp
 
     #endregion // Mock DataTables
 
-    static void TestRankUnrank()
+    public static void Tewt()
     {
-      var n = 3;
-      var r = 2;
-      var p = System.Linq.Enumerable.Range(0, n * n).ToArray();
-      var c = p.Length.CountPermutationsWithoutRepetition(n);
-      Flux.Combinatorics.Basics.Permutations.MyrvoldRuskey.Unrank(r, p, n); // 1,7,3,4,8,0,2,6,5,9
+      var n = new BigInteger(5);
+      var k = new BigInteger(3);
 
-      var q = new int[n];
-      //for (var i = 0; i < n; i++)
-      //  q[p[i]] = i;
+      var cwor = n.CountCombinationsWithoutRepetition(k);
+      //var cwor_f = n.BinomialCoefficient(k);
 
-      Flux.Combinatorics.Basics.Permutations.MyrvoldRuskey.CreateInversePermutation(p, q);
+      var cwr = n.CountCombinationsWithRepetition(k);
+      //var cwr_f = (k + n - 1).BinomialCoefficient(k);
 
-      var r1 = Flux.Combinatorics.Basics.Permutations.MyrvoldRuskey.Rank(p, q, n);
+      var pwop = n.CountPermutationsWithoutRepetition(k);
+      //var pwop_f = n.Factorial() / (n - k).Factorial();
 
+      var pwr = n.CountPermutationsWithRepetition(k);
+      //var pwr_f = (int)System.Numerics.BigInteger.Pow(n, k);
     }
 
-    /// <summary>
-    /// <para><see href="https://stackoverflow.com/a/20446640/3178666"/></para>
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="n"></param>
-    /// <param name="alphabet"></param>
-    /// <returns></returns>
-    public static System.Collections.Generic.List<int> BijectiveNumberSystemToIndices<T>(int n, T[] alphabet)
+    public static (int q, int r) EnvelopDivRem(int d, int n)
     {
-      /*
-      def get_bijective_val(n, alphabet):
-          base = len(alphabet)
-          digits = []
-          while n:
-              remainder = math.ceil(n/base)-1
-              digits.append(n - remainder*base)
-              n = remainder
-          digits.reverse()
-          return "".join(alphabet[digit-1] for digit in digits)
-       */
+      var q = (d / n);
+      var r = (d % n);
 
-      var b = alphabet.Length;
-      var digits = new System.Collections.Generic.List<int>();
-      while (n > 0)
-      {
-        var remainder = n.DivModEnveloped(b).QuotientEnveloped - 1;
-        digits.Add((n - remainder * b) - 1);
-        n = remainder;
-      }
-      digits.Reverse();
-      return digits;
+      q = int.CreateChecked(((double)d / (double)n).Envelop());
+      r = int.Abs(d) - int.Abs(q) * int.Abs(n);
+
+      return (q, r);
+    }
+
+    public static (int q, int r) FloorDivRem(int d, int n)
+    {
+      var q = int.CreateChecked(double.Floor((double)d / (double)n));
+      var r = int.Abs(d) - int.Abs(q) * int.Abs(n);
+
+      return (q, r);
+    }
+
+    public static (int q, int r) CeilingDivRem(int d, int n)
+    {
+      var q = int.CreateChecked(double.Ceiling((double)d / (double)n));
+      var r = int.Abs(d) - int.Abs(q) * int.Abs(n);
+
+      return (q, r);
+    }
+
+    public static (int q, int r) TruncateDivRem(int d, int n)
+    {
+      var q = int.CreateChecked(double.Ceiling((double)d / (double)n));
+      var r = int.Abs(d) - int.Abs(q) * int.Abs(n);
+
+      return (q, r);
+    }
+
+    public static void DivRemStuff()
+    {
+      var d = 9;
+      var n = -5;
+
+      var iq = d / n;
+      var ir = d % n;
+
+      var rd = (double)d / (double)n;
+
+      var id = int.DivRem(d, n);
+
+      var ed = EnvelopDivRem(d, n);
+      var fd = FloorDivRem(d, n);
+      var cd = CeilingDivRem(d, n);
+      var td = TruncateDivRem(d, n);
+
     }
 
     private static void TimedMain(string[] _)
@@ -384,18 +401,209 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
-      var span = new int[9].AsSpan();
+      //var mod = 4;
 
-      var gcd = 091575.GreatestCommonDivisor(999999);
-      var isc = 100010.IsCoprime(10);
+      //for (var idx = 0; idx < 15; idx++)
+      //  System.Console.WriteLine($"{idx:D2} : {idx % mod} : {idx.RemainderNoZero(mod, out var _)} : {idx.ReverseRemainder(mod, out var _)} : {idx.ReverseRemainderNoZero(mod, out var _)} ... {idx.Remainders(mod)}");
 
-      var total = new BigInteger(52);
-      var taken = 5;
+      for (var i = System.Numerics.BigInteger.One; i < long.MaxValue; i *= 9)
+      {
+        var ni = i;// (i + Flux.RandomNumberGenerators.SscRng.Shared.Next(100000000));
+        var nin = ni.GetCompoundNumbers(System.Numerics.BigInteger.Parse("1e123", System.Globalization.NumberStyles.AllowExponent, null)).ToList();
+        var anis = ni.GetCompoundNumerals(NamingScale.AnyScale);
+        var lnis = ni.GetCompoundNumerals(NamingScale.LongScale);
+        var snis = ni.GetCompoundNumerals(NamingScale.ShortScale);
 
-      var pwr = total.CountPermutationsWithRepetition(taken);
-      var pwor = total.CountPermutationsWithoutRepetition(taken);
-      var cwr = total.CountCombinationsWithRepetition(taken);
-      var cwor = total.CountCombinationsWithoutRepetition(taken);
+        System.Console.WriteLine($"{i:D2}{i.GetOrdinalIndicatorSuffix()} = ({ni}) : {string.Join(", ", nin)}");
+        System.Console.WriteLine($"{NumeralComposition.InterpretNumbersAndNumerals(anis)}");
+        System.Console.WriteLine($"{NumeralComposition.InterpretNumbersAndNumerals(lnis)}");
+        System.Console.WriteLine($"{NumeralComposition.InterpretNumbersAndNumerals(snis)}");
+      }
+
+      var dv = 0.15625d;
+      var sv = 0.15625f;
+
+      var (Binary64Sign, Binary64ExponentUnbiased, Binary64Significand53) = dv.GetBinary64Components(out var binary64SignBit, out var binary64ExponentBiased, out var binary64Significand52);
+      var (Binary32Sign, Binary32ExponentUnbiased, Binary32Significand24) = sv.GetBinary32Components(out var binary32SignBit, out var binary32ExponentBiased, out var binary32Significand23);
+
+      Tewt();
+
+      var irafz = (25.23456).Round(4, HalfRounding.ToRandom);
+
+      DivRemStuff();
+      return;
+
+      var n = 20L;
+
+      var f = (n).Factorial();
+      var df9 = (n).DoubleFactorial();
+      var df8 = (n - 1).DoubleFactorial();
+
+      var df = df9 * df8;
+
+      var dfdiv = (double)df9 / df8;
+      var e = double.E;
+      var divisor = 5;
+      for (var i = 1; i < 19; i++)
+      {
+        System.Console.WriteLine($"{i:D2} / {divisor} = {i / divisor} ({((double)i / (double)divisor):N3}) : Env = {i.EnvelopedDivRem(divisor)} : Euc = {i.EuclideanDivRem(divisor)} : Flr = {i.FloorDivRem(divisor)} : Trc = {NumberFunctions.TruncRem(i, divisor)} ({NumberFunctions.TruncRem((double)i, (double)divisor)})");
+      }
+
+      var lf = double.Log(4.Factorial());
+
+      Zamplez.RunLocale(); return;
+
+      //Flux.Locale.GetProperties().ToJaggedArray()
+
+      var sb = new Flux.SpanBuilder<char>();
+
+      //sb.Append("Hello");
+      //sb.Append(' ');
+      //sb.Append("World");
+      //sb.Append(", ");
+      //sb.Append("Again");
+
+      //sb.Prepend("Again");
+      //sb.Prepend(", ");
+      //sb.Prepend("World");
+      //sb.Prepend(' ');
+      //sb.Prepend("Hello");
+
+      sb.Append("World").Prepend("Hello").Insert(5, " ").Insert(5, "---").Insert(9, "---");
+
+      sb.RemoveAt(3);
+
+      return;
+
+      //ContinuedFractions();
+
+      //Tewt();
+
+      //var lcm = Flux.MultiplicativeFunctions.LeastCommonMultiple(new BigInteger(1), 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20);
+
+      //var count = 100;
+      //var sumofsqrs = Flux.Numerics.NumberSequence.GetNthPowerNumbers(new BigInteger(2)).Take(count).Sum();
+      //var sqrofsum = System.Linq.Enumerable.Range(1, count).Sum();
+      //sqrofsum = sqrofsum * sqrofsum;
+      //var sumsqrdiff = sqrofsum - sumofsqrs;
+
+      //var apc = 14.GetAscendingPrimeCandidates().Take(10).ToArray();
+
+      //for (var i = 0; i <= 101; i++)
+      //  System.Console.WriteLine($"{i:D3} : {i.NearestPrimeCandidate(HalfRounding.AwayFromZero, out var tz0, out var afz0):D3} ({tz0:D3}, {afz0:D3})");
+      //return;
+
+      //{
+      //  var n = 6L;
+      //  var k = 2L;
+
+      //  //System.Console.WriteLine(Flux.Diagnostics.Performance.Measure(() => Flux.FactorialPowers.RisingFactorial(n, k), 10000));
+      //  //System.Console.WriteLine(Flux.Diagnostics.Performance.Measure(() => Flux.FactorialPowers.FallingFactorial(n, k), 10000));
+
+      //  System.Console.WriteLine(Flux.Diagnostics.Performance.Measure(() => Flux.StirlingNumbers.StirlingNumber1st(n, k), 1000000));
+      //  System.Console.WriteLine(Flux.Diagnostics.Performance.Measure(() => Flux.StirlingNumbers.StirlingNumber2nd(n, k), 1000000));
+
+      //  return;
+      //}
+
+      //var dividend = 23;
+      //var divisor = -5;
+
+      //var drenv = dividend.DivRemEnveloped(divisor);
+      //var dreuc = dividend.DivRemEuclidean(divisor);
+      //var drf = dividend.DivRemFloor(divisor);
+      //var tr = dividend.TruncRem(divisor);
+
+
+      //var ph = (3).FallingFactorial(6);
+      //var mul = 3 * 4 * 5 * 6 * 7 * 8;
+      //var div = 8.Factorial() / 2.Factorial();
+      //var bc = 8.BinomialCoefficient(3);
+      //var ccwr = 8.CountCombinationsWithoutRepetition(3);
+      //var cpwr = 8.CountPermutationsWithoutRepetition(3);
+      //var v = 8.Factorial();
+      //var y = 8.FallingFactorial(3);
+      //var z = 8.RisingFactorial(3);
+
+      //var src = 9;
+
+      //System.Console.WriteLine($"Number: {src}");
+
+      //var countDivisors = src.CountDivisors();
+      //System.Console.WriteLine($"CountDivisors: {countDivisors}");
+
+      //var sumDivisors = src.SumDivisors();
+      //System.Console.WriteLine($"SumDivisors: (Sum: {sumDivisors.Sum}, AliqoutSum: {sumDivisors.AliquotSum})");
+
+      //var divisors = src.GetDivisors();
+      //System.Console.WriteLine($"Divisors: {string.Join(',', divisors)}");
+
+      //var primeFactors = src.GetPrimeFactors();
+      //System.Console.WriteLine($"Prime factors: {string.Join(',', primeFactors)} ({primeFactors.ToPrimeFactorString()})");
+
+      //var countPrimeFactors = src.CountPrimeFactors();
+      //System.Console.WriteLine($"CountPrimeFactors: (TotalCount: {countPrimeFactors.TotalCount}, DistinctCount: {countPrimeFactors.DistinctCount})");
+
+      //var eulerTotient = src.EulerTotient();
+      //System.Console.WriteLine($"EulerTotient: {string.Join(',', eulerTotient)}");
+
+      //return;
+
+      //var e1 = (22.45).Envelop(-1);
+      //var rup = (22.45).Round(-1, HalfRounding.AwayFromZero);
+
+      //var t1 = (-987654321.12345).Round(4, HalfRounding.Alternating);
+      //var t2 = (-987654321.12345).Round(4, HalfRounding.Alternating);
+      //var t3 = (-987654321.12345).Round(4, HalfRounding.Alternating);
+      //var t4 = (-987654321.12345).Round(4, HalfRounding.Alternating);
+
+      ////      4.465, 2
+
+      //var ms1 = Flux.ModularArithmetic.ModSub(33, 11, 12);
+      //var ms2 = Flux.ModularArithmetic.ModAdd(11, 11, 12);
+
+      ////Flux.ModularArithmetic.ModAdd(11, 11, 12);
+      ////Flux.ModularArithmetic.ModSub(11, 11, 12);
+
+      ////var t = Flux.IModularArithmetic.ModAdd(7, 8, 12);
+
+      ////var x = Flux.IModularArithmetic.ModMul(5, 3, 11);
+      ////var y = Flux.IModularArithmetic.ModMul(12, 15, 7);
+
+
+      ////var ipaks = AksPrimalityTest.IsPrimeAks(37);
+      ////var ip = AksPrimalityTest.IsPrime(37);
+
+      //for (var n = 0; n < 30; n++)
+      //{
+      //  //var pc = n.GetPrimeCandidates(UniversalRounding.HalfAwayFromZero, out var tz, out var afz);
+      //  var pc = n.NearestPrimeCandidate(HalfRounding.AwayFromZero, out var tz, out var afz);
+
+      //  System.Console.WriteLine($"{n:D2} (/ 6 = {n / 6}) : (% 6 = {n % 6}) : {tz:D2} | {afz:D2} ~ {pc:D2}");
+      //}
+
+      //return;
+
+      //var sieveSize = 1000;
+      //var testRuns = 1;
+
+      //System.Console.WriteLine(Flux.Diagnostics.Performance.Measure(() => Flux.PrimeNumbers.SieveOfEratosthenes(sieveSize), testRuns));
+
+      //var soe = Flux.PrimeNumbers.SieveOfEratosthenes(100);
+
+
+      //var ips = "The quick brown fox jumps over the lazy dog".AsSpan().IsPangram("abcdefghijklmnopqrstuvwxyz");
+
+      //var gcd = 091575.Gcd(999999);
+      //var isc = 100010.IsCoprime(10);
+
+      //var total = new BigInteger(52);
+      //var taken = 5;
+
+      //var pwr = total.CountPermutationsWithRepetition(taken);
+      //var pwor = total.CountPermutationsWithoutRepetition(taken);
+      //var cwr = total.CountCombinationsWithRepetition(taken);
+      //var cwor = total.CountCombinationsWithoutRepetition(taken);
 
       //var atoms = new char[] { 'A', 'B', 'C', 'D' };
       //var radix = new int[3];

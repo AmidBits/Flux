@@ -9,7 +9,7 @@ namespace Flux
     ///// <param name="typesSelector">The column types selector to use.</param>
     ///// <param name="valuesSelector">A array selector used to extract the data for each row in the data table.</param>
     ///// <exception cref="System.ArgumentNullException"/>
-    public static System.Data.DataTable ToDataTable(this System.Collections.Generic.IEnumerable<object[]> source, bool hasColumnNames, string? tableName = null)
+    public static System.Data.DataTable ToDataTable(this System.Collections.Generic.IEnumerable<object[]> source, bool hasFieldNames = false, bool adoptFieldTypes = false, string? tableName = null)
     {
       var dt = new System.Data.DataTable(tableName);
 
@@ -17,14 +17,18 @@ namespace Flux
 
       if (e.MoveNext() is var movedNext && movedNext)
       {
-        var columnNames = hasColumnNames ? e.Current : e.Current.Length.ToMultipleOrdinalColumnNames();
-        var columnTypes = columnNames.Select(cn => typeof(object)).ToArray();
+        var columnNames = e.Current.Length.ToMultipleOrdinalColumnNames();
 
-        if (hasColumnNames)
+        if (hasFieldNames) // If has-field-names let's use those for columnNames.
+          columnNames = e.Current.Select((e, i) => e?.ToString() ?? columnNames[i]).ToArray();
+
+        var columnTypes = columnNames.Select(cn => typeof(object)).ToArray(); // Default to System.Object for columnTypes.
+
+        if (hasFieldNames) // The first row has field-names..
         {
-          movedNext = e.MoveNext();
+          movedNext = e.MoveNext(); // ..which may be of other types than the data, so let's move to the data.
 
-          if (movedNext)
+          if (movedNext && adoptFieldTypes)
             columnTypes = columnNames.Select((cn, i) => e.Current[i].GetType()).ToArray();
         }
 

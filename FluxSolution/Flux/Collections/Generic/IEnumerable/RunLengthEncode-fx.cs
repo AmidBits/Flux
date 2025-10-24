@@ -2,6 +2,8 @@ namespace Flux
 {
   public static partial class IEnumerables
   {
+    #region RunLengthEncode
+
     /// <summary>
     /// <para>Run-length encodes <paramref name="source"/> by converting consecutive instances of the same element into a <c>KeyValuePair{T,int}</c> representing the item and its occurrence count. Uses the specified <paramref name="equalityComparer"/> (default if null).</para>
     /// </summary>
@@ -37,5 +39,7 @@ namespace Flux
         yield return new System.Collections.Generic.KeyValuePair<T, int>(previous, count);
       }
     }
+
+    #endregion
   }
 }

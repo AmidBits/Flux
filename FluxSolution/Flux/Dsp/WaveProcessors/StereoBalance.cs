@@ -13,12 +13,12 @@ namespace Flux.Dsp.WaveProcessors
       {
         m_position = double.Clamp(value, -1.0, 1.0);
 
-        if (m_position > Numerics.Constants.EpsilonCpp32)
+        if (m_position > XtensionSingle.MaxDefaultTolerance)
         {
           m_peakR = 1.0;
           m_peakL = 1.0 - m_position;
         }
-        else if (m_position < -Numerics.Constants.EpsilonCpp32)
+        else if (m_position < XtensionSingle.MinDefaultTolerance)
         {
           m_peakL = 1.0;
           m_peakR = 1.0 + m_position;
@@ -41,6 +41,6 @@ namespace Flux.Dsp.WaveProcessors
     /// <param name="left">Left stereo sample.</param>
     /// <param name="right">Right stereo sample.</param>
     public static (double left, double right) Apply(double position, double left, double right)
-      => position > Numerics.Constants.EpsilonCpp32 ? (left * (1.0 - position), right) : position < Numerics.Constants.EpsilonCpp32 ? (left, right * (1.0 + position)) : (left, right);
+      => position > XtensionSingle.MaxDefaultTolerance ? (left * (1.0 - position), right) : position < XtensionSingle.MinDefaultTolerance ? (left, right * (1.0 + position)) : (left, right);
   }
 }

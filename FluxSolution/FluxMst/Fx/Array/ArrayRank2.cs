@@ -30,7 +30,7 @@ namespace SystemArrays
       System.Console.WriteLine();
 
       inplaceMatrix.Fill(0, 1, 3, 4, 9);
-      System.Console.WriteLine(nameof(Arrays.FillWith));
+      System.Console.WriteLine(nameof(XtensionArrayRank1.FillWith));
       System.Console.WriteLine(inplaceMatrix.Rank2ToConsoleString(cso));
       System.Console.WriteLine();
 

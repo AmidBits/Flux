@@ -151,7 +151,7 @@ namespace Flux
 
       return (
         double.Sqrt(alpha * alpha + beta * beta),
-        double.RadiansToDegrees(double.Atan2(beta, alpha)).Wrap(0, 360, IntervalNotation.Closed)
+        IntervalNotation.Closed.Wrap(double.RadiansToDegrees(double.Atan2(beta, alpha)), 0.0, 360.0)
       );
     }
 
@@ -487,7 +487,7 @@ namespace Flux
     /// <param name="rng"></param>
     /// <returns></returns>
     public static System.Drawing.Color FromRandom(System.Random? rng = null)
-      => FromArgbBytes((rng ?? System.Random.Shared).GetRandomBytes(4));
+      => FromArgbBytes((rng ?? System.Random.Shared).GetNextBytes(4));
 
     /// <summary>
     /// <para>Creates ACMYK unit values from a <see cref="System.Drawing.Color"/>.</para>

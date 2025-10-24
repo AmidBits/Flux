@@ -18,7 +18,7 @@
     /// <summary>The values of edges.</summary>
     private readonly System.Collections.Generic.Dictionary<(int, int), TEdgeValue> m_edgeValues = [];
 
-    public AdjacencyMatrix(int[,] matrix) => m_matrix = (int[,])matrix.AssertDimensionallySymmetrical(out var _);
+    public AdjacencyMatrix(int[,] matrix) => m_matrix = (int[,])matrix.AssertDimensionalSymmetry(out var _);
 
     public AdjacencyMatrix() : this(new int[0, 0]) { }
 

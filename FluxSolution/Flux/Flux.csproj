@@ -7,6 +7,10 @@
 		<LangVersion>preview</LangVersion>
 	</PropertyGroup>
 
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+	  <DefineConstants>$(DefineConstants);INCLUDE_SCRATCH</DefineConstants>
+	</PropertyGroup>
+
 	<ItemGroup>
 	  <None Remove="Resources\world-map.svg" />
 	  <None Remove="Resources\WorldMapUserControl.xaml" />
@@ -41,15 +45,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Compile Update="Numerics\INumber\WrapAround.cs">
-	    <DesignTime>True</DesignTime>
-	    <AutoGen>True</AutoGen>
-	    <DependentUpon>WrapAround.tt</DependentUpon>
-	  </Compile>
-	</ItemGroup>
-
-	<ItemGroup>
-	  <None Update="Numerics\INumber\WrapAround.tt">
+	  <None Update="Numerics\WrapAround.tt">
 	    <Generator>TextTemplatingFileGenerator</Generator>
 	    <LastGenOutput>WrapAround.cs</LastGenOutput>
 	  </None>

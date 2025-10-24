@@ -1,15 +1,15 @@
 namespace Flux.Units
 {
   /// <summary>
-  /// <para>Radix is in the range of the closed interval [<see cref="Radix.MinRadix"/> = 2, <see cref="Radix.MaxRadix"/> = 256].</para>
+  /// <para>Radix is in the range of the closed interval [<see cref="Radix.MinRadix"/> = 2, <see cref="int.MaxValue"/>].</para>
   /// <para><see href="https://en.wikipedia.org/wiki/Radix"/></para>
   /// </summary>
   public readonly record struct Radix
     : System.IComparable, System.IComparable<Radix>, System.IFormattable, IValueQuantifiable<int>
   {
-    public const string Base62 = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+    public const string Base64 = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz+/";
+    //public const string Base62 = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 
-    public const int MaxValue = 62;
     public const int MinValue = 2;
 
     public static Radix Binary { get; } = new(2);
@@ -19,7 +19,7 @@ namespace Flux.Units
 
     private readonly int m_value;
 
-    public Radix(int radix) => m_value = Interval.AssertMember(radix, MinValue, MaxValue, IntervalNotation.Closed, nameof(radix));
+    public Radix(int radix) => m_value = AssertMember(radix, IntervalNotation.Closed, nameof(radix));
 
     #region Radix methods
 
@@ -315,68 +315,68 @@ namespace Flux.Units
       return double.CreateChecked(source) / double.CreateChecked(fip);
     }
 
-    /// <summary>
-    /// <para>Converts a <paramref name="value"/> to text based on <paramref name="minLength"/> and an <paramref name="alphabet"/> (<see cref="Base62"/> if null).</para>
-    /// </summary>
-    /// <typeparam name="TNumber"></typeparam>
-    /// <param name="value"></param>
-    /// <param name="minLength"></param>
-    /// <param name="alphabet"></param>
-    /// <returns></returns>
-    /// <exception cref="System.ArgumentOutOfRangeException"></exception>
-    public System.ReadOnlySpan<char> ToRadixString<TNumber>(TNumber value, int minLength = 1, string alphabet = Base62)
-      where TNumber : System.Numerics.IBinaryInteger<TNumber>
-    {
-      var rdx = int.CreateChecked(m_value);
+    ///// <summary>
+    ///// <para>Converts a <paramref name="value"/> to text based on <paramref name="minLength"/> and an <paramref name="alphabet"/> (<see cref="Base62"/> if null).</para>
+    ///// </summary>
+    ///// <typeparam name="TNumber"></typeparam>
+    ///// <param name="value"></param>
+    ///// <param name="minLength"></param>
+    ///// <param name="alphabet"></param>
+    ///// <returns></returns>
+    ///// <exception cref="System.ArgumentOutOfRangeException"></exception>
+    //public System.ReadOnlySpan<char> ToRadixString<TNumber>(TNumber value, int minLength = 1, string alphabet = Base64)
+    //  where TNumber : System.Numerics.IBinaryInteger<TNumber>
+    //{
+    //  var rdx = int.CreateChecked(m_value);
 
-      if (rdx == 2)
-        return value.ToBinaryString(minLength, alphabet);
-      else if (rdx == 8)
-        return value.ToOctalString(minLength, alphabet);
-      else if (rdx == 10)
-        return value.ToDecimalString(minLength, alphabet: alphabet);
-      else if (rdx == 16)
-        return value.ToHexadecimalString(minLength, alphabet);
-      else
-      {
-        if (minLength <= 0) minLength = value.GetBitCount().MaxDigitCountOfBitLength(rdx, value.IsSignedNumber());
+    //  if (rdx == 2)
+    //    return value.ToBinaryString(minLength, alphabet);
+    //  else if (rdx == 8)
+    //    return value.ToOctalString(minLength, alphabet);
+    //  else if (rdx == 10)
+    //    return value.ToDecimalString(minLength, alphabet: alphabet);
+    //  else if (rdx == 16)
+    //    return value.ToHexadecimalString(minLength, alphabet);
+    //  else
+    //  {
+    //    if (minLength <= 0) minLength = value.GetBitCount().MaxDigitCountOfBitLength(rdx, value.IsNumericTypeSigned());
 
-        alphabet ??= Units.Radix.Base62;
+    //    alphabet ??= Units.Radix.Base62;
 
-        if (alphabet.Length < rdx) throw new System.ArgumentOutOfRangeException(nameof(alphabet));
+    //    if (alphabet.Length < rdx) throw new System.ArgumentOutOfRangeException(nameof(alphabet));
 
-        value.TryConvertNumberToPositionalNotationIndices(m_value, out var indices);
+    //    value.TryConvertNumberToPositionalNotationIndices(m_value, out var indices);
 
-        while (indices.Count < minLength)
-          indices.Insert(0, 0); // Pad left with zeroth element.
+    //    while (indices.Count < minLength)
+    //      indices.Insert(0, 0); // Pad left with zeroth element.
 
-        indices.TryTransposePositionalNotationIndicesToSymbols(alphabet, out System.Collections.Generic.List<char> symbols);
+    //    indices.TryTransposePositionalNotationIndicesToSymbols(alphabet, out System.Collections.Generic.List<char> symbols);
 
-        return symbols.AsSpan();
-      }
-    }
+    //    return symbols.AsSpan();
+    //  }
+    //}
 
     #endregion // Radix methods
 
     #region Static methods
 
     /// <summary>
-    /// <para>Asserts that the <paramref name="radix"/> with an <paramref name="alternativeMaxRadix"/> is valid, i.e. an integer in the range [<see cref="MinValue"/>, <paramref name="alternativeMaxRadix"/>], and throws an exception if it's not.</para>
+    /// <para>Asserts that the <paramref name="radix"/> with an <paramref name="maxRadix"/> is valid, i.e. an integer in the range [<see cref="MinValue"/>, <paramref name="maxRadix"/>], and throws an exception if it's not.</para>
     /// </summary>
     /// <exception cref="System.ArgumentOutOfRangeException"></exception>
-    public static TSelf AssertMember<TSelf>(TSelf radix, TSelf alternativeMaxRadix, IntervalNotation intervalNotation = IntervalNotation.Closed, string? paramName = null)
-      where TSelf : System.Numerics.INumber<TSelf>
-      => Interval.IsMember(radix, TSelf.CreateChecked(MinValue), alternativeMaxRadix, intervalNotation)
+    public static TNumber AssertMember<TNumber>(TNumber radix, TNumber maxRadix, IntervalNotation intervalNotation = IntervalNotation.Closed, string? paramName = null)
+      where TNumber : System.Numerics.INumber<TNumber>
+      => intervalNotation.IsMember(radix, TNumber.CreateChecked(MinValue), maxRadix)
       ? radix
-      : throw new System.ArgumentOutOfRangeException(paramName ?? nameof(radix), $"The radix ({radix}) is out of range: {Interval.ToIntervalNotationString(TSelf.CreateChecked(MinValue), alternativeMaxRadix, intervalNotation)}.");
+      : throw new System.ArgumentOutOfRangeException(paramName ?? nameof(radix), $"The radix ({radix}) is out of range: {intervalNotation.ToIntervalNotationString(TNumber.CreateChecked(MinValue), maxRadix)}.");
 
     /// <summary>
     /// <para>Asserts that the <paramref name="radix"/> is valid, i.e. an integer in the range [<see cref="MinValue"/>, <see cref="MaxValue"/>], and throws an exception if it's not.</para>
     /// </summary>
     /// <exception cref="System.ArgumentOutOfRangeException"></exception>
-    public static TSelf AssertMember<TSelf>(TSelf radix, IntervalNotation notation = IntervalNotation.Closed, string? paramName = null)
-      where TSelf : System.Numerics.INumber<TSelf>
-      => AssertMember(radix, TSelf.CreateChecked(MaxValue), notation, paramName);
+    public static TNumber AssertMember<TNumber>(TNumber radix, IntervalNotation notation = IntervalNotation.Closed, string? paramName = null)
+      where TNumber : System.Numerics.INumber<TNumber>
+      => AssertMember(radix, radix + TNumber.One, notation, paramName);
 
     /// <summary>
     /// <para>Gets the count, the sum, whether it is jumbled, is a power of, the number reversed, the place values, and the reverse digits, of <paramref name="value"/> using base <paramref name="radix"/>.</para>
@@ -424,18 +424,18 @@ namespace Flux.Units
     }
 
     /// <summary>
-    /// <para>Determines whether the <paramref name="radix"/> is within <see cref="Radix"/> constrained by the specified <paramref name="intervalNotation"/> and the <paramref name="alternativeMaxRadix"/>.</para>
+    /// <para>Determines whether the <paramref name="radix"/> is within <see cref="Radix"/> constrained by the specified <paramref name="intervalNotation"/> and the <paramref name="maxRadix"/>.</para>
     /// </summary>
-    public static bool IsMember<TSelf>(TSelf radix, TSelf alternativeMaxRadix, IntervalNotation intervalNotation = IntervalNotation.Closed)
-      where TSelf : System.Numerics.INumber<TSelf>
-      => TSelf.IsInteger(radix) && TSelf.CreateChecked(MinValue) is var minRadix && alternativeMaxRadix >= minRadix && Interval.IsMember(radix, minRadix, alternativeMaxRadix, intervalNotation);
+    public static bool IsMember<TNumber>(TNumber radix, TNumber maxRadix, IntervalNotation intervalNotation = IntervalNotation.Closed)
+      where TNumber : System.Numerics.INumber<TNumber>
+      => TNumber.IsInteger(radix) && TNumber.CreateChecked(MinValue) is var minRadix && maxRadix >= minRadix && intervalNotation.IsMember(radix, minRadix, maxRadix);
 
     /// <summary>
     /// <para>Determines whether the <paramref name="radix"/> is within <see cref="Radix"/> constrained by the specified <paramref name="notation"/>.</para>
     /// </summary>
-    public static bool IsMember<TSelf>(TSelf radix, IntervalNotation notation = IntervalNotation.Closed)
-      where TSelf : System.Numerics.INumber<TSelf>
-      => IsMember(radix, TSelf.CreateChecked(MaxValue), notation);
+    public static bool IsMember<TNumber>(TNumber radix, IntervalNotation intervalNotation = IntervalNotation.Closed)
+      where TNumber : System.Numerics.INumber<TNumber>
+      => IsMember(radix, radix + TNumber.One, intervalNotation);
 
     #endregion Static methods
 

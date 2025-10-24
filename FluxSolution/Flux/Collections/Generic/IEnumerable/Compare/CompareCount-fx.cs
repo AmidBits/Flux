@@ -2,6 +2,8 @@ namespace Flux
 {
   public static partial class IEnumerables
   {
+    #region CompareCount
+
     /// <summary>
     /// <para>Compares the number of elements in <paramref name="source"/> that satisfies the <paramref name="predicate"/> (all elements if null) against the specified <paramref name="count"/>.</para>
     /// </summary>
@@ -9,7 +11,7 @@ namespace Flux
     /// <exception cref="System.ArgumentOutOfRangeException"/>
     public static int CompareCount<T>(this System.Collections.Generic.IEnumerable<T> source, int count, System.Func<T, int, bool>? predicate = null)
     {
-      if (count < 0) throw new ArgumentOutOfRangeException(nameof(count));
+      System.ArgumentOutOfRangeException.ThrowIfNegative(count);
 
       predicate ??= (e, i) => true; // Default predicate to all elements;
 
@@ -23,5 +25,7 @@ namespace Flux
 
       return counter > count ? 1 : counter < count ? -1 : 0;
     }
+
+    #endregion
   }
 }

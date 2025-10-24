@@ -1,4 +1,4 @@
-namespace Flux.Combinatorics.Basics.Permutations
+namespace Flux
 {
   /// <summary>
   /// <para>Permutations without repetitions.</para>

@@ -2,26 +2,38 @@ namespace Flux
 {
   public static partial class IEnumerables
   {
+    #region SingleOrValue
+
     /// <summary>
     /// <para></para>
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <param name="source"></param>
     /// <param name="value"></param>
+    /// <param name="predicate"></param>
     /// <returns></returns>
-    public static T SingleOrValue<T>(this System.Collections.Generic.IEnumerable<T> source, T value)
+    /// <exception cref="System.InvalidOperationException"></exception>
+    public static (T Item, int Index) SingleOrValue<T>(this System.Collections.Generic.IEnumerable<T> source, T value, System.Func<T, int, bool>? predicate = null)
     {
-      using var e = source.GetEnumerator();
+      predicate ??= (e, i) => true;
 
-      if (!e.MoveNext()) // If the sequence is empty..
-        return value; // ..return the specified value.
+      var item = value;
+      var index = -1;
 
-      var first = e.Current; // Save the first item so that we can check for more.
+      foreach (var element in source)
+      {
+        if (predicate(element, index))
+        {
+          index++;
+          item = element;
 
-      if (!e.MoveNext()) // If the sequence have no more elements..
-        return first; // ..return the first and only item.
+          if (index > 0) throw new System.InvalidOperationException("The sequence has more than one element.");
+        }
+      }
 
-      throw new System.InvalidOperationException("The sequence has more than one element.");
+      return (item, index);
     }
+
+    #endregion
   }
 }

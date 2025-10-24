@@ -10,28 +10,28 @@ namespace Maths
     [TestMethod]
     public void Round()
     {
-      Assert.AreEqual(6, (5.5).Envelop());
-      Assert.AreEqual(6, (5.5).RoundUniversal(UniversalRounding.HalfToEven));
-      Assert.AreEqual(6, (5.5).RoundUniversal(UniversalRounding.HalfAwayFromZero));
-      Assert.AreEqual(5, (5.5).RoundUniversal(UniversalRounding.HalfTowardZero));
-      Assert.AreEqual(5, (5.5).RoundUniversal(UniversalRounding.HalfToNegativeInfinity));
-      Assert.AreEqual(6, (5.5).RoundUniversal(UniversalRounding.HalfToPositiveInfinity));
-      Assert.AreEqual(5, (5.5).RoundUniversal(UniversalRounding.HalfAlternating)); // First alternating state. This is also {value}.RoundHalfAlternating().
-      Assert.AreEqual(6, (5.5).RoundUniversal(UniversalRounding.HalfAlternating)); // Second alternating state. This is also {value}.RoundHalfAlternating().
-      Assert.IsTrue((5.5).RoundUniversal(UniversalRounding.HalfToRandom) is 5 or 6); // This is also {value}.RoundHalfToRandom(). (below)
-      Assert.AreEqual(5, (5.5).RoundUniversal(UniversalRounding.HalfToOdd)); // This is also {value}.RoundHalfToOdd(). (below)
+      Assert.AreEqual(-6, (-5.5).Envelop());
+      Assert.AreEqual(6, (5.5).Round(HalfRounding.ToEven));
+      Assert.AreEqual(6, (5.5).Round(HalfRounding.AwayFromZero));
+      Assert.AreEqual(5, (5.5).Round(HalfRounding.TowardZero));
+      Assert.AreEqual(5, (5.5).Round(HalfRounding.ToNegativeInfinity));
+      Assert.AreEqual(6, (5.5).Round(HalfRounding.ToPositiveInfinity));
+      Assert.AreEqual(5, (5.5).Round(HalfRounding.ToAlternating)); // First alternating state. This is also {value}.RoundHalfAlternating().
+      Assert.AreEqual(6, (5.5).Round(HalfRounding.ToAlternating)); // Second alternating state. This is also {value}.RoundHalfAlternating().
+      Assert.IsTrue((5.5).Round(HalfRounding.ToRandom) is 5 or 6); // This is also {value}.RoundHalfToRandom(). (below)
+      Assert.AreEqual(5, (5.5).Round(HalfRounding.ToOdd)); // This is also {value}.RoundHalfToOdd(). (below)
 
-      Assert.AreEqual(5, (5.5).RoundHalfAlternating()); // Third alternating state.
-      Assert.AreEqual(6, (5.5).RoundHalfAlternating()); // Fourth alternating state.
-      Assert.IsTrue((5.5).RoundHalfRandom() is 5 or 6);
+      Assert.AreEqual(5, (5.5).RoundHalfToAlternating()); // Third alternating state.
+      Assert.AreEqual(6, (5.5).RoundHalfToAlternating()); // Fourth alternating state.
+      Assert.IsTrue((5.5).RoundHalfToRandom() is 5 or 6);
       Assert.AreEqual(5, (5.5).RoundHalfToOdd());
     }
 
     [TestMethod]
     public void RoundToBoundary()
     {
-      Assert.AreEqual(17, 12.RoundToNearest(UniversalRounding.HalfAwayFromZero, 7, 17), UniversalRounding.HalfAwayFromZero.ToString());
-      Assert.AreEqual(7, 12.RoundToNearest(UniversalRounding.HalfTowardZero, 7, 17), UniversalRounding.HalfTowardZero.ToString());
+      Assert.AreEqual(17, 12.RoundToNearest(HalfRounding.AwayFromZero, 7, 17), HalfRounding.AwayFromZero.ToString());
+      Assert.AreEqual(7, 12.RoundToNearest(HalfRounding.TowardZero, 7, 17), HalfRounding.TowardZero.ToString());
     }
 
     [TestMethod]
@@ -40,7 +40,7 @@ namespace Maths
       var n = 1.75;
       var m = 0.45;
 
-      n.MultipleOfNearest(m, false, UniversalRounding.HalfAwayFromZero, out var multipleTowardsZero, out var multipleAwayFromZero);
+      n.MultipleOfNearest(m, false, HalfRounding.AwayFromZero, out var multipleTowardsZero, out var multipleAwayFromZero);
 
       Assert.AreEqual(1.8, n.RoundToNearest(Flux.UniversalRounding.HalfAwayFromZero, multipleTowardsZero, multipleAwayFromZero), $"{nameof(RoundToMultipleOf)} {Flux.UniversalRounding.HalfAwayFromZero}");
     }

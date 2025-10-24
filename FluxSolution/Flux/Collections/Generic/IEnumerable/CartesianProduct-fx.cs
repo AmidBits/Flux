@@ -2,6 +2,8 @@ namespace Flux
 {
   public static partial class IEnumerables
   {
+    #region CartesianProduct
+
     public static System.Collections.Generic.IEnumerable<(TSource, TTarget)> CartesianProductFor2<TSource, TTarget>(this System.Collections.Generic.IEnumerable<TSource> source, System.Collections.Generic.IEnumerable<TTarget> target)
       => source.SelectMany(s => target, (s, t) => (s, t));
 
@@ -50,5 +52,7 @@ namespace Flux
           select accumulatorSequence.Concat(new[] { item })
       );
     }
+
+    #endregion
   }
 }

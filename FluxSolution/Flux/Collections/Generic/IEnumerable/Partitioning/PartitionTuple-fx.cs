@@ -2,6 +2,8 @@ namespace Flux
 {
   public static partial class IEnumerables
   {
+    #region PartitionTuple
+
     /// <summary>
     /// <para>Creates a sequence of staggered (by one element) n-tuples.</para>
     /// <see href="https://en.wikipedia.org/wiki/Tuple"/>
@@ -13,12 +15,13 @@ namespace Flux
     /// <exception cref="System.ArgumentNullException"/>
     public static System.Collections.Generic.IEnumerable<TResult> PartitionTuple<TSource, TResult>(this System.Collections.Generic.IEnumerable<TSource> source, int tupleSize, int tupleWrap, System.Func<System.Collections.Generic.IReadOnlyList<TSource>, int, TResult> resultSelector)
     {
+      System.ArgumentNullException.ThrowIfNull(source);
       System.ArgumentNullException.ThrowIfNull(resultSelector);
 
       if (tupleSize < 2) throw new System.ArgumentOutOfRangeException(nameof(tupleSize));
       if (tupleWrap < 0 || tupleWrap >= tupleSize) throw new System.ArgumentException($@"A {tupleSize}-tuple can only wrap from 0 to {tupleSize - 1} elements.");
 
-      using var e = source.ThrowOnNull().GetEnumerator();
+      using var e = source.GetEnumerator();
 
       var start = System.Collections.Immutable.ImmutableList<TSource>.Empty;
 
@@ -63,7 +66,7 @@ namespace Flux
       System.ArgumentNullException.ThrowIfNull(source);
       System.ArgumentNullException.ThrowIfNull(resultSelector);
 
-      using var e = source.ThrowOnNull().GetEnumerator();
+      using var e = source.GetEnumerator();
 
       if (e.MoveNext() && e.Current is var item1 && item1 is var back1 && e.MoveNext())
       {
@@ -97,7 +100,7 @@ namespace Flux
 
       if (wrap < 0 || wrap > 2) throw new System.ArgumentException("A 3-tuple can only wrap 0 (i.e. no-wrap), 1 or 2 elements.", nameof(wrap));
 
-      using var e = source.ThrowOnNull().GetEnumerator();
+      using var e = source.GetEnumerator();
 
       if (e.MoveNext() && e.Current is var item1 && item1 is var back2 && e.MoveNext() && e.Current is var item2 && item2 is var back1)
         if (e.MoveNext())
@@ -253,5 +256,7 @@ namespace Flux
     //    else throw new System.ArgumentException(@"The sequence has only 1 element.", nameof(source));
     //  else throw new System.ArgumentException(@"The sequence is empty.", nameof(source));
     //}
+
+    #endregion
   }
 }

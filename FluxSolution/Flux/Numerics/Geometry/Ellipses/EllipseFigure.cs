@@ -132,12 +132,12 @@ namespace Flux.Numerics.Geometry.Ellipses
     {
       try
       {
-        if ((source?.GetType().IsIntegerNumericType(true) ?? false) && Convert.ToInt64(source) is long i64)
+        if ((source?.GetType().IsNumericTypeInteger(true) ?? false) && Convert.ToInt64(source) is long i64)
         {
           result = i64;
           return true;
         }
-        else if ((source?.GetType().IsIntegerNumericType(true) ?? false) && Convert.ToDouble(source) is double d64)
+        else if ((source?.GetType().IsNumericTypeInteger(true) ?? false) && Convert.ToDouble(source) is double d64)
         {
           result = d64;
           return true;

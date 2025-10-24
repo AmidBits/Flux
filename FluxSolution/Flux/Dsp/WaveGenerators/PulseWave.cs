@@ -7,9 +7,9 @@
     private double m_dutyCycle;
 
     /// <summary>The duty cycle (pulse width) in the range [0, 2PI].</summary>
-    public double DutyCycle { get => m_dutyCycle; set => m_dutyCycle = value.Wrap(0.0, 1.0, IntervalNotation.Closed); }
+    public double DutyCycle { get => m_dutyCycle; set => m_dutyCycle = IntervalNotation.Closed.Wrap(value, 0.0, 1.0); }
 
-    public PulseWave(double dutyCycle) => m_dutyCycle = dutyCycle.Wrap(0.0, 1.0, IntervalNotation.Closed);
+    public PulseWave(double dutyCycle) => m_dutyCycle = IntervalNotation.Closed.Wrap(dutyCycle, 0.0, 1.0);
 
     public PulseWave() : this(0.5) { }
 

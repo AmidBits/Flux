@@ -281,5 +281,75 @@ namespace Flux.DataStructures
     #endregion // Implemented interfaces
 
     public override string ToString() => $"{GetType().Name} {{ Count = {Count} }}";
+
+    public System.Collections.Generic.IEnumerable<System.Collections.DictionaryEntry> CreateDictionaryEntries()
+    {
+      for (var index = 0; index < Count; index++)
+        if (TryGetKey(index, out var key) && TryGetValue(index, out var value))
+          yield return new(key, value);
+    }
+
+    #region IDictionary
+
+    bool System.Collections.IDictionary.IsFixedSize => false;
+
+    System.Collections.ICollection System.Collections.IDictionary.Keys => throw new NotImplementedException();
+
+    System.Collections.ICollection System.Collections.IDictionary.Values => throw new NotImplementedException();
+
+    bool System.Collections.ICollection.IsSynchronized => false;
+
+    object System.Collections.ICollection.SyncRoot => throw new NotImplementedException();
+
+    object? System.Collections.IDictionary.this[object key] { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
+    void System.Collections.IDictionary.Add(object key, object? value) => throw new NotImplementedException();
+    bool System.Collections.IDictionary.Contains(object key) => throw new NotImplementedException();
+    System.Collections.IDictionaryEnumerator System.Collections.IDictionary.GetEnumerator() => throw new NotImplementedException();
+    void System.Collections.IDictionary.Remove(object key) => throw new NotImplementedException();
+    void System.Collections.ICollection.CopyTo(Array array, int index) => throw new NotImplementedException();
+
+    private class SimpleDictionaryEnumerator
+      : System.Collections.IDictionaryEnumerator
+    {
+      private System.Collections.DictionaryEntry[] items;
+
+      private int index = -1;
+
+      public SimpleDictionaryEnumerator(System.Collections.Generic.IEnumerable<System.Collections.DictionaryEntry> des)
+      {
+        items = [.. des];
+
+        Reset();
+      }
+
+      public object Current => Entry;
+
+      public System.Collections.DictionaryEntry Entry => items[AssertValidIndex()];
+
+      public object Key => items[AssertValidIndex()].Key;
+      public object Value => items[AssertValidIndex()].Value!;
+
+      public bool MoveNext()
+      {
+        if (index < items.Length - 1)
+          index++;
+
+        return IsValidateIndex();
+      }
+
+      private int AssertValidIndex()
+      {
+        if (!IsValidateIndex())
+          throw new System.ArgumentOutOfRangeException(nameof(index));
+
+        return index;
+      }
+
+      private bool IsValidateIndex() => index >= 0 && index < items.Length;
+
+      public void Reset() => index = -1;
+    }
+    #endregion
   }
 }

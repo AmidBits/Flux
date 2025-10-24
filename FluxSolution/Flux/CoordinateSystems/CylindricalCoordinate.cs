@@ -154,7 +154,7 @@ namespace Flux.CoordinateSystems
     #region Implemented interfaces
 
     public string ToString(string? format, System.IFormatProvider? formatProvider)
-      => $"<{Radius.ToString(format ?? 3.FormatUpToFractionalDigits(), formatProvider)}, {Azimuth.ToUnitString(Units.AngleUnit.Degree, format ?? 6.FormatUpToFractionalDigits(), formatProvider)}, {Height.ToString(format ?? 3.FormatUpToFractionalDigits(), formatProvider)}>";
+      => $"<{Radius.ToString(format ?? 3.GetFormatWithCountDecimals(), formatProvider)}, {Azimuth.ToUnitString(Units.AngleUnit.Degree, format ?? 6.GetFormatWithCountDecimals(), formatProvider)}, {Height.ToString(format ?? 3.GetFormatWithCountDecimals(), formatProvider)}>";
 
     #endregion // Implemented interfaces
 

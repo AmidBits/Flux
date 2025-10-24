@@ -328,14 +328,14 @@ namespace Flux.Model.TicTacToe
       else return System.Math.Min(Minimax(depth + 1, nodeIndex * 2, true, scores, maxHeight), Minimax(depth + 1, nodeIndex * 2 + 1, true, scores, maxHeight));
     }
 
-    public State[] GetRowMajorOrder()
-      => m_state.ToArray();
+    public System.Collections.Generic.List<State> GetRowMajorOrder()
+      => m_state.ToList();
     public T[,] GetRowMajorOrder2D<T>(System.Func<State, T> selector)
       => GetRowMajorOrder().Select(selector).ToArray().ToTwoDimensionalArray(3, 3);
 
     // IEnumerable<State>
     public System.Collections.Generic.IEnumerator<State> GetEnumerator()
-      => GetRowMajorOrder().ToList().GetEnumerator();
+      => GetRowMajorOrder().GetEnumerator();
     System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
       => GetEnumerator();
   }

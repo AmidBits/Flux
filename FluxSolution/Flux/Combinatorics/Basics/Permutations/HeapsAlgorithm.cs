@@ -1,4 +1,4 @@
-﻿namespace Flux.Combinatorics.Basics.Permutations
+﻿namespace Flux
 {
   /// <summary>
   /// <para>Heap's algorithm. All possible permutations, without repeats, of n objects.</para>

@@ -26,7 +26,7 @@ namespace Flux
 
       var accumulator = seed;
 
-      foreach (var item in source.ThrowOnNull())
+      foreach (var item in source)
         accumulator = func(accumulator, item, ++index);
 
       return resultSelector(accumulator, index);

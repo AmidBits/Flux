@@ -2,6 +2,8 @@ namespace Flux
 {
   public static partial class IEnumerables
   {
+    #region AggregateTuple
+
     //    /// <summary>Creates a sequence of staggered (by one element) n-tuples.</summary>
     //    /// <param name="tupleSize">The number of elements in each tuple.</param>
     //    /// <param name="tupleWrap">The number of staggered wrap-around tuples to return, beyond the last element in the source sequence.</param>
@@ -236,5 +238,7 @@ namespace Flux
     //    //    else throw new System.ArgumentException($@"The sequence has only 1 element.", nameof(source));
     //    //  else throw new System.ArgumentException(@"The sequence is empty.", nameof(source));
     //    //}
+
+    #endregion
   }
 }

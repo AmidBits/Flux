@@ -1,7 +1,7 @@
-namespace Flux.Combinatorics.Basics.Permutations
+namespace Flux
 {
   /// <summary>
-  /// <para></para>
+  /// <para>Factoradic permutations.</para>
   /// <para><see href="https://en.wikipedia.org/wiki/Permutation"/></para>
   /// <para><see href="https://en.wikipedia.org/wiki/Factorial_number_system"/></para>
   /// </summary>

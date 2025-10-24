@@ -2,6 +2,8 @@ namespace Flux
 {
   public static partial class IEnumerables
   {
+    #region ElementAtOrValue
+
     /// <summary>
     /// <para>Returns a tuple with the item and <paramref name="index"/> if available, otherwise <paramref name="value"/> and index = -1.</para>
     /// </summary>
@@ -23,5 +25,7 @@ namespace Flux
 
       return (value, -1);
     }
+
+    #endregion
   }
 }

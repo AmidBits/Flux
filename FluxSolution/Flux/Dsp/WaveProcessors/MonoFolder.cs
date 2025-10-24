@@ -21,9 +21,9 @@ namespace Flux.Dsp.WaveProcessors
       {
         m_multiplier = double.Clamp(value, -1.0, 1.0);
 
-        if (m_multiplier > Numerics.Constants.EpsilonCpp32)
+        if (m_multiplier > XtensionSingle.MaxDefaultTolerance)
           m_multiplier = m_multiplier * 9.0 + 1.0;
-        else if (m_multiplier < -Numerics.Constants.EpsilonCpp32)
+        else if (m_multiplier < XtensionSingle.MinDefaultTolerance)
           m_multiplier += 1.0;
       }
     }

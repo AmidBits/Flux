@@ -720,9 +720,9 @@ namespace Flux
       where T : System.Numerics.IBinaryInteger<T>
     {
       if (endianess == Endianess.LittleEndian)
-        return T.TryReadLittleEndian(buffer, typeof(T).IsUnsignedNumericType(), out value);
+        return T.TryReadLittleEndian(buffer, typeof(T).IsNumericTypeUnsigned(), out value);
       else if (endianess == Endianess.BigEndian)
-        return T.TryReadBigEndian(buffer, typeof(T).IsUnsignedNumericType(), out value);
+        return T.TryReadBigEndian(buffer, typeof(T).IsNumericTypeUnsigned(), out value);
       else
       {
         value = default!;

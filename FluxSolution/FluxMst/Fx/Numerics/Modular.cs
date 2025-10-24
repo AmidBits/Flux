@@ -29,7 +29,7 @@ namespace Maths
     [TestMethod]
     public void Mod()
     {
-      var (quotient, remainder) = 9.DivModEuclidean(6);
+      var (quotient, remainder) = EuclideanDivision.EuclideanDivRem(9, 6);
 
       Assert.AreEqual(3, remainder);
     }

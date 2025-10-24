@@ -109,9 +109,7 @@
     }
 
     public bool Get(long bitIndex)
-      => (bitIndex < 0 || bitIndex >= m_bitLength)
-      ? throw new System.ArgumentOutOfRangeException(nameof(bitIndex))
-      : (m_bitArray[bitIndex >> 6] & (1UL << (int)(bitIndex % 64))) != 0;
+      => (m_bitArray[bitIndex >> 6] & (1UL << (int)(bitIndex % 64))) != 0;
 
     [System.CLSCompliant(false)] public byte GetByte(long index) => (byte)((m_bitArray[index >> 3] >> (int)((index % 8) << 3)) & 0xFF);
     public short GetInt16(long index) => unchecked((short)GetUInt16(index));
@@ -199,8 +197,6 @@
     /// <exception cref="System.ArgumentOutOfRangeException"></exception>
     public void Set(long bitIndex, bool value)
     {
-      if (bitIndex < 0 || bitIndex >= m_bitLength) throw new System.ArgumentOutOfRangeException(nameof(bitIndex));
-
       if (value) m_bitArray[bitIndex >> 6] |= (1UL << (int)(bitIndex % 64)); // Set the bit to 1.
       else m_bitArray[bitIndex >> 6] &= ~(1UL << (int)(bitIndex % 64)); // Set the bit to 0.
     }

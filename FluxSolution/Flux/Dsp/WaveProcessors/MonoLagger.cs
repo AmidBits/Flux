@@ -26,7 +26,7 @@ namespace Flux.Dsp.WaveProcessors
     { }
 
     public double ProcessMonoWave(double wave)
-      => (m_amount > Numerics.Constants.EpsilonCpp32 ? m_previousSample = wave.InterpolateCosine(m_previousSample, m_amount) : wave);
+      => (m_amount > XtensionSingle.MaxDefaultTolerance ? m_previousSample = wave.InterpolateCosine(m_previousSample, m_amount) : wave);
 
     public Waves.IWaveMono<double> ProcessMonoWave(Waves.IWaveMono<double> mono) => (Waves.WaveMono<double>)ProcessMonoWave(mono.Wave);
   }

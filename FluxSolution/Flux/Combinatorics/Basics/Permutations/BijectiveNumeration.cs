@@ -1,4 +1,4 @@
-namespace Flux.Combinatorics.Permutations
+namespace Flux
 {
   /// <summary>
   /// <para>Flexible lexiographically ordered permutation algorithm with repetition by index.</para>

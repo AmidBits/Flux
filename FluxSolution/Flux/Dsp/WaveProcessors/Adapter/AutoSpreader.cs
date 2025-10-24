@@ -13,12 +13,12 @@ namespace Flux.Dsp.WaveProcessors.Adapter
       {
         _mix = double.Clamp(value, -1.0, 1.0);
 
-        if (_mix > Numerics.Constants.EpsilonCpp32)
+        if (_mix > XtensionSingle.MaxDefaultTolerance)
         {
           m_wetMix = 0.5 * (1.0 + _mix);
           m_dryMix = 1.0 - m_wetMix;
         }
-        else if (_mix < -Numerics.Constants.EpsilonCpp32)
+        else if (_mix < XtensionSingle.MinDefaultTolerance)
         {
           m_dryMix = 0.5 * (1.0 - _mix);
           m_wetMix = 1.0 - m_dryMix;

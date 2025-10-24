@@ -12,7 +12,7 @@ namespace Flux.Units
 
     private readonly double m_value;
 
-    public Probability(double ratio) => m_value = Interval.AssertMember(ratio, MinValue, MaxValue, IntervalNotation.Closed, nameof(ratio));
+    public Probability(double ratio) => m_value = IntervalNotation.Closed.AssertMember(ratio, MinValue, MaxValue, nameof(ratio));
 
     /// <summary>
     /// <para>Computes the odds (p / (1 - p)) ratio of the probability.</para>
@@ -29,7 +29,7 @@ namespace Flux.Units
     /// <exception cref="System.ArgumentOutOfRangeException"></exception>
     public static TSelf AssertMember<TSelf>(TSelf probability, IntervalNotation notation, string? paramName = null)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
-      => Interval.AssertMember(probability, TSelf.CreateChecked(MinValue), TSelf.CreateChecked(MaxValue), notation, paramName ?? nameof(probability));
+      => notation.AssertMember(probability, TSelf.CreateChecked(MinValue), TSelf.CreateChecked(MaxValue), paramName ?? nameof(probability));
 
     /// <summary>
     /// <para>Returns whether the <paramref name="probability"/> is within <see cref="Probability"/> constrained by the specified <paramref name="intervalNotation"/>.</para>
@@ -37,7 +37,7 @@ namespace Flux.Units
     /// <exception cref="System.ArgumentOutOfRangeException"></exception>
     public static bool IsMember<TSelf>(TSelf probability, IntervalNotation intervalNotation)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
-      => Interval.IsMember(probability, TSelf.CreateChecked(MinValue), TSelf.CreateChecked(MaxValue), intervalNotation);
+      => intervalNotation.IsMember(probability, TSelf.CreateChecked(MinValue), TSelf.CreateChecked(MaxValue));
 
     #region Bernoulli distribution
 
@@ -51,7 +51,7 @@ namespace Flux.Units
     /// <param name="k">A value of 0 or 1.</param>
     /// <returns></returns>
     public static TProbability BernoulliDistributionPmf<TProbability, TCount>(TProbability p, TCount k)
-      where TProbability : System.Numerics.IFloatingPoint<TProbability>, System.Numerics.IPowerFunctions<TProbability>
+      where TProbability : System.Numerics.IFloatingPoint<TProbability>
       where TCount : System.Numerics.IBinaryInteger<TCount>
       => p * TProbability.CreateChecked(k) + (TProbability.One - p) * TProbability.CreateChecked(TCount.One - k);
 
@@ -65,7 +65,7 @@ namespace Flux.Units
     /// <param name="k">True (1) or false (0).</param>
     /// <returns></returns>
     public static TProbability BernoulliDistributionPmf<TProbability>(TProbability p, bool k)
-      where TProbability : System.Numerics.IFloatingPoint<TProbability>, System.Numerics.IPowerFunctions<TProbability>
+      where TProbability : System.Numerics.IFloatingPoint<TProbability>
       => BernoulliDistributionPmf(p, k ? 1 : 0);
 
     #endregion // Bernoulli distribution
@@ -219,6 +219,16 @@ namespace Flux.Units
       => probability / (TSelf.One - probability);
 
     /// <summary>
+    /// <para>Returns the probability that at least 2 events are equal. This is computation P(A), which is the complement to P(A') computed in (<see cref="OfNoDuplicates(System.Numerics.BigInteger, System.Numerics.BigInteger)"/>).</para>
+    /// <para><seealso href="https://en.wikipedia.org/wiki/Birthday_problem"/></para>
+    /// <para><seealso href="https://en.wikipedia.org/wiki/Conditional_probability"/></para>
+    /// </summary>
+    /// <returns>The probability, which is in the range [0, 1].</returns>
+    public static Probability OfDuplicates<TSelf>(TSelf whenCount, TSelf ofTotalCount)
+      where TSelf : System.Numerics.IBinaryInteger<TSelf>
+      => new(1 - OfNoDuplicates(whenCount, ofTotalCount).m_value);
+
+    /// <summary>
     /// <para>Returns the probability that specified event count in a group of total event count are all different (or unique). This is the computation P(A').</para>
     /// <para><seealso cref="https://en.wikipedia.org/wiki/Birthday_problem"/></para>
     /// <para><seealso cref="https://en.wikipedia.org/wiki/Conditional_probability"/></para>
@@ -234,14 +244,23 @@ namespace Flux.Units
     }
 
     /// <summary>
-    /// <para>Returns the probability that at least 2 events are equal. This is computation P(A), which is the complement to P(A') computed in (<see cref="OfNoDuplicates(System.Numerics.BigInteger, System.Numerics.BigInteger)"/>).</para>
-    /// <para><seealso href="https://en.wikipedia.org/wiki/Birthday_problem"/></para>
-    /// <para><seealso href="https://en.wikipedia.org/wiki/Conditional_probability"/></para>
+    /// <para>When probability of success p and probability of failure q = 1 - p. If you repeat what you’re doing m+n times, the probability of m successes and n failures is given by this function.</para>
     /// </summary>
-    /// <returns>The probability, which is in the range [0, 1].</returns>
-    public static Probability OfDuplicates<TSelf>(TSelf whenCount, TSelf ofTotalCount)
-      where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      => new(1 - OfNoDuplicates(whenCount, ofTotalCount).m_value);
+    /// <param name="p">Probability of success (1 - <paramref name="q"/>).</param>
+    /// <param name="q">Probability of failure (1 - <paramref name="p"/>).</param>
+    /// <param name="m">The probability of success count.</param>
+    /// <param name="n">The probability of failure count.</param>
+    /// <returns></returns>
+    public static double OfSuccessesAndFailures(double p, double q, int m, int n)
+    {
+      var temp = SpecialFunctions.LogGamma(m + n + 1.0);
+
+      temp -= SpecialFunctions.LogGamma(n + 1.0) + SpecialFunctions.LogGamma(m + 1.0);
+
+      temp += m * double.Log(p) + n * double.Log(q);
+
+      return double.Exp(temp);
+    }
 
     #region Poisson distribution
 

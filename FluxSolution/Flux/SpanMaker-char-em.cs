@@ -189,10 +189,9 @@ namespace Flux
     public static SpanMaker<char> RemoveRegex(this SpanMaker<char> source, string regexPattern)
     {
       var sm = source;
-      var rms = sm.AsReadOnlySpan().GetRegexMatches(regexPattern);
-      for (var i = rms.Count - 1; i >= 0; i--)
-        if (rms.TryGetKey(i, out var slice))
-          sm = sm.Remove(slice);
+      var ranges = sm.AsReadOnlySpan().GetRegexMatches(regexPattern);
+      for (var i = ranges.Count - 1; i >= 0; i--)
+        sm = sm.Remove(ranges[i]);
       return sm;
     }
 
@@ -213,7 +212,7 @@ namespace Flux
     /// <param name="source"></param>
     /// <param name="replacement"></param>
     /// <returns></returns>
-    public static SpanMaker<char> ReplaceAllMarkupTags(this SpanMaker<char> source, System.Func<string, string> replacementSelector)
+    public static SpanMaker<char> ReplaceAllMarkupTags(this SpanMaker<char> source, System.Func<System.ReadOnlySpan<char>, string> replacementSelector)
       => source.ReplaceRegex(RegexAllMarkupTags().ToString(), replacementSelector);
 
     /// <summary>
@@ -223,16 +222,19 @@ namespace Flux
     /// <param name="regexPattern"></param>
     /// <param name="appendSelector"></param>
     /// <returns></returns>
-    public static SpanMaker<char> AppendRegex(this SpanMaker<char> source, string regexPattern, System.Func<string, string> appendSelector)
+    public static SpanMaker<char> AppendRegex(this SpanMaker<char> source, string regexPattern, System.Func<System.ReadOnlySpan<char>, string> appendSelector)
     {
       System.ArgumentNullException.ThrowIfNull(appendSelector);
 
+      var ranges = source.AsReadOnlySpan().GetRegexMatches(regexPattern);
+
       var sm = source;
-      var rms = sm.AsReadOnlySpan().GetRegexMatches(regexPattern);
-      for (var i = rms.Count - 1; i >= 0; i--)
+      for (var i = ranges.Count - 1; i >= 0; i--)
       {
-        rms.TryGetIndexKeyValue(i, out var ikv);
-        sm = sm.Insert(ikv.Key.End.GetOffset(source.Length), 1, appendSelector(ikv.Value));
+        var range = ranges[i];
+        var replacement = appendSelector(sm.AsSpan()[range]);
+
+        sm = sm.Insert(range.End.GetOffset(source.Length), 1, replacement);
       }
       return sm;
     }
@@ -244,16 +246,19 @@ namespace Flux
     /// <param name="regexPattern"></param>
     /// <param name="prependSelector"></param>
     /// <returns></returns>
-    public static SpanMaker<char> PrependRegex(this SpanMaker<char> source, string regexPattern, System.Func<string, string> prependSelector)
+    public static SpanMaker<char> PrependRegex(this SpanMaker<char> source, string regexPattern, System.Func<System.ReadOnlySpan<char>, string> prependSelector)
     {
       System.ArgumentNullException.ThrowIfNull(prependSelector);
 
+      var ranges = source.AsReadOnlySpan().GetRegexMatches(regexPattern);
+
       var sm = source;
-      var rms = sm.AsReadOnlySpan().GetRegexMatches(regexPattern);
-      for (var i = rms.Count - 1; i >= 0; i--)
+      for (var i = ranges.Count - 1; i >= 0; i--)
       {
-        rms.TryGetIndexKeyValue(i, out var ikv);
-        sm = sm.Insert(ikv.Key.Start.GetOffset(source.Length), 1, prependSelector(ikv.Value));
+        var range = ranges[i];
+        var replacement = prependSelector(sm.AsSpan()[range]);
+
+        sm = sm.Insert(range.Start.GetOffset(source.Length), 1, replacement);
       }
       return sm;
     }
@@ -265,16 +270,19 @@ namespace Flux
     /// <param name="regexPattern"></param>
     /// <param name="replacementSelector"></param>
     /// <returns></returns>
-    public static SpanMaker<char> ReplaceRegex(this SpanMaker<char> source, string regexPattern, System.Func<string, string> replacementSelector)
+    public static SpanMaker<char> ReplaceRegex(this SpanMaker<char> source, string regexPattern, System.Func<System.ReadOnlySpan<char>, string> replacementSelector)
     {
       System.ArgumentNullException.ThrowIfNull(replacementSelector);
 
+      var ranges = source.AsReadOnlySpan().GetRegexMatches(regexPattern);
+
       var sm = source;
-      var rms = sm.AsReadOnlySpan().GetRegexMatches(regexPattern);
-      for (var i = rms.Count - 1; i >= 0; i--)
+      for (var i = ranges.Count - 1; i >= 0; i--)
       {
-        rms.TryGetIndexKeyValue(i, out var ikv);
-        sm = sm.Replace(ikv.Key, replacementSelector(ikv.Value));
+        var range = ranges[i];
+        var replacement = replacementSelector(sm.AsSpan()[range]);
+
+        sm = sm.Replace(range, replacement);
       }
       return sm;
     }
@@ -288,11 +296,15 @@ namespace Flux
     /// <returns></returns>
     public static SpanMaker<char> ReplaceRegex(this SpanMaker<char> source, string regexPattern, System.ReadOnlySpan<char> replacement)
     {
+      var ranges = source.AsReadOnlySpan().GetRegexMatches(regexPattern);
+
       var sm = source;
-      var rms = sm.AsReadOnlySpan().GetRegexMatches(regexPattern);
-      for (var i = rms.Count - 1; i >= 0; i--)
-        if (rms.TryGetKey(i, out var slice))
-          sm = sm.Replace(slice, replacement);
+      for (var i = ranges.Count - 1; i >= 0; i--)
+      {
+        var range = ranges[i];
+
+        sm = sm.Replace(range, replacement);
+      }
       return sm;
     }
 

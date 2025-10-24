@@ -1,76 +1,12 @@
 ﻿namespace Flux
 {
-  public static class Interval
+  public static class XtensionInterval
   {
-    /// <summary>
-    /// <para>Asserts that the <paramref name="value"/> is a member of the interval <paramref name="minValue"/>..<paramref name="maxValue"/> according to the specified <see cref="IntervalNotation"/>, and throws an exception if it's not.</para>
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="intervalNotation">The interval notation to apply when asserting the value.</param>
-    /// <param name="value">The value to assert.</param>
-    /// <param name="minValue">The lower bound of the interval set.</param>
-    /// <param name="maxValue">The upper bound of the interval set.</param>
-    /// <param name="paramName">Optional parameter name for the exception.</param>
-    /// <returns>The <paramref name="value"/>, if a member, otherwise an exception is thrown.</returns>
-    /// <exception cref="System.NotImplementedException"></exception>
-    public static T AssertMember<T>(T value, T minValue, T maxValue, IntervalNotation intervalNotation = IntervalNotation.Closed, string? paramName = "value")
-      where T : System.IComparable<T>
-      => IsMember(value, minValue, maxValue, intervalNotation)
-      ? value
-      : throw new System.ArgumentOutOfRangeException(paramName ?? nameof(value), $"The value '{value}' is not a member of the interval: {ToIntervalNotationString(minValue, maxValue, intervalNotation)}.");
-
-    /// <summary>
-    /// <para>Asserts whether the interval is valid, i.e. throws an exception if it is not.</para>
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="intervalNotation"></param>
-    /// <param name="minValue"></param>
-    /// <param name="maxValue"></param>
-    /// <exception cref="System.ArgumentException"></exception>
-    public static (T minValue, T maxValue) AssertValid<T>(T minValue, T maxValue, IntervalNotation intervalNotation = IntervalNotation.Closed, string? paramName = "minValue/maxValue")
-      where T : System.IComparable<T>
-      => IsValid(intervalNotation, minValue, maxValue)
-      ? (minValue, maxValue)
-      : throw new System.ArgumentException($"Invalid interval: {ToIntervalNotationString(minValue, maxValue, intervalNotation)}.", paramName);
-
-    /// <summary>
-    /// <para>Compares <paramref name="value"/> to the interval <paramref name="minValue"/>..<paramref name="maxValue"/> using the specified <see cref="IntervalNotation"/>.</para>
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="intervalNotation">The interval notation to apply when comparing to the interval set.</param>
-    /// <param name="value">The value to compare.</param>
-    /// <param name="minValue">The lower bound of the interval set.</param>
-    /// <param name="maxValue">The upper bound of the interval set.</param>
-    /// <returns>
-    /// <para>The '(-or-equal)' below depends on the openess of the <see cref="IntervalNotation"/> specified in <paramref name="intervalNotation"/>.</para>
-    /// <para>0 means that <paramref name="value"/> is a member of the interval.</para>
-    /// <para>-1 means that <paramref name="value"/> is less-than(-or-equal) to <paramref name="minValue"/>, and hence not a member of the interval.</para>
-    /// <para>+1 means that <paramref name="value"/> is greater-than(-or-equal) to <paramref name="maxValue"/>, and hence not a member of the interval.</para>
-    /// </returns>
-    /// <exception cref="NotImplementedException"></exception>
-    public static int CompareMember<T>(T value, T minValue, T maxValue, IntervalNotation intervalNotation = IntervalNotation.Closed)
-      where T : System.IComparable<T>
-    {
-      AssertValid(minValue, maxValue, intervalNotation);
-
-      var vcmpmin = value.CompareTo(minValue);
-      var vcmpmax = value.CompareTo(maxValue);
-
-      if (intervalNotation == IntervalNotation.Closed)
-        return vcmpmin < 0 ? -1 : vcmpmax > 0 ? +1 : 0;
-      else if (intervalNotation == IntervalNotation.HalfOpenLeft)
-        return vcmpmin <= 0 ? -1 : vcmpmax > 0 ? +1 : 0;
-      else if (intervalNotation == IntervalNotation.HalfOpenRight)
-        return vcmpmin < 0 ? -1 : vcmpmax >= 0 ? +1 : 0;
-      else if (intervalNotation == IntervalNotation.Open)
-        return vcmpmin <= 0 ? -1 : vcmpmax >= 0 ? +1 : 0;
-      else
-        throw new NotImplementedException(intervalNotation.ToString());
-    }
-
     public static Interval<T> Create<T>(T minValue, T maxValue)
       where T : System.IComparable<T>
       => new(minValue, maxValue);
+
+    #region GetExtent
 
     /// <summary>
     /// <para>Gets a new min/max interval (depending on type <typeparamref name="T"/>) using the specified <see cref="IntervalNotation"/>, <paramref name="minValue"/>, <paramref name="maxValue"/> and <paramref name="magnitude"/>.</para>
@@ -84,29 +20,42 @@
     /// <returns></returns>
     /// <exception cref="System.ArgumentOutOfRangeException"></exception>
     /// <exception cref="NotImplementedException"></exception>
-    public static (T minValue, T maxValue) GetExtent<T>(T minValue, T maxValue, IntervalNotation intervalNotation = IntervalNotation.Closed, int magnitude = 1)
+    public static Interval<T> GetExtent<T>(this Interval<T> source, IntervalNotation intervalNotation = IntervalNotation.Closed, int magnitude = 1)
       where T : System.Numerics.INumber<T>
     {
-      System.ArgumentOutOfRangeException.ThrowIfNegative(magnitude);
+      var (minValue, maxValue) = intervalNotation.GetExtentRelative(source.MinValue, source.MaxValue, magnitude);
 
-      AssertValid(minValue, maxValue, intervalNotation);
-
-      if (intervalNotation != IntervalNotation.Closed)
-      {
-        while (--magnitude >= 0)
-        {
-          if (intervalNotation == IntervalNotation.Open || intervalNotation == IntervalNotation.HalfOpenLeft)
-            minValue = minValue.GetSupremum();
-
-          if (intervalNotation == IntervalNotation.Open || intervalNotation == IntervalNotation.HalfOpenRight)
-            maxValue = maxValue.GetInfimum();
-        }
-
-        AssertValid(minValue, maxValue, IntervalNotation.Closed, "minExtent/maxExtent");
-      }
-
-      return (minValue, maxValue);
+      return new(minValue, maxValue);
     }
+
+    /// <summary>
+    /// <para>Attempts to get a new min/max interval (depending on type <typeparamref name="T"/>) using the specified <see cref="IntervalNotation"/>, <paramref name="minValue"/>, <paramref name="maxValue"/> and <paramref name="magnitude"/>.</para>
+    /// <para>If <typeparamref name="T"/> is an integer, magnitude = 1 and notation = <see cref="IntervalNotation.Open"/>, the new values are (<paramref name="minValue"/> + 1 * 1) and (<paramref name="maxValue"/> - 1 * 1).</para>
+    /// <para>If <typeparamref name="T"/> is a floating point value, magnitude = 1 and notation = <see cref="IntervalNotation.Open"/>, the new values are (<paramref name="minValue"/> + epsilon * 1) and (<paramref name="maxValue"/> - epsilon * 1). In this context epsilon is a value that makes the original value and the new value not equal.</para>
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="source"></param>
+    /// <param name="extent"></param>
+    /// <param name="intervalNotation"></param>
+    /// <param name="magnitude">This is the magnitude of the extent to aim for. It is essentially a multiplier of the minimum possible extent (when any open interval is chosen).</param>
+    /// <returns></returns>
+    public static bool TryGetExtent<T>(this Interval<T> source, out Interval<T> extent, IntervalNotation intervalNotation = IntervalNotation.Closed, int magnitude = 1)
+      where T : System.Numerics.INumber<T>
+    {
+      try
+      {
+        extent = GetExtent(source, intervalNotation, magnitude);
+        return true;
+      }
+      catch { }
+
+      extent = default!;
+      return false;
+    }
+
+    #endregion // GetExtent
+
+    #region GetMargin
 
     /// <summary>
     /// <para>Gets a new min/max interval, using the <paramref name="intervalNotation"/> <see cref="IntervalNotation"/> where <paramref name="minMargin"/>/<paramref name="maxMargin"/> are absolute margins applied to <paramref name="minValue"/>/<paramref name="maxValue"/> respectively.</para>
@@ -119,153 +68,113 @@
     /// <returns></returns>
     /// <exception cref="System.ArgumentOutOfRangeException"></exception>
     /// <exception cref="NotImplementedException"></exception>
-    public static (T minValue, T maxValue) GetMargin<T>(T minValue, T maxValue, T minMargin, T maxMargin, IntervalNotation intervalNotation = IntervalNotation.Closed)
+    public static Interval<T> GetMargin<T>(this Interval<T> source, T margin, IntervalNotation intervalNotation = IntervalNotation.Closed)
       where T : System.Numerics.INumber<T>
     {
-      System.ArgumentOutOfRangeException.ThrowIfNegative(minMargin);
-      System.ArgumentOutOfRangeException.ThrowIfNegative(maxMargin);
+      var (minValue, maxValue) = intervalNotation.GetExtentAbsolute(source.MinValue, source.MaxValue, margin);
 
-      AssertValid(minValue, maxValue);
-
-      if (intervalNotation != IntervalNotation.Closed)
-      {
-        if (intervalNotation == IntervalNotation.Open || intervalNotation == IntervalNotation.HalfOpenLeft)
-          minValue += minMargin;
-
-        if (intervalNotation == IntervalNotation.Open || intervalNotation == IntervalNotation.HalfOpenRight)
-          maxValue -= maxMargin;
-
-        AssertValid(minValue, maxValue, IntervalNotation.Closed, "minMargin/maxMargin");
-      }
-
-      return (minValue, maxValue);
+      return new(minValue, maxValue);
     }
 
     /// <summary>
-    /// <para>Determines whether the interval <paramref name="minValue"/>..<paramref name="maxValue"/> is a degenerate interval, i.e. the interval consists of only a single value.</para>
+    /// <para>Attempts to get a new min/max interval, using the <paramref name="intervalNotation"/> <see cref="IntervalNotation"/> where <paramref name="minMargin"/>/<paramref name="maxMargin"/> are absolute margins applied to <paramref name="minValue"/>/<paramref name="maxValue"/> respectively.</para>
     /// </summary>
     /// <typeparam name="T"></typeparam>
+    /// <param name="source"></param>
+    /// <param name="minMargin"></param>
+    /// <param name="maxMargin"></param>
+    /// <param name="margin"></param>
     /// <param name="intervalNotation"></param>
-    /// <param name="minValue"></param>
-    /// <param name="maxValue"></param>
     /// <returns></returns>
-    /// <remarks>If <paramref name="intervalNotation"/> is <see cref="IntervalNotation.Closed"/> and <paramref name="minValue"/> equals <paramref name="maxValue"/>, then it is a degenerate interval.</remarks>
-    public static bool IsDegenerate<T>(T minValue, T maxValue, IntervalNotation intervalNotation = IntervalNotation.Closed)
-      where T : System.IComparable<T>
-    {
-      AssertValid(minValue, maxValue, intervalNotation);
-
-      return intervalNotation == IntervalNotation.Closed && minValue.CompareTo(maxValue) == 0 && maxValue.CompareTo(minValue) == 0;
-    }
-
-    /// <summary>
-    /// <para>Determines whether the interval <paramref name="minValue"/>..<paramref name="maxValue"/> represents the empty set.</para>
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="intervalNotation"></param>
-    /// <param name="minValue"></param>
-    /// <param name="maxValue"></param>
-    /// <returns></returns>
-    /// <remarks>If <paramref name="minValue"/> equals <paramref name="maxValue"/> and <paramref name="intervalNotation"/> notation is not closed, or if <paramref name="minValue"/> is greater than <paramref name="maxValue"/>, then the interval is the empty set.</remarks>
-    public static bool IsEmptySet<T>(T minValue, T maxValue, IntervalNotation intervalNotation = IntervalNotation.Closed)
-      where T : System.IComparable<T>
-    {
-      AssertValid(minValue, maxValue, intervalNotation);
-
-      return (intervalNotation != IntervalNotation.Closed && minValue.CompareTo(maxValue) == 0 && maxValue.CompareTo(minValue) == 0) // If minValue equals maxValue, all but the closed notation represents the empty set.
-      || (minValue.CompareTo(maxValue) > 0 || maxValue.CompareTo(minValue) < 0); // If minValue is greater than maxValue, all four notations are usually taken to represent the empty set.
-    }
-
-    /// <summary>
-    /// <para>Determines if a <paramref name="value"/> is a member of an interval <paramref name="minValue"/>..<paramref name="maxValue"/> with the specified <paramref name="intervalNotation"/>.</para>
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="value">The value to verify.</param>
-    /// <param name="minValue">The lower bound of the interval set.</param>
-    /// <param name="maxValue">The upper bound of the interval set.</param>
-    /// <param name="intervalNotation">The interval notation to apply when determining membership of the interval set.</param>
-    /// <returns>Whether the <paramref name="value"/> is a member of the interval.</returns>
-    public static bool IsMember<T>(T value, T minValue, T maxValue, IntervalNotation intervalNotation = IntervalNotation.Closed)
-      where T : System.IComparable<T>
+    public static bool TryGetMargin<T>(this Interval<T> source, T margin, out Interval<T> result, IntervalNotation intervalNotation = IntervalNotation.Closed)
+      where T : System.Numerics.INumber<T>
     {
       try
       {
-        return CompareMember(value, minValue, maxValue, intervalNotation) == 0;
+        result = GetMargin(source, margin, intervalNotation);
+        return true;
       }
       catch { }
 
+      result = default!;
       return false;
     }
 
+    #endregion // GetMargin
+
     /// <summary>
-    /// <para>Determines whether an interval itself is valid.</para>
+    /// <para>Calculates the offset and length of an <see cref="Interval{T}"/>. The offset is the same as <see cref="Interval{T}.MinValue"/> of <paramref name="source"/>.</para>
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <param name="source"></param>
-    /// <param name="minValue"></param>
-    /// <param name="maxValue"></param>
     /// <returns></returns>
-    /// <exception cref="NotImplementedException"></exception>
-    public static bool IsValid<T>(IntervalNotation source, T minValue, T maxValue)
-      where T : System.IComparable<T>
+    public static (int Offset, int Length) GetOffsetAndLength<TInteger>(this Interval<TInteger> source, IntervalNotation intervalNotation = IntervalNotation.Closed)
+      where TInteger : System.Numerics.IBinaryInteger<TInteger>
+      => intervalNotation.GetOffsetAndLength(source.MinValue, source.MaxValue);
+
+    /// <summary>
+    /// <para>Creates a new sequence of values by iterating over the <paramref name="source"/> <see cref="Interval{TSelf}"/> using the <paramref name="constraint"/> .</para>
+    /// </summary>
+    /// <param name="source">The <see cref="Interval{TSelf}"/>.</param>
+    /// <param name="step">The stepping size between iterations. A positive number iterates from mean to extent, whereas a negative number iterates from extent to mean.</param>
+    /// <param name="order">Iterate the range in either <see cref="SortOrder"/> order.</param>
+    /// <param name="intervalNotation">Specified by <see cref="IntervalNotation"/>.</param>
+    /// <returns></returns>
+    /// <exception cref="System.ArgumentOutOfRangeException"></exception>
+    public static System.Collections.Generic.IEnumerable<TSelf> Range<TSelf>(this Interval<TSelf> source, TSelf step, IntervalNotation intervalNotation = IntervalNotation.Closed)
+      where TSelf : System.Numerics.INumber<TSelf>
     {
-      if (source == IntervalNotation.Closed)
-        return minValue.CompareTo(maxValue) <= 0 && maxValue.CompareTo(minValue) >= 0;
-      else if (source == IntervalNotation.HalfOpenRight)
-        return minValue.CompareTo(maxValue) <= 0 && maxValue.CompareTo(minValue) > 0;
-      else if (source == IntervalNotation.HalfOpenLeft)
-        return minValue.CompareTo(maxValue) < 0 && maxValue.CompareTo(minValue) >= 0;
-      else if (source == IntervalNotation.Open)
-        return minValue.CompareTo(maxValue) < 0 && maxValue.CompareTo(minValue) > 0;
+      var (minMargin, maxMargin) = source.GetMargin(TSelf.Abs(step), intervalNotation);
+
+      var count = System.Numerics.BigInteger.One;
+
+      if (TSelf.IsNegative(step)) // A negative number yields a descending sequence from maxValue to minValue of the interval.
+        for (var number = maxMargin; number >= minMargin; number = maxMargin + step * TSelf.CreateChecked(count), count++)
+          yield return number;
+      else if (!TSelf.IsZero(step)) // Any positive number but zero yields an ascending sequence from minValue to maxValue of the interval.
+        for (var number = minMargin; number <= maxMargin; number = minMargin + step * TSelf.CreateChecked(count), count++)
+          yield return number;
+      else // The argument "step" is zero and that is an invalid value.
+        throw new System.ArgumentOutOfRangeException(nameof(step));
+    }
+
+    /// <summary>
+    /// <para></para>
+    /// </summary>
+    /// <remarks>
+    /// <para>The Start property of Range is inclusive, but the End property is exclusive.</para>
+    /// <para>Both the Min and the Max properties on an Interval are inclusive.</para>
+    /// </remarks>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="source"></param>
+    /// <returns></returns>
+    public static System.Range ToRange<TInteger>(this Interval<TInteger> source)
+      where TInteger : System.Numerics.IBinaryInteger<TInteger>
+      => IntervalNotation.Closed.ToRange(source.MinValue, source.MaxValue);
+
+    /// <summary>
+    /// <para></para>
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="source"></param>
+    /// <param name="value"></param>
+    /// <param name="intervalNotation"></param>
+    /// <returns></returns>
+    public static T WrapAround<T>(this Interval<T> source, T value, IntervalNotation intervalNotation = IntervalNotation.Closed)
+      where T : System.Numerics.INumber<T>
+    {
+      var (minValue, maxValue) = source.GetExtent(intervalNotation);
+
+      var cmp = intervalNotation.Compare(value, minValue, maxValue);
+
+      var addon = value != minValue && value != maxValue ? T.One : T.Zero;
+
+      if (cmp > 0)
+        return minValue + (value - maxValue - addon) % (maxValue - minValue + addon);
+      else if (cmp < 0)
+        return maxValue - (minValue - value - addon) % (maxValue - minValue + addon);
       else
-        throw new NotImplementedException(source.ToString());
-    }
-
-    /// <summary>
-    /// <para>Creates a string representing the <see cref="IntervalNotation"/> (specified by <paramref name="source"/>) of the interval <paramref name="minValue"/>..<paramref name="maxValue"/>.</para>
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="source"></param>
-    /// <param name="minValue"></param>
-    /// <param name="maxValue"></param>
-    /// <returns></returns>
-    /// <exception cref="NotImplementedException"></exception>
-    public static string ToIntervalNotationString<T>(T minValue, T maxValue, IntervalNotation source = IntervalNotation.Closed, string? format = null, System.IFormatProvider? provider = null)
-      where T : System.IComparable<T>
-    {
-      format = $"{{0{(format is null ? string.Empty : $":{format}")}}}";
-
-      return $"{source.ToIntervalNotationCharLeft()}{string.Format(provider, format, minValue)}, {string.Format(provider, format, maxValue)}{source.ToIntervalNotationCharRight()}";
-    }
-
-    public static TNumber Wrap<TNumber>(this TNumber value, TNumber minValue, TNumber maxValue, IntervalNotation intervalNotation = IntervalNotation.Closed)
-      where TNumber : System.Numerics.INumber<TNumber>
-    {
-      (minValue, maxValue) = Interval.GetExtent(minValue, maxValue, intervalNotation);
-
-      if (value > maxValue)
-        return minValue + ((value - maxValue - TNumber.One) % (maxValue - minValue + TNumber.One));
-
-      if (value < minValue)
-        return maxValue - ((minValue - value - TNumber.One) % (maxValue - minValue + TNumber.One));
-
-      return value;
-
-      //// FROM Compare above!
-
-      //var vcmpmin = value.CompareTo(minValue);
-      //var vcmpmax = value.CompareTo(maxValue);
-
-      //if (intervalNotation == IntervalNotation.Closed)
-      //  return vcmpmin < 0 ? -1 : vcmpmax > 0 ? +1 : 0;
-      //else if (intervalNotation == IntervalNotation.HalfOpenLeft)
-      //  return vcmpmin <= 0 ? -1 : vcmpmax > 0 ? +1 : 0;
-      //else if (intervalNotation == IntervalNotation.HalfOpenRight)
-      //  return vcmpmin < 0 ? -1 : vcmpmax >= 0 ? +1 : 0;
-      //else if (intervalNotation == IntervalNotation.Open)
-      //  return vcmpmin <= 0 ? -1 : vcmpmax >= 0 ? +1 : 0;
-      //else
-      //  throw new NotImplementedException(intervalNotation.ToString());
+        return value;
     }
   }
 
@@ -285,7 +194,7 @@
     private readonly T m_minValue;
 
     public Interval(T minValue, T maxValue)
-      => (m_minValue, m_maxValue) = Interval.AssertValid(minValue, maxValue);
+      => (m_minValue, m_maxValue) = IntervalNotation.Closed.AssertValid(minValue, maxValue);
 
     public void Deconstruct(out T minValue, out T maxValue)
     {
@@ -439,7 +348,7 @@
 
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? formatProvider)
-      => Interval.ToIntervalNotationString(m_minValue, m_maxValue, IntervalNotation.Closed, format, formatProvider);
+      => IntervalNotation.Closed.ToIntervalNotationString(m_minValue, m_maxValue, format, formatProvider);
 
     #endregion Implemented interfaces
 

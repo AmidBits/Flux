@@ -36,18 +36,42 @@ namespace Maths
     }
 
     [TestMethod]
+    public void BinaryGcd()
+    {
+      Assert.AreEqual(3, 21.BinaryGcd(6));
+    }
+
+    [TestMethod]
+    public void EuclidGcd()
+    {
+      Assert.AreEqual(3, 21.EuclidGcd(6));
+    }
+
+    [TestMethod]
+    public void EuclidLcm()
+    {
+      Assert.AreEqual(42, 21.EuclidLcm(6));
+    }
+
+    [TestMethod]
+    public void LehmerGcd()
+    {
+      Assert.AreEqual(3, 21.LehmerGcd(6));
+    }
+
+    [TestMethod]
     public void Factorial()
     {
-      Assert.AreEqual(362880, 9.Factorial(), nameof(Flux.BinaryInteger.Factorial));
+      Assert.AreEqual(362880, 9.Factorial(), nameof(Factorials.Factorial));
       //Assert.AreEqual(362880, 9.SplitFactorial(), nameof(Flux.BinaryInteger.SplitFactorial));
-      Assert.AreEqual(System.Numerics.BigInteger.Parse("8320987112741390144276341183223364380754172606361245952449277696409600000000000000"), new System.Numerics.BigInteger(60).Factorial(), nameof(Flux.BinaryInteger.Factorial));
+      Assert.AreEqual(System.Numerics.BigInteger.Parse("8320987112741390144276341183223364380754172606361245952449277696409600000000000000"), new System.Numerics.BigInteger(60).Factorial(), nameof(Factorials.Factorial));
       //Assert.AreEqual(479001600, 12.SplitFactorial(), nameof(Flux.BinaryInteger.SplitFactorial));
     }
 
     [TestMethod]
     public void GreatestCommonDivisor()
     {
-      Assert.AreEqual(3, 21.GreatestCommonDivisor(6));
+      Assert.AreEqual(3, 21.Gcd(6));
     }
 
     [TestMethod]
@@ -113,12 +137,6 @@ namespace Maths
     }
 
     [TestMethod]
-    public void LeastCommonMultiple()
-    {
-      Assert.AreEqual(42, 21.LeastCommonMultiple(6));
-    }
-
-    [TestMethod]
     public void ModInv()
     {
       Assert.AreEqual(2, 4.ModInv(7));
@@ -131,7 +149,7 @@ namespace Maths
       var n = 512d;
       var m = 20;
 
-      n.MultipleOfNearest(m, false, UniversalRounding.HalfAwayFromZero, out var multipleTowardsZero, out var multipleAwayFromZero);
+      n.MultipleOfNearest(m, false, HalfRounding.AwayFromZero, out var multipleTowardsZero, out var multipleAwayFromZero);
 
       var nearestMultiple = n.RoundToNearest(UniversalRounding.HalfTowardZero, multipleTowardsZero, multipleAwayFromZero);
 

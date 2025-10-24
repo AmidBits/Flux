@@ -1,4 +1,4 @@
-namespace Flux.Combinatorics.Basics.Combinations
+namespace Flux.Combinations
 {
   /// <summary>
   /// <para>A combination algorithm, in lexiograpic order, without repeats, by index.</para>
@@ -124,7 +124,7 @@ namespace Flux.Combinatorics.Basics.Combinations
     /// <para>Note that <paramref name="rank"/> is 1-based.</para>
     /// <para>The <paramref name="n"/> is the <see langword="this"/> argument for the extension method.</para>
     /// </remarks>
-    public static void GetCombinationIndices(System.Span<int> combinationIndices, int n, int rank)
+    public static void Unrank(System.Span<int> combinationIndices, int n, int rank)
     {
       var combinationLength = combinationIndices.Length;
 

@@ -16,11 +16,14 @@ namespace Flux
 
       var index = 0;
 
-      foreach (var item in source)
-        if (predicate(item, index)) return (item, index);
+      foreach (var element in source)
+        if (predicate(element, index)) return (element, index);
         else index++;
 
       return (value, -1);
     }
+
+    public static (T Item, int Index) FirstOrValue<T>(this System.Collections.Generic.IEnumerable<T> source, T value)
+      => FirstOrValue(source, value, (e, i) => i == 0);
   }
 }

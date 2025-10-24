@@ -43,11 +43,11 @@ namespace Flux.PlanetaryScience
     public double GetMercatorProjectedY()
       => double.Clamp(double.Log(double.Tan(double.Pi / 4 + Angle.Value / 2)), -double.Pi, double.Pi);
 
-    public string ToDecimalString() => m_angle.GetUnitValue(Units.AngleUnit.Degree).ToString(6.FormatUpToFractionalDigits());
+    public string ToDecimalString() => m_angle.GetUnitValue(Units.AngleUnit.Degree).ToString(6.GetFormatWithCountDecimals());
 
     public string ToDmsNotationString()
     {
-      var (wholeDegrees, _, wholeMinutes, decimalSeconds) = SexagesimalUnitSubdivisions.FromDecimalDegrees(Value);
+      var (wholeDegrees, _, wholeMinutes, decimalSeconds) = double.DecimalDegreesToSexagesimalUnitSubdivisions(Value);
 
       return $"{(int)double.Abs(wholeDegrees):D2}\u00B0{(int)wholeMinutes:D2}\u2032{(int)decimalSeconds:D2}\u2033{(double.IsNegative(wholeDegrees) ? 'S' : 'N')}";
     }

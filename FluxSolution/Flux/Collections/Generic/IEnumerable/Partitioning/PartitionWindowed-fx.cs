@@ -2,6 +2,8 @@ namespace Flux
 {
   public static partial class IEnumerables
   {
+    #region PartitionWindowed
+
     /// <summary>
     /// <para>Apportions the sequence into lists of specified size with the specified stepping (or gap) interleave (0 means next in line and a positive number below size means skip that many, from the start of the previous list). Optionally include trailing lists, i.e. lists that could not be filled to size.</para>
     /// </summary>
@@ -16,6 +18,7 @@ namespace Flux
     /// <exception cref="System.ArgumentOutOfRangeException"></exception>
     public static System.Collections.Generic.IEnumerable<TResult> PartitionWindowed<TSource, TResult>(this System.Collections.Generic.IEnumerable<TSource> source, int size, int step, bool includeTrailing, System.Func<System.Collections.Generic.List<TSource>, TResult> resultSelector)
     {
+      System.ArgumentNullException.ThrowIfNull(source);
       System.ArgumentNullException.ThrowIfNull(resultSelector);
 
       if (size <= 0) throw new System.ArgumentOutOfRangeException(nameof(size), "Must be greater-than zero.");
@@ -23,7 +26,7 @@ namespace Flux
 
       var queue = new System.Collections.Generic.Queue<System.Collections.Generic.List<TSource>>();
 
-      var e = source.ThrowOnNull().GetEnumerator();
+      var e = source.GetEnumerator();
 
       var index = step;
 
@@ -48,5 +51,7 @@ namespace Flux
         while (queue.Count > 0 && queue.Peek().Count > 0)
           yield return resultSelector(queue.Dequeue());
     }
+
+    #endregion
   }
 }

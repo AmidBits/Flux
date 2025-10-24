@@ -2,6 +2,8 @@ namespace Flux
 {
   public static partial class IEnumerables
   {
+    #region GroupAdjacent
+
     /// <summary>
     /// <para>Creates a new sequence of equal (based on the specified keySelector) adjacent (consecutive) items grouped together as a key and a list. Uses the specified equality comparer.</para>
     /// </summary>
@@ -9,19 +11,24 @@ namespace Flux
     public static System.Collections.Generic.IEnumerable<System.Linq.IGrouping<TKey, TSource>> GroupAdjacent<TSource, TKey>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, TKey> keySelector, System.Collections.Generic.IEqualityComparer<TKey>? equalityComparer = null)
       where TKey : notnull
     {
+      System.ArgumentNullException.ThrowIfNull(source);
       System.ArgumentNullException.ThrowIfNull(keySelector);
 
       equalityComparer ??= System.Collections.Generic.EqualityComparer<TKey>.Default;
 
-      using var e = source.ThrowOnNull().GetEnumerator();
+      using var e = source.GetEnumerator();
 
       if (e.MoveNext())
       {
-        var g = new Flux.Grouping<TKey, TSource>(keySelector(e.Current), e.Current);
+        var item = e.Current;
+        var key = keySelector(item);
+
+        var g = new Flux.Grouping<TKey, TSource>(key, item);
 
         while (e.MoveNext())
         {
-          var key = keySelector(e.Current);
+          item = e.Current;
+          key = keySelector(item);
 
           if (!equalityComparer.Equals(g.Key, key))
           {
@@ -30,12 +37,14 @@ namespace Flux
             g = new Flux.Grouping<TKey, TSource>(key);
           }
 
-          g.Add(e.Current);
+          g.Add(item);
         }
 
         if (g.Count > 0)
           yield return g;
       }
     }
+
+    #endregion
   }
 }
