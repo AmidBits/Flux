@@ -63,8 +63,6 @@ namespace Flux.CoordinateSystems
     /// </summary>
     public Units.Length Height { get => new(m_height); init => m_height = value.Value; }
 
-    public double CylinderSurfaceArea => Units.Area.OfClosedCylinder(m_radius, m_height);
-
     public CartesianCoordinate ToCartesianCoordinate()
     {
       var (x, y, z) = ConvertCylindricalToCartesian3(m_radius, m_azimuth, m_height);
@@ -121,6 +119,30 @@ namespace Flux.CoordinateSystems
     }
 
     #region Static methods
+
+    public CylindricalCoordinate CreateRandom(double radius, double height, System.Random? rng = null)
+    {
+      rng ??= System.Random.Shared;
+
+      return new(
+        rng.NextDouble(radius),
+        rng.NextDouble(double.Tau),
+        rng.NextDouble(height)
+      );
+    }
+
+    public CylindricalCoordinate CreateRandomOnSurface(double radius, double height, System.Random? rng = null)
+    {
+      rng ??= System.Random.Shared;
+
+      var rORh = rng.NextBoolean(); // Determines whether radius or height is fixed.
+
+      return new(
+        rORh ? radius : rng.NextDouble(radius), // Either fixed (on curved surface), or random.
+        rng.NextDouble(double.Tau),
+        rORh ? rng.NextDouble(height) : (rng.NextBoolean() ? height : 0) // Either random, or fixed (at one of the poles).
+      );
+    }
 
     #region Conversion methods
 

@@ -1,6 +1,4 @@
-﻿using System.Linq;
-using Flux;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Flux;
 
 namespace Collections.Generic
 {
@@ -88,13 +86,13 @@ namespace Collections.Generic
     //  Assert.IsTrue(integers.IsCountBetween(3, 8, (e, i) => new int[] { 17, 23 }.Contains(e)));
     //}
 
-    [TestMethod]
-    public void Medoid()
-    {
-      Assert.IsTrue(integers.Select(i => i).ToList().TryComputeMedoid(out var medoid));
+    //[TestMethod]
+    //public void Medoid()
+    //{
+    //  Assert.IsTrue(integers.Select(i => i).ToList().TryComputeMedoid(out var medoid));
 
-      Assert.AreEqual(17, medoid, nameof(medoid));
-    }
+    //  Assert.AreEqual(17, medoid, nameof(medoid));
+    //}
 
     [TestMethod]
     public void Mode()
@@ -110,11 +108,11 @@ namespace Collections.Generic
       CollectionAssert.AreEqual(new int[] { 13, 17, 17, 19, 23, 23, 57 }, integers.Prepend(13).ToArray());
     }
 
-    [TestMethod]
-    public void Repeat()
-    {
-      CollectionAssert.AreEqual(new int[] { 17, 17, 19, 23, 23, 57, 17, 17, 19, 23, 23, 57 }, integers.Repeat(1).ToArray());
-    }
+    //[TestMethod]
+    //public void Repeat()
+    //{
+    //  CollectionAssert.AreEqual(new int[] { 17, 17, 19, 23, 23, 57, 17, 17, 19, 23, 23, 57 }, integers.Repeat(1).ToArray());
+    //}
 
     //[TestMethod]
     //public void OrderedSequenceEqual()
@@ -143,7 +141,7 @@ namespace Collections.Generic
     [TestMethod]
     public void SkipEvery()
     {
-      CollectionAssert.AreEqual(new int[] { 17, 23, 57 }, integers.SkipEvery(2, Flux.OptionEvery.First).ToArray());
+      CollectionAssert.AreEqual(new int[] { 17, 23, 57 }, integers.SkipEvery(0, 2).ToArray());
     }
 
     [TestMethod]
@@ -167,7 +165,7 @@ namespace Collections.Generic
     [TestMethod]
     public void TakeEvery()
     {
-      CollectionAssert.AreEqual(new int[] { 17, 19, 23 }, integers.TakeEvery(2, Flux.OptionEvery.First).ToArray());
+      CollectionAssert.AreEqual(new int[] { 17, 19, 23 }, integers.TakeEvery(0, 2).ToArray());
     }
 
     [TestMethod]

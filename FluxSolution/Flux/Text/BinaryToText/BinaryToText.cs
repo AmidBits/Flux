@@ -82,7 +82,7 @@ namespace Flux
       {
         using var mss = new System.IO.MemoryStream(source);
         var targetLength = (source.Length * 8).EnvelopedDivRem(targetBitSize);
-        target = new byte[targetLength.QuotientEnveloped];
+        target = new byte[targetLength.Quotient];
         using var mst = new System.IO.MemoryStream(target);
 
         EncodeToIndices(mss, targetBitSize, mst);

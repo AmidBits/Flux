@@ -65,7 +65,7 @@ namespace Flux.CoordinateSystems
       return new(x, y, 0, 0);
     }
 
-    public Numerics.Geometry.Circles.CircleFigure ToCircleGeometry() => new(m_radius);
+    public Numerics.Geometry.Circles.CircleFigure ToCircleFigure() => new(m_radius);
 
     /// <summary>Creates a new <see cref="CylindricalCoordinate"/> from the <see cref="PolarCoordinate"/> by adding the third component <paramref name="height"/>.</summary>
     /// <remarks>All angles in radians.</remarks>
@@ -104,6 +104,26 @@ namespace Flux.CoordinateSystems
     }
 
     #region Static methods
+
+    public static PolarCoordinate CreateRandom(double radius, System.Random? rng = null)
+    {
+      rng ??= System.Random.Shared;
+
+      return new(
+        rng.NextDouble(radius),
+        rng.NextDouble(double.Tau)
+      );
+    }
+
+    public static PolarCoordinate CreateRandomOnEdge(double radius, System.Random? rng = null)
+    {
+      rng ??= System.Random.Shared;
+
+      return new(
+        radius,
+        rng.NextDouble(double.Tau)
+      );
+    }
 
     #region Conversion methods
 

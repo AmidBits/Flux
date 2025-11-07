@@ -121,6 +121,6 @@ namespace Flux
     /// <param name="source"></param>
     /// <returns></returns>
     public static string ToShortScaleString(this Units.MetricPrefix source)
-      => Globalization.En.NumeralComposition.ShortScaleDictionary.TryGetValue(source.GetMetricPrefixValue(), out var shortScaleName) ? shortScaleName : string.Empty;
+      => Globalization.En.NumeralComposition.ShortScaleUniqueDictionary.TryGetValue(source.GetMetricPrefixValue(), out var shortScaleName) ? shortScaleName : string.Empty;
   }
 }

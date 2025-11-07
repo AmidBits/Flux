@@ -254,6 +254,20 @@ namespace Flux.CoordinateSystems
       );
     }
 
+    public static CartesianCoordinate CreateRandom(double maxX, double maxY, System.Random? rng = null)
+    {
+      rng ??= System.Random.Shared;
+
+      return new(rng.NextDouble(maxX), rng.NextDouble(maxY));
+    }
+
+    public static CartesianCoordinate CreateRandom(double maxX, double maxY, double maxZ, System.Random? rng = null)
+    {
+      rng ??= System.Random.Shared;
+
+      return new(rng.NextDouble(maxX), rng.NextDouble(maxY), rng.NextDouble(maxZ));
+    }
+
     #endregion // Static methods
 
     #region Implemented interfaces

@@ -2,6 +2,31 @@ namespace Flux
 {
   public static partial class FactorialPowers
   {
+    ///// <summary>
+    ///// <para>A generic factorial power function.</para>
+    ///// </summary>
+    ///// <typeparam name="TNumber"></typeparam>
+    ///// <param name="x"></param>
+    ///// <param name="n"></param>
+    ///// <param name="h"></param>
+    ///// <returns></returns>
+    //public static TNumber FactorialPower<TNumber>(this TNumber x, TNumber n, TNumber h)
+    //  where TNumber : System.Numerics.INumber<TNumber>
+    //{
+    //  System.ArgumentOutOfRangeException.ThrowIfNegative(n);
+    //  System.ArgumentOutOfRangeException.ThrowIfZero(h);
+
+    //  TNumber result = TNumber.One;
+
+    //  checked
+    //  {
+    //    for (var i = TNumber.Zero; i < n; i++) // Compute the falling factorial, decreasing x for each term.
+    //      result *= x - i * h;
+    //  }
+
+    //  return result;
+    //}
+
     /// <summary>
     /// <para>When n is a positive integer, the falling factorial, (x)_n, gives the number of n-permutations (sequences of distinct elements) from an n-element set.</para>
     /// <example>
@@ -24,7 +49,7 @@ namespace Flux
       checked
       {
         for (var i = TInteger.Zero; i < n; i++) // Compute the falling factorial, decreasing x for each term.
-          result *= x--;
+          result *= x - i;
       }
 
       return result;
@@ -55,5 +80,10 @@ namespace Flux
 
       return result;
     }
+
+    // Pockhammer is rather ambiguous and can represent either the rising or the falling power.
+    //public static TInteger Pockhammer<TInteger>(this TInteger x, TInteger n)
+    //  where TInteger : System.Numerics.IBinaryInteger<TInteger>
+    //  => RisingFactorial(x, n);
   }
 }

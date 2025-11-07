@@ -97,6 +97,17 @@ namespace Flux.CoordinateSystems
 
     #region Static members
 
+    public static GeographicCoordinate CreateRandom(System.Random? rng = null)
+    {
+      rng ??= System.Random.Shared;
+
+      return new(
+        rng.NextDouble(double.Pi),
+        rng.NextDouble(double.Tau),
+        rng.NextDouble(MinAltitudeInMeters, MaxAltitudeInMeters)
+      );
+    }
+
     ///// <summary>Return the <see cref="IGeographicCoordinate"/> from the specified components.</summary>
     //static GeographicCoordinate FromUnits(Angle latitude, Angle longitude, Units.Length altitude)
     //  => new GeographicCoordinate(

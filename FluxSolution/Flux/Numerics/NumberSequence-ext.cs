@@ -394,7 +394,7 @@ namespace Flux
 
         var six = TInteger.CreateChecked(6);
 
-        var (quotient, remainder) = n.EnvelopedDivRem(six);
+        var (quotient, remainder) = TInteger.DivRem(n, six);
 
         checked
         {
@@ -928,23 +928,19 @@ namespace Flux
       where TNumber : System.Numerics.INumber<TNumber>, System.Numerics.IPowerFunctions<TNumber>
     {
       /// <summary>
-      /// <para>Gets the <paramref name="nth"/> term of a geometric sequence.</para>
+      /// <para>Get the <paramref name="nth"/> term of a geometric sequence with the specified <paramref name="commonRatio"/>.</para>
       /// </summary>
-      /// <typeparam name="TFloat"></typeparam>
-      /// <param name="nth">The nth term of the geometric sequence to find the value of.</param>
-      /// <param name="firstTerm">The first term of the geometric sequence.</param>
-      /// <param name="commonRatio">The common ratio of the geometric sequence.</param>
+      /// <typeparam name="TInteger"></typeparam>
+      /// <param name="commonRatio"></param>
+      /// <param name="nth"></param>
       /// <returns></returns>
       public TNumber GeometricSequenceNthTerm<TInteger>(TNumber commonRatio, TInteger nth)
       where TInteger : System.Numerics.IBinaryInteger<TInteger>
       => a1 * TNumber.Pow(commonRatio, TNumber.CreateChecked(nth - TInteger.One));
 
       /// <summary>
-      /// <para>Gets the sum of <paramref name="nth"/> terms of the geometric sequence.</para>
+      /// <para>Gets the geometric series (sum) of a geometric sequence with infinite terms and the specified <paramref name="commonRatio"/>.</para>
       /// </summary>
-      /// <typeparam name="TFloat"></typeparam>
-      /// <param name="nth">The term of which to find the sum up until.</param>
-      /// <param name="firstTerm">The first term of the geometric sequence.</param>
       /// <param name="commonRatio">The common ratio of the geometric sequence.</param>
       /// <returns></returns>
       public TNumber GeometricSeriesOfInfiniteTerms(TNumber commonRatio)
@@ -953,12 +949,10 @@ namespace Flux
         : throw new System.ArithmeticException();
 
       /// <summary>
-      /// <para>Gets the sum of <paramref name="nth"/> terms of the geometric sequence.</para>
+      /// <para>Gets the geometric series (sum) of a geometric sequence with <paramref name="nth"/> terms and the specified <paramref name="commonRatio"/>.</para>
       /// </summary>
-      /// <typeparam name="TFloat"></typeparam>
-      /// <param name="nth">The term of which to find the sum up until.</param>
-      /// <param name="firstTerm">The first term of the geometric sequence.</param>
       /// <param name="commonRatio">The common ratio of the geometric sequence.</param>
+      /// <param name="nth">The term of which to find the sum up until.</param>
       /// <returns></returns>
       public TNumber GeometricSeriesOfNthTerms<TInteger>(TNumber commonRatio, TInteger nth)
         where TInteger : System.Numerics.IBinaryInteger<TInteger>

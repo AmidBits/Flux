@@ -11,6 +11,7 @@ namespace Flux.Numerics.Geometry.Hexagons
     public const double RadiusRatio = 0.8660254037844386;
 
     public const double CircleFillRatio = 0.8269933431326881;
+
     public static HexagonFigure Unit { get; } = new(1);
 
     private readonly double m_sideLength;
@@ -50,6 +51,8 @@ namespace Flux.Numerics.Geometry.Hexagons
     /// <param name="y"></param>
     /// <returns></returns>
     public bool Contains(double x, double y) => HexagonContainsPoint(m_sideLength, x, y);
+
+    public Numerics.Geometry.Circles.CircleFigure ToCircleFigure() => new(m_sideLength);
 
     public Polygons.PolygonRegularConvex ToPolygonFlatTopped() => Polygons.PolygonRegularConvex.Create(6, m_sideLength, double.Pi / 2);
 

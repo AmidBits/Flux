@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Em
+  public static partial class ContinuedFractionCoefficients
   {
     /// <summary>
     /// <para></para>
@@ -8,26 +8,34 @@ namespace Flux
     /// </summary>
     /// <typeparam name="TNumber"></typeparam>
     /// <param name="source"></param>
-    /// <param name="maxCount"></param>
+    /// <param name="maxCoefficients"></param>
     /// <returns></returns>
-    public static System.Collections.Generic.List<System.Numerics.BigInteger> GenerateContinuedFractionCoefficients<TNumber>(this TNumber source, int maxCount)
+    public static System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GenerateContinuedFractionCoefficients<TNumber>(this TNumber source, int maxCoefficients = 97)
       where TNumber : System.Numerics.IFloatingPoint<TNumber>
     {
-      System.ArgumentOutOfRangeException.ThrowIfNegative(maxCount);
+      System.ArgumentOutOfRangeException.ThrowIfNegative(maxCoefficients);
 
       var a = new System.Collections.Generic.List<System.Numerics.BigInteger>();
 
-      while (TNumber.Truncate(source) is var wholePart && !TNumber.IsZero(wholePart) && --maxCount >= 0 && !TNumber.IsInfinity(wholePart))
-      {
-        a.Add(System.Numerics.BigInteger.CreateChecked(wholePart));
+      var count = 0;
 
-        if (a.AsReadOnlySpan().CommonSuffixLength(a.Last()) > 23)
+      var previous = System.Numerics.BigInteger.Zero;
+
+      while (TNumber.Truncate(source) is var wholePart && !TNumber.IsZero(wholePart) && --maxCoefficients >= 0 && !TNumber.IsInfinity(wholePart))
+      {
+        var current = System.Numerics.BigInteger.CreateChecked(wholePart);
+
+        yield return current;
+
+        if (current == previous && count > maxCoefficients)
           break;
+        //if (a.AsReadOnlySpan().CommonSuffixLength(a.Last()) > 23)
+        //  break;
 
         source = TNumber.One / (source - wholePart);
-      }
 
-      return a;
+        previous = current;
+      }
     }
 
     /// <summary>
@@ -108,27 +116,48 @@ namespace Flux
     /// <typeparam name="TInteger"></typeparam>
     /// <param name="source"></param>
     /// <param name="spacing"></param>
+    /// <param name="maxTerms"></param>
     /// <param name="showAsIrrational"></param>
     /// <returns></returns>
-    public static string ToContinuedFractionRepresentationString<TInteger>(this System.Collections.Generic.List<TInteger> source, UnicodeSpacing spacing = UnicodeSpacing.Space, bool showAsIrrational = false)
+    public static string ToContinuedFractionRepresentationString<TInteger>(this System.Collections.Generic.List<TInteger> source, UnicodeSpacing spacing = UnicodeSpacing.None, int maxTerms = 23)
       where TInteger : System.Numerics.IBinaryInteger<TInteger>
     {
       var spacingString = spacing.ToSpacingString();
 
       var sb = new System.Text.StringBuilder();
 
-      sb.Append('[');
-      sb.Append(source[0]);
-      sb.Append(';');
-      sb.Append(spacingString);
-      sb.AppendJoin(',' + spacingString, source.Skip(1));
-      if (showAsIrrational)
+      using var e = source.GetEnumerator();
+
+      if (e.MoveNext())
       {
-        sb.Append(',');
+        sb.Append('[');
+
+        sb.Append(e.Current);
+        sb.Append(';');
         sb.Append(spacingString);
-        sb.Append('.', 3);
+
+        var count = 1;
+
+        while (e.MoveNext() && count <= maxTerms)
+        {
+          if (count++ >= 0)
+          {
+            sb.Append(',');
+            sb.Append(spacingString);
+          }
+
+          sb.Append(e.Current);
+        }
+
+        if (count >= maxTerms)
+        {
+          sb.Append(',');
+          sb.Append(spacingString);
+          sb.Append('.', 3);
+        }
+
+        sb.Append(']');
       }
-      sb.Append(']');
 
       return sb.ToString();
     }

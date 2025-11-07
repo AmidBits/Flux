@@ -5,6 +5,35 @@ namespace Flux
     extension<TNumber>(TNumber value)
       where TNumber : System.Numerics.INumber<TNumber>
     {
+      #region DecrementNative
+
+      /// <summary>
+      /// <para>Decrements a value. If integer, then by 1. If floating-point, then by "bit-decrement". If decimal, by 1e-28m.</para>
+      /// </summary>
+      /// <typeparam name="TNumber"></typeparam>
+      /// <param name="value"></param>
+      /// <returns></returns>
+      /// <remarks>Infimum, for integer types equal (<paramref name="value"/> - 1) and for floating point types equal (<paramref name="value"/> - epsilon). Other types are not implemented at this time.</remarks>
+      public TNumber DecrementNative()
+      {
+        if (value.GetType().IsNumericTypeInteger(false)) // All integers are the same, and therefor subtract one.
+          return checked(value - TNumber.One);
+        else if (value is decimal dfp128) // All floating point types has different structures, and therefor their own bit-increment.
+          return TNumber.CreateChecked(dfp128 - 1e-28m);
+        else if (value is double bfp64) // All floating point types has different structures, and therefor their own bit-decrement.
+          return TNumber.CreateChecked(double.BitDecrement(bfp64));
+        else if (value is float bfp32) // All floating point types has different structures, and therefor their own bit-decrement.
+          return TNumber.CreateChecked(float.BitDecrement(bfp32));
+        else if (value is System.Half bfp16) // All floating point types has different structures, and therefor their own bit-decrement.
+          return TNumber.CreateChecked(System.Half.BitDecrement(bfp16));
+        else if (value is System.Runtime.InteropServices.NFloat nf) // All floating point types has different structures, and therefor their own bit-decrement.
+          return TNumber.CreateChecked(System.Runtime.InteropServices.NFloat.BitDecrement(nf));
+        else
+          throw new System.NotImplementedException();
+      }
+
+      #endregion
+
       #region Detent
 
       /// <summary>
@@ -116,55 +145,27 @@ namespace Flux
       /// <summary>
       /// <para>Folds an out-of-bound <paramref name="value"/> (back and forth) across the closed interval [<paramref name="minValue"/>, <paramref name="maxValue"/>], until the <paramref name="value"/> is within the closed interval.</para>
       /// </summary>
-      /// <typeparam name="TNumber"></typeparam>
-      /// <param name="value"></param>
       /// <param name="minValue"></param>
       /// <param name="maxValue"></param>
       /// <returns></returns>
       public TNumber FoldAcross(TNumber minValue, TNumber maxValue)
         => (value > maxValue)
-        ? (value - maxValue).TruncRem(maxValue - minValue) is var (tqHi, remHi) && TNumber.IsEvenInteger(tqHi) ? maxValue - remHi : minValue + remHi
+        ? ((value - maxValue).TruncRem(maxValue - minValue) is var (tqHi, remHi) && TNumber.IsEvenInteger(tqHi) ? maxValue - remHi : minValue + remHi)
         : (value < minValue)
-        ? (minValue - value).TruncRem(maxValue - minValue) is var (tqLo, remLo) && TNumber.IsEvenInteger(tqLo) ? minValue + remLo : maxValue - remLo
+        ? ((minValue - value).TruncRem(maxValue - minValue) is var (tqLo, remLo) && TNumber.IsEvenInteger(tqLo) ? minValue + remLo : maxValue - remLo)
         : value;
 
       #endregion
 
-      #region GetInfimum & GetSupremum
+      #region IncrementNative
 
       /// <summary>
-      /// <para>Gets the infimum (the largest number that is less than <paramref name="value"/>).</para>
+      /// <para>Increments a value. If integer, then by 1. If floating-point, then by "bit-increment". If decimal, by 1e-28m.</para>
       /// </summary>
-      /// <typeparam name="TNumber"></typeparam>
-      /// <param name="value"></param>
-      /// <returns></returns>
-      /// <remarks>Infimum, for integer types equal (<paramref name="value"/> - 1) and for floating point types equal (<paramref name="value"/> - epsilon). Other types are not implemented at this time.</remarks>
-      public TNumber GetInfimum()
-      {
-        if (value.GetType().IsNumericTypeInteger(false)) // All integers are the same, and therefor subtract one.
-          return checked(value - TNumber.One);
-        else if (value is decimal dfp128) // All floating point types has different structures, and therefor their own bit-increment.
-          return TNumber.CreateChecked(dfp128 - 1e-28m);
-        else if (value is double bfp64) // All floating point types has different structures, and therefor their own bit-decrement.
-          return TNumber.CreateChecked(double.BitDecrement(bfp64));
-        else if (value is float bfp32) // All floating point types has different structures, and therefor their own bit-decrement.
-          return TNumber.CreateChecked(float.BitDecrement(bfp32));
-        else if (value is System.Half bfp16) // All floating point types has different structures, and therefor their own bit-decrement.
-          return TNumber.CreateChecked(System.Half.BitDecrement(bfp16));
-        else if (value is System.Runtime.InteropServices.NFloat nf) // All floating point types has different structures, and therefor their own bit-decrement.
-          return TNumber.CreateChecked(System.Runtime.InteropServices.NFloat.BitDecrement(nf));
-        else
-          throw new System.NotImplementedException();
-      }
-
-      /// <summary>
-      /// <para>Gets the supremum (the smallest number that is greater than <paramref name="value"/>).</para>
-      /// </summary>
-      /// <typeparam name="TNumber"></typeparam>
-      /// <param name="value"></param>
-      /// <returns></returns>
       /// <remarks>Supremum, for integer types equal (<paramref name="value"/> + 1) and for floating point types equal (<paramref name="value"/> + epsilon). Other types are not implemented at this time.</remarks>
-      public TNumber GetSupremum()
+      /// <returns></returns>
+      /// <exception cref="System.NotImplementedException"></exception>
+      public TNumber IncrementNative()
       {
         if (value.GetType().IsNumericTypeInteger(false)) // All integers are the same, and therefor add one.
           return checked(value + TNumber.One);
@@ -197,23 +198,112 @@ namespace Flux
 
       #endregion
 
+      public bool IsIntegerValue()
+        => TNumber.IsInteger(value);
+
+      #region Log..
+
+      /// <summary>
+      /// <para>Computes the logarithm of a value in the specified radix (base).</para>
+      /// </summary>
+      /// <typeparam name="TRadix"></typeparam>
+      /// <param name="radix">Can be any </param>
+      /// <returns>The floor and ceiling of the result.</returns>
+      public (TNumber TowardZero, double LogR, TNumber AwayFromZero) Log<TRadix>(TRadix radix)
+        where TRadix : System.Numerics.INumber<TRadix>
+      {
+        var logR = double.Log(double.CreateChecked(value), double.CreateChecked(radix));
+
+        var (tz, afz) = logR.FindSurroundingIntegersWithTolerance(1e-10, 1e-10);
+
+        return (TNumber.CreateChecked(tz), logR, TNumber.CreateChecked(afz));
+      }
+
+      /// <summary>
+      /// <para>Computes the base-10 logarithm of a value.</para>
+      /// </summary>
+      /// <returns></returns>
+      public (TNumber TowardZero, double Log10, TNumber AwayFromZero) Log10()
+      {
+        var log10 = double.Log10(double.CreateChecked(value));
+
+        var (tz, afz) = log10.FindSurroundingIntegersWithTolerance(1e-10, 1e-10);
+
+        return (TNumber.CreateChecked(tz), log10, TNumber.CreateChecked(afz));
+      }
+
+      /// <summary>
+      /// <para>Computes the natural (base-E) logarithm of a value.</para>
+      /// </summary>
+      /// <returns></returns>
+      public (TNumber TowardZero, double LogE, TNumber AwayFromZero) LogE()
+      {
+        var logE = double.Log(double.CreateChecked(value));
+
+        var (tz, afz) = logE.FindSurroundingIntegersWithTolerance(1e-10, 1e-10);
+
+        return (TNumber.CreateChecked(tz), logE, TNumber.CreateChecked(afz));
+      }
+
+      #endregion
+
+      #region Modulo operation (remainder)
+
+      /// <summary>
+      /// <para>Remainder is the standard remainder.</para>
+      /// <para>RemainderNoZero is the same as standard except no zero, and instead returns the divisor with the sign of the dividend.</para>
+      /// <para>ReverseRemainder is the reverse order of the standard remainder, except for 0, which is still in same.</para>
+      /// <para>ReverseRemainderNoZero is the same as ReverseRemainder except no zero, and instead returns the divisor with the sign of dividend.</para>
+      /// </summary>
+      /// <typeparam name="TNumber"></typeparam>
+      /// <param name="value"></param>
+      /// <param name="modulus"></param>
+      /// <returns></returns>
+      public (TNumber Remainder, TNumber RemainderNoZero, TNumber ReverseRemainder, TNumber ReverseRemainderNoZero) Modulo(TNumber modulus)
+      {
+        var remainder = value % modulus;
+
+        var copySign = TNumber.CopySign(modulus, value);
+
+        if (TNumber.IsZero(remainder))
+          return (remainder, copySign, remainder, copySign);
+
+        var minusRemainder = copySign - remainder;
+
+        return (remainder, remainder, minusRemainder, minusRemainder);
+      }
+
+      #endregion
+
       #region MultipleOf
 
       /// <summary>
       /// <para>Determines whether the <paramref name="value"/> is of a <paramref name="multiple"/>.</para>
       /// </summary>
-      /// <typeparam name="TNumber"></typeparam>
-      /// <param name="value">The number for which the nearest <paramref name="multiple"/> will be found.</param>
       /// <param name="multiple">The multiple to which <paramref name="value"/> is measured.</param>
       /// <returns></returns>
       public bool IsMultipleOf(TNumber multiple)
         => TNumber.IsZero(value % multiple);
 
+      public (TNumber TowardZero, TNumber Nearest, TNumber AwayFromZero) MultipleOf(TNumber multiple, bool unequal = false, HalfRounding mode = HalfRounding.TowardZero)
+      {
+        var csmv = TNumber.CopySign(multiple, value);
+
+        var motz = value - (value % multiple);
+        var moafz = motz;
+
+        if (unequal && motz == value)
+          motz -= csmv;
+
+        if (unequal || moafz != value)
+          moafz += csmv;
+
+        return (motz, value.RoundToNearest(mode, motz, moafz), moafz);
+      }
+
       /// <summary>
       /// <para>Round a <paramref name="value"/> to the nearest <paramref name="multiple"/> away-from-zero and whether to ensure it is <paramref name="unequal"/>.</para>
       /// </summary>
-      /// <typeparam name="TNumber"></typeparam>
-      /// <param name="value"></param>
       /// <param name="multiple"></param>
       /// <param name="unequal"></param>
       /// <returns></returns>
@@ -251,7 +341,62 @@ namespace Flux
 
       #endregion
 
-      #region Unit/Sign
+      #region Pow
+
+      /// <summary>
+      /// <para>Computes a <paramref name="value"/> raised to to a given <paramref name="exponent"/>.</para>
+      /// </summary>
+      /// <typeparam name="TNumber"></typeparam>
+      /// <typeparam name="TExponent"></typeparam>
+      /// <param name="value"></param>
+      /// <param name="exponent"></param>
+      /// <param name="pow">Out parameter with the result from <see cref="double.Pow(double, double)"/>.</param>
+      /// <returns>The floor and ceiling of the result.</returns>
+      public (TNumber TowardZero, double Pow, TNumber AwayFromZero) Pow<TExponent>(TExponent exponent)
+        where TExponent : System.Numerics.INumber<TExponent>
+      {
+        var pow = double.Pow(double.CreateChecked(value), double.CreateChecked(exponent));
+
+        var (powf, powc) = pow.FindSurroundingIntegersWithTolerance(1e-10, 1e-10);
+
+        return (TNumber.CreateChecked(powf), pow, TNumber.CreateChecked(powc));
+      }
+
+      #endregion
+
+      #region ..Root functions (Cube, Nth, Square)
+
+      public (TNumber TowardZero, double CubeRoot, TNumber AwayFromZero) Cbrt()
+      {
+        var rootn = double.Cbrt(double.CreateChecked(value));
+
+        var (tz, afz) = rootn.FindSurroundingIntegersWithTolerance(1e-10, 1e-10);
+
+        return (TNumber.CreateChecked(tz), rootn, TNumber.CreateChecked(afz));
+      }
+
+      public (TNumber TowardZero, double NthRoot, TNumber AwayFromZero) RootN<TNth>(TNth nth)
+        where TNth : System.Numerics.IBinaryInteger<TNth>
+      {
+        var rootn = double.RootN(double.CreateChecked(value), int.CreateChecked(nth));
+
+        var (tz, afz) = rootn.FindSurroundingIntegersWithTolerance(1e-10, 1e-10);
+
+        return (TNumber.CreateChecked(tz), rootn, TNumber.CreateChecked(afz));
+      }
+
+      public (TNumber TowardZero, double SquareRoot, TNumber AwayFromZero) Sqrt()
+      {
+        var sqrt = double.Sqrt(double.CreateChecked(value));
+
+        var (tz, afz) = sqrt.FindSurroundingIntegersWithTolerance(1e-10, 1e-10);
+
+        return (TNumber.CreateChecked(tz), sqrt, TNumber.CreateChecked(afz));
+      }
+
+      #endregion
+
+      #region ..Sign functions (Unit)
 
       /// <summary>
       /// <para>The sign step function.</para>
@@ -259,8 +404,6 @@ namespace Flux
       /// <para><seealso href="https://en.wikipedia.org/wiki/Step_function"/></para>
       /// </summary>
       /// <remarks>LT zero = -1, EQ zero = 0, GT zero = +1.</remarks>
-      /// <typeparam name="TNumber"></typeparam>
-      /// <param name="value"></param>
       /// <returns></returns>
       public TNumber Sign()
         => TNumber.IsZero(value) ? value : UnitSign(value);
@@ -271,8 +414,6 @@ namespace Flux
       /// <para><seealso href="https://en.wikipedia.org/wiki/Sign_function"/></para>
       /// </summary>
       /// <remarks>LT 0 (negative) = -1, GTE 0 (not negative) = +1.</remarks>
-      /// <typeparam name="TNumber"></typeparam>
-      /// <param name="value"></param>
       /// <returns></returns>
       public TNumber UnitSign()
         => TNumber.CopySign(TNumber.One, value);
@@ -282,76 +423,72 @@ namespace Flux
       #region Spread
 
       /// <summary>
-      /// <para>Spreads an in-interval <paramref name="value"/> around the outside edges of the closed interval [<paramref name="lowValue"/>, <paramref name="highValue"/>].</para>
-      /// <para>This is the opposite of a <see cref="System.Numerics.INumber{TSelf}.Clamp(TSelf, TSelf, TSelf)"/> ( [<paramref name="minValue"/>, <paramref name="maxValue"/>] ) which is inclusive, making the Spread( either [NegativeInfinity, <paramref name="lowValue"/>) or (<paramref name="highValue"/>, PositiveInfinity] ), i.e. exclusive of <paramref name="lowValue"/> and <paramref name="highValue"/>.</para>
+      /// <para>Spreads an in-interval value around the outside edges of the closed interval [<paramref name="minValue"/>, <paramref name="maxValue"/>].</para>
+      /// <para>This is the opposite of a <see cref="System.Numerics.INumber{TSelf}.Clamp(TSelf, TSelf, TSelf)"/> ( [<paramref name="minValue"/>, <paramref name="maxValue"/>] ) which is inclusive, making the Spread( either [NegativeInfinity, <paramref name="minValue"/>) or (<paramref name="maxValue"/>, PositiveInfinity] ), i.e. exclusive of <paramref name="minValue"/> and <paramref name="maxValue"/>.</para>
       /// </summary>
-      public TNumber Spread(TNumber lowValue, TNumber highValue, HalfRounding mode)
-        => (value < lowValue || value > highValue)
-        ? value // If number is already spread, nothing to do but return it.
-        : value.RoundToNearest(mode, lowValue, highValue) is var nearestValue && (nearestValue == lowValue)
-        ? lowValue.GetInfimum()
-        : (nearestValue == highValue)
-        ? highValue.GetSupremum()
-        : nearestValue;
+      /// <param name="minValue"></param>
+      /// <param name="maxValue"></param>
+      /// <param name="mode"></param>
+      /// <param name="margin"></param>
+      /// <returns></returns>
+      public TNumber Spread(TNumber minValue, TNumber maxValue, HalfRounding mode, TNumber margin)
+      {
+        System.ArgumentOutOfRangeException.ThrowIfNegative(margin);
+
+        if (value < minValue || value > maxValue)
+          return value; // If number is already spread, nothing to do but return it.
+
+        var nearestValue = value.RoundToNearest(mode, minValue, maxValue);
+
+        return (nearestValue == minValue)
+          ? minValue - margin
+          : (nearestValue == maxValue)
+          ? maxValue + margin
+          : nearestValue;
+      }
+
+      /// <summary>
+      /// <para>Spreads an in-interval value around the outside edges of the closed interval [<paramref name="minValue"/>, <paramref name="maxValue"/>].</para>
+      /// <para>This is the opposite of a <see cref="System.Numerics.INumber{TSelf}.Clamp(TSelf, TSelf, TSelf)"/> ( [<paramref name="minValue"/>, <paramref name="maxValue"/>] ) which is inclusive, making the Spread( either [NegativeInfinity, <paramref name="minValue"/>) or (<paramref name="maxValue"/>, PositiveInfinity] ), i.e. exclusive of <paramref name="minValue"/> and <paramref name="maxValue"/>.</para>
+      /// <para>A native function means that the difference will be based on the smallest native difference. For integers it is 1, and for floating point (double and float) it is the bit increment/decrement.</para>
+      /// </summary>
+      /// <param name="minValue"></param>
+      /// <param name="maxValue"></param>
+      /// <param name="mode"></param>
+      /// <returns></returns>
+      public TNumber SpreadNative(TNumber minValue, TNumber maxValue, HalfRounding mode)
+      {
+        if (value < minValue || value > maxValue)
+          return value; // If number is already spread, nothing to do but return it.
+
+        var nearestValue = value.RoundToNearest(mode, minValue, maxValue);
+
+        return (nearestValue == minValue)
+          ? minValue.DecrementNative()
+          : (nearestValue == maxValue)
+          ? maxValue.IncrementNative()
+          : nearestValue;
+      }
+
+      #endregion
+
+      #region WrapAround
+
+      /// <summary>
+      /// <para>Wraps a value around, to the opposite side, if the value exceeds either boundary.</para>
+      /// </summary>
+      /// <param name="minValue"></param>
+      /// <param name="maxValue"></param>
+      /// <returns></returns>
+      public TNumber WrapAround(TNumber minValue, TNumber maxValue)
+        => (value > maxValue)
+        ? minValue + ((value - maxValue - TNumber.One) % (maxValue - minValue + TNumber.One))
+        : (value < minValue)
+        ? maxValue - ((minValue - value - TNumber.One) % (maxValue - minValue + TNumber.One))
+        : value;
 
       #endregion
     }
-
-    #region LogOf
-
-    /// <summary>
-    /// <para>Round a <paramref name="value"/> to the nearest log-of-<paramref name="radix"/> away-from-zero.</para>
-    /// </summary>
-    /// <typeparam name="TNumber"></typeparam>
-    /// <typeparam name="TRadix"></typeparam>
-    /// <param name="value"></param>
-    /// <param name="radix"></param>
-    /// <returns></returns>
-    public static TNumber LogOfAwayFromZero<TNumber, TRadix>(this TNumber value, TRadix radix)
-      where TNumber : System.Numerics.INumber<TNumber>
-      where TRadix : System.Numerics.IBinaryInteger<TRadix>
-      => value <= TNumber.Zero || radix <= TRadix.One
-      ? TNumber.Zero
-      : TNumber.CreateChecked(double.Log(double.CreateChecked(value), double.CreateChecked(radix)).Envelop());
-
-    /// <summary>
-    /// <para></para>
-    /// </summary>
-    /// <typeparam name="TNumber"></typeparam>
-    /// <typeparam name="TRadix"></typeparam>
-    /// <param name="value"></param>
-    /// <param name="radix"></param>
-    /// <param name="mode"></param>
-    /// <param name="logTowardsZero"></param>
-    /// <param name="logAwayFromZero"></param>
-    /// <returns></returns>
-    public static TNumber LogOfNearest<TNumber, TRadix>(this TNumber value, TRadix radix, HalfRounding mode, out TNumber logTowardsZero, out TNumber logAwayFromZero)
-      where TNumber : System.Numerics.INumber<TNumber>
-      where TRadix : System.Numerics.IBinaryInteger<TRadix>
-    {
-      logAwayFromZero = value.LogOfAwayFromZero(radix);
-      logTowardsZero = value.LogOfTowardZero(radix);
-
-      return value.RoundToNearest(mode, logTowardsZero, logAwayFromZero);
-    }
-
-    /// <summary>
-    /// <para>Round a <paramref name="value"/> to the nearest log-of-<paramref name="radix"/> toward-zero.</para>
-    /// </summary>
-    /// <typeparam name="TNumber"></typeparam>
-    /// <typeparam name="TRadix"></typeparam>
-    /// <param name="value"></param>
-    /// <param name="radix"></param>
-    /// <returns></returns>
-    /// <exception cref="System.ArgumentOutOfRangeException"></exception>
-    public static TNumber LogOfTowardZero<TNumber, TRadix>(this TNumber value, TRadix radix)
-      where TNumber : System.Numerics.INumber<TNumber>
-      where TRadix : System.Numerics.IBinaryInteger<TRadix>
-      => value <= TNumber.Zero || radix <= TRadix.One
-      ? TNumber.Zero
-      : TNumber.CreateChecked(double.Truncate(double.Log(double.CreateChecked(TNumber.Abs(value)), double.CreateChecked(radix))));
-
-    #endregion
 
     #region MeanMedianAbsoluteDeviation
 
@@ -385,152 +522,60 @@ namespace Flux
 
     #endregion
 
-    #region PowOf
+    //#region PowOf
 
-    /// <summary>
-    /// <para>Round a <paramref name="value"/> to the nearest power-of-<paramref name="radix"/> away-from-zero and whether to ensure it is <paramref name="unequal"/>.</para>
-    /// </summary>
-    /// <typeparam name="TNumber"></typeparam>
-    /// <typeparam name="TRadix"></typeparam>
-    /// <param name="value"></param>
-    /// <param name="radix"></param>
-    /// <param name="unequal"></param>
-    /// <returns></returns>
-    public static TNumber PowOfAwayFromZero<TNumber, TRadix>(this TNumber value, TRadix radix, bool unequal = false)
-      where TNumber : System.Numerics.INumber<TNumber>
-      where TRadix : System.Numerics.IBinaryInteger<TRadix>
-      => TNumber.CreateChecked(Units.Radix.AssertMember(radix)) is var r && TNumber.IsZero(value)
-      ? value
-      : TNumber.CopySign(TNumber.Abs(value) is var v && r.FastIntegerPow(v.FastIntegerLog(radix, out var _).IlogTz, out var _).IpowTz is var p && (p == v ? p : p * r) is var afz && (unequal || !TNumber.IsInteger(value)) && afz == v ? afz * r : afz, value);
-
-    /// <summary>
-    /// <para>Rounds the <paramref name="value"/> to the closest power-of-<paramref name="radix"/> (i.e. of <paramref name="powOfTowardsZero"/> and <paramref name="powOfAwayFromZero"/> which are computed and returned as out parameters) according to <paramref name="unequal"/> and the strategy <paramref name="mode"/>. Negative <paramref name="value"/> resilient.</para>
-    /// </summary>
-    /// <param name="value">The value for which the nearest power-of-<paramref name="radix"/> of will be found.</param>
-    /// <param name="radix">The radix (base) of the power-of-<paramref name="radix"/>.</param>
-    /// <param name="unequal">Proper means nearest but <paramref name="unequal"/> to <paramref name="value"/> if it's a power-of-<paramref name="radix"/>, i.e. the two power-of-radix will be properly "nearest" (but not the same), or LT/GT rather than LTE/GTE.</param>
-    /// <param name="powOfTowardsZero">Outputs the power-of-<paramref name="radix"/> of that is closer to zero.</param>
-    /// <param name="powOfAwayFromZero">Outputs the power-of-<paramref name="radix"/> of that is farther from zero.</param>
-    /// <returns>The nearest two power-of-<paramref name="radix"/> as out parameters and the the nearest of those two is returned.</returns>
-    public static TNumber PowOf<TNumber, TRadix>(this TNumber value, TRadix radix, bool unequal, HalfRounding mode, out TNumber powOfTowardsZero, out TNumber powOfAwayFromZero)
-      where TNumber : System.Numerics.INumber<TNumber>
-      where TRadix : System.Numerics.IBinaryInteger<TRadix>
-    {
-      powOfTowardsZero = value.PowOfTowardZero(radix, unequal);
-      powOfAwayFromZero = value.PowOfAwayFromZero(radix, unequal);
-
-      return value.RoundToNearest(mode, powOfTowardsZero, powOfAwayFromZero);
-    }
-
-    /// <summary>
-    /// <para>Round a <paramref name="value"/> to the nearest power-of-<paramref name="radix"/> toward-zero and whether to ensure it is <paramref name="unequal"/>.</para>
-    /// </summary>
-    /// <typeparam name="TNumber"></typeparam>
-    /// <typeparam name="TRadix"></typeparam>
-    /// <param name="value"></param>
-    /// <param name="radix"></param>
-    /// <param name="unequal"></param>
-    /// <returns></returns>
-    public static TNumber PowOfTowardZero<TNumber, TRadix>(this TNumber value, TRadix radix, bool unequal = false)
-      where TNumber : System.Numerics.INumber<TNumber>
-      where TRadix : System.Numerics.IBinaryInteger<TRadix>
-      => TNumber.CreateChecked(Units.Radix.AssertMember(radix)) is var r && TNumber.IsZero(value)
-      ? value
-      : TNumber.CopySign(TNumber.Abs(value) is var v && r.FastIntegerPow(v.FastIntegerLog(radix, out var _).IlogTz, out var _).IpowTz is var p && (unequal && TNumber.IsInteger(value)) && p == v ? p / r : p, value);
-
-    #endregion
-
-    #region Remainders
-
-    /// <summary>
-    /// <para>Remainder is the standard remainder.</para>
-    /// <para>RemainderNoZero is the same as standard except no zero, and instead returns the divisor with the sign of the dividend.</para>
-    /// <para>ReverseRemainder is the reverse order of the standard remainder, except for 0, which is still in same.</para>
-    /// <para>ReverseRemainderNoZero is the same as ReverseRemainder except no zero, and instead returns the divisor with the sign of dividend.</para>
-    /// </summary>
-    /// <typeparam name="TNumber"></typeparam>
-    /// <param name="dividend"></param>
-    /// <param name="divisor"></param>
-    /// <returns></returns>
-    public static (TNumber Remainder, TNumber RemainderNoZero, TNumber ReverseRemainder, TNumber ReverseRemainderNoZero) Remainders<TNumber>(this TNumber dividend, TNumber divisor)
-      where TNumber : System.Numerics.INumber<TNumber>
-    {
-      var remainder = dividend % divisor;
-
-      var copySign = TNumber.CopySign(divisor, dividend);
-
-      if (TNumber.IsZero(remainder))
-      {
-        return (remainder, copySign, remainder, copySign);
-      }
-      else
-      {
-        var minusRemainder = copySign - remainder;
-
-        return (remainder, remainder, minusRemainder, minusRemainder);
-      }
-    }
-
-    //extension<TNumber>(TNumber dividend)
+    ///// <summary>
+    ///// <para>Round a <paramref name="value"/> to the nearest power-of-<paramref name="radix"/> away-from-zero and whether to ensure it is <paramref name="unequal"/>.</para>
+    ///// </summary>
+    ///// <typeparam name="TNumber"></typeparam>
+    ///// <typeparam name="TRadix"></typeparam>
+    ///// <param name="value"></param>
+    ///// <param name="radix"></param>
+    ///// <param name="unequal"></param>
+    ///// <returns></returns>
+    //public static TNumber PowOfAwayFromZero<TNumber, TRadix>(this TNumber value, TRadix radix, bool unequal = false)
     //  where TNumber : System.Numerics.INumber<TNumber>
+    //  where TRadix : System.Numerics.IBinaryInteger<TRadix>
+    //  => TNumber.CreateChecked(Units.Radix.AssertMember(radix)) is var r && TNumber.IsZero(value)
+    //  ? value
+    //  : TNumber.CopySign(TNumber.Abs(value) is var v && r.FastIntegerPow(v.FastIntegerLog(radix, out var _).IlogTz, out var _).IpowTz is var p && (p == v ? p : p * r) is var afz && (unequal || !TNumber.IsInteger(value)) && afz == v ? afz * r : afz, value);
+
+    ///// <summary>
+    ///// <para>Rounds the <paramref name="value"/> to the closest power-of-<paramref name="radix"/> (i.e. of <paramref name="powOfTowardsZero"/> and <paramref name="powOfAwayFromZero"/> which are computed and returned as out parameters) according to <paramref name="unequal"/> and the strategy <paramref name="mode"/>. Negative <paramref name="value"/> resilient.</para>
+    ///// </summary>
+    ///// <param name="value">The value for which the nearest power-of-<paramref name="radix"/> of will be found.</param>
+    ///// <param name="radix">The radix (base) of the power-of-<paramref name="radix"/>.</param>
+    ///// <param name="unequal">Proper means nearest but <paramref name="unequal"/> to <paramref name="value"/> if it's a power-of-<paramref name="radix"/>, i.e. the two power-of-radix will be properly "nearest" (but not the same), or LT/GT rather than LTE/GTE.</param>
+    ///// <param name="powOfTowardsZero">Outputs the power-of-<paramref name="radix"/> of that is closer to zero.</param>
+    ///// <param name="powOfAwayFromZero">Outputs the power-of-<paramref name="radix"/> of that is farther from zero.</param>
+    ///// <returns>The nearest two power-of-<paramref name="radix"/> as out parameters and the the nearest of those two is returned.</returns>
+    //public static TNumber PowOf<TNumber, TRadix>(this TNumber value, TRadix radix, bool unequal, HalfRounding mode, out TNumber powOfTowardsZero, out TNumber powOfAwayFromZero)
+    //  where TNumber : System.Numerics.INumber<TNumber>
+    //  where TRadix : System.Numerics.IBinaryInteger<TRadix>
     //{
-    //  /// <summary>
-    //  /// <para>Computes a non-zero remainder of (<paramref name="dividend"/> % <paramref name="divisor"/>), i.e. it returns [divisor, 1 .. (divisor - 1)], instead of the remainder [0, 1 .. (divisor - 1)].</para>
-    //  /// <para>Zero is replaced by the <paramref name="divisor"/> (with the sign of <paramref name="dividend"/>) and all other remainder (%) values returned as defined by <typeparamref name="TNumber"/>.</para>
-    //  /// </summary>
-    //  /// <typeparam name="TNumber"></typeparam>
-    //  /// <param name="dividend"></param>
-    //  /// <param name="divisor"></param>
-    //  /// <returns>
-    //  /// <para>The reverse remainder of (<paramref name="dividend"/> % <paramref name="divisor"/>).</para>
-    //  /// </returns>
-    //  public TNumber RemainderNoZero(TNumber divisor, out TNumber remainder)
-    //  {
-    //    remainder = dividend % divisor;
+    //  powOfTowardsZero = value.PowOfTowardZero(radix, unequal);
+    //  powOfAwayFromZero = value.PowOfAwayFromZero(radix, unequal);
 
-    //    return TNumber.IsZero(remainder) ? TNumber.CopySign(divisor, dividend) : remainder;
-    //  }
-
-    //  /// <summary>
-    //  /// <para>Computes the reverse <paramref name="remainder"/> of (<paramref name="dividend"/> % <paramref name="divisor"/>), i.e. it returns [divisor, 1], instead of the remainder [0, (divisor - 1)].</para>
-    //  /// <para>Zero is replaced by the <paramref name="divisor"/> with the sign of <paramref name="dividend"/>, and all other remainder (%) values are returned in reverse order from that defined by <typeparamref name="TNumber"/>.</para>
-    //  /// </summary>
-    //  /// <typeparam name="TNumber"></typeparam>
-    //  /// <param name="dividend"></param>
-    //  /// <param name="divisor"></param>
-    //  /// <param name="remainder"></param>
-    //  /// <returns>
-    //  /// <para>The reverse <paramref name="remainder"/> of (<paramref name="dividend"/> % <paramref name="divisor"/>).</para>
-    //  /// <para>Also returns the normal <paramref name="remainder"/> as an out parameter.</para>
-    //  /// </returns>
-    //  public TNumber ReverseRemainderNoZero(TNumber divisor, out TNumber remainder)
-    //  {
-    //    var rev = ReverseRemainder(dividend, divisor, out remainder);
-
-    //    return TNumber.IsZero(rev) ? TNumber.CopySign(divisor, dividend) : rev;
-    //  }
-
-    //  /// <summary>
-    //  /// <para>Computes the reverse <paramref name="remainder"/> of (<paramref name="dividend"/> % <paramref name="divisor"/>), i.e. it returns [0, (divisor - 1) .. 1] instead of the remainder [0, 1 .. (divisor - 1)].</para>
-    //  /// <para>All remainder values greater-than zero are in reverse order from that defined by <typeparamref name="TNumber"/>.</para>
-    //  /// </summary>
-    //  /// <typeparam name="TNumber"></typeparam>
-    //  /// <param name="dividend"></param>
-    //  /// <param name="divisor"></param>
-    //  /// <param name="remainder"></param>
-    //  /// <returns>
-    //  /// <para>The reverse <paramref name="remainder"/> of (<paramref name="dividend"/> % <paramref name="divisor"/>).</para>
-    //  /// <para>Also returns the normal <paramref name="remainder"/> as an out parameter.</para>
-    //  /// </returns>
-    //  public TNumber ReverseRemainder(TNumber divisor, out TNumber remainder)
-    //  {
-    //    remainder = dividend % divisor;
-
-    //    return TNumber.IsZero(remainder) ? remainder : TNumber.CopySign(divisor, dividend) - remainder;
-    //  }
+    //  return value.RoundToNearest(mode, powOfTowardsZero, powOfAwayFromZero);
     //}
 
-    #endregion
+    ///// <summary>
+    ///// <para>Round a <paramref name="value"/> to the nearest power-of-<paramref name="radix"/> toward-zero and whether to ensure it is <paramref name="unequal"/>.</para>
+    ///// </summary>
+    ///// <typeparam name="TNumber"></typeparam>
+    ///// <typeparam name="TRadix"></typeparam>
+    ///// <param name="value"></param>
+    ///// <param name="radix"></param>
+    ///// <param name="unequal"></param>
+    ///// <returns></returns>
+    //public static TNumber PowOfTowardZero<TNumber, TRadix>(this TNumber value, TRadix radix, bool unequal = false)
+    //  where TNumber : System.Numerics.INumber<TNumber>
+    //  where TRadix : System.Numerics.IBinaryInteger<TRadix>
+    //  => TNumber.CreateChecked(Units.Radix.AssertMember(radix)) is var r && TNumber.IsZero(value)
+    //  ? value
+    //  : TNumber.CopySign(TNumber.Abs(value) is var v && r.FastIntegerPow(v.FastIntegerLog(radix, out var _).IlogTz, out var _).IpowTz is var p && (unequal && TNumber.IsInteger(value)) && p == v ? p / r : p, value);
+
+    //#endregion
 
     #region TruncRem
 

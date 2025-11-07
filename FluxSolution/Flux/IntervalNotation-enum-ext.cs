@@ -36,7 +36,7 @@ namespace Flux
         where TComparable : System.IComparable<TComparable>
         => IsMember(source, value, minValue, maxValue)
         ? value
-        : throw new System.ArgumentOutOfRangeException(paramName ?? nameof(value), $"{{{value}}} is not a member of the interval: {ToIntervalNotationString(source, minValue, maxValue)}.");
+        : throw new System.ArgumentOutOfRangeException(paramName ?? nameof(value), $"Nonmember value: {{{value}}} not in {ToIntervalNotationString(source, minValue, maxValue)}.");
 
       /// <summary>
       /// <para>Asserts that an <see cref="IntervalNotation"/> interval <paramref name="minValue"/>..<paramref name="maxValue"/> is valid. Throws an exception if it's invalid.</para>
@@ -116,6 +116,22 @@ namespace Flux
       }
 
       /// <summary>
+      /// <para>Folds an out-of-bound <paramref name="value"/> (back and forth) across the closed interval [<paramref name="minValue"/>, <paramref name="maxValue"/>], until the <paramref name="value"/> is within the closed interval.</para>
+      /// </summary>
+      /// <typeparam name="TNumber"></typeparam>
+      /// <param name="value"></param>
+      /// <param name="minValue"></param>
+      /// <param name="maxValue"></param>
+      /// <returns></returns>
+      public TNumber FoldAcross<TNumber>(TNumber value, TNumber minValue, TNumber maxValue)
+        where TNumber : System.Numerics.INumber<TNumber>
+      {
+        (minValue, maxValue) = source.GetExtentRelative(minValue, maxValue, 1);
+
+        return value.FoldAcross(minValue, maxValue);
+      }
+
+      /// <summary>
       /// <para>Gets a new min/max interval relative type (<typeparamref name="TNumber"/>) using the specified <see cref="IntervalNotation"/>, <paramref name="minValue"/>, <paramref name="maxValue"/> and <paramref name="magnitude"/>.</para>
       /// <para>If <typeparamref name="TNumber"/> is an integer, magnitude = 1 and notation = <see cref="IntervalNotation.Open"/>, the new values are (<paramref name="minValue"/> + 1) and (<paramref name="maxValue"/> - 1).</para>
       /// <para>If <typeparamref name="TNumber"/> is a floating point value, magnitude > 1 and <see cref="IntervalNotation"/> is open on either or both ends, the new values are (<paramref name="minValue"/> + "epsilon" * <paramref name="magnitude"/>) and (<paramref name="maxValue"/> - "epsilon" * <paramref name="magnitude"/>). In this context epsilon is a value that makes the original value and the new value not equal.</para>
@@ -135,10 +151,10 @@ namespace Flux
           while (magnitude-- > 0)
           {
             if (source is IntervalNotation.Open or IntervalNotation.HalfOpenLeft)
-              minValue = minValue.GetSupremum();
+              minValue = minValue.IncrementNative();
 
             if (source is IntervalNotation.Open or IntervalNotation.HalfOpenRight)
-              maxValue = maxValue.GetInfimum();
+              maxValue = maxValue.DecrementNative();
           }
 
           AssertValid(IntervalNotation.Closed, minValue, maxValue, "magnitude");
@@ -386,35 +402,45 @@ namespace Flux
         return new(int.CreateChecked(minValue), int.CreateChecked(maxValue) + 1);
       }
 
+      /// <summary>
+      /// <para>Wraps around using an absolute margin on 1 for all types.</para>
+      /// </summary>
+      /// <typeparam name="TNumber"></typeparam>
+      /// <param name="value"></param>
+      /// <param name="minValue"></param>
+      /// <param name="maxValue"></param>
+      /// <returns></returns>
       public TNumber Wrap<TNumber>(TNumber value, TNumber minValue, TNumber maxValue)
+        where TNumber : System.Numerics.INumber<TNumber>
+      {
+        (minValue, maxValue) = source.GetExtentAbsolute(minValue, maxValue, TNumber.One);
+
+        return value.WrapAround(minValue, maxValue);
+      }
+
+      /// <summary>
+      /// <para>Wraps around using the native values of open ends (1 for integer types and bit increment/decrement for floating point).</para>
+      /// </summary>
+      /// <typeparam name="TNumber"></typeparam>
+      /// <param name="value"></param>
+      /// <param name="minValue"></param>
+      /// <param name="maxValue"></param>
+      /// <returns></returns>
+      public TNumber WrapNative<TNumber>(TNumber value, TNumber minValue, TNumber maxValue)
         where TNumber : System.Numerics.INumber<TNumber>
       {
         (minValue, maxValue) = source.GetExtentRelative(minValue, maxValue, 1);
 
-        if (value > maxValue)
-          return minValue + ((value - maxValue - TNumber.One) % (maxValue - minValue + TNumber.One));
-
-        if (value < minValue)
-          return maxValue - ((minValue - value - TNumber.One) % (maxValue - minValue + TNumber.One));
-
-        return value;
-
-        //// FROM Compare above!
-
-        //var vcmpmin = value.CompareTo(minValue);
-        //var vcmpmax = value.CompareTo(maxValue);
-
-        //if (intervalNotation == IntervalNotation.Closed)
-        //  return vcmpmin < 0 ? -1 : vcmpmax > 0 ? +1 : 0;
-        //else if (intervalNotation == IntervalNotation.HalfOpenLeft)
-        //  return vcmpmin <= 0 ? -1 : vcmpmax > 0 ? +1 : 0;
-        //else if (intervalNotation == IntervalNotation.HalfOpenRight)
-        //  return vcmpmin < 0 ? -1 : vcmpmax >= 0 ? +1 : 0;
-        //else if (intervalNotation == IntervalNotation.Open)
-        //  return vcmpmin <= 0 ? -1 : vcmpmax >= 0 ? +1 : 0;
-        //else
-        //  throw new NotImplementedException(intervalNotation.ToString());
+        return value.WrapAround(minValue, maxValue);
       }
+
+      //public TNumber Wrap<TNumber>(TNumber value, TNumber minValue, TNumber maxValue)
+      //  where TNumber : System.Numerics.INumber<TNumber>
+      //{
+      //  (minValue, maxValue) = source.GetExtentAbsolute(minValue, maxValue, 0);
+
+      //  return value.WrapAround(minValue, maxValue);
+      //}
     }
   }
 }

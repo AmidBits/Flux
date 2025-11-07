@@ -43,36 +43,7 @@ namespace Flux.Globalization.En
     {
       stringBuilder ??= new System.Text.StringBuilder();
 
-      InterpretNumbersAndNumerals(GetCompoundNumerals(System.Numerics.BigInteger.CreateChecked(value), namingScale), stringBuilder);
-
-      //var e = GetCompoundNumbersAndNumerals(System.Numerics.BigInteger.CreateChecked(value), namingScale);
-
-      //InterpretNumerals(e, stringBuilder);
-
-      //if (e.MoveNext())
-      //{
-      //  var (previousNumber, previousNumeral) = e.Current;
-
-      //  if (previousNumber.IsZero)
-      //    stringBuilder.Append(previousNumeral);
-
-      //  while (e.MoveNext())
-      //  {
-      //    var (currentNumber, currentNumeral) = e.Current;
-
-      //    if (stringBuilder.Length > 0)
-      //    {
-      //      if (currentNumber >= 1 && currentNumber <= 9 && previousNumber >= 20 && previousNumber <= 90)
-      //        stringBuilder.Append('-'); // Add a hyphen between ANY tens and ones.
-      //      else
-      //        stringBuilder.Append(' '); // Otherwise add a space.
-      //    }
-
-      //    stringBuilder.Append(currentNumeral);
-
-      //    (previousNumber, previousNumeral) = (currentNumber, currentNumeral);
-      //  }
-      //}
+      ToCompoundString(value, namingScale, stringBuilder);
 
       return stringBuilder.ToString();
     }
@@ -86,19 +57,18 @@ namespace Flux.Globalization.En
     /// <param name="stringBuilder"></param>
     /// <param name="numeralDecimalSeparator"></param>
     /// <returns></returns>
-    public static string ToEnglishWordString<TFloat>(this TFloat value, System.Text.StringBuilder? stringBuilder = null, NamingScale namingScale = NamingScale.ShortScale, string numeralDecimalSeparator = "And")
+    public static string ToEnglishWordString<TFloat>(this TFloat value, System.Text.StringBuilder? stringBuilder = null, NamingScale namingScale = NamingScale.ShortScale, string numeralDecimalSeparator = "And", bool includeScaleFactor = true)
       where TFloat : System.Numerics.IFloatingPoint<TFloat>
     {
       stringBuilder ??= new System.Text.StringBuilder();
 
       if (value is decimal decimalValue)
       {
-        var (integerPart, fractionalPart, fractionalPartAsWholeNumber) = decimalValue.GetParts(out var significand, out var scale, out var scaleFactor, out var sign);
+        var (integerPart, _, fractionalPartAsWholeNumber) = decimalValue.GetParts(out var _, out var _, out var scaleFactor, out var _);
 
         if (!integerPart.IsZero)
         {
-          InterpretNumbersAndNumerals(GetCompoundNumerals(integerPart, namingScale), stringBuilder);
-          //ToEnglishWordString(integerPart, stringBuilder, namingScale);
+          ToCompoundString(integerPart, namingScale, stringBuilder);
 
           if (!fractionalPartAsWholeNumber.IsZero)
           {
@@ -110,39 +80,48 @@ namespace Flux.Globalization.En
 
         if (!fractionalPartAsWholeNumber.IsZero)
         {
-          InterpretNumbersAndNumerals(GetCompoundNumerals(fractionalPartAsWholeNumber, namingScale), stringBuilder);
-          //ToEnglishWordString(fractionalPartAsWholeNumber, stringBuilder, namingScale);
+          ToCompoundString(fractionalPartAsWholeNumber, namingScale, stringBuilder);
 
-          stringBuilder.Append(' ');
+          if (includeScaleFactor)
+          {
+            var sb = new System.Text.StringBuilder();
 
-          var sb = new System.Text.StringBuilder();
+            ToCompoundString(scaleFactor, namingScale, sb);
 
-          InterpretNumbersAndNumerals(GetCompoundNumerals(scaleFactor, namingScale), sb);
-          //ToEnglishWordString(scaleFactor, sb, namingScale);
+            sb.Replace(' ', '-');
 
-          sb.Replace(' ', '-');
+            sb.TrimCommonPrefix(0, "One-");
 
-          sb.TrimCommonPrefix(0, "One-");
+            sb.Append(0.GetOrdinalIndicatorSuffix());
 
-          sb.Append(0.GetOrdinalIndicatorSuffix());
+            if (fractionalPartAsWholeNumber.IsConsideredPlural())
+              sb.Append('s');
 
-          if (fractionalPartAsWholeNumber.IsConsideredPlural())
-            sb.Append('s');
-
-          stringBuilder.Append(sb);
+            stringBuilder.Append(' ');
+            stringBuilder.Append(sb);
+          }
         }
       }
       else // It's another type (than decimal) of floating point, so let's convert it and call again.
         ToEnglishWordString(decimal.CreateChecked(value), stringBuilder, namingScale, numeralDecimalSeparator);
 
-      return stringBuilder.ToString();
+      return stringBuilder.TrimCommonSuffix(0, char.IsWhiteSpace).ToString();
     }
 
-    public static string InterpretNumbersAndNumerals(System.Collections.Generic.IEnumerable<(System.Numerics.BigInteger CompoundNumber, string CardinalNumeral)> numerals, System.Text.StringBuilder? stringBuilder = null)
+    /// <summary>
+    /// <para>Creates a new string of numerals by breaking down the specified <paramref name="value"/> using the specified <paramref name="namingScale"/>. Optionally using the specified <paramref name="stringBuilder"/>.</para>
+    /// </summary>
+    /// <typeparam name="TInteger"></typeparam>
+    /// <param name="value"></param>
+    /// <param name="namingScale"></param>
+    /// <param name="stringBuilder"></param>
+    /// <returns></returns>
+    public static string ToCompoundString<TInteger>(TInteger value, NamingScale namingScale, System.Text.StringBuilder? stringBuilder = null)
+      where TInteger : System.Numerics.IBinaryInteger<TInteger>
     {
       stringBuilder ??= new System.Text.StringBuilder();
 
-      using var e = numerals.GetEnumerator();
+      using var e = GetCompoundNumbersAndNumerals(value, namingScale).GetEnumerator();
 
       if (e.MoveNext())
       {
@@ -173,82 +152,14 @@ namespace Flux.Globalization.En
     }
 
     /// <summary>
-    /// <para>Creates a string with english compound numerals representing the number.</para>
+    /// <para>Creates a new sequence of compound numbers and corresponding numerals by breaking down the specified <paramref name="value"/> using the specified <paramref name="namingScale"/>.</para>
     /// </summary>
-    /// <typeparam name="TSelf"></typeparam>
-    /// <param name="number"></param>
-    /// <param name="decimalPointWord"></param>
-    /// <param name="includeAnd"></param>
+    /// <typeparam name="TInteger"></typeparam>
+    /// <param name="value"></param>
+    /// <param name="namingScale"></param>
     /// <returns></returns>
-    //public static string GetCardinalNumeralString<TSelf>(TSelf number, string decimalSeparatorWord = "Point", bool includeAnd = false)
-    //  where TSelf : System.Numerics.INumber<TSelf>
-    //{
-    //  var sm = new SpanMaker<char>();
-
-    //  var composition = GetCompoundNumbersAndNumerals(System.Numerics.BigInteger.CreateChecked(number)).ToList(); // The integral part.
-
-    //  sm = sm.Append(composition.First().CardinalNumeral);
-
-    //  AppendNumber(ref sm);
-
-    //  if (!TSelf.IsInteger(number)) // If it's a decimal number...
-    //  {
-    //    if (sm.Length > 0)
-    //      sm = sm.Append(' ');
-
-    //    sm = sm.Append(decimalSeparatorWord);
-
-    //    composition = GetCompoundNumbersAndNumerals(System.Numerics.BigInteger.CreateChecked(decimal.CreateChecked(TSelf.Abs(number)).GetParts().FractionalPartAsWholeNumber)).ToList(); // The fractional part.
-
-    //    AppendNumber(ref sm);
-    //  }
-
-    //  return sm.ToString();
-
-    //  void AppendNumber(ref SpanMaker<char> sm)
-    //  {
-    //    for (var index = 1; index < composition.Count; index++)
-    //    {
-    //      var (currentCompoundNumber, currentCardinalNumeral) = composition.ElementAt(index);
-    //      var (previousCompoundNumber, _) = composition.ElementAt(index - 1);
-
-    //      if (sm.Length > 0)
-    //        sm = sm.Append(currentCompoundNumber >= 1 && currentCompoundNumber <= 9 && previousCompoundNumber >= 20 && previousCompoundNumber <= 90 ? '-' : ' ');
-
-    //      sm = sm.Append(currentCardinalNumeral);
-
-    //      if (includeAnd && currentCompoundNumber == 100)
-    //      {
-    //        sm = sm.Append(' ');
-    //        sm = sm.Append("And");
-    //      }
-    //    }
-    //  }
-    //}
-
-    /// <summary>
-    /// <para>Creates a new sequence of compound numbers. The first entry is the sign (as in the sign function) of the number and the word "Negative" if the number is negative.</para>
-    /// </summary>
-    /// <remarks>The first number in the list is the sign, i.e. -1, 0 or 1. If the sign is 0, there are no more numbers in the list.</remarks>
-    //public static System.Collections.Generic.IEnumerable<(System.Numerics.BigInteger CompoundNumber, string CardinalNumeral)> GetCompoundNumbersAndNumerals(this System.Numerics.BigInteger number, NamingScale namingScale = NamingScale.LongScale)
-    //{
-    //  yield return (number.Sign, number.IsZero ? "Zero" : number.Sign < 0 ? "Negative" : string.Empty);
-
-    //  foreach (var bi in GetCompoundNumbers(System.Numerics.BigInteger.Abs(number), System.Numerics.BigInteger.Parse("1e123", System.Globalization.NumberStyles.AllowExponent, null)))
-    //    switch (namingScale)
-    //    {
-    //      case NamingScale.LongScale:
-    //        yield return (bi, LongScaleDictionary[bi]);
-    //        break;
-    //      case NamingScale.ShortScale:
-    //        yield return (bi, ShortScaleDictionary[bi]);
-    //        break;
-    //      default:
-    //        break;
-    //    }
-    //}
-
-    public static System.Collections.Generic.IEnumerable<(System.Numerics.BigInteger CompoundNumber, string CardinalNumeral)> GetCompoundNumerals<TInteger>(this TInteger value, NamingScale namingScale)
+    /// <exception cref="System.NotImplementedException"></exception>
+    public static System.Collections.Generic.IEnumerable<(System.Numerics.BigInteger CompoundNumber, string CardinalNumeral)> GetCompoundNumbersAndNumerals<TInteger>(TInteger value, NamingScale namingScale)
       where TInteger : System.Numerics.IBinaryInteger<TInteger>
     {
       var number = System.Numerics.BigInteger.CreateChecked(value);
@@ -257,15 +168,14 @@ namespace Flux.Globalization.En
 
       number = System.Numerics.BigInteger.Abs(number);
 
-      var maxCutoff1E6 = System.Numerics.BigInteger.Parse("1e6", System.Globalization.NumberStyles.AllowExponent, null);
-      var maxCutoff1E123 = System.Numerics.BigInteger.Parse("1e123", System.Globalization.NumberStyles.AllowExponent, null);
+      var maxCutoff1E123 = System.Numerics.BigInteger.Parse("1e123", System.Globalization.NumberStyles.AllowExponent, null); // Only for the long/short scales.
 
       switch (namingScale)
       {
         case NamingScale.AnyScale:
-          foreach (var bi in GetCompoundNumbers(number, maxCutoff1E6))
+          foreach (var bi in GetCompoundNumbers(number, 1000000))
           {
-            var word = ((AnyScaleZeroToMillion)(int)bi).ToString();
+            var word = ((AnyScaleCommonZeroToMillion)(int)bi).ToString();
 
             yield return (bi, word);
           }
@@ -273,8 +183,8 @@ namespace Flux.Globalization.En
         case NamingScale.LongScale:
           foreach (var bi in GetCompoundNumbers(number, maxCutoff1E123))
           {
-            if (!LongScaleDictionary.TryGetValue(bi, out var word))
-              word = ((AnyScaleZeroToMillion)(int)bi).ToString();
+            if (!LongScaleUniqueDictionary.TryGetValue(bi, out var word))
+              word = ((AnyScaleCommonZeroToMillion)(int)bi).ToString();
 
             yield return (bi, word);
           }
@@ -282,8 +192,8 @@ namespace Flux.Globalization.En
         case NamingScale.ShortScale:
           foreach (var bi in GetCompoundNumbers(number, maxCutoff1E123))
           {
-            if (!ShortScaleDictionary.TryGetValue(bi, out var word))
-              word = ((AnyScaleZeroToMillion)(int)bi).ToString();
+            if (!ShortScaleUniqueDictionary.TryGetValue(bi, out var word))
+              word = ((AnyScaleCommonZeroToMillion)(int)bi).ToString();
 
             yield return (bi, word);
           }
@@ -293,61 +203,19 @@ namespace Flux.Globalization.En
       }
     }
 
-    //public static System.Collections.Generic.IEnumerable<(System.Numerics.BigInteger CompoundNumber, string CardinalNumeral)> GetNumeralsAnyScale<TInteger>(this TInteger value)
-    //  where TInteger : System.Numerics.IBinaryInteger<TInteger>
-    //{
-    //  var number = System.Numerics.BigInteger.CreateChecked(value);
-
-    //  yield return (number.Sign, number.IsZero ? "Zero" : number.Sign < 0 ? "Negative" : string.Empty);
-
-    //  var maxCutoff = System.Numerics.BigInteger.Parse("1e6", System.Globalization.NumberStyles.AllowExponent, null);
-
-    //  foreach (var bi in GetCompoundNumbers(System.Numerics.BigInteger.Abs(number), maxCutoff))
-    //    yield return (bi, ((AnyScaleZeroToMillion)(int)bi).ToString());
-    //}
-
-    //public static System.Collections.Generic.IEnumerable<(System.Numerics.BigInteger CompoundNumber, string CardinalNumeral)> GetNumeralsLongScale<TInteger>(this TInteger value)
-    //  where TInteger : System.Numerics.IBinaryInteger<TInteger>
-    //{
-    //  var number = System.Numerics.BigInteger.CreateChecked(value);
-
-    //  yield return (number.Sign, number.IsZero ? "Zero" : number.Sign < 0 ? "Negative" : string.Empty);
-
-    //  var maxCutoff = System.Numerics.BigInteger.Parse("1e123", System.Globalization.NumberStyles.AllowExponent, null);
-
-    //  foreach (var bi in GetCompoundNumbers(System.Numerics.BigInteger.Abs(number), maxCutoff))
-    //  {
-    //    if (!LongScaleDictionary.TryGetValue(bi, out var word))
-    //      word = ((AnyScaleZeroToMillion)(int)bi).ToString();
-
-    //    yield return (bi, word);
-    //  }
-    //}
-
-    //public static System.Collections.Generic.IEnumerable<(System.Numerics.BigInteger CompoundNumber, string CardinalNumeral)> GetNumeralsShortScale<TInteger>(this TInteger value)
-    //  where TInteger : System.Numerics.IBinaryInteger<TInteger>
-    //{
-    //  var number = System.Numerics.BigInteger.CreateChecked(value);
-
-    //  yield return (number.Sign, number.IsZero ? "Zero" : number.Sign < 0 ? "Negative" : string.Empty);
-
-    //  var maxCutoff = System.Numerics.BigInteger.Parse("1e123", System.Globalization.NumberStyles.AllowExponent, null);
-
-    //  foreach (var bi in GetCompoundNumbers(System.Numerics.BigInteger.Abs(number), maxCutoff))
-    //  {
-    //    if (!ShortScaleDictionary.TryGetValue(bi, out var word))
-    //      word = ((AnyScaleZeroToMillion)(int)bi).ToString();
-
-    //    yield return (bi, word);
-    //  }
-    //}
-
-    public static System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetCompoundNumbers<TInteger>(this TInteger value, TInteger maxCompound)
+    /// <summary>
+    /// <para>Creates a new sequence of compound numbers by breaking down the specified <paramref name="value"/>. The sequence will yield no larger value than <paramref name="maxCutoff"/>.</para>
+    /// </summary>
+    /// <typeparam name="TInteger"></typeparam>
+    /// <param name="value"></param>
+    /// <param name="maxCutoff">No values larger than this will appear. This is the maximum compound value.</param>
+    /// <returns></returns>
+    public static System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetCompoundNumbers<TInteger>(TInteger value, TInteger maxCutoff)
       where TInteger : System.Numerics.IBinaryInteger<TInteger>
     {
       yield return TInteger.Sign(value);
 
-      foreach (var compoundNumber in GetCompoundNumbers(System.Numerics.BigInteger.Abs(System.Numerics.BigInteger.CreateChecked(value)), System.Numerics.BigInteger.CreateChecked(maxCompound)))
+      foreach (var compoundNumber in GetCompoundNumbers(System.Numerics.BigInteger.Abs(System.Numerics.BigInteger.CreateChecked(value)), System.Numerics.BigInteger.CreateChecked(maxCutoff)))
         yield return compoundNumber;
     }
 
@@ -380,7 +248,9 @@ namespace Flux.Globalization.En
         yield return absNumber; // Add the number (e.g. 2).
     }
 
-    public static System.Collections.Generic.IReadOnlyDictionary<System.Numerics.BigInteger, string> LongScaleDictionary
+    #region Numeric (any, long & short) scale data
+
+    public static System.Collections.Generic.IReadOnlyDictionary<System.Numerics.BigInteger, string> LongScaleUniqueDictionary
       => new System.Collections.Generic.Dictionary<System.Numerics.BigInteger, string>()
       {
         { System.Numerics.BigInteger.Parse("1e123", System.Globalization.NumberStyles.AllowExponent, null), "Vigintilliard" },
@@ -422,45 +292,12 @@ namespace Flux.Globalization.En
         { 1000000000000000L, "Billiard" }, // 1e15
         { 1000000000000L, "Billion" }, // 1e12
         { 1000000000, "Milliard" }, // 1e9
-        //{ 1000000, "Million" }, // 1e6
-        //{ 1000, "Thousand" }, // 1e3
-        //{ 100, "Hundred" },
-
-        //{ 90, "Ninety" },
-        //{ 80, "Eighty" },
-        //{ 70, "Seventy" },
-        //{ 60, "Sixty" },
-        //{ 50, "Fifty" },
-        //{ 40, "Fourty" },
-        //{ 30, "Thirty" },
-        //{ 20, "Twenty" },
-        //{ 19, "Nineteen" },
-        //{ 18, "Eighteen" },
-        //{ 17, "Seventeen" },
-        //{ 16, "Sixteen" },
-        //{ 15, "Fifteen" },
-        //{ 14, "Fourteen" },
-        //{ 13, "Thirteen" },
-        //{ 12, "Twelve" },
-        //{ 11, "Eleven" },
-        //{ 10, "Ten" },
-
-        //{ 9, "Nine" },
-        //{ 8, "Eight" },
-        //{ 7, "Seven" },
-        //{ 6, "Six" },
-        //{ 5, "Five" },
-        //{ 4, "Four" },
-        //{ 3, "Three" },
-        //{ 2, "Two" },
-        //{ 1, "One" },
-        //{ 0, "Zero" },
       };
 
     /// <summary>
     /// <para>Contains the short scale table of number to word translations.</para>
     /// </summary>
-    public static System.Collections.Generic.IReadOnlyDictionary<System.Numerics.BigInteger, string> ShortScaleDictionary
+    public static System.Collections.Generic.IReadOnlyDictionary<System.Numerics.BigInteger, string> ShortScaleUniqueDictionary
       => new System.Collections.Generic.Dictionary<System.Numerics.BigInteger, string>()
       {
         { System.Numerics.BigInteger.Parse("1e123", System.Globalization.NumberStyles.AllowExponent, null), "Quadragintillion" },
@@ -498,47 +335,13 @@ namespace Flux.Globalization.En
         { System.Numerics.BigInteger.Parse("1e27", System.Globalization.NumberStyles.AllowExponent, null), "Octillion" },
         { System.Numerics.BigInteger.Parse("1e24", System.Globalization.NumberStyles.AllowExponent, null), "Septillion" },
         { System.Numerics.BigInteger.Parse("1e21", System.Globalization.NumberStyles.AllowExponent, null), "Sextillion" },
-
         { 1000000000000000000L, "Quintillion" }, // 1e18
         { 1000000000000000L, "Quadrillion" }, // 1e15
         { 1000000000000L, "Trillion" }, // 1e12
         { 1000000000, "Billion" }, // 1e9
-        //{ 1000000, "Million" }, // 1e6
-        //{ 1000, "Thousand" }, // 1e3
-        //{ 100, "Hundred" },
-
-        //{ 90, "Ninety" },
-        //{ 80, "Eighty" },
-        //{ 70, "Seventy" },
-        //{ 60, "Sixty" },
-        //{ 50, "Fifty" },
-        //{ 40, "Fourty" },
-        //{ 30, "Thirty" },
-        //{ 20, "Twenty" },
-        //{ 19, "Nineteen" },
-        //{ 18, "Eighteen" },
-        //{ 17, "Seventeen" },
-        //{ 16, "Sixteen" },
-        //{ 15, "Fifteen" },
-        //{ 14, "Fourteen" },
-        //{ 13, "Thirteen" },
-        //{ 12, "Twelve" },
-        //{ 11, "Eleven" },
-        //{ 10, "Ten" },
-
-        //{ 9, "Nine" },
-        //{ 8, "Eight" },
-        //{ 7, "Seven" },
-        //{ 6, "Six" },
-        //{ 5, "Five" },
-        //{ 4, "Four" },
-        //{ 3, "Three" },
-        //{ 2, "Two" },
-        //{ 1, "One" },
-        //{ 0, "Zero" },
       };
 
-    public enum AnyScaleZeroToMillion
+    public enum AnyScaleCommonZeroToMillion
     {
       Zero = 0,
       One,
@@ -572,5 +375,7 @@ namespace Flux.Globalization.En
       Thousand = 1000, // 1e3
       Million = 1000000, // 1e6
     }
+
+    #endregion
   }
 }

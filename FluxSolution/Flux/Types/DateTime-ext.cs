@@ -2,58 +2,143 @@ namespace Flux
 {
   public static partial class XtensionDateTime
   {
-    #region CoordinateTimeDifference
-
     private const double Lb = 1.55051976772e-08;
-
     private const double Lg = 6.969290134e-10;
 
-    extension(System.DateTime source)
+    extension(System.DateTime)
     {
+      #region CoordinateTimeDifference
+
       /// <summary>
       /// <para>A clock that performs exactly the same movements as the Solar System but is outside the system's (the Solar System's) gravity well.</para>
       /// <see href="https://en.wikipedia.org/wiki/Barycentric_Coordinate_Time"/>
       /// </summary>
-      public double GetBarycentricCoordinateTimeDifference()
+      public static double GetBarycentricCoordinateTimeDifference(System.DateTime source)
         => Lb * (source.ToJulianDate(Temporal.TemporalCalendar.GregorianCalendar).Value - 2443144.5003725) * 86400;
 
       /// <summary>
       /// <para>A clock that performs exactly the same movements as the Earth but is outside the system's (Earth's) gravity well.</para>
       /// <see href="https://en.wikipedia.org/wiki/Geocentric_Coordinate_Time"/>
       /// </summary>
-      public double GetGeocentricCoordinateTimeDifference()
+      public static double GetGeocentricCoordinateTimeDifference(System.DateTime source)
       => Lg * (source.ToJulianDate(Temporal.TemporalCalendar.GregorianCalendar).Value - 2443144.5003725) * 86400;
+
+      #endregion
+
+      #region OAEpock (OLE Automation)
+
+      public static System.DateTime OAEpoch
+        => new(1899, 12, 31, 0, 0, 0);
+
+      #endregion
+
+      #region UnixTime
+
+      public static System.DateTime UnixEpoch
+        => new(1970, 1, 1, 0, 0, 0);
+
+      public static System.DateTime FromUnixTimestamp(long unixTimestamp)
+        => get_UnixEpoch().AddSeconds(unixTimestamp);
+
+      public static System.DateTime FromUnixUltraTimestamp(long unixUltraTimestamp)
+        => get_UnixEpoch().AddMilliseconds(unixUltraTimestamp);
+
+      public static long ToUnixTimestamp(System.DateTime source)
+        => (long)(source - get_UnixEpoch()).TotalSeconds;
+
+      public static long ToUnixUltraTimestamp(System.DateTime source)
+        => (long)(source - get_UnixEpoch()).TotalMilliseconds;
+
+      #endregion
+
+      /// <summary>Determines the number of days in the quarter of the source.</summary>
+      public static int DaysInQuarter(int year, int quarter)
+        => EndOfQuarter(year, quarter).Subtract(StartOfQuarter(year, quarter)).Days + 1;
+
+      /// <summary>Determines the number of days in the year of a <see cref="System.DateTime"/>.</summary>
+      public static int DaysInYear(int year)
+        => System.DateTime.IsLeapYear(year) ? 366 : 365;
+
+      /// <summary>Determines the last day of the month in the source.</summary>
+      public static System.DateTime EndOfMonth(int year, int month)
+        => new(year, month, System.DateTime.DaysInMonth(year, month));
+
+      /// <summary>Determines the last day of the specified quarter in a <see cref="System.DateTime"/>.</summary>
+      public static System.DateTime EndOfQuarter(int year, int quarter)
+      {
+        return quarter switch
+        {
+          1 => new(year, 3, 31),
+          2 => new(year, 6, 30),
+          3 => new(year, 9, 30),
+          4 => new(year, 12, 31),
+          _ => throw new System.ArgumentOutOfRangeException(nameof(quarter)),
+        };
+      }
+
+      /// <summary>Determines the last day of the week in the source, based on the current DateTimeFormatInfo.</summary>
+      public static System.DateTime EndOfWeek(int year, int week, System.Globalization.CultureInfo cultureInfo)
+      {
+        System.ArgumentOutOfRangeException.ThrowIfLessThan(week, 1);
+        System.ArgumentOutOfRangeException.ThrowIfGreaterThan(week, 53);
+
+        var startOfWeek = StartOfWeek(year, week, cultureInfo);
+
+        return startOfWeek.AddDays(6);
+      }
+
+      /// <summary>Determines the last day of the year in the source.</summary>
+      public static System.DateTime EndOfYear(int year)
+        => new(year, 12, 31);
+
+      /// <summary>Determines the first day of the month in the source.</summary>
+      public static System.DateTime StartOfMonth(int year, int month)
+        => new(year, month, 1);
+
+      /// <summary>Determines the first day of the specified quarter in the source.</summary>
+      public static System.DateTime StartOfQuarter(int year, int quarter)
+        => quarter switch
+        {
+          1 => new(year, 1, 1),
+          2 => new(year, 4, 1),
+          3 => new(year, 7, 1),
+          4 => new(year, 10, 1),
+          _ => throw new System.ArgumentOutOfRangeException(nameof(quarter)),
+        };
+
+      public static DateTime StartOfWeek(int year, int week, System.Globalization.CultureInfo cultureInfo)
+      {
+        System.ArgumentOutOfRangeException.ThrowIfLessThan(week, 1);
+        System.ArgumentOutOfRangeException.ThrowIfGreaterThan(week, 53);
+
+        var firstDayOfWeekInYear = System.DateTime.StartOfYear(year);
+
+        if (WeekOfYear(firstDayOfWeekInYear, cultureInfo) is var weekOfYear && weekOfYear != 1)
+          firstDayOfWeekInYear = firstDayOfWeekInYear.AddDays(1);
+
+        var startOfWeek = firstDayOfWeekInYear.AddDays((int)cultureInfo.DateTimeFormat.FirstDayOfWeek - (int)firstDayOfWeekInYear.DayOfWeek);
+
+        return startOfWeek.AddWeeks(week - 1);
+      }
+
+      /// <summary>Determines the first day of the year in the source.</summary>
+      public static System.DateTime StartOfYear(int year)
+        => new(year, 1, 1);
+
+      public static int WeekOfYear(System.DateTime source, System.Globalization.CultureInfo culture)
+        => culture.Calendar.GetWeekOfYear(source, culture.DateTimeFormat.CalendarWeekRule, culture.DateTimeFormat.FirstDayOfWeek);
     }
-
-    #endregion
-
-    #region OAEpock (OLE Automation)
-
-    public static readonly System.DateTime OAEpoch = new(1899, 12, 31, 0, 0, 0);
-
-    #endregion
-
-    #region UnixTime
-
-    public static readonly System.DateTime UnixEpoch = new(1970, 1, 1, 0, 0, 0);
-
-    public static System.DateTime FromUnixTimestamp(this long unixTimestamp) => UnixEpoch.AddSeconds(unixTimestamp);
-
-    public static System.DateTime FromUnixUltraTimestamp(this long unixUltraTimestamp) => UnixEpoch.AddMilliseconds(unixUltraTimestamp);
 
     extension(System.DateTime source)
     {
-      public long ToUnixTimestamp()
-        => (long)(source - UnixEpoch).TotalSeconds;
+      #region Quarter
 
-      public long ToUnixUltraTimestamp()
-        => (long)(source - UnixEpoch).TotalMilliseconds;
-    }
+      /// <summary>Returns the current calendar quarter in the range [1, 4] of the <paramref name="source"/>.</summary>
+      public int Quarter
+        => (source.Month - 1) / 3 + 1;
 
-    #endregion
+      #endregion
 
-    extension(System.DateTime source)
-    {
       #region Add..
 
       public System.DateTime AddFortnights(int count)
@@ -108,64 +193,29 @@ namespace Flux
       #region DayOfWeek
 
       /// <summary>Determines the two closest DayOfWeek dates before and after the source.</summary>
-      public (System.DateTime closest, System.DateTime secondClosest) DayOfWeekClosest(System.DayOfWeek dayOfWeek, bool unequal)
+      public (System.DateTime closest, System.DateTime secondClosest) ClosestDayOfWeek(System.DayOfWeek dayOfWeek, bool unequal)
       {
-        var last = DayOfWeekLast(source, dayOfWeek, unequal);
-        var next = DayOfWeekNext(source, dayOfWeek, unequal);
+        var last = LastDayOfWeek(source, dayOfWeek, unequal);
+        var next = NextDayOfWeek(source, dayOfWeek, unequal);
 
         return next.Subtract(source) < source.Subtract(last) ? (next, last) : (last, next);
       }
 
       /// <summary>Yields the <see cref="System.DateTime"/> of the previous specified <paramref name="dayOfWeek"/> relative to the <paramref name="source"/>. Use <paramref name="unequal"/> to (false = include, true = exclude) <paramref name="source"/> as a result for the past <see cref="System.DayOfWeek"/>.</summary>
-      public System.DateTime DayOfWeekLast(System.DayOfWeek dayOfWeek, bool unequal)
-        => source.DayOfWeek == dayOfWeek && unequal
+      public System.DateTime LastDayOfWeek(System.DayOfWeek dayOfWeek, bool unequal)
+        => unequal && source.DayOfWeek == dayOfWeek
         ? source.AddDays(-7)
-        : source.AddDays(unchecked((int)dayOfWeek - (int)source.DayOfWeek - 7) % 7);
+        : source.AddDays(((int)dayOfWeek - (int)source.DayOfWeek - 7) % 7);
 
       /// <summary>Yields the <see cref="System.DateTime"/> of the next specified <paramref name="dayOfWeek"/> relative to the <paramref name="source"/>. Use <paramref name="unequal"/> to include/exclude <paramref name="source"/> as a result for the future <see cref="System.DayOfWeek"/>.</summary>
-      public System.DateTime DayOfWeekNext(System.DayOfWeek dayOfWeek, bool unequal)
-        => source.DayOfWeek == dayOfWeek && unequal
+      public System.DateTime NextDayOfWeek(System.DayOfWeek dayOfWeek, bool unequal)
+        => unequal && source.DayOfWeek == dayOfWeek
         ? source.AddDays(7)
-        : source.AddDays(unchecked((int)dayOfWeek - (int)source.DayOfWeek + 7) % 7);
-
-      #endregion
-
-      #region DaysIn..
-
-      /// <summary>Determines the number of days in the month of the source.</summary>
-      public int DaysInMonth()
-        => System.DateTime.DaysInMonth(source.Year, source.Month);
-
-      /// <summary>Determines the number of days in the quarter of the source.</summary>
-      public int DaysInQuarter()
-        => source.LastDayOfQuarter().Subtract(source.FirstDayOfQuarter()).Days + 1;
-
-      /// <summary>Determines the number of days in the year of the source.</summary>
-      public int DaysInYear()
-        => System.DateTime.IsLeapYear(source.Year) ? 366 : 365;
+        : source.AddDays(((int)dayOfWeek - (int)source.DayOfWeek + 7) % 7);
 
       #endregion
 
       #region FirstDayOf..
-
-      /// <summary>Determines the first day of the month in the source.</summary>
-      public System.DateTime FirstDayOfMonth()
-        => new(source.Year, source.Month, 1);
-
-      /// <summary>Determines the first day of the specified quarter in the source.</summary>
-      public System.DateTime FirstDayOfQuarter(int quarter)
-        => quarter switch
-        {
-          1 => new(source.Year, 1, 1),
-          2 => new(source.Year, 4, 1),
-          3 => new(source.Year, 7, 1),
-          4 => new(source.Year, 10, 1),
-          _ => throw new System.ArgumentOutOfRangeException(nameof(quarter)),
-        };
-
-      /// <summary>Determines the first day of the current calendar quarter in the source.</summary>
-      public System.DateTime FirstDayOfQuarter()
-        => FirstDayOfQuarter(source, source.QuarterOfYear());
 
       /// <summary>Determines the first day of the week in the source, based on the current DateTimeFormatInfo.</summary>
       public System.DateTime FirstDayOfWeek(System.Globalization.DateTimeFormatInfo? dateTimeFormatInfo = null)
@@ -177,11 +227,7 @@ namespace Flux
 
       /// <summary>Determines the first day of the week in the source, based on the specified DateTimeFormatInfo.</summary>
       public System.DateTime FirstDayOfWeek(System.DayOfWeek firstDayOfWeek)
-        => source.DayOfWeekLast(firstDayOfWeek, true);
-
-      /// <summary>Determines the first day of the year in the source.</summary>
-      public System.DateTime FirstDayOfYear()
-        => new(source.Year, 1, 1);
+        => source.LastDayOfWeek(firstDayOfWeek, true);
 
       #endregion
 
@@ -202,11 +248,11 @@ namespace Flux
 
       /// <summary>Yields the dates in the month of the source.</summary>
       public System.Collections.Generic.IEnumerable<System.DateTime> GetDatesInMonth()
-        => source.FirstDayOfMonth().GetDates(System.DateTime.DaysInMonth(source.Year, source.Month));
+        => System.DateTime.StartOfMonth(source.Year, source.Month).GetDates(System.DateTime.DaysInMonth(source.Year, source.Month));
 
       /// <summary>Yields the dates in the current calendar quarter of the source.</summary>
       public System.Collections.Generic.IEnumerable<System.DateTime> GetDatesInQuarter()
-        => FirstDayOfQuarter(source).GetDatesTo(LastDayOfQuarter(source), true);
+        => System.DateTime.StartOfQuarter(source.Year, source.Quarter).GetDatesTo(System.DateTime.EndOfQuarter(source.Year, source.Quarter), true);
 
       /// <summary>Yields the dates in the week of the source.</summary>
       public System.Collections.Generic.IEnumerable<System.DateTime> GetDatesInWeek()
@@ -214,7 +260,7 @@ namespace Flux
 
       /// <summary>Yields the dates in the year of the source.</summary>
       public System.Collections.Generic.IEnumerable<System.DateTime> GetDatesInYear()
-        => source.FirstDayOfYear().GetDates(source.DaysInYear());
+        => System.DateTime.StartOfYear(source.Year).GetDates(System.DateTime.DaysInYear(source.Year));
 
       /// <summary>Yields a sequence of dates between the source and the specified target, which can be included or not.</summary>
       public System.Collections.Generic.IEnumerable<System.DateTime> GetDatesTo(System.DateTime target, bool includeTarget)
@@ -222,39 +268,17 @@ namespace Flux
 
       #endregion
 
-      #region GetWeekOfYear
+      #region Week
 
-      /// <summary>Determines the week of year for the <paramref name="source"/>.</summary>
-      public int GetWeekOfYear(System.Globalization.CalendarWeekRule rule, System.DayOfWeek firstDayOfWeek)
-        => System.Globalization.CultureInfo.CurrentCulture.Calendar.GetWeekOfYear(source, rule, firstDayOfWeek);
-
-      /// <summary>Determines the week of year for the <paramref name="source"/>.</summary>
-      public int GetWeekOfYear(System.Globalization.CultureInfo? culture = null)
-        => GetWeekOfYear(source, (culture ?? System.Globalization.CultureInfo.CurrentCulture).DateTimeFormat.CalendarWeekRule, (culture ?? System.Globalization.CultureInfo.CurrentCulture).DateTimeFormat.FirstDayOfWeek);
+      /// <summary>
+      /// <para>Returns the current calendar week of year in the range [1, 53] of a <see cref="System.DateTime"/>.</para>
+      /// </summary>
+      public int Week(System.Globalization.CultureInfo? cultureInfo = null)
+        => System.DateTime.WeekOfYear(source, cultureInfo ?? System.Globalization.CultureInfo.CurrentCulture);
 
       #endregion
 
       #region LastDayOf..
-
-      /// <summary>Determines the last day of the month in the source.</summary>
-      public System.DateTime LastDayOfMonth()
-        => new(source.Year, source.Month, System.DateTime.DaysInMonth(source.Year, source.Month));
-
-      /// <summary>Determines the last day of the quarter in the source.</summary>
-      public System.DateTime LastDayOfQuarter(int quarter)
-      {
-        return quarter switch
-        {
-          1 => new(source.Year, 3, 31),
-          2 => new(source.Year, 6, 30),
-          3 => new(source.Year, 9, 30),
-          4 => new(source.Year, 12, 31),
-          _ => throw new System.ArgumentOutOfRangeException(nameof(quarter)),
-        };
-      }
-      /// <summary>Determines the last day of the specified quarter.</summary>
-      public System.DateTime LastDayOfQuarter()
-        => LastDayOfQuarter(source, source.QuarterOfYear());
 
       /// <summary>Determines the last day of the week in the source, based on the current DateTimeFormatInfo.</summary>
       public System.DateTime LastDayOfWeek(System.Globalization.DateTimeFormatInfo? dateTimeFormatInfo = null)
@@ -266,19 +290,7 @@ namespace Flux
 
       /// <summary>Determines the last day of the week in the source, based on the specified DateTimeFormatInfo.</summary>
       public System.DateTime LastDayOfWeek(System.DayOfWeek lastDayOfWeek)
-        => DayOfWeekNext(source, lastDayOfWeek, true);
-
-      /// <summary>Determines the last day of the year in the source.</summary>
-      public System.DateTime LastDayOfYear()
-        => new(source.Year, 12, 31);
-
-      #endregion
-
-      #region QuarterOfYear
-
-      /// <summary>Returns the current calendar quarter in the range [1, 4] of the <paramref name="source"/>.</summary>
-      public int QuarterOfYear()
-        => ((source.Month - 1) / 3) + 1;
+        => NextDayOfWeek(source, lastDayOfWeek, true);
 
       #endregion
 

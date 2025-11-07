@@ -303,9 +303,10 @@ namespace ConsoleApp
 
       //      var rtmo = value.MultipleOfNearest(multiple, true, HalfRounding.AwayFromZero, out var mTowardsZero, out var mAwayFromZero);
 
-      var rtpTowardsZero = value.PowOfTowardZero(radix, true);
-      var rtpAwayFromZero = value.PowOfAwayFromZero(radix, true);
-      var rtp = value.RoundToNearest(Flux.UniversalRounding.IntegralAwayFromZero, rtpTowardsZero, rtpAwayFromZero);
+      //value.Pow()
+      //var rtpTowardsZero = value.PowOfTowardZero(radix, true);
+      //var rtpAwayFromZero = value.PowOfAwayFromZero(radix, true);
+      //var rtp = value.RoundToNearest(Flux.UniversalRounding.IntegralAwayFromZero, rtpTowardsZero, rtpAwayFromZero);
       //var rtp = Flux.Quantities.Radix.PowOf(value, radix, true, Flux.RoundingMode.AwayFromZero, out var rtpTowardsZero, out var rtpAwayFromZero);
 
       System.ArgumentOutOfRangeException.ThrowIfNegative(value);

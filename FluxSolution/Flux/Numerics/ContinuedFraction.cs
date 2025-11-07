@@ -8,13 +8,13 @@ namespace Flux
   public readonly struct ContinuedFraction
     : System.Collections.Generic.IEnumerable<System.Numerics.BigInteger>
   {
-    public static ContinuedFraction E { get; } = (ContinuedFraction)Simplify(Cons(2, Nats()), Cons(1, Nats()));
+    public static ContinuedFraction E { get; } = (ContinuedFraction)Simplify(Cons(2, NaturalNumbers()), Cons(1, NaturalNumbers()));
 
     public static ContinuedFraction One { get; } = (ContinuedFraction)1;
 
-    public static ContinuedFraction Pi { get; } = (ContinuedFraction)Simplify(Cons(3, Rep(6)), Squared(Odds()));
+    public static ContinuedFraction Pi { get; } = (ContinuedFraction)Simplify(Cons(3, Repeat(6)), Squared(Odds()));
 
-    public static ContinuedFraction Sqrt2 { get; } = (ContinuedFraction)Cons(1, Rep(2));
+    public static ContinuedFraction Sqrt2 { get; } = (ContinuedFraction)Cons(1, Repeat(2));
 
     private readonly System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> m_seq;
 
@@ -32,17 +32,17 @@ namespace Flux
 
     #region Static methods
 
-    static System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> Rep(System.Numerics.BigInteger n) { while (true) yield return n; }
+    static System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> Repeat(System.Numerics.BigInteger n) { while (true) yield return n; }
 
     static ContinuedFraction Cons(System.Numerics.BigInteger n, System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> s) => (ContinuedFraction)new[] { n }.Concat(s);
 
     static ContinuedFraction Reciprocal(System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> s) => s.First() == 0 ? (ContinuedFraction)s.Skip(1) : (ContinuedFraction)Cons(0, s);
 
-    static System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> Nats() { System.Numerics.BigInteger n = 1; while (true) { yield return n; n++; } }
+    static System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> NaturalNumbers() { System.Numerics.BigInteger n = 1; while (true) { yield return n; n++; } }
 
     static ContinuedFraction Squared(System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> s) => (ContinuedFraction)s.Select(n => n * n);
 
-    static ContinuedFraction Odds() => (ContinuedFraction)Nats().Select(n => 2 * n - 1);
+    static ContinuedFraction Odds() => (ContinuedFraction)NaturalNumbers().Select(n => 2 * n - 1);
 
     static System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> Simplify(System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> aseq, System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> bseq)
     {
@@ -95,14 +95,14 @@ namespace Flux
     public static ContinuedFraction Ratio(System.Numerics.BigInteger n, System.Numerics.BigInteger d)
       => n.Sign * d.Sign >= 0 ? new(One.Transform(n, 0, d, 0)) : -new ContinuedFraction(One.Transform(-n, 0, d, 0));
 
-    static System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GenerateSeq(System.Func<System.Numerics.BigInteger> generator)
+    static System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GenerateSequence(System.Func<System.Numerics.BigInteger> generator)
     {
       while (true)
         yield return generator();
     }
 
     public static ContinuedFraction Generate(System.Func<System.Numerics.BigInteger> generator)
-      => new(GenerateSeq(generator));
+      => new(GenerateSequence(generator));
 
     private System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> Transform(System.Numerics.BigInteger a1, System.Numerics.BigInteger a, System.Numerics.BigInteger b1, System.Numerics.BigInteger b)
     {

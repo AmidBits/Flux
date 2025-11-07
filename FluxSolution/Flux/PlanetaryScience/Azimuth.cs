@@ -18,7 +18,7 @@ namespace Flux.PlanetaryScience
     private readonly Units.Angle m_angle;
 
     private Azimuth(double angleDeg)
-      => m_angle = new(IntervalNotation.HalfOpenRight.Wrap(angleDeg, MinValue, MaxValue), Units.AngleUnit.Degree);
+      => m_angle = new(IntervalNotation.HalfOpenRight.WrapNative(angleDeg, MinValue, MaxValue), Units.AngleUnit.Degree);
 
     /// <summary>
     /// <para>Creates a new <see cref="Azimuth"/> from the specified <paramref name="angle"/>.</para>

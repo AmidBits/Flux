@@ -406,7 +406,7 @@ namespace Flux
       {
         if (value < TInteger.Zero) throw new System.ArgumentOutOfRangeException(nameof(value));
 
-        var gray = new TInteger[int.CreateChecked(value.DigitCount(radix))];
+        var gray = new TInteger[int.CreateChecked(Units.Radix.DigitCount(value, radix))];
 
         var baseN = new TInteger[gray.Length]; // Stores the ordinary base-N number, one digit per entry
 

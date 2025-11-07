@@ -215,7 +215,7 @@
     /// <param name="angle"></param>
     /// <returns></returns>
     /// <remarks>Values outside the interval [0, 360)) are wrapped, i.e. 370 = 10, -10 = 350, etc.</remarks>
-    public static Angle AsAzimuth(Angle angle) => new(IntervalNotation.Closed.Wrap(angle.Value, 0, double.Tau) % double.Tau);
+    public static Angle AsAzimuth(Angle angle) => new(angle.Value.WrapAround(0, double.Tau) % double.Tau);
 
     /// <summary>
     /// <para>Creates an azimuth <see cref="Angle"/> from <paramref name="value"/> and <paramref name="unit"/>, i.e. a value in the interval [0, 360].</para>

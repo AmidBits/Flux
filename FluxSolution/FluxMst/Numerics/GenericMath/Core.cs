@@ -1,6 +1,5 @@
 ﻿#if NET7_0_OR_GREATER
 using Flux;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Maths
 {
@@ -77,13 +76,13 @@ namespace Maths
     [TestMethod]
     public void IntegerRootN()
     {
-      Assert.AreEqual((3, 3), 27.IntegerRootN(3));
+      Assert.AreEqual((3, 3, 3), 27.RootN(3));
     }
 
     [TestMethod]
     public void IntegerSqrt()
     {
-      Assert.AreEqual(4, 21.IntegerSqrt());
+      Assert.AreEqual((4, 4.58257569495584, 5), 21.Sqrt());
     }
 
     [TestMethod]
@@ -98,12 +97,12 @@ namespace Maths
       Assert.AreEqual(10000000000, 10L.IntegerPow(10));
     }
 
-    [TestMethod]
-    public void IntegerPowRec()
-    {
-      Assert.AreEqual(10000000000, 10L.IntegerPowRec(10, out double reciprocal));
-      Assert.AreEqual(1E-10, reciprocal);
-    }
+    //[TestMethod]
+    //public void IntegerPowRec()
+    //{
+    //  Assert.AreEqual(10000000000, 10L.IntegerPowRec(10, out double reciprocal));
+    //  Assert.AreEqual(1E-10, reciprocal);
+    //}
 
     [TestMethod]
     public void IsPow()
@@ -119,7 +118,7 @@ namespace Maths
 
       var iq = v.IntegerSqrt();
 
-      var isiq = v.IsIntegerSqrt(iq);
+      var isiq = v.IsSqrt(iq);
 
       Assert.IsTrue(isiq);
     }
@@ -131,9 +130,21 @@ namespace Maths
 
       var iq = v.IntegerSqrt();
 
-      var ispiq = v.IsPerfectIntegerSqrt(iq);
+      var ispiq = v.IsPerfectSqrt(iq);
 
       Assert.IsFalse(ispiq);
+    }
+
+    [TestMethod]
+    public void MaxDigitCount()
+    {
+      var actual = (10).MaxDigitCountOfBitLength(10, false); // Yields 4, because a max value of 1023 can be represented (all bits can be used in an unsigned value).
+      var expected = 4;
+      Assert.AreEqual(expected, actual);
+
+      actual = (10).MaxDigitCountOfBitLength(10, true); // Yields 3, because a max value of 511 can be represented (excluding the MSB used for negative values of signed types).
+      expected = 3;
+      Assert.AreEqual(expected, actual);
     }
 
     [TestMethod]

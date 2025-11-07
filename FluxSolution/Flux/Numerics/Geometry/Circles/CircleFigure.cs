@@ -14,20 +14,29 @@ namespace Flux.Numerics.Geometry.Circles
     public CircleFigure(double radius) => m_radius = radius;
 
     /// <summary>
-    /// <para>The circumference (perimeter) of the circle.</para>
-    /// </summary>
-    public double Perimeter => Units.Length.OfCirclePerimeter(m_radius);
-
-    /// <summary>
     /// <para>The radius of the circle.</para>
     /// </summary>
     public double Radius => m_radius;
+
+    /// <summary>
+    /// <para>The circumference (perimeter) of the circle.</para>
+    /// </summary>
+    public double Circumference => Units.Length.OfCirclePerimeter(m_radius);
+
+    /// <summary>
+    /// <para>The perimeter (circumference) of the circle.</para>
+    /// </summary>
+    public double Perimeter => Units.Length.OfCirclePerimeter(m_radius);
 
     /// <summary>The surface area of circle.</summary>
     public double SurfaceArea => Units.Area.OfCircle(m_radius);
 
     /// <summary>Returns whether a point is inside the circle.</summary>
     public bool Contains(double x, double y) => CircleContainsPoint(m_radius, x, y);
+
+    public Numerics.Geometry.Ellipses.EllipseFigure ToEllipseFigure() => new(m_radius);
+
+    public Numerics.Geometry.Hexagons.HexagonFigure ToHexagonFigure() => new(m_radius);
 
     public CoordinateSystems.PolarCoordinate ToPolarCoordinate(double azimuthValue, Units.AngleUnit azimuthUnit) => new(m_radius, Units.LengthUnit.Meter, azimuthValue, azimuthUnit);
 

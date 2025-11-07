@@ -1,8 +1,6 @@
-﻿using System.Globalization;
-
-namespace Flux
+﻿namespace Flux
 {
-  public static partial class IFloatingPoint
+  public static class FloatingPointFunctions
   {
     /// <summary>Represents the Champernowne constant. A transcendental real constant whose decimal expansion has important properties.</summary>
     public const double C10 = 0.123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960;
@@ -51,21 +49,6 @@ namespace Flux
       /// <summary>Represents the square root of 3.</summary>
       public static TFloat TheodorusConstant => TFloat.CreateChecked(TheodorusConstant);
     }
-
-    //extension<TFloat>(TFloat)
-    //  where TFloat : System.Numerics.IFloatingPoint<TFloat>
-    //{
-    //  /// <summary>
-    //  /// <para>Equivalent to the opposite effect of the Truncate() functionality, i.e. instead of truncating the fraction and essentially executing a round-toward-zero, envelop the fraction and essentially execute a round-away-from-zero.</para>
-    //  /// <para>It can also be seen as a companion function to truncate(). Unlike truncate() which calls floor() for positive numbers and ceiling() for negative; envelope() calls ceiling() for positive numbers and floor() for negative.</para>
-    //  /// </summary>
-    //  /// <remarks>Like truncate, envelop is a symmetric biased around 0 type rounding.</remarks>
-    //  /// <typeparam name="TFloat"></typeparam>
-    //  /// <param name="x"></param>
-    //  /// <returns></returns>
-    //  public static TFloat Envelop(TFloat x)
-    //  => TFloat.IsNegative(x) ? TFloat.Floor(x) : TFloat.Ceiling(x);
-    //}
 
     extension<TFloat>(TFloat x)
       where TFloat : System.Numerics.IFloatingPoint<TFloat>
@@ -126,6 +109,34 @@ namespace Flux
 
         return Envelop(x * m) / m;
       }
+
+      public (TFloat Floor, TFloat Ceiling) FindSurroundingIntegersWithTolerance(TFloat absoluteTolerance, TFloat relativeTolerance, System.MidpointRounding midpointRounding)
+      {
+        if (x != default(TFloat)!)
+        {
+          var ivalue = TFloat.Round(x, midpointRounding);
+
+          var eqwt = x.EqualsWithinAbsoluteTolerance(ivalue, absoluteTolerance) || x.EqualsWithinRelativeTolerance(ivalue, relativeTolerance);
+
+          var ivaluec = TFloat.Ceiling(x);
+          var ivaluef = TFloat.Floor(x);
+
+          if (eqwt)
+          {
+            if (x < ivalue) // The value and its integer is considered equal, but the specified value is less, so the floor will be off, slightly less, and needs to be equal to ceiling. (The ceiling, same issue, happens to be correct.)
+              ivaluef = ivaluec;
+            else if (x > ivalue) // The value and its integer is considered equal, but the specified value is greater, so the ceiling will be off, slightly greater, and needs to be equal to floor. (The floor, same issue, happens to be correct.)
+              ivaluec = ivaluef;
+          }
+
+          return TFloat.IsNegative(x) ? (ivaluec, ivaluef) : (ivaluef, ivaluec);
+        }
+
+        return (default!, default!);
+      }
+
+      public (TFloat Floor, TFloat Ceiling) FindSurroundingIntegersWithTolerance(TFloat absoluteTolerance, TFloat relativeTolerance)
+        => FindSurroundingIntegersWithTolerance(x, absoluteTolerance, relativeTolerance, System.MidpointRounding.ToEven);
 
       public Numerics.BigRational ToBigRational(int maxApproximationIterations = 101)
       {

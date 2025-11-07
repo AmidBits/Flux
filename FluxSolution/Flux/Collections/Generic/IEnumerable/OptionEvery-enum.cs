@@ -1,8 +1,8 @@
-namespace Flux
-{
-  public enum OptionEvery
-  {
-    First,
-    Last
-  }
-}
+//namespace Flux
+//{
+//  public enum OptionEvery
+//  {
+//    First,
+//    Last
+//  }
+//}

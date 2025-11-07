@@ -1,3 +1,5 @@
+using Flux.Units;
+
 namespace Flux.CoordinateSystems
 {
   /// <summary>
@@ -66,8 +68,6 @@ namespace Flux.CoordinateSystems
     /// <remarks>The elevation angle is 90 degrees (PI/2 radians) minus the <see cref="Inclination"/> angle.</remarks>
     public Units.Angle Elevation { get => new(ConvertInclinationToElevation(m_inclination)); init => m_inclination = ConvertElevationToInclination(value.Value); }
 
-    public double SphereSurfaceArea => Units.Area.OfSphere(m_radius);
-
     /// <summary>Creates new <see cref="CartesianCoordinate"/> from the <see cref="SphericalCoordinate"/>.</summary>
     public CartesianCoordinate ToCartesianCoordinate()
     {
@@ -107,6 +107,28 @@ namespace Flux.CoordinateSystems
     }
 
     #region Static methods
+
+    public SphericalCoordinate CreateRandom(double radius, System.Random? rng = null)
+    {
+      rng ??= System.Random.Shared;
+
+      return new(
+        rng.NextDouble(radius),
+        rng.NextDouble(double.Pi),
+        rng.NextDouble(double.Tau)
+      );
+    }
+
+    public SphericalCoordinate CreateRandomOnSurface(double radius, System.Random? rng = null)
+    {
+      rng ??= System.Random.Shared;
+
+      return new(
+        radius,
+        rng.NextDouble(double.Pi),
+        rng.NextDouble(double.Tau)
+      );
+    }
 
     #region Conversion methods
 

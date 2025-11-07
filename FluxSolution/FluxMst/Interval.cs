@@ -1,6 +1,5 @@
 ﻿#if NET7_0_OR_GREATER
 using Flux;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Numerics
 {
@@ -34,13 +33,19 @@ namespace Numerics
     [TestMethod]
     public void WrapAroundHalfOpenMax()
     {
-      Assert.AreEqual(-1, new Interval<int>(-2, 2).WrapAround(7, Flux.IntervalNotation.HalfOpenRight));
+      var expected = -1;
+      var actual = Flux.IntervalNotation.HalfOpenRight.Wrap(7, -2, 2);
+
+      Assert.AreEqual(expected, actual);
     }
 
     [TestMethod]
     public void WrapAroundHalfOpenMin()
     {
-      Assert.AreEqual(-1, new Interval<int>(-2, 2).WrapAround(7, Flux.IntervalNotation.HalfOpenLeft));
+      var expected = -1;
+      var actual = Flux.IntervalNotation.HalfOpenLeft.Wrap(7, -2, 2);
+
+      Assert.AreEqual(expected, actual);
     }
   }
 }

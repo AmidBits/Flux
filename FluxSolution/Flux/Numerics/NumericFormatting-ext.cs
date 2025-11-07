@@ -152,7 +152,7 @@ namespace Flux
       /// <param name="columnNamePrefix"></param>
       /// <returns></returns>
       public string ToSingleOrdinalColumnName(string columnNamePrefix = "Column")
-        => value.ToSingleOrdinalColumnName(int.CreateChecked(value.DigitCount(TInteger.CreateChecked(10))), columnNamePrefix);
+        => value.ToSingleOrdinalColumnName(int.CreateChecked(Units.Radix.DigitCount(value, TInteger.CreateChecked(10))), columnNamePrefix);
 
       /// <summary>
       /// <para>Creates an array of generic column-<paramref name="columnNamePrefix"/>s for <paramref name="value"/> amount of columns.</para>
@@ -164,7 +164,7 @@ namespace Flux
       /// <returns></returns>
       public string[] ToMultipleOrdinalColumnNames(string columnNamePrefix = "Column")
       {
-        var maxWidth = int.CreateChecked(value.DigitCount(10));
+        var maxWidth = int.CreateChecked(Units.Radix.DigitCount(value, 10));
 
         return [.. System.Linq.Enumerable.Range(1, int.CreateChecked(value)).Select(i => i.ToSingleOrdinalColumnName(maxWidth, columnNamePrefix))];
       }

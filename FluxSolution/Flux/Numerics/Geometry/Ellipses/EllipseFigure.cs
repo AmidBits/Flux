@@ -19,6 +19,7 @@ namespace Flux.Numerics.Geometry.Ellipses
       m_a = a;
       m_b = b;
     }
+    public EllipseFigure(double r) : this(r, r) { }
 
     public void Deconstruct(out double a, out double b) { a = m_a; b = m_b; }
 

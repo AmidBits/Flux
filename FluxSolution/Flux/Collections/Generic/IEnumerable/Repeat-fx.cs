@@ -1,22 +1,22 @@
-namespace Flux
-{
-  public static partial class IEnumerables
-  {
-    #region Repeat
+//namespace Flux
+//{
+//  public static partial class IEnumerables
+//  {
+//    #region Repeat
 
-    /// <summary></summary>
-    /// <exception cref="System.ArgumentNullException"/>
-    public static System.Collections.Generic.IEnumerable<T> Repeat<T>(this System.Collections.Generic.IEnumerable<T> source, int count)
-    {
-      System.ArgumentOutOfRangeException.ThrowIfNegative(count);
+//    /// <summary></summary>
+//    /// <exception cref="System.ArgumentNullException"/>
+//    public static System.Collections.Generic.IEnumerable<T> Repeat<T>(this System.Collections.Generic.IEnumerable<T> source, int count)
+//    {
+//      System.ArgumentOutOfRangeException.ThrowIfNegative(count);
 
-      var list = new System.Collections.Generic.List<T>(source);
+//      var list = new System.Collections.Generic.List<T>(source);
 
-      while (count-- >= 0)
-        foreach (var item in list)
-          yield return item;
-    }
+//      while (count-- >= 0)
+//        foreach (var item in list)
+//          yield return item;
+//    }
 
-    #endregion
-  }
-}
+//    #endregion
+//  }
+//}

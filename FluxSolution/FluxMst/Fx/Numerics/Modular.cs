@@ -1,6 +1,5 @@
 ﻿#if NET7_0_OR_GREATER
 using Flux;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Maths
 {
@@ -27,11 +26,51 @@ namespace Maths
     //}
 
     [TestMethod]
-    public void Mod()
+    public void CeilingDivRem()
     {
-      var (quotient, remainder) = EuclideanDivision.EuclideanDivRem(9, 6);
+      var actual = ModuloOperations.CeilingDivRem(9, 6);
+      var expected = (2, -3);
+      Assert.AreEqual(expected, actual);
+    }
 
-      Assert.AreEqual(3, remainder);
+    [TestMethod]
+    public void EnvelopDivRem()
+    {
+      var actual = ModuloOperations.EnvelopedDivRem(9, 6);
+      var expected = (2, -3);
+      Assert.AreEqual(expected, actual);
+    }
+
+    [TestMethod]
+    public void EuclideanDivRem()
+    {
+      var actual = ModuloOperations.EuclideanDivRem(9, 6);
+      var expected = (1, 3);
+      Assert.AreEqual(expected, actual);
+    }
+
+    [TestMethod]
+    public void FlooredDivRem()
+    {
+      var actual = ModuloOperations.FlooredDivRem(9, 6);
+      var expected = (1, 3);
+      Assert.AreEqual(expected, actual);
+    }
+
+    [TestMethod]
+    public void RoundedDivRem()
+    {
+      var actual = ModuloOperations.RoundedDivRem(9, 6);
+      var expected = (2, -3);
+      Assert.AreEqual(expected, actual);
+    }
+
+    [TestMethod]
+    public void TruncatedDivRem()
+    {
+      var actual = ModuloOperations.TruncatedDivRem(9, 6);
+      var expected = (1, 3);
+      Assert.AreEqual(expected, actual);
     }
 
     [TestMethod]

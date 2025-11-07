@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static class NumberRescaling
+  public static class Rescaling
   {
     extension<TNumber>(TNumber value)
       where TNumber : System.Numerics.INumber<TNumber>
