@@ -272,7 +272,7 @@ namespace Flux.Units
     public static TProbability PoissonDistributionPmf<TCount, TProbability>(TCount a, TCount k)
       where TCount : System.Numerics.IBinaryInteger<TCount>
       where TProbability : System.Numerics.IFloatingPoint<TProbability>, System.Numerics.IPowerFunctions<TProbability>
-      => TProbability.CreateChecked(a.IntegerPow(k)) * TProbability.Pow(TProbability.E, -TProbability.CreateChecked(a)) / TProbability.CreateChecked(k.Factorial());
+      => TProbability.CreateChecked(a.IPow(k)) * TProbability.Pow(TProbability.E, -TProbability.CreateChecked(a)) / TProbability.CreateChecked(k.Factorial());
 
     #endregion // Poisson distribution
 

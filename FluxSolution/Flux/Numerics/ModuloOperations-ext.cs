@@ -2,7 +2,6 @@ namespace Flux
 {
   /// <summary>
   /// <para>Euclidean division, where the remainder is always positive.</para>
-  /// <para><see href="https://en.wikipedia.org/wiki/Euclidean_division"/></para>
   /// <para><see href="https://en.wikipedia.org/wiki/Modulo"/></para>
   /// <para><see href="https://stackoverflow.com/a/20638659/3178666"/></para>
   /// </summary>
@@ -48,9 +47,6 @@ namespace Flux
 
       /// <summary>
       /// <para>Enveloped (opposite of truncated, in that it envelops the entire fractional side to the next whole integer) division, where the quotient is ceiling for positive and floor for negative.</para>
-      /// <para><see href="https://en.wikipedia.org/wiki/Euclidean_division"/></para>
-      /// <para><see href="https://en.wikipedia.org/wiki/Modulo"/></para>
-      /// <para><see href="https://stackoverflow.com/a/20638659/3178666"/></para>
       /// </summary>
       /// <param name="n"></param>
       /// <returns>
@@ -135,6 +131,7 @@ namespace Flux
       /// <para><c>q = trunc(a / n)</c></para>
       /// <para><c>r = a - n * q</c></para>
       /// </returns>
+      [System.Obsolete("Please use the built-in versions from System.Numerics.IBinaryInteger<>.DivRem(left, right) instead. Just provided here for completeness.")]
       public (TInteger Quotient, TInteger Remainder) TruncatedDivRem(TInteger n) => TInteger.DivRem(a, n);
     }
   }

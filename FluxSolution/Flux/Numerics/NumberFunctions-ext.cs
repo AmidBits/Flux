@@ -198,49 +198,62 @@ namespace Flux
 
       #endregion
 
-      public bool IsIntegerValue()
-        => TNumber.IsInteger(value);
+      #region KroneckerDelta
+
+      /// <summary>
+      /// <para>The Kronecker delta is a function of two variables, usually just non-negative integers. The function is 1 if the variables are equal, and 0 otherwise.</para>
+      /// <para><see href="https://en.wikipedia.org/wiki/Kronecker_delta"/></para>
+      /// </summary>
+      /// <param name="b"></param>
+      /// <returns></returns>
+      public TNumber KroneckerDelta(TNumber other)
+        => value == other ? TNumber.One : TNumber.Zero;
+
+      #endregion
 
       #region Log..
 
       /// <summary>
-      /// <para>Computes the logarithm of a value in the specified radix (base).</para>
+      /// <para>Computes the logarithm of a value in the specified radix (base) and returns the largest integral LTE (less-than-or-equal) and the smallest integral GTE (greater-than-or-equal) to value.</para>
+      /// <para>Uses the <see cref="System.Double"/> functionality.</para>
       /// </summary>
       /// <typeparam name="TRadix"></typeparam>
       /// <param name="radix">Can be any </param>
-      /// <returns>The floor and ceiling of the result.</returns>
-      public (TNumber TowardZero, double LogR, TNumber AwayFromZero) Log<TRadix>(TRadix radix)
+      /// <returns>The (IntegralTowardZero, the "raw" LogR, and IntegralAwayFromZero) of the result.</returns>
+      public (TNumber IntegralTowardZero, double LogR, TNumber IntegralAwayFromZero) Log<TRadix>(TRadix radix)
         where TRadix : System.Numerics.INumber<TRadix>
       {
         var logR = double.Log(double.CreateChecked(value), double.CreateChecked(radix));
 
-        var (tz, afz) = logR.FindSurroundingIntegersWithTolerance(1e-10, 1e-10);
+        var (tz, afz) = logR.SurroundingIntegralsWithTolerance(1e-10, 1e-10);
 
         return (TNumber.CreateChecked(tz), logR, TNumber.CreateChecked(afz));
       }
 
       /// <summary>
       /// <para>Computes the base-10 logarithm of a value.</para>
+      /// <para>Uses the <see cref="System.Double"/> functionality.</para>
       /// </summary>
-      /// <returns></returns>
-      public (TNumber TowardZero, double Log10, TNumber AwayFromZero) Log10()
+      /// <returns>The (IntegralTowardZero, the "raw" Log10, and IntegralAwayFromZero) of the result.</returns>
+      public (TNumber IntegralTowardZero, double Log10, TNumber IntegralAwayFromZero) Log10()
       {
         var log10 = double.Log10(double.CreateChecked(value));
 
-        var (tz, afz) = log10.FindSurroundingIntegersWithTolerance(1e-10, 1e-10);
+        var (tz, afz) = log10.SurroundingIntegralsWithTolerance(1e-10, 1e-10);
 
         return (TNumber.CreateChecked(tz), log10, TNumber.CreateChecked(afz));
       }
 
       /// <summary>
       /// <para>Computes the natural (base-E) logarithm of a value.</para>
+      /// <para>Uses the <see cref="System.Double"/> functionality.</para>
       /// </summary>
-      /// <returns></returns>
-      public (TNumber TowardZero, double LogE, TNumber AwayFromZero) LogE()
+      /// <returns>The (IntegralTowardZero, the "raw" LogE, and IntegralAwayFromZero) of the result.</returns>
+      public (TNumber IntegralTowardZero, double LogE, TNumber IntegralAwayFromZero) LogE()
       {
         var logE = double.Log(double.CreateChecked(value));
 
-        var (tz, afz) = logE.FindSurroundingIntegersWithTolerance(1e-10, 1e-10);
+        var (tz, afz) = logE.SurroundingIntegralsWithTolerance(1e-10, 1e-10);
 
         return (TNumber.CreateChecked(tz), logE, TNumber.CreateChecked(afz));
       }
@@ -344,20 +357,19 @@ namespace Flux
       #region Pow
 
       /// <summary>
-      /// <para>Computes a <paramref name="value"/> raised to to a given <paramref name="exponent"/>.</para>
+      /// <para>Computes a value raised to to a given <paramref name="exponent"/>.</para>
+      /// <para>Uses the <see cref="System.Double"/> functionality.</para>
       /// </summary>
       /// <typeparam name="TNumber"></typeparam>
       /// <typeparam name="TExponent"></typeparam>
-      /// <param name="value"></param>
       /// <param name="exponent"></param>
-      /// <param name="pow">Out parameter with the result from <see cref="double.Pow(double, double)"/>.</param>
-      /// <returns>The floor and ceiling of the result.</returns>
-      public (TNumber TowardZero, double Pow, TNumber AwayFromZero) Pow<TExponent>(TExponent exponent)
+      /// <returns>The (IntegralTowardZero, the "raw" Pow, and IntegralAwayFromZero) of the result.</returns>
+      public (TNumber IntegralTowardZero, double Pow, TNumber IntegralAwayFromZero) Pow<TExponent>(TExponent exponent)
         where TExponent : System.Numerics.INumber<TExponent>
       {
         var pow = double.Pow(double.CreateChecked(value), double.CreateChecked(exponent));
 
-        var (powf, powc) = pow.FindSurroundingIntegersWithTolerance(1e-10, 1e-10);
+        var (powf, powc) = pow.SurroundingIntegralsWithTolerance(1e-10, 1e-10);
 
         return (TNumber.CreateChecked(powf), pow, TNumber.CreateChecked(powc));
       }
@@ -370,7 +382,7 @@ namespace Flux
       {
         var rootn = double.Cbrt(double.CreateChecked(value));
 
-        var (tz, afz) = rootn.FindSurroundingIntegersWithTolerance(1e-10, 1e-10);
+        var (tz, afz) = rootn.SurroundingIntegralsWithTolerance(1e-10, 1e-10);
 
         return (TNumber.CreateChecked(tz), rootn, TNumber.CreateChecked(afz));
       }
@@ -380,7 +392,7 @@ namespace Flux
       {
         var rootn = double.RootN(double.CreateChecked(value), int.CreateChecked(nth));
 
-        var (tz, afz) = rootn.FindSurroundingIntegersWithTolerance(1e-10, 1e-10);
+        var (tz, afz) = rootn.SurroundingIntegralsWithTolerance(1e-10, 1e-10);
 
         return (TNumber.CreateChecked(tz), rootn, TNumber.CreateChecked(afz));
       }
@@ -389,7 +401,7 @@ namespace Flux
       {
         var sqrt = double.Sqrt(double.CreateChecked(value));
 
-        var (tz, afz) = sqrt.FindSurroundingIntegersWithTolerance(1e-10, 1e-10);
+        var (tz, afz) = sqrt.SurroundingIntegralsWithTolerance(1e-10, 1e-10);
 
         return (TNumber.CreateChecked(tz), sqrt, TNumber.CreateChecked(afz));
       }

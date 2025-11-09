@@ -1,7 +1,7 @@
 namespace Flux
 {
   /// <para><see href="https://en.wikipedia.org/wiki/Multiplicative_function"/></para>
-  public static class EuclidsAlgorithm
+  public static class EuclideanAlgorithm
   {
     extension<TInteger>(TInteger a)
       where TInteger : System.Numerics.IBinaryInteger<TInteger>

@@ -250,7 +250,7 @@ namespace Flux
       /// <exception cref="System.ArgumentOutOfRangeException"></exception>
       public System.ReadOnlySpan<char> ToDecimalString(int minLength = 1, char negativeSymbol = '\u002D', string alphabet = Units.Radix.Base64)
       {
-        if (minLength <= 0) minLength = value.GetBitCount().MaxDigitCountOfBitLength(10, value.IsNumericTypeSigned());
+        if (minLength <= 0) minLength = value.GetBitCount().BitLengthToMaxDigitCount<int, int>(10, value.IsNumericTypeSigned());
 
         alphabet ??= Units.Radix.Base64;
 
@@ -282,7 +282,7 @@ namespace Flux
       /// <exception cref="System.ArgumentOutOfRangeException"></exception>
       public System.ReadOnlySpan<char> ToHexadecimalString(int minLength = 1, string alphabet = Units.Radix.Base64)
       {
-        if (minLength <= 0) minLength = value.GetBitCount().MaxDigitCountOfBitLength(16, value.IsNumericTypeSigned());
+        if (minLength <= 0) minLength = value.GetBitCount().BitLengthToMaxDigitCount<int, int>(16, value.IsNumericTypeSigned());
 
         alphabet ??= Units.Radix.Base64;
 
@@ -314,7 +314,7 @@ namespace Flux
       /// <exception cref="System.ArgumentOutOfRangeException"></exception>
       public System.ReadOnlySpan<char> ToOctalString(int minLength = 1, string alphabet = Units.Radix.Base64)
       {
-        if (minLength <= 0) minLength = value.GetBitCount().MaxDigitCountOfBitLength(8, value.IsNumericTypeSigned());
+        if (minLength <= 0) minLength = value.GetBitCount().BitLengthToMaxDigitCount<int, int>(8, value.IsNumericTypeSigned());
 
         alphabet ??= Units.Radix.Base64;
 
@@ -356,7 +356,7 @@ namespace Flux
           return value.ToHexadecimalString(minLength, alphabet);
         else
         {
-          if (minLength <= 0) minLength = value.GetBitCount().MaxDigitCountOfBitLength(rdx, value.IsNumericTypeSigned());
+          if (minLength <= 0) minLength = value.GetBitCount().BitLengthToMaxDigitCount<int, int>(rdx, value.IsNumericTypeSigned());
 
           alphabet ??= Units.Radix.Base64;
 

@@ -3,7 +3,7 @@ namespace Flux
   public static class ModularArithmetic
   {
     extension<TInteger>(TInteger a)
-        where TInteger : System.Numerics.IBinaryInteger<TInteger>
+      where TInteger : System.Numerics.IBinaryInteger<TInteger>
     {
       public TInteger ModAdd(TInteger b, TInteger m)
       {
@@ -107,5 +107,26 @@ namespace Flux
         return (a - b) % m;
       }
     }
+
+
+    //public static TInteger Redc<TInteger>(TInteger thi, TInteger tlo, TInteger n, TInteger invn)
+    //  where TInteger : System.Numerics.IBinaryInteger<TInteger>
+    //{
+    //  if (!TInteger.IsOddInteger(n)) throw new System.ArgumentOutOfRangeException(nameof(n), "Requires odd modulus.");
+    //  if (thi < n) throw new System.ArgumentException("Requires thi < n.");
+
+    //  var m = tlo * invn;
+    //  var mN = m * n;
+    //  var mN_hi = mN >> 64;
+    //  var tmp = thi + n;
+    //  tmp -= mN_hi;
+    //  var result = thi - mN_hi;
+    //  if (thi < mN_hi)
+    //    result = tmp;
+
+    //  if (result < n) throw new System.ArgumentException("Requires result < n.");
+
+    //  return result;
+    //}
   }
 }

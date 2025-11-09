@@ -50,6 +50,23 @@
       public static TFloat TheodorusConstant => TFloat.CreateChecked(TheodorusConstant);
     }
 
+    extension<TFloat>(TFloat)
+      where TFloat : System.Numerics.IFloatingPointIeee754<TFloat>
+    {
+      /// <summary>
+      /// <para>Machine epsilon computed on the fly.</para>
+      /// </summary>
+      public static TFloat MachineEpsilon()
+      {
+        var epsilon = TFloat.One;
+
+        while (epsilon / TFloat.CreateChecked(2) is var halfEpsilon && (TFloat.One + halfEpsilon) > TFloat.One)
+          epsilon = halfEpsilon;
+
+        return epsilon;
+      }
+    }
+
     extension<TFloat>(TFloat x)
       where TFloat : System.Numerics.IFloatingPoint<TFloat>
     {
@@ -110,9 +127,9 @@
         return Envelop(x * m) / m;
       }
 
-      public (TFloat Floor, TFloat Ceiling) FindSurroundingIntegersWithTolerance(TFloat absoluteTolerance, TFloat relativeTolerance, System.MidpointRounding midpointRounding)
+      public (TFloat Floor, TFloat Ceiling) SurroundingIntegralsWithTolerance(TFloat absoluteTolerance, TFloat relativeTolerance, System.MidpointRounding midpointRounding)
       {
-        if (x != default(TFloat)!)
+        if (!TFloat.IsZero(x))
         {
           var ivalue = TFloat.Round(x, midpointRounding);
 
@@ -135,8 +152,8 @@
         return (default!, default!);
       }
 
-      public (TFloat Floor, TFloat Ceiling) FindSurroundingIntegersWithTolerance(TFloat absoluteTolerance, TFloat relativeTolerance)
-        => FindSurroundingIntegersWithTolerance(x, absoluteTolerance, relativeTolerance, System.MidpointRounding.ToEven);
+      public (TFloat Floor, TFloat Ceiling) SurroundingIntegralsWithTolerance(TFloat absoluteTolerance, TFloat relativeTolerance)
+        => SurroundingIntegralsWithTolerance(x, absoluteTolerance, relativeTolerance, System.MidpointRounding.ToEven);
 
       public Numerics.BigRational ToBigRational(int maxApproximationIterations = 101)
       {

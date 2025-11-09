@@ -41,7 +41,7 @@ namespace Flux.Transcipher.Asymmetric
 
       var privateB64 = Flux.Transcode.Base64.Default.EncodeString(privateKey);
 
-      var privateLines = privateB64.Length.CreateSubRanges(splitLineLength).Select(r => privateB64[r]).ToList();
+      var privateLines = privateB64.Length.GenerateSubRanges(splitLineLength).Select(r => privateB64[r]).ToList();
 
       privateLines.Insert(0, "-----BEGIN RSA PRIVATE KEY-----");
       privateLines.Add("-----END RSA PRIVATE KEY-----");
@@ -52,7 +52,7 @@ namespace Flux.Transcipher.Asymmetric
 
       var publicB64 = Flux.Transcode.Base64.Default.EncodeString(publicKey);
 
-      var publicLines = publicB64.Length.CreateSubRanges(splitLineLength).Select(r => publicB64[r]).ToList();
+      var publicLines = publicB64.Length.GenerateSubRanges(splitLineLength).Select(r => publicB64[r]).ToList();
 
       publicLines.Insert(0, "-----BEGIN RSA PUBLIC KEY-----");
       publicLines.Add("-----END RSA PUBLIC KEY-----");

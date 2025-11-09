@@ -94,7 +94,7 @@ namespace Maths
     [TestMethod]
     public void IntegerPow()
     {
-      Assert.AreEqual(10000000000, 10L.IntegerPow(10));
+      Assert.AreEqual(10000000000, 10L.IPow(10));
     }
 
     //[TestMethod]
@@ -138,11 +138,11 @@ namespace Maths
     [TestMethod]
     public void MaxDigitCount()
     {
-      var actual = (10).MaxDigitCountOfBitLength(10, false); // Yields 4, because a max value of 1023 can be represented (all bits can be used in an unsigned value).
+      var actual = (10).BitLengthToMaxDigitCount<int, int>(10, false); // Yields 4, because a max value of 1023 can be represented (all bits can be used in an unsigned value).
       var expected = 4;
       Assert.AreEqual(expected, actual);
 
-      actual = (10).MaxDigitCountOfBitLength(10, true); // Yields 3, because a max value of 511 can be represented (excluding the MSB used for negative values of signed types).
+      actual = (10).BitLengthToMaxDigitCount<int, int>(10, true); // Yields 3, because a max value of 511 can be represented (excluding the MSB used for negative values of signed types).
       expected = 3;
       Assert.AreEqual(expected, actual);
     }

@@ -12,7 +12,7 @@ namespace Flux
       /// <param name="length"></param>
       /// <returns></returns>
       public System.Collections.Generic.IEnumerable<System.Range> SplitByLength(int length)
-        => source.Length.CreateSubRanges(length);
+        => source.Length.GenerateSubRanges(length);
 
       #endregion
     }

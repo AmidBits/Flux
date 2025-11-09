@@ -94,7 +94,7 @@ namespace Flux.Units
     public static TInteger DigitCount<TInteger, TRadix>(TInteger value, TRadix radix)
       where TInteger : System.Numerics.IBinaryInteger<TInteger>
       where TRadix : System.Numerics.IBinaryInteger<TRadix>
-      => value.IntegerLog(radix).TowardZero + TInteger.One;
+      => value.ILog(radix).TowardZero + TInteger.One;
     //{
     //  var rdx = TInteger.CreateChecked(Units.Radix.AssertMember(radix));
 
@@ -138,7 +138,7 @@ namespace Flux.Units
     public static TInteger DropLeastSignificantDigits<TInteger, TRadix>(TInteger value, TRadix radix, TInteger count)
       where TInteger : System.Numerics.IBinaryInteger<TInteger>
       where TRadix : System.Numerics.IBinaryInteger<TRadix>
-      => value / TInteger.CreateChecked(Units.Radix.AssertMember(radix).IntegerPow(count));
+      => value / TInteger.CreateChecked(Units.Radix.AssertMember(radix).IPow(count));
 
     /// <summary>
     /// <para>Drop <paramref name="count"/> leading (most significant) digits of <paramref name="value"/> using base <paramref name="radix"/>.</para>
@@ -146,7 +146,7 @@ namespace Flux.Units
     public static TInteger DropMostSignificantDigits<TInteger, TRadix>(TInteger value, TRadix radix, TInteger count)
       where TInteger : System.Numerics.IBinaryInteger<TInteger>
       where TRadix : System.Numerics.IBinaryInteger<TRadix>
-      => value % TInteger.CreateChecked(radix.IntegerPow(DigitCount(value, radix) - count));
+      => value % TInteger.CreateChecked(radix.IPow(DigitCount(value, radix) - count));
 
     /// <summary>
     /// <para>Creates a new list with the digit place value components of <paramref name="value"/> using base <paramref name="radix"/>. E.g. 1234 return [4 (for 4 * ones), 30 (for 3 * tens), 200 (for 2 * hundreds), 1000 (for 1 * thousands)].</para>
@@ -323,7 +323,7 @@ namespace Flux.Units
     public static TInteger KeepLeastSignificantDigits<TInteger, TRadix>(TInteger value, TRadix radix, TInteger count)
       where TInteger : System.Numerics.IBinaryInteger<TInteger>
       where TRadix : System.Numerics.IBinaryInteger<TRadix>
-      => value % TInteger.CreateChecked(Units.Radix.AssertMember(radix).IntegerPow(count));
+      => value % TInteger.CreateChecked(Units.Radix.AssertMember(radix).IPow(count));
 
     /// <summary>
     /// <para>Drop the leading digit of <paramref name="value"/> using base <paramref name="radix"/>.</para>
@@ -331,7 +331,7 @@ namespace Flux.Units
     public static TInteger KeepMostSignificantDigits<TInteger, TRadix>(TInteger value, TRadix radix, TInteger count)
       where TInteger : System.Numerics.IBinaryInteger<TInteger>
       where TRadix : System.Numerics.IBinaryInteger<TRadix>
-      => value / TInteger.CreateChecked(radix.IntegerPow(Units.Radix.DigitCount(value, radix) - count));
+      => value / TInteger.CreateChecked(radix.IPow(Units.Radix.DigitCount(value, radix) - count));
 
     /// <summary>
     /// <para>Reverse the digits a <paramref name="value"/> in base <paramref name="radix"/>, obtaining a new number.</para>

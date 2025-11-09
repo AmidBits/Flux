@@ -89,13 +89,13 @@ namespace Units
     [TestMethod]
     public void IntegerLogCeiling()
     {
-      Assert.AreEqual((2, 2.7084209001347124, 3), (512 - 1).IntegerLog10());
+      Assert.AreEqual((2, 2.7084209001347124, 3), (512 - 1).ILog10());
     }
 
     [TestMethod]
     public void IntegerLogFloor()
     {
-      Assert.AreEqual((2, 2.7092699609758304, 3), 512.IntegerLog10());
+      Assert.AreEqual((2, 2.7092699609758304, 3), 512.ILog10());
     }
 
     [TestMethod]

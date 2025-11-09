@@ -65,7 +65,7 @@ namespace Flux
         {
           for (var i = sum; i <= k; i++)
           {
-            sum += neg * BinomialTheorem.BinomialCoefficient(k, i) * (k - i).IntegerPow(n);
+            sum += neg * BinomialTheorem.BinomialCoefficient(k, i) * (k - i).IPow(n);
             neg = -neg;
           }
         }

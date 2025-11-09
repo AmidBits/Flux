@@ -5,6 +5,8 @@ namespace Flux
     extension<TInteger>(TInteger)
       where TInteger : System.Numerics.IBinaryInteger<TInteger>
     {
+      #region (Highly, Super) Abundant numbers
+
       /// <summary>
       /// <para>Creates a new sequence of abundant numbers.</para>
       /// <para><see href="https://en.wikipedia.org/wiki/Abundant_number"/></para>
@@ -52,6 +54,10 @@ namespace Flux
             largestValue = value;
           }
       }
+
+      #endregion
+
+      #region Bell numbers
 
       /// <summary>
       /// <para>Creates a new sequence of Bell numbers.</para>
@@ -142,6 +148,8 @@ namespace Flux
         }
       }
 
+      #endregion
+
       ///// <summary>
       ///// <para>Creates a new sequence with Catalan numbers.</para>
       ///// <para><see href="https://en.wikipedia.org/wiki/Catalan_number"/></para>
@@ -151,6 +159,8 @@ namespace Flux
       ///// <returns></returns>
       //public static System.Collections.Generic.IEnumerable<TInteger> GetCatalanSequence()
       //  => TInteger.Zero.LoopVerge(TInteger.One).AsParallel().AsOrdered().Select(GetCatalanNumber);
+
+      #region (Highly) Composite numbers
 
       /// <summary>
       /// <para>Generates a new sequence of composite numbers.</para>
@@ -171,14 +181,12 @@ namespace Flux
         var largestCount = TInteger.Zero;
 
         foreach (var tuple in TInteger.One.LoopVerge(TInteger.One).AsParallel().AsOrdered().Select(n => (Number: n, Count: n.CountDivisors())))
-        {
           if (tuple.Count > largestCount)
           {
             yield return tuple;
 
             largestCount = tuple.Count;
           }
-        }
 
         //var largestCountOfDivisors = TInteger.Zero;
 
@@ -196,6 +204,10 @@ namespace Flux
         //  checked { index++; }
         //}
       }
+
+      #endregion
+
+      #region Fibonacci sequence
 
       /// <summary>
       /// <para>Creates a new sequence of <typeparamref name="TInteger"/> with Fibonacci numbers.</para>
@@ -229,6 +241,10 @@ namespace Flux
         }
       }
 
+      #endregion
+
+      #region Mersenne sequences
+
       /// <summary>`
       /// <para>Creates a new sequence of Mersenne numbers.</para>
       /// <para><see href="https://en.wikipedia.org/wiki/Mersenne_number"/></para>
@@ -246,6 +262,10 @@ namespace Flux
       /// <returns></returns>
       public static System.Collections.Generic.IEnumerable<TInteger> GetMersennePrimeSequence()
         => GetMersenneNumberSequence<TInteger>().Where(IsPrimeNumber);
+
+      #endregion
+
+      #region Padovan sequence
 
       /// <summary>
       /// <para>Creates a new sequence with Padovan numbers.</para>
@@ -280,6 +300,10 @@ namespace Flux
         }
       }
 
+      #endregion
+
+      #region Perrin numbers
+
       /// <summary>
       /// <para>Creates an indefinite sequence of Perrin numbers.</para>
       /// <para><see href="https://en.wikipedia.org/wiki/Perrin_number"/></para>
@@ -311,19 +335,54 @@ namespace Flux
           yield return p;
         }
       }
+
+      #endregion
     }
+
+    #region Centered Polygonal Numbers
+
+    extension<TInteger>(TInteger k)
+        where TInteger : System.Numerics.IBinaryInteger<TInteger>
+    {
+      /// <summary>
+      /// <para>Creates a new sequence of </para>
+      /// <para><see href="https://en.wikipedia.org/wiki/Centered_polygonal_number"/></para>
+      /// </summary>
+      /// <remarks>This function runs indefinitely, if allowed.</remarks>
+      /// <typeparam name="TSelf"></typeparam>
+      /// <param name="numberOfSides"></param>
+      /// <returns></returns>
+      public System.Collections.Generic.IEnumerable<(TInteger LayerCount, TInteger CenterPolygonalNumber)> GetCenteredPolygonalLayers()
+      {
+        yield return (TInteger.One, TInteger.One);
+
+        foreach (var v in GetCenteredPolygonalNumberSequence(k).PartitionTuple2(false, (previous, current, index) => (previous, current, index)))
+          yield return (TInteger.CreateChecked(v.index + 2), v.current);
+      }
+
+      /// <summary></summary>
+      /// <see href="https://en.wikipedia.org/wiki/Centered_polygonal_number"/>
+      public TInteger GetCenteredPolygonalNumber(TInteger n)
+      {
+        System.ArgumentOutOfRangeException.ThrowIfNegative(n);
+        System.ArgumentOutOfRangeException.ThrowIfLessThan(k, TInteger.CreateChecked(3));
+
+        return checked(k * n * (n + TInteger.One) / TInteger.CreateChecked(2) + TInteger.One);
+      }
+
+      /// <summary></summary>
+      /// <see href="https://en.wikipedia.org/wiki/Centered_polygonal_number"/>
+      /// <remarks>This function runs indefinitely, if allowed.</remarks>
+      public System.Collections.Generic.IEnumerable<TInteger> GetCenteredPolygonalNumberSequence()
+        => TInteger.Zero.LoopVerge(TInteger.One).Select(n => GetCenteredPolygonalNumber(k, n));
+    }
+
+    #endregion
 
     extension<TInteger>(TInteger n)
       where TInteger : System.Numerics.IBinaryInteger<TInteger>
     {
-      /// <summary>
-      /// <para>Determines if the number is a prime candidate. If not, it's definitely a composite.</para>
-      /// </summary>
-      /// <typeparam name="TInteger"></typeparam>
-      /// <param name="n"></param>
-      /// <returns></returns>
-      public bool IsPrimeCandidate()
-        => TInteger.CreateChecked(6) is var six && n < six ? int.CreateChecked(n) is 2 or 3 or 5 : int.CreateChecked(n % six) is 1 or 5;
+      #region Prime Numbers
 
       /// <summary>
       /// 
@@ -464,6 +523,17 @@ namespace Flux
         => GetDescendingPrimeCandidates(n).AsParallel().AsOrdered().Where(IsPrimeNumber);
 
       /// <summary>
+      /// <para>Determines if the number is a prime candidate. If not, it's definitely a composite.</para>
+      /// </summary>
+      /// <typeparam name="TInteger"></typeparam>
+      /// <param name="n"></param>
+      /// <returns></returns>
+      public bool IsPrimeCandidate()
+        => TInteger.CreateChecked(6) is var six && n < six ? int.CreateChecked(n) is 2 or 3 or 5 : int.CreateChecked(n % six) is 1 or 5;
+
+      #endregion
+
+      /// <summary>
       /// <para>Returns the Catalan number for the specified <paramref name="number"/>.</para>
       /// <para><see href="https://en.wikipedia.org/wiki/Catalan_number"/></para>
       /// </summary>
@@ -473,39 +543,43 @@ namespace Flux
       public TInteger GetCatalanNumber()
         => (n + n).Factorial() / ((n + TInteger.One).Factorial() * n.Factorial());
 
-      /// <summary>
-      /// <para>Creates a new sequence of </para>
-      /// <para><see href="https://en.wikipedia.org/wiki/Centered_polygonal_number"/></para>
-      /// </summary>
-      /// <remarks>This function runs indefinitely, if allowed.</remarks>
-      /// <typeparam name="TSelf"></typeparam>
-      /// <param name="numberOfSides"></param>
-      /// <returns></returns>
-      public System.Collections.Generic.IEnumerable<(TInteger minCenteredNumber, TInteger maxCenteredNumber, TInteger count)> GetCenteredPolygonalLayers()
-      {
-        yield return (TInteger.One, TInteger.One, TInteger.One);
+      //#region Centered Polygonal Numbers
 
-        foreach (var v in GetCenteredPolygonalNumberSequence(n).PartitionTuple2(false, (min, max, index) => (min, max)))
-          yield return (v.min + TInteger.One, v.max, v.max - v.min);
-      }
+      ///// <summary>
+      ///// <para>Creates a new sequence of </para>
+      ///// <para><see href="https://en.wikipedia.org/wiki/Centered_polygonal_number"/></para>
+      ///// </summary>
+      ///// <remarks>This function runs indefinitely, if allowed.</remarks>
+      ///// <typeparam name="TSelf"></typeparam>
+      ///// <param name="numberOfSides"></param>
+      ///// <returns></returns>
+      //public System.Collections.Generic.IEnumerable<(TInteger minCenteredNumber, TInteger maxCenteredNumber, TInteger count)> GetCenteredPolygonalLayers()
+      //{
+      //  yield return (TInteger.One, TInteger.One, TInteger.One);
 
-      /// <summary></summary>
-      /// <see href="https://en.wikipedia.org/wiki/Centered_polygonal_number"/>
-      public TInteger GetCenteredPolygonalNumber(TInteger index)
-      {
-        System.ArgumentOutOfRangeException.ThrowIfNegative(index);
-        System.ArgumentOutOfRangeException.ThrowIfLessThan(n, TInteger.CreateChecked(3));
+      //  foreach (var v in GetCenteredPolygonalNumberSequence(n).PartitionTuple2(false, (min, max, index) => (min, max)))
+      //    yield return (v.min + TInteger.One, v.max, v.max - v.min);
+      //}
 
-        var two = TInteger.CreateChecked(2);
+      ///// <summary></summary>
+      ///// <see href="https://en.wikipedia.org/wiki/Centered_polygonal_number"/>
+      //public TInteger GetCenteredPolygonalNumber(TInteger index)
+      //{
+      //  System.ArgumentOutOfRangeException.ThrowIfNegative(index);
+      //  System.ArgumentOutOfRangeException.ThrowIfLessThan(n, TInteger.CreateChecked(3));
 
-        return (n * index * index + n * index + two) / two;
-      }
+      //  var two = TInteger.CreateChecked(2);
 
-      /// <summary></summary>
-      /// <see href="https://en.wikipedia.org/wiki/Centered_polygonal_number"/>
-      /// <remarks>This function runs indefinitely, if allowed.</remarks>
-      public System.Collections.Generic.IEnumerable<TInteger> GetCenteredPolygonalNumberSequence()
-        => TInteger.Zero.LoopVerge(TInteger.One).Select(i => GetCenteredPolygonalNumber(i, n));
+      //  return (n * index * index + n * index + two) / two;
+      //}
+
+      ///// <summary></summary>
+      ///// <see href="https://en.wikipedia.org/wiki/Centered_polygonal_number"/>
+      ///// <remarks>This function runs indefinitely, if allowed.</remarks>
+      //public System.Collections.Generic.IEnumerable<TInteger> GetCenteredPolygonalNumberSequence()
+      //  => TInteger.Zero.LoopVerge(TInteger.One).Select(i => GetCenteredPolygonalNumber(n, i));
+
+      //#endregion
 
       /// <summary>
       /// <para>Computes the Mersenne number for the specified <paramref name="value"/>.</para>
@@ -547,6 +621,25 @@ namespace Flux
       /// <summary>
       /// <para>Creates a sequence of powers-of-radix values.</para>
       /// </summary>
+      /// <typeparam name="TSelf"></typeparam>
+      /// <param name="radix"></param>
+      /// <returns></returns>
+      public System.Collections.Generic.IEnumerable<TInteger> GetPowerSequence()
+      {
+        var power = TInteger.One;
+
+        while (true)
+        {
+          yield return power;
+
+          try { checked { power *= n; } }
+          catch { break; }
+        }
+      }
+
+      /// <summary>
+      /// <para>Creates a sequence of powers-of-radix values.</para>
+      /// </summary>
       /// <typeparam name="TMinMaxInteger"></typeparam>
       /// <param name="nth"></param>
       /// <returns></returns>
@@ -559,6 +652,45 @@ namespace Flux
           for (var root = System.Numerics.BigInteger.Zero; ; root++)
             yield return (TInteger.CreateChecked(root), TInteger.CreateChecked(System.Numerics.BigInteger.Pow(System.Numerics.BigInteger.CreateChecked(root), int.CreateChecked(n))));
         }
+      }
+
+      /// <summary>
+      /// <para>This is a fast building sieve of Eratosthenes.</para>
+      /// </summary>
+      /// <param name="limit">The max number of the sieve.</param>
+      /// <returns></returns>
+      /// <remarks>In .NET there is currently a maximum index limit for an array: 2,146,435,071 (0X7FEFFFFF). That number times 64 (137,371,844,544) is the practical limit of <paramref name="limit"/>.</remarks>
+      /// <exception cref="System.ArgumentOutOfRangeException"></exception>
+      public DataStructures.BitArray64 GetSieveOfEratosthenes()
+      {
+        var limit = long.CreateChecked(n);
+
+        System.ArgumentOutOfRangeException.ThrowIfNegativeOrZero(limit);
+        System.ArgumentOutOfRangeException.ThrowIfGreaterThan(limit, 64L * System.Array.MaxIndexArrayOfMultiByteStructures);
+
+        var ba = new Flux.DataStructures.BitArray64(limit + 1, unchecked((long)0xAAAAAAAAAAAAAAAAUL)); // Bits represents the number line, so we start with all odd numbers being set to 1 and all even numbers set to 0.
+
+        ba.Set(1, false); // One is not a prime so we set it to 0.
+        ba.Set(2, true); // Two is the only even and the oddest prime so we set it to 1.
+
+        var factor = 3L;
+
+        while (factor * factor <= limit)
+        {
+          for (var i = factor; i <= limit; i += 2)
+            if (ba.Get(i))
+            {
+              factor = i;
+              break;
+            }
+
+          for (var i = factor * factor; i <= limit; i += factor * 2)
+            ba.Set(i, false);
+
+          factor += 2;
+        }
+
+        return ba;
       }
 
       /// <summary>
@@ -601,64 +733,6 @@ namespace Flux
               yield return i;
           }
         }
-      }
-
-      /// <summary>
-      /// <para>Creates a sequence of powers-of-radix values.</para>
-      /// </summary>
-      /// <typeparam name="TSelf"></typeparam>
-      /// <param name="radix"></param>
-      /// <returns></returns>
-      public System.Collections.Generic.IEnumerable<TInteger> GetPowerSequence()
-      {
-        var power = TInteger.One;
-
-        while (true)
-        {
-          yield return power;
-
-          try { checked { power *= n; } }
-          catch { break; }
-        }
-      }
-
-      /// <summary>
-      /// <para>This is a fast building sieve of Eratosthenes.</para>
-      /// </summary>
-      /// <param name="limit">The max number of the sieve.</param>
-      /// <returns></returns>
-      /// <remarks>In .NET there is currently a maximum index limit for an array: 2,146,435,071 (0X7FEFFFFF). That number times 64 (137,371,844,544) is the practical limit of <paramref name="limit"/>.</remarks>
-      /// <exception cref="System.ArgumentOutOfRangeException"></exception>
-      public DataStructures.BitArray64 GetSieveOfEratosthenes()
-      {
-        var limit = long.CreateChecked(n);
-
-        System.ArgumentOutOfRangeException.ThrowIfNegativeOrZero(limit);
-        System.ArgumentOutOfRangeException.ThrowIfGreaterThan(limit, 64L * System.Array.MaxIndexArrayOfMultiByteStructures);
-
-        var ba = new Flux.DataStructures.BitArray64(limit + 1, unchecked((long)0xAAAAAAAAAAAAAAAAUL)); // Bits represents the number line, so we start with all odd numbers being set to 1 and all even numbers set to 0.
-
-        ba.Set(1, false); // One is not a prime so we set it to 0.
-        ba.Set(2, true); // Two is the only even and the oddest prime so we set it to 1.
-
-        var factor = 3L;
-
-        while (factor * factor <= limit)
-        {
-          for (var i = factor; i <= limit; i += 2)
-            if (ba.Get(i))
-            {
-              factor = i;
-              break;
-            }
-
-          for (var i = factor * factor; i <= limit; i += factor * 2)
-            ba.Set(i, false);
-
-          factor += 2;
-        }
-
-        return ba;
       }
 
       /// <summary>
@@ -780,6 +854,8 @@ namespace Flux
       }
     }
 
+    #region DeBruijn sequence
+
     /// <summary>
     /// <para>Returns the total length of the DeBruijn sequence.</para>
     /// <para><see href="https://en.wikipedia.org/wiki/De_Bruijn_sequence"/></para>
@@ -792,8 +868,8 @@ namespace Flux
     /// <remarks>The formula for the length is <c>(<paramref name="k"/> * <paramref name="n"/> + <paramref name="n"/> - 1)</c>.</remarks>
     public static int GetDeBruijnSequenceLength(int k, int n)
     {
-      if (k < 1) throw new System.ArgumentOutOfRangeException(nameof(k));
-      if (n < 0) throw new System.ArgumentOutOfRangeException(nameof(n));
+      System.ArgumentOutOfRangeException.ThrowIfNegativeOrZero(k);
+      System.ArgumentOutOfRangeException.ThrowIfNegative(n);
 
       return (int)System.Numerics.BigInteger.Pow(k, n) + n - 1;
     }
@@ -810,9 +886,6 @@ namespace Flux
     /// <exception cref="System.ArgumentOutOfRangeException"></exception>
     public static System.Collections.Generic.List<int> GetDeBruijnSequence(int k, int n)
     {
-      if (k < 1) throw new System.ArgumentOutOfRangeException(nameof(k));
-      if (n < 0) throw new System.ArgumentOutOfRangeException(nameof(n));
-
       var sequence = new System.Collections.Generic.List<int>(GetDeBruijnSequenceLength(k, n));
 
       var a = new int[k * n];
@@ -866,6 +939,10 @@ namespace Flux
     public static System.Collections.Generic.IEnumerable<System.Collections.Generic.List<TSymbol>> GetDeBruijnSequenceExpandedSymbols<TSymbol>(int k, int n, params TSymbol[] alphabet)
       => GetDeBruijnSequence(k, n).PartitionNgram(n, (e, i) => e.Select(i => alphabet[i]).ToList());
 
+    #endregion
+
+    #region Leonardo sequence
+
     /// <summary>
     /// <para>Creates a new sequence with Leonardo numbers.</para>
     /// <para><see href="https://en.wikipedia.org/wiki/Leonardo_number"/></para>
@@ -887,81 +964,191 @@ namespace Flux
       }
     }
 
-    public static TNumber Pow<TNumber>(this TNumber source, int exponent)
-    where TNumber : System.Numerics.INumber<TNumber>
-    => typeof(TNumber).IsNumericTypeInteger() ? TNumber.CreateChecked(System.Numerics.BigInteger.Pow(System.Numerics.BigInteger.CreateChecked(source), exponent))
-    : typeof(TNumber).IsNumericTypeFloatingPoint() ? TNumber.CreateChecked(double.Pow(double.CreateChecked(source), exponent))
-    : throw new System.NotImplementedException();
+    #endregion
 
-    extension<TNumber>(TNumber a1)
+    #region Arithmetic progression
+
+    /// <summary>
+    /// <para>Creates a new sequence of non-zero numbers where each term after the first <paramref name="firstTerm"/> is found by multiplying the previous one by a fixed, non-zero number called the <paramref name="d"/>.</para>
+    /// <para><see href="https://en.wikipedia.org/wiki/Geometric_progression"/></para>
+    /// </summary>
+    /// <remarks>This function runs indefinitely, if allowed.</remarks>
+    /// <typeparam name="TFloat"></typeparam>
+    /// <param name="a"></param>
+    /// <param name="d"></param>
+    /// <returns></returns>
+    /// <exception cref="System.ArgumentOutOfRangeException"></exception>
+    public static System.Collections.Generic.IEnumerable<TNumber> GetArithmeticSequence<TNumber>(this TNumber a, TNumber d)
       where TNumber : System.Numerics.INumber<TNumber>
     {
-      /// <summary>
-      /// <para>Creates a new sequence of non-zero numbers where each term after the first <paramref name="firstTerm"/> is found by multiplying the previous one by a fixed, non-zero number called the <paramref name="commonRatio"/>.</para>
-      /// <para><see href="https://en.wikipedia.org/wiki/Geometric_progression"/></para>
-      /// </summary>
-      /// <remarks>This function runs indefinitely, if allowed.</remarks>
-      /// <typeparam name="TFloat"></typeparam>
-      /// <param name="firstTerm"></param>
-      /// <param name="commonRatio"></param>
-      /// <returns></returns>
-      /// <exception cref="System.ArgumentOutOfRangeException"></exception>
-      public System.Collections.Generic.IEnumerable<TNumber> GetGeometricSequence(TNumber commonRatio)
+      System.ArgumentOutOfRangeException.ThrowIfZero(a);
+      System.ArgumentOutOfRangeException.ThrowIfZero(d);
+
+      for (var n = 0; true; n++) // We can start at zero..
+        yield return checked(a + TNumber.CreateChecked(n) * d); // ..and get away with NOT subtracting one from n: (a + n * d)
+    }
+
+    public static double ArithmeticMeanOfTwoTerms<TInteger>(this TInteger a, TInteger b)
+      where TInteger : System.Numerics.IBinaryInteger<TInteger>
+      => double.CreateChecked(a + b) / 2;
+
+    /// <summary>
+    /// <para>Get the <paramref name="nth"/> term of a geometric sequence with the specified <paramref name="commonRatio"/>.</para>
+    /// </summary>
+    /// <typeparam name="TInteger"></typeparam>
+    /// <param name="a"></param>
+    /// <param name="d"></param>
+    /// <param name="n"></param>
+    /// <returns></returns>
+    public static TNumber ArithmeticSequenceNthTerm<TNumber, TInteger>(this TNumber a, TNumber d, TInteger n)
+      where TNumber : System.Numerics.INumber<TNumber>
+      where TInteger : System.Numerics.IBinaryInteger<TInteger>
+      => a + TNumber.CreateChecked(n - TInteger.One) * d; // (a + (n - 1) * d)
+
+    /// <summary>
+    /// <para>Gets the geometric series (sum) of a geometric sequence with infinite terms and the specified <paramref name="d"/>.</para>
+    /// </summary>
+    /// <param name="d">The common ratio of the geometric sequence.</param>
+    /// <returns></returns>
+    public static TNumber ArithmeticSeriesMeanOfNthTerms<TNumber, TInteger>(this TNumber a, TNumber d, TInteger n)
+      where TNumber : System.Numerics.INumber<TNumber>
+      where TInteger : System.Numerics.IBinaryInteger<TInteger>
+      => (a + ArithmeticSequenceNthTerm(a, d, n)) / TNumber.CreateChecked(2);
+
+    ///// <summary>
+    ///// <para>Gets the geometric series (sum) of a geometric sequence with infinite terms and the specified <paramref name="d"/>.</para>
+    ///// </summary>
+    ///// <param name="d">The common ratio of the geometric sequence.</param>
+    ///// <returns></returns>
+    //public static TNumber ArithmeticSeriesOfInfiniteTerms<TNumber>(this TNumber a, TNumber d)
+    //  where TNumber : System.Numerics.INumber<TNumber>
+    //  => ()
+
+    /// <summary>
+    /// <para>Gets the geometric series (sum) of a geometric sequence with <paramref name="n"/> terms and the specified <paramref name="d"/>.</para>
+    /// </summary>
+    /// <param name="d">The common ratio of the geometric sequence.</param>
+    /// <param name="n">The term of which to find the sum up until.</param>
+    /// <returns></returns>
+    public static TNumber ArithmeticSeriesOfNthTerms<TNumber, TInteger>(this TNumber a, TNumber d, TInteger n)
+      where TNumber : System.Numerics.INumber<TNumber>
+      where TInteger : System.Numerics.IBinaryInteger<TInteger>
+      => TNumber.CreateChecked(n) * (a + ArithmeticSequenceNthTerm(a, d, n)) / TNumber.CreateChecked(2);
+
+    #endregion
+
+    #region Geometric progression
+
+    /// <summary>
+    /// <para>Creates a new sequence of non-zero numbers where each term after the first <paramref name="firstTerm"/> is found by multiplying the previous one by a fixed, non-zero number called the <paramref name="commonRatio"/>.</para>
+    /// <para><see href="https://en.wikipedia.org/wiki/Geometric_progression"/></para>
+    /// </summary>
+    /// <remarks>This function runs indefinitely, if allowed.</remarks>
+    /// <typeparam name="TFloat"></typeparam>
+    /// <param name="firstTerm"></param>
+    /// <param name="commonRatio"></param>
+    /// <returns></returns>
+    /// <exception cref="System.ArgumentOutOfRangeException"></exception>
+    public static System.Collections.Generic.IEnumerable<TNumber> GetGeometricSequence<TNumber>(this TNumber a1, TNumber commonRatio)
+      where TNumber : System.Numerics.INumber<TNumber>
+    {
+      System.ArgumentOutOfRangeException.ThrowIfZero(a1);
+      System.ArgumentOutOfRangeException.ThrowIfZero(commonRatio);
+
+      while (true)
       {
-        System.ArgumentOutOfRangeException.ThrowIfZero(a1);
-        System.ArgumentOutOfRangeException.ThrowIfZero(commonRatio);
+        yield return a1;
 
-        while (true)
+        try
         {
-          yield return a1;
-
-          try
-          {
-            checked { a1 *= commonRatio; }
-          }
-          catch { break; }
+          checked { a1 *= commonRatio; }
         }
+        catch { break; }
       }
     }
 
-    extension<TNumber>(TNumber a1)
+    public static double GeometricMeanOfTwoTerms<TInteger>(this TInteger a, TInteger b)
+      where TInteger : System.Numerics.IBinaryInteger<TInteger>
+      => double.Sqrt(double.CreateChecked(a * b));
+
+    /// <summary>
+    /// <para>Get the <paramref name="nth"/> term of a geometric sequence with the specified <paramref name="commonRatio"/>.</para>
+    /// </summary>
+    /// <typeparam name="TInteger"></typeparam>
+    /// <param name="commonRatio"></param>
+    /// <param name="nth"></param>
+    /// <returns></returns>
+    public static TNumber GeometricSequenceNthTerm<TNumber, TInteger>(this TNumber a1, TNumber commonRatio, TInteger nth)
       where TNumber : System.Numerics.INumber<TNumber>, System.Numerics.IPowerFunctions<TNumber>
-    {
-      /// <summary>
-      /// <para>Get the <paramref name="nth"/> term of a geometric sequence with the specified <paramref name="commonRatio"/>.</para>
-      /// </summary>
-      /// <typeparam name="TInteger"></typeparam>
-      /// <param name="commonRatio"></param>
-      /// <param name="nth"></param>
-      /// <returns></returns>
-      public TNumber GeometricSequenceNthTerm<TInteger>(TNumber commonRatio, TInteger nth)
       where TInteger : System.Numerics.IBinaryInteger<TInteger>
       => a1 * TNumber.Pow(commonRatio, TNumber.CreateChecked(nth - TInteger.One));
 
-      /// <summary>
-      /// <para>Gets the geometric series (sum) of a geometric sequence with infinite terms and the specified <paramref name="commonRatio"/>.</para>
-      /// </summary>
-      /// <param name="commonRatio">The common ratio of the geometric sequence.</param>
-      /// <returns></returns>
-      public TNumber GeometricSeriesOfInfiniteTerms(TNumber commonRatio)
-        => commonRatio < TNumber.One
-        ? a1 / (TNumber.One - commonRatio)
-        : throw new System.ArithmeticException();
+    /// <summary>
+    /// <para>Gets the geometric series (sum) of a geometric sequence with infinite terms and the specified <paramref name="commonRatio"/>.</para>
+    /// </summary>
+    /// <param name="commonRatio">The common ratio of the geometric sequence.</param>
+    /// <returns></returns>
+    public static TNumber GeometricSeriesOfInfiniteTerms<TNumber>(this TNumber a1, TNumber commonRatio)
+      where TNumber : System.Numerics.INumber<TNumber>
+      => commonRatio < TNumber.One
+      ? a1 / (TNumber.One - commonRatio)
+      : throw new System.ArithmeticException();
 
-      /// <summary>
-      /// <para>Gets the geometric series (sum) of a geometric sequence with <paramref name="nth"/> terms and the specified <paramref name="commonRatio"/>.</para>
-      /// </summary>
-      /// <param name="commonRatio">The common ratio of the geometric sequence.</param>
-      /// <param name="nth">The term of which to find the sum up until.</param>
-      /// <returns></returns>
-      public TNumber GeometricSeriesOfNthTerms<TInteger>(TNumber commonRatio, TInteger nth)
-        where TInteger : System.Numerics.IBinaryInteger<TInteger>
-        => a1 * (TNumber.One - TNumber.Pow(commonRatio, TNumber.CreateChecked(nth))) / (TNumber.One - commonRatio);
+    /// <summary>
+    /// <para>Gets the geometric series (sum) of a geometric sequence with <paramref name="nth"/> terms and the specified <paramref name="commonRatio"/>.</para>
+    /// </summary>
+    /// <param name="commonRatio">The common ratio of the geometric sequence.</param>
+    /// <param name="nth">The term of which to find the sum up until.</param>
+    /// <returns></returns>
+    public static TNumber GeometricSeriesOfNthTerms<TNumber, TInteger>(this TNumber a1, TNumber commonRatio, TInteger nth)
+      where TNumber : System.Numerics.INumber<TNumber>, System.Numerics.IPowerFunctions<TNumber>
+      where TInteger : System.Numerics.IBinaryInteger<TInteger>
+      => a1 * (TNumber.One - TNumber.Pow(commonRatio, TNumber.CreateChecked(nth))) / (TNumber.One - commonRatio);
+
+    #endregion
+
+    #region Harmonic progression
+
+    public static System.Collections.Generic.IEnumerable<TFloat> GetHarmonicSequence<TFloat>(this TFloat a, TFloat d)
+      where TFloat : System.Numerics.IFloatingPoint<TFloat>
+      => GetArithmeticSequence(a, d).Select(an => TFloat.One / an);
+
+    public static double HarmonicMeanOfTwoTerms<TInteger>(this TInteger a, TInteger b)
+      where TInteger : System.Numerics.IBinaryInteger<TInteger>
+      => double.CreateChecked(TInteger.CreateChecked(2) * a * b) / double.CreateChecked(a + b);
+
+    public static double HarmonicMeanOfThreeTerms<TInteger>(this TInteger a, TInteger b, TInteger c)
+      where TInteger : System.Numerics.IBinaryInteger<TInteger>
+      => double.CreateChecked(TInteger.CreateChecked(3) * a * b * c) / double.CreateChecked(a * b + b * c + c * a);
+
+    public static TFloat HarmonicSequenceNthTerm<TFloat, TInteger>(this TFloat a, TFloat d, TInteger n)
+      where TFloat : System.Numerics.IFloatingPoint<TFloat>
+      where TInteger : System.Numerics.IBinaryInteger<TInteger>
+      => TFloat.One / (a + (TFloat.CreateChecked(n) - TFloat.One) * d);
+
+    /// <summary>
+    /// <para>Gets the harmonic series (sum) of a geometric sequence with <paramref name="nth"/> terms and the specified <paramref name="commonRatio"/>.</para>
+    /// </summary>
+    /// <param name="commonRatio">The common ratio of the geometric sequence.</param>
+    /// <param name="nth">The term of which to find the sum up until.</param>
+    /// <returns></returns>
+    public static TFloat HarmonicSeriesOfNthTerms<TFloat, TInteger>(this TFloat a, TFloat d, TInteger n)
+      where TFloat : System.Numerics.IFloatingPoint<TFloat>, System.Numerics.ILogarithmicFunctions<TFloat>
+      where TInteger : System.Numerics.IBinaryInteger<TInteger>
+    {
+      var two = TFloat.CreateChecked(2);
+
+      return TFloat.One / d * TFloat.Log((two * a + (two * TFloat.CreateChecked(n) - TFloat.One) * d) / (two * a - d));
     }
+
+    #endregion
+
+    #region Gaps in sequence
 
     public static System.Collections.Generic.IEnumerable<TNumber> GetGapsInSequence<TNumber>(this System.Collections.Generic.IEnumerable<TNumber> source, bool includeLastFirstGap)
       where TNumber : System.Numerics.INumber<TNumber>
       => source.PartitionTuple2(includeLastFirstGap, (leading, trailing, index) => trailing - leading);
 
+    #endregion
   }
 }

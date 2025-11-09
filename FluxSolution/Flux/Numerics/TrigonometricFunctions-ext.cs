@@ -219,5 +219,25 @@
       public TFloat Ahcvcos()
         => TFloat.Asin(TFloat.CreateChecked(2) * y - TFloat.One);
     }
+
+    public static System.Numerics.Complex Asinh(System.Numerics.Complex z)
+      => System.Numerics.Complex.Log(z + System.Numerics.Complex.Sqrt(z * z + 1));
+
+    public static System.Numerics.Complex Acosh(System.Numerics.Complex z)
+      => System.Numerics.Complex.Log(z + System.Numerics.Complex.Sqrt(z + 1) * System.Numerics.Complex.Sqrt(z - 1));
+
+    public static System.Numerics.Complex Acoth(System.Numerics.Complex z)
+      => z == 0
+      ? 0.5 * System.Numerics.Complex.Log((z + 1) / (z - 1))
+      : 0.5 * System.Numerics.Complex.Log(1 + 1 / z) - 0.5 * System.Numerics.Complex.Log(1 - 1 / z);
+
+    public static System.Numerics.Complex Acsch(System.Numerics.Complex z)
+      => System.Numerics.Complex.Log(1 / z + System.Numerics.Complex.Sqrt((1 / z * z) + 1));
+
+    public static System.Numerics.Complex Asech(System.Numerics.Complex z)
+      => System.Numerics.Complex.Log((1 / z) + System.Numerics.Complex.Sqrt(1 / z + 1) * System.Numerics.Complex.Sqrt(1 / z - 1));
+
+    public static System.Numerics.Complex Atanh(System.Numerics.Complex z)
+      => 0.5 * System.Numerics.Complex.Log(1 + z) - 0.5 * System.Numerics.Complex.Log(1 - z);
   }
 }

@@ -2,7 +2,6 @@
 using System.Buffers;
 using System.Data;
 using System.Linq;
-using System.Numerics;
 using System.Text.RegularExpressions;
 using Flux;
 // C# Interactive commands:
@@ -334,116 +333,16 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
-//      var x = 10.FactorialPower(2, -1);
 
-      var xmo = (12.5).MultipleOf(3.75, true);
 
-      var cultureInfo = System.Globalization.CultureInfo.GetCultureInfo("sv");
-      cultureInfo = System.Globalization.CultureInfo.CurrentCulture;
-      //cultureInfo = System.Globalization.CultureInfo.GetCultureInfo("en-gb");
+      var x = (8.0).RescaleLogarithmicToLinear(5, 12, 5, 12, 40);
+      var y = x.RescaleLinearToLogarithmic(5, 12, 5, 12, 40);
 
-      var calendarWeekRule = cultureInfo.DateTimeFormat.CalendarWeekRule;
-      var firstDayOfWeek = cultureInfo.DateTimeFormat.FirstDayOfWeek;
 
-      var startOfWeek = System.DateTime.StartOfWeek(2023, 1, cultureInfo);
-      var endOfWeek = System.DateTime.EndOfWeek(2023, 1, cultureInfo);
+      var ap = 5d.GetArithmeticSequence(4).Take(10).ToArray();
+      var hp = (13d / 90d).GetHarmonicSequence(-2d / 225d).Take(20).ToArray();
 
-      var now = System.DateTime.Now;
-      var rems = 12.Modulo(4);
-
-      var test1 = now.ClosestDayOfWeek(System.DayOfWeek.Wednesday, true);
-
-      var test = startOfWeek.ClosestDayOfWeek(System.DayOfWeek.Sunday, true);
-      //var firstDayOfWeek = cultureInfo.DateTimeFormat.FirstDayOfWeek;
-      //var firstWeekday = (int)firstDayOfWeek;
-
-      //var jan1 = System.DateTime.StartOfYear(2023);
-
-      //var jan1DayOfWeek = jan1.DayOfWeek;
-      //var jan1Weekday = (int)jan1DayOfWeek;
-
-      //var week = (int)jan1.Week;
-
-      //if (week != 1)
-      //  jan1 = jan1.AddWeeks(1);
-
-      //var firstDay = jan1.AddDays(-7).AddDays(firstWeekday - jan1Weekday);
-      //var dow = (System.DayOfWeek)day;
-
-      //var date = System.DateTime.GetDateFromWeekNumber(2023, 1, System.Globalization.CultureInfo.CurrentCulture);
-
-      var today = (int)now.DayOfWeek;
-
-      var fourDaysAgo = now.AddDays(-4);
-
-      var thatDay = (int)fourDaysAgo.DayOfWeek;
-
-      {
-        var n = 5;
-        var d = 6;
-
-        var ceiling = n.CeilingDivRem(d);
-        var closest = n.ClosestDivRem(d);
-        var enveloped = n.EnvelopedDivRem(d);
-        var euclidean = n.EuclideanDivRem(d);
-        var floor = n.FlooredDivRem(d);
-        var rounded = n.RoundedDivRem(d);
-        var truncated = n.TruncatedDivRem(d);
-      }
-
-      //var v = System.Numerics.Vector.Create(100L, 100, 100);
-      //System.Numerics.Vector.ConvertToDouble(v);
-      //System.Numerics.Vector.TruncRem(v);
-      //var cc = new Flux.CartesianCoordinate<int>();
-
-      //cc.Vector
-
-      var cnt = System.Numerics.Vector<short>.Count;
-
-      var hidden = 10;
-
-      var interval = Flux.XtensionInterval.Create(1L, 10000000000L);
-
-      System.Console.WriteLine($"{new System.Numerics.BigInteger(System.Numerics.BigInteger.Log(interval.MaxValue, 2)) - 1}");
-
-      var counter = 0;
-
-      while (!interval.IsDegenerate)
-      {
-        var guess = interval.GetGuess();
-
-        var compared = guess.CompareTo(hidden);
-
-        var resultingInterval = interval.CreateNewBasedOnGuess(guess, compared);
-
-        System.Console.WriteLine($"#{++counter} : Interval = {interval.ToString()} : Guess = {guess} : Compared = {compared} : ResultingInterval = {resultingInterval.ToString()}");
-
-        interval = resultingInterval;
-      }
-
-      foreach (var t in 10.GetGeometricSequence(10))
-      {
-        System.Console.WriteLine($"{t} : {(t.IntegerSqrt() is var sqrt ? sqrt : -1)} : {t / sqrt} : {(Flux.Units.Radix.DigitCount(t, 10).CeilingDivRem(2).Quotient is var digitCount ? digitCount : -1)} : {(System.Numerics.BigInteger.Pow(10, digitCount) - 1) / 2} : {t.GetDivisors().MeanMedianMode()}");
-      }
-
-      var cfc = Flux.ContinuedFractionCoefficients.GenerateContinuedFractionCoefficients(double.E, 400).Take(300).ToList();
-      var cfcbr = Flux.ContinuedFractionCoefficients.ParseContinuedFractionCoefficients(cfc);
-      var cfcs = Flux.ContinuedFractionCoefficients.ToContinuedFractionRepresentationString(cfc, maxTerms: 97);
-
-      var lcm = Flux.EuclidsAlgorithm.LeastCommonMultiple(new BigInteger(1), 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20);
-
-      {
-        var n = new BigInteger(10L);
-        var k = 4L;
-
-        //System.Console.WriteLine(Flux.Diagnostics.Performance.Measure(() => Flux.FactorialPowers.RisingFactorial(n, k), 10000));
-        //System.Console.WriteLine(Flux.Diagnostics.Performance.Measure(() => Flux.FactorialPowers.FallingFactorial(n, k), 10000));
-
-        System.Console.WriteLine(Flux.Diagnostics.Performance.Measure(() => Flux.StirlingNumbers.StirlingNumber1stKind(n, k), 1000000));
-        System.Console.WriteLine(Flux.Diagnostics.Performance.Measure(() => Flux.StirlingNumbers.StirlingNumber2ndKind(n, k), 1000000));
-
-        return;
-      }
+      var bs = new BitStruct(0xFFFFFFFF);
 
 
 
