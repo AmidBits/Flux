@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static class XtensionIComparable
+  public static class IComparableExtensions
   {
     public static bool EqualsDefault<TEqualityComparer>(this TEqualityComparer source)
       where TEqualityComparer : System.IComparable<TEqualityComparer>

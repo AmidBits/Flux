@@ -7,33 +7,28 @@ namespace Flux.PhoneticAlgorithm
   {
     public string EncodePhonetic(System.ReadOnlySpan<char> name)
     {
-      var sm = new SpanMaker<System.Text.Rune>();
+      var sb = new System.Text.StringBuilder();
 
       var index = -1;
-      var previousRune = new System.Text.Rune(0);
+      var previousRune = '\0';
 
-      foreach (var currentRune in name.EnumerateRunes())
+      foreach (var currentRune in name)
       {
         index++;
 
         if (index > 0)
-        {
-          if (!currentRune.IsBasicLatinLetterY() && currentRune.IsVowelOf(System.Globalization.CultureInfo.CurrentCulture))
+          if (char.IsVowel(currentRune) && (!char.IsBasicLatinLetterY(currentRune) || currentRune == previousRune))
             continue;
 
-          if (currentRune.IsVowelOf(System.Globalization.CultureInfo.CurrentCulture) && currentRune == previousRune)
-            continue;
-        }
-
-        sm = sm.Append(System.Text.Rune.ToUpper(currentRune, System.Globalization.CultureInfo.InvariantCulture));
+        sb.Append(char.ToUpper(currentRune, System.Globalization.CultureInfo.InvariantCulture));
 
         previousRune = currentRune;
       }
 
-      if (sm.Length > 6)
-        sm = sm.Remove(3, sm.Length - 6);
+      if (sb.Length > 6)
+        sb.Remove(3, sb.Length - 6);
 
-      return sm.ToString();
+      return sb.ToString();
     }
 
     /// <summary>Compare two MRA encoded names.</summary>
@@ -74,8 +69,8 @@ namespace Flux.PhoneticAlgorithm
     /// <returns></returns>
     public static int ComputeSimilarityRating(System.ReadOnlySpan<char> code1, System.ReadOnlySpan<char> code2)
     {
-      var large = code1.ToSpanMaker();
-      var small = code2.ToSpanMaker();
+      var large = code1.ToStringBuilder();
+      var small = code2.ToStringBuilder();
 
       if (large.Length < small.Length)
       {
@@ -84,11 +79,11 @@ namespace Flux.PhoneticAlgorithm
         small = tmp;
       }
 
-      for (int i = 0; i < small.Length;)
+      for (var i = 0; i < small.Length;)
       {
         bool found = false;
 
-        for (int j = 0; j < large.Length; j++)
+        for (var j = 0; j < large.Length; j++)
           if (small[i] == large[j])
           {
             small = small.Remove(i, 1);

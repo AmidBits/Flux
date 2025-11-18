@@ -65,7 +65,7 @@ namespace Flux
       public System.Collections.Generic.IEnumerable<System.Range> GenerateSubRanges(TInteger subLength)
       {
         for (var index = TInteger.Zero; index < source; index += subLength)
-          yield return XtensionRange.FromOffsetAndLength(int.CreateChecked(index), int.CreateChecked(TInteger.Min(subLength, source - index)));
+          yield return RangeExtensions.FromOffsetAndLength(int.CreateChecked(index), int.CreateChecked(TInteger.Min(subLength, source - index)));
       }
 
       #endregion
@@ -190,14 +190,17 @@ namespace Flux
       /// </summary>
       /// <typeparam name="TInteger"></typeparam>
       /// <param name="value">The value to find the root of.</param>
-      /// <param name="nth">Essentially the radix.</param>
+      /// <param name="nth">The degree or index of root.</param>
       /// <returns>The integer <paramref name="nth"/> root of <paramref name="value"/>.</returns>
-      public TInteger IRootN(TInteger nth)
+      public TInteger IRootN<TNth>(TNth nth)
+        where TNth : System.Numerics.IBinaryInteger<TNth>
       {
-        if (nth == TInteger.CreateChecked(2)) return IntegerSqrt(source); // Use dedicated square-root function if nth is 2.
+        var two = TNth.CreateChecked(2);
+
+        if (nth == two) return IntegerSqrt(source); // Use dedicated square-root function if nth is 2.
 
         System.ArgumentOutOfRangeException.ThrowIfNegative(source);
-        System.ArgumentOutOfRangeException.ThrowIfLessThan(nth, TInteger.CreateChecked(2));
+        System.ArgumentOutOfRangeException.ThrowIfLessThan(nth, two);
 
         if (source <= TInteger.One) // 0 = 0, 1 = 1.
           return source;
@@ -290,7 +293,8 @@ namespace Flux
       /// <param name="nth">Essentially the radix.</param>
       /// <param name="root">The integer <paramref name="nth"/> root of <paramref name="value"/>.</param>
       /// <returns></returns>
-      public bool IsIRootN(TInteger nth, TInteger root)
+      public bool IsIRootN<TNth>(TNth nth, TInteger root)
+        where TNth : System.Numerics.IBinaryInteger<TNth>
         => source >= root.IPow(nth) // If GTE to nth of root.
         && source < (root + TInteger.One).IPow(nth); // And if LT to nth of (root + 1).
 
@@ -302,7 +306,8 @@ namespace Flux
       /// <param name="nth">Essentially the radix.</param>
       /// <param name="root">The integer <paramref name="nth"/> root of <paramref name="value"/>.</param>
       /// <returns></returns>
-      public bool IsPerfectIRootN(TInteger nth, TInteger root)
+      public bool IsPerfectIRootN<TNth>(TNth nth, TInteger root)
+        where TNth : System.Numerics.IBinaryInteger<TNth>
         => source == IPow(root, nth);
 
       #endregion

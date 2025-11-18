@@ -49,6 +49,13 @@
 
   public static partial class Unicode
   {
+    public static System.Globalization.NumberFormatInfo GetSiNumberFormatInfo(UnicodeSpacing unicodeSpacing = UnicodeSpacing.ThinSpace)
+    {
+      var nfi = (System.Globalization.NumberFormatInfo)System.Globalization.CultureInfo.InvariantCulture.NumberFormat.Clone();
+      nfi.NumberGroupSeparator = unicodeSpacing.ToSpacingString();
+      return nfi;
+    }
+
     /// <summary>
     /// <para>Create a string containing the string representation of <paramref name="spacing"/>.</para>
     /// </summary>

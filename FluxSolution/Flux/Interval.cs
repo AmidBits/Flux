@@ -1,31 +1,49 @@
 ﻿namespace Flux
 {
-  public static class XtensionInterval
+  public static class IntervalExtensions
   {
     public static Interval<T> Create<T>(T minValue, T maxValue)
       where T : System.IComparable<T>
       => new(minValue, maxValue);
 
+    extension<TFloat>(Interval<TFloat> source)
+      where TFloat : System.Numerics.IFloatingPoint<TFloat>
+    {
+      /// <summary>
+      /// <para>Rounds the values of an <see cref="Interval{T}"/> using the specified rounding and also returns the new values as out parameters.</para>
+      /// </summary>
+      /// <typeparam name="TFloat"></typeparam>
+      /// <typeparam name="TInteger"></typeparam>
+      /// <param name="source"></param>
+      /// <param name="minValueRounding"></param>
+      /// <param name="maxValueRounding"></param>
+      /// <param name="minValue"></param>
+      /// <param name="maxValue"></param>
+      /// <returns></returns>
+      public Interval<TNumber> Round<TNumber>(HalfRounding minValueRounding, HalfRounding maxValueRounding, out TNumber minValue, out TNumber maxValue)
+        where TNumber : System.Numerics.INumber<TNumber>
+        => new(minValue = TNumber.CreateChecked(source.MinValue.RoundHalf(minValueRounding)), maxValue = TNumber.CreateChecked(source.MaxValue.RoundHalf(maxValueRounding)));
+    }
+
     extension<TInteger>(Interval<TInteger> source)
       where TInteger : System.Numerics.IBinaryInteger<TInteger>
     {
       /// <summary>
-      /// <para>Creates a new <see cref="Interval{T}"/> based on a guessed <paramref name="value"/> and how the guess <paramref name="compare"/> (as in <see cref="System.IComparable{T}"/>) to a number which is a member of the <paramref name="source"/> interval.</para>
-      /// <para>If <paramref name="compare"/> is less than 0 (guess is too low): <c>[<paramref name="value"/> + 1, <see cref="Interval{T}.MaxValue"/>]</c>.</para>
-      /// <para>If <paramref name="compare"/> is greater than 0 (guess is too high): <c>[<see cref="Interval{T}.MinValue"/>, <paramref name="value"/> - 1]</c>.</para>
-      /// <para>If <paramref name="compare"/> is equal to 0 (guess is correct): <c>[<paramref name="value"/>, <paramref name="value"/>]</c> and therefor with its property <c><see cref="Interval{T}.IsDegenerate"/> = true</c>.</para>
+      /// <para>Creates a new <see cref="Interval{T}"/> based on a <paramref name="guess"/> and how the guess <paramref name="compare"/> (as in <see cref="System.IComparable{T}"/>) to a number which is a member of the <paramref name="source"/> interval.</para>
+      /// <para>If <paramref name="compare"/> is less than 0 (guess is too low): <c>[<paramref name="guess"/> + 1, <see cref="Interval{T}.MaxValue"/>]</c>.</para>
+      /// <para>If <paramref name="compare"/> is greater than 0 (guess is too high): <c>[<see cref="Interval{T}.MinValue"/>, <paramref name="guess"/> - 1]</c>.</para>
+      /// <para>If <paramref name="compare"/> is equal to 0 (guess is correct): <c>[<paramref name="guess"/>, <paramref name="guess"/>]</c> and therefor with its property <c><see cref="Interval{T}.IsDegenerate"/> = true</c>.</para>
       /// </summary>
       /// <typeparam name="TInteger"></typeparam>
-      /// <param name="source"></param>
-      /// <param name="value">The value of the guess.</param>
+      /// <param name="guess">The value of the guess.</param>
       /// <param name="compare">The sign of the guess compared to the chosen number. -1 = guess is too low, 1 = guess is too high, 0 = guess is the chosen number.</param>
       /// <returns></returns>
-      public Interval<TInteger> CreateNewBasedOnGuess(TInteger value, int compare)
+      public Interval<TInteger> CreateNewBasedOnGuess(TInteger guess, int compare)
         => compare < 0
-        ? new(value + TInteger.One, source.MaxValue)
+        ? new(guess + TInteger.One, source.MaxValue)
         : compare > 0
-        ? new(source.MinValue, value - TInteger.One)
-        : new(value, value);
+        ? new(source.MinValue, guess - TInteger.One)
+        : new(guess, guess);
 
       /// <summary>
       /// <para>Gets a guess of a number which is a member of an <see cref="Interval{T}"/>.</para>
@@ -35,7 +53,7 @@
       /// <param name="source"></param>
       /// <returns></returns>
       public TInteger GetGuess()
-        => (source.MinValue + source.MaxValue) / TInteger.CreateChecked(2);
+        => source.Center;
 
       /// <summary>
       /// <para>Calculates the offset and length of an <see cref="Interval{T}"/>. The offset is the same as <see cref="Interval{T}.MinValue"/> of <paramref name="source"/>.</para>
@@ -60,23 +78,28 @@
         => IntervalNotation.Closed.ToRange(source.MinValue, source.MaxValue);
     }
 
-    extension<TFloat>(Interval<TFloat> source)
-      where TFloat : System.Numerics.IFloatingPoint<TFloat>
+    extension<TNumber>(Interval<TNumber> source)
+      where TNumber : System.Numerics.INumber<TNumber>
     {
-      /// <summary>
-      /// <para>Rounds the values of an <see cref="Interval{T}"/> using the specified rounding and also returns the new values as out parameters.</para>
-      /// </summary>
-      /// <typeparam name="TFloat"></typeparam>
-      /// <typeparam name="TInteger"></typeparam>
-      /// <param name="source"></param>
-      /// <param name="minValueRounding"></param>
-      /// <param name="maxValueRounding"></param>
-      /// <param name="minValue"></param>
-      /// <param name="maxValue"></param>
-      /// <returns></returns>
-      public Interval<TInteger> Round<TInteger>(UniversalRounding minValueRounding, UniversalRounding maxValueRounding, out TInteger minValue, out TInteger maxValue)
+      public TNumber Center
+        => (source.MinValue + source.MaxValue) / TNumber.CreateChecked(2);
+
+      public TNumber Size
+        => source.MaxValue - source.MinValue;
+
+      public System.Collections.Generic.IEnumerable<Interval<TNumber>> Subdivide<TInteger>(TInteger count)
         where TInteger : System.Numerics.IBinaryInteger<TInteger>
-        => new(minValue = TInteger.CreateChecked(source.MinValue.RoundUniversal(minValueRounding)), maxValue = TInteger.CreateChecked(source.MaxValue.RoundUniversal(maxValueRounding)));
+      {
+        TNumber subintervalSize = source.Size / TNumber.CreateChecked(count);
+
+        for (var index = TInteger.Zero; index < count; index++)
+        {
+          var minValue = source.MinValue + TNumber.CreateChecked(index) * subintervalSize;
+          var maxValue = minValue + subintervalSize;
+
+          yield return new Interval<TNumber>(minValue, maxValue);
+        }
+      }
     }
 
     extension<TNumber>(Interval<TNumber> source)

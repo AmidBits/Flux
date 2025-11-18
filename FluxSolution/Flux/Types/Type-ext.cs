@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class XtensionType
+  public static partial class TypeExtensions
   {
     #region NotSureAboutThese (clever way of finding out, but needed..)
 
@@ -154,7 +154,7 @@ namespace Flux
       /// <para>Creates a new sequence with the derived types of a <see cref="System.Type"/> in the specified <paramref name="typeCollection"/>.</para>
       /// </summary>
       public System.Collections.Generic.List<System.Type> GetDerived(System.Collections.Generic.IEnumerable<System.Type> typeCollection)
-        => [.. typeCollection.Where(type => type.IsSubtypeOf(type))];
+        => [.. typeCollection.Where(t => t.IsSubtypeOf(type))];
 
       #endregion
 
@@ -206,7 +206,7 @@ namespace Flux
       /// <param name="instanceOrStatic">Pass null for static values.</param>
       /// <param name="bindingFlags"></param>
       /// <returns></returns>
-      public System.Collections.Generic.IDictionary<System.Reflection.MemberInfo, object?> GetMemberDictionary(object? instanceOrStatic = null, System.Reflection.BindingFlags bindingFlags = System.Reflection.BindingFlags.FlattenHierarchy | System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static)
+      public System.Collections.Generic.IDictionary<System.Reflection.MemberInfo, object?> GetMemberDictionary(object? instanceOrStatic = null, System.Reflection.BindingFlags bindingFlags = System.Reflection.BindingFlags.FlattenHierarchy | System.Reflection.BindingFlags.Instance | /*System.Reflection.BindingFlags.NonPublic | */System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static)
       {
         var members = new DataStructures.OrderedDictionary<System.Reflection.MemberInfo, object?>();
 

@@ -21,13 +21,19 @@ namespace Flux.Transcipher
     /// <returns></returns>
     public static (byte[] Key, byte[] IV) GetBytes(string key, string salt, int requestSizeKey, int requestSizeIV, System.Security.Cryptography.HashAlgorithmName hashAlgorithm, int iterations)
     {
+      var saltKey = Transcode.Utf8.Default.DecodeString(key);
       var saltBytes = Transcode.Utf8.Default.DecodeString(salt);
 
       //using (var pdb = new System.Security.Cryptography.PasswordDeriveBytes(key, saltBytes, "SHA1", 1000))
       //  return (pdb.GetBytes(requestSizeKey), pdb.GetBytes(requestSizeIV));
 
-      using (var db = new System.Security.Cryptography.Rfc2898DeriveBytes(key, saltBytes, iterations, hashAlgorithm))
-        return (db.GetBytes(requestSizeKey), db.GetBytes(requestSizeIV));
+      var byteKey = System.Security.Cryptography.Rfc2898DeriveBytes.Pbkdf2(saltKey, saltBytes, iterations, hashAlgorithm, requestSizeKey);
+      var byteIV = System.Security.Cryptography.Rfc2898DeriveBytes.Pbkdf2(saltBytes, saltKey, iterations, hashAlgorithm, requestSizeIV);
+
+      return (byteKey, byteIV);
+
+      //using (var db = new System.Security.Cryptography.Rfc2898DeriveBytes(key, saltBytes, iterations, hashAlgorithm))
+      //  return (db.GetBytes(requestSizeKey), db.GetBytes(requestSizeIV));
     }
   }
 }

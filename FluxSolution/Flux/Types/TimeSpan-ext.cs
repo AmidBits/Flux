@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class XtensionTimeSpan
+  public static partial class TimeSpanExtensions
   {
     extension(System.TimeSpan source)
     {
@@ -18,39 +18,39 @@ namespace Flux
 
       public string ToStringOfUnits(UnicodeSpacing spacing, bool fullNames)
       {
-        var sm = new SpanMaker<char>();
+        var sb = new System.Text.StringBuilder();
 
         if (source.Days > 0)
         {
           var td = new Units.Time(source.Days, Units.TimeUnit.Day);
-          sm = sm.Append(td.ToUnitString(Units.TimeUnit.Day, null, null, spacing, fullNames));
+          sb.Append(td.ToUnitString(Units.TimeUnit.Day, null, null, spacing, fullNames));
         }
 
-        sm = sm.Append(' ');
+        sb.Append(' ');
 
         if (source.Hours > 0)
         {
           var th = new Units.Time(source.Hours, Units.TimeUnit.Hour);
-          sm = sm.Append(th.ToUnitString(Units.TimeUnit.Hour, null, null, spacing, fullNames));
+          sb.Append(th.ToUnitString(Units.TimeUnit.Hour, null, null, spacing, fullNames));
         }
 
-        sm = sm.Append(' ');
+        sb.Append(' ');
 
         if (source.Minutes > 0)
         {
           var tm = new Units.Time(source.Minutes, Units.TimeUnit.Minute);
-          sm = sm.Append(tm.ToUnitString(Units.TimeUnit.Minute, null, null, spacing, fullNames));
+          sb.Append(tm.ToUnitString(Units.TimeUnit.Minute, null, null, spacing, fullNames));
         }
 
-        sm = sm.Append(' ');
+        sb.Append(' ');
 
         if (source.Seconds > 0)
         {
           var ts = new Units.Time(source.Seconds, Units.TimeUnit.Second);
-          sm = sm.Append(ts.ToUnitString(Units.TimeUnit.Second, null, null, spacing, fullNames));
+          sb.Append(ts.ToUnitString(Units.TimeUnit.Second, null, null, spacing, fullNames));
         }
 
-        return sm.ToString();
+        return sb.ToString();
       }
 
       #endregion
@@ -59,15 +59,15 @@ namespace Flux
 
       public string ToXsdDurationString()
       {
-        var sm = new SpanMaker<char>();
+        var sb = new System.Text.StringBuilder();
 
         if (source.Ticks < 0)
-          sm = sm.Append('-');
+          sb.Append('-');
 
-        sm = sm.Append('P');
+        sb.Append('P');
 
         if (int.Abs(source.Days) is var days && days > 0)
-          sm = sm.Append(days).Append('D');
+          sb.Append(days).Append('D');
 
         if (
           int.Abs(source.Hours) is var h
@@ -79,35 +79,35 @@ namespace Flux
           && (h != 0 || m != 0 || s != 0 || milli != 0 || micro != 0 || nano != 0)
         )
         {
-          sm = sm.Append('T');
+          sb.Append('T');
 
           if (h != 0)
-            sm = sm.Append(h).Append('H');
+            sb.Append(h).Append('H');
 
           if (m != 0)
-            sm = sm.Append(m).Append('M');
+            sb.Append(m).Append('M');
 
           if (s != 0 || milli != 0 || micro != 0 || nano != 0)
           {
-            sm = sm.Append(s);
+            sb.Append(s);
 
             if (milli != 0 || micro != 0 || nano != 0)
             {
-              sm = sm.Append('.');
+              sb.Append('.');
 
               if (milli != 0)
-                sm = sm.Append(milli.ToString("D3"));
+                sb.Append(milli.ToString("D3"));
               if (micro != 0)
-                sm = sm.Append(micro.ToString("D3"));
+                sb.Append(micro.ToString("D3"));
               if (nano != 0)
-                sm = sm.Append(nano.ToString("D3"));
+                sb.Append(nano.ToString("D3"));
             }
 
-            sm = sm.Append('S');
+            sb.Append('S');
           }
         }
 
-        return sm.ToString();
+        return sb.ToString();
       }
 
       #endregion

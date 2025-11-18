@@ -6,9 +6,9 @@ namespace Flux
     private readonly System.Numerics.Vector<T> m_vector;
 
     public CartesianCoordinate(T x) => m_vector = new System.Numerics.Vector<T>(x);
-    public CartesianCoordinate(T x, T y) => m_vector = System.Numerics.Vector.Create(x, y);
-    public CartesianCoordinate(T x, T y, T z) => m_vector = System.Numerics.Vector.Create(x, y, z);
-    public CartesianCoordinate(T x, T y, T z, T w) => m_vector = System.Numerics.Vector.Create(x, y, z, w);
+    public CartesianCoordinate(T x, T y) => m_vector = new System.Numerics.Vector<T>([x, y]);
+    public CartesianCoordinate(T x, T y, T z) => m_vector = new System.Numerics.Vector<T>([x, y, z]);
+    public CartesianCoordinate(T x, T y, T z, T w) => m_vector = new System.Numerics.Vector<T>([x, y, z, w]);
     public CartesianCoordinate(System.Numerics.Vector<T> vector) => m_vector = vector;
 
     public readonly System.Numerics.Vector<T> Vector => m_vector;

@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class XtensionSByte
+  public static partial class SByteExtensions
   {
     extension(System.SByte)
     {

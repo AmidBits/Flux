@@ -94,7 +94,7 @@ namespace Flux.CoordinateSystems
     }
 
     /// <summary>Creates a new <see cref="Geometry.HexCoordinate{TSelf}"/> from a <see cref="Geometry.CoordinateSystems.CartesianCoordinate"/>.</summary>
-    public static HexCoordinate<TResult> ToHexCoordinate<TResult>(CartesianCoordinate source, UniversalRounding mode, out TResult q, out TResult r, out TResult s)
+    public static HexCoordinate<TResult> ToHexCoordinate<TResult>(CartesianCoordinate source, HalfRounding mode, out TResult q, out TResult r, out TResult s)
       where TResult : System.Numerics.INumber<TResult>
     {
       var (x, y, z) = source;
@@ -108,7 +108,7 @@ namespace Flux.CoordinateSystems
       );
     }
 
-    public System.Drawing.Point ToPoint(UniversalRounding mode) => new(System.Convert.ToInt32(m_v[0].RoundUniversal(mode)), System.Convert.ToInt32(m_v[1].RoundUniversal(mode)));
+    public System.Drawing.Point ToPoint(HalfRounding mode) => new(System.Convert.ToInt32(m_v[0].RoundHalf(mode)), System.Convert.ToInt32(m_v[1].RoundHalf(mode)));
 
     public System.Drawing.PointF ToPointF() => new((float)m_v[0], (float)m_v[1]);
 

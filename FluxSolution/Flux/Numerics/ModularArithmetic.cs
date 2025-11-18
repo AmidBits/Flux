@@ -5,6 +5,12 @@ namespace Flux
     extension<TInteger>(TInteger a)
       where TInteger : System.Numerics.IBinaryInteger<TInteger>
     {
+      /// <summary>
+      /// <para>Modular addition.</para>
+      /// </summary>
+      /// <param name="b"></param>
+      /// <param name="m"></param>
+      /// <returns></returns>
       public TInteger ModAdd(TInteger b, TInteger m)
       {
         System.ArgumentOutOfRangeException.ThrowIfNegativeOrZero(m);
@@ -12,6 +18,12 @@ namespace Flux
         return (a + b) % m;
       }
 
+      /// <summary>
+      /// <para>Modular division.</para>
+      /// </summary>
+      /// <param name="b"></param>
+      /// <param name="m"></param>
+      /// <returns></returns>
       public TInteger ModDiv(TInteger b, TInteger m)
       {
         System.ArgumentOutOfRangeException.ThrowIfNegativeOrZero(m);
@@ -63,6 +75,12 @@ namespace Flux
         return t;
       }
 
+      /// <summary>
+      /// <para>Modular multiplication.</para>
+      /// </summary>
+      /// <param name="b"></param>
+      /// <param name="m"></param>
+      /// <returns></returns>
       public TInteger ModMul(TInteger b, TInteger m)
         => ((a % m) * (b % m)) % m;
 
@@ -100,6 +118,12 @@ namespace Flux
         return r;
       }
 
+      /// <summary>
+      /// <para>Modular subtraction.</para>
+      /// </summary>
+      /// <param name="b"></param>
+      /// <param name="m"></param>
+      /// <returns></returns>
       public TInteger ModSub(TInteger b, TInteger m)
       {
         System.ArgumentOutOfRangeException.ThrowIfNegativeOrZero(m);
@@ -107,7 +131,6 @@ namespace Flux
         return (a - b) % m;
       }
     }
-
 
     //public static TInteger Redc<TInteger>(TInteger thi, TInteger tlo, TInteger n, TInteger invn)
     //  where TInteger : System.Numerics.IBinaryInteger<TInteger>

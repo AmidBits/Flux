@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class XtensionIDataReader
+  public static partial class IDataReaderExtensions
   {
     const string CsAllowDBNull = @"AllowDBNull";
     const string CsColumnName = @"ColumnName";

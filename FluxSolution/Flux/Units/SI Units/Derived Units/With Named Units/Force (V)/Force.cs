@@ -18,7 +18,7 @@ namespace Flux.Units
 
     public Force(double value, ForceUnit unit = ForceUnit.Newton) => m_value = ConvertFromUnit(unit, value);
 
-    public Force(MetricPrefix prefix, double newton) => m_value = prefix.ChangePrefix(newton, MetricPrefix.Unprefixed);
+    public Force(MetricPrefix prefix, double newton) => m_value = prefix.ConvertPrefix(newton, MetricPrefix.Unprefixed);
 
     public Force(Mass mass, Acceleration acceleration) => m_value = mass.Value * acceleration.Value;
 
@@ -60,7 +60,7 @@ namespace Flux.Units
 
     #region ISiUnitValueQuantifiable<>
 
-    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ChangePrefix(m_value, prefix);
+    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertPrefix(m_value, prefix);
 
     public string ToSiUnitString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null)
       => GetSiUnitValue(prefix).ToSiFormattedString(format, formatProvider) + UnicodeSpacing.ThinSpace.ToSpacingString() + prefix.GetMetricPrefixSymbol() + ForceUnit.Newton.GetUnitSymbol();

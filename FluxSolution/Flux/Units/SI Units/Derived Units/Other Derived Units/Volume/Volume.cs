@@ -12,7 +12,7 @@ namespace Flux.Units
 
     public Volume(double value, VolumeUnit unit = VolumeUnit.CubicMeter) => m_value = ConvertFromUnit(unit, value);
 
-    public Volume(MetricPrefix prefix, double cubicMeter) => m_value = prefix.ChangePrefix(cubicMeter, MetricPrefix.Unprefixed);
+    public Volume(MetricPrefix prefix, double cubicMeter) => m_value = prefix.ConvertPrefix(cubicMeter, MetricPrefix.Unprefixed);
 
     #region Static methods
 
@@ -124,7 +124,7 @@ namespace Flux.Units
 
     #region ISiUnitValueQuantifiable<>
 
-    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ChangePrefix(m_value, prefix, 3);
+    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertPrefix(m_value, prefix, 3);
 
     public string ToSiUnitString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null)
       => GetSiUnitValue(prefix).ToSiFormattedString(format, formatProvider) + UnicodeSpacing.ThinSpace.ToSpacingString() + prefix.GetMetricPrefixSymbol() + VolumeUnit.CubicMeter.GetUnitSymbol();

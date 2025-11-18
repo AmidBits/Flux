@@ -12,200 +12,46 @@ namespace Flux
     TopDown
   }
 
-  public static partial class XtensionSpan
+  public static partial class SpanExtensions
   {
-    extension(System.Span<char> source)
-    {
-      /// <summary>
-      /// <para>Capitalize any lower-case char at the beginning or with a whitespace on the left, and with a lower-case char on the right.</para>
-      /// </summary>
-      /// <param name="source"></param>
-      /// <param name="culture">Set to <see cref="System.Globalization.CultureInfo.CurrentCulture"/> if null.</param>
-      /// <returns></returns>
-      public System.Span<char> Capitalize(System.Globalization.CultureInfo? culture = null)
-      {
-        culture ??= System.Globalization.CultureInfo.CurrentCulture;
-
-        var maxIndex = source.Length - 1;
-
-        for (var index = maxIndex; index >= 0; index--)
-        {
-          var c = source[index]; // Avoid multiple indexers.
-
-          if (!char.IsLower(c)) continue; // If, c is not lower-case, advance.
-
-          if (index > 0 && !char.IsWhiteSpace(source[index - 1])) continue; // If, (ensure left char exists) left is not white-space, advance.
-
-          if (index < maxIndex && !char.IsLower(source[index + 1])) continue; // If, (ensure right char exists) right is not lower-case, advance.
-
-          source[index] = char.ToUpper(c, culture);
-        }
-
-        return source;
-      }
-
-      /// <summary>
-      /// <para>Convert all chars in the span to lower-case.</para>
-      /// </summary>
-      /// <param name="source"></param>
-      /// <param name="culture">Set to <see cref="System.Globalization.CultureInfo.CurrentCulture"/> if null.</param>
-      /// <returns></returns>
-      public System.Span<char> ToLower(System.Globalization.CultureInfo? culture = null)
-      {
-        culture ??= System.Globalization.CultureInfo.CurrentCulture;
-
-        for (var index = source.Length - 1; index >= 0; index--)
-          if (source[index] is var sourceChar && char.ToLower(sourceChar, culture) is var targetChar && sourceChar != targetChar)
-            source[index] = targetChar;
-
-        return source;
-      }
-
-      /// <summary>
-      /// <para>Convert all chars in the span to upper-case.</para>
-      /// </summary>
-      /// <param name="source"></param>
-      /// <param name="culture">Set to <see cref="System.Globalization.CultureInfo.CurrentCulture"/> if null.</param>
-      /// <returns></returns>
-      public System.Span<char> ToUpper(System.Globalization.CultureInfo? culture = null)
-      {
-        culture ??= System.Globalization.CultureInfo.CurrentCulture;
-
-        for (var index = source.Length - 1; index >= 0; index--)
-          if (source[index] is var sourceChar && char.ToUpper(sourceChar, culture) is var targetChar && sourceChar != targetChar)
-            source[index] = targetChar;
-
-        return source;
-      }
-
-      /// <summary>
-      /// <para>Uncapitalize any upper-case char at the beginning or with a whitespace on the left, and with a lower-case char on the right.</para>
-      /// </summary>
-      /// <param name="source"></param>
-      /// <param name="culture">Set to <see cref="System.Globalization.CultureInfo.CurrentCulture"/> if null.</param>
-      /// <returns></returns>
-      public System.Span<char> Uncapitalize(System.Globalization.CultureInfo? culture = null)
-      {
-        culture ??= System.Globalization.CultureInfo.CurrentCulture;
-
-        var maxIndex = source.Length - 1;
-
-        for (var index = maxIndex; index >= 0; index--)
-        {
-          var c = source[index]; // Avoid multiple indexers.
-
-          if (!char.IsUpper(c)) continue; // If, c is not upper-case, advance.
-
-          if (index > 0 && !char.IsWhiteSpace(source[index - 1])) continue; // If, (ensure left char exists) left is not white-space, advance.
-
-          if (index < maxIndex && !char.IsLower(source[index + 1])) continue; // If, (ensure right char exists) right is not lower-case, advance.
-
-          source[index] = char.ToLower(c, culture);
-        }
-
-        return source;
-      }
-    }
-
-    extension(System.Span<System.Text.Rune> source)
-    {
-      /// <summary>
-      /// <para>Capitalize any lower-case rune at the beginning or with a whitespace on the left, and with a lower-case rune on the right.</para>
-      /// </summary>
-      /// <param name="source"></param>
-      /// <param name="culture">Set to <see cref="System.Globalization.CultureInfo.CurrentCulture"/> if null.</param>
-      /// <returns></returns>
-      public System.Span<System.Text.Rune> Capitalize(System.Globalization.CultureInfo? culture = null)
-      {
-        culture ??= System.Globalization.CultureInfo.CurrentCulture;
-
-        var maxIndex = source.Length - 1;
-
-        for (var index = maxIndex; index >= 0; index--)
-        {
-          var r = source[index]; // Avoid multiple indexers.
-
-          if (!System.Text.Rune.IsLower(r)) continue; // If, r is not lower-case, advance.
-
-          if (index > 0 && !System.Text.Rune.IsWhiteSpace(source[index - 1])) continue; // If, (ensure left char exists) left is not white-space, advance.
-
-          if (index < maxIndex && !System.Text.Rune.IsLower(source[index + 1])) continue; // If, (ensure right char exists) right is not lower-case, advance.
-
-          source[index] = System.Text.Rune.ToUpper(r, culture);
-        }
-
-        return source;
-      }
-
-      /// <summary>
-      /// <para>Convert all runes in the span to lower-case.</para>
-      /// </summary>
-      /// <param name="source"></param>
-      /// <param name="culture">Set to <see cref="System.Globalization.CultureInfo.CurrentCulture"/> if null.</param>
-      /// <returns></returns>
-      public System.Span<System.Text.Rune> ToLower(System.Globalization.CultureInfo? culture = null)
-      {
-        culture ??= System.Globalization.CultureInfo.CurrentCulture;
-
-        for (var index = source.Length - 1; index >= 0; index--)
-          if (source[index] is var sourceRune && System.Text.Rune.ToLower(sourceRune, culture) is var targetRune && sourceRune != targetRune)
-            source[index] = targetRune;
-
-        return source;
-      }
-
-      /// <summary>
-      /// <para>Convert all runes in the span to upper-case.</para>
-      /// </summary>
-      /// <param name="source"></param>
-      /// <param name="culture">Set to <see cref="System.Globalization.CultureInfo.CurrentCulture"/> if null.</param>
-      /// <returns></returns>
-      public System.Span<System.Text.Rune> ToUpper(System.Globalization.CultureInfo? culture = null)
-      {
-        culture ??= System.Globalization.CultureInfo.CurrentCulture;
-
-        for (var index = source.Length - 1; index >= 0; index--)
-          if (source[index] is var sourceRune && System.Text.Rune.ToUpper(sourceRune, culture) is var targetRune && sourceRune != targetRune)
-            source[index] = targetRune;
-
-        return source;
-      }
-
-      /// <summary>
-      /// <para>Uncapitalize any upper-case rune at the beginning or with a whitespace on the left, and with a lower-case rune on the right.</para>
-      /// </summary>
-      /// <param name="source"></param>
-      /// <param name="culture">Set to <see cref="System.Globalization.CultureInfo.CurrentCulture"/> if null.</param>
-      /// <returns></returns>
-      public System.Span<System.Text.Rune> Uncapitalize(System.Globalization.CultureInfo? culture = null)
-      {
-        culture ??= System.Globalization.CultureInfo.CurrentCulture;
-
-        var maxIndex = source.Length - 1;
-
-        for (var index = maxIndex; index >= 0; index--)
-        {
-          var r = source[index]; // Avoid multiple indexers.
-
-          if (!System.Text.Rune.IsUpper(r)) continue; // If, r is not upper-case, advance.
-
-          if (index > 0 && !System.Text.Rune.IsWhiteSpace(source[index - 1])) continue; // If, (ensure left char exists) left is not white-space, advance.
-
-          if (index < maxIndex && !System.Text.Rune.IsLower(source[index + 1])) continue; // If, (ensure right char exists) right is not lower-case, advance.
-
-          source[index] = System.Text.Rune.ToLower(r, culture);
-        }
-
-        return source;
-      }
-    }
-
     extension<T>(System.Span<T> source)
     {
-      /// <summary>Non-allocating conversion (casting) from <see cref="System.Span{T}"/> to <see cref="System.ReadOnlySpan{T}"/>.</summary>
-      public System.ReadOnlySpan<T> AsReadOnlySpan() => source;
+      #region AsReadOnlySpan
 
-      #region Replace
+      /// <summary>
+      /// <para>Creates a new non-allocating <see cref="System.ReadOnlySpan{T}"/> over a <see cref="System.Span{T}"/>.</para>
+      /// </summary>
+      /// <returns></returns>
+      public System.ReadOnlySpan<T> AsReadOnlySpan()
+        => source;
+
+      #endregion
+
+      #region QuickSelect
+
+      /// <summary>Find the Kth smallest element in an unordered list, between left and right index.</summary>
+      /// <see href="https://en.wikipedia.org/wiki/Quickselect"/>
+      public T QuickSelect(int leftIndex, int rightIndex, int kth, System.Collections.Generic.IComparer<T>? comparer = null)
+      {
+        comparer ??= System.Collections.Generic.Comparer<T>.Default;
+
+        if (leftIndex == rightIndex)
+          return source[leftIndex];
+
+        while (true)
+        {
+          var pivotIndex = QuickSelectPartition(source, kth, leftIndex, rightIndex, comparer);
+
+          if (kth < pivotIndex) rightIndex = pivotIndex - 1;
+          else if (kth > pivotIndex) leftIndex = pivotIndex + 1;
+          else return source[kth];
+        }
+
+      }
+
+      #endregion
+
+      #region Replace..
 
       /// <summary>Replace all values in <paramref name="source"/> using the specified <paramref name="replacementSelector"/>.</summary>
       public System.Span<T> Replace(System.Func<T, int, bool> predicate, System.Func<T, int, T> replacementSelector)
@@ -223,13 +69,23 @@ namespace Flux
       public System.Span<T> Replace(System.Func<T, bool> predicate, System.Func<T, T> replacementSelector)
         => Replace(source, (e, i) => predicate(e), (e, i) => replacementSelector(e));
 
-      public System.Span<T> Replace(System.Func<T, T> replacementSelector)
-        => Replace(source, (e, i) => true, (e, i) => replacementSelector(e));
+      public System.Span<T> ReplaceAny(System.Collections.Generic.IEnumerable<T> any, System.Func<T, T> replacementSelector, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
+      {
+        equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
+
+        return Replace(source, (e, i) => any.Contains(e, equalityComparer), (e, i) => replacementSelector(e));
+      }
+
+      public System.Span<T> ReplaceAny(System.Collections.Generic.IEnumerable<T> any, T replacement, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
+        => Replace(source, (e, i) => any.Contains(e, equalityComparer), (e, i) => replacement);
 
       #endregion
 
       #region Rotate
 
+      /// <summary>
+      /// <para>Rotate all items in a <see cref="System.Span{T}"/> one step to the left (down or in the direction of least-significant position).</para>
+      /// </summary>
       public void RotateLeft1()
       {
         var tmp = source[0];
@@ -237,6 +93,9 @@ namespace Flux
         source[^1] = tmp;
       }
 
+      /// <summary>
+      /// <para>Rotate all items in a <see cref="System.Span{T}"/> one step to the right (up or in the direction of most-significant position).</para>
+      /// </summary>
       public void RotateRight1()
       {
         var tmp = source[^1];
@@ -244,22 +103,25 @@ namespace Flux
         source[0] = tmp;
       }
 
-      public void RotateLeft(int count)
+      /// <summary>
+      /// <para>Rotates all items in a <see cref="System.Span{T}"/> a specified <paramref name="count"/> number of steps.</para>
+      /// <para>When count is positive, rotate right (up or in the direction of most-significant position).</para>
+      /// <para>When count is negative, rotate left (down or in the direction of least-significant position).</para>
+      /// </summary>
+      /// <param name="count"></param>
+      public void Rotate(int count)
       {
         count %= source.Length;
 
-        source.Reverse();
-        source[^count..].Reverse();
-        source[..^count].Reverse();
-      }
+        if (count < 0)
+          count = source.Length + count;
 
-      public void RotateRight(int count)
-      {
-        count %= source.Length;
-
-        source.Reverse();
-        source[..count].Reverse();
-        source[count..].Reverse();
+        if (count > 0)
+        {
+          source.Reverse();
+          source[..count].Reverse();
+          source[count..].Reverse();
+        }
       }
 
       #endregion
@@ -553,7 +415,12 @@ namespace Flux
 
       #region Swap
 
-      /// <summary>In-place swap of two elements by the specified indices.</summary>
+      /// <summary>
+      /// <para>Performs an in-place swap of two elements at a specified pair of indices.</para>
+      /// </summary>
+      /// <param name="indexA"></param>
+      /// <param name="indexB"></param>
+      /// <returns>Whether a swap actually took place.</returns>
       public bool Swap(int indexA, int indexB)
       {
         if ((indexA != indexB) is var isUnequal && isUnequal) // No need to actually swap if the indices are the same.
@@ -562,18 +429,208 @@ namespace Flux
         return isUnequal;
       }
 
-      /// <summary>In-place swap of two elements by the specified index and the first element.</summary>
-      public bool SwapFirstWith(int index)
+      /// <summary>
+      /// <para>Perform a swap of two elements at a specified index and the first element.</para>
+      /// </summary>
+      public bool SwapWithFirst(int index)
         => Swap(source, 0, index);
 
-      /// <summary>In-place swap of two elements by the specified index and the last element.</summary>
-      public bool SwapLastWith(int index)
+      /// <summary>
+      /// <para>Perform a swap of two elements at a specified index and the last element.</para>
+      /// </summary>
+      public bool SwapWithLast(int index)
         => Swap(source, index, source.Length - 1);
 
       #endregion
     }
 
-    #region Helpers HeapSort
+    extension(System.Span<char> source)
+    {
+      /// <summary>
+      /// <para>Capitalize any lower-case char at the beginning or with a whitespace on the left, and with a lower-case char on the right.</para>
+      /// </summary>
+      /// <param name="source"></param>
+      /// <param name="culture">Set to <see cref="System.Globalization.CultureInfo.CurrentCulture"/> if null.</param>
+      /// <returns></returns>
+      public System.Span<char> Capitalize(System.Globalization.CultureInfo? culture = null)
+      {
+        culture ??= System.Globalization.CultureInfo.CurrentCulture;
+
+        var maxIndex = source.Length - 1;
+
+        for (var index = maxIndex; index >= 0; index--)
+        {
+          var c = source[index]; // Avoid multiple indexers.
+
+          if (!char.IsLower(c)) continue; // If, c is not lower-case, advance.
+
+          if (index > 0 && !char.IsWhiteSpace(source[index - 1])) continue; // If, (ensure left char exists) left is not white-space, advance.
+
+          if (index < maxIndex && !char.IsLower(source[index + 1])) continue; // If, (ensure right char exists) right is not lower-case, advance.
+
+          source[index] = char.ToUpper(c, culture);
+        }
+
+        return source;
+      }
+
+      /// <summary>
+      /// <para>Convert all chars in the span to lower-case.</para>
+      /// </summary>
+      /// <param name="source"></param>
+      /// <param name="culture">Set to <see cref="System.Globalization.CultureInfo.CurrentCulture"/> if null.</param>
+      /// <returns></returns>
+      public System.Span<char> ToLower(System.Globalization.CultureInfo? culture = null)
+      {
+        culture ??= System.Globalization.CultureInfo.CurrentCulture;
+
+        for (var index = source.Length - 1; index >= 0; index--)
+          if (source[index] is var sourceChar && char.ToLower(sourceChar, culture) is var targetChar && sourceChar != targetChar)
+            source[index] = targetChar;
+
+        return source;
+      }
+
+      /// <summary>
+      /// <para>Convert all chars in the span to upper-case.</para>
+      /// </summary>
+      /// <param name="source"></param>
+      /// <param name="culture">Set to <see cref="System.Globalization.CultureInfo.CurrentCulture"/> if null.</param>
+      /// <returns></returns>
+      public System.Span<char> ToUpper(System.Globalization.CultureInfo? culture = null)
+      {
+        culture ??= System.Globalization.CultureInfo.CurrentCulture;
+
+        for (var index = source.Length - 1; index >= 0; index--)
+          if (source[index] is var sourceChar && char.ToUpper(sourceChar, culture) is var targetChar && sourceChar != targetChar)
+            source[index] = targetChar;
+
+        return source;
+      }
+
+      /// <summary>
+      /// <para>Uncapitalize any upper-case char at the beginning or with a whitespace on the left, and with a lower-case char on the right.</para>
+      /// </summary>
+      /// <param name="source"></param>
+      /// <param name="culture">Set to <see cref="System.Globalization.CultureInfo.CurrentCulture"/> if null.</param>
+      /// <returns></returns>
+      public System.Span<char> Uncapitalize(System.Globalization.CultureInfo? culture = null)
+      {
+        culture ??= System.Globalization.CultureInfo.CurrentCulture;
+
+        var maxIndex = source.Length - 1;
+
+        for (var index = maxIndex; index >= 0; index--)
+        {
+          var c = source[index]; // Avoid multiple indexers.
+
+          if (!char.IsUpper(c)) continue; // If, c is not upper-case, advance.
+
+          if (index > 0 && !char.IsWhiteSpace(source[index - 1])) continue; // If, (ensure left char exists) left is not white-space, advance.
+
+          if (index < maxIndex && !char.IsLower(source[index + 1])) continue; // If, (ensure right char exists) right is not lower-case, advance.
+
+          source[index] = char.ToLower(c, culture);
+        }
+
+        return source;
+      }
+    }
+
+    extension(System.Span<System.Text.Rune> source)
+    {
+      /// <summary>
+      /// <para>Capitalize any lower-case rune at the beginning or with a whitespace on the left, and with a lower-case rune on the right.</para>
+      /// </summary>
+      /// <param name="source"></param>
+      /// <param name="culture">Set to <see cref="System.Globalization.CultureInfo.CurrentCulture"/> if null.</param>
+      /// <returns></returns>
+      public System.Span<System.Text.Rune> Capitalize(System.Globalization.CultureInfo? culture = null)
+      {
+        culture ??= System.Globalization.CultureInfo.CurrentCulture;
+
+        var maxIndex = source.Length - 1;
+
+        for (var index = maxIndex; index >= 0; index--)
+        {
+          var r = source[index]; // Avoid multiple indexers.
+
+          if (!System.Text.Rune.IsLower(r)) continue; // If, r is not lower-case, advance.
+
+          if (index > 0 && !System.Text.Rune.IsWhiteSpace(source[index - 1])) continue; // If, (ensure left char exists) left is not white-space, advance.
+
+          if (index < maxIndex && !System.Text.Rune.IsLower(source[index + 1])) continue; // If, (ensure right char exists) right is not lower-case, advance.
+
+          source[index] = System.Text.Rune.ToUpper(r, culture);
+        }
+
+        return source;
+      }
+
+      /// <summary>
+      /// <para>Convert all runes in the span to lower-case.</para>
+      /// </summary>
+      /// <param name="source"></param>
+      /// <param name="culture">Set to <see cref="System.Globalization.CultureInfo.CurrentCulture"/> if null.</param>
+      /// <returns></returns>
+      public System.Span<System.Text.Rune> ToLower(System.Globalization.CultureInfo? culture = null)
+      {
+        culture ??= System.Globalization.CultureInfo.CurrentCulture;
+
+        for (var index = source.Length - 1; index >= 0; index--)
+          if (source[index] is var sourceRune && System.Text.Rune.ToLower(sourceRune, culture) is var targetRune && sourceRune != targetRune)
+            source[index] = targetRune;
+
+        return source;
+      }
+
+      /// <summary>
+      /// <para>Convert all runes in the span to upper-case.</para>
+      /// </summary>
+      /// <param name="source"></param>
+      /// <param name="culture">Set to <see cref="System.Globalization.CultureInfo.CurrentCulture"/> if null.</param>
+      /// <returns></returns>
+      public System.Span<System.Text.Rune> ToUpper(System.Globalization.CultureInfo? culture = null)
+      {
+        culture ??= System.Globalization.CultureInfo.CurrentCulture;
+
+        for (var index = source.Length - 1; index >= 0; index--)
+          if (source[index] is var sourceRune && System.Text.Rune.ToUpper(sourceRune, culture) is var targetRune && sourceRune != targetRune)
+            source[index] = targetRune;
+
+        return source;
+      }
+
+      /// <summary>
+      /// <para>Uncapitalize any upper-case rune at the beginning or with a whitespace on the left, and with a lower-case rune on the right.</para>
+      /// </summary>
+      /// <param name="source"></param>
+      /// <param name="culture">Set to <see cref="System.Globalization.CultureInfo.CurrentCulture"/> if null.</param>
+      /// <returns></returns>
+      public System.Span<System.Text.Rune> Uncapitalize(System.Globalization.CultureInfo? culture = null)
+      {
+        culture ??= System.Globalization.CultureInfo.CurrentCulture;
+
+        var maxIndex = source.Length - 1;
+
+        for (var index = maxIndex; index >= 0; index--)
+        {
+          var r = source[index]; // Avoid multiple indexers.
+
+          if (!System.Text.Rune.IsUpper(r)) continue; // If, r is not upper-case, advance.
+
+          if (index > 0 && !System.Text.Rune.IsWhiteSpace(source[index - 1])) continue; // If, (ensure left char exists) left is not white-space, advance.
+
+          if (index < maxIndex && !System.Text.Rune.IsLower(source[index + 1])) continue; // If, (ensure right char exists) right is not lower-case, advance.
+
+          source[index] = System.Text.Rune.ToLower(r, culture);
+        }
+
+        return source;
+      }
+    }
+
+    #region HeapSort helpers
 
     private static int HeapSort_GetParent(int index)
        => (index - 1) / 2;
@@ -723,7 +780,7 @@ namespace Flux
 
     #endregion
 
-    #region Helpers MergeSort
+    #region MergeSort helpers
 
     // Sort the elements between min and max index (inclusive).
     private static void MergeSort_Sort<T>(System.Span<T> source, int minIndex, int maxIndex, System.Collections.Generic.IComparer<T> comparer)
@@ -772,7 +829,7 @@ namespace Flux
 
     #endregion
 
-    #region Helpers MergeSortToCopy
+    #region MergeSortToCopy helpers
 
     /// <summary>The <paramref name="source"/> array has the items to sort, and the <paramref name="target"/> is the work array.</summary>
     private static void MergeSortToCopy_BottomUpMergeSort<T>(System.Span<T> source, System.Span<T> target, int length, System.Collections.Generic.IComparer<T> comparer)
@@ -850,7 +907,7 @@ namespace Flux
 
     #endregion
 
-    #region Helpers QuickSort
+    #region QuickSort helpers
 
     private static void QuickSort_Impl<T>(System.Span<T> source, int lowIndex, int highIndex, System.Collections.Generic.IComparer<T> comparer)
     {
@@ -884,7 +941,7 @@ namespace Flux
 
     #endregion
 
-    #region QuickSelect
+    #region QuickSelect helpers
 
     /// <summary>Group a list (from left to right index) into two parts, those less than a certain element, and those greater than or equal to the element.</summary>
     private static int QuickSelectPartition<T>(System.Span<T> source, int pivotIndex, int leftIndex, int rightIndex, System.Collections.Generic.IComparer<T>? comparer = null)
@@ -906,32 +963,9 @@ namespace Flux
       return storeIndex;
     }
 
-    extension<T>(System.Span<T> source)
-    {
-      /// <summary>Find the Kth smallest element in an unordered list, between left and right index.</summary>
-      /// <see href="https://en.wikipedia.org/wiki/Quickselect"/>
-      public T QuickSelect(int leftIndex, int rightIndex, int kth, System.Collections.Generic.IComparer<T>? comparer = null)
-      {
-        comparer ??= System.Collections.Generic.Comparer<T>.Default;
-
-        if (leftIndex == rightIndex)
-          return source[leftIndex];
-
-        while (true)
-        {
-          var pivotIndex = QuickSelectPartition(source, kth, leftIndex, rightIndex, comparer);
-
-          if (kth < pivotIndex) rightIndex = pivotIndex - 1;
-          else if (kth > pivotIndex) leftIndex = pivotIndex + 1;
-          else return source[kth];
-        }
-
-      }
-    }
-
     #endregion
 
-    #region Helpers ShellSort
+    #region ShellSort helpers
 
     private static readonly int[] ShellSort_MarcinCiuraGapSequence = new int[] { 701, 301, 132, 57, 23, 10, 4, 1 }; // Marcin Ciura's gap sequence.
 

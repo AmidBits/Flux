@@ -14,7 +14,7 @@ namespace Flux.Units
     public MagneticFluxDensityVector(double valueX, double valueY, double valueZ, double valueW, MagneticFluxDensityUnit unit = MagneticFluxDensityUnit.Tesla)
       : this(System.Runtime.Intrinsics.Vector256.Create(valueX, valueY, valueZ, valueW), unit) { }
 
-    public MagneticFluxDensityVector(MetricPrefix prefix, System.Runtime.Intrinsics.Vector256<double> TeslaSquare) => m_value = prefix.ChangePrefix(TeslaSquare, MetricPrefix.Unprefixed);
+    public MagneticFluxDensityVector(MetricPrefix prefix, System.Runtime.Intrinsics.Vector256<double> TeslaSquare) => m_value = prefix.ConvertPrefix(TeslaSquare, MetricPrefix.Unprefixed);
 
     public MagneticFluxDensityVector(MetricPrefix prefix, double TeslaSquareX, double TeslaSquareY, double TeslaSquareZ, double TeslaSquareW)
       : this(prefix, System.Runtime.Intrinsics.Vector256.Create(TeslaSquareX, TeslaSquareY, TeslaSquareZ, TeslaSquareW)) { }
@@ -47,7 +47,7 @@ namespace Flux.Units
 
     #region ISiUnitValueQuantifiable<>
 
-    public System.Runtime.Intrinsics.Vector256<double> GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ChangePrefix(m_value, prefix);
+    public System.Runtime.Intrinsics.Vector256<double> GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertPrefix(m_value, prefix);
 
     public string ToSiUnitString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null)
       => GetSiUnitValue(prefix).ToString() + UnicodeSpacing.ThinSpace.ToSpacingString() + prefix.GetMetricPrefixSymbol() + MagneticFluxDensityUnit.Tesla.GetUnitSymbol();

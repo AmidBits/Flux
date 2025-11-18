@@ -12,7 +12,7 @@ namespace Flux.Units
 
     public LinearDensity(double value, LinearDensityUnit unit = LinearDensityUnit.KilogramPerMeter) => m_value = ConvertFromUnit(unit, value);
 
-    public LinearDensity(MetricPrefix prefix, double gramPerMeter) => m_value = prefix.ChangePrefix(gramPerMeter, MetricPrefix.Unprefixed);
+    public LinearDensity(MetricPrefix prefix, double gramPerMeter) => m_value = prefix.ConvertPrefix(gramPerMeter, MetricPrefix.Unprefixed);
 
     public LinearDensity(Mass mass, Volume volume) : this(mass.Value / volume.Value) { }
 
@@ -54,7 +54,7 @@ namespace Flux.Units
 
     #region ISiUnitValueQuantifiable<>
 
-    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Kilo.ChangePrefix(m_value, prefix);
+    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Kilo.ConvertPrefix(m_value, prefix);
 
     public string ToSiUnitString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null)
       => GetSiUnitValue(prefix).ToSiFormattedString(format, formatProvider) + UnicodeSpacing.ThinSpace.ToSpacingString() + prefix.GetMetricPrefixSymbol() + LinearDensityUnit.GramPerMeter.GetUnitSymbol();

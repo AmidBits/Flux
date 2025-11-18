@@ -11,7 +11,7 @@ namespace Flux.Units
 
     public EquivalentDose(double value, EquivalentDoseUnit unit = EquivalentDoseUnit.Sievert) => m_value = ConvertFromUnit(unit, value);
 
-    public EquivalentDose(MetricPrefix prefix, double sievert) => m_value = prefix.ChangePrefix(sievert, MetricPrefix.Unprefixed);
+    public EquivalentDose(MetricPrefix prefix, double sievert) => m_value = prefix.ConvertPrefix(sievert, MetricPrefix.Unprefixed);
 
     #region Overloaded operators
 
@@ -47,7 +47,7 @@ namespace Flux.Units
 
     #region ISiPrefixValueQuantifiable<>
 
-    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ChangePrefix(m_value, prefix);
+    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertPrefix(m_value, prefix);
 
     public string ToSiUnitString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null)
       => GetSiUnitValue(prefix).ToSiFormattedString(format, formatProvider) + UnicodeSpacing.ThinSpace.ToSpacingString() + prefix.GetMetricPrefixSymbol() + EquivalentDoseUnit.Sievert.GetUnitSymbol();

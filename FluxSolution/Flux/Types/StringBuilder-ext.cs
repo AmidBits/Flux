@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class XtensionStringBuilder
+  public static partial class StringBuilderExtensions
   {
     extension(System.Text.StringBuilder source)
     {
@@ -770,6 +770,15 @@ namespace Flux
 
       #endregion
 
+      public bool IsWhitespace()
+      {
+        for (var index = source.Length - 1; index >= 0; index--)
+          if (!char.IsWhiteSpace(source[index]))
+            return false;
+
+        return true;
+      }
+
       #region LastIndexOf..
 
       public int LastIndexOf(System.Func<char, bool> predicate)
@@ -1359,7 +1368,51 @@ namespace Flux
 
       #endregion
 
+      #region Slice
+
+      public System.Text.StringBuilder Slice(int index, int length, char[] buffer)
+      {
+        source.CopyTo(index, buffer, length);
+
+        return new System.Text.StringBuilder().Append(buffer, 0, length);
+      }
+
+      public System.Text.StringBuilder Slice(int index, char[] buffer)
+        => Slice(source, index, source.Length, buffer);
+
+      #endregion
+
       #region Split
+
+      public System.Collections.Generic.List<System.Text.StringBuilder> SplitSb(System.Func<char, bool> predicate, System.StringSplitOptions options = StringSplitOptions.None)
+      {
+        System.ArgumentNullException.ThrowIfNull(source);
+        System.ArgumentNullException.ThrowIfNull(predicate);
+
+        var te = (options & StringSplitOptions.TrimEntries) != 0;
+        var ree = (options & StringSplitOptions.RemoveEmptyEntries) != 0;
+
+        var list = new System.Collections.Generic.List<System.Text.StringBuilder>();
+
+        var atIndex = 0;
+
+        var maxIndex = source.Length - 1;
+
+        var buffer = new char[source.Length];
+
+        for (var index = 0; index <= maxIndex; index++)
+        {
+          if ((predicate(source[index]) ? source.Slice(atIndex, index - atIndex, buffer) : (index == maxIndex) ? source.Slice(atIndex, buffer) : default) is var sb && sb is not null)
+          {
+            if (!(ree && (sb.Length == 0 || (te && sb.IsWhitespace()))))
+              list.Add(te ? sb.TrimCommonPrefix(0, char.IsWhiteSpace).TrimCommonSuffix(0, char.IsWhiteSpace) : sb);
+
+            atIndex = index + 1;
+          }
+        }
+
+        return list;
+      }
 
       /// <summary>
       /// <para>Splits a <see cref="System.Text.StringBuilder"/> into substrings based on the specified <paramref name="predicate"/> and <paramref name="options"/>.</para>
@@ -1482,18 +1535,18 @@ namespace Flux
         return ranges;
       }
 
-      /// <summary>
-      /// <para>Creates a new <see cref="SpanMaker{T}"/> from the characters in source.</para>
-      /// </summary>
-      /// <param name="source"></param>
-      /// <returns></returns>
-      public SpanMaker<char> ToSpanMaker()
-      {
-        var sm = new SpanMaker<char>(source.Length);
-        foreach (var chunk in source.GetChunks())
-          sm.Append(1, chunk.Span);
-        return sm;
-      }
+      ///// <summary>
+      ///// <para>Creates a new <see cref="SpanMaker{T}"/> from the characters in source.</para>
+      ///// </summary>
+      ///// <param name="source"></param>
+      ///// <returns></returns>
+      //public SpanMaker<char> ToSpanMaker()
+      //{
+      //  var sm = new SpanMaker<char>(source.Length);
+      //  foreach (var chunk in source.GetChunks())
+      //    sm.Append(1, chunk.Span);
+      //  return sm;
+      //}
 
       /// <summary>Converts the value of a substring of this instance, starting at <paramref name="startIndex"/>, to a <see langword="string"/>.</summary>
       public string ToString(int startIndex)
@@ -1548,6 +1601,9 @@ namespace Flux
         return source.Remove(offset, length);
       }
 
+      public System.Text.StringBuilder TrimCommonPrefixAny(int offset, System.Collections.Generic.IEnumerable<char> any, System.Collections.Generic.IEqualityComparer<char>? equalityComparer = null)
+        => TrimCommonPrefix(source, offset, c => any.Contains(c, equalityComparer));
+
       /// <summary>
       /// <para>Returns the <paramref name="source"/> with all consecutive elements satisfying the <paramref name="predicate"/> removed from the end.</para>
       /// </summary>
@@ -1594,6 +1650,9 @@ namespace Flux
 
         return source.Remove(source.Length - offset - length, length);
       }
+
+      public System.Text.StringBuilder TrimCommonSuffixAny(int offset, System.Collections.Generic.IEnumerable<char> any, System.Collections.Generic.IEqualityComparer<char>? equalityComparer = null)
+        => TrimCommonSuffix(source, offset, c => any.Contains(c, equalityComparer));
 
       #endregion
 

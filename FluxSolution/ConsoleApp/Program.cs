@@ -3,7 +3,9 @@ using System.Buffers;
 using System.Data;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Xml.Schema;
 using Flux;
+using Flux.Units;
 // C# Interactive commands:
 // #r "System.Runtime"
 // #r "System.Runtime.Numerics"
@@ -335,14 +337,112 @@ namespace ConsoleApp
 
 
 
-      var x = (8.0).RescaleLogarithmicToLinear(5, 12, 5, 12, 40);
-      var y = x.RescaleLinearToLogarithmic(5, 12, 5, 12, 40);
 
 
-      var ap = 5d.GetArithmeticSequence(4).Take(10).ToArray();
-      var hp = (13d / 90d).GetHarmonicSequence(-2d / 225d).Take(20).ToArray();
+      var ipa = System.Globalization.CultureInfo.CurrentCulture.LoadIpaFile();
+      var ipalength = ipa.Length;
 
-      var bs = new BitStruct(0xFFFFFFFF);
+      ipa.AsSpan().AsSpan()[4] = 'x';
+
+      //var matches = System.Text.RegularExpressions.Regex.Matches(ipa, @"^..b.$", RegexOptions.Multiline).ToArray();
+
+      var matches1 = System.Text.RegularExpressions.Regex.Replace(ipa, @"\s.*\n", "\n");
+      var matches1len = matches1.Length;
+
+      var matches2 = System.Text.RegularExpressions.Regex.Matches(ipa, "(^|\n).*\t");
+
+      var sub1 = "geeksforgeeks".AsSpan().LongestRepeatingSubstring();
+      var sub1s = "geeksforgeeks".AsSpan()[sub1];
+      var subs = "SSABBASABBASS".AsSpan().LongestRepeatingSubstring();
+      var subss = "TTABBASABBASS".AsSpan()[subs];
+
+
+
+      // 0, 1, 2, 3, 4, 5, 6, 7, 8, 9
+
+      // 6, 5, 4, 3, 2, 1, 0, 9, 8, 7
+
+      // 9, 8, 7, 6, 5, 4, 3, 2, 1, 0
+      // 7, 8, 9, 0, 1, 2, 3, 4, 5, 6
+
+      var x = new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+
+      x.Rotate(3);
+      x.Rotate(-3);
+
+      x.AsReadOnlySpan().CommonPrefixLength([2, 4, 6, 8]);
+
+
+      //var directory = System.IO.Directory.GetCurrentDirectory();
+
+      //var test = new System.IO.FileInfo(@"\Resources\Scowl\2of12full.txt");
+
+      //var urix = @"\Resources\Scowl\2of12full.txt".ToUri();
+
+      var fi = @"\Resources\Scowl\2of12full.txt".ToFileInfo();
+      var di = @"\Resources\Scowl\".ToDirectoryInfo();
+
+
+
+      var file = @"file:///Resources\Scowl\2of12full.txt";
+      var furi = file.ToFileInfo();
+      var path = @"file://\Resources\Scowl\";
+
+      if (@"file://\Resources\Scowl\2of12full.txt".ToUri().TryGetStream(out var stream))
+        using (stream)
+        {
+        }
+
+      var isuri = Uri.TryCreate(file, UriKind.RelativeOrAbsolute, out Uri uriResult);
+
+      var fullfile = System.IO.Path.GetFullPath(file);
+      var fullpath = System.IO.Path.GetFullPath(path);
+
+      var isfile = System.IO.Path.IsPathRooted(file);
+      var ispath = System.IO.Path.IsPathRooted(path);
+      var fqfile = System.IO.Path.IsPathFullyQualified(file);
+      var fqpath = System.IO.Path.IsPathFullyQualified(path);
+      var isurifile = System.Uri.IsWellFormedUriString(file, UriKind.RelativeOrAbsolute);
+      var isuripath = System.Uri.IsWellFormedUriString(path, UriKind.RelativeOrAbsolute);
+
+      var urifile = new System.Uri(file);
+      var uripath = new System.Uri(path);
+
+      var filedi = new System.IO.DirectoryInfo(file);
+      var filefi = new System.IO.FileInfo(file);
+      var fileuri = new System.Uri(file);
+
+      var pathdi = new System.IO.DirectoryInfo(path);
+      var pathfi = new System.IO.FileInfo(path);
+      var pathuri = new System.Uri(path);
+
+      var uri = new System.Uri(@"file://\Resources\Scowl\2of12full.txt");
+      var uri2 = new System.Uri(@"file://\Resources\Scowl\");
+
+      //var words = System.Globalization.CultureInfo.ReadIpaString(System.Globalization.CultureInfo.CurrentCulture);
+
+
+      var points1 = new System.Numerics.Vector<double>[5];
+      points1[0] = System.Numerics.Vector.Create<double>(5, 0, 0, 0); // edge[0]: (6 - 5)(4 + 0) = 4
+      points1[1] = System.Numerics.Vector.Create<double>(6, 4, 0, 0); // edge[1]: (4 - 6)(5 + 4) = -18
+      points1[2] = System.Numerics.Vector.Create<double>(4, 5, 0, 0); // edge[2]: (1 - 4)(5 + 5) = -30
+      points1[3] = System.Numerics.Vector.Create<double>(1, 5, 0, 0); // edge[3]: (1 - 1)(0 + 5) = 0
+      points1[4] = System.Numerics.Vector.Create<double>(1, 0, 0, 0); // edge[4]: (5 - 1)(0 + 0) = 0
+
+      var points2 = new System.Numerics.Vector<double>[5];
+      points2[0] = System.Numerics.Vector.Create<double>(5, 0, 0, 0); // edge[0]: (6 - 5)(4 + 0) = 4
+      points2[1] = System.Numerics.Vector.Create<double>(1, 0, 0, 0); // edge[4]: (5 - 1)(0 + 0) = 0
+      points2[2] = System.Numerics.Vector.Create<double>(1, 5, 0, 0); // edge[3]: (1 - 1)(0 + 5) = 0
+      points2[3] = System.Numerics.Vector.Create<double>(4, 5, 0, 0); // edge[2]: (1 - 4)(5 + 5) = -30
+      points2[4] = System.Numerics.Vector.Create<double>(6, 4, 0, 0); // edge[1]: (4 - 6)(5 + 4) = -18
+
+      var sumedges1 = points1.ComputeAreaSigned2();
+      var sumedges2 = points2.ComputeAreaSigned2();
+
+      var asum = points1.PartitionTuple2(true, (v1, v2, i) => System.Numerics.Vector.CrossProduct2(v2, v1)).Sum();
+
+
+
 
 
 

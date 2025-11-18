@@ -11,7 +11,7 @@ namespace Flux.Units
 
     public Illuminance(double value, IlluminanceUnit unit = IlluminanceUnit.Lux) => m_value = ConvertFromUnit(unit, value);
 
-    public Illuminance(MetricPrefix prefix, double lux) => m_value = prefix.ChangePrefix(lux, MetricPrefix.Unprefixed);
+    public Illuminance(MetricPrefix prefix, double lux) => m_value = prefix.ConvertPrefix(lux, MetricPrefix.Unprefixed);
 
     #region Overloaded operators
 
@@ -47,7 +47,7 @@ namespace Flux.Units
 
     #region ISiUnitValueQuantifiable<>
 
-    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ChangePrefix(m_value, prefix);
+    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertPrefix(m_value, prefix);
 
     public string ToSiUnitString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null)
       => GetSiUnitValue(prefix).ToSiFormattedString(format, formatProvider) + UnicodeSpacing.ThinSpace.ToSpacingString() + prefix.GetMetricPrefixSymbol() + IlluminanceUnit.Lux.GetUnitSymbol();

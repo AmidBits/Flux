@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class XtensionArrayRank1
+  public static partial class ArrayRank1Extensions
   {
     /// <summary>
     /// <para>Returns a column name of the <paramref name="index"/>ed column from the array as if it were an array of column names, substituting if not enough column names are specified.</para>

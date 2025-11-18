@@ -46,11 +46,11 @@ namespace NetFx.ReadOnlySpan.Special
     [TestMethod]
     public void HammingDistance2()
     {
-      Assert.AreEqual(0, m_text2a.AsSpan().HammingDistanceMetric(m_text2b, m_comparableIgnoreNonSpace));
-      Assert.AreEqual(60, m_text2a.AsSpan().HammingDistanceMetric(m_text2b, m_comparerDoNotIgnoreCase));
+      Assert.AreEqual(0, m_text2a.AsSpan().HammingDistance(m_text2b, m_comparableIgnoreNonSpace));
+      Assert.AreEqual(60, m_text2a.AsSpan().HammingDistance(m_text2b, m_comparerDoNotIgnoreCase));
 
-      Assert.AreEqual(6, m_text3a.AsSpan().HammingDistanceMetric(m_text3b, m_comparisonOrdinal));
-      Assert.AreEqual(4, m_text3a.AsSpan().HammingDistanceMetric(m_text3b, m_comparableIgnoreNonSpace));
+      Assert.AreEqual(6, m_text3a.AsSpan().HammingDistance(m_text3b, m_comparisonOrdinal));
+      Assert.AreEqual(4, m_text3a.AsSpan().HammingDistance(m_text3b, m_comparableIgnoreNonSpace));
     }
 
     [TestMethod]
@@ -69,8 +69,8 @@ namespace NetFx.ReadOnlySpan.Special
     [TestMethod]
     public void LevenshteinDistance2()
     {
-      Assert.AreEqual(3, m_text1a.AsSpan().LevenshteinDistanceMetric(m_text1b, m_comparisonOrdinal));
-      Assert.AreEqual(3, m_text1a.AsSpan().LevenshteinDistanceMetric(m_text1b, m_comparisonOrdinalIgnoreCase));
+      Assert.AreEqual(2, m_text1a.AsSpan().LevenshteinDistanceMetric(m_text1b, m_comparisonOrdinal));
+      Assert.AreEqual(2, m_text1a.AsSpan().LevenshteinDistanceMetric(m_text1b, m_comparisonOrdinalIgnoreCase));
 
       Assert.AreEqual(0, m_text2a.AsSpan().LevenshteinDistanceMetric(m_text2b, m_comparableIgnoreNonSpace));
       Assert.AreEqual(60, m_text2a.AsSpan().LevenshteinDistanceMetric(m_text2b, m_comparerDoNotIgnoreCase));
@@ -78,7 +78,7 @@ namespace NetFx.ReadOnlySpan.Special
       Assert.AreEqual(6, m_text3a.AsSpan().LevenshteinDistanceMetric(m_text3b, m_comparisonOrdinal));
       Assert.AreEqual(4, m_text3a.AsSpan().LevenshteinDistanceMetric(m_text3b, m_comparableIgnoreNonSpace));
 
-      Assert.AreEqual(1, m_text4a.AsSpan().LevenshteinDistanceMetric(m_text4b, m_comparisonOrdinal));
+      Assert.AreEqual(2, m_text4a.AsSpan().LevenshteinDistanceMetric(m_text4b, m_comparisonOrdinal));
       Assert.AreEqual(1, m_text4a.AsSpan().LevenshteinDistanceMetric(m_text4b, m_comparisonOrdinalIgnoreCase));
     }
 
@@ -146,6 +146,18 @@ namespace NetFx.ReadOnlySpan.Special
 
         Assert.AreEqual(vt, outputs[i]);
       }
+    }
+
+    [TestMethod]
+    public void ShortestCommonSubsequence()
+    {
+      var expectedc = 9;
+      var actualc = "abcbdab".AsSpan().ShortestCommonSupersequenceCount("bdcaba", out var _);
+      Assert.AreEqual(expectedc, actualc);
+
+      var expectedv = "abdcabdab";
+      var actualv = "abcbdab".AsSpan().ShortestCommonSupersequenceValues("bdcaba", out var _).AsSpan().ToString();
+      Assert.AreEqual(expectedv, actualv);
     }
   }
 }

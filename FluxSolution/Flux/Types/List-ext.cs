@@ -1,23 +1,19 @@
 namespace Flux
 {
-  public static partial class XtensionList
+  public static partial class ListExtensions
   {
     extension<T>(System.Collections.Generic.List<T> source)
     {
       /// <summary>
-      /// <para>Flux non-allocating conversion (casting) to <see cref="System.ReadOnlySpan{T}"/>.</para>
+      /// <para>Create a non-allocating <see cref="System.ReadOnlySpan{T}"/> to the internal array of a <see cref="System.Collections.Generic.List{T}"/>.</para>
       /// </summary>
-      /// <typeparam name="T"></typeparam>
-      /// <param name="source"></param>
       /// <returns></returns>
       public System.ReadOnlySpan<T> AsReadOnlySpan()
         => System.Runtime.InteropServices.CollectionsMarshal.AsSpan(source);
 
       /// <summary>
-      /// <para>Flux non-allocating conversion (casting) to <see cref="System.Span{T}"/>.</para>
+      /// <para>Create a non-allocating <see cref="System.Span{T}"/> to the internal array of a <see cref="System.Collections.Generic.List{T}"/>.</para>
       /// </summary>
-      /// <typeparam name="T"></typeparam>
-      /// <param name="source"></param>
       /// <returns></returns>
       public System.Span<T> AsSpan()
         => System.Runtime.InteropServices.CollectionsMarshal.AsSpan(source);

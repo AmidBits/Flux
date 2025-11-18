@@ -12,7 +12,7 @@ namespace Flux.Units
 
     public Molarity(double value, MolarityUnit unit = MolarityUnit.MolesPerCubicMeter) => m_value = ConvertFromUnit(unit, value);
 
-    public Molarity(MetricPrefix prefix, double molesPerCubicMeter) => m_value = prefix.ChangePrefix(molesPerCubicMeter, MetricPrefix.Unprefixed);
+    public Molarity(MetricPrefix prefix, double molesPerCubicMeter) => m_value = prefix.ConvertPrefix(molesPerCubicMeter, MetricPrefix.Unprefixed);
 
     #region Static methods
 
@@ -52,7 +52,7 @@ namespace Flux.Units
 
     #region ISiUnitValueQuantifiable<>
 
-    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Kilo.ChangePrefix(m_value, prefix);
+    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Kilo.ConvertPrefix(m_value, prefix);
 
     public string ToSiUnitString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null)
       => GetSiUnitValue(prefix).ToSiFormattedString(format, formatProvider) + UnicodeSpacing.ThinSpace.ToSpacingString() + prefix.GetMetricPrefixSymbol() + MolarityUnit.MolesPerCubicMeter.GetUnitSymbol();

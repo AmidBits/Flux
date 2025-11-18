@@ -11,7 +11,7 @@ namespace Flux.Units
 
     public Power(double value, PowerUnit unit = PowerUnit.Watt) => m_value = ConvertFromUnit(unit, value);
 
-    public Power(MetricPrefix prefix, double watt) => m_value = prefix.ChangePrefix(watt, MetricPrefix.Unprefixed);
+    public Power(MetricPrefix prefix, double watt) => m_value = prefix.ConvertPrefix(watt, MetricPrefix.Unprefixed);
 
     /// <summary>Creates a new Power instance from the specified <paramref name="current"/> and <paramref name="voltage"/>.</summary>
     /// <param name="current"></param>
@@ -56,7 +56,7 @@ namespace Flux.Units
 
     #region ISiUnitValueQuantifiable<>
 
-    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ChangePrefix(m_value, prefix);
+    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertPrefix(m_value, prefix);
 
     public string ToSiUnitString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null)
       => GetSiUnitValue(prefix).ToSiFormattedString(format, formatProvider) + UnicodeSpacing.ThinSpace.ToSpacingString() + prefix.GetMetricPrefixSymbol() + PowerUnit.Watt.GetUnitSymbol();

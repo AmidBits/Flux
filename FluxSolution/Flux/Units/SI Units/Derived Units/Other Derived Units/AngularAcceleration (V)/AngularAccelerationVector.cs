@@ -12,7 +12,7 @@ namespace Flux.Units
     public AngularAccelerationVector(double valueX, double valueY, double valueZ, double valueW, AngularAccelerationUnit unit = AngularAccelerationUnit.RadianPerSecondSquared)
       : this(System.Runtime.Intrinsics.Vector256.Create(valueX, valueY, valueZ, valueW), unit) { }
 
-    public AngularAccelerationVector(MetricPrefix prefix, System.Runtime.Intrinsics.Vector256<double> meterPerSecondSquare) => m_value = prefix.ChangePrefix(meterPerSecondSquare, MetricPrefix.Unprefixed);
+    public AngularAccelerationVector(MetricPrefix prefix, System.Runtime.Intrinsics.Vector256<double> meterPerSecondSquare) => m_value = prefix.ConvertPrefix(meterPerSecondSquare, MetricPrefix.Unprefixed);
 
     public AngularAccelerationVector(MetricPrefix prefix, double meterPerSecondSquareX, double meterPerSecondSquareY, double meterPerSecondSquareZ, double meterPerSecondSquareW)
       : this(prefix, System.Runtime.Intrinsics.Vector256.Create(meterPerSecondSquareX, meterPerSecondSquareY, meterPerSecondSquareZ, meterPerSecondSquareW)) { }
@@ -45,7 +45,7 @@ namespace Flux.Units
 
     #region ISiUnitValueQuantifiable<>
 
-    public System.Runtime.Intrinsics.Vector256<double> GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ChangePrefix(m_value, prefix);
+    public System.Runtime.Intrinsics.Vector256<double> GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertPrefix(m_value, prefix);
 
     public string ToSiUnitString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null)
       => GetSiUnitValue(prefix).ToString() + UnicodeSpacing.ThinSpace.ToSpacingString() + prefix.GetMetricPrefixSymbol() + AngularAccelerationUnit.RadianPerSecondSquared.GetUnitSymbol();

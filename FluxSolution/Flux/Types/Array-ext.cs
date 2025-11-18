@@ -32,7 +32,7 @@ namespace Flux
     JaggedArray,
   }
 
-  public static partial class XtensionArray
+  public static partial class ArrayExtensions
   {
     extension(System.Array source)
     {

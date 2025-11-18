@@ -35,16 +35,16 @@ namespace Flux
     /// <summary>Creates a new string in a more readable format, e.g. "DecimalDigitNumber" becomes "decimal digit" (i.e. drop the ending Unicode category major, make lower case and add word spacing).</summary>
     public static string ToUnicodeCategoryMinorFriendlyString(this System.Globalization.UnicodeCategory source)
     {
-      var ucsb = new SpanMaker<char>(source == System.Globalization.UnicodeCategory.OtherNotAssigned ? source.ToString()[5..] : source.ToString());
+      var ucsb = new System.Text.StringBuilder(source == System.Globalization.UnicodeCategory.OtherNotAssigned ? source.ToString()[5..] : source.ToString());
       var ucms = source.ToUnicodeCategoryMajor().ToString();
 
-      if (ucsb.AsReadOnlySpan().IsCommonSuffix(ucms)) ucsb = ucsb.Remove(ucsb.Length - ucms.Length, ucms.Length); // Either fix the unicode category that ends with its own category major.
-      else if (ucsb.AsReadOnlySpan().IsCommonPrefix(ucms)) ucsb = ucsb.Remove(0, ucms.Length); // Or fix the unicode category that starts with its own category major.
+      if (ucsb.ToString().AsSpan().IsCommonSuffix(ucms)) ucsb = ucsb.Remove(ucsb.Length - ucms.Length, ucms.Length); // Either fix the unicode category that ends with its own category major.
+      else if (ucsb.ToString().AsSpan().IsCommonPrefix(ucms)) ucsb = ucsb.Remove(0, ucms.Length); // Or fix the unicode category that starts with its own category major.
 
       ucsb.PrefixCapWords();
 
       if (source == System.Globalization.UnicodeCategory.NonSpacingMark) ucsb = ucsb.RemoveAll(char.IsWhiteSpace); // Fix "non spacing" to "nonspacing".
-      if (source == System.Globalization.UnicodeCategory.PrivateUse) ucsb = ucsb.Replace(c => c == ' ', "-"); // Fix "private use" to "private-use".
+      if (source == System.Globalization.UnicodeCategory.PrivateUse) ucsb = ucsb.Replace(' ', '-'); // Fix "private use" to "private-use".
 
       return ucsb.ToString();
     }

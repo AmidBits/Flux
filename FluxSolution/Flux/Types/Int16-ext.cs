@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class XtensionInt16
+  public static partial class Int16Extensions
   {
     extension(System.Int16)
     {

@@ -1,23 +1,37 @@
 namespace Flux
 {
-  public static partial class XtensionRegularExpressions
+  public static class RegularExpressionsExtensions
   {
-    /// <summary>All expressions are unanchored (for now).</summary>
-    public static System.Collections.Generic.IDictionary<string, string> GetNamedGroups(this System.Text.RegularExpressions.Match source)
+    extension(System.Text.RegularExpressions.Regex)
     {
-      System.ArgumentNullException.ThrowIfNull(source);
+      /// <summary>
+      /// <para>Creates a new <see cref="System.Text.RegularExpressions.Regex"/> so that it matches the last occurrence of the specified <paramref name="pattern"/>.</para>
+      /// </summary>
+      /// <param name="pattern"></param>
+      /// <returns></returns>
+      public static System.Text.RegularExpressions.Regex CreateToMatchLastOccurrence(string pattern)
+        => new(@$"(?!(?s:.*){pattern})");
+    }
 
-      var dictionary = new System.Collections.Generic.SortedDictionary<string, string>();
-
-      for (var index = 0; index < source.Groups.Count; index++)
+    extension(System.Text.RegularExpressions.Match source)
+    {
+      /// <summary>All expressions are unanchored (for now).</summary>
+      public System.Collections.Generic.IDictionary<string, string> GetNamedGroups()
       {
-        var group = source.Groups[index];
+        System.ArgumentNullException.ThrowIfNull(source);
 
-        if (!group.Name.Equals(index.ToString(System.Globalization.CultureInfo.CurrentCulture), System.StringComparison.InvariantCulture))
-          dictionary.Add(group.Name, group.Value);
+        var dictionary = new System.Collections.Generic.SortedDictionary<string, string>();
+
+        for (var index = 0; index < source.Groups.Count; index++)
+        {
+          var group = source.Groups[index];
+
+          if (!group.Name.Equals(index.ToString(System.Globalization.CultureInfo.CurrentCulture), System.StringComparison.InvariantCulture))
+            dictionary.Add(group.Name, group.Value);
+        }
+
+        return dictionary;
       }
-
-      return dictionary;
     }
   }
 }

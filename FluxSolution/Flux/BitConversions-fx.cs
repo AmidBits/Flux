@@ -736,7 +736,7 @@ namespace Flux
       {
         var intParts = System.Decimal.GetBits(value);
 
-        var byteParts = System.Runtime.InteropServices.MemoryMarshal.AsBytes<int>(intParts).AsSpan();
+        var byteParts = System.Runtime.InteropServices.MemoryMarshal.AsBytes(intParts).AsSpan(); // Cannot use "var byteParts = System.Runtime.InteropServices.MemoryMarshal.Cast<int, byte>(intParts);" because it creates a read-only span.
 
         if (endianess == Endianess.BigEndian)
           System.MemoryExtensions.Reverse(byteParts);

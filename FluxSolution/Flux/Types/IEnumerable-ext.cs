@@ -609,35 +609,7 @@ namespace Flux
 
     #endregion
 
-    #region FirstOrValue
-
-    /// <summary>
-    /// <para>Returns the a tuple with the first element and index from <paramref name="source"/> that satisfies the <paramref name="predicate"/>, otherwise <paramref name="value"/> and index = -1.</para>
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="source"></param>
-    /// <param name="value"></param>
-    /// <param name="predicate">If null then predicate is ignored.</param>
-    /// <returns></returns>
-    public static (T Item, int Index) FirstOrValue<T>(this System.Collections.Generic.IEnumerable<T> source, T value, System.Func<T, int, bool>? predicate = null)
-    {
-      predicate ??= (e, i) => true;
-
-      var index = 0;
-
-      foreach (var element in source)
-        if (predicate(element, index)) return (element, index);
-        else index++;
-
-      return (value, -1);
-    }
-
-    public static (T Item, int Index) FirstOrValue<T>(this System.Collections.Generic.IEnumerable<T> source, T value)
-      => FirstOrValue(source, value, (e, i) => i == 0);
-
-    #endregion
-
-    #region GetExtremum
+    #region Extremum
 
     /// <summary>
     /// <para>Locate the minimum/maximum elements and indices, as evaluated by the <paramref name="valueSelector"/>, in <paramref name="source"/>. Uses the specified <paramref name="comparer"/> (default if null).</para>
@@ -650,19 +622,19 @@ namespace Flux
     /// <returns></returns>
     /// <exception cref="System.ArgumentNullException"></exception>
     /// <exception cref="System.ArgumentException"></exception>
-    public static (int MinIndex, TSource? MinItem, TValue? MinValue, int MaxIndex, TSource? MaxItem, TValue? MaxValue) GetExtremum<TSource, TValue>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, TValue> valueSelector, System.Collections.Generic.IComparer<TValue>? comparer = null)
+    public static (TSource? MinItem, int MinIndex, TValue? MinValue, TSource? MaxItem, int MaxIndex, TValue? MaxValue) Extremum<TSource, TValue>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, TValue> valueSelector, System.Collections.Generic.IComparer<TValue>? comparer = null)
     {
       System.ArgumentNullException.ThrowIfNull(source);
       System.ArgumentNullException.ThrowIfNull(valueSelector);
 
       comparer ??= System.Collections.Generic.Comparer<TValue>.Default;
 
-      var minIndex = -1;
       var minItem = default(TSource);
+      var minIndex = -1;
       var minValue = default(TValue);
 
-      var maxIndex = -1;
       var maxItem = default(TSource);
+      var maxIndex = -1;
       var maxValue = default(TValue);
 
       var index = 0;
@@ -673,23 +645,54 @@ namespace Flux
 
         if (minIndex < 0 || comparer.Compare(value, minValue) < 0)
         {
-          minIndex = index;
           minItem = item;
+          minIndex = index;
           minValue = value;
         }
 
         if (maxIndex < 0 || comparer.Compare(value, maxValue) > 0)
         {
-          maxIndex = index;
           maxItem = item;
+          maxIndex = index;
           maxValue = value;
         }
 
         index++;
       }
 
-      return (minIndex, minItem, minValue, maxIndex, maxItem, maxValue);
+      return (minItem, minIndex, minValue, maxItem, maxIndex, maxValue);
     }
+
+    #endregion
+
+    #region FirstOrValue
+
+    /// <summary>
+    /// <para>Returns the a tuple with the first element and index from <paramref name="source"/> that satisfies the <paramref name="predicate"/>, otherwise <paramref name="value"/> and index = -1.</para>
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="source"></param>
+    /// <param name="value"></param>
+    /// <param name="predicate">If null then predicate is ignored.</param>
+    /// <returns></returns>
+    public static (T Item, int Index) FirstOrValue<T>(this System.Collections.Generic.IEnumerable<T> source, T value, System.Func<T, int, bool> predicate)
+    {
+      System.ArgumentNullException.ThrowIfNull(predicate);
+
+      var index = 0;
+
+      foreach (var element in source)
+        if (predicate(element, index)) return (element, index);
+        else index++;
+
+      return (value, -1);
+    }
+
+    public static (T Item, int Index) FirstOrValue<T>(this System.Collections.Generic.IEnumerable<T> source, T value, System.Func<T, bool> predicate)
+      => FirstOrValue(source, value, (e, i) => predicate(e));
+
+    public static (T Item, int Index) FirstOrValue<T>(this System.Collections.Generic.IEnumerable<T> source, T value)
+      => FirstOrValue(source, value, (e, i) => true);
 
     #endregion
 
@@ -719,68 +722,6 @@ namespace Flux
       }
 
       return map;
-    }
-
-    #endregion
-
-    #region GetInfimumAndSupremum
-
-    /// <summary>
-    /// <para>Gets the nearest ("less-than" and "greater-than", optionally with "-or-equal") elements and indices to the singleton set {<paramref name="referenceValue"/>}, as evaluated by the <paramref name="valueSelector"/>, in <paramref name="source"/>. Uses the specified <paramref name="comparer"/> (default if null).</para>
-    /// <para>The infimum of a (singleton in this case) subset <paramref name="referenceValue"/> of a set <paramref name="source"/> is the greatest element in <paramref name="source"/> that is less-than-or-equal <paramref name="referenceValue"/>. If <paramref name="proper"/> is <see langword="true"/> then infimum will never be equal.</para>
-    /// <para>The supremum of a (singleton in this case) subset <paramref name="referenceValue"/> of a set <paramref name="source"/> is the least element in <paramref name="source"/> that is greater-than-or-equal <paramref name="referenceValue"/>. If <paramref name="proper"/> is <see langword="true"/> then supremum will never be equal.</para>
-    /// <para><see href="https://en.wikipedia.org/wiki/Infimum_and_supremum"/></para>
-    /// </summary>
-    /// <typeparam name="TSource"></typeparam>
-    /// <typeparam name="TValue"></typeparam>
-    /// <param name="source">This is the set P.</param>
-    /// <param name="valueSelector"></param>
-    /// <param name="referenceValue">This is the subset S.</param>
-    /// <param name="proper">If <paramref name="proper"/> is <see langword="true"/> then infimum and supremum will never be equal, otherwise it may be equal.</param>
-    /// <param name="comparer">Uses the specified comparer, or default if null.</param>
-    /// <returns></returns>
-    /// <exception cref="System.ArgumentNullException"/>
-    public static (int InfimumIndex, TSource? InfimumItem, TValue? InfimumValue, int SupremumIndex, TSource? SupremumItem, TValue? SupremumValue) GetInfimumAndSupremum<TSource, TValue>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, TValue> valueSelector, TValue referenceValue, bool proper, System.Collections.Generic.IComparer<TValue>? comparer = null)
-    {
-      System.ArgumentNullException.ThrowIfNull(source);
-      System.ArgumentNullException.ThrowIfNull(valueSelector);
-
-      comparer ??= System.Collections.Generic.Comparer<TValue>.Default;
-
-      var infIndex = -1;
-      var infItem = default(TSource);
-      var infValue = referenceValue;
-
-      var supIndex = -1;
-      var supItem = default(TSource);
-      var supValue = referenceValue;
-
-      var index = 0;
-
-      foreach (var item in source)
-      {
-        var value = valueSelector(item);
-
-        var cmp = comparer.Compare(value, referenceValue);
-
-        if ((!proper ? cmp <= 0 : cmp < 0) && (infIndex < 0 || comparer.Compare(value, infValue) > 0))
-        {
-          infIndex = index;
-          infItem = item;
-          infValue = value;
-        }
-
-        if ((!proper ? cmp >= 0 : cmp > 0) && (supIndex < 0 || comparer.Compare(value, supValue) < 0))
-        {
-          supIndex = index;
-          supItem = item;
-          supValue = value;
-        }
-
-        index++;
-      }
-
-      return (infIndex, infItem, infValue, supIndex, supItem, supValue);
     }
 
     #endregion
@@ -826,6 +767,68 @@ namespace Flux
         if (g.Count > 0)
           yield return g;
       }
+    }
+
+    #endregion
+
+    #region InfimumSupremum
+
+    /// <summary>
+    /// <para>Gets the nearest ("less-than" and "greater-than", optionally with "-or-equal") elements and indices to the singleton set {<paramref name="referenceValue"/>}, as evaluated by the <paramref name="valueSelector"/>, in <paramref name="source"/>. Uses the specified <paramref name="comparer"/> (default if null).</para>
+    /// <para>The infimum of a (singleton in this case) subset <paramref name="referenceValue"/> of a set <paramref name="source"/> is the greatest element in <paramref name="source"/> that is less-than-or-equal <paramref name="referenceValue"/>. If <paramref name="proper"/> is <see langword="true"/> then infimum will never be equal.</para>
+    /// <para>The supremum of a (singleton in this case) subset <paramref name="referenceValue"/> of a set <paramref name="source"/> is the least element in <paramref name="source"/> that is greater-than-or-equal <paramref name="referenceValue"/>. If <paramref name="proper"/> is <see langword="true"/> then supremum will never be equal.</para>
+    /// <para><see href="https://en.wikipedia.org/wiki/Infimum_and_supremum"/></para>
+    /// </summary>
+    /// <typeparam name="TSource"></typeparam>
+    /// <typeparam name="TValue"></typeparam>
+    /// <param name="source">This is the set P.</param>
+    /// <param name="valueSelector"></param>
+    /// <param name="referenceValue">This (and the infimum/supremum) is the subset S.</param>
+    /// <param name="proper">If <paramref name="proper"/> is <see langword="true"/> then infimum and supremum will never be equal, otherwise it may be equal.</param>
+    /// <param name="comparer">Uses the specified comparer, or default if null.</param>
+    /// <returns></returns>
+    /// <exception cref="System.ArgumentNullException"/>
+    public static (TSource? InfimumItem, int InfimumIndex, TValue? InfimumValue, TSource? SupremumItem, int SupremumIndex, TValue? SupremumValue) InfimumSupremum<TSource, TValue>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, TValue> valueSelector, TValue referenceValue, bool proper, System.Collections.Generic.IComparer<TValue>? comparer = null)
+    {
+      System.ArgumentNullException.ThrowIfNull(source);
+      System.ArgumentNullException.ThrowIfNull(valueSelector);
+
+      comparer ??= System.Collections.Generic.Comparer<TValue>.Default;
+
+      var infItem = default(TSource);
+      var infIndex = -1;
+      var infValue = referenceValue;
+
+      var supItem = default(TSource);
+      var supIndex = -1;
+      var supValue = referenceValue;
+
+      var index = 0;
+
+      foreach (var item in source)
+      {
+        var value = valueSelector(item);
+
+        var cmp = comparer.Compare(value, referenceValue);
+
+        if ((!proper ? cmp <= 0 : cmp < 0) && (infIndex < 0 || comparer.Compare(value, infValue) > 0))
+        {
+          infIndex = index;
+          infItem = item;
+          infValue = value;
+        }
+
+        if ((!proper ? cmp >= 0 : cmp > 0) && (supIndex < 0 || comparer.Compare(value, supValue) < 0))
+        {
+          supIndex = index;
+          supItem = item;
+          supValue = value;
+        }
+
+        index++;
+      }
+
+      return (infItem, infIndex, infValue, supItem, supIndex, supValue);
     }
 
     #endregion
@@ -1018,6 +1021,9 @@ namespace Flux
       }
       else throw new System.ArgumentException("The sequence has only 1 element.", nameof(source));
     }
+
+    public static System.Collections.Generic.IEnumerable<TResult> PartitionTuple2<TSource, TResult>(this System.Collections.Generic.IEnumerable<TSource> source, bool wrap, System.Func<TSource, TSource, TResult> resultSelector)
+      => PartitionTuple2(source, wrap, (a, b, i) => resultSelector(a, b));
 
     /// <summary>
     /// <para>Create a new sequence of 3-tuples, project with a <paramref name="resultSelector"/>, and optionally overlap by wrap-around to the first or the second element.</para>
@@ -1705,17 +1711,17 @@ namespace Flux
 
     #endregion
 
-    #region ToSpanBuilder
+    //#region ToSpanBuilder
 
-    public static SpanBuilder<T> ToSpanBuilder<T>(this System.Collections.Generic.IEnumerable<T> source)
-    {
-      var sb = new SpanBuilder<T>();
-      foreach (var item in source)
-        sb.Append(item);
-      return sb;
-    }
+    //public static SpanBuilder<T> ToSpanBuilder<T>(this System.Collections.Generic.IEnumerable<T> source)
+    //{
+    //  var sb = new SpanBuilder<T>();
+    //  foreach (var item in source)
+    //    sb.Append(item);
+    //  return sb;
+    //}
 
-    #endregion
+    //#endregion
 
     #region ToTwoDimensionalArray
 

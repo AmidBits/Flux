@@ -19,7 +19,7 @@ namespace Flux.Units
     /// </summary>
     /// <param name="meter"></param>
     /// <param name="prefix"></param>
-    public Length(MetricPrefix prefix, double meter) => m_value = prefix.ChangePrefix(meter, MetricPrefix.Unprefixed);
+    public Length(MetricPrefix prefix, double meter) => m_value = prefix.ConvertPrefix(meter, MetricPrefix.Unprefixed);
 
     /// <summary>
     /// <para>Computes the wavelength from the specified phase velocity and frequency. A wavelength is the spatial period of a periodic wave, i.e. the distance over which the wave's shape repeats. The default reference value for the speed of sound is 343.21 m/s. This determines the unit of measurement (i.e. meters per second) for the wavelength distance.</para>
@@ -176,7 +176,7 @@ namespace Flux.Units
 
     #region ISiUnitValueQuantifiable<>
 
-    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ChangePrefix(m_value, prefix);
+    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertPrefix(m_value, prefix);
 
     public string ToSiUnitString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null)
       => GetSiUnitValue(prefix).ToSiFormattedString(format, formatProvider) + UnicodeSpacing.ThinSpace.ToSpacingString() + prefix.GetMetricPrefixSymbol() + LengthUnit.Meter.GetUnitSymbol();

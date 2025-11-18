@@ -1,3 +1,5 @@
+using System.Net.Http.Headers;
+
 namespace Flux
 {
   public static partial class NumberFunctions
@@ -311,7 +313,7 @@ namespace Flux
         if (unequal || moafz != value)
           moafz += csmv;
 
-        return (motz, value.RoundToNearest(mode, motz, moafz), moafz);
+        return (motz, value.RoundToNearest(mode, false, [motz, moafz]), moafz);
       }
 
       /// <summary>
@@ -337,7 +339,7 @@ namespace Flux
         multipleOfTowardsZero = value.MultipleOfTowardZero(multiple, unequal);
         multipleOfAwayFromZero = value.MultipleOfAwayFromZero(multiple, unequal);
 
-        return value.RoundToNearest(mode, multipleOfTowardsZero, multipleOfAwayFromZero);
+        return value.RoundToNearest(mode, false, [multipleOfTowardsZero, multipleOfAwayFromZero]);
       }
 
       /// <summary>
@@ -408,6 +410,51 @@ namespace Flux
 
       #endregion
 
+      #region RoundToNearest
+
+      public TNumber RoundToNearest(HalfRounding mode, bool proper, params System.ReadOnlySpan<TNumber> values)
+      {
+        System.ArgumentOutOfRangeException.ThrowIfZero(values.Length);
+
+        var closestValues = new System.Collections.Generic.List<TNumber>() { values[0] };
+        var closestDistance = TNumber.Abs(value - TNumber.CreateChecked(values[0]));
+
+        for (var i = 1; i < values.Length; i++)
+        {
+          var currentValue = values[i];
+          var currentDistance = TNumber.Abs(value - TNumber.CreateChecked(currentValue));
+
+          if ((!proper || currentValue != value) && currentDistance <= closestDistance)
+          {
+            if (currentDistance < closestDistance)
+            {
+              closestValues.Clear();
+              closestDistance = currentDistance;
+            }
+
+            if (!closestValues.Contains(currentValue))
+              closestValues.Add(currentValue);
+          }
+        }
+
+        return closestValues.Count == 0
+          ? closestValues[0]
+          : mode switch // If the distances are equal, i.e. the value is exactly halfway to all closestValues, we use the appropriate rounding strategy to resolve a winner.
+          {
+            HalfRounding.ToEven => closestValues.FirstOrValue(closestValues[0], TNumber.IsEvenInteger).Item,
+            HalfRounding.AwayFromZero => closestValues.AsSpan().InfimumSupremum(value, v => v, false) is var (infimumItem, infimumIndex, infimumValue, supremumItem, supremumIndex, supremumValue) && value >= TNumber.Zero ? (supremumIndex > -1 ? supremumValue : infimumValue) : (infimumIndex > -1 ? infimumValue : supremumValue),
+            HalfRounding.TowardZero => closestValues.AsSpan().InfimumSupremum(value, v => v, false) is var (infimumItem, infimumIndex, infimumValue, supremumItem, supremumIndex, supremumValue) && value >= TNumber.Zero ? (infimumIndex > -1 ? infimumValue : supremumValue) : (supremumIndex > -1 ? supremumValue : infimumValue),
+            HalfRounding.ToNegativeInfinity => closestValues.Min() ?? throw new System.NullReferenceException(),
+            HalfRounding.ToPositiveInfinity => closestValues.Max() ?? throw new System.NullReferenceException(),
+            HalfRounding.ToOdd => closestValues.FirstOrValue(closestValues[0], TNumber.IsOddInteger).Item,
+            HalfRounding.ToRandom => closestValues.AsSpan().GetRandomElement(),
+            HalfRounding.ToAlternating => closestValues.AsSpan().GetAlternatingElement(),
+            _ => throw new NotImplementedException(),
+          };
+      }
+
+      #endregion
+
       #region ..Sign functions (Unit)
 
       /// <summary>
@@ -450,7 +497,7 @@ namespace Flux
         if (value < minValue || value > maxValue)
           return value; // If number is already spread, nothing to do but return it.
 
-        var nearestValue = value.RoundToNearest(mode, minValue, maxValue);
+        var nearestValue = value.RoundToNearest(mode, false, [minValue, maxValue]);
 
         return (nearestValue == minValue)
           ? minValue - margin
@@ -473,7 +520,7 @@ namespace Flux
         if (value < minValue || value > maxValue)
           return value; // If number is already spread, nothing to do but return it.
 
-        var nearestValue = value.RoundToNearest(mode, minValue, maxValue);
+        var nearestValue = value.RoundToNearest(mode, false, [minValue, maxValue]);
 
         return (nearestValue == minValue)
           ? minValue.DecrementNative()
@@ -604,118 +651,6 @@ namespace Flux
       var remainder = dividend % divisor;
 
       return ((dividend - remainder) / divisor, remainder);
-    }
-
-    #endregion
-
-    #region RoundToNearest
-
-    private static bool m_roundNearestAlternatingState; // This is a field used for the method below.
-
-    extension<TNumber>(TNumber value)
-      where TNumber : System.Numerics.INumber<TNumber>
-    {
-      /// <summary>
-      /// <para>Rounds the <paramref name="value"/> to the nearest boundary according to the strategy <paramref name="mode"/>.</para>
-      /// <remark>Use .NET built-in functionality when possible.</remark>
-      /// </summary>
-      /// <typeparam name="TNumber"></typeparam>
-      /// <typeparam name="TNearest"></typeparam>
-      /// <param name="value"></param>
-      /// <param name="mode"></param>
-      /// <param name="nearestTowardZero"></param>
-      /// <param name="nearestAwayFromZero"></param>
-      /// <returns></returns>
-      public TNearest RoundToNearest<TNearest>(UniversalRounding mode, TNearest nearestTowardZero, TNearest nearestAwayFromZero)
-      where TNearest : System.Numerics.INumber<TNearest>
-      => nearestTowardZero == nearestAwayFromZero ? nearestTowardZero // First, if the two boundaries are equal, it's the one.
-      : mode switch
-      {
-        // Second, we take care of the integral rounding cases.
-        UniversalRounding.IntegralAwayFromZero => nearestAwayFromZero,
-        UniversalRounding.IntegralTowardZero => nearestTowardZero,
-        UniversalRounding.IntegralToNegativeInfinity => TNearest.Min(nearestTowardZero, nearestAwayFromZero),
-        UniversalRounding.IntegralToPositiveInfinity => TNearest.Max(nearestTowardZero, nearestAwayFromZero),
-        UniversalRounding.IntegralToRandom => value.RoundToNearestRandom(nearestTowardZero, nearestAwayFromZero),
-        UniversalRounding.IntegralToEven => TNearest.IsEvenInteger(nearestTowardZero) ? nearestTowardZero : nearestAwayFromZero,
-        //UniversalRounding.WholeAlternating => value.RoundToNearestAlternating(nearestTowardZero, nearestAwayFromZero),
-        UniversalRounding.IntegralToOdd => TNearest.IsOddInteger(nearestTowardZero) ? nearestTowardZero : nearestAwayFromZero,
-        // And third, we delegate to halfway-rounding strategies.
-        _ => TNumber.Abs(value - TNumber.CreateChecked(nearestTowardZero)) is var distanceTowardsZero
-          && TNumber.Abs(TNumber.CreateChecked(nearestAwayFromZero) - value) is var distanceAwayFromZero
-          && (distanceTowardsZero < distanceAwayFromZero) ? nearestTowardZero // A clear win for towards-zero, no halfway-rounding needed.
-          : (distanceAwayFromZero < distanceTowardsZero) ? nearestAwayFromZero // A clear win for away-from-zero, no halfway-rounding needed.
-          : mode switch // If the distances are equal, i.e. exactly halfway, we use the appropriate rounding strategy to resolve a winner.
-          {
-            UniversalRounding.HalfToEven => TNearest.IsEvenInteger(nearestTowardZero) ? nearestTowardZero : nearestAwayFromZero,
-            UniversalRounding.HalfAwayFromZero => nearestAwayFromZero,
-            UniversalRounding.HalfTowardZero => nearestTowardZero,
-            UniversalRounding.HalfToNegativeInfinity => TNearest.Min(nearestTowardZero, nearestAwayFromZero),
-            UniversalRounding.HalfToPositiveInfinity => TNearest.Max(nearestTowardZero, nearestAwayFromZero),
-            UniversalRounding.HalfToRandom => value.RoundToNearestRandom(nearestTowardZero, nearestAwayFromZero),
-            UniversalRounding.HalfToAlternating => value.RoundToNearestAlternating(nearestTowardZero, nearestAwayFromZero),
-            UniversalRounding.HalfToOdd => TNearest.IsOddInteger(nearestAwayFromZero) ? nearestAwayFromZero : nearestTowardZero,
-            _ => throw new System.ArgumentOutOfRangeException(nameof(mode)),
-          }
-      };
-
-      public TNearest RoundToNearest<TNearest>(HalfRounding mode, TNearest nearestTowardZero, TNearest nearestAwayFromZero)
-        where TNearest : System.Numerics.INumber<TNearest>
-        => TNumber.Abs(value - TNumber.CreateChecked(nearestTowardZero)) is var distanceTowardsZero
-        && TNumber.Abs(TNumber.CreateChecked(nearestAwayFromZero) - value) is var distanceAwayFromZero
-        && (distanceTowardsZero < distanceAwayFromZero) ? nearestTowardZero // A clear win for towards-zero, no halfway-rounding needed.
-        : (distanceTowardsZero > distanceAwayFromZero) ? nearestAwayFromZero // A clear win for away-from-zero, no halfway-rounding needed.
-        : mode switch // If the distances are equal, i.e. exactly halfway, we use the appropriate rounding strategy to resolve a winner.
-        {
-          HalfRounding.ToEven => TNearest.IsEvenInteger(nearestTowardZero) ? nearestTowardZero : nearestAwayFromZero,
-          HalfRounding.AwayFromZero => nearestAwayFromZero,
-          HalfRounding.TowardZero => nearestTowardZero,
-          HalfRounding.ToNegativeInfinity => TNearest.Min(nearestTowardZero, nearestAwayFromZero),
-          HalfRounding.ToPositiveInfinity => TNearest.Max(nearestTowardZero, nearestAwayFromZero),
-          HalfRounding.ToRandom => value.RoundToNearestRandom(nearestTowardZero, nearestAwayFromZero),
-          HalfRounding.ToAlternating => value.RoundToNearestAlternating(nearestTowardZero, nearestAwayFromZero),
-          HalfRounding.ToOdd => TNearest.IsOddInteger(nearestAwayFromZero) ? nearestAwayFromZero : nearestTowardZero,
-          _ => throw new System.ArgumentOutOfRangeException(nameof(mode)),
-        };
-
-      /// <summary>
-      /// <para></para>
-      /// </summary>
-      /// <typeparam name="TNumber"></typeparam>
-      /// <param name="value"></param>
-      /// <param name="customState"></param>
-      /// <returns></returns>
-      public TNearest RoundToNearestAlternating<TNearest>(TNearest nearestTowardZero, TNearest nearestAwayFromZero, ref bool customState)
-        where TNearest : System.Numerics.INumber<TNearest>
-        => (customState = !customState)
-        ? nearestTowardZero
-        : nearestAwayFromZero;
-
-      /// <summary>
-      /// <para></para>
-      /// </summary>
-      /// <typeparam name="TNumber"></typeparam>
-      /// <param name="value"></param>
-      /// <returns></returns>
-      public TNearest RoundToNearestAlternating<TNearest>(TNearest nearestTowardZero, TNearest nearestAwayFromZero)
-        where TNearest : System.Numerics.INumber<TNearest>
-        => value.RoundToNearestAlternating(nearestTowardZero, nearestAwayFromZero, ref m_roundNearestAlternatingState);
-
-      /// <summary>
-      /// <para></para>
-      /// </summary>
-      /// <remarks>
-      /// <para><see cref="HalfRounding.HalfToRandom"/></para>
-      /// </remarks>
-      /// <typeparam name="TNumber"></typeparam>
-      /// <param name="value"></param>
-      /// <param name="rng"></param>
-      /// <returns></returns>
-      public TNearest RoundToNearestRandom<TNearest>(TNearest nearestTowardZero, TNearest nearestAwayFromZero, System.Random? rng = null)
-        where TNearest : System.Numerics.INumber<TNearest>
-        => (rng ?? System.Random.Shared).NextDouble() < 0.5
-        ? nearestTowardZero
-        : nearestAwayFromZero;
     }
 
     #endregion

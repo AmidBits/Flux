@@ -21,7 +21,7 @@ namespace Flux
       {
         engineeringNotationPrefix = double.Log10(double.Abs(double.CreateChecked(engineeringNotationValue))) is var log10 && restrictToTriplets
         ? (Units.MetricPrefix)int.CreateChecked(double.Floor(log10 / 3) * 3)
-        : System.Enum.GetValues<Units.MetricPrefix>().GetInfimumAndSupremum(mp => (int)mp, int.CreateChecked(double.Floor(log10)), true).InfimumItem;
+        : System.Enum.GetValues<Units.MetricPrefix>().InfimumSupremum(mp => (int)mp, int.CreateChecked(double.Floor(log10)), true).InfimumItem;
 
         engineeringNotationValue *= (decimal)double.Pow(10, -(int)engineeringNotationPrefix);
       }
@@ -152,7 +152,7 @@ namespace Flux
       /// <param name="columnNamePrefix"></param>
       /// <returns></returns>
       public string ToSingleOrdinalColumnName(string columnNamePrefix = "Column")
-        => value.ToSingleOrdinalColumnName(int.CreateChecked(Units.Radix.DigitCount(value, TInteger.CreateChecked(10))), columnNamePrefix);
+        => value.ToSingleOrdinalColumnName(int.CreateChecked(value <= TInteger.Zero ? TInteger.Zero : Units.Radix.DigitCount(value, TInteger.CreateChecked(10))), columnNamePrefix);
 
       /// <summary>
       /// <para>Creates an array of generic column-<paramref name="columnNamePrefix"/>s for <paramref name="value"/> amount of columns.</para>
@@ -176,7 +176,7 @@ namespace Flux
       /// <summary>
       /// <para>Gets the ordinal indicator suffix for <paramref name="value"/>. E.g. "st" for 1 and "nd" for 122.</para>
       /// </summary>
-      /// <remarks>The suffixes "st", "nd" and "rd" are consistent for all numbers ending in 1, 2 and 3, resp., except for 11, 12 and 13, which, with all other numbers, ends with the suffix "th".</remarks>
+      /// <remarks>The suffixes "st", "nd" and "rd" are consistent for all numbers ending in 1, 2 and 3, resp., except numbers ending with 11, 12 and 13, which instead uses the suffix "th".</remarks>
       public string GetOrdinalIndicatorSuffix()
       {
         var hundreds = int.CreateChecked(TInteger.Abs(value) % TInteger.CreateChecked(100)); // Trim the value (to 2 digits) before making it fit in an int (since the value could be larger).
@@ -215,7 +215,7 @@ namespace Flux
       /// <param name="alphabet"></param>
       /// <returns></returns>
       /// <exception cref="System.ArgumentOutOfRangeException"></exception>
-      public System.ReadOnlySpan<char> ToBinaryString(int minLength = 1, string alphabet = Units.Radix.Base64)
+      public string ToBinaryString(int minLength = 1, string alphabet = Units.Radix.Base64)
       {
         if (minLength <= 0) minLength = value.GetBitCount();
 
@@ -235,7 +235,7 @@ namespace Flux
 
         indices.TryTransposePositionalNotationIndicesToSymbols(alphabet, out System.Collections.Generic.List<char> symbols);
 
-        return symbols.AsSpan();
+        return symbols.AsSpan().ToString();
       }
 
       /// <summary>
@@ -248,7 +248,7 @@ namespace Flux
       /// <param name="alphabet"></param>
       /// <returns></returns>
       /// <exception cref="System.ArgumentOutOfRangeException"></exception>
-      public System.ReadOnlySpan<char> ToDecimalString(int minLength = 1, char negativeSymbol = '\u002D', string alphabet = Units.Radix.Base64)
+      public string ToDecimalString(int minLength = 1, char negativeSymbol = '\u002D', string alphabet = Units.Radix.Base64)
       {
         if (minLength <= 0) minLength = value.GetBitCount().BitLengthToMaxDigitCount<int, int>(10, value.IsNumericTypeSigned());
 
@@ -268,7 +268,7 @@ namespace Flux
         if (TInteger.IsNegative(value))
           symbols.Insert(0, negativeSymbol); // If the value is negative AND base-2 (radix) is 10 (decimal)...
 
-        return symbols.AsSpan();
+        return symbols.AsSpan().ToString();
       }
 
       /// <summary>
@@ -280,7 +280,7 @@ namespace Flux
       /// <param name="alphabet"></param>
       /// <returns></returns>
       /// <exception cref="System.ArgumentOutOfRangeException"></exception>
-      public System.ReadOnlySpan<char> ToHexadecimalString(int minLength = 1, string alphabet = Units.Radix.Base64)
+      public string ToHexadecimalString(int minLength = 1, string alphabet = Units.Radix.Base64)
       {
         if (minLength <= 0) minLength = value.GetBitCount().BitLengthToMaxDigitCount<int, int>(16, value.IsNumericTypeSigned());
 
@@ -300,7 +300,7 @@ namespace Flux
 
         indices.TryTransposePositionalNotationIndicesToSymbols(alphabet, out System.Collections.Generic.List<char> symbols);
 
-        return symbols.AsSpan();
+        return symbols.AsSpan().ToString();
       }
 
       /// <summary>
@@ -312,7 +312,7 @@ namespace Flux
       /// <param name="alphabet"></param>
       /// <returns></returns>
       /// <exception cref="System.ArgumentOutOfRangeException"></exception>
-      public System.ReadOnlySpan<char> ToOctalString(int minLength = 1, string alphabet = Units.Radix.Base64)
+      public string ToOctalString(int minLength = 1, string alphabet = Units.Radix.Base64)
       {
         if (minLength <= 0) minLength = value.GetBitCount().BitLengthToMaxDigitCount<int, int>(8, value.IsNumericTypeSigned());
 
@@ -327,7 +327,7 @@ namespace Flux
 
         indices.TryTransposePositionalNotationIndicesToSymbols(alphabet, out System.Collections.Generic.List<char> symbols);
 
-        return symbols.AsSpan();
+        return symbols.AsSpan().ToString();
       }
 
       /// <summary>
@@ -341,7 +341,7 @@ namespace Flux
       /// <param name="alphabet"></param>
       /// <returns></returns>
       /// <exception cref="System.ArgumentOutOfRangeException"></exception>
-      public System.ReadOnlySpan<char> ToRadixString<TRadix>(TRadix radix, int minLength = 1, string alphabet = Units.Radix.Base64)
+      public string ToRadixString<TRadix>(TRadix radix, int minLength = 1, string alphabet = Units.Radix.Base64)
         where TRadix : System.Numerics.IBinaryInteger<TRadix>
       {
         var rdx = int.CreateChecked(Units.Radix.AssertMember(radix));
@@ -369,20 +369,19 @@ namespace Flux
 
           indices.TryTransposePositionalNotationIndicesToSymbols(alphabet, out System.Collections.Generic.List<char> symbols);
 
-          return symbols.AsSpan();
+          return symbols.AsSpan().ToString();
         }
       }
 
       /// <summary>
       /// <para>Converts a <paramref name="value"/> to subscript text using <paramref name="radix"/> (base) and a <paramref name="minLength"/>.</para>
       /// </summary>
-      /// <typeparam name="TValue"></typeparam>
+      /// <remarks>Subscript can operate with up to base-10 (<paramref name="radix"/>).</remarks>
       /// <typeparam name="TRadix"></typeparam>
-      /// <param name="value"></param>
       /// <param name="radix"></param>
       /// <param name="minLength"></param>
       /// <returns></returns>
-      public System.ReadOnlySpan<char> ToSubscriptString<TRadix>(TRadix radix, int minLength = 1)
+      public string ToSubscriptString<TRadix>(TRadix radix, int minLength = 1)
         where TRadix : System.Numerics.IBinaryInteger<TRadix>
       {
         var alphabet = "\u2080\u2081\u2082\u2083\u2084\u2085\u2086\u2087\u2088\u2089";
@@ -391,15 +390,15 @@ namespace Flux
       }
 
       /// <summary>
-      /// <para>Converts a <paramref name="value"/> to superscript text using <paramref name="radix"/> (base) and a <paramref name="minLength"/>.</para>
+      /// <para>Creates a new superscript string from an integer in the specified <paramref name="radix"/> (base) and <paramref name="minLength"/>.</para>
       /// </summary>
-      /// <typeparam name="TSelf"></typeparam>
+      /// <remarks>Superscript can operate with up to base-16 (<paramref name="radix"/>).</remarks>
       /// <typeparam name="TRadix"></typeparam>
-      /// <param name="value"></param>
       /// <param name="radix"></param>
       /// <param name="minLength"></param>
+      /// <param name="upperCase"></param>
       /// <returns></returns>
-      public System.ReadOnlySpan<char> ToSuperscriptString<TRadix>(TRadix radix, int minLength = 1, bool upperCase = false)
+      public string ToSuperscriptString<TRadix>(TRadix radix, int minLength = 1, bool upperCase = false)
         where TRadix : System.Numerics.IBinaryInteger<TRadix>
       {
         var alphabet = "\u2070\u00B9\u00B2\u00B3\u2074\u2075\u2076\u2077\u2078\u2079";

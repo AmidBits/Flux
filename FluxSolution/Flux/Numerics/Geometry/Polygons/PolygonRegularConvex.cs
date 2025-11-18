@@ -76,29 +76,29 @@ namespace Flux.Numerics.Geometry.Polygons
     {
       format ??= "N3";
 
-      var sm = new SpanMaker<char>();
+      var sb = new System.Text.StringBuilder();
 
-      sm = sm.Append(GetType().Name);
+      sb.Append(GetType().Name);
 
-      sm = sm.Append($" {{");
+      sb.Append($" {{");
 
-      sm = sm.Append($" Apothem = {Apothem.ToString(format, formatProvider)}");
-      sm = sm.Append($", Centroid = {Centroid.ToStringXY(format, formatProvider)}");
-      sm = sm.Append($", Circumradius = {Circumradius.ToString(format, formatProvider)}");
-      sm = sm.Append($", ExteriorAngle = {ExteriorAngle.ToUnitString(Units.AngleUnit.Degree, format, formatProvider)}");
-      sm = sm.Append($", InteriorAngle = {InteriorAngle.ToUnitString(Units.AngleUnit.Degree, format, formatProvider)}");
-      sm = sm.Append($", IsConvex = {IsConvex}");
-      sm = sm.Append($", Perimeter = {Perimeter.ToString(format, formatProvider)}");
-      sm = sm.Append($", SurfaceArea = {SurfaceArea.ToString(format, formatProvider)}");
-      sm = sm.Append($", SurfaceAreaSigned = {SurfaceAreaSigned.ToString(format, formatProvider)}");
+      sb.Append($" Apothem = {Apothem.ToString(format, formatProvider)}");
+      sb.Append($", Centroid = {Centroid.ToStringXY(format, formatProvider)}");
+      sb.Append($", Circumradius = {Circumradius.ToString(format, formatProvider)}");
+      sb.Append($", ExteriorAngle = {ExteriorAngle.ToUnitString(Units.AngleUnit.Degree, format, formatProvider)}");
+      sb.Append($", InteriorAngle = {InteriorAngle.ToUnitString(Units.AngleUnit.Degree, format, formatProvider)}");
+      sb.Append($", IsConvex = {IsConvex}");
+      sb.Append($", Perimeter = {Perimeter.ToString(format, formatProvider)}");
+      sb.Append($", SurfaceArea = {SurfaceArea.ToString(format, formatProvider)}");
+      sb.Append($", SurfaceAreaSigned = {SurfaceAreaSigned.ToString(format, formatProvider)}");
 
-      sm = sm.Append($", Vertices = {m_vertices.Count}");
+      sb.Append($", Vertices = {m_vertices.Count}");
 
       //sm = sm.Append($" [{m_vertices.ToStringXY(format, formatProvider)}]");
 
-      sm = sm.Append($" }}");
+      sb.Append($" }}");
 
-      return sm.ToString();
+      return sb.ToString();
     }
 
     #endregion // Implemented interfaces

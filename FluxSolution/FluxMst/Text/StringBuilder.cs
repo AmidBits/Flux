@@ -69,7 +69,7 @@ namespace Text
     public void Duplicate2()
     {
       var expected = "Roobeert";
-      var actual = new System.Text.StringBuilder("Robert").Replicate(1, null, 'a', 'e', 'i', 'o', 'u').ToString();
+      var actual = new System.Text.StringBuilder("Robert").Replicate(1, null, ['a', 'e', 'i', 'o', 'u']).ToString();
       Assert.AreEqual(expected, actual);
     }
 
@@ -89,11 +89,11 @@ namespace Text
     public void EqualsAnyAt()
     {
       var expected = false;
-      var actual = new System.Text.StringBuilder("Robert").IsCommonPrefixAny(2, null, 2, "do", "re", "mi");
+      var actual = new System.Text.StringBuilder("Robert").IsCommonPrefixAny(2, null, 2, ["do", "re", "mi"]);
       Assert.AreEqual(expected, actual);
 
       expected = true;
-      actual = new System.Text.StringBuilder("Robert").IsCommonPrefixAny(2, null, 2, "bo", "bi", "be");
+      actual = new System.Text.StringBuilder("Robert").IsCommonPrefixAny(2, null, 2, ["bo", "bi", "be"]);
       Assert.AreEqual(expected, actual);
     }
 
@@ -202,7 +202,7 @@ namespace Text
     public void NormalizeAdjacents()
     {
       var expected = @"There is a bee in the soup.";
-      var actual = new System.Text.StringBuilder(@"There is aa bbee in the soup.").NormalizeConsecutive(1, null, 'a', 'b').ToString();
+      var actual = new System.Text.StringBuilder(@"There is aa bbee in the soup.").NormalizeConsecutive(1, null, ['a', 'b']).ToString();
       Assert.AreEqual(expected, actual);
     }
 

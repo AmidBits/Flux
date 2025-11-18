@@ -16,7 +16,7 @@ namespace Flux.Units
     /// </summary>
     /// <param name="candela"></param>
     /// <param name="prefix"></param>
-    public LuminousIntensity(MetricPrefix prefix, double candela) => m_value = prefix.ChangePrefix(candela, MetricPrefix.Unprefixed);
+    public LuminousIntensity(MetricPrefix prefix, double candela) => m_value = prefix.ConvertPrefix(candela, MetricPrefix.Unprefixed);
 
     #region Static methods
     #endregion // Static methods
@@ -55,7 +55,7 @@ namespace Flux.Units
 
     #region ISiUnitValueQuantifiable<>
 
-    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ChangePrefix(m_value, prefix);
+    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertPrefix(m_value, prefix);
 
     public string ToSiUnitString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null)
       => GetSiUnitValue(prefix).ToSiFormattedString(format, formatProvider) + UnicodeSpacing.ThinSpace.ToSpacingString() + prefix.GetMetricPrefixSymbol() + LuminousIntensityUnit.Candela.GetUnitSymbol();

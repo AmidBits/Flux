@@ -14,9 +14,9 @@
     #region Static methods
 
     public static Percentage ConvertToReversePercentage(Percentage p)
-      => new (double.Abs(p.m_value) / (p.m_value + 1));
+      => new(double.Abs(p.m_value) / (p.m_value + 1));
 
-    public static Percentage Parse(System.ReadOnlySpan<char> source, int? significantDigits = null, UniversalRounding mode = UniversalRounding.HalfToEven, System.Globalization.CultureInfo? cultureInfo = null)
+    public static Percentage Parse(System.ReadOnlySpan<char> source, int? significantDigits = null, HalfRounding mode = HalfRounding.ToEven, System.Globalization.CultureInfo? cultureInfo = null)
     {
       cultureInfo ??= System.Globalization.CultureInfo.InvariantCulture;
 
@@ -27,7 +27,7 @@
         var vms = source.Slice(vme.Current.Index, vme.Current.Length);
 
         if (double.TryParse(vms, System.Globalization.NumberStyles.Number, cultureInfo, out var value))
-          return new(significantDigits.HasValue ? (value / 100).RoundUniversalByPrecision(mode, significantDigits.Value, 10) : value / 100);
+          return new(significantDigits.HasValue ? (value / 100).RoundByPrecision(mode, significantDigits.Value, 10) : value / 100);
       }
 
       throw new System.ArgumentException("Parse failed.", nameof(source));

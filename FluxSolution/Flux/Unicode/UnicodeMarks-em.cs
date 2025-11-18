@@ -3,17 +3,17 @@ namespace Flux
   public static partial class Unicode
   {
     /// <summary>Remove diacritical marks.</summary>
-    public static SpanMaker<char> RemoveUnicodeMarks(this string source)
+    public static System.Text.StringBuilder RemoveUnicodeMarks(this string source)
     {
       System.ArgumentNullException.ThrowIfNull(source);
 
-      var sm = new SpanMaker<char>();
+      var sb = new System.Text.StringBuilder();
 
       foreach (var c in source.Normalize(System.Text.NormalizationForm.FormKD))
         if (System.Globalization.CharUnicodeInfo.GetUnicodeCategory(c) is not System.Globalization.UnicodeCategory.NonSpacingMark and not System.Globalization.UnicodeCategory.SpacingCombiningMark and not System.Globalization.UnicodeCategory.EnclosingMark)
-          sm = sm.Append(c);
+          sb.Append(c);
 
-      return sm;
+      return sb;
     }
   }
 }

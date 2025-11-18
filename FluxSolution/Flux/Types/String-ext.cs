@@ -1,9 +1,50 @@
 namespace Flux
 {
-  public static partial class XtensionString
+  public static partial class StringExtensions
   {
     extension(System.String source)
     {
+      /// <summary>Indicates whether the content of the string is possibly of slavo/germanic origin.</summary>
+      public bool ContainsSlavoGermanic()
+      {
+        System.ArgumentNullException.ThrowIfNullOrEmpty(source);
+
+        return source.Contains('k', System.StringComparison.OrdinalIgnoreCase)
+          || source.Contains('w', System.StringComparison.OrdinalIgnoreCase)
+          || source.Contains("cz", System.StringComparison.OrdinalIgnoreCase);
+      }
+
+      #region Deserialize..
+
+      /// <summary>
+      /// <para></para>
+      /// </summary>
+      /// <typeparam name="T"></typeparam>
+      /// <returns></returns>
+      /// <exception cref="System.InvalidOperationException"></exception>
+      public T DeserializeFromJson<T>()
+      {
+        var o = System.Text.Json.JsonSerializer.Deserialize<T>(source);
+
+        return o ?? throw new System.InvalidOperationException("Unable to parse JSON into an object.");
+      }
+
+      /// <summary>
+      /// <para></para>
+      /// </summary>
+      /// <typeparam name="T"></typeparam>
+      /// <returns></returns>
+      /// <exception cref="System.InvalidOperationException"></exception>
+      public T DeserializeFromXml<T>()
+      {
+        var xs = new System.Xml.Serialization.XmlSerializer(typeof(T));
+        using var sr = new System.IO.StringReader(source);
+        var o = (T)(xs.Deserialize(sr) ?? throw new System.InvalidOperationException($"Unable to serialize string to typeof(T)."));
+        return o;
+      }
+
+      #endregion
+
       #region GetTextElements
 
       /// <summary>
@@ -26,25 +67,35 @@ namespace Flux
 
       #endregion
 
-      #region ToSpanMaker
+      //#region ToSpanMaker
 
-      /// <summary>Creates a new <see cref="SpanMaker{T}"/> with the <paramref name="source"/> as content.</summary>
-      public SpanMaker<char> ToSpanMaker()
-        => new(source);
+      ///// <summary>Creates a new <see cref="SpanMaker{T}"/> with the <paramref name="source"/> as content.</summary>
+      //public SpanMaker<char> ToSpanMaker()
+      //  => new(source);
 
-      #endregion
+      //#endregion
 
-      #region ToSpanMakerOfRune
+      //#region ToSpanMakerOfRune
 
-      /// <summary>Creates a new <see cref="SpanMaker{T}"/> with the <paramref name="source"/> as content.</summary>
-      public SpanMaker<System.Text.Rune> ToSpanMakerOfRune()
-      {
-        var sm = new SpanMaker<System.Text.Rune>(source.Length);
-        if (!string.IsNullOrEmpty(source))
-          foreach (var rune in source.EnumerateRunes())
-            sm = sm.Append(rune);
-        return sm;
-      }
+      ///// <summary>Creates a new <see cref="SpanMaker{T}"/> with the <paramref name="source"/> as content.</summary>
+      //public SpanMaker<System.Text.Rune> ToSpanMakerOfRune()
+      //{
+      //  var sm = new SpanMaker<System.Text.Rune>(source.Length);
+      //  if (!string.IsNullOrEmpty(source))
+      //    foreach (var rune in source.EnumerateRunes())
+      //      sm = sm.Append(rune);
+      //  return sm;
+      //}
+
+      //#endregion
+
+      #region To..
+
+      public System.IO.DirectoryInfo ToDirectoryInfo()
+        => new(source.TrimCommonPrefix(['/']).ToString());
+
+      public System.Uri ToUri(System.UriKind uriKind = System.UriKind.RelativeOrAbsolute)
+        => new(source, uriKind);
 
       #endregion
 
@@ -71,6 +122,12 @@ namespace Flux
         => force || !IsWrapped(source, left, right) ? left + source + right : source;
 
       #endregion
+    }
+
+    public static System.IO.FileInfo ToFileInfo(this string source)
+    {
+      source = source.AsSpan().TrimCommonPrefix(c => c is '/' or '\\').TrimCommonSuffix(c => c is '/' or '\\').ToString();
+      return new(source);
     }
   }
 }

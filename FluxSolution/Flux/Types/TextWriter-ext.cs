@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class XtensionTextWriter
+  public static partial class TextWriterExtensions
   {
     extension(System.IO.TextWriter source)
     {

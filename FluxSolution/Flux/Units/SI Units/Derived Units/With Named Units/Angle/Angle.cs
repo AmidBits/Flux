@@ -18,7 +18,7 @@
 
     public Angle(double value, AngleUnit unit = AngleUnit.Radian) => m_value = ConvertFromUnit(unit, value);
 
-    public Angle(MetricPrefix prefix, double radian) => m_value = prefix.ChangePrefix(radian, MetricPrefix.Unprefixed);
+    public Angle(MetricPrefix prefix, double radian) => m_value = prefix.ConvertPrefix(radian, MetricPrefix.Unprefixed);
 
     public double InDegrees => double.RadiansToDegrees(m_value);
 
@@ -493,7 +493,7 @@
 
       foreach (var vm in evm)
       {
-        System.Console.WriteLine($"({vm.Index}, {vm.Length}) = '{dmsNotation.AsSpan().Slice(vm.Index, vm.Length).ToSpanMaker().RemoveAll(char.IsWhiteSpace).AsReadOnlySpan()}'");
+        System.Console.WriteLine($"({vm.Index}, {vm.Length}) = '{dmsNotation.AsSpan().Slice(vm.Index, vm.Length).ToStringBuilder().RemoveAll(char.IsWhiteSpace).ToString()}'");
 
         if (ParseDmsNotationRegex().Match(dmsNotation, vm.Index, vm.Length) is var m && m.Success)
         {
@@ -625,7 +625,7 @@
 
     #region ISiUnitValueQuantifiable<>
 
-    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ChangePrefix(m_value, prefix);
+    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertPrefix(m_value, prefix);
 
     public string ToSiUnitString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null)
       => GetSiUnitValue(prefix).ToSiFormattedString(format, formatProvider) + UnicodeSpacing.ThinSpace.ToSpacingString() + prefix.GetMetricPrefixSymbol() + AngleUnit.Radian.GetUnitSymbol();

@@ -11,7 +11,7 @@ namespace Flux.Units
 
     public Capacitance(double value, CapacitanceUnit unit = CapacitanceUnit.Farad) => m_value = ConvertFromUnit(unit, value);
 
-    public Capacitance(MetricPrefix prefix, double farad) => m_value = prefix.ChangePrefix(farad, MetricPrefix.Unprefixed);
+    public Capacitance(MetricPrefix prefix, double farad) => m_value = prefix.ConvertPrefix(farad, MetricPrefix.Unprefixed);
 
     #region Overloaded operators
 
@@ -47,7 +47,7 @@ namespace Flux.Units
 
     #region ISiUnitValueQuantifiable<>
 
-    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ChangePrefix(m_value, prefix);
+    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertPrefix(m_value, prefix);
 
     public string ToSiUnitString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null)
       => GetSiUnitValue(prefix).ToSiFormattedString(format, formatProvider) + UnicodeSpacing.ThinSpace.ToSpacingString() + prefix.GetMetricPrefixSymbol() + CapacitanceUnit.Farad.GetUnitSymbol();

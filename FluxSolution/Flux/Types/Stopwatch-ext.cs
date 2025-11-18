@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class XtensionStopwatch
+  public static partial class StopwatchExtensions
   {
     extension(System.Diagnostics.Stopwatch source)
     {

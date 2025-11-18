@@ -1,6 +1,6 @@
 ﻿namespace Flux
 {
-  public static partial class XtensionRange
+  public static partial class RangeExtensions
   {
     extension(System.Range source)
     {

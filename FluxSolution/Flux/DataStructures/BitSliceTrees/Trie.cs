@@ -43,32 +43,32 @@ namespace Flux.DataStructures.BitSliceTrees
 
     public string ToConsole()
     {
-      var sm = new SpanMaker<char>();
+      var sb = new System.Text.StringBuilder();
 
-      AddString(this, 0, sm);
+      AddString(this, 0, sb);
 
-      return sm.ToString();
+      return sb.ToString();
 
-      static void AddString(Trie<TKey, TValue> node, int level, SpanMaker<char> sm)
+      static void AddString(Trie<TKey, TValue> node, int level, System.Text.StringBuilder sb)
       {
         foreach (var childNode in node.m_children)
         {
-          sm = sm.Append(string.Empty.PadLeft(level == 0 ? 0 : level + 1));
+          sb = sb.Append(string.Empty.PadLeft(level == 0 ? 0 : level + 1));
 
           if (level == 0)
-            sm = sm.Append(1, '[');
+            sb = sb.Append('[');
 
-          sm = sm.Append(childNode.Key.ToString());
-          sm = sm.Append(childNode.Value.ToString());
+          sb = sb.Append(childNode.Key.ToString());
+          sb = sb.Append(childNode.Value.ToString());
 
           //if (childNode.Value.IsTerminal) sm = sm.Append("]", 1);
           //else sm = sm.Append($"#{childNode.Value.Children.Count}", 1);
 
           //sm = sm.Append($" ({childNode.Value.Value})", 1);
 
-          sm = sm.AppendLine();
+          sb = sb.AppendLine();
 
-          AddString(childNode.Value, level + 1, sm);
+          AddString(childNode.Value, level + 1, sb);
         }
       }
     }

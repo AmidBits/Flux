@@ -11,7 +11,7 @@ namespace Flux.Units
 
     public Energy(double value, EnergyUnit unit = EnergyUnit.Joule) => m_value = ConvertFromUnit(unit, value);
 
-    public Energy(MetricPrefix prefix, double joule) => m_value = prefix.ChangePrefix(joule, MetricPrefix.Unprefixed);
+    public Energy(MetricPrefix prefix, double joule) => m_value = prefix.ConvertPrefix(joule, MetricPrefix.Unprefixed);
 
     public Energy(Pressure pressure, Volume volumn) => m_value = pressure.Value * volumn.Value;
 
@@ -53,7 +53,7 @@ namespace Flux.Units
 
     #region ISiUnitValueQuantifiable<>
 
-    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ChangePrefix(m_value, prefix);
+    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertPrefix(m_value, prefix);
 
     public string ToSiUnitString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null)
       => GetSiUnitValue(prefix).ToSiFormattedString(format, formatProvider) + UnicodeSpacing.ThinSpace.ToSpacingString() + prefix.GetMetricPrefixSymbol() + EnergyUnit.Joule.GetUnitSymbol();

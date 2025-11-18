@@ -1,6 +1,6 @@
 ﻿namespace Flux
 {
-  public static partial class XtensionSingle
+  public static partial class SingleExtensions
   {
     public const float MaxDefaultTolerance = +1e-6f;
     public const float MinDefaultTolerance = -1e-6f;

@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class XtensionDataSet
+  public static partial class DataSetExtensions
   {
     extension(System.Data.DataSet source)
     {

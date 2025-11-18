@@ -29,7 +29,7 @@ namespace Flux.Units
 
     public Acceleration(double value, AccelerationUnit unit = AccelerationUnit.MeterPerSecondSquared) => m_value = ConvertFromUnit(unit, value);
 
-    public Acceleration(MetricPrefix prefix, double meterPerSecondSquare) => m_value = prefix.ChangePrefix(meterPerSecondSquare, MetricPrefix.Unprefixed);
+    public Acceleration(MetricPrefix prefix, double meterPerSecondSquare) => m_value = prefix.ConvertPrefix(meterPerSecondSquare, MetricPrefix.Unprefixed);
 
     public Acceleration(Force force, Mass mass) => m_value = force.Value / mass.Value;
 
@@ -81,7 +81,7 @@ namespace Flux.Units
 
     #region ISiUnitValueQuantifiable<>
 
-    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ChangePrefix(m_value, prefix);
+    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertPrefix(m_value, prefix);
 
     public string ToSiUnitString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null)
       => GetSiUnitValue(prefix).ToSiFormattedString(format, formatProvider) + UnicodeSpacing.ThinSpace.ToSpacingString() + prefix.GetMetricPrefixSymbol() + AccelerationUnit.MeterPerSecondSquared.GetUnitSymbol();

@@ -12,7 +12,7 @@ namespace Flux.Units
 
     public Area(double value, AreaUnit unit = AreaUnit.SquareMeter) => m_value = ConvertFromUnit(unit, value);
 
-    public Area(MetricPrefix prefix, double squareMeter) => m_value = prefix.ChangePrefix(squareMeter, MetricPrefix.Unprefixed);
+    public Area(MetricPrefix prefix, double squareMeter) => m_value = prefix.ConvertPrefix(squareMeter, MetricPrefix.Unprefixed);
 
     #region Static methods
 
@@ -201,7 +201,7 @@ namespace Flux.Units
 
     #region ISiUnitValueQuantifiable<>
 
-    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ChangePrefix(m_value, prefix, 2);
+    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertPrefix(m_value, prefix, 2);
 
     public string ToSiUnitString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null)
       => GetSiUnitValue(prefix).ToSiFormattedString(format, formatProvider) + UnicodeSpacing.ThinSpace.ToSpacingString() + prefix.GetMetricPrefixSymbol() + AreaUnit.SquareMeter.GetUnitSymbol();

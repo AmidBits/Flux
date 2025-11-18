@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class XtensionInt32
+  public static partial class Int32Extensions
   {
     extension(System.Int32)
     {

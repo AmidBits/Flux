@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class XtensionBigInteger
+  public static partial class BigIntegerExtensions
   {
     extension(System.Numerics.BigInteger)
     {

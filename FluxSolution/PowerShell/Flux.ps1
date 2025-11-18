@@ -48,14 +48,8 @@ else {
 
 # Sample use from Flux BaseLibrary:
 
-"Flux.Locale.EnvironmentVariables: (This dictionary is projected directly from the `"System.Environment.GetEnvironmentVariables()`" method.)"
-[Flux.Locale]::EnvironmentVariables | Format-Table
-
-"Flux.Locale.SpecialFolders: (This dictionary represents the names and values of the `"System.Environment.SpecialFolder`" enum.)"
-[Flux.Locale]::SpecialFolders | Format-Table
-
-"Flux.Locale.GetProperties(): (This dictionary is compiled from various sources within the system. They can also be accessed as properties of the Flux.Locale, using the same names as the keys in the dictionary.)"
-[Flux.Locale]::GetProperties() | Format-Table
+"Flux.EnvironmentExtensions.GetProperties(): (This dictionary is compiled from various sources within the system. They can also be accessed as properties of the Flux.EnvironmentExtensions.)"
+[Flux.EnvironmentExtensions]::GetProperties() | Format-Table
 
 return;
 

@@ -24,7 +24,7 @@ namespace Flux.Data
     {
       ColumnName = columnName.TsqlUnenquote();
       DataTypeName = dataTypeName.TsqlUnenquote();
-      DataTypeArguments = dataTypeArguments.Select(s => new SpanMaker<char>(s).RemoveAll(char.IsWhiteSpace).ToString()).ToList();
+      DataTypeArguments = dataTypeArguments.Select(s => new System.Text.StringBuilder(s).RemoveAll(char.IsWhiteSpace).ToString()).ToList();
       Nullability = nullability;
     }
 
@@ -37,7 +37,7 @@ namespace Flux.Data
       => string.Join(@",", dataTypeArguments) is var dta && dta.Length > 0 ? dta.Wrap('(', ')') : string.Empty;
     /// <summary>Convert a data type arguments string into a new sequence of argument values.</summary>
     public static System.Collections.Generic.IEnumerable<string> ToDataTypeArguments(string dataTypeArgumentsAsString)
-      => new System.Text.StringBuilder(dataTypeArgumentsAsString).RemoveAll(char.IsWhiteSpace).Unwrap('(', ')').Split(System.StringSplitOptions.RemoveEmptyEntries, ',');
+      => new System.Text.StringBuilder(dataTypeArgumentsAsString).RemoveAll(char.IsWhiteSpace).Unwrap('(', ')').Split(System.StringSplitOptions.RemoveEmptyEntries, [',']);
 
     public static TsqlColumnDefinition Parse(string tsqlColumnDefinition)
     {

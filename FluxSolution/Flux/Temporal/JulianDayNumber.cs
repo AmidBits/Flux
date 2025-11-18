@@ -31,16 +31,16 @@ namespace Flux.Temporal
     {
       calendar ??= GetConversionCalendar();
 
-      var sm = new SpanMaker<char>();
+      var sb = new System.Text.StringBuilder();
 
       if (indicateOutOfRangeCalendar)
       {
         if (calendar.Value.Contains(m_value) is var ic && !ic)
-          sm = sm.Append("Proleptic ");
+          sb.Append("Proleptic ");
 
         if (!ic || calendar != GetConversionCalendar())
         {
-          sm = sm.Append(calendar switch
+          sb.Append(calendar switch
           {
             TemporalCalendar.GregorianCalendar => "Gregorian Calendar, ",
             TemporalCalendar.JulianCalendar => "Julian Calendar, ",
@@ -49,25 +49,25 @@ namespace Flux.Temporal
         }
       }
 
-      sm = sm.Append(DayOfWeek.ToString());
-      sm = sm.Append(Static.CommaSpace);
+      sb.Append(DayOfWeek.ToString());
+      sb.Append(Static.CommaSpace);
 
       var (year, month, day) = GetParts(calendar); // Add 0.5 to the julian date value for date strings, because of the 12 noon convention in a Julian Date.
 
-      sm = sm.Append(System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(month));
-      sm = sm.Append(' ');
-      sm = sm.Append(day);
-      sm = sm.Append(Static.CommaSpace);
-      sm = sm.Append(year);
+      sb.Append(System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(month));
+      sb.Append(' ');
+      sb.Append(day);
+      sb.Append(Static.CommaSpace);
+      sb.Append(year);
 
       if (year <= 0 && calendar == TemporalCalendar.GregorianCalendar)
       {
-        sm = sm.Append(@" or ");
-        sm = sm.Append(int.Abs(year) + 1);
-        sm = sm.Append(@" BCE");
+        sb.Append(@" or ");
+        sb.Append(int.Abs(year) + 1);
+        sb.Append(@" BCE");
       }
 
-      return sm.ToString();
+      return sb.ToString();
     }
 
     /// <summary>Creates a new <see cref="JulianDate"/> from this instance.</summary>

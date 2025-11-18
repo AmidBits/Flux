@@ -496,11 +496,11 @@ namespace Flux
         if (TInteger.IsZero(value))
           return (value, value, value);
 
-        var log2f = TInteger.Log2(value);
+        TInteger log2f = TInteger.Log2(value);
 
-        var log2c = TInteger.IsPow2(value) ? log2f : log2f + TInteger.One;
+        TInteger log2c = TInteger.IsPow2(value) ? log2f : log2f + TInteger.One;
 
-        return (log2c, log2f, value.RoundToNearest(HalfRounding.TowardZero, log2f, log2c));
+        return (log2c, log2f, value.RoundToNearest(HalfRounding.TowardZero, false, [log2f, log2c]));
       }
 
 #if INCLUDE_SCRATCH

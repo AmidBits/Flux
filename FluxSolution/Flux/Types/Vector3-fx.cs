@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class XtensionVector3
+  public static partial class Vector3Extensions
   {
     #region 3D vector (non-collection) computations
 

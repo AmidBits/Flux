@@ -85,109 +85,88 @@ namespace Flux
     ToAlternating = 30, // There is no built-in rounding of this kind.
   }
 
-  public static class XtensionHalfRounding
+  public static partial class HalfRoundingExtensions
   {
-    #region RoundHalfAlternating
+    extension<TFloat>(TFloat value)
+      where TFloat : System.Numerics.IFloatingPoint<TFloat>
+    {
+      /// <summary>
+      /// <para>Rounds a value to the nearest integer, resolving halfway cases using the specified <see cref="HalfRounding"/> <paramref name="mode"/>.</para>
+      /// </summary>
+      /// <typeparam name="TFloat"></typeparam>
+      /// <param name="value"></param>
+      /// <param name="mode"></param>
+      /// <returns></returns>
+      /// <exception cref="System.ArgumentOutOfRangeException"></exception>
+      public TFloat RoundHalf(HalfRounding mode)
+        => mode switch
+        {
+          HalfRounding.ToEven or
+          HalfRounding.AwayFromZero or
+          HalfRounding.TowardZero or
+          HalfRounding.ToNegativeInfinity or
+          HalfRounding.ToPositiveInfinity => TFloat.Round(value, (MidpointRounding)(int)mode), // Use built-in .NET functionality for standard cases.
+          HalfRounding.ToAlternating => RoundHalfToAlternating(value),
+          HalfRounding.ToOdd => RoundHalfToOdd(value),
+          HalfRounding.ToRandom => RoundHalfToRandom(value),
+          _ => throw new System.ArgumentOutOfRangeException(nameof(mode)),
+        };
+    }
+
+    extension<TFloat>(TFloat value)
+      where TFloat : System.Numerics.IFloatingPoint<TFloat>, System.Numerics.IPowerFunctions<TFloat>
+    {
+      /// <summary>
+      /// <para>Rounds the <paramref name="value"/> to the nearest <paramref name="significantDigits"/> in base <paramref name="radix"/>. The <paramref name="mode"/> specifies the halfway rounding strategy to use.</para>
+      /// <example>
+      /// <code>var r = RoundByPrecision(99.96535789, 2, HalfwayRounding.ToEven); // = 99.97 (compare with the corresponding <see cref="RoundByTruncatedPrecision{TSelf}(TSelf, UniversalRounding, int, int)"/> method)</code>
+      /// </example>
+      /// </summary>
+      /// <typeparam name="TValue"></typeparam>
+      /// <typeparam name="TRadix"></typeparam>
+      /// <param name="value"></param>
+      /// <param name="mode"></param>
+      /// <param name="significantDigits"></param>
+      /// <param name="radix"></param>
+      /// <returns></returns>
+      public TFloat RoundByPrecision<TRadix>(HalfRounding mode, int significantDigits, TRadix radix)
+        where TRadix : System.Numerics.IBinaryInteger<TRadix>
+      {
+        System.ArgumentOutOfRangeException.ThrowIfNegative(significantDigits);
+
+        var scalar = TFloat.Pow(TFloat.CreateChecked(Units.Radix.AssertMember(radix)), TFloat.CreateChecked(significantDigits));
+
+        return (value * scalar).RoundHalf(mode) / scalar;
+      }
+
+      /// <summary>
+      /// <para>Rounds <paramref name="value"/> by truncating to the specified number of <paramref name="significantDigits"/> in base <paramref name="radix"/> and then round using the <paramref name="mode"/>. The reason for doing this is because unless a value is EXACTLY between two numbers, to the decimal, it will be rounded based on the next least significant decimal digit and so on.</para>
+      /// <para><seealso href="https://stackoverflow.com/questions/1423074/rounding-to-even-in-c-sharp"/></para>
+      /// <example>
+      /// <code>var r = RoundByTruncatedPrecision(99.96535789, 2, HalfwayRounding.ToEven); // = 99.96 (compare with the corresponding <see cref="RoundByPrecision{TValue}(TValue, UniversalRounding, int, int)"/> method)</code>
+      /// </example>
+      /// </summary>
+      /// <typeparam name="TValue"></typeparam>
+      /// <param name="value"></param>
+      /// <param name="mode"></param>
+      /// <param name="significantDigits"></param>
+      /// <param name="radix"></param>
+      /// <returns></returns>
+      /// <exception cref="System.ArgumentOutOfRangeException"></exception>
+      public TFloat RoundByTruncatedPrecision<TRadix>(HalfRounding mode, int significantDigits, TRadix radix)
+        where TRadix : System.Numerics.IBinaryInteger<TRadix>
+      {
+        System.ArgumentOutOfRangeException.ThrowIfNegative(significantDigits);
+
+        var scalar = TFloat.Pow(TFloat.CreateChecked(Units.Radix.AssertMember(radix)), TFloat.CreateChecked(significantDigits + 1));
+
+        return RoundByPrecision((TFloat.Truncate(value * scalar) / scalar), mode, significantDigits, radix);
+      }
+    }
+
+    #region RoundHalfToAlternating
 
     private static bool m_roundHalfAlternatingState; // Internal state.
-
-    #endregion
-
-    /// <summary>
-    /// <para>Rounds a value to the nearest integer, resolving halfway cases using the specified <see cref="HalfRounding"/> <paramref name="mode"/>.</para>
-    /// </summary>
-    /// <typeparam name="TFloat"></typeparam>
-    /// <param name="value"></param>
-    /// <param name="mode"></param>
-    /// <returns></returns>
-    /// <exception cref="System.ArgumentOutOfRangeException"></exception>
-    public static TFloat Round<TFloat>(this TFloat value, HalfRounding mode)
-      where TFloat : System.Numerics.IFloatingPoint<TFloat>
-      => mode switch
-      {
-        HalfRounding.ToEven or
-        HalfRounding.AwayFromZero or
-        HalfRounding.TowardZero or
-        HalfRounding.ToNegativeInfinity or
-        HalfRounding.ToPositiveInfinity => TFloat.Round(value, (MidpointRounding)(int)mode),
-        HalfRounding.ToRandom => value.RoundHalfToRandom(),
-        HalfRounding.ToAlternating => value.RoundHalfToAlternating(),
-        HalfRounding.ToOdd => value.RoundHalfToOdd(),
-        _ => throw new System.ArgumentOutOfRangeException(nameof(mode)),
-      };
-
-    /// <summary>
-    /// <para>Try to round <paramref name="value"/> using half-rounding <paramref name="mode"/> into the out parameter <paramref name="result"/>.</para>
-    /// </summary>
-    /// <typeparam name="TFloat"></typeparam>
-    /// <param name="value"></param>
-    /// <param name="mode"></param>
-    /// <param name="result"></param>
-    /// <returns></returns>
-    public static bool TryRound<TFloat>(this TFloat value, HalfRounding mode, out TFloat result)
-      where TFloat : System.Numerics.IFloatingPoint<TFloat>
-    {
-      try
-      {
-        result = value.Round(mode);
-        return true;
-      }
-      catch
-      {
-        result = default!;
-        return false;
-      }
-    }
-
-    /// <summary>
-    /// <para>Common rounding: round half, bias: odd.</para>
-    /// <para><see cref="HalfRounding.ToOdd"/></para>
-    /// </summary>
-    /// <typeparam name="TFloat"></typeparam>
-    /// <param name="value"></param>
-    /// <returns></returns>
-    public static TFloat RoundHalfToOdd<TFloat>(this TFloat value)
-      where TFloat : System.Numerics.IFloatingPoint<TFloat>
-    {
-      var cmp = value.CompareToFractionMidpoint();
-
-      var floor = TFloat.Floor(value);
-
-      if (cmp < 0)
-        return floor;
-
-      var ceiling = TFloat.Ceiling(value);
-
-      if (cmp > 0)
-        return ceiling;
-
-      return TFloat.IsOddInteger(floor) ? floor : ceiling;
-    }
-
-    /// <summary>
-    /// <para><see cref="HalfRounding.ToRandom"/></para>
-    /// </summary>
-    /// <typeparam name="TFloat"></typeparam>
-    /// <param name="value"></param>
-    /// <param name="rng"></param>
-    /// <returns></returns>
-    public static TFloat RoundHalfToRandom<TFloat>(this TFloat value)
-      where TFloat : System.Numerics.IFloatingPoint<TFloat>
-    {
-      var cmp = value.CompareToFractionMidpoint();
-
-      var floor = TFloat.Floor(value);
-
-      if (cmp < 0)
-        return floor;
-
-      var ceiling = TFloat.Ceiling(value);
-
-      if (cmp > 0)
-        return ceiling;
-
-      return RandomNumberGenerators.SscRng.Shared.Next(2) == 0 ? floor : ceiling;
-    }
 
     /// <summary>
     /// <para></para>
@@ -196,7 +175,7 @@ namespace Flux
     /// <param name="value"></param>
     /// <param name="state"></param>
     /// <returns></returns>
-    public static TFloat RoundHalfToAlternating<TFloat>(this TFloat value)
+    private static TFloat RoundHalfToAlternating<TFloat>(TFloat value)
       where TFloat : System.Numerics.IFloatingPoint<TFloat>
     {
       var cmp = value.CompareToFractionMidpoint();
@@ -214,22 +193,64 @@ namespace Flux
       return (m_roundHalfAlternatingState = !m_roundHalfAlternatingState) ? floor : ceiling;
     }
 
+    #endregion
+
+    #region RoundHalfToOdd
+
     /// <summary>
-    /// <para>Round to number of significant digits using <see cref="HalfRounding"/>.</para>
+    /// <para>Common rounding: round half, bias: odd.</para>
+    /// <para><see cref="HalfRounding.ToOdd"/></para>
     /// </summary>
     /// <typeparam name="TFloat"></typeparam>
-    /// <typeparam name="TInteger"></typeparam>
     /// <param name="value"></param>
-    /// <param name="digits"></param>
-    /// <param name="mode"></param>
     /// <returns></returns>
-    public static TFloat Round<TFloat, TInteger>(this TFloat value, TInteger digits, HalfRounding mode)
-      where TFloat : System.Numerics.IFloatingPoint<TFloat>, System.Numerics.IPowerFunctions<TFloat>
-      where TInteger : System.Numerics.IBinaryInteger<TInteger>
+    private static TFloat RoundHalfToOdd<TFloat>(TFloat value)
+      where TFloat : System.Numerics.IFloatingPoint<TFloat>
     {
-      var m = TFloat.Pow(TFloat.CreateChecked(10), TFloat.CreateChecked(digits));
+      var cmp = value.CompareToFractionMidpoint();
 
-      return (value * m).Round(mode) / m;
+      var floor = TFloat.Floor(value);
+
+      if (cmp < 0)
+        return floor;
+
+      var ceiling = TFloat.Ceiling(value);
+
+      if (cmp > 0)
+        return ceiling;
+
+      return TFloat.IsOddInteger(floor) ? floor : ceiling;
     }
+
+    #endregion
+
+    #region RoundHalfToRandom
+
+    /// <summary>
+    /// <para><see cref="HalfRounding.ToRandom"/></para>
+    /// </summary>
+    /// <typeparam name="TFloat"></typeparam>
+    /// <param name="value"></param>
+    /// <param name="rng"></param>
+    /// <returns></returns>
+    private static TFloat RoundHalfToRandom<TFloat>(TFloat value)
+      where TFloat : System.Numerics.IFloatingPoint<TFloat>
+    {
+      var cmp = value.CompareToFractionMidpoint();
+
+      var floor = TFloat.Floor(value);
+
+      if (cmp < 0)
+        return floor;
+
+      var ceiling = TFloat.Ceiling(value);
+
+      if (cmp > 0)
+        return ceiling;
+
+      return RandomNumberGenerators.SscRng.Shared.Next(2) == 0 ? floor : ceiling;
+    }
+
+    #endregion
   }
 }

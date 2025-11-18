@@ -11,7 +11,7 @@ namespace Flux.Units
 
     public DynamicViscosity(double value, DynamicViscosityUnit unit = DynamicViscosityUnit.PascalSecond) => m_value = ConvertToUnit(unit, value);
 
-    public DynamicViscosity(MetricPrefix prefix, double pascalSecond) => m_value = prefix.ChangePrefix(pascalSecond, MetricPrefix.Unprefixed);
+    public DynamicViscosity(MetricPrefix prefix, double pascalSecond) => m_value = prefix.ConvertPrefix(pascalSecond, MetricPrefix.Unprefixed);
 
     public DynamicViscosity(Pressure pressure, Time time) : this(pressure.Value * time.Value) { }
 
@@ -53,7 +53,7 @@ namespace Flux.Units
 
     #region ISiUnitValueQuantifiable<>
 
-    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ChangePrefix(m_value, prefix);
+    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertPrefix(m_value, prefix);
 
     public string ToSiUnitString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null)
       => GetSiUnitValue(prefix).ToSiFormattedString(format, formatProvider) + UnicodeSpacing.ThinSpace.ToSpacingString() + prefix.GetMetricPrefixSymbol() + DynamicViscosityUnit.PascalSecond.GetUnitSymbol();

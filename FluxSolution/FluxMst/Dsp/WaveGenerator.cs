@@ -30,8 +30,8 @@ namespace Dsp
     [TestMethod]
     public void SineWave()
     {
-      Assert.AreEqual(1, m_sineWave.GenerateMonoWaveUi(0.25).Wave, XtensionSingle.MaxDefaultTolerance);
-      Assert.AreEqual(-1, m_sineWave.GenerateMonoWaveUi(0.75).Wave, XtensionSingle.MaxDefaultTolerance);
+      Assert.AreEqual(1, m_sineWave.GenerateMonoWaveUi(0.25).Wave, SingleExtensions.MaxDefaultTolerance);
+      Assert.AreEqual(-1, m_sineWave.GenerateMonoWaveUi(0.75).Wave, SingleExtensions.MaxDefaultTolerance);
     }
 
     [TestMethod]

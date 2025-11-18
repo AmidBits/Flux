@@ -9,7 +9,7 @@ namespace Flux.Units
 
     public AngularAcceleration(double value, AngularAccelerationUnit unit = AngularAccelerationUnit.RadianPerSecondSquared) => m_value = ConvertFromUnit(unit, value);
 
-    public AngularAcceleration(MetricPrefix prefix, double radianPerSecondSquared) => m_value = prefix.ChangePrefix(radianPerSecondSquared, MetricPrefix.Unprefixed);
+    public AngularAcceleration(MetricPrefix prefix, double radianPerSecondSquared) => m_value = prefix.ConvertPrefix(radianPerSecondSquared, MetricPrefix.Unprefixed);
 
     /// <summary>
     /// <para>Creates a new angular acceleration from the length (magnitude) of <paramref name="vector"/> and <paramref name="unit"/>.</para>
@@ -59,7 +59,7 @@ namespace Flux.Units
 
     #region ISiUnitValueQuantifiable<>
 
-    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ChangePrefix(m_value, prefix);
+    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertPrefix(m_value, prefix);
 
     public string ToSiUnitString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null)
       => GetSiUnitValue(prefix).ToSiFormattedString(format, formatProvider) + UnicodeSpacing.ThinSpace.ToSpacingString() + prefix.GetMetricPrefixSymbol() + AngularAccelerationUnit.RadianPerSecondSquared.GetUnitSymbol();

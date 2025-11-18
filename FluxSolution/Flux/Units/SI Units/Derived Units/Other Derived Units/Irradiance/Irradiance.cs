@@ -11,7 +11,7 @@ namespace Flux.Units
 
     public Irradiance(double value, IrradianceUnit unit = IrradianceUnit.WattPerSquareMeter) => m_value = ConvertFromUnit(unit, value);
 
-    public Irradiance(MetricPrefix prefix, double wattPerSquareMeter) => m_value = prefix.ChangePrefix(wattPerSquareMeter, MetricPrefix.Unprefixed);
+    public Irradiance(MetricPrefix prefix, double wattPerSquareMeter) => m_value = prefix.ConvertPrefix(wattPerSquareMeter, MetricPrefix.Unprefixed);
 
     public Irradiance(Power power, Area area) : this(power.Value / area.Value) { }
 
@@ -53,7 +53,7 @@ namespace Flux.Units
 
     #region ISiUnitValueQuantifiable<>
 
-    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ChangePrefix(m_value, prefix);
+    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertPrefix(m_value, prefix);
 
     public string ToSiUnitString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null)
       => GetSiUnitValue(prefix).ToSiFormattedString(format, formatProvider) + UnicodeSpacing.ThinSpace.ToSpacingString() + prefix.GetMetricPrefixSymbol() + IrradianceUnit.WattPerSquareMeter.GetUnitSymbol();

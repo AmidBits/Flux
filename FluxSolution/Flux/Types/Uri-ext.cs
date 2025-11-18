@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class XtensionUri
+  public static partial class UriExtensions
   {
     extension(System.Uri source)
     {
@@ -25,17 +25,16 @@ namespace Flux
         return response.Content.ReadAsStreamAsync().Result;
       }
 
-      public bool TryGetStream(out System.IO.Stream? stream)
+      public bool TryGetStream(out System.IO.Stream stream)
       {
         try
         {
-          //System.IO.Stream.Null
           stream = source.GetStream();
           return true;
         }
         catch { }
 
-        stream = null;
+        stream = System.IO.Stream.Null;
         return false;
       }
 
@@ -70,12 +69,10 @@ namespace Flux
 
           if (source.IsFile)
           {
-            var directoryPath = source.LocalPath.AsSpan().TrimCommonPrefix('/').ToString();
+            var directoryPath = source.LocalPath.AsSpan().TrimCommonPrefix(['/']).ToString();
 
             directoryInfo = new System.IO.DirectoryInfo(directoryPath);
-
-            if (directoryInfo.Exists) // Check and fall through on non-existent.
-              return true;
+            return directoryInfo.Exists;
           }
         }
         catch { }
@@ -96,12 +93,10 @@ namespace Flux
 
           if (source.IsFile)
           {
-            var filePath = source.LocalPath.AsSpan().TrimCommonPrefix('/').TrimCommonSuffix('/').ToString();
+            var filePath = source.LocalPath.AsSpan().TrimCommonPrefix(['/']).TrimCommonSuffix(['/']).ToString();
 
             fileInfo = new System.IO.FileInfo(filePath);
-
-            if (fileInfo.Exists) // Check and fall through on non-existent.
-              return true;
+            return fileInfo.Exists;
           }
         }
         catch { }

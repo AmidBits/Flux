@@ -19,7 +19,7 @@ namespace Flux.Data
       => value ? Null : NotNull;
 
     public static TsqlNullability Parse(string expression)
-      => new SpanMaker<char>(expression).NormalizeReplace(char.IsWhiteSpace, ' ').ToString() is var text
+      => new System.Text.StringBuilder(expression).NormalizeConsecutive(1, char.IsWhiteSpace).ToString() is var text
       && (text.Equals(CsNotNull, System.StringComparison.InvariantCultureIgnoreCase))
       ? NotNull
       : (text.Equals(CsNull, System.StringComparison.InvariantCultureIgnoreCase))

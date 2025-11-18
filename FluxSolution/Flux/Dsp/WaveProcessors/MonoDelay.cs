@@ -37,12 +37,12 @@ namespace Flux.Dsp.WaveProcessors
       {
         _mix = double.Clamp(value, -1.0, 1.0);
 
-        if (_mix > XtensionSingle.MaxDefaultTolerance)
+        if (_mix > SingleExtensions.MaxDefaultTolerance)
         {
           m_wetMix = 0.5 * (1.0 + _mix);
           m_dryMix = 1.0 - m_wetMix;
         }
-        else if (_mix < XtensionSingle.MinDefaultTolerance)
+        else if (_mix < SingleExtensions.MinDefaultTolerance)
         {
           m_dryMix = 0.5 * (1.0 - _mix);
           m_wetMix = 1.0 - m_dryMix;

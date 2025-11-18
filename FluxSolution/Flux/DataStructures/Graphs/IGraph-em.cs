@@ -73,7 +73,7 @@ namespace Flux
 
     public static string ToConsoleString<TVertexValue, TEdgeValue>(this DataStructures.Graphs.IGraph<TVertexValue, TEdgeValue> source)
     {
-      var sm = new SpanMaker<char>();
+      var sm = new System.Text.StringBuilder();
 
       sm = sm.AppendLine(source.ToString()).AppendLine();
 

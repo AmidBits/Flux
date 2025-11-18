@@ -1,6 +1,6 @@
 ﻿namespace Flux
 {
-  public static partial class XtensionDecimal
+  public static partial class DecimalExtensions
   {
     /// <summary>
     /// <para>The largest integer that can be stored in a <see cref="System.Decimal"/> without losing precision is 79,228,162,514,264,337,593,543,950,335.</para>

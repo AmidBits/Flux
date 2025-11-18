@@ -432,7 +432,7 @@ namespace Flux
       {
         (towardZero, awayFromZero) = GetPrimeCandidates(n);
 
-        return n.RoundToNearest(mode, towardZero, awayFromZero);
+        return n.RoundToNearest(mode, false, [towardZero, awayFromZero]);
       }
 
       /// <summary>

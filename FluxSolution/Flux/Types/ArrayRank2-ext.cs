@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class XtensionArrayRank2
+  public static partial class ArrayRank2Extensions
   {
     extension<T>(T[,] source)
     {

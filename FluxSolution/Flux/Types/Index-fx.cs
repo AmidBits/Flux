@@ -1,6 +1,6 @@
 ﻿namespace Flux
 {
-  public static partial class XtensionIndex
+  public static partial class IndexExtensions
   {
     extension(System.Index source)
     {

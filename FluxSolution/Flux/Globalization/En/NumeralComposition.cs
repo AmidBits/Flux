@@ -203,6 +203,51 @@ namespace Flux.Globalization.En
       }
     }
 
+    public static string GetCardinalNumeral<TInteger>(TInteger value, NamingScale namingScale)
+      where TInteger : System.Numerics.IBinaryInteger<TInteger>
+    {
+      var number = System.Numerics.BigInteger.CreateChecked(value);
+
+      number = System.Numerics.BigInteger.Abs(number);
+
+      var maxCutoff1000000 = System.Numerics.BigInteger.Parse("1000000", null); // Only for the any scale.
+      var maxCutoff1E123 = System.Numerics.BigInteger.Parse("1e123", System.Globalization.NumberStyles.AllowExponent, null); // Only for the long/short scales.
+
+      switch (namingScale)
+      {
+        case NamingScale.AnyScale:
+          if (number <= maxCutoff1000000)
+          {
+            var word = ((AnyScaleCommonZeroToMillion)(int)number).ToString();
+
+            return word;
+          }
+          break;
+        case NamingScale.LongScale:
+          if (number <= maxCutoff1E123)
+          {
+            if (!LongScaleUniqueDictionary.TryGetValue(number, out var word))
+              word = ((AnyScaleCommonZeroToMillion)(int)number).ToString();
+
+            return word;
+          }
+          break;
+        case NamingScale.ShortScale:
+          if (number <= maxCutoff1E123)
+          {
+            if (!ShortScaleUniqueDictionary.TryGetValue(number, out var word))
+              word = ((AnyScaleCommonZeroToMillion)(int)number).ToString();
+
+            return word;
+          }
+          break;
+        default:
+          throw new System.NotImplementedException();
+      }
+
+      return string.Empty;
+    }
+
     /// <summary>
     /// <para>Creates a new sequence of compound numbers by breaking down the specified <paramref name="value"/>. The sequence will yield no larger value than <paramref name="maxCutoff"/>.</para>
     /// </summary>

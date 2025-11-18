@@ -51,7 +51,7 @@ namespace NetFx.ReadOnlySpan.Special
     public void HammingDistance_Default()
     {
       var expected = 3;
-      var actual = source.AsSpan().HammingDistanceMetric(target);
+      var actual = source.AsSpan().HammingDistance(target);
       Assert.AreEqual(expected, actual);
     }
 
@@ -59,7 +59,7 @@ namespace NetFx.ReadOnlySpan.Special
     public void HammingDistance_IgnoreCase()
     {
       var expected = 1;
-      var actual = source.AsSpan().HammingDistanceMetric(target, comparerIgnoreCase);
+      var actual = source.AsSpan().HammingDistance(target, comparerIgnoreCase);
       Assert.AreEqual(expected, actual);
     }
 
@@ -67,7 +67,7 @@ namespace NetFx.ReadOnlySpan.Special
     public void HammingDistance_IgnoreNonSpace()
     {
       var expected = 2;
-      var actual = source.AsSpan().HammingDistanceMetric(target, comparerIgnoreNonSpace);
+      var actual = source.AsSpan().HammingDistance(target, comparerIgnoreNonSpace);
       Assert.AreEqual(expected, actual);
     }
 
@@ -75,7 +75,7 @@ namespace NetFx.ReadOnlySpan.Special
     public void HammingDistance_None()
     {
       var expected = 3;
-      var actual = source.AsSpan().HammingDistanceMetric(target, comparerNone);
+      var actual = source.AsSpan().HammingDistance(target, comparerNone);
       Assert.AreEqual(expected, actual);
     }
 

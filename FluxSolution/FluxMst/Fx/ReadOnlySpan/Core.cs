@@ -60,7 +60,7 @@ namespace NetFx.ReadOnlySpan
       var expectedIndexMin = 11;
       var expectedIndexMax = 7;
 
-      var (actualIndexMin, actualItemMin, actualValueMin, actualIndexMax, actualItemMax, actualValueMax) = span.Extremum(n => n, null);
+      var (actualItemMin, actualIndexMin, actualValueMin, actualItemMax, actualIndexMax, actualValueMax) = span.Extremum(n => n, null);
 
       Assert.AreEqual(expectedIndexMin, actualIndexMin);
       Assert.AreEqual(expectedIndexMax, actualIndexMax);
@@ -71,11 +71,11 @@ namespace NetFx.ReadOnlySpan
     {
       var span = new System.ReadOnlySpan<int>([45, 60, 90, 10, 20, 30, 50, 100, 70, 80, 40, 10, 20, 30]);
 
-      var (actualIndexMin, actualItemMin, actualValueMin, actualIndexMax, actualItemMax, actualValueMax) = span.GetInfimumAndSupremum(60, n => n, true);
+      var (actualItemMin, actualIndexMin, actualValueMin, actualItemMax, actualIndexMax, actualValueMax) = span.InfimumSupremum(60, n => n, true);
       Assert.AreEqual(6, actualIndexMin);
       Assert.AreEqual(8, actualIndexMax);
 
-      (actualIndexMin, actualItemMin, actualValueMin, actualIndexMax, actualItemMax, actualValueMax) = span.GetInfimumAndSupremum(55, n => n, false);
+      (actualItemMin, actualIndexMin, actualValueMin, actualItemMax, actualIndexMax, actualValueMax) = span.InfimumSupremum(55, n => n, false);
       Assert.AreEqual(6, actualIndexMin);
       Assert.AreEqual(1, actualIndexMax);
     }
@@ -92,17 +92,17 @@ namespace NetFx.ReadOnlySpan
     public void IsIsomorphic()
     {
       var expected = true;
-      var actual = new Flux.SpanMaker<char>("egg").AsReadOnlySpan().AreIsomorphic("add");
+      var actual = "egg".AsSpan().AreIsomorphic("add");
       Assert.AreEqual(expected, actual);
       expected = false;
-      actual = new Flux.SpanMaker<char>("foo").AsReadOnlySpan().AreIsomorphic("bar");
+      actual = "foo".AsSpan().AreIsomorphic("bar");
       Assert.AreEqual(expected, actual);
     }
 
     [TestMethod]
     public void IsPalindrome()
     {
-      var palindrome = "Poor Dan is in a droop".ToSpanMaker().RemoveAll(char.IsWhiteSpace).AsSpan().ToLower().AsReadOnlySpan();
+      var palindrome = "Poor Dan is in a droop".ToStringBuilder().RemoveAll(char.IsWhiteSpace).ToLower().ToString().AsSpan();
       var expected = true;
       var actual = palindrome.IsPalindrome();
       Assert.AreEqual(expected, actual);

@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class XtensionMatrix4x4
+  public static partial class Matrix4x4Extensions
   {
     /// <summary>Computes the determinant (generally) of the matrix.</summary>
     public static double GetDeterminantGeneral(this System.Numerics.Matrix4x4 source) =>

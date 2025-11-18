@@ -11,9 +11,9 @@ namespace Flux
     /// <param name="source"></param>
     /// <param name="replacementSelector"></param>
     /// <returns></returns>
-    public static SpanMaker<char> HtmlDecode(this System.ReadOnlySpan<char> source/*, System.Func<System.ReadOnlySpan<char>, string>? replacer=null*/)
+    public static System.Text.StringBuilder HtmlDecode(this System.ReadOnlySpan<char> source/*, System.Func<System.ReadOnlySpan<char>, string>? replacer=null*/)
     {
-      var sm = new SpanMaker<char>();
+      var sb = new System.Text.StringBuilder();
 
       var evm = RegexHtmlEncodingMatch().EnumerateMatches(source);
 
@@ -21,7 +21,7 @@ namespace Flux
 
       foreach (var vm in evm)
       {
-        sm = sm.Append(source[lastEnd..vm.Index]);
+        sb.Append(source[lastEnd..vm.Index]);
 
         var integer
           = int.TryParse(source.Slice(vm.Index + 2, vm.Length - 3), System.Globalization.NumberStyles.Integer, System.Globalization.CultureInfo.InvariantCulture, out var dec)
@@ -30,12 +30,12 @@ namespace Flux
           ? hex
           : throw new System.InvalidOperationException();
 
-        sm = sm.Append(new System.Text.Rune(integer).ToString());
+        sb.Append(new System.Text.Rune(integer).ToString());
 
         lastEnd = vm.Index + vm.Length;
       }
 
-      return sm;
+      return sb;
     }
 
     /// <summary>
@@ -64,12 +64,12 @@ namespace Flux
     /// <param name="source"></param>
     /// <param name="asHexadecimal"></param>
     /// <returns></returns>
-    public static SpanMaker<char> HtmlEncode(this System.ReadOnlySpan<char> source, bool asHexadecimal = false)
+    public static System.Text.StringBuilder HtmlEncode(this System.ReadOnlySpan<char> source, bool asHexadecimal = false)
     {
-      var sm = new SpanMaker<char>();
-      foreach (var rune in source.EnumerateRunes())
-        sm = sm.Append(rune.HtmlEncode(asHexadecimal));
-      return sm;
+      var sb = new System.Text.StringBuilder();
+      foreach (var rune in source)
+        sb.Append(rune.HtmlEncode(asHexadecimal));
+      return sb;
     }
   }
 }

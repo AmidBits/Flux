@@ -16,7 +16,7 @@ namespace Flux.Dsp.WaveProcessors
 
         // var tmp = 1 / System.Math.Max(m_width + 1, 2); // This was present in my code, but I am unsure what it is suppose to do.
 
-        m_stereoCoefficient = (m_width > XtensionSingle.MaxDefaultTolerance || m_width < XtensionSingle.MinDefaultTolerance) ? (m_width + 1) / 2 : 1;
+        m_stereoCoefficient = (m_width > SingleExtensions.MaxDefaultTolerance || m_width < SingleExtensions.MinDefaultTolerance) ? (m_width + 1) / 2 : 1;
       }
     }
 
@@ -35,6 +35,6 @@ namespace Flux.Dsp.WaveProcessors
     /// <param name="left">Left stereo sample.</param>
     /// <param name="right">Right stereo sample.</param>
     public static (double left, double right) Apply(double width, double left, double right)
-      => (left + right) / 2 is var m && (right - left) * (width > XtensionSingle.MaxDefaultTolerance || width < XtensionSingle.MinDefaultTolerance ? (width + 1) / 2 : 1) is var s ? (m - s, m + s) : (left, right);
+      => (left + right) / 2 is var m && (right - left) * (width > SingleExtensions.MaxDefaultTolerance || width < SingleExtensions.MinDefaultTolerance ? (width + 1) / 2 : 1) is var s ? (m - s, m + s) : (left, right);
   }
 }

@@ -121,17 +121,17 @@ namespace Flux.CoordinateSystems
     {
       format ??= "N6";
 
-      var sm = new SpanMaker<char>();
-      sm = sm.Append('<');
-      sm = sm.Append(m_a.ToString(format, formatProvider));
-      sm = sm.Append(',');
-      sm = sm.Append(' ');
-      sm = sm.Append(m_r.ToString(format, formatProvider));
-      sm = sm.Append(',');
-      sm = sm.Append(' ');
-      sm = sm.Append(m_c.ToString(format, formatProvider));
-      sm = sm.Append('>');
-      return sm.ToString();
+      var sb = new System.Text.StringBuilder();
+      sb.Append('<');
+      sb.Append(m_a.ToString(format, formatProvider));
+      sb.Append(',');
+      sb.Append(' ');
+      sb.Append(m_r.ToString(format, formatProvider));
+      sb.Append(',');
+      sb.Append(' ');
+      sb.Append(m_c.ToString(format, formatProvider));
+      sb.Append('>');
+      return sb.ToString();
     }
 
     #endregion // Implemented interfaces

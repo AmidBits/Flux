@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class XtensionDataTable
+  public static partial class DataTableExtensions
   {
     //public static string ToUrgfString(this System.Data.DataColumnCollection source) => string.Join('\u001F', source.Cast<System.Data.DataColumn>().Select(dc => dc.ColumnName));
     //public static string ToUrgfString(this System.Data.DataRowCollection source) => string.Join('\u001E', source.Cast<System.Data.DataRow>().Select(dr => dr.ItemArray.ToUrgfString()));

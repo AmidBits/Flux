@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class XtensionDateTime
+  public static partial class DateTimeExtensions
   {
     private const double Lb = 1.55051976772e-08;
     private const double Lg = 6.969290134e-10;

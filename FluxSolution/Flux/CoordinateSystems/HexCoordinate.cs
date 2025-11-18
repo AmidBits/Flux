@@ -137,13 +137,13 @@ namespace Flux.CoordinateSystems
     //  );
     //}
 
-    public static HexCoordinate<TTarget> Round<TSource, TTarget>(TSource sq, TSource sr, TSource ss, UniversalRounding mode, out TTarget tq, out TTarget tr, out TTarget ts)
+    public static HexCoordinate<TTarget> Round<TSource, TTarget>(TSource sq, TSource sr, TSource ss, HalfRounding mode, out TTarget tq, out TTarget tr, out TTarget ts)
       where TSource : System.Numerics.IFloatingPoint<TSource>
       where TTarget : System.Numerics.INumber<TTarget>
     {
-      var rQ = sq.RoundUniversal(mode);
-      var rR = sr.RoundUniversal(mode);
-      var rS = ss.RoundUniversal(mode);
+      var rQ = sq.RoundHalf(mode);
+      var rR = sr.RoundHalf(mode);
+      var rS = ss.RoundHalf(mode);
 
       var aQ = TSource.Abs(rQ - sq);
       var aR = TSource.Abs(rR - sr);
@@ -195,7 +195,7 @@ namespace Flux.CoordinateSystems
       );
     }
 
-    public static HexCoordinate<TResult> ToHexCoordinate<TSelf, TResult>(this HexCoordinate<TSelf> source, UniversalRounding mode, out TResult q, out TResult r, out TResult s)
+    public static HexCoordinate<TResult> ToHexCoordinate<TSelf, TResult>(this HexCoordinate<TSelf> source, HalfRounding mode, out TResult q, out TResult r, out TResult s)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
       where TResult : System.Numerics.INumber<TResult>
     {

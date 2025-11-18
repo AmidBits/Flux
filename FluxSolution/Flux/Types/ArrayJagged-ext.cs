@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class XtensionArrayJagged
+  public static partial class ArrayJaggedExtensions
   {
     extension<T>(T[][] source)
     {

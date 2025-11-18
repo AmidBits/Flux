@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class XtensionIConvertible
+  public static partial class IConvertibleExtensions
   {
     extension(System.IConvertible value)
     {

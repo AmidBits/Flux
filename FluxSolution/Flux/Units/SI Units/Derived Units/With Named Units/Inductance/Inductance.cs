@@ -11,7 +11,7 @@ namespace Flux.Units
 
     public Inductance(double value, InductanceUnit unit = InductanceUnit.Henry) => m_value = ConvertFromUnit(unit, value);
 
-    public Inductance(MetricPrefix prefix, double henry) => m_value = prefix.ChangePrefix(henry, MetricPrefix.Unprefixed);
+    public Inductance(MetricPrefix prefix, double henry) => m_value = prefix.ConvertPrefix(henry, MetricPrefix.Unprefixed);
 
     #region Overloaded operators
 
@@ -47,7 +47,7 @@ namespace Flux.Units
 
     #region ISiPrefixValueQuantifiable<>
 
-    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ChangePrefix(m_value, prefix);
+    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertPrefix(m_value, prefix);
 
     public string ToSiUnitString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null)
       => GetSiUnitValue(prefix).ToSiFormattedString(format, formatProvider) + UnicodeSpacing.ThinSpace.ToSpacingString() + prefix.GetMetricPrefixSymbol() + InductanceUnit.Henry.GetUnitSymbol();

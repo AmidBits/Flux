@@ -14,9 +14,9 @@ namespace Flux
     [System.Text.RegularExpressions.GeneratedRegex(@"((?<Prefix>\\u)(?<Number>[0-9A-Fa-f]{4})|(?<Prefix>\\U)(?<Number>[0-9A-Fa-f]{8})|(?<Prefix>\\x)(?<Number>[0-9A-Fa-f]{1,8}))", System.Text.RegularExpressions.RegexOptions.Compiled)]
     public static partial System.Text.RegularExpressions.Regex RegexParseCsEscape();
 
-    public static SpanMaker<char> CsEscapeDecode(this System.ReadOnlySpan<char> source)
+    public static System.Text.StringBuilder CsEscapeDecode(this System.ReadOnlySpan<char> source)
     {
-      var sm = new SpanMaker<char>();
+      var sb = new System.Text.StringBuilder();
 
       var evm = RegexParseCsEscape().EnumerateMatches(source);
 
@@ -27,14 +27,14 @@ namespace Flux
         var index = vm.Index;
         var length = vm.Length;
 
-        sm.Append(source[lastEnd..index]); // Append any in-between characters.
+        sb.Append(source[lastEnd..index]); // Append any in-between characters.
 
-        sm.Append(new System.Text.Rune(int.Parse(source.Slice(index + 2, length - 2), System.Globalization.NumberStyles.HexNumber)).ToString()); // Append the rune string.
+        sb.Append(new System.Text.Rune(int.Parse(source.Slice(index + 2, length - 2), System.Globalization.NumberStyles.HexNumber)).ToString()); // Append the rune string.
 
         lastEnd = index + length;
       }
 
-      return sm;
+      return sb;
     }
 
     /// <summary>
@@ -63,12 +63,12 @@ namespace Flux
         _ => throw new NotImplementedException(),
       };
 
-    public static SpanMaker<char> CsEscapeEncode(this System.ReadOnlySpan<char> source, CsEscapeOption format)
+    public static System.Text.StringBuilder CsEscapeEncode(this System.ReadOnlySpan<char> source, CsEscapeOption format)
     {
-      var sm = new SpanMaker<char>();
+      var sb = new System.Text.StringBuilder();
       foreach (var rune in source.EnumerateRunes())
-        sm.Append(rune.CsEscapeEncode(format));
-      return sm;
+        sb.Append(rune.CsEscapeEncode(format));
+      return sb;
     }
   }
 }

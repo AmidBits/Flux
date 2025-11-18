@@ -290,8 +290,8 @@ namespace ConsoleApp
       System.Console.WriteLine();
 
       var value = 128;
-      var multiple = -4;
-      var radix = 2;
+      //var multiple = -4;
+      //var radix = 2;
 
       ////      var mTowardsZero = value.MultipleOfTowardZero(multiple);
       //var mTowardsZeropf = value.MultipleOfTowardZero(multiple, false);
@@ -346,9 +346,9 @@ namespace ConsoleApp
 
       //      n = 0;
       //      var nlpow2 = n.NextLargerPowerOf2();
-      var np2TowardsZero = (int)n.RoundToNearest(Flux.UniversalRounding.IntegralTowardZero, n.Pow2TowardZero(false), n.Pow2AwayFromZero(false));
+      var np2TowardsZero = (int)n.RoundToNearest(HalfRounding.TowardZero, false, [n.Pow2TowardZero(false), n.Pow2AwayFromZero(false)]);
       System.Console.WriteLine($" Pow2TowardsZero = {np2TowardsZero}");
-      var np2AwayFromZero = (int)n.RoundToNearest(Flux.UniversalRounding.IntegralAwayFromZero, n.Pow2TowardZero(false), n.Pow2AwayFromZero(false));
+      var np2AwayFromZero = (int)n.RoundToNearest(HalfRounding.AwayFromZero, false, [n.Pow2TowardZero(false), n.Pow2AwayFromZero(false)]);
       System.Console.WriteLine($"Pow2AwayFromZero = {np2AwayFromZero}");
 
       var birbits = n.ReverseBits();
@@ -585,7 +585,7 @@ namespace ConsoleApp
 
       //System.Console.WriteLine(Flux.Locale.GetProperties().ToConsoleString(k => k, v => v.ToString()));
       //System.Console.WriteLine(Flux.Locale.GetProperties().ToArray().ToConsoleString(k => k, v => v.ToString()));
-      System.Console.WriteLine(Flux.Locale.GetProperties().ToRank2Array().ToConsoleString(ConsoleFormatOptions.Default));
+      System.Console.WriteLine(Flux.EnvironmentExtensions.GetProperties().ToRank2Array().ToConsoleString(ConsoleFormatOptions.Default));
       //System.Console.WriteLine(Flux.Locale.GetProperties().ToJaggedArray().ToTwoDimensionalArray().Rank2ToConsoleString());
 
       //System.Console.WriteLine($"AppDomainDirectory = \"{new System.IO.DirectoryInfo(System.AppDomain.CurrentDomain.BaseDirectory)}\"");
@@ -673,7 +673,7 @@ namespace ConsoleApp
 
       static void Write(System.Type type, System.Predicate<System.Type> predicate)
       {
-        var ofTypes = typeof(Flux.Locale).Assembly.DefinedTypes.ToList();
+        var ofTypes = typeof(Flux.EnvironmentExtensions).Assembly.DefinedTypes.ToList();
         var derivedTypes = type.GetDerived(ofTypes).Where(t => predicate(t)).OrderBy(t => t.IsInterface).ThenBy(t => t.Name).ToList();
         System.Console.WriteLine($"{type.Name} ({derivedTypes.Count}) : {string.Join(", ", derivedTypes.Select(i => i.Name))}");
         System.Console.WriteLine();

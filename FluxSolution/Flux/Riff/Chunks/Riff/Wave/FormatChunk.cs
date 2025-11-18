@@ -57,14 +57,14 @@ namespace Flux.Riff.Chunks.Riff.Wave
 
     public override string ToString()
     {
-      var sm = new SpanMaker<char>(base.ToString());
+      var sb = new System.Text.StringBuilder(base.ToString());
 
       if (IsExtendedFormat)
-        sm = sm.Insert(sm.AsReadOnlySpan().IndexOf(" bytes"), 1, "+22");
+        sb.Insert(sb.ToString().AsSpan().IndexOf(" bytes"), "+22");
 
-      sm = sm.Insert(sm.AsReadOnlySpan().IndexOf(')') + 1, 1, $" {GetFormatName(Format)} {SampleChannels} ch. {SampleBitDepth}-bit {SampleRate} Hz");
+      sb.Insert(sb.ToString().AsSpan().IndexOf(')') + 1, $" {GetFormatName(Format)} {SampleChannels} ch. {SampleBitDepth}-bit {SampleRate} Hz");
 
-      return sm.ToString();
+      return sb.ToString();
       //return base.ToString().Replace(">", $", {GetFormatName((int)Format)}, {SampleChannels} ch., {SampleRate} Hz, {SampleBitDepth}-bit>", System.StringComparison.Ordinal);
     }
   }

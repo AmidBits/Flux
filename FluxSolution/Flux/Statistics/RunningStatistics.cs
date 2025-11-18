@@ -243,23 +243,23 @@ namespace Flux.Statistics
     {
       format ??= "N3";
 
-      var sm = new SpanMaker<char>();
+      var sb = new System.Text.StringBuilder();
 
-      sm = sm.Append(GetType().Name);
+      sb.Append(GetType().Name);
 
-      sm = sm.Append(" { ");
+      sb.Append(" { ");
 
-      sm = sm.Append($" Count = {Count}");
-      sm = sm.Append($", Min/Max = [{Minimum.ToStringWithCountDecimals(3)}, {Maximum.ToStringWithCountDecimals(3)}]");
-      sm = sm.Append($", Mean = {Mean.ToStringWithCountDecimals(3)}");
-      sm = sm.Append($", Product = {Product.ToStringWithCountDecimals(3)}");
-      sm = sm.Append($", Sum = {Sum.ToStringWithCountDecimals(3)}");
+      sb.Append($" Count = {Count}");
+      sb.Append($", Min/Max = [{Minimum.ToStringWithCountDecimals(3)}, {Maximum.ToStringWithCountDecimals(3)}]");
+      sb.Append($", Mean = {Mean.ToStringWithCountDecimals(3)}");
+      sb.Append($", Product = {Product.ToStringWithCountDecimals(3)}");
+      sb.Append($", Sum = {Sum.ToStringWithCountDecimals(3)}");
 
-      sm = sm.Append($", M* = [{m_m1.ToString(format, formatProvider)}, {m_m2.ToString(format, formatProvider)}, {m_m3.ToString(format, formatProvider)}, {m_m4.ToString(format, formatProvider)}]");
+      sb.Append($", M* = [{m_m1.ToString(format, formatProvider)}, {m_m2.ToString(format, formatProvider)}, {m_m3.ToString(format, formatProvider)}, {m_m4.ToString(format, formatProvider)}]");
 
-      sm = sm.Append(" }");
+      sb.Append(" }");
 
-      return sm.ToString();
+      return sb.ToString();
     }
 
     #endregion // Implemented interfaces

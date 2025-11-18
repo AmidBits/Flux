@@ -12,7 +12,7 @@ namespace Flux.Units
 
     public EnergyDensity(double value, EnergyDensityUnit unit = EnergyDensityUnit.JoulePerCubicMeter) => m_value = ConvertFromUnit(unit, value);
 
-    public EnergyDensity(MetricPrefix prefix, double joulePerCubicMeter) => m_value = prefix.ChangePrefix(joulePerCubicMeter, MetricPrefix.Unprefixed);
+    public EnergyDensity(MetricPrefix prefix, double joulePerCubicMeter) => m_value = prefix.ConvertPrefix(joulePerCubicMeter, MetricPrefix.Unprefixed);
 
     #region Static methods
 
@@ -52,7 +52,7 @@ namespace Flux.Units
 
     #region ISiUnitValueQuantifiable<>
 
-    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Kilo.ChangePrefix(m_value, prefix);
+    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Kilo.ConvertPrefix(m_value, prefix);
 
     public string ToSiUnitString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null)
       => GetSiUnitValue(prefix).ToSiFormattedString(format, formatProvider) + UnicodeSpacing.ThinSpace.ToSpacingString() + prefix.GetMetricPrefixSymbol() + EnergyDensityUnit.JoulePerCubicMeter.GetUnitSymbol();

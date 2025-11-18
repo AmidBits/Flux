@@ -28,7 +28,7 @@ namespace Flux.Units
     /// </summary>
     /// <param name="mole"></param>
     /// <param name="prefix"></param>
-    public AmountOfSubstance(MetricPrefix prefix, double mole) => m_value = prefix.ChangePrefix(mole, MetricPrefix.Unprefixed);
+    public AmountOfSubstance(MetricPrefix prefix, double mole) => m_value = prefix.ConvertPrefix(mole, MetricPrefix.Unprefixed);
 
     public double NumberOfParticles => m_value * AvogadrosNumber;
 
@@ -69,7 +69,7 @@ namespace Flux.Units
 
     #region ISiUnitValueQuantifiable<>
 
-    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ChangePrefix(m_value, prefix);
+    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertPrefix(m_value, prefix);
 
     public string ToSiUnitString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null)
       => GetSiUnitValue(prefix).ToSiFormattedString(format, formatProvider) + UnicodeSpacing.ThinSpace.ToSpacingString() + prefix.GetMetricPrefixSymbol() + AmountOfSubstanceUnit.Mole.GetUnitSymbol();

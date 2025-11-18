@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class XtensionException
+  public static partial class ExceptionExtensions
   {
     extension(System.Exception source)
     {

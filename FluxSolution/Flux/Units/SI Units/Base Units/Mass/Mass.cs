@@ -36,7 +36,7 @@ namespace Flux.Units
     /// <remarks>Mass is the only </remarks>
     /// <param name="gram"></param>
     /// <param name="prefix"></param>
-    public Mass(MetricPrefix prefix, double gram) => m_value = prefix.ChangePrefix(gram, MetricPrefix.Kilo);
+    public Mass(MetricPrefix prefix, double gram) => m_value = prefix.ConvertPrefix(gram, MetricPrefix.Kilo);
 
     public Mass(Force force, Acceleration acceleration) => m_value = force.Value / acceleration.Value;
 
@@ -79,7 +79,7 @@ namespace Flux.Units
     #region ISiUnitValueQuantifiable<>
 
     public double GetSiUnitValue(MetricPrefix prefix)
-      => MetricPrefix.Kilo.ChangePrefix(m_value, prefix);
+      => MetricPrefix.Kilo.ConvertPrefix(m_value, prefix);
 
     public string ToSiUnitString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null)
       => GetSiUnitValue(prefix).ToSiFormattedString(format, formatProvider) + UnicodeSpacing.ThinSpace.ToSpacingString() + prefix.GetMetricPrefixSymbol() + MassUnit.Gram.GetUnitSymbol();

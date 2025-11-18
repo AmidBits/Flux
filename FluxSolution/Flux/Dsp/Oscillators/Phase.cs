@@ -67,10 +67,10 @@ namespace Flux.Dsp.Oscillators
 
       var shift = normalizedFrequency.Value; // Normal phase shift for the current frequency.
 
-      if (PhaseModulator != null && m_phaseModulation > XtensionSingle.MaxDefaultTolerance)
+      if (PhaseModulator != null && m_phaseModulation > SingleExtensions.MaxDefaultTolerance)
         shift += 0.1 * PhaseModulator.Next(normalizedFrequency.Value) * m_phaseModulation;
 
-      if (FrequencyModulator != null && m_frequencyModulation > XtensionSingle.MaxDefaultTolerance)
+      if (FrequencyModulator != null && m_frequencyModulation > SingleExtensions.MaxDefaultTolerance)
         shift += normalizedFrequency.Value * FrequencyModulator.NextSample() * m_frequencyModulation;
 
       if (Reverse)

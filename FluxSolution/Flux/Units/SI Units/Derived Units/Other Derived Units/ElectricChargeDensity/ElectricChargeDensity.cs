@@ -12,7 +12,7 @@ namespace Flux.Units
 
     public ElectricChargeDensity(double value, ElectricChargeDensityUnit unit = ElectricChargeDensityUnit.CoulombPerCubicMeter) => m_value = ConvertFromUnit(unit, value);
 
-    public ElectricChargeDensity(MetricPrefix prefix, double coulombPerCubicMeter) => m_value = prefix.ChangePrefix(coulombPerCubicMeter, MetricPrefix.Unprefixed);
+    public ElectricChargeDensity(MetricPrefix prefix, double coulombPerCubicMeter) => m_value = prefix.ConvertPrefix(coulombPerCubicMeter, MetricPrefix.Unprefixed);
 
     #region Static methods
 
@@ -52,7 +52,7 @@ namespace Flux.Units
 
     #region ISiUnitValueQuantifiable<>
 
-    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ChangePrefix(m_value, prefix);
+    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertPrefix(m_value, prefix);
 
     public string ToSiUnitString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null)
       => GetSiUnitValue(prefix).ToSiFormattedString(format, formatProvider) + UnicodeSpacing.ThinSpace.ToSpacingString() + prefix.GetMetricPrefixSymbol() + ElectricChargeDensityUnit.CoulombPerCubicMeter.GetUnitSymbol();

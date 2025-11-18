@@ -5,9 +5,9 @@ namespace Flux
     [System.Text.RegularExpressions.GeneratedRegex(@"(?<Prefix>U\+)(?<Codepoint>[0-9A-Fa-f]{4,6})", System.Text.RegularExpressions.RegexOptions.Compiled)]
     public static partial System.Text.RegularExpressions.Regex RegexParseUnicodeUnotation();
 
-    public static SpanMaker<char> UnicodeUnotationDecode(this System.ReadOnlySpan<char> source)
+    public static System.Text.StringBuilder UnicodeUnotationDecode(this System.ReadOnlySpan<char> source)
     {
-      var sm = new SpanMaker<char>();
+      var sb = new System.Text.StringBuilder();
 
       var evm = RegexParseUnicodeUnotation().EnumerateMatches(source);
 
@@ -18,14 +18,14 @@ namespace Flux
         var index = vm.Index;
         var length = vm.Length;
 
-        sm.Append(source[lastEnd..index]); // Append any in-between characters.
+        sb.Append(source[lastEnd..index]); // Append any in-between characters.
 
-        sm.Append(new System.Text.Rune(int.Parse(source.Slice(index + 2, length - 2), System.Globalization.NumberStyles.HexNumber)).ToString()); // Append the rune string.
+        sb.Append(new System.Text.Rune(int.Parse(source.Slice(index + 2, length - 2), System.Globalization.NumberStyles.HexNumber)).ToString()); // Append the rune string.
 
         lastEnd = index + length;
       }
 
-      return sm;
+      return sb;
     }
 
     /// <summary>
@@ -50,12 +50,12 @@ namespace Flux
     /// <param name="source"></param>
     /// <param name="format"></param>
     /// <returns></returns>
-    public static SpanMaker<char> UnicodeUnotationEncode(this System.ReadOnlySpan<char> source)
+    public static System.Text.StringBuilder UnicodeUnotationEncode(this System.ReadOnlySpan<char> source)
     {
-      var sm = new SpanMaker<char>();
+      var sb = new System.Text.StringBuilder();
       foreach (var rune in source.EnumerateRunes())
-        sm.Append(rune.UnicodeUnotationEncode());
-      return sm;
+        sb.Append(rune.UnicodeUnotationEncode());
+      return sb;
     }
 
     ///// <summary>

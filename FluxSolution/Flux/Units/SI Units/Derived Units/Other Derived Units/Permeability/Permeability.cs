@@ -11,7 +11,7 @@ namespace Flux.Units
 
     public Permeability(double value, PermeabilityUnit unit = PermeabilityUnit.HenryPerMeter) => m_value = ConvertFromUnit(unit, value);
 
-    public Permeability(MetricPrefix prefix, double henryPerMeter) => m_value = prefix.ChangePrefix(henryPerMeter, MetricPrefix.Unprefixed);
+    public Permeability(MetricPrefix prefix, double henryPerMeter) => m_value = prefix.ConvertPrefix(henryPerMeter, MetricPrefix.Unprefixed);
 
     #region Overloaded operators
 
@@ -47,7 +47,7 @@ namespace Flux.Units
 
     #region ISiUnitValueQuantifiable<>
 
-    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ChangePrefix(m_value, prefix);
+    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertPrefix(m_value, prefix);
 
     public string ToSiUnitString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null)
       => GetSiUnitValue(prefix).ToSiFormattedString(format, formatProvider) + UnicodeSpacing.ThinSpace.ToSpacingString() + prefix.GetMetricPrefixSymbol() + PermeabilityUnit.HenryPerMeter.GetUnitSymbol();

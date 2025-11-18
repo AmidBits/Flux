@@ -11,7 +11,7 @@ namespace Flux.Units
 
     public RadiationExposure(double value, RadiationExposureUnit unit = RadiationExposureUnit.CoulombPerKilogram) => m_value = ConvertFromUnit(unit, value);
 
-    public RadiationExposure(MetricPrefix prefix, double coulombPerKilogram) => m_value = prefix.ChangePrefix(coulombPerKilogram, MetricPrefix.Unprefixed);
+    public RadiationExposure(MetricPrefix prefix, double coulombPerKilogram) => m_value = prefix.ConvertPrefix(coulombPerKilogram, MetricPrefix.Unprefixed);
 
     #region Overloaded operators
 
@@ -47,7 +47,7 @@ namespace Flux.Units
 
     #region ISiUnitValueQuantifiable<>
 
-    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ChangePrefix(m_value, prefix);
+    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertPrefix(m_value, prefix);
 
     public string ToSiUnitString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null)
       => GetSiUnitValue(prefix).ToSiFormattedString(format, formatProvider) + UnicodeSpacing.ThinSpace.ToSpacingString() + prefix.GetMetricPrefixSymbol() + RadiationExposureUnit.CoulombPerKilogram.GetUnitSymbol();

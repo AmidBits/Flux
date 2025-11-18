@@ -51,7 +51,7 @@ namespace Flux.Globalization.En.Us
     {
       System.ArgumentNullException.ThrowIfNull(phoneNumberWithAlphabeticMnemonics);
 
-      var sm = new SpanMaker<char>();
+      var sm = new System.Text.StringBuilder();
 
       foreach (var c in phoneNumberWithAlphabeticMnemonics)
       {

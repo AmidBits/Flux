@@ -162,7 +162,7 @@ namespace Maths
 
       n.MultipleOfNearest(m, false, HalfRounding.AwayFromZero, out var multipleTowardsZero, out var multipleAwayFromZero);
 
-      var nearestMultiple = n.RoundToNearest(UniversalRounding.HalfTowardZero, multipleTowardsZero, multipleAwayFromZero);
+      var nearestMultiple = n.RoundToNearest(HalfRounding.TowardZero, false, [multipleTowardsZero, multipleAwayFromZero]);
 
       Assert.AreEqual(520, nearestMultiple);
 

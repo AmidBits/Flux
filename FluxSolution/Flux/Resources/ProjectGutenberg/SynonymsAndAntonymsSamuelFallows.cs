@@ -39,7 +39,7 @@ namespace Flux
               var dictionary = new System.Collections.Generic.Dictionary<string, System.Collections.Generic.List<string>>();
 
               System.Array.ForEach(
-                RegexGutenbergSynonymsAndAntonymsBySamuelFallows().Split(lines.RemoveAll(null, '.').ToLower().ToString()),
+                RegexGutenbergSynonymsAndAntonymsBySamuelFallows().Split(lines.RemoveAll(null, ['.']).ToLower().ToString()),
                 s =>
                 {
                   var array = s.Split(':');

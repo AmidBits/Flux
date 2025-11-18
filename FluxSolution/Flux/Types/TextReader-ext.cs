@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class XtensionTextReader
+  public static partial class TextReaderExtensions
   {
     extension(System.IO.TextReader source)
     {

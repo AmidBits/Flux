@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class XtensionIDataRecord
+  public static partial class IDataRecordExtensions
   {
     extension(System.Data.IDataRecord source)
     {

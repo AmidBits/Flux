@@ -1,8 +1,6 @@
-using System.Runtime.CompilerServices;
-
 namespace Flux
 {
-  public static partial class XtensionDictionary
+  public static partial class DictionaryExtensions
   {
     public static bool ContainsKeyValuePair<TKey, TValue>(this System.Collections.Generic.Dictionary<TKey, TValue> source, TKey key, TValue value, System.Collections.Generic.IEqualityComparer<TValue>? equalityComparer = null)
       where TKey : notnull
@@ -61,7 +59,7 @@ namespace Flux
         culture ??= System.Globalization.CultureInfo.CurrentCulture;
 
         foreach (var de in source)
-          yield return new KeyValuePair<TKey, TValue>((TKey)de.Key.TypeConverter(culture, typeof(TKey)), (TValue)de.Value!.TypeConverter(culture, typeof(TValue)));
+          yield return new KeyValuePair<TKey, TValue>((TKey)de.Key.TypeConverter(culture, [typeof(TKey)]), (TValue)de.Value!.TypeConverter(culture, [typeof(TValue)]));
       }
 
       public object[][] ToJaggedArray()

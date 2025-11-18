@@ -12,7 +12,7 @@ namespace Flux.Units
     public TorqueVector(double valueX, double valueY, double valueZ, double valueW, TorqueUnit unit = TorqueUnit.NewtonMeter)
       : this(System.Runtime.Intrinsics.Vector256.Create(valueX, valueY, valueZ, valueW), unit) { }
 
-    public TorqueVector(MetricPrefix prefix, System.Runtime.Intrinsics.Vector256<double> NewtonMeterSquare) => m_value = prefix.ChangePrefix(NewtonMeterSquare, MetricPrefix.Unprefixed);
+    public TorqueVector(MetricPrefix prefix, System.Runtime.Intrinsics.Vector256<double> NewtonMeterSquare) => m_value = prefix.ConvertPrefix(NewtonMeterSquare, MetricPrefix.Unprefixed);
 
     public TorqueVector(MetricPrefix prefix, double NewtonMeterSquareX, double NewtonMeterSquareY, double NewtonMeterSquareZ, double NewtonMeterSquareW)
       : this(prefix, System.Runtime.Intrinsics.Vector256.Create(NewtonMeterSquareX, NewtonMeterSquareY, NewtonMeterSquareZ, NewtonMeterSquareW)) { }
@@ -45,7 +45,7 @@ namespace Flux.Units
 
     #region ISiUnitValueQuantifiable<>
 
-    public System.Runtime.Intrinsics.Vector256<double> GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ChangePrefix(m_value, prefix);
+    public System.Runtime.Intrinsics.Vector256<double> GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertPrefix(m_value, prefix);
 
     public string ToSiUnitString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null)
       => GetSiUnitValue(prefix).ToString() + UnicodeSpacing.ThinSpace.ToSpacingString() + prefix.GetMetricPrefixSymbol() + TorqueUnit.NewtonMeter.GetUnitSymbol();

@@ -11,15 +11,15 @@ namespace Static
     {
       var c = 'A';
 
-      Assert.AreEqual(65, c.ChangeType(null, typeof(int)));
-      Assert.AreEqual(65D, c.ChangeType(null, typeof(int), typeof(double)));
+      Assert.AreEqual(65, c.ChangeType(null, [typeof(int)]));
+      Assert.AreEqual(65D, c.ChangeType(null, [typeof(int), typeof(double)]));
     }
 
     [TestMethod]
     public void Em_Convert_TypeConverter()
     {
       var expected = "5/30/1967";
-      var actual = XtensionObject.TypeConverter<string>(System.DateTime.Parse(expected));
+      var actual = ObjectExtensions.TypeConverter<string>(System.DateTime.Parse(expected));
 
       Assert.AreEqual(expected, actual);
     }

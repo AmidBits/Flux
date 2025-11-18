@@ -12,7 +12,7 @@ namespace Flux.PhoneticAlgorithm.Soundex
 
     public string EncodePhonetic(System.ReadOnlySpan<char> name)
     {
-      var refinedSoundex = new SpanMaker<char>(20);
+      var refinedSoundex = new System.Text.StringBuilder(20);
 
       var previousCode = '\0';
 
@@ -32,7 +32,7 @@ namespace Flux.PhoneticAlgorithm.Soundex
           }
         }
 
-      return refinedSoundex.AsReadOnlySpan()[..int.Min(MaxCodeLength, refinedSoundex.Length)].ToString();
+      return refinedSoundex.ToString().AsSpan()[..int.Min(MaxCodeLength, refinedSoundex.Length)].ToString();
     }
   }
 }

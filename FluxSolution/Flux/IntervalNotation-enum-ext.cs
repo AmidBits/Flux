@@ -17,7 +17,7 @@ namespace Flux
     Open,
   }
 
-  public static partial class XtensionIntervalNotation
+  public static partial class IntervalNotationExtensions
   {
     extension(IntervalNotation source)
     {

@@ -36,7 +36,7 @@ namespace Flux.Units
     /// </summary>
     /// <param name="prefix"></param>
     /// <param name="hertz"></param>
-    public Frequency(MetricPrefix prefix, double hertz) => m_value = prefix.ChangePrefix(hertz, MetricPrefix.Unprefixed);
+    public Frequency(MetricPrefix prefix, double hertz) => m_value = prefix.ConvertPrefix(hertz, MetricPrefix.Unprefixed);
 
     /// <summary>
     /// <para>Constructs a frequency from sound-velocity and wavelength.</para>
@@ -155,7 +155,7 @@ namespace Flux.Units
         _ => prefix.GetMetricPrefixSymbol(preferUnicode) + FrequencyUnit.Hertz.GetUnitSymbol(preferUnicode),
       };
 
-    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ChangePrefix(m_value, prefix);
+    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertPrefix(m_value, prefix);
 
     public string ToSiUnitString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null)
       => GetSiUnitValue(prefix).ToSiFormattedString(format, formatProvider) + UnicodeSpacing.ThinSpace.ToSpacingString() + GetSiUnitSymbol(prefix, false);

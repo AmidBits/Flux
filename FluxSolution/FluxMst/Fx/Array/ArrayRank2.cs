@@ -29,8 +29,8 @@ namespace SystemArrays
       System.Console.WriteLine(inplaceMatrix.Rank2ToConsoleString(cso));
       System.Console.WriteLine();
 
-      inplaceMatrix.Fill(0, 1, 3, 4, 9);
-      System.Console.WriteLine(nameof(XtensionArrayRank1.FillWith));
+      inplaceMatrix.Fill(0, 1, 3, 4, [9]);
+      System.Console.WriteLine(nameof(ArrayRank1Extensions.FillWith));
       System.Console.WriteLine(inplaceMatrix.Rank2ToConsoleString(cso));
       System.Console.WriteLine();
 
@@ -225,13 +225,13 @@ namespace SystemArrays
       System.Console.WriteLine(initial.Rank2ToConsoleString(cso));
       System.Console.WriteLine();
 
-      var insertToCopy = initial.InsertToCopy(0, 2, 2, 0);
+      var insertToCopy = initial.InsertToCopy(0, 2, 2, [0]);
 
       System.Console.WriteLine($"{nameof(insertToCopy)}: 2 rows");
       System.Console.WriteLine(insertToCopy.Rank2ToConsoleString(cso));
       System.Console.WriteLine();
 
-      insertToCopy = insertToCopy.InsertToCopy(1, 2, 2, 0);
+      insertToCopy = insertToCopy.InsertToCopy(1, 2, 2, [0]);
 
       System.Console.WriteLine($"{nameof(insertToCopy)}: 2 columns");
       System.Console.WriteLine(insertToCopy.Rank2ToConsoleString(cso));
@@ -268,13 +268,13 @@ namespace SystemArrays
       System.Console.WriteLine(initial.Rank2ToConsoleString(cso));
       System.Console.WriteLine();
 
-      var removeToCopy = initial.Copy0Remove(initial.NewResize(-2, 0), 1, 2);
+      var removeToCopy = initial.Copy0Remove(initial.NewResize(-2, 0), [1, 2]);
 
       System.Console.WriteLine($"{nameof(removeToCopy)}: 2 rows");
       System.Console.WriteLine(removeToCopy.Rank2ToConsoleString(cso));
       System.Console.WriteLine();
 
-      removeToCopy = removeToCopy.Copy1Remove(removeToCopy.NewResize(0, -2), 1, 2);
+      removeToCopy = removeToCopy.Copy1Remove(removeToCopy.NewResize(0, -2), [1, 2]);
 
       System.Console.WriteLine($"{nameof(removeToCopy)}: 2 columns");
       System.Console.WriteLine(removeToCopy.Rank2ToConsoleString(cso));

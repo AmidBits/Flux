@@ -878,16 +878,16 @@ namespace Flux
     /// </summary>
     /// <param name="predicate"></param>
     /// <returns></returns>
-    public SpanBuilder<T> TrimLeft(System.Func<T, int, bool> predicate)
-      => RemoveLeft(AsReadOnlySpan().CommonPrefixLength(predicate));
+    public SpanBuilder<T> TrimLeft(System.Func<T, int, bool> predicate, int maxTrimLength = int.MaxValue)
+      => RemoveLeft(AsReadOnlySpan().CommonPrefixLength(predicate, maxTrimLength));
 
     /// <summary>
     /// <para>Trims all consecutive occurences that satisfies the <paramref name="predicate"/> at the end of the <see cref="SpanBuilder{T}"/>.</para>
     /// </summary>
     /// <param name="predicate"></param>
     /// <returns></returns>
-    public SpanBuilder<T> TrimRight(System.Func<T, int, bool> predicate)
-      => RemoveRight(AsReadOnlySpan().CommonSuffixLength(predicate));
+    public SpanBuilder<T> TrimRight(System.Func<T, int, bool> predicate, int maxTrimLength = int.MaxValue)
+      => RemoveRight(AsReadOnlySpan().CommonSuffixLength(predicate, maxTrimLength));
 
     #endregion Trim methods
 

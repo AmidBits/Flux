@@ -1,6 +1,6 @@
 ﻿namespace Flux
 {
-  public static partial class XtensionQuaternion
+  public static partial class QuaternionExtensions
   {
     /// <summary></summary>
     /// <remarks>The quaternion must be normalized.</remarks>

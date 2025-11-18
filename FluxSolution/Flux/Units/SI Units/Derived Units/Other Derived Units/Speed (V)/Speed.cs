@@ -23,7 +23,7 @@ namespace Flux.Units
 
     public Speed(double value, SpeedUnit unit = SpeedUnit.MeterPerSecond) => m_value = ConvertFromUnit(unit, value);
 
-    public Speed(MetricPrefix prefix, double meterPerSecond) => m_value = prefix.ChangePrefix(meterPerSecond, MetricPrefix.Unprefixed);
+    public Speed(MetricPrefix prefix, double meterPerSecond) => m_value = prefix.ConvertPrefix(meterPerSecond, MetricPrefix.Unprefixed);
 
     /// <summary>Create a new instance representing phase velocity from the specified frequency and wavelength.</summary>
     /// <see href="https://en.wikipedia.org/wiki/Phase_velocity"/>
@@ -80,7 +80,7 @@ namespace Flux.Units
 
     #region ISiUnitValueQuantifiable<>
 
-    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ChangePrefix(m_value, prefix);
+    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertPrefix(m_value, prefix);
 
     public string ToSiUnitString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null)
       => GetSiUnitValue(prefix).ToSiFormattedString(format, formatProvider) + UnicodeSpacing.ThinSpace.ToSpacingString() + prefix.GetMetricPrefixSymbol() + SpeedUnit.MeterPerSecond.GetUnitSymbol();
@@ -111,25 +111,25 @@ namespace Flux.Units
 
     public string ToUnitString(SpeedUnit unit = SpeedUnit.MeterPerSecond, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing spacing = UnicodeSpacing.Space, bool fullName = false)
     {
-      var sm = new SpanMaker<char>();
+      var sb = new System.Text.StringBuilder();
 
       var value = GetUnitValue(unit);
 
       if (unit == SpeedUnit.Mach)
       {
-        sm.Append(fullName ? unit.GetUnitName(value.IsConsideredPlural()) : unit.GetUnitSymbol(false));
-        sm.Append(spacing.ToSpacingString());
+        sb.Append(fullName ? unit.GetUnitName(value.IsConsideredPlural()) : unit.GetUnitSymbol(false));
+        sb.Append(spacing.ToSpacingString());
       }
 
-      sm.Append(GetUnitValue(unit).ToString(format, formatProvider));
+      sb.Append(GetUnitValue(unit).ToString(format, formatProvider));
 
       if (unit != SpeedUnit.Mach)
       {
-        sm.Append(spacing.ToSpacingString());
-        sm.Append(fullName ? unit.GetUnitName(value.IsConsideredPlural()) : unit.GetUnitSymbol(false));
+        sb.Append(spacing.ToSpacingString());
+        sb.Append(fullName ? unit.GetUnitName(value.IsConsideredPlural()) : unit.GetUnitSymbol(false));
       }
 
-      return sm.ToString();
+      return sb.ToString();
     }
 
     //public string ToUnitValueNameString(SpeedUnit unit = SpeedUnit.MeterPerSecond, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing unitSpacing = UnicodeSpacing.Space, bool preferPlural = false)

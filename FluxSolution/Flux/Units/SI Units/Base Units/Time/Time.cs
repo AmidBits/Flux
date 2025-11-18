@@ -39,7 +39,7 @@ namespace Flux.Units
     /// </summary>
     /// <param name="seconds"></param>
     /// <param name="prefix"></param>
-    public Time(MetricPrefix prefix, double seconds) => m_value = prefix.ChangePrefix(seconds, MetricPrefix.Unprefixed);
+    public Time(MetricPrefix prefix, double seconds) => m_value = prefix.ConvertPrefix(seconds, MetricPrefix.Unprefixed);
 
     /// <summary>Creates a new instance from the specified <paramref name="timeSpan"/>.</summary>
     public Time(System.TimeSpan timeSpan) : this(timeSpan.TotalSeconds, TimeUnit.Second) { }
@@ -169,7 +169,7 @@ namespace Flux.Units
 
     #region ISiUnitValueQuantifiable<>
 
-    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ChangePrefix(m_value, prefix);
+    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertPrefix(m_value, prefix);
 
     public string ToSiUnitString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null)
       => GetSiUnitValue(prefix).ToSiFormattedString(format, formatProvider) + UnicodeSpacing.ThinSpace.ToSpacingString() + prefix.GetMetricPrefixSymbol() + TimeUnit.Second.GetUnitSymbol();

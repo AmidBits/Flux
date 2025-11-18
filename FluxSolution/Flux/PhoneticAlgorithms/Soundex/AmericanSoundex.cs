@@ -12,7 +12,7 @@ namespace Flux.PhoneticAlgorithm.Soundex
 
     public string EncodePhonetic(System.ReadOnlySpan<char> name)
     {
-      var sm = new SpanMaker<char>();
+      var sb = new System.Text.StringBuilder();
 
       var lastUsedCode = '\0';
       var wasLastLetterHW = false;
@@ -22,16 +22,16 @@ namespace Flux.PhoneticAlgorithm.Soundex
         {
           var code = LetterCodeMap[c - 'A'];
 
-          if (sm.Length == 0)
+          if (sb.Length == 0)
           {
-            sm = sm.Append(c);
+            sb = sb.Append(c);
 
             lastUsedCode = code;
           }
           else if (!(code == lastUsedCode || wasLastLetterHW))
           {
             if (code != '0')
-              sm = sm.Append(code);
+              sb = sb.Append(code);
 
             lastUsedCode = code;
           }
@@ -39,12 +39,12 @@ namespace Flux.PhoneticAlgorithm.Soundex
           wasLastLetterHW = c == 'H' || c == 'W';
         }
 
-      if (sm.Length < MaxCodeLength)
-        return sm.Append(MaxCodeLength - sm.Length, '0').ToString();
-      if (sm.Length > MaxCodeLength)
-        return sm.AsReadOnlySpan()[..MaxCodeLength].ToString();
+      if (sb.Length < MaxCodeLength)
+        return sb.Append('0', MaxCodeLength - sb.Length).ToString();
+      if (sb.Length > MaxCodeLength)
+        return sb.ToString().AsSpan()[..MaxCodeLength].ToString();
 
-      return sm.ToString();
+      return sb.ToString();
     }
 
     /// <summary>Returns a score in the range [0, 4] symbolizing a difference of the two specified soundex codes. The larger the difference score the larger the difference.</summary>

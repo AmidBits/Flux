@@ -11,7 +11,7 @@ namespace Flux.Units
 
     public MagneticFluxDensity(double value, MagneticFluxDensityUnit unit = MagneticFluxDensityUnit.Tesla) => m_value = ConvertFromUnit(unit, value);
 
-    public MagneticFluxDensity(MetricPrefix prefix, double tesla) => m_value = prefix.ChangePrefix(tesla, MetricPrefix.Unprefixed);
+    public MagneticFluxDensity(MetricPrefix prefix, double tesla) => m_value = prefix.ConvertPrefix(tesla, MetricPrefix.Unprefixed);
 
     /// <summary>
     /// <para>Creates a new magnetic flux density from the length (magnitude) of <paramref name="vector"/> and <paramref name="unit"/>.</para>
@@ -61,7 +61,7 @@ namespace Flux.Units
 
     #region ISiPrefixValueQuantifiable<>
 
-    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ChangePrefix(m_value, prefix);
+    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertPrefix(m_value, prefix);
 
     public string ToSiUnitString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null)
       => GetSiUnitValue(prefix).ToSiFormattedString(format, formatProvider) + UnicodeSpacing.ThinSpace.ToSpacingString() + prefix.GetMetricPrefixSymbol() + MagneticFluxDensityUnit.Tesla.GetUnitSymbol();

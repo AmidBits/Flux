@@ -11,7 +11,7 @@ namespace Flux.Units
 
     public AbsoluteHumidity(double value, AbsoluteHumidityUnit unit = AbsoluteHumidityUnit.GramPerCubicMeter) => m_value = ConvertFromUnit(unit, value);
 
-    public AbsoluteHumidity(MetricPrefix prefix, double gramPerCubicMeter) => m_value = prefix.ChangePrefix(gramPerCubicMeter, MetricPrefix.Unprefixed);
+    public AbsoluteHumidity(MetricPrefix prefix, double gramPerCubicMeter) => m_value = prefix.ConvertPrefix(gramPerCubicMeter, MetricPrefix.Unprefixed);
 
     #region Static methods
 

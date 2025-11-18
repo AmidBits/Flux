@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class XtensionIDbConnection
+  public static partial class IDbConnectionExtensions
   {
     extension(System.Data.IDbConnection source)
     {

@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class XtensionUInt16
+  public static partial class UInt16Extensions
   {
     extension(System.UInt16)
     {

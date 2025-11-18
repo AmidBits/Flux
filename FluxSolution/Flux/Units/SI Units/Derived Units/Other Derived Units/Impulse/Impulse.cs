@@ -11,7 +11,7 @@ namespace Flux.Units
 
     public Impulse(double value, ImpulseUnit unit = ImpulseUnit.NewtonSecond) => m_value = ConvertToUnit(unit, value);
 
-    public Impulse(MetricPrefix prefix, double newtonSecond) => m_value = prefix.ChangePrefix(newtonSecond, MetricPrefix.Unprefixed);
+    public Impulse(MetricPrefix prefix, double newtonSecond) => m_value = prefix.ConvertPrefix(newtonSecond, MetricPrefix.Unprefixed);
 
     public Impulse(Force force, Time time) : this(force.Value / time.Value) { }
 
@@ -53,7 +53,7 @@ namespace Flux.Units
 
     #region ISiUnitValueQuantifiable<>
 
-    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ChangePrefix(m_value, prefix);
+    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertPrefix(m_value, prefix);
 
     public string ToSiUnitString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null)
       => GetSiUnitValue(prefix).ToSiFormattedString(format, formatProvider) + UnicodeSpacing.ThinSpace.ToSpacingString() + prefix.GetMetricPrefixSymbol() + ImpulseUnit.NewtonSecond.GetUnitSymbol();

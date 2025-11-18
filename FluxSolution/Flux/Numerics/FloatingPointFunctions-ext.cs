@@ -51,7 +51,7 @@
     }
 
     extension<TFloat>(TFloat)
-      where TFloat : System.Numerics.IFloatingPointIeee754<TFloat>
+      where TFloat : System.Numerics.IFloatingPoint<TFloat>
     {
       /// <summary>
       /// <para>Machine epsilon computed on the fly.</para>
@@ -70,6 +70,8 @@
     extension<TFloat>(TFloat x)
       where TFloat : System.Numerics.IFloatingPoint<TFloat>
     {
+      #region CompareToFraction..
+
       /// <summary>
       /// <para>Compare the fraction part of <paramref name="value"/> to it's midpoint (i.e. its .5).</para>
       /// </summary>
@@ -99,6 +101,10 @@
       public int CompareToFractionPercent(TFloat percent)
         => (x - TFloat.Floor(x)).CompareTo(percent);
 
+      #endregion
+
+      #region Envelop
+
       /// <summary>
       /// <para>Equivalent to the opposite effect of the Truncate() functionality, i.e. instead of truncating the fraction and essentially executing a round-toward-zero, envelop the fraction and essentially execute a round-away-from-zero.</para>
       /// <para>It can also be seen as a companion function to truncate(). Unlike truncate() which calls floor() for positive numbers and ceiling() for negative; envelope() calls ceiling() for positive numbers and floor() for negative.</para>
@@ -127,6 +133,10 @@
         return Envelop(x * m) / m;
       }
 
+      #endregion
+
+      #region SurroundingIntegralsWithTolerance
+
       public (TFloat Floor, TFloat Ceiling) SurroundingIntegralsWithTolerance(TFloat absoluteTolerance, TFloat relativeTolerance, System.MidpointRounding midpointRounding)
       {
         if (!TFloat.IsZero(x))
@@ -154,6 +164,10 @@
 
       public (TFloat Floor, TFloat Ceiling) SurroundingIntegralsWithTolerance(TFloat absoluteTolerance, TFloat relativeTolerance)
         => SurroundingIntegralsWithTolerance(x, absoluteTolerance, relativeTolerance, System.MidpointRounding.ToEven);
+
+      #endregion
+
+      #region ToBigRational
 
       public Numerics.BigRational ToBigRational(int maxApproximationIterations = 101)
       {
@@ -203,6 +217,10 @@
         return new(a, b);
       }
 
+      #endregion
+
+      #region Truncate
+
       /// <summary>
       /// 
       /// </summary>
@@ -217,6 +235,8 @@
 
         return TFloat.Truncate(x * m) / m;
       }
+
+      #endregion
     }
 
     extension<TFloat>(TFloat x)
