@@ -1,4 +1,4 @@
-namespace Flux.Geometry.Hexagons
+namespace Flux.Numerics.Geometry.Hexagons
 {
   /// <summary>Hex directions.</summary>
   public enum HexDirection

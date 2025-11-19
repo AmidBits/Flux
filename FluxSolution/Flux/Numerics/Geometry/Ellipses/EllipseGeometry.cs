@@ -4,22 +4,22 @@ namespace Flux.Numerics.Geometry.Ellipses
   /// <para></para>
   /// <see href="https://en.wikipedia.org/wiki/Ellipse"/>
   /// </summary>
-  public readonly record struct EllipseFigure
+  public readonly record struct EllipseGeometry
     : IFormattable, IFigurable
   {
-    public static EllipseFigure Unit { get; } = new(1, 1);
+    public static EllipseGeometry Unit { get; } = new(1, 1);
 
     private readonly double m_a;
     private readonly double m_b;
 
-    public EllipseFigure(double a, double b)
+    public EllipseGeometry(double a, double b)
     {
       if (a < b) throw new ArgumentException("The ellipse geometry structure requires the semi-major axis (A) to be greater-than-or-equal-to the semi-minor axis (B).");
 
       m_a = a;
       m_b = b;
     }
-    public EllipseFigure(double r) : this(r, r) { }
+    public EllipseGeometry(double r) : this(r, r) { }
 
     public void Deconstruct(out double a, out double b) { a = m_a; b = m_b; }
 

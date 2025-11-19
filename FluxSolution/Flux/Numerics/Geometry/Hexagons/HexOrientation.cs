@@ -1,4 +1,4 @@
-namespace Flux.Geometry.Hexagons
+namespace Flux.Numerics.Geometry.Hexagons
 {
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
   public readonly record struct HexOrientation

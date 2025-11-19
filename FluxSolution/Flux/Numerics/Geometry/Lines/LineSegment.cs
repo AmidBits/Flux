@@ -155,6 +155,16 @@ namespace Flux.Numerics.Geometry.Lines
     //  return (2, x0, y0, x1, y1);
     //}
 
+    public static (LineSegmentIntersectTest Outcome, CoordinateSystems.CartesianCoordinate Intersection) Intersects(LineSegment a, LineSegment b)
+    {
+      var (ax1, ay1, ax2, ay2) = a;
+      var (bx1, by1, bx2, by2) = b;
+
+      var (Outcome, X, Y) = GivenTwoPointsOnEach(ax1, ay1, ax2, ay2, bx1, by1, bx2, by2);
+
+      return (Outcome, new(X, Y));
+    }
+
     #endregion // Static methods
 
     #region Implemented interfaces

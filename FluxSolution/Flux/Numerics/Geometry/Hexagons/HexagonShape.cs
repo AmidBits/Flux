@@ -1,4 +1,4 @@
-//namespace Flux.Geometry.Hexagons
+//namespace Flux.Numerics.Geometry.Hexagons
 //{
 //  // https://en.wikipedia.org/wiki/Centered_hexagonal_number
 //  // https://hexnet.org/content/hex-numbers

@@ -1,8 +1,10 @@
-﻿namespace Flux
+﻿using System.Reflection.Metadata.Ecma335;
+
+namespace Flux
 {
   public static partial class RangeExtensions
   {
-    extension(System.Range source)
+    extension(System.Range)
     {
       /// <summary>
       /// <para></para>
@@ -12,7 +14,10 @@
       /// <returns></returns>
       public static System.Range FromOffsetAndLength(int offset, int length)
         => new(offset, offset + length);
+    }
 
+    extension(System.Range source)
+    {
       /// <summary>
       /// <para>Attempt to convert to Interval without knowledge of a collection length. If either of the Start or End properties are set from-end, this will fail since an offset from the end cannot be determined.</para>
       /// </summary>

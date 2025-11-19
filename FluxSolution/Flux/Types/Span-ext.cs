@@ -1,3 +1,5 @@
+using System.Diagnostics.Tracing;
+
 namespace Flux
 {
   public enum HeapSortType
@@ -473,6 +475,73 @@ namespace Flux
 
         return source;
       }
+
+      #region Regex
+
+      /// <summary>
+      /// <para></para>
+      /// </summary>
+      /// <param name="pattern"></param>
+      /// <returns></returns>
+      public System.Span<char> RemoveRegex(string pattern)
+      {
+        var removed = 0;
+
+        var ranges = source.AsReadOnlySpan().GetRegexMatches(pattern);
+
+        for (var i = ranges.Count - 1; i >= 0; i--)
+        {
+          var (startIndex, length) = ranges[i].GetOffsetAndLength(source.Length);
+
+          var endIndex = startIndex + length;
+
+          var move = source.Slice(endIndex, source.Length - endIndex - removed);
+
+          move.CopyTo(source.Slice(startIndex, move.Length));
+
+          removed += length;
+        }
+
+        return source[..^removed];
+      }
+
+      /// <summary>
+      /// <para></para>
+      /// </summary>
+      /// <param name="pattern"></param>
+      /// <param name="replacement"></param>
+      /// <returns></returns>
+      /// <exception cref="System.ArgumentException"></exception>
+      public System.Span<char> ReplaceRegex(string pattern, string replacement)
+      {
+        var removed = 0;
+
+        var ranges = source.AsReadOnlySpan().GetRegexMatches(pattern);
+
+        for (var i = ranges.Count - 1; i >= 0; i--)
+        {
+          var (startIndex, length) = ranges[i].GetOffsetAndLength(source.Length);
+
+          var endIndex = startIndex + length;
+
+          if (replacement.Length > length) throw new System.ArgumentException("The replacement length cannot be longer than what it replaces.");
+
+          var move = source.Slice(endIndex, source.Length - endIndex - removed);
+
+          if (move.Length > 0)
+          {
+            move.CopyTo(source.Slice(startIndex + replacement.Length, move.Length));
+
+            replacement.CopyTo(source.Slice(startIndex, replacement.Length));
+
+            removed += length - replacement.Length;
+          }
+        }
+
+        return source[..^removed];
+      }
+
+      #endregion
 
       /// <summary>
       /// <para>Convert all chars in the span to lower-case.</para>

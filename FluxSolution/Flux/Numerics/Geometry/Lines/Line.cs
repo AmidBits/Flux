@@ -116,6 +116,15 @@ namespace Flux.Numerics.Geometry.Lines
       return (outcome, System.Runtime.Intrinsics.Vector128.Create(x, y));
     }
 
+    public static (LineIntersectTest Outcome, CoordinateSystems.CartesianCoordinate Intersection) Intersects(Line a, Line b)
+    {
+      var (ax0, ay0, ax1, ay1) = a;
+      var (bx0, by0, bx1, by1) = b;
+
+      var (Outcome, X, Y) = GivenTwoPointsOnEach(ax0, ay0, ax1, ay1, bx0, by0, bx1, by1);
+
+      return (Outcome, new(X, Y));
+    }
 
     /// <summary>
     /// <para>Returns the sign indicating whether the point is Left|On|Right of an infinite line. Through point1 and point2 the result has the meaning: greater than 0 is to the left of the line, equal to 0 is on the line, less than 0 is to the right of the line. (This is also known as an IsLeft function.)</para>

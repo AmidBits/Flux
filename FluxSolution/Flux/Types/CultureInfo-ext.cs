@@ -171,9 +171,17 @@ namespace Flux
         };
       }
 
-      public string LoadIpaFile(string directory = ResourcesDirectoryIpa)
+      /// <summary>
+      /// <para>Load an IPA file based on the specified <see cref="System.Globalization.CultureInfo"/>.</para>
+      /// <para></para>
+      /// </summary>
+      /// <param name="directory"></param>
+      /// <returns></returns>
+      /// <exception cref="System.InvalidOperationException"></exception>
+      /// <exception cref="System.NullReferenceException"></exception>
+      public string ReadIpaFile(string directory = ResourcesDirectoryIpa)
       {
-        if (!System.Globalization.CultureInfo.TryLocateMatchingFiles(source, out var fileInfo, directory)) throw new System.InvalidOperationException($"Culture file not found for {source}.");
+        if (!System.Globalization.CultureInfo.TryLocateMatchingFiles(source, out var fileInfo, directory)) throw new System.InvalidOperationException($"No culture file found for {source}.");
 
         using var fileStream = fileInfo?.OpenRead() ?? throw new System.NullReferenceException(nameof(fileInfo));
         using var streamReader = new System.IO.StreamReader(fileStream, System.Text.Encoding.UTF8);

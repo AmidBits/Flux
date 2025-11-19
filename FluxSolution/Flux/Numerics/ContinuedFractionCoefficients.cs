@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class ContinuedFractionCoefficients
+  public static class ContinuedFractionCoefficients
   {
     /// <summary>
     /// <para></para>

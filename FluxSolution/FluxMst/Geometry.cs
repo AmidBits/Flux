@@ -28,7 +28,7 @@ namespace Maths
     [TestMethod]
     public void Ellipse()
     {
-      var geometry = new Flux.Numerics.Geometry.Ellipses.EllipseFigure(7, 5);
+      var geometry = new Flux.Numerics.Geometry.Ellipses.EllipseGeometry(7, 5);
 
       Assert.AreEqual(7, geometry.A);
       Assert.AreEqual(5, geometry.B);

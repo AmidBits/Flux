@@ -339,8 +339,14 @@ namespace ConsoleApp
 
 
 
-      var ipa = System.Globalization.CultureInfo.CurrentCulture.LoadIpaFile();
+      var ipa = System.Globalization.CultureInfo.GetCultureInfo("sv").ReadIpaFile();
       var ipalength = ipa.Length;
+
+      //var match = System.Text.RegularExpressions.Regex.Match(ipa, @"\t.*\n");
+
+      var removed = ipa.AsSpan().AsSpan().ReplaceRegex(@"\t.*(?=\n|$)", string.Empty);
+      var removeds = removed.ToString();
+
 
       ipa.AsSpan().AsSpan()[4] = 'x';
 

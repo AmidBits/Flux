@@ -1,9 +1,12 @@
 namespace Flux.Numerics.Geometry.Polygons
 {
   public record class Polygon
+  //public record class Polygon<T>
     : System.IFormattable, IFigurable
+  //where T : System.Numerics.INumber<T>
   {
     protected readonly System.Collections.Generic.List<System.Runtime.Intrinsics.Vector128<double>> m_vertices;
+    //protected readonly System.Collections.Generic.List<System.Numerics.Vector<T>> m_vertices;
 
     public Polygon(System.Collections.Generic.List<System.Runtime.Intrinsics.Vector128<double>> vertices) => m_vertices = vertices;
 

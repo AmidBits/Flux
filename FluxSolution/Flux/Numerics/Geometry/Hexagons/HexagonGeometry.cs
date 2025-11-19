@@ -5,18 +5,18 @@ namespace Flux.Numerics.Geometry.Hexagons
   /// <see href="https://en.wikipedia.org/wiki/Hexagon"/>
   /// </summary>
   /// <remarks>The hexagon is essentially a specialized 6-point circle.</remarks>
-  public readonly record struct HexagonFigure
+  public readonly record struct HexagonGeometry
     : System.IFormattable, IFigurable
   {
     public const double RadiusRatio = 0.8660254037844386;
 
     public const double CircleFillRatio = 0.8269933431326881;
 
-    public static HexagonFigure Unit { get; } = new(1);
+    public static HexagonGeometry Unit { get; } = new(1);
 
     private readonly double m_sideLength;
 
-    public HexagonFigure(double sideLength) => m_sideLength = sideLength;
+    public HexagonGeometry(double sideLength) => m_sideLength = sideLength;
 
     /// <summary>
     /// <para>The circumradius of the hexagon.</para>
@@ -52,7 +52,7 @@ namespace Flux.Numerics.Geometry.Hexagons
     /// <returns></returns>
     public bool Contains(double x, double y) => HexagonContainsPoint(m_sideLength, x, y);
 
-    public Numerics.Geometry.Circles.CircleFigure ToCircleFigure() => new(m_sideLength);
+    public Numerics.Geometry.Circles.CircleGeometry ToCircleFigure() => new(m_sideLength);
 
     public Polygons.PolygonRegularConvex ToPolygonFlatTopped() => Polygons.PolygonRegularConvex.Create(6, m_sideLength, double.Pi / 2);
 
@@ -81,7 +81,7 @@ namespace Flux.Numerics.Geometry.Hexagons
     #endregion // Conversion methods
 
     public static System.Collections.Generic.IEnumerable<System.Runtime.Intrinsics.Vector128<double>> CreatePointsOfHexagon(double circumradius = 1, double arcOffset = 0, double translateX = 0, double translateY = 0)
-      => Ellipses.EllipseFigure.CreatePointsOnEllipse(6, circumradius, circumradius, arcOffset, translateX, translateY);
+      => Ellipses.EllipseGeometry.CreatePointsOnEllipse(6, circumradius, circumradius, arcOffset, translateX, translateY);
 
     /// <summary>
     /// <para>Find the centered hexagonal number by index. This is the number of hexagons in the "ring" represented by <paramref name="index"/>.</para>

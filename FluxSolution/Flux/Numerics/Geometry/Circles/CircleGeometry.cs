@@ -4,14 +4,14 @@ namespace Flux.Numerics.Geometry.Circles
   /// <para></para>
   /// <see href="https://en.wikipedia.org/wiki/Circle"/>
   /// </summary>
-  public readonly record struct CircleFigure
+  public readonly record struct CircleGeometry
     : IFormattable, IFigurable
   {
-    public static CircleFigure Unit { get; } = new(1);
+    public static CircleGeometry Unit { get; } = new(1);
 
     private readonly double m_radius;
 
-    public CircleFigure(double radius) => m_radius = radius;
+    public CircleGeometry(double radius) => m_radius = radius;
 
     /// <summary>
     /// <para>The radius of the circle.</para>
@@ -34,9 +34,9 @@ namespace Flux.Numerics.Geometry.Circles
     /// <summary>Returns whether a point is inside the circle.</summary>
     public bool Contains(double x, double y) => CircleContainsPoint(m_radius, x, y);
 
-    public Numerics.Geometry.Ellipses.EllipseFigure ToEllipseFigure() => new(m_radius);
+    public Numerics.Geometry.Ellipses.EllipseGeometry ToEllipseFigure() => new(m_radius);
 
-    public Numerics.Geometry.Hexagons.HexagonFigure ToHexagonFigure() => new(m_radius);
+    public Numerics.Geometry.Hexagons.HexagonGeometry ToHexagonFigure() => new(m_radius);
 
     public CoordinateSystems.PolarCoordinate ToPolarCoordinate(double azimuthValue, Units.AngleUnit azimuthUnit) => new(m_radius, Units.LengthUnit.Meter, azimuthValue, azimuthUnit);
 
@@ -61,7 +61,7 @@ namespace Flux.Numerics.Geometry.Circles
     /// <param name="rng"></param>
     /// <returns></returns>
     public static IEnumerable<System.Runtime.Intrinsics.Vector128<double>> CreatePointsOnCircle(int count, double radius = 1, double arcOffset = 0, double translateX = 0, double translateY = 0)
-      => Ellipses.EllipseFigure.CreatePointsOnEllipse(count, radius, radius, arcOffset, translateX, translateY);
+      => Ellipses.EllipseGeometry.CreatePointsOnEllipse(count, radius, radius, arcOffset, translateX, translateY);
 
     /// <summary>
     /// <para>Intersection of circle at 0, 1 or 2 points with line ABC.</para>

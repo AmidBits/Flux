@@ -62,7 +62,7 @@ namespace Flux
     /// <param name="rng">The random number generator to use, or default if null.</param>
     /// <returns>A new sequence of <typeparamref name="TResult"/>.</returns>
     public static System.Numerics.Vector2[] GenerateEllipseVectors(this System.Numerics.Vector2 source, int count, double radOffset = 0, double maxRandomness = 0, System.Random? rng = null)
-      => Numerics.Geometry.Ellipses.EllipseFigure.CreatePointsOnEllipse(count, source.X, source.Y, radOffset, 0, 0, maxRandomness, rng).Select(v128 => v128.ToVector2()).ToArray();
+      => Numerics.Geometry.Ellipses.EllipseGeometry.CreatePointsOnEllipse(count, source.X, source.Y, radOffset, 0, 0, maxRandomness, rng).Select(v128 => v128.ToVector2()).ToArray();
 
     public static int GetQuadrant(this System.Numerics.Vector2 source, System.Numerics.Vector2 center)
       => source.X < center.X is var xneg && source.Y < center.Y ? (xneg ? 2 : 3) : (xneg ? 1 : 0);

@@ -35,7 +35,7 @@ namespace Flux.Numerics.Geometry.Polygons
     /// <param name="translateY">The translation Y offset.</param>
     /// <returns></returns>
     public static PolygonRegularConvex Create(int count, double circumradius, double arcOffset = 0, double translateX = 0, double translateY = 0)
-      => new(Ellipses.EllipseFigure.CreatePointsOnEllipse(count, circumradius, circumradius, arcOffset, translateX, translateY));
+      => new(Ellipses.EllipseGeometry.CreatePointsOnEllipse(count, circumradius, circumradius, arcOffset, translateX, translateY));
 
     /// <summary>
     /// <para></para>
@@ -47,7 +47,7 @@ namespace Flux.Numerics.Geometry.Polygons
     /// <param name="translateY">The translation Y offset.</param>
     /// <returns></returns>
     public static PolygonRegularConvex CreateEx(int count, double circumradius, double arcOffset = 0, double translateX = 0, double translateY = 0)
-      => new(Ellipses.EllipseFigure.CreatePointsOnEllipseEx(count, circumradius, circumradius, arcOffset, translateX, translateY));
+      => new(Ellipses.EllipseGeometry.CreatePointsOnEllipseEx(count, circumradius, circumradius, arcOffset, translateX, translateY));
 
     #region Conversion methods
 
