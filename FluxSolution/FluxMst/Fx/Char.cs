@@ -16,9 +16,9 @@ namespace SystemFx
     [TestMethod]
     public void IsEnglishConsonant()
     {
-      Assert.AreEqual(false, System.Text.Rune.IsConsonant((System.Text.Rune)'ñ', System.Globalization.CultureInfo.CurrentCulture));
-      Assert.AreEqual(true, System.Text.Rune.IsConsonant((System.Text.Rune)'t', System.Globalization.CultureInfo.CurrentCulture));
-      Assert.AreEqual(false, System.Text.Rune.IsConsonant((System.Text.Rune)'A', System.Globalization.CultureInfo.CurrentCulture));
+      Assert.IsFalse(System.Text.Rune.IsConsonant((System.Text.Rune)'ñ', System.Globalization.CultureInfo.CurrentCulture));
+      Assert.IsTrue(System.Text.Rune.IsConsonant((System.Text.Rune)'t', System.Globalization.CultureInfo.CurrentCulture));
+      Assert.IsFalse(System.Text.Rune.IsConsonant((System.Text.Rune)'A', System.Globalization.CultureInfo.CurrentCulture));
     }
 
     //[TestMethod]
@@ -46,10 +46,10 @@ namespace SystemFx
     [TestMethod]
     public void IsEnglishVowel()
     {
-      Assert.AreEqual(false, System.Text.Rune.IsVowel((System.Text.Rune)'ñ', System.Globalization.CultureInfo.CurrentCulture));
-      Assert.AreEqual(false, !System.Text.Rune.IsBasicLatinLetterY((System.Text.Rune)'y') && System.Text.Rune.IsVowel((System.Text.Rune)'y', System.Globalization.CultureInfo.CurrentCulture));
-      Assert.AreEqual(true, System.Text.Rune.IsVowel((System.Text.Rune)'y', System.Globalization.CultureInfo.CurrentCulture));
-      Assert.AreEqual(true, System.Text.Rune.IsVowel((System.Text.Rune)'A', System.Globalization.CultureInfo.CurrentCulture));
+      Assert.IsFalse(System.Text.Rune.IsVowel((System.Text.Rune)'ñ', System.Globalization.CultureInfo.CurrentCulture));
+      Assert.IsFalse(!System.Text.Rune.IsBasicLatinLetterY((System.Text.Rune)'y') && System.Text.Rune.IsVowel((System.Text.Rune)'y', System.Globalization.CultureInfo.CurrentCulture));
+      Assert.IsTrue(System.Text.Rune.IsVowel((System.Text.Rune)'y', System.Globalization.CultureInfo.CurrentCulture));
+      Assert.IsTrue(System.Text.Rune.IsVowel((System.Text.Rune)'A', System.Globalization.CultureInfo.CurrentCulture));
     }
   }
 }

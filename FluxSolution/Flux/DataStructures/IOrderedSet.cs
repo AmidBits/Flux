@@ -6,7 +6,9 @@ namespace Flux.DataStructures
   /// </summary>
   /// <typeparam name="TValue"></typeparam>
   public interface IOrderedSet<TValue>
-    : System.Collections.Generic.ISet<TValue>
+    : System.Collections.Generic.IReadOnlyCollection<TValue>, System.Collections.Generic.ISet<TValue>
+
+
       where TValue : notnull
   {
     /// <summary>

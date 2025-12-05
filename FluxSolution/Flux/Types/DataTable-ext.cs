@@ -270,7 +270,7 @@ namespace Flux
           array[0] = source.Columns.Cast<System.Data.DataColumn>().Skip(columnStartIndex).Take(columnCount).Select(dc => dc.ColumnName).ToArray();
 
         for (var index = 0; index < rowCount; index++)
-          array[arrayStartIndex + index] = source.Rows[rowStartIndex + index].ItemArray.ToCopy(columnStartIndex, columnCount);
+          array[arrayStartIndex + index] = System.Array.ToCopy(source.Rows[rowStartIndex + index].ItemArray, columnStartIndex, columnCount);
 
         return array;
       }

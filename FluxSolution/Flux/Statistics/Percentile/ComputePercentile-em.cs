@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Em
+  public static partial class PercentileExtensions
   {
     public static TPercent ComputePercentileRank<TCount, TPercent>(this TCount count, TPercent p, Statistics.Percentile.PercentileAlgorithm algorithm)
       where TCount : System.Numerics.IBinaryInteger<TCount>

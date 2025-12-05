@@ -1,8 +1,9 @@
 namespace Flux.CoordinateSystems
 {
   /// <summary>Represents a geographic position, using latitude, longitude and altitude.</summary>
-  /// <seealso cref="http://www.edwilliams.org/avform.htm"/>
-  /// <seealso cref="http://www.movable-type.co.uk/scripts/latlong.html"/>
+  /// <seealso href="http://www.edwilliams.org/avform.htm"/>
+  /// <seealso href="https://www.edwilliams.org/avform147.htm"/>
+  /// <seealso href="http://www.movable-type.co.uk/scripts/latlong.html"/>
   /// <remarks>Abbreviated angles (e.g. lat and lon) are in radians, and full names (e.g. latitude and longitude) are in degrees.</remarks>
   [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
   public readonly record struct GeographicCoordinate
@@ -198,16 +199,40 @@ namespace Flux.CoordinateSystems
     /// </remarks>
     public static double GetCentralAngleVincentyFormula(double lat1, double lon1, double lat2, double lon2)
     {
-      var cosLat1 = double.Cos(lat1);
-      var cosLat2 = double.Cos(lat2);
-      var sinLat1 = double.Sin(lat1);
-      var sinLat2 = double.Sin(lat2);
+      var (sinLat1, cosLat1) = double.SinCos(lat1);
+      var (sinLat2, cosLat2) = double.SinCos(lat2);
 
-      var lonD = lon2 - lon1;
+      var (sinLonD, cosLonD) = double.SinCos(lon2 - lon1);
 
-      var cosLat2LonD = cosLat2 * double.Cos(lonD);
+      var cosLat2LonD = cosLat2 * cosLonD;
 
-      return double.Atan2(double.Sqrt(double.Pow(cosLat2 * double.Sin(lonD), 2) + double.Pow(cosLat1 * sinLat2 - sinLat1 * cosLat2LonD, 2)), sinLat1 * sinLat2 + cosLat1 * cosLat2LonD);
+      return double.Atan2(double.Sqrt(double.Pow(cosLat2 * sinLonD, 2) + double.Pow(cosLat1 * sinLat2 - sinLat1 * cosLat2LonD, 2)), sinLat1 * sinLat2 + cosLat1 * cosLat2LonD);
+    }
+
+    /// <summary>
+    /// <para>The shortest distance between two points on the surface of a sphere, measured along the surface of the sphere (as opposed to a straight line through the sphere's interior). Multiply by unit radius, e.g. 6371 km or 3959 mi.</para>
+    /// <para><see href="https://en.wikipedia.org/wiki/Vincenty%27s_formulae"/></para>
+    /// <para><seealso href="https://en.wikipedia.org/wiki/Central_angle"/></para>
+    /// <para><seealso href="https://en.wikipedia.org/wiki/Great-circle_distance"/></para>
+    /// </summary>
+    /// <param name="lat1">The source latitude in radians.</param>
+    /// <param name="lon1">The source longitude in radians.</param>
+    /// <param name="lat2">The target latitude in radians.</param>
+    /// <param name="lon2">The target longitude in radians.</param>
+    /// <remarks>
+    /// <para>A more complicated formula that is accurate for all distances is the following special case of the Vincenty formula for an ellipsoid with equal major and minor axes.</para>
+    /// <para>Central angles are subtended by an arc between those two points, and the arc length is the central angle of a circle of radius one (measured in radians). The central angle is also known as the arc's angular distance.</para>
+    /// </remarks>
+    public static double GetCentralAngleVincentyFormula(double lat1, double lon1, double lat2, double lon2, out double sinLat1, out double cosLat1, out double sinLat2, out double cosLat2)
+    {
+      (sinLat1, cosLat1) = double.SinCos(lat1);
+      (sinLat2, cosLat2) = double.SinCos(lat2);
+
+      var (sinLonD, cosLonD) = double.SinCos(lon2 - lon1);
+
+      var cosLat2LonD = cosLat2 * cosLonD;
+
+      return double.Atan2(double.Sqrt(double.Pow(cosLat2 * sinLonD, 2) + double.Pow(cosLat1 * sinLat2 - sinLat1 * cosLat2LonD, 2)), sinLat1 * sinLat2 + cosLat1 * cosLat2LonD);
     }
 
     /// <summary>The distance of a point from a great-circle path (sometimes called cross track error). The sign of the result tells which side of the path (lat/lon 1 to lat/lon 3) the second point is on.</summary>
@@ -239,17 +264,19 @@ namespace Flux.CoordinateSystems
     /// <param name="lonOut">The resulting longitude in radians.</param>
     public static void GetDestination(double lat, double lon, double brg, double angularDistance, out double latOut, out double lonOut)
     {
-      var cosLat = double.Cos(lat);
-      var sinLat = double.Sin(lat);
+      var (sinLat, cosLat) = double.SinCos(lat);
 
-      var cosAd = double.Cos(angularDistance);
-      var sinAd = double.Sin(angularDistance);
+      var (sinAd, cosAd) = double.SinCos(angularDistance);
 
-      latOut = double.Asin(sinLat * cosAd + cosLat * sinAd * double.Cos(brg));
-      lonOut = lon + double.Atan2(double.Sin(brg) * sinAd * cosLat, cosAd - sinLat * double.Sin(lat));
+      var (sinBrg, cosBrg) = double.SinCos(brg);
+
+      latOut = double.Asin(sinLat * cosAd + cosLat * sinAd * cosBrg);
+      lonOut = lon + double.Atan2(sinBrg * sinAd * cosLat, cosAd - sinLat * sinLat);
     }
 
-    /// <summary>Computes the distance between the two lat/lon coordinates in whatever the unit is specified for Earths radius.</summary>
+    /// <summary>
+    /// <para>Computes the distance between the two lat/lon coordinates in whatever the unit is specified for Earths radius.</para>
+    /// </summary>
     /// <param name="lat1">The source latitude in radians.</param>
     /// <param name="lon1">The source longitude in radians.</param>
     /// <param name="lat2">The target latitude in radians.</param>
@@ -276,11 +303,13 @@ namespace Flux.CoordinateSystems
     /// <remarks>In general, your current heading will vary as you follow a great circle path (orthodrome); the final heading will differ from the initial heading by varying degrees according to distance and latitude.</remarks>
     public static double GetInitialCourse(double lat1, double lon1, double lat2, double lon2)
     {
-      var cosLat2 = double.Cos(lat2);
-      var lonD = lon2 - lon1;
+      var (sinLat1, cosLat1) = double.SinCos(lat1);
+      var (sinLat2, cosLat2) = double.SinCos(lat2);
 
-      var y = double.Sin(lonD) * cosLat2;
-      var x = double.Cos(lat1) * double.Sin(lat2) - double.Sin(lat1) * cosLat2 * double.Cos(lonD);
+      var (sinLonD, cosLonD) = double.SinCos(lon2 - lon1);
+
+      var y = sinLonD * cosLat2;
+      var x = cosLat1 * sinLat2 - sinLat1 * cosLat2 * cosLonD;
 
       return (double.Atan2(y, x) + double.Tau) % double.Tau; // Atan2 returns values in the range [-π, +π] radians (i.e. -180 - +180 degrees), shift to [0, 2PI] radians (i.e. 0 - 360 degrees).
     }
@@ -295,17 +324,17 @@ namespace Flux.CoordinateSystems
     /// <param name="lonOut">The resulting longitude in radians.</param>
     public static void GetIntermediaryPoint(double lat1, double lon1, double lat2, double lon2, double mu, out double latOut, out double lonOut)
     {
-      var centralAngle = GetCentralAngleVincentyFormula(lat1, lon1, lat2, lon2);
+      var centralAngle = GetCentralAngleVincentyFormula(lat1, lon1, lat2, lon2, out var sinLat1, out var cosLat1, out var sinLat2, out var cosLat2);
 
       var a = double.Sin((1.0 - mu) * centralAngle) / double.Sin(centralAngle);
       var b = double.Sin(mu * centralAngle) / double.Sin(centralAngle);
 
-      var cosLat1 = double.Cos(lat1);
-      var cosLat2 = double.Cos(lat2);
+      var (sinLon1, cosLon1) = double.SinCos(lon1);
+      var (sinLon2, cosLon2) = double.SinCos(lon2);
 
-      var x = a * cosLat1 * double.Cos(lon1) + b * cosLat2 * double.Cos(lon2);
-      var y = a * cosLat1 * double.Sin(lon1) + b * cosLat2 * double.Sin(lon2);
-      var z = a * double.Sin(lat1) + b * double.Sin(lat2);
+      var x = a * cosLat1 * cosLon1 + b * cosLat2 * cosLon2;
+      var y = a * cosLat1 * sinLon1 + b * cosLat2 * sinLon2;
+      var z = a * sinLat1 + b * sinLat2;
 
       latOut = double.Atan2(z, double.Sqrt(x * x + y * y));
       lonOut = double.Atan2(y, x);
@@ -377,36 +406,30 @@ namespace Flux.CoordinateSystems
     {
       var latD = lat2 - lat1;
       var lonD = lon2 - lon1;
-      var sinlonD = double.Sin(lonD);
+      var sinLonD = double.Sin(lonD);
 
-      var cosLat1 = double.Cos(lat1);
-      var cosLat2 = double.Cos(lat2);
-      var sinLat1 = double.Sin(lat1);
-      var sinLat2 = double.Sin(lat2);
+      var (sinLat1, cosLat1) = double.SinCos(lat1);
+      var (sinLat2, cosLat2) = double.SinCos(lat2);
 
       var d12 = 2 * double.Asin(double.Sqrt(double.Pow(double.Sin(latD / 2), 2) + cosLat1 * cosLat2 * double.Pow(double.Sin(lonD / 2), 2)));
-      var cosd12 = double.Cos(d12);
-      var sind12 = double.Sin(d12);
+      var (sind12, cosd12) = double.SinCos(d12);
 
       var φ1 = double.Acos(sinLat2 - sinLat1 * cosd12 / sind12 * cosLat1);
       var φ2 = double.Acos(sinLat1 - sinLat2 * cosd12 / sind12 * cosLat2);
 
-      var bearing12 = sinlonD > 0 ? φ1 : double.Tau - φ1;
-      var bearing21 = sinlonD > 0 ? double.Tau - φ2 : φ2;
+      var bearing12 = sinLonD > 0 ? φ1 : double.Tau - φ1;
+      var bearing21 = sinLonD > 0 ? double.Tau - φ2 : φ2;
 
       var α1 = (brg1 - bearing12 + double.Pi) % double.Tau - double.Pi;
-      var α1cos = double.Cos(α1);
-      var α1sin = double.Sin(α1);
+      var (α1sin, α1cos) = double.SinCos(α1);
 
       var α2 = (bearing21 - brg2 + double.Pi) % double.Tau - double.Pi;
-      var α2cos = double.Cos(α2);
-      var α2sin = double.Sin(α2);
+      var (α2sin, α2cos) = double.SinCos(α2);
 
       var α3 = double.Acos(-α1cos * α2cos + α1sin * α2sin * cosd12);
 
       var d13 = double.Atan2(sind12 * α1sin * α2sin, α2cos + α1cos * double.Cos(α3));
-      var d13cos = double.Cos(d13);
-      var d13sin = double.Sin(d13);
+      var (d13sin, d13cos) = double.SinCos(d13);
 
       latOut = double.Asin(sinLat1 * d13cos + cosLat1 * d13sin * double.Cos(brg1));
 
@@ -430,15 +453,15 @@ namespace Flux.CoordinateSystems
     /// <param name="lonOut">The resulting longitude in radians.</param>
     public static void GetMidpoint(double lat1, double lon1, double lat2, double lon2, out double latOut, out double lonOut)
     {
-      var lonD = lon2 - lon1;
+      var (sinLonD, cosLonD) = double.SinCos(lon2 - lon1);
 
-      var cosLat1 = double.Cos(lat1);
-      var cosLat2 = double.Cos(lat2);
+      var (sinLat1, cosLat1) = double.SinCos(lat1);
+      var (sinLat2, cosLat2) = double.SinCos(lat2);
 
-      var Bx = cosLat2 * double.Cos(lonD);
-      var By = cosLat2 * double.Sin(lonD);
+      var Bx = cosLat2 * cosLonD;
+      var By = cosLat2 * sinLonD;
 
-      latOut = double.Atan2(double.Sin(lat1) + double.Sin(lat2), double.Sqrt(double.Pow(cosLat1 + Bx, 2) + By * By));
+      latOut = double.Atan2(sinLat1 + sinLat2, double.Sqrt(double.Pow(cosLat1 + Bx, 2) + By * By));
       lonOut = lon1 + double.Atan2(By, cosLat1 + Bx);
     }
 

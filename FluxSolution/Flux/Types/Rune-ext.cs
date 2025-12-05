@@ -50,11 +50,15 @@ namespace Flux
 
       #endregion
 
+      #region FoldToAscii
+
       /// <summary>
       /// <para>Folds runes representing characters above ASCII as a reasonable ASCII equivalent. Only characters from certain blocks are converted.</para>
       /// </summary>
       public static string FoldToAscii(System.Text.Rune value)
         => System.Char.FoldToAscii((char)value.Value);
+
+      #endregion
 
       /// <summary>
       /// <para>Indicates whether the character is the letter 'Y' or 'y', i.e. ignore case.</para>
@@ -118,6 +122,52 @@ namespace Flux
       /// <returns></returns>
       public static bool IsVowel(System.Text.Rune source, System.Globalization.CultureInfo? culture = null)
         => char.IsVowel((char)source.Value, culture);
+
+      #region ..Subscript
+
+      /// <summary>
+      /// <para>Indicates whether the specified Unicode character is categorized as a subscript character.</para>
+      /// </summary>
+      /// <param name="c"></param>
+      /// <returns></returns>
+      public static bool IsSubscript(System.Text.Rune rune)
+        => System.Char.IsSubscript((char)rune.Value);
+
+      /// <summary>
+      /// <para>Converts the value of a Unicode character to its subscript equivalent.</para>
+      /// </summary>
+      /// <param name="c"></param>
+      /// <returns></returns>
+      public static System.Text.Rune ToSubscript(System.Text.Rune rune)
+        => System.Char.TryConvertToSubscript((char)rune.Value, out var subscriptCharacter) ? (System.Text.Rune)subscriptCharacter : rune;
+
+      public static bool TryConvertToSubscript(System.Text.Rune rune, out System.Text.Rune subscriptCharacter)
+        => (subscriptCharacter = ToSubscript(rune)) == rune;
+
+      #endregion
+
+      #region ..Superscript
+
+      /// <summary>
+      /// <para>Indicates whether the specified Unicode character is categorized as a superscript character.</para>
+      /// </summary>
+      /// <param name="c"></param>
+      /// <returns></returns>
+      public static bool IsSuperscript(System.Text.Rune rune)
+        => System.Char.IsSuperscript((char)rune.Value);
+
+      /// <summary>
+      /// <para>Converts the value of a Unicode character to its superscript equivalent.</para>
+      /// </summary>
+      /// <param name="c"></param>
+      /// <returns></returns>
+      public static System.Text.Rune ToSuperscript(System.Text.Rune rune)
+        => System.Char.TryConvertToSuperscript((char)rune.Value, out var superscriptCharacter) ? (System.Text.Rune)superscriptCharacter : rune;
+
+      public static bool TryConvertToSuperscript(System.Text.Rune rune, out System.Text.Rune superscriptCharacter)
+        => (superscriptCharacter = ToSuperscript(rune)) == rune;
+
+      #endregion
     }
 
     extension(System.Text.Rune source)

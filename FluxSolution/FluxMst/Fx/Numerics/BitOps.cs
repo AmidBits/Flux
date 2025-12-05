@@ -1,6 +1,5 @@
 ﻿#if NET7_0_OR_GREATER
 using Flux;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Numerics
 {
@@ -12,15 +11,15 @@ namespace Numerics
     [TestMethod]
     public void BitFlagCarryLsb()
     {
-      Assert.AreEqual(true, 0xFFFFFFFFU.BitGetLs1b());
-      Assert.AreEqual(false, 0.BitGetLs1b());
+      Assert.IsTrue(0xFFFFFFFFU.BitGetLs1b());
+      Assert.IsFalse(0.BitGetLs1b());
     }
 
     [TestMethod]
     public void BitFlagCarryMsb()
     {
-      Assert.AreEqual(true, 0xFFFFFFFFU.BitGetMs1b());
-      Assert.AreEqual(false, 0.BitGetMs1b());
+      Assert.IsTrue(0xFFFFFFFFU.BitGetMs1b());
+      Assert.IsFalse(0.BitGetMs1b());
     }
 
     #endregion // BitFlags
@@ -58,7 +57,7 @@ namespace Numerics
     [TestMethod]
     public void BitIndexGet()
     {
-      Assert.AreEqual(true, 0x6U.GetBit(2));
+      Assert.IsTrue(0x6U.GetBit(2));
     }
 
     [TestMethod]
@@ -97,13 +96,13 @@ namespace Numerics
     [TestMethod]
     public void BitMaskCheckAll()
     {
-      Assert.AreEqual(true, 0b111110.BitMaskCheckAll(0b101010));
+      Assert.IsTrue(0b111110.BitMaskCheckAll(0b101010));
     }
 
     [TestMethod]
     public void BitMaskCheckAny()
     {
-      Assert.AreEqual(true, 0b1111.BitMaskCheckAny(0b101010));
+      Assert.IsTrue(0b1111.BitMaskCheckAny(0b101010));
     }
 
     [TestMethod]

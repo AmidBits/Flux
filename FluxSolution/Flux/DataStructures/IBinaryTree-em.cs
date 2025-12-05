@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Em
+  public static partial class DataStructuresExtensions
   {
     /// <summary>
     /// <para>Computes the number of nodes in a <see cref="Flux.DataStructures.IBinaryTree{TValue}"/>.</para>

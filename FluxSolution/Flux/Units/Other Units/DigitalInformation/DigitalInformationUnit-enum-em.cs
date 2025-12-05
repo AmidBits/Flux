@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Em
+  public static partial class UnitsExtensions
   {
     public static System.Numerics.BigInteger GetUnitFactor(this Units.DigitalInformationUnit unit)
       => unit switch

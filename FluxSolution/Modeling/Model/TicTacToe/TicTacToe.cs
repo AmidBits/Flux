@@ -1,5 +1,3 @@
-using System.Linq;
-
 // https://www.geeksforgeeks.org/minimax-algorithm-in-game-theory-set-1-introduction/
 // https://www.geeksforgeeks.org/minimax-algorithm-in-game-theory-set-2-evaluation-function/
 // https://www.geeksforgeeks.org/minimax-algorithm-in-game-theory-set-3-tic-tac-toe-ai-finding-optimal-move/
@@ -197,7 +195,7 @@ namespace Flux.Model.TicTacToe
       => GetRowMajorOrder().GroupBy(s => s).ToDictionary(g => g.Key, g => g.Count());
 
     public override string ToString()
-      => GetRowMajorOrder2D(s => s switch { State.Empty => '-', State.Player1 => 'X', State.Player2 => 'O', _ => '?' }).Rank2ToConsoleString(new ConsoleFormatOptions() { HorizontalSeparator = null, VerticalSeparator = null });
+      => System.Array.Rank2ToConsoleString(GetRowMajorOrder2D(s => s switch { State.Empty => '-', State.Player1 => 'X', State.Player2 => 'O', _ => '?' }), new ConsoleFormatOptions() { HorizontalSeparator = null, VerticalSeparator = null });
 
     // This is the evaluation function as discussed in the previous article ( http://goo.gl/sJgv68 ) 
     //public static int EvaluateBoard(char[,] board, char player, char opponent)

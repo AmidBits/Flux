@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Em
+  public static partial class DataStructuresExtensions
   {
     /// <summary>
     /// <para>Finds the level of the node containing the <paramref name="key"/>.</para>

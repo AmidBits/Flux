@@ -1,8 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using Flux;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace DataStructures
 {
@@ -291,7 +287,7 @@ namespace DataStructures
 
       var (actualDistance, actualPredecessor) = Flux.DataStructures.Graphs.Algorithm.BellmanFordShortestPaths(vertices, edges, 0);
 
-      System.Console.WriteLine(actualDistance.Rank1ToConsoleString());
+      System.Console.WriteLine(System.Array.Rank1ToConsoleString(actualDistance));
 
       var expectedDistance = new double[] { 0, 2, 4, 7, -2 };
       var expectedPredecessor = new int[] { -1, 2, 3, 0, 1 };
@@ -308,7 +304,7 @@ namespace DataStructures
 
       var (actualDistance, actualPrevious) = Flux.DataStructures.Graphs.Algorithm.DijkstraShortestPaths(vertices, edges, 1);
 
-      System.Console.WriteLine(actualDistance.Rank1ToConsoleString());
+      System.Console.WriteLine(System.Array.Rank1ToConsoleString(actualDistance));
 
       var expectedDistance = new double[] { double.PositiveInfinity, 0, 7, 9, 20, 20, 11 };
       var expectedPrevious = new int[] { 0, 0, 1, 1, 3, 6, 3 };

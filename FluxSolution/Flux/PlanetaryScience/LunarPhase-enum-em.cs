@@ -1,6 +1,6 @@
 ﻿namespace Flux
 {
-  public static partial class Em
+  public static partial class PlanetaryScienceExtensions
   {
     public static double GetUnitPhase(this PlanetaryScience.LunarPhase source)
       => source switch

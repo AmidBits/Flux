@@ -6,17 +6,33 @@
 		<UseWPF>true</UseWPF>
 		<UseWindowsForms>true</UseWindowsForms>
 		<EnablePreviewFeatures>True</EnablePreviewFeatures>
+		<SupportedOSPlatformVersion>7.0</SupportedOSPlatformVersion>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.Extensions.Logging" Version="9.0.2" />
-		<PackageReference Include="Microsoft.Win32.Registry" Version="5.0.0" />
-		<PackageReference Include="System.DirectoryServices" Version="9.0.2" />
-		<PackageReference Include="System.Management" Version="9.0.2" />
+		<!--<PackageReference Include="Microsoft.Extensions.Logging" Version="10.0.0" />-->
+		<!--<PackageReference Include="Microsoft.Win32.Registry" Version="5.0.0" />-->
+		<!--<PackageReference Include="System.DirectoryServices" Version="10.0.0" />-->
+		<!--<PackageReference Include="System.Management" Version="10.0.0" />-->
 	</ItemGroup>
 
 	<ItemGroup>
 	  <ProjectReference Include="..\Modeling\Modeling.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Compile Update="Properties\Settings.Designer.cs">
+	    <DesignTimeSharedInput>True</DesignTimeSharedInput>
+	    <AutoGen>True</AutoGen>
+	    <DependentUpon>Settings.settings</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Update="Properties\Settings.settings">
+	    <Generator>SettingsSingleFileGenerator</Generator>
+	    <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+	  </None>
 	</ItemGroup>
 
 </Project>

@@ -1,6 +1,6 @@
 ﻿namespace Flux
 {
-  public static partial class Em
+  public static partial class UnitsExtensions
   {
     public static System.Globalization.NumberFormatInfo GetSiNumberFormatInfo<TValue>(this Units.IValueQuantifiable<TValue> source, UnicodeSpacing numberGroupSeparator = UnicodeSpacing.ThinSpace)
       where TValue : struct, System.Numerics.INumber<TValue>

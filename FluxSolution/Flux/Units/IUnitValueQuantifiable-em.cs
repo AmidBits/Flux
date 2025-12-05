@@ -2,7 +2,7 @@
 
 namespace Flux
 {
-  public static partial class Em
+  public static partial class UnitsExtensions
   {
     //public static T GetDefaultValue<T>()
     //  where T : struct, System.Enum

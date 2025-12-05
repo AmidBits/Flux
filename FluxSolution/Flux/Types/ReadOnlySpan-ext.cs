@@ -1206,6 +1206,8 @@
 
       #region LevenshteinDistance
 
+#if RESEARCH
+
       /// <summary>
       /// <para>The Levenshtein distance between two sequences is the minimum number of single-element edits(insertions, deletions or substitutions) required to change one sequence into the other.</para>
       /// <see href="https://en.wikipedia.org/wiki/Levenshtein_distance" />
@@ -1225,10 +1227,8 @@
 
         var dp = new int[sn + 1, tn + 1];
 
-        for (var i = 1; i <= sn; i++)
-          dp[i, 0] = i;
-        for (var j = 1; j <= tn; j++)
-          dp[0, j] = j;
+        for (var i = 1; i <= sn; i++) dp[i, 0] = i;
+        for (var j = 1; j <= tn; j++) dp[0, j] = j;
 
         for (var i = 1; i <= sn; i++)
           for (var j = 1; j <= tn; j++)
@@ -1243,29 +1243,7 @@
         return dp;
       }
 
-      ///// <summary>The grid method is using a traditional implementation in order to generate the Wagner-Fisher table.</summary>
-      //public double[,] GetFullMatrix(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, double costOfDeletion, double costOfInsertion, double costOfSubstitution)
-      //{
-      //  var sourceLength = source.Length;
-      //  var targetLength = target.Length;
-
-      //  var ldg = new double[sourceLength + 1, targetLength + 1];
-
-      //  for (var si = 1; si <= sourceLength; si++)
-      //    ldg[si, 0] = si * costOfInsertion;
-      //  for (var ti = 1; ti <= targetLength; ti++)
-      //    ldg[0, ti] = ti * costOfInsertion;
-
-      //  for (var si = 1; si <= sourceLength; si++)
-      //    for (var ti = 1; ti <= targetLength; ti++)
-      //      ldg[si, ti] = Maths.Min(
-      //        ldg[si - 1, ti] + costOfDeletion,
-      //        ldg[si, ti - 1] + costOfInsertion,
-      //        EqualityComparer.Equals(source[si - 1], target[ti - 1]) ? ldg[si - 1, ti - 1] : ldg[si - 1, ti - 1] + costOfSubstitution
-      //      );
-
-      //  return ldg;
-      //}
+#endif
 
       /// <summary>
       /// <para>The Levenshtein distance between two sequences is the minimum number of single-element edits(insertions, deletions or substitutions) required to change one sequence into the other.</para>
@@ -1278,7 +1256,7 @@
       /// <para>Implemented based on the Wiki article.</para>
       /// <para>This Levenshtein algorithm does not rely on a complete matrix. It only needs two alternating horizontal rows throughout the process.</para>
       /// </remarks>
-      public int LevenshteinDistanceMetric(System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
+      public int LevenshteinDistance(System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
       {
         equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
 
@@ -1399,11 +1377,13 @@
       /// <para>This Levenshtein algorithm does not rely on a complete matrix. It only needs two alternating horizontal rows throughout the process.</para>
       /// </remarks>
       public double LevenshteinDistanceSmd(System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
-        => (double)LevenshteinDistanceMetric(source, target, equalityComparer) / (double)int.Max(source.Length, target.Length);
+        => (double)LevenshteinDistance(source, target, equalityComparer) / (double)int.Max(source.Length, target.Length);
 
       #endregion
 
       #region LevenshteinDistanceCustom
+
+#if RESEARCH
 
       /// <summary>
       /// <para>The Levenshtein distance between two sequences is the minimum number of single-element edits(insertions, deletions or substitutions) required to change one sequence into the other.</para>
@@ -1446,6 +1426,8 @@
         return dp;
       }
 
+#endif
+
       /// <summary>
       /// <para>The Levenshtein distance between two sequences is the minimum number of single-element edits(insertions, deletions or substitutions) required to change one sequence into the other.</para>
       /// <para>This implementation allows use of custom values for deletion, insertion and substitution.</para>
@@ -1461,7 +1443,7 @@
       /// <param name="costOfSubstitution"></param>
       /// <param name="equalityComparer">If null, then <see cref="System.Collections.Generic.EqualityComparer{T}.Default"/> is used.</param>
       /// <returns></returns>
-      public double LevenshteinDistanceCustomMetric(System.ReadOnlySpan<T> target, double costOfDeletion = 1, double costOfInsertion = 1, double costOfSubstitution = 1, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
+      public double LevenshteinDistanceCustom(System.ReadOnlySpan<T> target, double costOfDeletion = 1, double costOfInsertion = 1, double costOfSubstitution = 1, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
       {
         equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
 
@@ -1514,7 +1496,7 @@
       /// </remarks>
       /// <param name="comparer">If null, then <see cref="System.Collections.Generic.Comparer{T}.Default"/> is used.</param>
       /// <returns>The matrix of the longest alternating subsequence that was found, using dynamic programming.</returns>
-      public int LongestAlternatingSubsequenceLength(out int[,] matrix, System.Collections.Generic.IComparer<T>? comparer = null)
+      public T[] LongestAlternatingSubsequence(out int[,] matrix, System.Collections.Generic.IComparer<T>? comparer = null)
       {
         comparer ??= System.Collections.Generic.Comparer<T>.Default;
 
@@ -1526,7 +1508,7 @@
           matrix[i, 1] = 1; // Length of the longest alternating subsequence ending at index i and last element is smaller than its previous element.
         }
 
-        var length = 0;
+        var maxLength = 0;
 
         for (var i = 1; i < source.Length; i++)
         {
@@ -1541,30 +1523,12 @@
               matrix[i, 1] = mj0p1;
           }
 
-          length = int.Max(length, int.Max(matrix[i, 0], matrix[i, 1]));
+          maxLength = int.Max(maxLength, int.Max(matrix[i, 0], matrix[i, 1]));
         }
 
-        return length;
-      }
-
-      /// <summary>
-      /// <para>The longest alternating subsequence problem, one wants to find a subsequence of a given <paramref name="source"/> in which the elements are in alternating order, and in which the sequence is as long as possible. Uses the specified <paramref name="comparer"/>, default if null.</para>
-      /// <see href="https://en.wikipedia.org/wiki/Longest_alternating_subsequence"/>
-      /// </summary>
-      /// <remarks>
-      /// <para>Implemented based on the Wiki article.</para>
-      /// <para>This Levenshtein algorithm does not rely on a complete matrix. It only needs two alternating horizontal rows throughout the process.</para>
-      /// </remarks>
-      /// <param name="matrix">The matrix of the longest alternating subsequence that was found, using dynamic programming.</param>
-      /// <param name="comparer">If null, then <see cref="System.Collections.Generic.Comparer{T}.Default"/> is used.</param>
-      /// <returns>The longest alternating subsequence that was found.</returns>
-      public T[] LongestAlternatingSubsequenceValues(out int[,] matrix, System.Collections.Generic.IComparer<T>? comparer = null)
-      {
-        var length = LongestAlternatingSubsequenceLength(source, out matrix, comparer);
-
-        if (length > 0)
+        if (maxLength > 0)
         {
-          var lasv = new T[length];
+          var subsequence = new T[maxLength];
 
           for (int i = 0, mark = 0; i < source.Length; i++)
           {
@@ -1572,16 +1536,16 @@
 
             if (max > mark)
             {
-              lasv[mark] = source[i];
+              subsequence[mark] = source[i];
 
               mark++;
             }
           }
 
-          return lasv;
+          return subsequence;
         }
 
-        return System.Array.Empty<T>();
+        return [];
       }
 
       #endregion
@@ -1602,7 +1566,7 @@
       /// <param name="target"></param>
       /// <param name="equalityComparer">If null, then <see cref="System.Collections.Generic.EqualityComparer{T}.Default"/> is used.</param>
       /// <returns>The number of sequential characters, not necessarily consecutive, from source that occurs in target.</returns>
-      public int LongestCommonSubsequenceCount(System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
+      public int LongestCommonSubsequenceLength(System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
       {
         equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
 
@@ -1621,6 +1585,8 @@
 
         return v0[0] + equalAtStart + equalAtEnd;
       }
+
+#if RESEARCH
 
       /// <summary>
       /// <para>Finding the longest common subsequence (LCS) of two sequences. It differs from problems of finding common substrings: unlike substrings, subsequences are not required to occupy consecutive positions within the original sequences.</para>
@@ -1653,6 +1619,8 @@
         return dp;
       }
 
+#endif
+
       /// <summary>
       /// <para>Compute the longest common subsequence (LCS) edit distance when only insertion and deletion is allowed (not substitution), or when the cost of the substitution is double of the cost of an insertion or deletion.</para>
       /// <para><see href="https://en.wikipedia.org/wiki/Longest_common_subsequence_problem"/></para>
@@ -1665,8 +1633,8 @@
       /// <param name="target"></param>
       /// <param name="equalityComparer">If null, then <see cref="System.Collections.Generic.EqualityComparer{T}.Default"/> is used.</param>
       /// <returns></returns>
-      public int LongestCommonSubsequenceMetric(System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
-        => (source.Length + target.Length) - 2 * LongestCommonSubsequenceCount(source, target, equalityComparer);
+      public int LongestCommonSubsequenceDistance(System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
+        => (source.Length + target.Length) - 2 * LongestCommonSubsequenceLength(source, target, equalityComparer);
 
       /// <summary>
       /// <para>Finding the longest common subsequence (LCS) of two sequences. It differs from problems of finding common substrings: unlike substrings, subsequences are not required to occupy consecutive positions within the original sequences.</para>
@@ -1700,7 +1668,9 @@
       /// <param name="equalityComparer">If null, then <see cref="System.Collections.Generic.EqualityComparer{T}.Default"/> is used.</param>
       /// <returns>The number of sequential characters, not necessarily consecutive, from source that occurs in target.</returns>
       public double LongestCommonSubsequenceSmd(System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
-        => (double)LongestCommonSubsequenceMetric(source, target, equalityComparer) / (double)int.Max(source.Length, target.Length);
+        => (double)LongestCommonSubsequenceDistance(source, target, equalityComparer) / (double)int.Max(source.Length, target.Length);
+
+#if RESEARCH
 
       /// <summary>
       /// <para>Finding the longest common subsequence (LCS) of two sequences. It differs from problems of finding common substrings: unlike substrings, subsequences are not required to occupy consecutive positions within the original sequences.</para>
@@ -1746,6 +1716,8 @@
         return lcsv;
       }
 
+#endif
+
       #endregion
 
       #region LongestCommonSubstring
@@ -1788,6 +1760,8 @@
 
         return maxLength;
       }
+
+#if RESEARCH
 
       /// <summary>
       /// <para>Finding the longest consecutive sequence of elements common to two or more sequences.</para>
@@ -1846,17 +1820,19 @@
       /// <param name="matrix"></param>
       /// <param name="equalityComparer">If null, then <see cref="System.Collections.Generic.EqualityComparer{T}.Default"/> is used.</param>
       /// <returns></returns>
-      public T[] LongestCommonSubstringValues(System.ReadOnlySpan<T> target, out int[,] matrix, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
+      public System.Collections.Generic.List<T> LongestCommonSubstringValues(System.ReadOnlySpan<T> target, out int[,] matrix, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
       {
         matrix = LongestCommonSubstringMatrix(source, target, out var length, out var sourceIndex, out var targetIndex, equalityComparer);
 
         if (length > 0)
         {
-          var lcsv = new T[length];
+          var lcsv = new System.Collections.Generic.List<T>();
+          //var lcsv = new T[length];
 
           while (matrix[sourceIndex, targetIndex] != 0)
           {
-            lcsv.InsertToCopy(0, [source[sourceIndex - 1]]); // Can also use target[targetIndex - 1].
+            lcsv.Insert(0, source[sourceIndex - 1]);
+            //System.Array.InsertToCopy(lcsv, 0, 1, [source[sourceIndex - 1]]); // Can also use target[targetIndex - 1].
 
             sourceIndex--;
             targetIndex--;
@@ -1867,6 +1843,8 @@
 
         return [];
       }
+
+#endif
 
       #endregion
 
@@ -1879,7 +1857,7 @@
       /// <param name="dp"></param>
       /// <param name="comparer">If null, then <see cref="System.Collections.Generic.Comparer{T}.Default"/> is used.</param>
       /// <returns></returns>
-      public int LongestIncreasingSubsequenceCount(out int[,] dp, System.Collections.Generic.IComparer<T>? comparer = null)
+      public T[] LongestIncreasingSubsequence(out int[,] dp, System.Collections.Generic.IComparer<T>? comparer = null)
       {
         comparer ??= System.Collections.Generic.Comparer<T>.Default;
 
@@ -1913,28 +1891,14 @@
             length = newL; // If we found a subsequence longer than any we've found yet, update length.
         }
 
-        return length;
-      }
-
-      /// <summary>
-      /// <para>The longest increasing subsequence is to find a subsequence of a given sequence where the elements of the subsequence are in sorted order, lowest to highest, and in which the subsequence is as long as possible. Uses the specified comparer.</para>
-      /// <see href="https://en.wikipedia.org/wiki/Longest_increasing_subsequence"/>
-      /// </summary>
-      /// <param name="matrix"></param>
-      /// <param name="comparer">If null, then <see cref="System.Collections.Generic.Comparer{T}.Default"/> is used.</param>
-      /// <returns></returns>
-      public T[] LongestIncreasingSubsequenceValues(out int[,] matrix, System.Collections.Generic.IComparer<T>? comparer = null)
-      {
-        var length = LongestIncreasingSubsequenceCount(source, out matrix, comparer);
-
         if (length > 0)
         {
-          var lisv = new T[length];
+          var subsequence = new T[length];
 
-          for (int i = length - 1, k = matrix[0, length]; i >= 0; i--, k = matrix[1, k])
-            lisv[i] = source[k];
+          for (int i = length - 1, k = dp[0, length]; i >= 0; i--, k = dp[1, k])
+            subsequence[i] = source[k];
 
-          return lisv;
+          return subsequence;
         }
 
         return [];
@@ -2001,6 +1965,8 @@
 
       #region OptimalStringAlignment
 
+#if RESEARCH
+
       /// <summary>
       /// <para>Computes the optimal sequence alignment (OSA) using the specified comparer. OSA is basically an edit distance algorithm somewhere between Levenshtein and Damerau-Levenshtein, and is also referred to as 'restricted edit distance'.</para>
       /// <para>The grid method is using a traditional implementation in order to generate the Wagner-Fisher table.</para>
@@ -2049,6 +2015,8 @@
         return dp;
       }
 
+#endif
+
       /// <summary>
       /// <para>Computes the optimal sequence alignment (OSA) using the specified comparer. OSA is basically an edit distance algorithm somewhere between Levenshtein and Damerau-Levenshtein, and is also referred to as 'restricted edit distance'.</para>
       /// <para>The grid method is using a traditional implementation in order to generate the Wagner-Fisher table.</para>
@@ -2062,7 +2030,7 @@
       /// <param name="target"></param>
       /// <param name="equalityComparer">If null, then <see cref="System.Collections.Generic.EqualityComparer{T}.Default"/> is used.</param>
       /// <returns></returns>
-      public int OptimalStringAlignmentMetric(System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
+      public int OptimalStringAlignment(System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
       {
         equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
 
@@ -2139,11 +2107,13 @@
       /// <param name="equalityComparer">If null, then <see cref="System.Collections.Generic.EqualityComparer{T}.Default"/> is used.</param>
       /// <returns></returns>
       public double OptimalStringAlignmentSmd(System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
-        => (double)OptimalStringAlignmentMetric(source, target, equalityComparer) / (double)int.Max(source.Length, target.Length);
+        => (double)OptimalStringAlignment(source, target, equalityComparer) / (double)int.Max(source.Length, target.Length);
 
       #endregion
 
       #region OptimalStringAlignmentCustom
+
+#if RESEARCH
 
       /// <summary>
       /// <para>Computes the optimal sequence alignment (OSA) using the specified comparer. OSA is basically an edit distance algorithm somewhere between Levenshtein and Damerau-Levenshtein, and is also referred to as 'restricted edit distance'.</para>
@@ -2197,6 +2167,8 @@
         return dp;
       }
 
+#endif
+
       /// <summary>
       /// <para>Computes the optimal sequence alignment (OSA) using the specified comparer. OSA is basically an edit distance algorithm somewhere between Levenshtein and Damerau-Levenshtein, and is also referred to as 'restricted edit distance'.</para>
       /// <para><seealso href="https://en.wikipedia.org/wiki/Damerau%E2%80%93Levenshtein_distance"/></para>
@@ -2213,7 +2185,7 @@
       /// <param name="costOfTransposition"></param>
       /// <param name="equalityComparer">If null, then <see cref="System.Collections.Generic.EqualityComparer{T}.Default"/> is used.</param>
       /// <returns></returns>
-      public double OptimalStringAlignmentCustomMetric(System.ReadOnlySpan<T> target, double costOfDeletion = 1, double costOfInsertion = 1, double costOfSubstitution = 1, double costOfTransposition = 1, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
+      public double OptimalStringAlignmentCustom(System.ReadOnlySpan<T> target, double costOfDeletion = 1, double costOfInsertion = 1, double costOfSubstitution = 1, double costOfTransposition = 1, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
       {
         equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
 
@@ -2338,30 +2310,37 @@
 
       #endregion
 
-      //static System.Range ShortestRepeatingSubstring(System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
-      //{
-      //  if (string.IsNullOrEmpty(input))
-      //    return null;
+      public System.Range ShortestRepeatingSubstring(System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
+      {
+        equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
 
-      //  int len = input.Length;
+        if (source.Length == 0)
+          return System.Range.FromOffsetAndLength(0, 0);
 
-      //  // Try all possible substring lengths from 1 to len/2
-      //  for (int subLen = 1; subLen <= len / 2; subLen++)
-      //  {
-      //    // Only consider lengths that divide the full string length evenly
-      //    if (len % subLen != 0)
-      //      continue;
+        for (var subLength = 1; subLength <= source.Length; subLength++)
+        {
+          if (source.Length % subLength != 0) // Pattern must evenly divide sequence length.
+            continue;
 
-      //    string pattern = input.Substring(0, subLen);
-      //    string built = string.Concat(System.Linq.Enumerable.Repeat(pattern, len / subLen));
+          var isString = true;
+          var subRange = System.Range.FromOffsetAndLength(0, subLength); // Candidate target.
 
-      //    if (built == input)
-      //      return pattern;
-      //  }
+          var subString = source[subRange];
 
-      //  // No repeating pattern found; return the string itself
-      //  return input;
-      //}
+          for (var i = 0; i < source.Length; i++) // Check if repeating candidate forms the sequence.
+            if (!equalityComparer.Equals(source[i], subString[i % subLength]))
+            {
+              isString = false;
+
+              break;
+            }
+
+          if (isString)
+            return subRange; // Found shortest repeating pattern
+        }
+
+        return System.Range.FromOffsetAndLength(0, source.Length); // If no repetition, the whole sequence is the pattern.
+      }
 
       #region Set operations
 
@@ -2538,44 +2517,20 @@
       /// <param name="matrix"></param>
       /// <param name="equalityComparer">If null, then <see cref="System.Collections.Generic.EqualityComparer{T}.Default"/> is used.</param>
       /// <returns></returns>
-      public int ShortestCommonSupersequenceCount(System.ReadOnlySpan<T> target, out int[,] matrix, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
+      public System.Collections.Generic.List<T> ShortestCommonSupersequence(System.ReadOnlySpan<T> target, out int[,] matrix, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
       {
         equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
 
-        var sourceLength = source.Length;
-        var targetLength = target.Length;
+        matrix = new int[source.Length + 1, target.Length + 1];
 
-        matrix = new int[sourceLength + 1, targetLength + 1];
-
-        for (int si = sourceLength - 1; si >= 0; si--)
+        for (int si = source.Length - 1; si >= 0; si--)
           matrix[si, 0] = si;
-        for (int ti = targetLength - 1; ti >= 0; ti--)
+        for (int ti = target.Length - 1; ti >= 0; ti--)
           matrix[0, ti] = ti;
 
-        for (var si = 0; si < sourceLength; si++)
-          for (var ti = 0; ti < targetLength; ti++)
+        for (var si = 0; si < source.Length; si++)
+          for (var ti = 0; ti < target.Length; ti++)
             matrix[si + 1, ti + 1] = equalityComparer.Equals(source[si], target[ti]) ? matrix[si, ti] + 1 : int.Min(matrix[si, ti + 1], matrix[si + 1, ti]) + 1;
-
-        var length = matrix[source.Length, target.Length];
-
-        return length;
-      }
-
-      /// <summary>
-      /// <para>Finding the shortest common supersequence (SCS) of two sequences.</para>
-      /// <para><see href="https://en.wikipedia.org/wiki/Shortest_common_supersequence_problem"/></para>
-      /// <para><seealso cref="http://rosettacode.org/wiki/Shortest_common_supersequence#C"/></para>
-      /// <para><see href="https://www.techiedelight.com/shortest-common-supersequence-finding-scs/"/></para>
-      /// </summary>
-      /// <param name="target"></param>
-      /// <param name="matrix"></param>
-      /// <param name="equalityComparer">If null, then <see cref="System.Collections.Generic.EqualityComparer{T}.Default"/> is used.</param>
-      /// <returns></returns>
-      public System.Collections.Generic.List<T> ShortestCommonSupersequenceValues(System.ReadOnlySpan<T> target, out int[,] matrix, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
-      {
-        equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
-
-        ShortestCommonSupersequenceCount(source, target, out matrix, equalityComparer);
 
         return GetSupersequence(matrix, source, target, source.Length, target.Length, equalityComparer);
       }
@@ -2631,7 +2586,7 @@
           if (trimWhiteSpace)
             s = s.Trim();
 
-          if (!alwaysEncloseInDoubleQuotes || s.Contains(delimiter) || s.Contains(System.Environment.NewLine))
+          if (!alwaysEncloseInDoubleQuotes || s.Contains(delimiter) || s.Contains(System.Environment.NewLine) || s.Contains('\n'))
             s = $"\"{s.Replace("\"", "\"\"")}\"";
 
           sb.Append(s);
@@ -2676,9 +2631,9 @@
       /// <para>Creates an URGF (Unicode tabular data) string from the <paramref name="source"/> data.</para>
       /// </summary>
       /// <returns></returns>
-      public string ToUrgfString()
+      public string ToUrgfString(System.Text.StringBuilder? sb = null)
       {
-        var sb = new System.Text.StringBuilder();
+        sb ??= new System.Text.StringBuilder();
 
         for (var index = 0; index < source.Length; index++)
         {
@@ -2891,7 +2846,7 @@
       /// <param name="matrix"></param>
       /// <param name="equalityComparer">If null, then <see cref="System.Collections.Generic.EqualityComparer{T}.Default"/> is used.</param>
       /// <returns></returns>
-      public int DamerauLevenshteinDistanceMetric(System.ReadOnlySpan<T> target, out int[,] matrix, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
+      public int DamerauLevenshteinDistance(System.ReadOnlySpan<T> target, out int[,] matrix, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
       {
         equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
 
@@ -2921,9 +2876,10 @@
       {
         equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
 
-        var ldg = new int[source.Length + 2, target.Length + 2];
+        var dp = new int[source.Length + 2, target.Length + 2];
 
         var dr = new System.Collections.Generic.Dictionary<T, int>(equalityComparer); // Dictionary of items from both lists.
+
         for (var si = source.Length - 1; si >= 0; si--)
           if (!dr.ContainsKey(source[si]))
             dr[source[si]] = 0;
@@ -2933,17 +2889,17 @@
 
         var maxDistance = source.Length + target.Length;
 
-        ldg[0, 0] = maxDistance;
+        dp[0, 0] = maxDistance;
 
         for (var si = source.Length + 1; si >= 1; si--)
         {
-          ldg[si, 1] = si - 1;
-          ldg[si, 0] = maxDistance;
+          dp[si, 1] = si - 1;
+          dp[si, 0] = maxDistance;
         }
         for (var ti = target.Length + 1; ti >= 1; ti--)
         {
-          ldg[1, ti] = ti - 1;
-          ldg[0, ti] = maxDistance;
+          dp[1, ti] = ti - 1;
+          dp[0, ti] = maxDistance;
         }
 
         for (var si = 1; si <= source.Length; si++)
@@ -2960,14 +2916,14 @@
 
             var isEqual = equalityComparer.Equals(sourceItem, targetItem);
 
-            ldg[si + 1, ti + 1] = int.Min(
+            dp[si + 1, ti + 1] = int.Min(
               int.Min(
-                ldg[si, ti + 1] + 1, // Deletion.
-                ldg[si + 1, ti] + 1 // Insertion
+                dp[si, ti + 1] + 1, // Deletion.
+                dp[si + 1, ti] + 1 // Insertion
               ),
               int.Min(
-                isEqual ? ldg[si, ti] : ldg[si, ti] + 1, // Substitution.
-                ldg[lsi, ltim] + (si - lsi - 1) + 1 + (ti - ltim - 1) // Transposition.
+                isEqual ? dp[si, ti] : dp[si, ti] + 1, // Substitution.
+                dp[lsi, ltim] + (si - lsi - 1) + 1 + (ti - ltim - 1) // Transposition.
               )
             );
 
@@ -2978,7 +2934,7 @@
           dr[sourceItem] = si;
         }
 
-        return ldg;
+        return dp;
       }
 
       /// <summary>
@@ -3005,7 +2961,7 @@
       /// <param name="equalityComparer">If null, then <see cref="System.Collections.Generic.EqualityComparer{T}.Default"/> is used.</param>
       /// <returns></returns>
       public double DamerauLevenshteinDistanceSmd(System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
-        => (double)DamerauLevenshteinDistanceMetric(source, target, out var _, equalityComparer) / (double)int.Max(source.Length, target.Length);
+        => (double)DamerauLevenshteinDistance(source, target, out var _, equalityComparer) / (double)int.Max(source.Length, target.Length);
 
       #endregion
 
@@ -3025,7 +2981,7 @@
       /// <param name="costOfTransposition"></param>
       /// <param name="equalityComparer">If null, then <see cref="System.Collections.Generic.EqualityComparer{T}.Default"/> is used.</param>
       /// <returns></returns>
-      public double DamerauLevenshteinDistanceCustomMetric(System.ReadOnlySpan<T> target, double costOfDeletion = 1, double costOfInsertion = 1, double costOfSubstitution = 1, double costOfTransposition = 1, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
+      public double DamerauLevenshteinDistanceCustom(System.ReadOnlySpan<T> target, double costOfDeletion = 1, double costOfInsertion = 1, double costOfSubstitution = 1, double costOfTransposition = 1, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
       {
         equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
 
@@ -3127,7 +3083,7 @@
       /// </summary>
       /// <param name="vocabulary"></param>
       /// <returns>A 2-tuple with (index, count) of elements in the shortest balancing substring, or (-1, 0) if not found.</returns>
-      public (int Index, int Count) ShortestBalancingSubstringSearch(System.ReadOnlySpan<T> vocabulary)
+      public System.Range ShortestBalancingSubstring(System.ReadOnlySpan<T> vocabulary)
       {
         var frequencies = new System.Collections.Generic.Dictionary<T, int>();
 
@@ -3140,7 +3096,7 @@
         var balancedCount = source.Length / 4; // This is the target count for each item in the vocabulary.
 
         if (!frequencies.Where(p => p.Value != balancedCount).Any())
-          return (-1, 0);
+          return System.Range.FromOffsetAndLength(0, 0);
 
         var minLength = frequencies.Where(p => p.Value > balancedCount).Sum(p => p.Value - balancedCount);
 
@@ -3155,7 +3111,7 @@
           if (surplusCharacter.Contains(source[left]))
           {
             if (minLength == 1)
-              return (0, 1);
+              return System.Range.FromOffsetAndLength(0, 1);
 
             for (var right = left + minLength - 1; right < source.Length; right++)
               if (surplusCharacter.Contains(source[right]))
@@ -3184,7 +3140,7 @@
               }
           }
 
-        return (index, count);
+        return System.Range.FromOffsetAndLength(index, count);
       }
 
       #endregion
@@ -3577,6 +3533,21 @@
       }
 
       #endregion
+    }
+
+    /// <summary>
+    /// <para>Returns a column name of the <paramref name="index"/>ed column from the array as if it were an array of column names, substituting if not enough column names are specified.</para>
+    /// </summary>
+    /// <param name="source"></param>
+    /// <param name="index"></param>
+    /// <returns></returns>
+    public static string EnsureColumnName(this System.ReadOnlySpan<string> source, int index)
+    {
+      System.ArgumentOutOfRangeException.ThrowIfNegative(index);
+
+      return index < source.Length && source[index] is var value && !string.IsNullOrWhiteSpace(value)
+        ? source[index]
+        : index.ToSingleOrdinalColumnName();
     }
 
     #region BalancedConstructs helpers

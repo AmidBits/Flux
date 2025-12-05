@@ -1,8 +1,8 @@
-namespace Flux.Model
+namespace Flux.Model.Sudoku
 {
-  /// <summary></summary>
+  /// <summary>Hardest puzzles.</summary>
   /// <see cref="http://www.norvig.com/sudoku.html"/>
-  public static partial class Sudoku
+  public static partial class Utilities
   {
     public static readonly string[] Puzzles11 = new string[]
     {

@@ -101,20 +101,20 @@ namespace Units
     [TestMethod]
     public void IsIntegerPowOf()
     {
-      Assert.AreEqual(false, 511.IsIntegerPowOf(2));
-      Assert.AreEqual(true, 512.IsIntegerPowOf(2));
+      Assert.IsFalse(511.IsIntegerPowOf(2));
+      Assert.IsTrue(512.IsIntegerPowOf(2));
     }
 
     [TestMethod]
     public void IsJumbled()
     {
-      Assert.AreEqual(false, Flux.Units.Radix.IsJumbled(512, 10));
+      Assert.IsFalse(Flux.Units.Radix.IsJumbled(512, 10));
     }
 
     [TestMethod]
     public void IsSingleDigit()
     {
-      Assert.AreEqual(false, Flux.Units.Radix.IsSingleDigit(512, 10));
+      Assert.IsFalse(Flux.Units.Radix.IsSingleDigit(512, 10));
     }
 
     //[TestMethod]

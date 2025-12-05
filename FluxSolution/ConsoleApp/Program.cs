@@ -3,9 +3,7 @@ using System.Buffers;
 using System.Data;
 using System.Linq;
 using System.Text.RegularExpressions;
-using System.Xml.Schema;
 using Flux;
-using Flux.Units;
 // C# Interactive commands:
 // #r "System.Runtime"
 // #r "System.Runtime.Numerics"
@@ -337,10 +335,21 @@ namespace ConsoleApp
 
 
 
+      var sbx = new Flux.SpanBuilder<char>();
+      sbx.Append("This is the 1 time it happened.");
+      sbx.MakeNumbersFixedLength(6, 0, sbx.Length);
+      sbx.InsertOrdinalIndicatorSuffix((s1, s2) => true);
+      sbx.NormalizeConsecutive(1, char.IsDigit);
 
+      var totf = Flux.Resources.GetScowlTwoOfTwelveFull().Select(a => a[5]).ToArray();
 
-      var ipa = System.Globalization.CultureInfo.GetCultureInfo("sv").ReadIpaFile();
+      var ipa = System.Globalization.CultureInfo.GetCultureInfo("en-gb").ReadIpaFile();
       var ipalength = ipa.Length;
+
+      var words = ipa.Split('\r', '\n').Select(s => s.Split('\t')[0]);
+
+      var cdws = words.AsParallel().Select(w => (w, d: Flux.ReadOnlySpanExtensions.JaroWinklerDistance<char>("untill", w))).Where(t => t.d < 0.15).OrderBy(t => t.d).ToArray();
+
 
       //var match = System.Text.RegularExpressions.Regex.Match(ipa, @"\t.*\n");
 

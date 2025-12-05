@@ -88,7 +88,7 @@ namespace Maths
     [TestMethod]
     public void IsCoprime()
     {
-      Assert.AreEqual(true, 23.IsCoprime(43));
+      Assert.IsTrue(23.IsCoprime(43));
     }
 
     [TestMethod]
@@ -107,8 +107,8 @@ namespace Maths
     [TestMethod]
     public void IsPow()
     {
-      Assert.AreEqual(true, 100.IsIntegerPowOf(10));
-      Assert.AreEqual(false, 101.IsIntegerPowOf(10));
+      Assert.IsTrue(100.IsIntegerPowOf(10));
+      Assert.IsFalse(101.IsIntegerPowOf(10));
     }
 
     [TestMethod]

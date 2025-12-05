@@ -2,7 +2,7 @@
 {
   #region ExtensionMethods
 
-  public static partial class Em
+  public static partial class DataStructuresExtensions
   {
     public static Flux.DataStructures.IStack<T> Reverse<T>(this Flux.DataStructures.IStack<T> source)
     {

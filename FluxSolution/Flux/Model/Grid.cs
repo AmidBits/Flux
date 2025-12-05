@@ -109,7 +109,7 @@
     }
 
     public string ToConsoleBlock(System.Func<TValue, object> resultSelector)
-      => System.Environment.NewLine + ToTwoDimensionalArray(resultSelector).Rank2ToConsoleString(ConsoleFormatOptions.Default with { HorizontalSeparator = null, VerticalSeparator = null, UniformWidth = true, CenterContent = true }).ToString();
+      => System.Environment.NewLine + System.Array.Rank2ToConsoleString(ToTwoDimensionalArray(resultSelector), ConsoleFormatOptions.Default with { HorizontalSeparator = null, VerticalSeparator = null, UniformWidth = true, CenterContent = true }).ToString();
     public string ToConsoleBlock()
       => ToConsoleBlock(v => v.Equals(default(TValue)) ? "\u00B7" : "V");
   }

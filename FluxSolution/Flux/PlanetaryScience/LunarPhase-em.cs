@@ -1,6 +1,6 @@
 ﻿namespace Flux
 {
-  public static partial class Em
+  public static partial class PlanetaryScienceExtensions
   {
     /// <summary>
     /// <para>Gets the <see cref="Temporal.JulianDate"/> for the <see cref="LunarPhase"/> <paramref name="lunarPhase"/> in the synodic month of the <see cref="System.DateTime"/> <paramref name="source"/>.</para>

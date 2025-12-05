@@ -35,7 +35,7 @@
       var sb = new System.Text.StringBuilder();
 
       sb.AppendLine($"Placement {countAdjacentShips}:");
-      sb.AppendLine(placement.Rank2ToConsoleString(new ConsoleFormatOptions() { HorizontalSeparator = null, VerticalSeparator = null, UniformWidth = true }));
+      sb.AppendLine(System.Array.Rank2ToConsoleString(placement, new ConsoleFormatOptions() { HorizontalSeparator = null, VerticalSeparator = null, UniformWidth = true }));
 
       return sb.ToString();
     }

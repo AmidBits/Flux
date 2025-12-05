@@ -129,7 +129,7 @@
         matrix[5, index] = kf.Pet != EnumPet.Unknown ? kf.Pet.ToString() : string.Empty;
       }
 
-      System.Console.WriteLine(matrix.Rank2ToConsoleString(ConsoleFormatOptions.Default with { UniformWidth = true, CenterContent = true }));
+      System.Console.WriteLine(System.Array.Rank2ToConsoleString(matrix, ConsoleFormatOptions.Default with { UniformWidth = true, CenterContent = true }));
     }
 
     public static void Example()

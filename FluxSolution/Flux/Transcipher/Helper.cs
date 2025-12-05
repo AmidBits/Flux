@@ -1,6 +1,6 @@
 namespace Flux.Transcipher
 {
-  public static class Helper
+  public static partial class Helper
   {
     public const int DefaultIterations = 9973;
     /// <summary>

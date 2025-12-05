@@ -1,6 +1,4 @@
-﻿using System;
-using Flux;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Flux;
 
 namespace NetFx.ReadOnlySpan.Special
 {
@@ -30,17 +28,17 @@ namespace NetFx.ReadOnlySpan.Special
     [TestMethod]
     public void DamerauLevenshteinDistance2()
     {
-      Assert.AreEqual(2, m_text1a.AsSpan().DamerauLevenshteinDistanceMetric(m_text1b, out var _, m_comparisonOrdinal));
-      Assert.AreEqual(2, m_text1a.AsSpan().DamerauLevenshteinDistanceMetric(m_text1b, out var _, m_comparisonOrdinalIgnoreCase));
+      Assert.AreEqual(2, m_text1a.AsSpan().DamerauLevenshteinDistance(m_text1b, out var _, m_comparisonOrdinal));
+      Assert.AreEqual(2, m_text1a.AsSpan().DamerauLevenshteinDistance(m_text1b, out var _, m_comparisonOrdinalIgnoreCase));
 
-      Assert.AreEqual(0, m_text2a.AsSpan().DamerauLevenshteinDistanceMetric(m_text2b, out var _, m_comparableIgnoreNonSpace));
-      Assert.AreEqual(60, m_text2a.AsSpan().DamerauLevenshteinDistanceMetric(m_text2b, out var _, m_comparerDoNotIgnoreCase));
+      Assert.AreEqual(0, m_text2a.AsSpan().DamerauLevenshteinDistance(m_text2b, out var _, m_comparableIgnoreNonSpace));
+      Assert.AreEqual(60, m_text2a.AsSpan().DamerauLevenshteinDistance(m_text2b, out var _, m_comparerDoNotIgnoreCase));
 
-      Assert.AreEqual(5, m_text3a.AsSpan().DamerauLevenshteinDistanceMetric(m_text3b, out var _, m_comparisonOrdinal));
-      Assert.AreEqual(3, m_text3a.AsSpan().DamerauLevenshteinDistanceMetric(m_text3b, out var _, m_comparableIgnoreNonSpace));
+      Assert.AreEqual(5, m_text3a.AsSpan().DamerauLevenshteinDistance(m_text3b, out var _, m_comparisonOrdinal));
+      Assert.AreEqual(3, m_text3a.AsSpan().DamerauLevenshteinDistance(m_text3b, out var _, m_comparableIgnoreNonSpace));
 
-      Assert.AreEqual(1, m_text4a.AsSpan().DamerauLevenshteinDistanceMetric(m_text4b, out var _, m_comparisonOrdinal));
-      Assert.AreEqual(1, m_text4a.AsSpan().DamerauLevenshteinDistanceMetric(m_text4b, out var _, m_comparisonOrdinalIgnoreCase));
+      Assert.AreEqual(1, m_text4a.AsSpan().DamerauLevenshteinDistance(m_text4b, out var _, m_comparisonOrdinal));
+      Assert.AreEqual(1, m_text4a.AsSpan().DamerauLevenshteinDistance(m_text4b, out var _, m_comparisonOrdinalIgnoreCase));
     }
 
     [TestMethod]
@@ -69,33 +67,33 @@ namespace NetFx.ReadOnlySpan.Special
     [TestMethod]
     public void LevenshteinDistance2()
     {
-      Assert.AreEqual(2, m_text1a.AsSpan().LevenshteinDistanceMetric(m_text1b, m_comparisonOrdinal));
-      Assert.AreEqual(2, m_text1a.AsSpan().LevenshteinDistanceMetric(m_text1b, m_comparisonOrdinalIgnoreCase));
+      Assert.AreEqual(2, m_text1a.AsSpan().LevenshteinDistance(m_text1b, m_comparisonOrdinal));
+      Assert.AreEqual(2, m_text1a.AsSpan().LevenshteinDistance(m_text1b, m_comparisonOrdinalIgnoreCase));
 
-      Assert.AreEqual(0, m_text2a.AsSpan().LevenshteinDistanceMetric(m_text2b, m_comparableIgnoreNonSpace));
-      Assert.AreEqual(60, m_text2a.AsSpan().LevenshteinDistanceMetric(m_text2b, m_comparerDoNotIgnoreCase));
+      Assert.AreEqual(0, m_text2a.AsSpan().LevenshteinDistance(m_text2b, m_comparableIgnoreNonSpace));
+      Assert.AreEqual(60, m_text2a.AsSpan().LevenshteinDistance(m_text2b, m_comparerDoNotIgnoreCase));
 
-      Assert.AreEqual(6, m_text3a.AsSpan().LevenshteinDistanceMetric(m_text3b, m_comparisonOrdinal));
-      Assert.AreEqual(4, m_text3a.AsSpan().LevenshteinDistanceMetric(m_text3b, m_comparableIgnoreNonSpace));
+      Assert.AreEqual(6, m_text3a.AsSpan().LevenshteinDistance(m_text3b, m_comparisonOrdinal));
+      Assert.AreEqual(4, m_text3a.AsSpan().LevenshteinDistance(m_text3b, m_comparableIgnoreNonSpace));
 
-      Assert.AreEqual(2, m_text4a.AsSpan().LevenshteinDistanceMetric(m_text4b, m_comparisonOrdinal));
-      Assert.AreEqual(1, m_text4a.AsSpan().LevenshteinDistanceMetric(m_text4b, m_comparisonOrdinalIgnoreCase));
+      Assert.AreEqual(2, m_text4a.AsSpan().LevenshteinDistance(m_text4b, m_comparisonOrdinal));
+      Assert.AreEqual(1, m_text4a.AsSpan().LevenshteinDistance(m_text4b, m_comparisonOrdinalIgnoreCase));
     }
 
     [TestMethod]
     public void LongestCommonSubsequence2()
     {
-      Assert.AreEqual(1, m_text1a.AsSpan().LongestCommonSubsequenceCount(m_text1b, m_comparisonOrdinal));
-      Assert.AreEqual(1, m_text1a.AsSpan().LongestCommonSubsequenceCount(m_text1b, m_comparisonOrdinalIgnoreCase));
+      Assert.AreEqual(1, m_text1a.AsSpan().LongestCommonSubsequenceLength(m_text1b, m_comparisonOrdinal));
+      Assert.AreEqual(1, m_text1a.AsSpan().LongestCommonSubsequenceLength(m_text1b, m_comparisonOrdinalIgnoreCase));
 
-      Assert.AreEqual(64, m_text2a.AsSpan().LongestCommonSubsequenceCount(m_text2b, m_comparableIgnoreNonSpace));
-      Assert.AreEqual(4, m_text2a.AsSpan().LongestCommonSubsequenceCount(m_text2b, m_comparerDoNotIgnoreCase));
+      Assert.AreEqual(64, m_text2a.AsSpan().LongestCommonSubsequenceLength(m_text2b, m_comparableIgnoreNonSpace));
+      Assert.AreEqual(4, m_text2a.AsSpan().LongestCommonSubsequenceLength(m_text2b, m_comparerDoNotIgnoreCase));
 
-      Assert.AreEqual(5, m_text3a.AsSpan().LongestCommonSubsequenceCount(m_text3b, m_comparisonOrdinal));
-      Assert.AreEqual(7, m_text3a.AsSpan().LongestCommonSubsequenceCount(m_text3b, m_comparableIgnoreNonSpace));
+      Assert.AreEqual(5, m_text3a.AsSpan().LongestCommonSubsequenceLength(m_text3b, m_comparisonOrdinal));
+      Assert.AreEqual(7, m_text3a.AsSpan().LongestCommonSubsequenceLength(m_text3b, m_comparableIgnoreNonSpace));
 
-      Assert.AreEqual(9, m_text4a.AsSpan().LongestCommonSubsequenceCount(m_text4b, m_comparisonOrdinal));
-      Assert.AreEqual(9, m_text4a.AsSpan().LongestCommonSubsequenceCount(m_text4b, m_comparisonOrdinalIgnoreCase));
+      Assert.AreEqual(9, m_text4a.AsSpan().LongestCommonSubsequenceLength(m_text4b, m_comparisonOrdinal));
+      Assert.AreEqual(9, m_text4a.AsSpan().LongestCommonSubsequenceLength(m_text4b, m_comparisonOrdinalIgnoreCase));
     }
 
     [TestMethod]
@@ -117,17 +115,17 @@ namespace NetFx.ReadOnlySpan.Special
     [TestMethod]
     public void OptimalStringAlignment2()
     {
-      Assert.AreEqual(3, m_text1a.AsSpan().OptimalStringAlignmentMetric(m_text1b, m_comparisonOrdinal));
-      Assert.AreEqual(3, m_text1a.AsSpan().OptimalStringAlignmentMetric(m_text1b, m_comparisonOrdinalIgnoreCase));
+      Assert.AreEqual(3, m_text1a.AsSpan().OptimalStringAlignment(m_text1b, m_comparisonOrdinal));
+      Assert.AreEqual(3, m_text1a.AsSpan().OptimalStringAlignment(m_text1b, m_comparisonOrdinalIgnoreCase));
 
-      Assert.AreEqual(0, m_text2a.AsSpan().OptimalStringAlignmentMetric(m_text2b, m_comparableIgnoreNonSpace));
-      Assert.AreEqual(60, m_text2a.AsSpan().OptimalStringAlignmentMetric(m_text2b, m_comparerDoNotIgnoreCase));
+      Assert.AreEqual(0, m_text2a.AsSpan().OptimalStringAlignment(m_text2b, m_comparableIgnoreNonSpace));
+      Assert.AreEqual(60, m_text2a.AsSpan().OptimalStringAlignment(m_text2b, m_comparerDoNotIgnoreCase));
 
-      Assert.AreEqual(5, m_text3a.AsSpan().OptimalStringAlignmentMetric(m_text3b, m_comparisonOrdinal));
-      Assert.AreEqual(3, m_text3a.AsSpan().OptimalStringAlignmentMetric(m_text3b, m_comparableIgnoreNonSpace));
+      Assert.AreEqual(5, m_text3a.AsSpan().OptimalStringAlignment(m_text3b, m_comparisonOrdinal));
+      Assert.AreEqual(3, m_text3a.AsSpan().OptimalStringAlignment(m_text3b, m_comparableIgnoreNonSpace));
 
-      Assert.AreEqual(1, m_text4a.AsSpan().OptimalStringAlignmentMetric(m_text4b, m_comparisonOrdinal));
-      Assert.AreEqual(1, m_text4a.AsSpan().OptimalStringAlignmentMetric(m_text4b, m_comparisonOrdinalIgnoreCase));
+      Assert.AreEqual(1, m_text4a.AsSpan().OptimalStringAlignment(m_text4b, m_comparisonOrdinal));
+      Assert.AreEqual(1, m_text4a.AsSpan().OptimalStringAlignment(m_text4b, m_comparisonOrdinalIgnoreCase));
     }
 
     [TestMethod]
@@ -136,13 +134,13 @@ namespace NetFx.ReadOnlySpan.Special
       var vocab = "ACGT";
 
       string[] inputs = ["GAAATAAA", "CACCGCTACCGC", "CAGCTAGC", "AAAAAAAA", "GAAAAAAA", "GATGAATAACCA", "ACGT"];
-      System.ValueTuple<int, int>[] outputs = [(1, 5), (2, 7), (0, 1), (0, 6), (1, 5), (4, 4), (-1, 0)];
+      System.Range[] outputs = [System.Range.FromOffsetAndLength(1, 5), System.Range.FromOffsetAndLength(2, 7), System.Range.FromOffsetAndLength(0, 1), System.Range.FromOffsetAndLength(0, 6), System.Range.FromOffsetAndLength(1, 5), System.Range.FromOffsetAndLength(4, 4), System.Range.FromOffsetAndLength(0, 0)];
 
-      Assert.AreEqual(inputs.Length, outputs.Length);
+      Assert.HasCount(inputs.Length, outputs);
 
       for (var i = 0; i < inputs.Length; i++)
       {
-        var vt = inputs[i].AsSpan().ShortestBalancingSubstringSearch(vocab);
+        var vt = inputs[i].AsSpan().ShortestBalancingSubstring(vocab);
 
         Assert.AreEqual(vt, outputs[i]);
       }
@@ -152,11 +150,11 @@ namespace NetFx.ReadOnlySpan.Special
     public void ShortestCommonSubsequence()
     {
       var expectedc = 9;
-      var actualc = "abcbdab".AsSpan().ShortestCommonSupersequenceCount("bdcaba", out var _);
+      var actualc = "abcbdab".AsSpan().ShortestCommonSupersequence("bdcaba", out var _).Count;
       Assert.AreEqual(expectedc, actualc);
 
       var expectedv = "abdcabdab";
-      var actualv = "abcbdab".AsSpan().ShortestCommonSupersequenceValues("bdcaba", out var _).AsSpan().ToString();
+      var actualv = "abcbdab".AsSpan().ShortestCommonSupersequence("bdcaba", out var _).AsSpan().ToString();
       Assert.AreEqual(expectedv, actualv);
     }
   }

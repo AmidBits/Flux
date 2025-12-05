@@ -125,7 +125,7 @@ namespace Flux
 
       /// <summary>Converts a sequence of <see cref="System.Collections.Generic.KeyValuePair{TKey, TValue}"/> into a single composite string.</summary>
       public string ToConsoleString(System.Func<TKey, string> keySelector, System.Func<TValue, string> valueSelector, ConsoleFormatOptions? options = null)
-        => ToJaggedArray(source).JaggedToConsoleString(options ?? ConsoleFormatOptions.Default with { HorizontalSeparator = "=" });
+        => System.Array.JaggedArrayToConsoleString(ToJaggedArray(source), options ?? ConsoleFormatOptions.Default with { HorizontalSeparator = "=" });
     }
 
     extension<TKey, TValue>(System.Collections.Generic.IDictionary<TKey, TValue> source)

@@ -1,5 +1,4 @@
 ﻿using Flux;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace SystemArrays
 {
@@ -26,12 +25,13 @@ namespace SystemArrays
       };
 
       System.Console.WriteLine(nameof(inplaceMatrix));
-      System.Console.WriteLine(inplaceMatrix.Rank2ToConsoleString(cso));
+      System.Console.WriteLine(System.Array.Rank2ToConsoleString(inplaceMatrix, cso));
       System.Console.WriteLine();
 
-      inplaceMatrix.Fill(0, 1, 3, 4, [9]);
-      System.Console.WriteLine(nameof(ArrayRank1Extensions.FillWith));
-      System.Console.WriteLine(inplaceMatrix.Rank2ToConsoleString(cso));
+      System.Array.Fill(inplaceMatrix, 0, 1, 3, 4, t => true, [9]);
+      //inplaceMatrix.Fill(0, 1, 3, 4, [9]);
+      System.Console.WriteLine(nameof(System.Array.Fill));
+      System.Console.WriteLine(System.Array.Rank2ToConsoleString(inplaceMatrix, cso));
       System.Console.WriteLine();
 
       CollectionAssert.AreEqual(expected, inplaceMatrix);
@@ -53,7 +53,7 @@ namespace SystemArrays
       };
 
       System.Console.WriteLine(nameof(expected));
-      System.Console.WriteLine(expected.Rank2ToConsoleString(cso));
+      System.Console.WriteLine(System.Array.Rank2ToConsoleString(expected, cso));
       System.Console.WriteLine();
 
       var flip0InPlace = new int[3, 3]
@@ -64,13 +64,14 @@ namespace SystemArrays
       };
 
       System.Console.WriteLine("Initial");
-      System.Console.WriteLine(flip0InPlace.Rank2ToConsoleString(cso));
+      System.Console.WriteLine(System.Array.Rank2ToConsoleString(flip0InPlace, cso));
       System.Console.WriteLine();
 
-      flip0InPlace.Flip0();
+      System.Array.Flip(TwoDimensionalArrayAxis.Row, flip0InPlace);
+      //flip0InPlace.Flip0();
 
       System.Console.WriteLine(nameof(flip0InPlace));
-      System.Console.WriteLine(flip0InPlace.Rank2ToConsoleString(cso));
+      System.Console.WriteLine(System.Array.Rank2ToConsoleString(flip0InPlace, cso));
       System.Console.WriteLine();
 
       CollectionAssert.AreEqual(expected, flip0InPlace);
@@ -92,7 +93,7 @@ namespace SystemArrays
       };
 
       System.Console.WriteLine(nameof(expected));
-      System.Console.WriteLine(expected.Rank2ToConsoleString(cso));
+      System.Console.WriteLine(System.Array.Rank2ToConsoleString(expected, cso));
       System.Console.WriteLine();
 
       var initial = new int[,] {
@@ -103,13 +104,14 @@ namespace SystemArrays
       };
 
       System.Console.WriteLine(nameof(initial));
-      System.Console.WriteLine(initial.Rank2ToConsoleString(cso));
+      System.Console.WriteLine(System.Array.Rank2ToConsoleString(initial, cso));
       System.Console.WriteLine();
 
       var flip0ToCopy = new int[4, 4];
-      initial.Flip0(flip0ToCopy);
+      System.Array.Flip(TwoDimensionalArrayAxis.Row, initial, flip0ToCopy);
+      //initial.Flip0(flip0ToCopy);
       System.Console.WriteLine(nameof(flip0ToCopy));
-      System.Console.WriteLine(flip0ToCopy.Rank2ToConsoleString(cso));
+      System.Console.WriteLine(System.Array.Rank2ToConsoleString(flip0ToCopy, cso));
       System.Console.WriteLine();
 
       CollectionAssert.AreEqual(expected, flip0ToCopy);
@@ -131,7 +133,7 @@ namespace SystemArrays
       };
 
       System.Console.WriteLine(nameof(expected));
-      System.Console.WriteLine(expected.Rank2ToConsoleString(cso));
+      System.Console.WriteLine(System.Array.Rank2ToConsoleString(expected, cso));
       System.Console.WriteLine();
 
       var flip1InPlace = new int[3, 3]
@@ -142,13 +144,14 @@ namespace SystemArrays
       };
 
       System.Console.WriteLine("Initial");
-      System.Console.WriteLine(flip1InPlace.Rank2ToConsoleString(cso));
+      System.Console.WriteLine(System.Array.Rank2ToConsoleString(flip1InPlace, cso));
       System.Console.WriteLine();
 
-      flip1InPlace.Flip1();
+      System.Array.Flip(TwoDimensionalArrayAxis.Column, flip1InPlace);
+      //flip1InPlace.Flip1();
 
       System.Console.WriteLine(nameof(flip1InPlace));
-      System.Console.WriteLine(flip1InPlace.Rank2ToConsoleString(cso));
+      System.Console.WriteLine(System.Array.Rank2ToConsoleString(flip1InPlace, cso));
       System.Console.WriteLine();
 
       CollectionAssert.AreEqual(expected, flip1InPlace);
@@ -170,7 +173,7 @@ namespace SystemArrays
       };
 
       System.Console.WriteLine(nameof(expected));
-      System.Console.WriteLine(expected.Rank2ToConsoleString(cso));
+      System.Console.WriteLine(System.Array.Rank2ToConsoleString(expected, cso));
       System.Console.WriteLine();
 
       var initial = new int[,] {
@@ -181,13 +184,14 @@ namespace SystemArrays
       };
 
       System.Console.WriteLine(nameof(initial));
-      System.Console.WriteLine(initial.Rank2ToConsoleString(cso));
+      System.Console.WriteLine(System.Array.Rank2ToConsoleString(initial, cso));
       System.Console.WriteLine();
 
       var flip1ToCopy = new int[4, 4];
-      initial.Flip1(flip1ToCopy);
+      System.Array.Flip(TwoDimensionalArrayAxis.Column, initial, flip1ToCopy);
+      //initial.Flip1(flip1ToCopy);
       System.Console.WriteLine(nameof(flip1ToCopy));
-      System.Console.WriteLine(flip1ToCopy.Rank2ToConsoleString(cso));
+      System.Console.WriteLine(System.Array.Rank2ToConsoleString(flip1ToCopy, cso));
       System.Console.WriteLine();
 
       CollectionAssert.AreEqual(expected, flip1ToCopy);
@@ -211,7 +215,7 @@ namespace SystemArrays
       };
 
       System.Console.WriteLine(nameof(expected));
-      System.Console.WriteLine(expected.Rank2ToConsoleString(cso));
+      System.Console.WriteLine(System.Array.Rank2ToConsoleString(expected, cso));
       System.Console.WriteLine();
 
       var initial = new int[,] {
@@ -222,19 +226,21 @@ namespace SystemArrays
       };
 
       System.Console.WriteLine(nameof(initial));
-      System.Console.WriteLine(initial.Rank2ToConsoleString(cso));
+      System.Console.WriteLine(System.Array.Rank2ToConsoleString(initial, cso));
       System.Console.WriteLine();
 
-      var insertToCopy = initial.InsertToCopy(0, 2, 2, [0]);
+      var insertToCopy = System.Array.InsertToCopy(TwoDimensionalArrayAxis.Row, initial, 2, 2);
+      //var insertToCopy = initial.InsertToCopy(0, 2, 2, [0]);
 
       System.Console.WriteLine($"{nameof(insertToCopy)}: 2 rows");
-      System.Console.WriteLine(insertToCopy.Rank2ToConsoleString(cso));
+      System.Console.WriteLine(System.Array.Rank2ToConsoleString(insertToCopy, cso));
       System.Console.WriteLine();
 
-      insertToCopy = insertToCopy.InsertToCopy(1, 2, 2, [0]);
+      insertToCopy = System.Array.InsertToCopy(TwoDimensionalArrayAxis.Column, insertToCopy, 2, 2);
+      //insertToCopy = insertToCopy.InsertToCopy(1, 2, 2, [0]);
 
       System.Console.WriteLine($"{nameof(insertToCopy)}: 2 columns");
-      System.Console.WriteLine(insertToCopy.Rank2ToConsoleString(cso));
+      System.Console.WriteLine(System.Array.Rank2ToConsoleString(insertToCopy, cso));
       System.Console.WriteLine();
 
       CollectionAssert.AreEqual(expected, insertToCopy);
@@ -254,7 +260,7 @@ namespace SystemArrays
       };
 
       System.Console.WriteLine(nameof(expected));
-      System.Console.WriteLine(expected.Rank2ToConsoleString(cso));
+      System.Console.WriteLine(System.Array.Rank2ToConsoleString(expected, cso));
       System.Console.WriteLine();
 
       var initial = new int[,] {
@@ -265,19 +271,21 @@ namespace SystemArrays
       };
 
       System.Console.WriteLine(nameof(initial));
-      System.Console.WriteLine(initial.Rank2ToConsoleString(cso));
+      System.Console.WriteLine(System.Array.Rank2ToConsoleString(initial, cso));
       System.Console.WriteLine();
 
-      var removeToCopy = initial.Copy0Remove(initial.NewResize(-2, 0), [1, 2]);
+      var removeToCopy = System.Array.RemoveBySkipping(TwoDimensionalArrayAxis.Row, i => i is 1 or 2, initial, System.Array.CreateNew(initial, -2, 0));
+      //var removeToCopy = initial.Copy0Remove(initial.NewResize(-2, 0), [1, 2]);
 
       System.Console.WriteLine($"{nameof(removeToCopy)}: 2 rows");
-      System.Console.WriteLine(removeToCopy.Rank2ToConsoleString(cso));
+      System.Console.WriteLine(System.Array.Rank2ToConsoleString(removeToCopy, cso));
       System.Console.WriteLine();
 
-      removeToCopy = removeToCopy.Copy1Remove(removeToCopy.NewResize(0, -2), [1, 2]);
+      removeToCopy = System.Array.RemoveBySkipping(TwoDimensionalArrayAxis.Column, i => i is 1 or 2, removeToCopy, System.Array.CreateNew(removeToCopy, 0, -2));
+      //removeToCopy = removeToCopy.Copy1Remove(removeToCopy.NewResize(0, -2), [1, 2]);
 
       System.Console.WriteLine($"{nameof(removeToCopy)}: 2 columns");
-      System.Console.WriteLine(removeToCopy.Rank2ToConsoleString(cso));
+      System.Console.WriteLine(System.Array.Rank2ToConsoleString(removeToCopy, cso));
       System.Console.WriteLine();
 
       CollectionAssert.AreEqual(expected, removeToCopy);
@@ -299,7 +307,7 @@ namespace SystemArrays
       };
 
       System.Console.WriteLine(nameof(expected));
-      System.Console.WriteLine(expected.Rank2ToConsoleString(cso));
+      System.Console.WriteLine(System.Array.Rank2ToConsoleString(expected, cso));
       System.Console.WriteLine();
 
       var rotateCcwInPlace = new int[,] {
@@ -310,13 +318,14 @@ namespace SystemArrays
       };
 
       System.Console.WriteLine("Initial");
-      System.Console.WriteLine(rotateCcwInPlace.Rank2ToConsoleString(cso));
+      System.Console.WriteLine(System.Array.Rank2ToConsoleString(rotateCcwInPlace, cso));
       System.Console.WriteLine();
 
-      rotateCcwInPlace.RotateCcw();
+      System.Array.Rotate(RotationalDirection.CounterClockWise, rotateCcwInPlace, rotateCcwInPlace);
+      //rotateCcwInPlace.RotateCcw();
 
       System.Console.WriteLine(nameof(rotateCcwInPlace));
-      System.Console.WriteLine(rotateCcwInPlace.Rank2ToConsoleString(cso));
+      System.Console.WriteLine(System.Array.Rank2ToConsoleString(rotateCcwInPlace, cso));
       System.Console.WriteLine();
 
       CollectionAssert.AreEqual(expected, rotateCcwInPlace);
@@ -338,7 +347,7 @@ namespace SystemArrays
       };
 
       System.Console.WriteLine(nameof(expected));
-      System.Console.WriteLine(expected.Rank2ToConsoleString(cso));
+      System.Console.WriteLine(System.Array.Rank2ToConsoleString(expected, cso));
       System.Console.WriteLine();
 
       var initial = new int[,] {
@@ -349,13 +358,14 @@ namespace SystemArrays
       };
 
       System.Console.WriteLine(nameof(initial));
-      System.Console.WriteLine(initial.Rank2ToConsoleString(cso));
+      System.Console.WriteLine(System.Array.Rank2ToConsoleString(initial, cso));
       System.Console.WriteLine();
 
       var rotateCcwToCopy = new int[4, 4];
-      initial.RotateCcw(rotateCcwToCopy);
+      System.Array.Rotate(RotationalDirection.CounterClockWise, initial, rotateCcwToCopy);
+      //initial.RotateCcw(rotateCcwToCopy);
       System.Console.WriteLine(nameof(rotateCcwToCopy));
-      System.Console.WriteLine(rotateCcwToCopy.Rank2ToConsoleString(cso));
+      System.Console.WriteLine(System.Array.Rank2ToConsoleString(rotateCcwToCopy, cso));
       System.Console.WriteLine();
 
       CollectionAssert.AreEqual(expected, rotateCcwToCopy);
@@ -377,7 +387,7 @@ namespace SystemArrays
       };
 
       System.Console.WriteLine(nameof(expected));
-      System.Console.WriteLine(expected.Rank2ToConsoleString(cso));
+      System.Console.WriteLine(System.Array.Rank2ToConsoleString(expected, cso));
       System.Console.WriteLine();
 
       var rotateCwInPlace = new int[,] {
@@ -388,13 +398,14 @@ namespace SystemArrays
       };
 
       System.Console.WriteLine("Initial");
-      System.Console.WriteLine(rotateCwInPlace.Rank2ToConsoleString(cso));
+      System.Console.WriteLine(System.Array.Rank2ToConsoleString(rotateCwInPlace, cso));
       System.Console.WriteLine();
 
-      rotateCwInPlace.RotateCw();
+      System.Array.Rotate(RotationalDirection.ClockWise, rotateCwInPlace);
+      //rotateCwInPlace.RotateCw();
 
       System.Console.WriteLine(nameof(rotateCwInPlace));
-      System.Console.WriteLine(rotateCwInPlace.Rank2ToConsoleString(cso));
+      System.Console.WriteLine(System.Array.Rank2ToConsoleString(rotateCwInPlace, cso));
       System.Console.WriteLine();
 
       CollectionAssert.AreEqual(expected, rotateCwInPlace);
@@ -416,7 +427,7 @@ namespace SystemArrays
       };
 
       System.Console.WriteLine(nameof(expected));
-      System.Console.WriteLine(expected.Rank2ToConsoleString(cso));
+      System.Console.WriteLine(System.Array.Rank2ToConsoleString(expected, cso));
       System.Console.WriteLine();
 
       var initial = new int[,] {
@@ -427,15 +438,16 @@ namespace SystemArrays
       };
 
       System.Console.WriteLine(nameof(initial));
-      System.Console.WriteLine(initial.Rank2ToConsoleString(cso));
+      System.Console.WriteLine(System.Array.Rank2ToConsoleString(initial, cso));
       System.Console.WriteLine();
 
       var rotateCwToCopy = new int[4, 4];
 
-      initial.RotateCw(rotateCwToCopy);
+      System.Array.Rotate(RotationalDirection.ClockWise, initial, rotateCwToCopy);
+      //initial.RotateCw(rotateCwToCopy);
 
       System.Console.WriteLine(nameof(rotateCwToCopy));
-      System.Console.WriteLine(rotateCwToCopy.Rank2ToConsoleString(cso));
+      System.Console.WriteLine(System.Array.Rank2ToConsoleString(rotateCwToCopy, cso));
       System.Console.WriteLine();
 
       CollectionAssert.AreEqual(expected, rotateCwToCopy);
@@ -457,7 +469,7 @@ namespace SystemArrays
       };
 
       System.Console.WriteLine(nameof(expected));
-      System.Console.WriteLine(expected.Rank2ToConsoleString(cso));
+      System.Console.WriteLine(System.Array.Rank2ToConsoleString(expected, cso));
       System.Console.WriteLine();
 
       var transposeInPlace = new int[,] {
@@ -468,13 +480,14 @@ namespace SystemArrays
       };
 
       System.Console.WriteLine("Initial");
-      System.Console.WriteLine(transposeInPlace.Rank2ToConsoleString(cso));
+      System.Console.WriteLine(System.Array.Rank2ToConsoleString(transposeInPlace, cso));
       System.Console.WriteLine();
 
-      transposeInPlace.Transpose();
+      System.Array.Transpose(transposeInPlace);
+      //transposeInPlace.Transpose();
 
       System.Console.WriteLine(nameof(transposeInPlace));
-      System.Console.WriteLine(transposeInPlace.Rank2ToConsoleString(cso));
+      System.Console.WriteLine(System.Array.Rank2ToConsoleString(transposeInPlace, cso));
       System.Console.WriteLine();
 
       CollectionAssert.AreEqual(expected, transposeInPlace);
@@ -496,7 +509,7 @@ namespace SystemArrays
       };
 
       System.Console.WriteLine(nameof(expected));
-      System.Console.WriteLine(expected.Rank2ToConsoleString(cso));
+      System.Console.WriteLine(System.Array.Rank2ToConsoleString(expected, cso));
       System.Console.WriteLine();
 
       var initial = new int[,] {
@@ -507,15 +520,16 @@ namespace SystemArrays
       };
 
       System.Console.WriteLine(nameof(initial));
-      System.Console.WriteLine(initial.Rank2ToConsoleString(cso));
+      System.Console.WriteLine(System.Array.Rank2ToConsoleString(initial, cso));
       System.Console.WriteLine();
 
       var transposeToCopy = new int[4, 4];
 
-      initial.Transpose(transposeToCopy);
+      System.Array.Transpose(initial, transposeToCopy);
+      //initial.Transpose(transposeToCopy);
 
       System.Console.WriteLine(nameof(transposeToCopy));
-      System.Console.WriteLine(transposeToCopy.Rank2ToConsoleString(cso));
+      System.Console.WriteLine(System.Array.Rank2ToConsoleString(transposeToCopy, cso));
       System.Console.WriteLine();
 
       CollectionAssert.AreEqual(expected, transposeToCopy);

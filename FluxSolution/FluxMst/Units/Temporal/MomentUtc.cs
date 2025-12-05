@@ -1,6 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-namespace Units
+﻿namespace Units
 {
   [TestClass]
   public class MomentUtc
@@ -74,10 +72,10 @@ namespace Units
     public void IsValidGregorianCalendarDate()
     {
       var m14 = new Flux.Temporal.Moment(1582, 10, 14);
-      Assert.AreEqual(false, m14.IsValidGregorianCalendarDate);
+      Assert.IsFalse(m14.IsValidGregorianCalendarDate);
 
       var m15 = new Flux.Temporal.Moment(1582, 10, 15);
-      Assert.AreEqual(true, m15.IsValidGregorianCalendarDate);
+      Assert.IsTrue(m15.IsValidGregorianCalendarDate);
     }
 
     //[TestMethod]

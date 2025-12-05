@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Em
+  public static partial class DataStructuresExtensions
   {
     /// <summary>
     /// <para>Creates a new <see cref="DataStructures.OrderedDictionary{TKey, TValue}"/> with the specified <paramref name="equalityComparer"/> and all items from <paramref name="source"/> using <paramref name="keySelector"/> and <paramref name="valueSelector"/> for each item.</para>

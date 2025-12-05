@@ -1,4 +1,4 @@
-namespace Flux.Security.Cryptography
+namespace Flux.Transcipher
 {
   // http://burtleburtle.net/bob/rand/isaacafa.html
   public sealed class Isaac

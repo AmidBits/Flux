@@ -1,6 +1,6 @@
 ﻿namespace Flux
 {
-  public static partial class Em
+  public static partial class DspExtensions
   {
     public static Dsp.Waves.IWaveMono<TSelf> ToMonoWave<TSelf>(this Dsp.Waves.IWaveStereo<TSelf> stereo)
       where TSelf : System.Numerics.IFloatingPointIeee754<TSelf>

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Linq;
-using Flux;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Flux;
 
 namespace SystemFx
 {
@@ -14,8 +11,8 @@ namespace SystemFx
     [TestMethod]
     public void IsBalanced()
     {
-      Assert.AreEqual(true, s1.AsSpan().IsBalanced('<', '>'));
-      Assert.AreEqual(false, s2.AsSpan().IsBalanced('<', '>'));
+      Assert.IsTrue(s1.AsSpan().IsBalanced('<', '>'));
+      Assert.IsFalse(s2.AsSpan().IsBalanced('<', '>'));
     }
 
     [TestMethod]

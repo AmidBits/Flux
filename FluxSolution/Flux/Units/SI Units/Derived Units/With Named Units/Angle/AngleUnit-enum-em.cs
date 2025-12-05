@@ -1,6 +1,6 @@
 ﻿namespace Flux
 {
-  public static partial class Em
+  public static partial class UnitsExtensions
   {
     public static bool HasUnitSpacing(this Units.AngleUnit unit, bool preferUnicode)
       => !((unit == Units.AngleUnit.Degree && preferUnicode)

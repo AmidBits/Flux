@@ -114,12 +114,12 @@ namespace Flux
       public System.Text.StringBuilder ToLower(int index, int length, System.Globalization.CultureInfo? cultureInfo = null)
       {
         System.ArgumentNullException.ThrowIfNull(source);
-        System.ArgumentOutOfRangeException.ThrowIfNegative(index);
-        System.ArgumentOutOfRangeException.ThrowIfNegative(length);
+
+        var endIndex = System.Range.AssertInRange(index, length, source.Length);
 
         cultureInfo ??= System.Globalization.CultureInfo.InvariantCulture;
 
-        for (var i = index + length - 1; i >= index; i--)
+        for (var i = endIndex; i >= index; i--)
           if (source[i] is var sourceChar && char.ToLower(sourceChar, cultureInfo) is var targetChar && sourceChar != targetChar)
             source[i] = targetChar;
 
@@ -140,12 +140,12 @@ namespace Flux
       public System.Text.StringBuilder ToUpper(int index, int length, System.Globalization.CultureInfo? cultureInfo = null)
       {
         System.ArgumentNullException.ThrowIfNull(source);
-        System.ArgumentOutOfRangeException.ThrowIfNegative(index);
-        System.ArgumentOutOfRangeException.ThrowIfNegative(length);
+
+        var endIndex = System.Range.AssertInRange(index, length, source.Length);
 
         cultureInfo ??= System.Globalization.CultureInfo.CurrentCulture;
 
-        for (var i = index + length - 1; i >= index; i--)
+        for (var i = endIndex; i >= index; i--)
           if (source[i] is var sourceChar && char.ToUpper(sourceChar, cultureInfo) is var targetChar && sourceChar != targetChar)
             source[i] = targetChar;
 
@@ -175,8 +175,8 @@ namespace Flux
       {
         System.ArgumentNullException.ThrowIfNull(source);
 
-        if (sourceStartIndex < 0 || sourceStartIndex >= source.Length) throw new System.ArgumentOutOfRangeException(nameof(sourceStartIndex));
-        if (targetStartIndex < 0 || targetStartIndex >= target.Length) throw new System.ArgumentOutOfRangeException(nameof(targetStartIndex));
+        System.Index.AssertInRange(sourceStartIndex, source.Length);
+        System.Index.AssertInRange(targetStartIndex, target.Length);
 
         equalityComparer ??= System.Collections.Generic.EqualityComparer<char>.Default;
 
@@ -202,7 +202,7 @@ namespace Flux
         System.ArgumentNullException.ThrowIfNull(source);
         System.ArgumentNullException.ThrowIfNull(predicate);
 
-        if (offset < 0 || offset >= source.Length) throw new System.ArgumentOutOfRangeException(nameof(offset));
+        System.Index.AssertInRange(offset, source.Length);
 
         var length = 0;
         while (offset < source.Length && length < maxLength && predicate(source[offset++]))
@@ -222,16 +222,9 @@ namespace Flux
       /// <exception cref="System.ArgumentOutOfRangeException"></exception>
       public int CommonPrefixLength(int offset, char value, System.Collections.Generic.IEqualityComparer<char>? equalityComparer = null, int maxLength = int.MaxValue)
       {
-        System.ArgumentNullException.ThrowIfNull(source);
-
-        if (offset < 0 || offset >= source.Length) throw new System.ArgumentOutOfRangeException(nameof(offset));
-
         equalityComparer ??= System.Collections.Generic.EqualityComparer<char>.Default;
 
-        var length = 0;
-        while (offset < source.Length && length < maxLength && equalityComparer.Equals(source[offset++], value))
-          length++;
-        return length;
+        return CommonPrefixLength(source, offset, c => equalityComparer.Equals(c, value), maxLength);
       }
 
       /// <summary>
@@ -248,7 +241,7 @@ namespace Flux
       {
         System.ArgumentNullException.ThrowIfNull(source);
 
-        if (offset < 0 || offset >= source.Length) throw new System.ArgumentOutOfRangeException(nameof(offset));
+        System.Index.AssertInRange(offset, source.Length);
 
         equalityComparer ??= System.Collections.Generic.EqualityComparer<char>.Default;
 
@@ -277,7 +270,7 @@ namespace Flux
         if (source.Length == 0 || maxLength <= 0)
           return 0;
 
-        if (offset < 0 || offset >= source.Length) throw new System.ArgumentOutOfRangeException(nameof(offset));
+        System.Index.AssertInRange(offset, source.Length);
 
         var length = 0;
         for (var si = source.Length - 1 - offset; si >= 0 && length < maxLength && predicate(source[si]); si--)
@@ -297,19 +290,9 @@ namespace Flux
       /// <exception cref="System.ArgumentOutOfRangeException"></exception>
       public int CommonSuffixLength(int offset, char value, System.Collections.Generic.IEqualityComparer<char>? equalityComparer = null, int maxLength = int.MaxValue)
       {
-        System.ArgumentNullException.ThrowIfNull(source);
-
-        if (source.Length == 0 || maxLength <= 0)
-          return 0;
-
-        if (offset < 0 || offset >= source.Length) throw new System.ArgumentOutOfRangeException(nameof(offset));
-
         equalityComparer ??= System.Collections.Generic.EqualityComparer<char>.Default;
 
-        var length = 0;
-        for (var si = source.Length - 1 - offset; si >= 0 && length < maxLength && equalityComparer.Equals(source[si], value); si--)
-          length++;
-        return length;
+        return CommonSuffixLength(source, offset, c => equalityComparer.Equals(c, value), maxLength);
       }
 
       /// <summary>
@@ -329,7 +312,7 @@ namespace Flux
         if (source.Length == 0 || value.Length == 0 || maxLength <= 0)
           return 0;
 
-        if (offset < 0 || offset >= source.Length) throw new System.ArgumentOutOfRangeException(nameof(offset));
+        System.Index.AssertInRange(offset, source.Length);
 
         equalityComparer ??= System.Collections.Generic.EqualityComparer<char>.Default;
 
@@ -346,15 +329,14 @@ namespace Flux
 
       #region Copy
 
-      public System.Text.StringBuilder Copy(int sourceIndex, int count, int targetIndex)
+      public System.Text.StringBuilder Copy(int sourceIndex, int length, int targetIndex)
       {
         System.ArgumentNullException.ThrowIfNull(source);
 
-        if (sourceIndex < 0 || sourceIndex > source.Length - 1) throw new System.ArgumentOutOfRangeException(nameof(sourceIndex));
-        if (targetIndex < 0 || targetIndex > source.Length - 1) throw new System.ArgumentOutOfRangeException(nameof(sourceIndex));
-        if (count < 0 || sourceIndex + count > source.Length || targetIndex + count > source.Length) throw new System.ArgumentOutOfRangeException(nameof(count));
+        System.Range.AssertInRange(sourceIndex, length, source.Length);
+        System.Range.AssertInRange(targetIndex, length, source.Length);
 
-        for (; count > 0; count--)
+        for (; length > 0; length--)
           source[targetIndex++] = source[sourceIndex++];
 
         return source;
@@ -364,30 +346,26 @@ namespace Flux
 
       #region CopyTo
 
-      public void CopyTo(int sourceStartIndex, System.Collections.Generic.IList<char> target, int targetStartIndex, int count)
+      public void CopyTo(int sourceStartIndex, System.Collections.Generic.IList<char> target, int targetStartIndex, int length)
       {
         System.ArgumentNullException.ThrowIfNull(source);
         System.ArgumentNullException.ThrowIfNull(target);
 
-        if (sourceStartIndex < 0 || sourceStartIndex >= source.Length) throw new System.ArgumentOutOfRangeException(nameof(sourceStartIndex));
-        if (targetStartIndex < 0 || targetStartIndex >= source.Length) throw new System.ArgumentOutOfRangeException(nameof(targetStartIndex));
-        if (count <= 0 || (sourceStartIndex + count) > source.Length || (targetStartIndex + count) > target.Count) throw new System.ArgumentOutOfRangeException(nameof(count));
+        System.Range.AssertInRange(sourceStartIndex, length, source.Length);
+        System.Range.AssertInRange(targetStartIndex, length, source.Length);
 
-        while (count-- > 0)
+        while (length-- > 0)
           target[targetStartIndex++] = source[sourceStartIndex++];
       }
 
-      public void CopyTo(System.Collections.Generic.IList<char> target, int count)
-        => CopyTo(source, 0, target, 0, count);
+      public void CopyTo(System.Collections.Generic.IList<char> target, int length)
+        => CopyTo(source, 0, target, 0, length);
 
       public int CopyTo(System.Collections.Generic.IList<char> target)
       {
-        System.ArgumentNullException.ThrowIfNull(source);
-        System.ArgumentNullException.ThrowIfNull(target);
-
-        var count = int.Min(source.Length, target.Count);
-        CopyTo(source, 0, target, 0, count);
-        return count;
+        var length = int.Min(source.Length, target.Count);
+        CopyTo(source, 0, target, 0, length);
+        return length;
       }
 
       #endregion
@@ -627,27 +605,27 @@ namespace Flux
       #region IsCommon..
 
       /// <summary>
-      /// <para>Indicates whether there are <paramref name="count"/> elements satisfying the <paramref name="predicate"/> at <paramref name="source"/>[<paramref name="offset"/>].</para>
+      /// <para>Indicates whether there are <paramref name="length"/> elements satisfying the <paramref name="predicate"/> at <paramref name="source"/>[<paramref name="offset"/>].</para>
       /// </summary>
       /// <param name="source"></param>
       /// <param name="offset"></param>
-      /// <param name="count"></param>
+      /// <param name="length"></param>
       /// <param name="predicate"></param>
       /// <returns></returns>
-      public bool IsCommonPrefix(int offset, int count, System.Func<char, bool> predicate)
-        => source.CommonPrefixLength(offset, predicate, count) == count;
+      public bool IsCommonPrefix(int offset, int length, System.Func<char, bool> predicate)
+        => CommonPrefixLength(source, offset, predicate, length) == length;
 
       /// <summary>
-      /// <para>Indicates whether there are <paramref name="count"/> elements equal to <paramref name="value"/> at <paramref name="source"/>[<paramref name="offset"/>]. Uses the specified <paramref name="equalityComparer"/>, or default if null.</para>
+      /// <para>Indicates whether there are <paramref name="length"/> elements equal to <paramref name="value"/> at <paramref name="source"/>[<paramref name="offset"/>]. Uses the specified <paramref name="equalityComparer"/>, or default if null.</para>
       /// </summary>
       /// <param name="source"></param>
       /// <param name="offset"></param>
-      /// <param name="count"></param>
+      /// <param name="length"></param>
       /// <param name="value"></param>
       /// <param name="equalityComparer"></param>
       /// <returns></returns>
-      public bool IsCommonPrefix(int offset, int count, char value, System.Collections.Generic.IEqualityComparer<char>? equalityComparer = null)
-        => source.CommonPrefixLength(offset, value, equalityComparer, count) == count;
+      public bool IsCommonPrefix(int offset, int length, char value, System.Collections.Generic.IEqualityComparer<char>? equalityComparer = null)
+        => CommonPrefixLength(source, offset, value, equalityComparer, length) == length;
 
       /// <summary>
       /// <para>Indicates whether <paramref name="value"/> exists at <paramref name="source"/>[offset]. Uses the specified <paramref name="equalityComparer"/>, or default if null.</para>
@@ -658,7 +636,7 @@ namespace Flux
       /// <param name="equalityComparer"></param>
       /// <returns></returns>
       public bool IsCommonPrefix(int offset, System.ReadOnlySpan<char> value, System.Collections.Generic.IEqualityComparer<char>? equalityComparer = null)
-        => source.CommonPrefixLength(offset, value, equalityComparer, value.Length) == value.Length;
+        => CommonPrefixLength(source, offset, value, equalityComparer, value.Length) == value.Length;
 
       /// <summary>
       /// <para>Returns whether <paramref name="count"/> of any <paramref name="values"/> are found at <paramref name="offset"/> in the <paramref name="source"/>. Uses the <paramref name="equalityComparer"/>, or default if null.</para>
@@ -673,7 +651,7 @@ namespace Flux
       public bool IsCommonPrefixAny(int offset, System.Collections.Generic.IEqualityComparer<char>? equalityComparer, int maxLength, params string[] values)
       {
         for (var valuesIndex = 0; valuesIndex < values.Length; valuesIndex++)
-          if (values[valuesIndex] is var value && source.IsCommonPrefix(offset, value.AsSpan()[..int.Min(value.Length, maxLength)], equalityComparer))
+          if (values[valuesIndex] is var value && IsCommonPrefix(source, offset, value.AsSpan()[..int.Min(value.Length, maxLength)], equalityComparer))
             return true;
 
         return false;
@@ -695,7 +673,7 @@ namespace Flux
       /// <param name="predicate"></param>
       /// <returns></returns>
       public bool IsCommonSuffix(int offset, int count, System.Func<char, bool> predicate)
-        => source.CommonSuffixLength(offset, predicate, count) == count;
+        => CommonSuffixLength(source, offset, predicate, count) == count;
 
       /// <summary>
       /// <para>Indicates whether there are <paramref name="count"/> elements equal to <paramref name="value"/> that ends at <paramref name="source"/>[end - <paramref name="offset"/>]. Uses the specified <paramref name="equalityComparer"/>, or default if null.</para>
@@ -707,7 +685,7 @@ namespace Flux
       /// <param name="equalityComparer"></param>
       /// <returns></returns>
       public bool IsCommonSuffix(int offset, int count, char value, System.Collections.Generic.IEqualityComparer<char>? equalityComparer = null)
-        => source.CommonSuffixLength(offset, value, equalityComparer, count) == count;
+        => CommonSuffixLength(source, offset, value, equalityComparer, count) == count;
 
       /// <summary>
       /// <para>Indicates whether the <paramref name="value"/> ends at <paramref name="source"/>[end - <paramref name="offset"/>]. Uses the specified <paramref name="equalityComparer"/>, or default if null.</para>
@@ -718,7 +696,7 @@ namespace Flux
       /// <param name="equalityComparer"></param>
       /// <returns></returns>
       public bool IsCommonSuffix(int offset, System.ReadOnlySpan<char> value, System.Collections.Generic.IEqualityComparer<char>? equalityComparer = null)
-        => source.CommonSuffixLength(offset, value, equalityComparer, value.Length) == value.Length;
+        => CommonSuffixLength(source, offset, value, equalityComparer, value.Length) == value.Length;
 
       /// <summary>
       /// <para>Returns whether <paramref name="count"/> of any <paramref name="values"/> that ends at <paramref name="source"/>[end - <paramref name="offset"/>]. Uses the <paramref name="equalityComparer"/>, or default if null.</para>
@@ -739,7 +717,7 @@ namespace Flux
       public bool IsCommonSuffixAny(int offset, System.Collections.Generic.IEqualityComparer<char>? equalityComparer, int maxLength, params string[] values)
       {
         for (var valuesIndex = 0; valuesIndex < values.Length; valuesIndex++)
-          if (values[valuesIndex] is var value && source.IsCommonSuffix(offset, value.AsSpan()[..int.Min(value.Length, maxLength)], equalityComparer))
+          if (values[valuesIndex] is var value && IsCommonSuffix(source, offset, value.AsSpan()[..int.Min(value.Length, maxLength)], equalityComparer))
             return true;
 
         return false;
@@ -750,7 +728,7 @@ namespace Flux
       /// <para>Uses the specified <paramref name="equalityComparer"/>, or default if null.</para>
       /// </summary>
       public bool IsCommonSuffixAny(int offset, System.Collections.Generic.IEqualityComparer<char>? equalityComparer, params string[] values)
-        => source.IsCommonSuffixAny(offset, equalityComparer, int.MaxValue, values);
+        => IsCommonSuffixAny(source, offset, equalityComparer, int.MaxValue, values);
 
       #endregion
 
@@ -857,21 +835,23 @@ namespace Flux
       #region MakeNumbersFixedLength
 
       /// <summary>
-      /// <para>Make all numeric groups be of at least <paramref name="fixedLength"/> in <paramref name="source"/> from <paramref name="startIndex"/> and <paramref name="count"/> characters.</para>
+      /// <para>Make all numeric groups be of at least <paramref name="fixedLength"/> in <paramref name="source"/> from <paramref name="index"/> and <paramref name="length"/> characters.</para>
       /// </summary>
       /// <param name="source"></param>
       /// <param name="fixedLength"></param>
-      /// <param name="startIndex"></param>
-      /// <param name="count"></param>
+      /// <param name="index"></param>
+      /// <param name="length"></param>
       /// <returns></returns>
-      public System.Text.StringBuilder MakeNumbersFixedLength(int fixedLength, int startIndex, int count)
+      public System.Text.StringBuilder MakeNumbersFixedLength(int fixedLength, int index, int length)
       {
         System.ArgumentNullException.ThrowIfNull(source);
+
+        var endIndex = System.Range.AssertInRange(index, length, source.Length);
 
         bool wasDigit = false;
         var digitCount = 0;
 
-        for (var i = startIndex + count - 1; i >= startIndex; i--)
+        for (var i = endIndex; i >= index; i--)
         {
           var isDigit = char.IsDigit(source[i]);
 
@@ -894,13 +874,13 @@ namespace Flux
 
       #region ..Most
 
-      /// <summary>Returns a string containing at most <paramref name="count"/> of characters from the left (start-of-string), if available, otherwise the entire string is returned.</summary>
-      public string LeftMost(int count)
-        => source.ToString(source.Length - int.Min(source.Length, count));
+      /// <summary>Returns a string containing at most <paramref name="length"/> of characters from the left (start-of-string), if available, otherwise the entire string is returned.</summary>
+      public string LeftMost(int length)
+        => source.ToString(source.Length - int.Min(source.Length, length));
 
-      /// <summary>Returns a string containing at most <paramref name="count"/> of characters from the right (end-of-string), if available, otherwise the entire string is returned.</summary>
-      public string RightMost(int count)
-        => source.ToString(int.Max(0, source.Length - count));
+      /// <summary>Returns a string containing at most <paramref name="length"/> of characters from the right (end-of-string), if available, otherwise the entire string is returned.</summary>
+      public string RightMost(int length)
+        => source.ToString(int.Max(0, source.Length - length));
 
       #endregion
 
@@ -1250,12 +1230,13 @@ namespace Flux
       public System.Text.StringBuilder ReplaceAll(int index, int length, System.Func<char, int, bool> predicate, System.Func<char, int, string?> replacementSelector)
       {
         System.ArgumentNullException.ThrowIfNull(source);
-        System.ArgumentOutOfRangeException.ThrowIfNegative(index);
-        System.ArgumentOutOfRangeException.ThrowIfNegative(length);
+
+        var endIndex = System.Range.AssertInRange(index, length, source.Length);
+
         System.ArgumentNullException.ThrowIfNull(predicate);
         System.ArgumentNullException.ThrowIfNull(replacementSelector);
 
-        for (var i = index + length - 1; i >= index; i--)
+        for (var i = endIndex; i >= index; i--)
           if (source[i] is var c && predicate(c, i) && replacementSelector(c, i) is var r && r is not null)
             source.Remove(i, 1).Insert(i, r);
 
@@ -1269,9 +1250,20 @@ namespace Flux
       /// <param name="predicate"></param>
       /// <param name="replacementSelector"></param>
       /// <returns></returns>
+      /// <remarks>In both the <paramref name="predicate"/>(e, bool) and the <paramref name="replacementSelector"/>(e, string): e = the character.</remarks>
+      public System.Text.StringBuilder ReplaceAll(System.Func<char, int, bool> predicate, System.Func<char, int, string?> replacementSelector)
+        => ReplaceAll(source, 0, source.Length, predicate, replacementSelector);
+
+      /// <summary>
+      /// <para>Replace all characters satisfying the <paramref name="predicate"/> using the <paramref name="replacementSelector"/>.</para>
+      /// </summary>
+      /// <param name="source"></param>
+      /// <param name="predicate"></param>
+      /// <param name="replacementSelector"></param>
+      /// <returns></returns>
       /// <remarks>In both the <paramref name="predicate"/>(e, i, bool) and the <paramref name="replacementSelector"/>(e, i, string): e = the character, i = the index of the character.</remarks>
       public System.Text.StringBuilder ReplaceAll(int index, int length, System.Func<char, bool> predicate, System.Func<char, string?> replacementSelector)
-        => ReplaceAll(source, 0, source.Length, (e, i) => predicate(e), (e, i) => replacementSelector(e));
+        => ReplaceAll(source, index, length, (e, i) => predicate(e), (e, i) => replacementSelector(e));
 
       /// <summary>
       /// <para>Replace all characters satisfying the <paramref name="predicate"/> using the <paramref name="replacementSelector"/>.</para>
@@ -1349,12 +1341,11 @@ namespace Flux
       #region Reverse
 
       /// <summary>Reverse all ranged characters sort of in-place. Handles surrogates.</summary>
-      public System.Text.StringBuilder Reverse(int startIndex, int endIndex)
+      public System.Text.StringBuilder Reverse(int startIndex, int length)
       {
         System.ArgumentNullException.ThrowIfNull(source);
 
-        if (startIndex < 0 || startIndex >= source.Length) throw new System.ArgumentOutOfRangeException(nameof(startIndex));
-        if (endIndex < startIndex || endIndex >= source.Length) throw new System.ArgumentOutOfRangeException(nameof(endIndex));
+        var endIndex = System.Range.AssertInRange(startIndex, length, source.Length);
 
         while (startIndex < endIndex)
           source.Swap(startIndex++, endIndex--);
@@ -1364,7 +1355,7 @@ namespace Flux
 
       /// <summary>Reverse all characters sort of in-place. Handles surrogates.</summary>
       public System.Text.StringBuilder Reverse()
-        => Reverse(source, 0, source.Length - 1);
+        => Reverse(source, 0, source.Length);
 
       #endregion
 
@@ -1565,7 +1556,7 @@ namespace Flux
       /// <returns></returns>
       public System.Text.StringBuilder TrimCommonPrefix(int offset, System.Func<char, bool> predicate, int maxTrimLength = int.MaxValue)
       {
-        var length = source.CommonPrefixLength(offset, predicate, maxTrimLength);
+        var length = CommonPrefixLength(source, offset, predicate, maxTrimLength);
 
         return source.Remove(offset, length);
       }
@@ -1581,7 +1572,7 @@ namespace Flux
       /// <returns></returns>
       public System.Text.StringBuilder TrimCommonPrefix(int offset, char value, System.Collections.Generic.IEqualityComparer<char>? equalityComparer = null, int maxTrimLength = int.MaxValue)
       {
-        var length = source.CommonPrefixLength(offset, value, equalityComparer, maxTrimLength);
+        var length = CommonPrefixLength(source, offset, value, equalityComparer, maxTrimLength);
 
         return source.Remove(offset, length);
       }
@@ -1596,7 +1587,7 @@ namespace Flux
       /// <returns></returns>
       public System.Text.StringBuilder TrimCommonPrefix(int offset, System.ReadOnlySpan<char> value, System.Collections.Generic.IEqualityComparer<char>? equalityComparer = null)
       {
-        var length = source.CommonPrefixLength(offset, value, equalityComparer);
+        var length = CommonPrefixLength(source, offset, value, equalityComparer);
 
         return source.Remove(offset, length);
       }
@@ -1614,7 +1605,7 @@ namespace Flux
       /// <returns></returns>
       public System.Text.StringBuilder TrimCommonSuffix(int offset, System.Func<char, bool> predicate, int maxTrimLength = int.MaxValue)
       {
-        var length = source.CommonSuffixLength(offset, predicate, maxTrimLength);
+        var length = CommonSuffixLength(source, offset, predicate, maxTrimLength);
 
         return source.Remove(source.Length - offset - length, length);
       }
@@ -1630,7 +1621,7 @@ namespace Flux
       /// <returns></returns>
       public System.Text.StringBuilder TrimCommonSuffix(int offset, char value, System.Collections.Generic.IEqualityComparer<char>? equalityComparer = null, int maxTrimLength = int.MaxValue)
       {
-        var length = source.CommonSuffixLength(offset, value, equalityComparer, maxTrimLength);
+        var length = CommonSuffixLength(source, offset, value, equalityComparer, maxTrimLength);
 
         return source.Remove(source.Length - offset - length, length);
       }
@@ -1646,7 +1637,7 @@ namespace Flux
       /// <returns></returns>
       public System.Text.StringBuilder TrimCommonSuffix(int offset, System.ReadOnlySpan<char> value, System.Collections.Generic.IEqualityComparer<char>? equalityComparer = null, int maxTrimLength = int.MaxValue)
       {
-        var length = source.CommonSuffixLength(offset, value, equalityComparer, maxTrimLength);
+        var length = CommonSuffixLength(source, offset, value, equalityComparer, maxTrimLength);
 
         return source.Remove(source.Length - offset - length, length);
       }

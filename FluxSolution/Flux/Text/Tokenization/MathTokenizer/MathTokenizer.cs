@@ -5,20 +5,13 @@ namespace Flux.Text.Tokenization
   public sealed class MathTokenizer
     : ITokenizer<MathToken>
   {
-    //public const string Unrecognized = nameof(Unrecognized);
-
-    //public const string Whitespace = nameof(Whitespace);
-    //public const string RegexWhitespace = @"^\s+";
-
-    //    private Tokenizer _tokenizer = new Tokenizer();
-
     private readonly System.Collections.Generic.Dictionary<string, System.Text.RegularExpressions.Regex> m_recognized;
 
-    public MathTokenizer(bool multipleArguments)
+    public MathTokenizer(bool enableMultipleParenthesisArguments)
     {
       m_recognized = new System.Collections.Generic.Dictionary<string, System.Text.RegularExpressions.Regex>()
       {
-        { nameof(MathTokenParenthesis), multipleArguments ? MathTokenParenthesis.RegexWithComma() : MathTokenParenthesis.RegexWithoutComma() },
+        { nameof(MathTokenParenthesis), enableMultipleParenthesisArguments ? MathTokenParenthesis.RegexWithComma() : MathTokenParenthesis.RegexWithoutComma() },
         { nameof(MathTokenOperator), MathTokenOperator.Regex() },
         { nameof(MathTokenNumber), MathTokenNumber.Regex() },
         { nameof(MathTokenLabel), MathTokenLabel.Regex() },
@@ -27,6 +20,12 @@ namespace Flux.Text.Tokenization
       };
     }
 
+    /// <summary>
+    /// <para></para>
+    /// </summary>
+    /// <param name="expression"></param>
+    /// <returns></returns>
+    /// <exception cref="System.Exception"></exception>
     public System.Collections.Generic.IEnumerable<MathToken> GetTokens(string expression)
     {
       var tokens = new System.Collections.Generic.List<MathToken>();
@@ -86,6 +85,13 @@ namespace Flux.Text.Tokenization
       return tokens;
     }
 
+    /// <summary>
+    /// <para></para>
+    /// </summary>
+    /// <param name="tokens"></param>
+    /// <param name="discardUnrecognized"></param>
+    /// <returns></returns>
+    /// <exception cref="System.ArgumentException"></exception>
     public System.Collections.Generic.IList<MathToken> FilterTokens(System.Collections.Generic.IList<MathToken> tokens, bool discardUnrecognized)
       => MergeUnaryNegativeOperator(tokens.Where(t => t is not MathTokenWhitespace).Where(t => !(t is MathTokenUnrecognized && discardUnrecognized)).Select(t => t is not MathTokenUnrecognized ? t : throw new System.ArgumentException($"Invalid token: {t.ToTokenString()}", nameof(tokens))).ToList());
 
@@ -114,6 +120,7 @@ namespace Flux.Text.Tokenization
 
       return double.Parse(stack.Pop().Value, System.Globalization.NumberStyles.Number, System.Globalization.CultureInfo.CurrentCulture);
     }
+
     /// <summary>
     /// <para>Evaluate a sequence of tokens in postfix notation order (a.k.a. Reverse Polish Notation, or RPN), to a value.</para>
     /// <see href="https://en.wikipedia.org/wiki/Reverse_Polish_notation"/>
@@ -140,6 +147,11 @@ namespace Flux.Text.Tokenization
       return double.Parse(stack.Pop().Value, System.Globalization.NumberStyles.Number, System.Globalization.CultureInfo.CurrentCulture);
     }
 
+    /// <summary>
+    /// <para></para>
+    /// </summary>
+    /// <param name="tokens"></param>
+    /// <returns></returns>
     public static System.Collections.Generic.IEnumerable<MathToken> GetUnbalancedParenthesis(System.Collections.Generic.IEnumerable<MathToken> tokens)
     {
       if (tokens.Where(t => t.Name.Equals(nameof(MathTokenParenthesis), System.StringComparison.Ordinal)).ToList() is System.Collections.Generic.List<MathToken> ps && ps.Count != 0)
@@ -278,6 +290,11 @@ namespace Flux.Text.Tokenization
       return list;
     }
 
+    /// <summary>
+    /// <para>Unify all basic mathematical operators.</para>
+    /// </summary>
+    /// <param name="expression"></param>
+    /// <returns></returns>
     public static string UnifyExpressionOperators(string expression)
     {
       System.ArgumentNullException.ThrowIfNull(expression);

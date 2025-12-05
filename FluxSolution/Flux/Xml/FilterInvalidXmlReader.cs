@@ -1,4 +1,4 @@
-namespace Flux.Xml
+namespace Flux
 {
   // https://www.w3.org/TR/xml/#NT-Char
   // https://docs.microsoft.com/en-us/dotnet/api/system.xml.xmlreader

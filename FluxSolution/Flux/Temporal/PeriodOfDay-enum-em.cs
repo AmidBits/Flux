@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Fx
+  public static partial class TemporalExtensions
   {
     public static Temporal.PeriodOfDay GetPeriodOfDay(this System.TimeOnly source)
       => ((source.Hour == 23 && source.Minute > 47) || (source.Hour == 00 && source.Minute < 13))

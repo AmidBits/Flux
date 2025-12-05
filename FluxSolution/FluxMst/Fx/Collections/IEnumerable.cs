@@ -73,7 +73,7 @@ namespace Collections.Generic
     [TestMethod]
     public void GetExtremum()
     {
-      var (minIndex, minItem, minValue, maxIndex, maxItem, maxValue) = Flux.IEnumerable.Extremum(integers, v => v);
+      var (minItem, minIndex, minValue, maxItem, maxIndex, maxValue) = Flux.IEnumerable.Extremum(integers, v => v);
 
       Assert.AreEqual(5, maxIndex);
       Assert.AreEqual(0, minIndex);

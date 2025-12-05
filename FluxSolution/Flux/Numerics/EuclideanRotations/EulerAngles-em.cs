@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Em
+  public static partial class DataStructuresExtensions
   {
     public static Numerics.EuclideanRotations.AxisAngle ToAxisAngle(this Numerics.EuclideanRotations.EulerAngles source)
     {

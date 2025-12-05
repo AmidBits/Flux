@@ -2,12 +2,10 @@
 {
   public static partial class CharExtensions
   {
-    //public const string SuperscriptAlphaLower = "ᵃᵇᶜᵈᵉᶠᵍʰⁱʲᵏˡᵐⁿᵒᵖ\0ʳˢᵗᵘᵛʷˣʸᶻ";
-    //public const string SuperscriptNumeric = "⁰¹²³⁴⁵⁶⁷⁸⁹";
+    #region Subscript/superscript dictionaries
 
     //public const string SubscriptAlphaLower = "ₐ\0\0\0ₑ\0\0ₕᵢⱼₖₗₘₙₒₚ\0ᵣₛₜᵤᵥ\0ₓ\0\0";
     //public const string SubscriptNumeric = "₀₁₂₃₄₅₆₇₈₉";
-
     private static System.Collections.Generic.Dictionary<char, char> m_subscriptDictionary = new()
     {
       { '\u0028', '\u208D' },
@@ -43,6 +41,8 @@
       { '\u0078', '\u2093' },
     };
 
+    //public const string SuperscriptAlphaLower = "ᵃᵇᶜᵈᵉᶠᵍʰⁱʲᵏˡᵐⁿᵒᵖ\0ʳˢᵗᵘᵛʷˣʸᶻ";
+    //public const string SuperscriptNumeric = "⁰¹²³⁴⁵⁶⁷⁸⁹";
     private static System.Collections.Generic.Dictionary<char, char> m_superscriptDictionary = new()
     {
       { '\u0028', '\u207D' },
@@ -120,6 +120,8 @@
       //{ '\u00F8', '\u107A2' },
     };
 
+    #endregion
+
     extension(System.Char)
     {
       #region ControlPicture
@@ -174,6 +176,8 @@
       }
 
       #endregion
+
+      #region FoldToAscii
 
       /// <summary>
       /// <para>Folds chars representing characters above ASCII as a reasonable ASCII equivalent. Only characters from certain blocks are converted.</para>
@@ -1658,6 +1662,8 @@
         }
       }
 
+      #endregion
+
       /// <summary>
       /// <para>Indicates whether the character is the letter 'Y' or 'y', i.e. ignore case.</para>
       /// </summary>
@@ -1680,6 +1686,8 @@
         return char.IsLetter(source) && MemoryExtensions.Contains(culture.GetConsonants(), source);
       }
 
+      #region IsPrintableAscii
+
       /// <summary>
       /// <para>Returns whether a character is a printable from the ASCII table, i.e. any character from U+0020 (32 = ' ' space) to U+007E (126 = '~' tilde), both inclusive.</para>
       /// </summary>
@@ -1688,21 +1696,7 @@
       public static bool IsPrintableAscii(char c)
         => c is >= '\u0020' and <= '\u007E';
 
-      /// <summary>
-      /// <para>Indicates whether the specified Unicode character is categorized as a subscript character.</para>
-      /// </summary>
-      /// <param name="c"></param>
-      /// <returns></returns>
-      public static bool IsSubscript(char c)
-        => m_subscriptDictionary.ContainsKey(c);
-
-      /// <summary>
-      /// <para>Indicates whether the specified Unicode character is categorized as a superscript character.</para>
-      /// </summary>
-      /// <param name="c"></param>
-      /// <returns></returns>
-      public static bool IsSuperscript(char c)
-        => m_superscriptDictionary.ContainsKey(c);
+      #endregion
 
       /// <summary>
       /// <para>Indicates whether a <see cref="char"/> is a vowel in the specified <paramref name="culture"/>.</para>
@@ -1717,6 +1711,16 @@
         return char.IsLetter(source) && MemoryExtensions.Contains(culture.GetVowels(), source);
       }
 
+      #region ..Subscript
+
+      /// <summary>
+      /// <para>Indicates whether the specified Unicode character is categorized as a subscript character.</para>
+      /// </summary>
+      /// <param name="c"></param>
+      /// <returns></returns>
+      public static bool IsSubscript(char c)
+        => m_subscriptDictionary.ContainsKey(c);
+
       /// <summary>
       /// <para>Converts the value of a Unicode character to its subscript equivalent.</para>
       /// </summary>
@@ -1724,6 +1728,21 @@
       /// <returns></returns>
       public static char ToSubscript(char c)
         => m_subscriptDictionary.TryGetValue(c, out var subscriptCharacter) ? subscriptCharacter : c;
+
+      public static bool TryConvertToSubscript(char c, out char subscriptCharacter)
+        => (subscriptCharacter = ToSubscript(c)) != c;
+
+      #endregion
+
+      #region ..Superscript
+
+      /// <summary>
+      /// <para>Indicates whether the specified Unicode character is categorized as a superscript character.</para>
+      /// </summary>
+      /// <param name="c"></param>
+      /// <returns></returns>
+      public static bool IsSuperscript(char c)
+        => m_superscriptDictionary.ContainsKey(c);
 
       /// <summary>
       /// <para>Converts the value of a Unicode character to its superscript equivalent.</para>
@@ -1733,11 +1752,10 @@
       public static char ToSuperscript(char c)
         => m_superscriptDictionary.TryGetValue(c, out var superscriptCharacter) ? superscriptCharacter : c;
 
-      public static bool TryConvertToSubscript(char c, out char subscriptCharacter)
-        => (subscriptCharacter = char.ToSubscript(c)) != c;
-
       public static bool TryConvertToSuperscript(char c, out char superscriptCharacter)
-        => (superscriptCharacter = char.ToSuperscript(c)) != c;
+        => (superscriptCharacter = ToSuperscript(c)) != c;
+
+      #endregion
     }
 
     extension(System.Char source)

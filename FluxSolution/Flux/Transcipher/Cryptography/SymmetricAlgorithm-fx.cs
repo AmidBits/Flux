@@ -1,6 +1,6 @@
-namespace Flux
+namespace Flux.Transcipher
 {
-  public static partial class Fx
+  public static partial class Helper
   {
     /// <summary>
     /// <para>Sets the <see cref="System.Security.Cryptography.SymmetricAlgorithm.Key"/> property by <paramref name="encoding"/> the <paramref name="key"/> string into bytes.</para>

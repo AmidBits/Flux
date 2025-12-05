@@ -68,7 +68,7 @@ namespace Maths
     [TestMethod]
     public void TruncatedDivRem()
     {
-      var actual = ModuloOperations.TruncatedDivRem(9, 6);
+      var actual = int.DivRem(9, 6);
       var expected = (1, 3);
       Assert.AreEqual(expected, actual);
     }

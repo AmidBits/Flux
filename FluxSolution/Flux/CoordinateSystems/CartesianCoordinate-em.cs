@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class Em
+  public static partial class CoordinateSystemsExtensions
   {
     /// <summary>Creates a new <see cref="Geometry.CoordinateSystems.CylindricalCoordinate"/> from a <see cref="System.Numerics.Vector2"/>.</summary>
     public static CoordinateSystems.CartesianCoordinate ToCartesianCoordinate(this System.Numerics.Vector2 source, double z = 0, double w = 0)

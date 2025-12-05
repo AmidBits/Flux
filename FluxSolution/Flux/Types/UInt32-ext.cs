@@ -8,7 +8,7 @@ namespace Flux
       /// <para>The largest prime number that fits in the type.</para>
       /// </summary>
       [System.CLSCompliant(false)]
-      public static uint LargestPrimeNumber => 4294967291u;
+      public static uint MaxPrimeNumber => 4294967291u;
     }
   }
 }

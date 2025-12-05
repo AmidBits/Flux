@@ -166,7 +166,7 @@ namespace Flux
         var remainder = new T[System.Numerics.Vector<T>.Count];
 
         for (var i = System.Numerics.Vector<T>.Count - 1; i >= 0; i--)
-          (quotient[i], remainder[i]) = ModuloOperations.TruncatedDivRem(source[i], divisor[i]);
+          (quotient[i], remainder[i]) = T.DivRem(source[i], divisor[i]);
 
         return (new System.Numerics.Vector<T>(quotient), new System.Numerics.Vector<T>(remainder));
       }

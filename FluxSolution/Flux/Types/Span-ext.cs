@@ -1,5 +1,3 @@
-using System.Diagnostics.Tracing;
-
 namespace Flux
 {
   public enum HeapSortType

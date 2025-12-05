@@ -213,41 +213,45 @@ namespace ConsoleApp
       }
       ;
 
-      void AreUnique(params Flux.AmbOperator.IValue<int>[] values) => amb.Require(() => values.Select(v => v.Value).Distinct().Count() == 5);
-      void IsSame(Flux.AmbOperator.IValue<int> left, Flux.AmbOperator.IValue<int> right) => amb.Require(() => left.Value == right.Value);
-      void IsLeftOf(Flux.AmbOperator.IValue<int> left, Flux.AmbOperator.IValue<int> right) => amb.Require(() => right.Value - left.Value == 1);
-      void IsIn(Flux.AmbOperator.IValue<int> attrib, int house) => amb.Require(() => attrib.Value == house);
-      void IsNextTo(Flux.AmbOperator.IValue<int> left, Flux.AmbOperator.IValue<int> right) => amb.Require(() => System.Math.Abs(left.Value - right.Value) == 1);
+      Flux.AmbOperator.IValue<int> house1 = Term(nameof(house1)), house2 = Term(nameof(house2)), house3 = Term(nameof(house3)), house4 = Term(nameof(house4)), house5 = Term(nameof(house5));
+      amb.AllUnique(null, house1, house2, house3, house4, house5); // Unique values.
+
+      //void AreUnique(params Flux.AmbOperator.IValue<int>[] values) => amb.AllUnequal(null, values);// amb.Require(() => values.Select(v => v.Value).Distinct().Count() == 5);
+      //void IsSame(Flux.AmbOperator.IValue<int> left, Flux.AmbOperator.IValue<int> right) => amb.IsEqual(left, right, null);// amb.Require(() => left.Value == right.Value);
+      //void IsLeftOf(Flux.AmbOperator.IValue<int> left, Flux.AmbOperator.IValue<int> right) => amb.IsConsecutivelyLessThan(left, right);// amb.Require(() => right.Value - left.Value == 1);
+      //void IsIn(Flux.AmbOperator.IValue<int> attrib, int house) => amb.IsEqual(attrib, house, null);// amb.Require(() => attrib.Value == house);
+      //void IsIn(Flux.AmbOperator.IValue<int> attrib, Flux.AmbOperator.IValue<int> house) => amb.IsEqual(attrib, house, null);
+      //void IsNextTo(Flux.AmbOperator.IValue<int> left, Flux.AmbOperator.IValue<int> right) => amb.AreConsecutive(left, right); // amb.Require(() => System.Math.Abs(left.Value - right.Value) == 1);
 
       Flux.AmbOperator.IValue<int> english = Term(nameof(english)), swede = Term(nameof(swede)), dane = Term(nameof(dane)), norwegian = Term(nameof(norwegian)), german = Term(nameof(german));
-      AreUnique(english, swede, german, dane, norwegian); // Unique values.
-      IsIn(norwegian, 1); // 10
+      amb.AllUnique(null, english, swede, german, dane, norwegian); // Unique values.
+      amb.IsEqual(norwegian, house1, null); // 10
 
       Flux.AmbOperator.IValue<int> red = Term(nameof(red)), green = Term(nameof(green)), white = Term(nameof(white)), blue = Term(nameof(blue)), yellow = Term(nameof(yellow));
-      AreUnique(red, green, white, blue, yellow); // Unique values.
-      IsNextTo(norwegian, blue); // 15
-      IsLeftOf(green, white); // 5
-      IsSame(english, red); // 2
+      amb.AllUnique(null, red, green, white, blue, yellow); // Unique values.
+      amb.AreConsecutive(norwegian, blue); // 15
+      amb.IsConsecutivelyLessThan(green, white); // 5
+      amb.IsEqual(english, red, null); // 2
 
       Flux.AmbOperator.IValue<int> tea = Term(nameof(tea)), coffee = Term(nameof(coffee)), milk = Term(nameof(milk)), beer = Term(nameof(beer)), water = Term(nameof(water));
-      AreUnique(tea, coffee, milk, beer, water); // Unique values.
-      IsIn(milk, 3); // 9
-      IsSame(dane, tea); // 4
-      IsSame(green, coffee); // 6
+      amb.AllUnique(null, tea, coffee, milk, beer, water); // Unique values.
+      amb.IsEqual(milk, house3, null); // 9
+      amb.IsEqual(dane, tea, null); // 4
+      amb.IsEqual(green, coffee, null); // 6
 
       Flux.AmbOperator.IValue<int> dog = Term(nameof(dog)), cat = Term(nameof(cat)), birds = Term(nameof(birds)), horse = Term(nameof(horse)), zebra = Term(nameof(zebra));
-      AreUnique(dog, cat, birds, horse, zebra); // Unique values.
-      IsSame(swede, dog); // 3
+      amb.AllUnique(null, dog, cat, birds, horse, zebra); // Unique values.
+      amb.IsEqual(swede, dog, null); // 3
 
       Flux.AmbOperator.IValue<int> pallmall = Term(nameof(pallmall)), dunhill = Term(nameof(dunhill)), blend = Term(nameof(blend)), bluemaster = Term(nameof(bluemaster)), prince = Term(nameof(prince));
-      AreUnique(pallmall, dunhill, bluemaster, prince, blend); // Unique values.
-      IsSame(pallmall, birds); // 7
-      IsSame(dunhill, yellow); // 8
-      IsNextTo(blend, cat); // 11
-      IsNextTo(horse, dunhill); // 12
-      IsSame(bluemaster, beer); // 13
-      IsSame(german, prince); // 14
-      IsNextTo(water, blend); // 16
+      amb.AllUnique(null, pallmall, dunhill, bluemaster, prince, blend); // Unique values.
+      amb.IsEqual(pallmall, birds, null); // 7
+      amb.IsEqual(dunhill, yellow, null); // 8
+      amb.AreConsecutive(blend, cat); // 11
+      amb.AreConsecutive(horse, dunhill); // 12
+      amb.IsEqual(bluemaster, beer, null); // 13
+      amb.IsEqual(german, prince, null); // 14
+      amb.AreConsecutive(water, blend); // 16
 
       if (!amb.Disambiguate())
       {

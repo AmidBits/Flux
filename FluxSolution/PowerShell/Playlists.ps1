@@ -26,8 +26,6 @@ function Build-Playlist([string]$playlistName, [string[]]$directories, [string]$
     Write-Host $playlistName
 }
 
-Build-Playlist "All Music" ("Tracks\Collections", "Tracks\MediaTracks", "Tracks\Miscellaneous")
-
 Build-Playlist "Billy Idol" ("Tracks\Collections\Billy Idol")
 Build-Playlist "Depeche Mode" ("Tracks\Collections\Depeche Mode")
 Build-Playlist "DEVO" ("Tracks\Collections\DEVO")
@@ -42,19 +40,15 @@ Build-Playlist "Wipeout" ("Tracks\MediaTracks\CoLD SToRAGE", "Tracks\MediaTracks
 Build-Playlist "Yazoo" ("Tracks\Collections\Yazoo", "Tracks\Collections\Yaz")
 Build-Playlist "Yello" ("Tracks\Collections\Yello")
 
+Build-Playlist "All Music" ("Tracks\Collections", "Tracks\MediaTracks", "Tracks\Miscellaneous")
+
+Build-Playlist "Collections" ("Tracks\Collections")
+
 Build-Playlist "MediaTracks" ("Tracks\MediaTracks")
 
 Build-Playlist "Miscellaneous" ("Tracks\Miscellaneous")
 
 Build-Playlist "Personal Jesus" ("Tracks\Collections", "Tracks\MediaTracks", "Tracks\Miscellaneous") "*Personal Jesus*.mp3"
-
-Build-Playlist "Always Looking Up (Michael J. Fox)" ("Books\Michael J. Fox\Always Looking Up")
-Build-Playlist "Art Of War (Sun Tzu)" ("Books\Sun Tzu\Art of War")
-Build-Playlist "George Washington (J. Ellis)" ("Books\Joseph J. Ellis\His Excellency - George Washington")
-Build-Playlist "Letting Go Of God (Julia Sweeney)" ("Books\Julia Sweeney\Letting Go Of God")
-Build-Playlist "Meditations (Marcus Aurelius)" ("Books\Marcus Aurelius Antoninus\Meditations")
-Build-Playlist "Moral Letters to Lucilius (Seneca the Younger)" ("Books\Lucius Annaeus Seneca the Younger\Lucilius Epistulae")
-Build-Playlist "The Divine Comedy (Dante Alighieri)" ("Books\Dante Alighieri\The Divine Comedy")
 
 Build-Playlist "Svensk Musik" ("Tracks\Collections\Adolphson & Falk", "Tracks\Collections\Gyllene Tider", "Tracks\Collections\Lustans Lakejer", "Tracks\Collections\Noice", "Tracks\Collections\Ratata")
 
@@ -63,3 +57,11 @@ Build-Playlist "Lindeman" ("Comedy") "*Lindeman*.mp3"
 Build-Playlist "Talk & Comedy" ("Comedy")
 
 Build-Playlist "X-mas" ("Tracks\X-mas")
+
+Build-Playlist "Always Looking Up (Michael J. Fox)" ("Books\Michael J. Fox\Always Looking Up")
+Build-Playlist "Art Of War (Sun Tzu)" ("Books\Sun Tzu\Art of War")
+Build-Playlist "George Washington (J. Ellis)" ("Books\Joseph J. Ellis\His Excellency - George Washington")
+Build-Playlist "Letting Go Of God (Julia Sweeney)" ("Books\Julia Sweeney\Letting Go Of God")
+Build-Playlist "Meditations (Marcus Aurelius)" ("Books\Marcus Aurelius Antoninus\Meditations")
+Build-Playlist "Moral Letters to Lucilius (Seneca the Younger)" ("Books\Lucius Annaeus Seneca the Younger\Lucilius Epistulae")
+Build-Playlist "The Divine Comedy (Dante Alighieri)" ("Books\Dante Alighieri\The Divine Comedy")

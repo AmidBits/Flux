@@ -3,10 +3,10 @@
   public class RangeComparer
     : System.Collections.Generic.IComparer<System.Range>
   {
-    public static RangeComparer Ascending = new(SortOrder.Ascending);
-    public static RangeComparer Descending = new(SortOrder.Descending);
+    public static RangeComparer Ascending { get; } = new(SortOrder.Ascending);
+    public static RangeComparer Descending { get; } = new(SortOrder.Descending);
 
-    private SortOrder m_sortOrder;
+    private readonly SortOrder m_sortOrder;
 
     private RangeComparer(SortOrder sortOrder) => m_sortOrder = sortOrder;
 

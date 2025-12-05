@@ -1,6 +1,6 @@
 ﻿namespace Flux
 {
-  public static partial class Em
+  public static partial class UnitsExtensions
   {
     public static double GetUnitFactor(this Units.EnergyUnit unit)
       => unit switch

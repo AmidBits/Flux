@@ -126,6 +126,29 @@ namespace Flux
       #endregion
     }
 
+    extension<T>(System.Collections.Generic.IEnumerable<T> source)
+    {
+      public (int Count, int DistinctCount, bool IsDistinct, bool AllEqual) Counts<TValue>(System.Func<T, TValue> valueSelector, System.Collections.Generic.IEqualityComparer<TValue>? equalityComparer = null)
+      {
+        equalityComparer ??= System.Collections.Generic.EqualityComparer<TValue>.Default;
+
+        var count = 0;
+
+        var distinct = new System.Collections.Generic.HashSet<TValue>(equalityComparer);
+
+        foreach (var item in source)
+        {
+          count++;
+
+          distinct.Add(valueSelector(item));
+        }
+
+        var distinctCount = distinct.Count;
+
+        return (count, distinctCount, distinctCount == count, distinctCount == 1);
+      }
+    }
+
     #region GetMissingRanges
 
     //    /// <summary>Given an array of positive integers. All numbers occur even number of times except one number which occurs odd number of times. Find the number in O(n) time & constant space.</summary>
@@ -467,11 +490,11 @@ namespace Flux
         new System.Collections.Generic.IEnumerable<T>[] { source }.Concat(targets)
         , emptyProduct
         , (accumulator, sequence) =>
-          from accumulatorSequence
-          in accumulator
-          from item
-          in sequence
-          select accumulatorSequence.Concat([item])
+        from accumulatorSequence
+        in accumulator
+        from item
+        in sequence
+        select accumulatorSequence.Concat([item])
       );
     }
 
@@ -490,11 +513,11 @@ namespace Flux
         new System.Collections.Generic.IEnumerable<T>[] { source }.Concat(targets)
         , emptyProduct
         , (accumulator, sequence) =>
-          from accumulatorSequence
-          in accumulator
-          from item
-          in sequence
-          select accumulatorSequence.Concat(new[] { item })
+        from accumulatorSequence
+        in accumulator
+        from item
+        in sequence
+        select accumulatorSequence.Concat(new[] { item })
       );
     }
 
@@ -582,6 +605,8 @@ namespace Flux
     }
 
     #endregion
+
+
 
     #region ElementAtOrValue
 

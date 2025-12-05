@@ -18,7 +18,7 @@
     /// <summary>The values of edges.</summary>
     private readonly System.Collections.Generic.Dictionary<(int, int), TEdgeValue> m_edgeValues = [];
 
-    public AdjacencyMatrix(int[,] matrix) => m_matrix = (int[,])matrix.AssertDimensionalSymmetry(out var _);
+    public AdjacencyMatrix(int[,] matrix) => m_matrix = (int[,])System.Array.AssertDimensionalSymmetry(matrix, out var _);
 
     public AdjacencyMatrix() : this(new int[0, 0]) { }
 
@@ -69,8 +69,11 @@
           // Trying to replace the InsertToCopy with more modular versions.
           //m_matrix = m_matrix.Copy0Insert(m_matrix.NewResize(1, 0), i);
           //m_matrix = m_matrix.Copy1Insert(m_matrix.NewResize(0, 1), i);
-          m_matrix = m_matrix.InsertToCopy(0, i, 1, [0]); // Add dimension 0 to accomodate the new vertex as a source.
-          m_matrix = m_matrix.InsertToCopy(1, i, 1, [0]); // Add dimension 1 to accomodate the new vertex as a target.
+          m_matrix = System.Array.InsertToCopy(TwoDimensionalArrayAxis.Row, m_matrix, i, 1);
+          m_matrix = System.Array.InsertToCopy(TwoDimensionalArrayAxis.Column, m_matrix, i, 1);
+          //m_matrix[0, i] = 0;
+          //m_matrix = m_matrix.InsertToCopy(0, i, 1, [0]); // Add dimension 0 to accomodate the new vertex as a source.
+          //m_matrix = m_matrix.InsertToCopy(1, i, 1, [0]); // Add dimension 1 to accomodate the new vertex as a target.
         }
 
         return true;
@@ -101,8 +104,10 @@
       {
         RemoveVertexValue(x);
 
-        m_matrix = m_matrix.Remove0ToCopy([x]); // Add dimension 0 to accomodate vertex values.
-        m_matrix = m_matrix.Remove1ToCopy([x]); // Add dimension 1 to accomodate vertex values.
+        m_matrix = System.Array.RemoveToCopy(TwoDimensionalArrayAxis.Row, m_matrix, [x]);
+        m_matrix = System.Array.RemoveToCopy(TwoDimensionalArrayAxis.Column, m_matrix, [x]);
+        //m_matrix = m_matrix.Remove0ToCopy([x]); // Add dimension 0 to accomodate vertex values.
+        //m_matrix = m_matrix.Remove1ToCopy([x]); // Add dimension 1 to accomodate vertex values.
 
         return true;
       }
@@ -362,7 +367,7 @@
       }
 
       sb.Append(System.Environment.NewLine);
-      sb.Append(grid.Rank2ToConsoleString(ConsoleFormatOptions.Default with { UniformWidth = true, CenterContent = true }));
+      sb.Append(System.Array.Rank2ToConsoleString(grid, ConsoleFormatOptions.Default with { UniformWidth = true, CenterContent = true }));
 
       return sb.ToString();
     }

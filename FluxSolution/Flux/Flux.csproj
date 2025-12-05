@@ -17,6 +17,15 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Include="Types\IEnumerable-ext.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <PackageReference Include="BenchmarkDotNet" Version="0.15.6" />
+	  <PackageReference Include="BenchmarkDotNet.Annotations" Version="0.15.6" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
 	</ItemGroup>
 
