@@ -117,7 +117,7 @@ namespace Flux.Units
 
       if (unit == SpeedUnit.Mach)
       {
-        sb.Append(fullName ? unit.GetUnitName(value.IsConsideredPlural()) : unit.GetUnitSymbol(false));
+        sb.Append(fullName ? unit.GetUnitName(Numbers.IsConsideredPlural(value)) : unit.GetUnitSymbol(false));
         sb.Append(spacing.ToSpacingString());
       }
 
@@ -126,7 +126,7 @@ namespace Flux.Units
       if (unit != SpeedUnit.Mach)
       {
         sb.Append(spacing.ToSpacingString());
-        sb.Append(fullName ? unit.GetUnitName(value.IsConsideredPlural()) : unit.GetUnitSymbol(false));
+        sb.Append(fullName ? unit.GetUnitName(Numbers.IsConsideredPlural(value)) : unit.GetUnitSymbol(false));
       }
 
       return sb.ToString();

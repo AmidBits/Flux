@@ -59,7 +59,7 @@
     public void AllEqual<T>(System.Collections.Generic.IEqualityComparer<T> equalityComparer, params System.Collections.Generic.IEnumerable<Flux.AmbOperator.IValue<T>> values)
       => Require(() => values.Counts(v => v.Value, equalityComparer).AllEqual);
 
-    public void AllUnique<T>(System.Collections.Generic.IEqualityComparer<T> equalityComparer, params Flux.AmbOperator.IValue<T>[] values)
+    public void AllUnique<T>(System.Collections.Generic.IEqualityComparer<T>? equalityComparer, params Flux.AmbOperator.IValue<T>[] values)
       => Require(() => values.Counts(v => v.Value, equalityComparer).IsDistinct);
 
     //public void IsEqual<T>(Flux.AmbOperator.IValue<T> left, T right, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)

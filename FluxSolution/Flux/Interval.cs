@@ -6,6 +6,15 @@
       where T : System.IComparable<T>
       => new(minValue, maxValue);
 
+    extension<TNumber>(Interval<TNumber>)
+      where TNumber : System.Numerics.INumber<TNumber>
+    {
+      /// <summary>
+      /// <para>The unit interval represents [0, 1].</para>
+      /// </summary>
+      public static Interval<TNumber> Unit => new(TNumber.Zero, TNumber.One);
+    }
+
     extension<TFloat>(Interval<TFloat> source)
       where TFloat : System.Numerics.IFloatingPoint<TFloat>
     {
@@ -22,7 +31,7 @@
       /// <returns></returns>
       public Interval<TNumber> Round<TNumber>(HalfRounding minValueRounding, HalfRounding maxValueRounding, out TNumber minValue, out TNumber maxValue)
         where TNumber : System.Numerics.INumber<TNumber>
-        => new(minValue = TNumber.CreateChecked(source.MinValue.RoundHalf(minValueRounding)), maxValue = TNumber.CreateChecked(source.MaxValue.RoundHalf(maxValueRounding)));
+        => new(minValue = TNumber.CreateChecked(FloatingPoints.RoundHalf(source.MinValue, minValueRounding)), maxValue = TNumber.CreateChecked(FloatingPoints.RoundHalf(source.MaxValue, maxValueRounding)));
     }
 
     extension<TInteger>(Interval<TInteger> source)
@@ -119,9 +128,9 @@
         var (minValue, maxValue) = (source.MinValue, source.MaxValue);
 
         if (TNumber.IsNegative(step)) // A negative number yields a descending sequence from maxValue to minValue of the interval.
-          return Iterations.LoopVerge(maxValue, step).TakeWhile(n => n >= minValue);
+          return Numbers.LoopVerge(maxValue, step).TakeWhile(n => n >= minValue);
         else if (!TNumber.IsZero(step)) // Any positive number but zero yields an ascending sequence from minValue to maxValue of the interval.
-          return Iterations.LoopVerge(minValue, step).TakeWhile(n => n <= maxValue);
+          return Numbers.LoopVerge(minValue, step).TakeWhile(n => n <= maxValue);
         else // The argument "step" is zero and that is an invalid value.
           throw new System.ArgumentOutOfRangeException(nameof(step));
       }
@@ -162,7 +171,7 @@
     where T : System.IComparable<T>
   {
     /// <remarks>The default interval is representing a degenerate interval with the default value of <typeparamref name="T"/>, i.e. zero for standard numerical types, e.g. int, double, BigInteger, etc.</remarks>
-    public readonly static Interval<T> Default;
+    public static Interval<T> Default { get; } = new(default!, default!);
 
     private readonly T m_maxValue;
     private readonly T m_minValue;
@@ -208,7 +217,7 @@
     /// <para>Returns whether a and b are overlapping.</para>
     /// </summary>
     public static bool IsOverlapping(Interval<T> a, Interval<T> b)
-      => a.m_minValue.CompareTo(b.m_maxValue) < 0 && b.m_minValue.CompareTo(a.m_maxValue) < 0;
+      => b.m_minValue.CompareTo(a.m_maxValue) <= 0 && b.m_maxValue.CompareTo(a.m_minValue) >= 0;
 
     /// <summary>
     /// <para>Returns the maximum high value of a and b.</para>

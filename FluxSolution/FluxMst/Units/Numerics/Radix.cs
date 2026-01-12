@@ -89,20 +89,20 @@ namespace Units
     [TestMethod]
     public void IntegerLogCeiling()
     {
-      Assert.AreEqual((2, 2.7084209001347124, 3), (512 - 1).ILog10());
+      Assert.AreEqual((2, 3, 3, 2.7084209001347124), BinaryIntegers.IntegerLog(512 - 1, 10));
     }
 
     [TestMethod]
     public void IntegerLogFloor()
     {
-      Assert.AreEqual((2, 2.7092699609758304, 3), 512.ILog10());
+      Assert.AreEqual((2, 3, 3, 2.7092699609758304), BinaryIntegers.IntegerLog(512, 10));
     }
 
     [TestMethod]
     public void IsIntegerPowOf()
     {
-      Assert.IsFalse(511.IsIntegerPowOf(2));
-      Assert.IsTrue(512.IsIntegerPowOf(2));
+      Assert.IsFalse(BinaryIntegers.IsIntegerPowOf(511, 2));
+      Assert.IsTrue(BinaryIntegers.IsIntegerPowOf(512, 2));
     }
 
     [TestMethod]

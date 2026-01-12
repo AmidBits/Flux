@@ -2,12 +2,12 @@ namespace Flux
 {
   public static partial class SpecialFunctions
   {
-    extension(double x)
+    extension(double)
     {
       /// <summary>Implementation see reference.</summary>
       /// <see href="https://www.johndcook.com/blog/stand_alone_code/"/>
       /// <see href="https://www.johndcook.com/blog/2009/01/19/stand-alone-error-function-erf/"/>
-      public double Erf()
+      public static double Erf(double x)
       {
         var a1 = 0.254829592;
         var a2 = -0.284496736;
@@ -29,7 +29,7 @@ namespace Flux
       /// <summary>Compute log(1+x) without losing precision for small values of x.</summary>
       /// <see href="https://www.johndcook.com/blog/stand_alone_code/"/>
       /// <see href="https://www.johndcook.com/blog/csharp_expm1/"/>
-      public double Expm1()
+      public static double Expm1(double x)
         => double.Abs(x) < 1e-5
         ? x + 0.5 * x * x
         : double.Exp(x) - 1;
@@ -39,7 +39,7 @@ namespace Flux
       /// <para><see href="https://en.wikipedia.org/wiki/Gamma_function"/></para>
       /// <para><see href="https://www.johndcook.com/blog/stand_alone_code/"/></para>
       /// <para><see href="https://www.johndcook.com/blog/csharp_gamma/"/></para>
-      public double Gamma()
+      public static double Gamma(double x)
       {
         System.ArgumentOutOfRangeException.ThrowIfNegativeOrZero(x);
 
@@ -141,7 +141,7 @@ namespace Flux
       /// </summary>
       /// <param name="x"></param>
       /// <returns></returns>
-      public double GammaLanczosApproximation()
+      public static double GammaLanczosApproximation(double x)
       {
         var g = 7;
 
@@ -165,7 +165,7 @@ namespace Flux
         return double.Sqrt(double.Tau) * double.Pow(t, x + 0.5) * double.Exp(-t) * a;
       }
 
-      public double GammaSpougesApproximation()
+      public static double GammaSpougesApproximation(double x)
         => GammaSpougesApproximation(x, m_coefficients13);
 
       /// <summary>
@@ -176,7 +176,7 @@ namespace Flux
       /// <param name="x"></param>
       /// <param name="coefficients">A variable number of coefficients from <see cref="Coefficients(int)"/>.</param>
       /// <returns></returns>
-      public double GammaSpougesApproximation(System.Collections.Generic.List<double> coefficients)
+      public static double GammaSpougesApproximation(double x, System.Collections.Generic.List<double> coefficients)
       {
         var accm = coefficients[0];
 
@@ -195,13 +195,13 @@ namespace Flux
       /// </summary>
       /// <param name="x"></param>
       /// <returns></returns>
-      public double GammaStirlingsApproximation()
+      public static double GammaStirlingsApproximation(double x)
         => double.Sqrt(double.Tau / x) * double.Pow((x / double.E), x);
 
       /// <summary>Compute log(1+x) without losing precision for small values of x.</summary>
       /// <see href="https://www.johndcook.com/blog/stand_alone_code/"/>
       /// <see href="https://www.johndcook.com/blog/csharp_log_one_plus_x/"/>
-      public double Log1p()
+      public static double Log1p(double x)
       {
         if (x <= -1) throw new ArgumentOutOfRangeException(nameof(x));
 
@@ -221,7 +221,7 @@ namespace Flux
       /// <para><see href="https://www.johndcook.com/blog/csharp_gamma/"/></para>
       /// </summary>
       /// <param name="x">Any positive value.</param>
-      public double LogGamma()
+      public static double LogGamma(double x)
       {
         System.ArgumentOutOfRangeException.ThrowIfNegativeOrZero(x);
 
@@ -270,7 +270,7 @@ namespace Flux
       /// <summary>Compute the inverse of the normal (Gaussian) CDF. </summary>
       /// <see href="https://www.johndcook.com/blog/stand_alone_code/"/>
       /// <see href="https://www.johndcook.com/blog/normal_cdf_inverse/"/>
-      public double NormalCdfInverse()
+      public static double NormalCdfInverse(double x)
       {
         System.ArgumentOutOfRangeException.ThrowIfNegativeOrZero(x);
         System.ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(x, 1.0);
@@ -284,7 +284,7 @@ namespace Flux
       /// <summary>Implementation see reference.</summary>
       /// <see href="https://www.johndcook.com/blog/stand_alone_code/"/>
       /// <see href="https://www.johndcook.com/blog/csharp_phi/"/>
-      public double Phi()
+      public static double Phi(double x)
       {
         var a1 = 0.254829592;
         var a2 = -0.284496736;
@@ -307,7 +307,7 @@ namespace Flux
       /// <see href="https://www.johndcook.com/blog/stand_alone_code/"/>
       /// <see href="https://www.johndcook.com/blog/normal_cdf_inverse/"/>
       /// <seealso href="https://en.wikipedia.org/wiki/Horner%27s_method"/>
-      public double RationalApproximation()
+      public static double RationalApproximation(double x)
       {
         // Abramowitz and Stegun formula 26.2.23. The absolute value of the error should be less than 4.5 e-4.
 

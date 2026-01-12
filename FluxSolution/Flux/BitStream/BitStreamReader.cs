@@ -19,12 +19,70 @@ namespace Flux.IO.BitStream
     public int BitCount => m_bitCount;
 
     /// <summary>The intermediate 64-bit storage buffer.</summary>
-    public long BitField => unchecked((long)(m_bitField & (ulong)m_bitCount.CreateBitMaskRight()));
+    public long BitField => unchecked((long)(m_bitField & BitOps.CreateBitMaskRight((ulong)m_bitCount)));
 
     /// <summary>The total number of bits read through the bit stream.</summary>
     public int TotalReadBits { get; private set; }
 
     private int m_lastReadByte = 0;
+
+    /// <summary>
+    /// <para>Fill the internal buffer with as many bits as possible (not necessarily 64 bits).</para>
+    /// </summary>
+    /// <remarks>Less than 64 bits does not automatically mean end-of-stream.</remarks>
+    /// <returns>The current number of bits in the internal buffer.</returns>
+    private int FillBuffer()
+    {
+      while (m_bitCount <= 56) // Load up with data from the base-stream.
+      {
+        m_lastReadByte = m_baseStream.ReadByte();
+
+        if (m_lastReadByte == -1)
+          break;
+
+        m_bitCount += 8;
+        m_bitField = (m_bitField << 8) | (byte)m_lastReadByte;
+      }
+
+      return m_bitCount;
+    }
+
+    /// <summary>
+    /// <para>Read a number of bits from the underlying stream.</para>
+    /// </summary>
+    /// <param name="bitCount"></param>
+    /// <param name="actualBitCount"></param>
+    /// <returns></returns>
+    public System.Numerics.BigInteger ReadBits(int bitCount, out int actualBitCount)
+    {
+      var bits = System.Numerics.BigInteger.Zero;
+
+      actualBitCount = 0;
+
+      while (actualBitCount < bitCount)
+      {
+        var neededBitCount = bitCount - actualBitCount;
+
+        if (neededBitCount == 0)
+          break;
+
+        var bufferBitCount = FillBuffer();
+
+        var movingBitCount = int.Min(neededBitCount, bufferBitCount);
+
+        var mask = BitOps.CreateBitMaskRight((ulong)movingBitCount);
+
+        bits <<= movingBitCount; // Make room for moving bits.
+
+        m_bitCount -= movingBitCount;
+
+        bits &= (m_bitField >> m_bitCount) & mask; // And in moving bits.
+      }
+
+      TotalReadBits += actualBitCount;
+
+      return bits;
+    }
 
     /// <summary>
     /// <para></para>
@@ -57,7 +115,7 @@ namespace Flux.IO.BitStream
 
       m_bitCount -= actualBitCount;
 
-      var bitField = unchecked((long)((m_bitField >> m_bitCount) & ((ulong)actualBitCount).CreateBitMaskRight()));
+      var bitField = unchecked((long)((m_bitField >> m_bitCount) & BitOps.CreateBitMaskRight((ulong)actualBitCount)));
 
       TotalReadBits += actualBitCount;
 

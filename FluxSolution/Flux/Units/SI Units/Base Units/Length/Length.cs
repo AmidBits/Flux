@@ -212,7 +212,7 @@ namespace Flux.Units
 
       return value.ToString(format, provider)
         + spacing.ToSpacingString()
-        + (fullName ? unit.GetUnitName(value.IsConsideredPlural()) : unit.GetUnitSymbol(false));
+        + (fullName ? unit.GetUnitName(Numbers.IsConsideredPlural(value)) : unit.GetUnitSymbol(false));
     }
 
     #endregion // IUnitValueQuantifiable<>

@@ -2,9 +2,11 @@ namespace Flux.Statistics.Quantile
 {
   /// <summary>
   /// <para>Linear interpolation of the modes for the order statistics for the uniform distribution on [0, 1].</para>
-  /// <para><remarks>Equivalent to Excel's PERCENTILE and PERCENTILE.INC and Python's optional "inclusive" method.</remarks></para>
-  /// <see href="https://en.wikipedia.org/wiki/Quantile#Estimating_quantiles_from_a_sample"/>
+  /// <para><see href="https://en.wikipedia.org/wiki/Quantile#Estimating_quantiles_from_a_sample"/></para>
   /// </summary>
+  /// <remarks>
+  /// <para>Equivalent to Excel's PERCENTILE, PERCENTILE.INC, and Python's optional "inclusive" method.</para>
+  /// </remarks>
   public record class R7
     : IQuantileEstimatable
   {

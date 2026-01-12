@@ -29,7 +29,6 @@ namespace Flux.Statistics.PopulationModel
     /// <summary>The number of individuals immigrating into the population between Nt and Nt+1 (I).</summary>
     public double CarryingCapacity { get => m_carryingCapacity; init => m_carryingCapacity = value; }
 
-    /// <returns>The number of individuals at time Nt+1.</returns>
     public IPopulationModelable ModelPopulation()
       => new PopulationModelRicker(Compute(m_population, m_growthRate, m_carryingCapacity), m_growthRate, m_carryingCapacity);
 

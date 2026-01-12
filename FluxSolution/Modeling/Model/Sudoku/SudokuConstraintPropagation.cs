@@ -148,9 +148,9 @@ namespace Flux.Model.Sudoku
       rng.Shuffle(squares.AsSpan());
       rng.Shuffle(squares.AsSpan());
 
-      foreach (var square in squares.GetRandomElements(.23, rng))
+      foreach (var square in squares.RandomElements(.23, rng))
       {
-        values[square].TryRandom(out var value, rng);
+        values[square].TryGetRandomElement(out var value, rng);
 
         if (Assign(values, square, value - '0') == null)
           break;

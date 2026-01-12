@@ -15,7 +15,7 @@ namespace Flux
       where TInteger : System.Numerics.IBinaryInteger<TInteger>
       where TRadix : System.Numerics.IBinaryInteger<TRadix>
     {
-      positionalNotationIndices = new();
+      positionalNotationIndices = [];
 
       try
       {
@@ -80,7 +80,7 @@ namespace Flux
     {
       try
       {
-        symbols = new System.Collections.Generic.List<TSymbol>(positionalNotationIndices.Count);
+        symbols = [];
 
         for (var i = 0; i < positionalNotationIndices.Count; i++)
           symbols.Add(alphabet[positionalNotationIndices[i]]);

@@ -2,8 +2,8 @@ namespace Flux.Statistics.Quantile
 {
   /// <summary>
   /// <para>An empirical distribution function (commonly also called an empirical Cumulative Distribution Function, eCDF) is the distribution function associated with the empirical measure of a sample.</para>
-  /// <see href="https://en.wikipedia.org/wiki/Quantile"/>
-  /// <see href="https://en.wikipedia.org/wiki/Empirical_distribution_function"/>
+  /// <para><see href="https://en.wikipedia.org/wiki/Quantile"/></para>
+  /// <para><see href="https://en.wikipedia.org/wiki/Empirical_distribution_function"/></para>
   /// </summary>
   public record class Edf
     : IQuantileEstimatable

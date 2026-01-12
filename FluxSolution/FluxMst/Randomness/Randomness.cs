@@ -240,7 +240,7 @@ namespace FluxMst.Randomness
     [TestMethod]
     public void Next()
     {
-      var cr = new Flux.RandomNumberGenerators.IsaacRandom();
+      var cr = new Flux.RandomNumberGenerators.Isaac32();
 
       for (var i = 0; i < short.MaxValue; i++)
       {
@@ -267,7 +267,7 @@ namespace FluxMst.Randomness
     [TestMethod]
     public void NextDouble()
     {
-      var cr = new Flux.RandomNumberGenerators.IsaacRandom();
+      var cr = new Flux.RandomNumberGenerators.Isaac32();
 
       for (var i = 0; i < short.MaxValue; i++)
       {
@@ -294,7 +294,7 @@ namespace FluxMst.Randomness
     [TestMethod]
     public void NextBigInteger()
     {
-      var cr = new Flux.RandomNumberGenerators.IsaacRandom();
+      var cr = new Flux.RandomNumberGenerators.Isaac32();
 
       for (var i = 1; i < short.MaxValue; i++)
       {

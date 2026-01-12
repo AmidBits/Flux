@@ -19,7 +19,7 @@ namespace Flux.Model.Maze
 
           if (preferredNeighbors.Any())
           {
-            preferredNeighbors.TryRandom(out var neighbor, RandomNumberGenerator);
+            preferredNeighbors.TryGetRandomElement(out var neighbor, RandomNumberGenerator);
 
             cell.ConnectPath(neighbor.Value, true);
           }

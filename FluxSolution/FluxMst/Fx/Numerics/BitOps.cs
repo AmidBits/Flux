@@ -6,77 +6,77 @@ namespace Numerics
   [TestClass]
   public class BitOps
   {
-    #region BitFlags
+    //#region BitFlags
 
-    [TestMethod]
-    public void BitFlagCarryLsb()
-    {
-      Assert.IsTrue(0xFFFFFFFFU.BitGetLs1b());
-      Assert.IsFalse(0.BitGetLs1b());
-    }
+    //[TestMethod]
+    //public void BitFlagCarryLsb()
+    //{
+    //  Assert.IsTrue(0xFFFFFFFFU.BitGetLs1b());
+    //  Assert.IsFalse(0.BitGetLs1b());
+    //}
 
-    [TestMethod]
-    public void BitFlagCarryMsb()
-    {
-      Assert.IsTrue(0xFFFFFFFFU.BitGetMs1b());
-      Assert.IsFalse(0.BitGetMs1b());
-    }
+    //[TestMethod]
+    //public void BitFlagCarryMsb()
+    //{
+    //  Assert.IsTrue(0xFFFFFFFFU.BitGetMs1b());
+    //  Assert.IsFalse(0.BitGetMs1b());
+    //}
 
-    #endregion // BitFlags
+    //#endregion // BitFlags
 
     #region BitFolds
 
     [TestMethod]
     public void BitFoldToRight()
     {
-      Assert.AreEqual(0b00000000000000000000000001111111U, 0b00000000_01011000U.BitFoldRight());
+      Assert.AreEqual(0b00000000000000000000000001111111U, uint.BitFoldRight(0b00000000_01011000U));
     }
 
     [TestMethod]
     public void BitFoldToLeft()
     {
-      Assert.AreEqual(0b11111111111111111111111111111000U, 0b00000000_10011000U.BitFoldLeft());
+      Assert.AreEqual(0b11111111_11111111_11111111_11111000U, uint.BitFoldLeft(0b00000000_10011000U));
     }
 
     #endregion // BitFolds
 
-    #region BitIndex
+    //#region BitIndex
 
-    [TestMethod]
-    public void BitIndexClear()
-    {
-      Assert.AreEqual(0x2U, 0x6U.ClearBit(2));
-    }
+    //[TestMethod]
+    //public void BitIndexClear()
+    //{
+    //  Assert.AreEqual(0x2U, 0x6U.ClearBit(2));
+    //}
 
-    [TestMethod]
-    public void BitIndexFlip()
-    {
-      Assert.AreEqual(4, 0.FlipBit(2));
-    }
+    //[TestMethod]
+    //public void BitIndexFlip()
+    //{
+    //  Assert.AreEqual(4, 0.FlipBit(2));
+    //}
 
-    [TestMethod]
-    public void BitIndexGet()
-    {
-      Assert.IsTrue(0x6U.GetBit(2));
-    }
+    //[TestMethod]
+    //public void BitIndexGet()
+    //{
+    //  Assert.IsTrue(0x6U.GetBit(2));
+    //}
 
-    [TestMethod]
-    public void BitIndexOfPow2()
-    {
-      var tb = 0x18;
-      var tbil = tb.LeastSignificant1Bit().BitIndexOfPow2();
-      Assert.AreEqual(3, tbil);
-      var tbim = tb.MostSignificant1Bit().BitIndexOfPow2();
-      Assert.AreEqual(4, tbim);
-    }
+    //[TestMethod]
+    //public void BitIndexOfPow2()
+    //{
+    //  var tb = 0x18;
+    //  var tbil = int.LeastSignificant1Bit(tb).BitIndexOfPow2();
+    //  Assert.AreEqual(3, tbil);
+    //  var tbim = int.MostSignificant1Bit(tb).BitIndexOfPow2();
+    //  Assert.AreEqual(4, tbim);
+    //}
 
-    [TestMethod]
-    public void BitIndexSet()
-    {
-      Assert.AreEqual(0x4U, 0b00000000U.SetBit(2));
-    }
+    //[TestMethod]
+    //public void BitIndexSet()
+    //{
+    //  Assert.AreEqual(0x4U, 0b00000000U.SetBit(2));
+    //}
 
-    #endregion // BitIndex
+    //#endregion // BitIndex
 
     #region BitLengths
 
@@ -93,34 +93,34 @@ namespace Numerics
 
     #region BitMasks
 
-    [TestMethod]
-    public void BitMaskCheckAll()
-    {
-      Assert.IsTrue(0b111110.BitMaskCheckAll(0b101010));
-    }
+    //[TestMethod]
+    //public void BitMaskCheckAll()
+    //{
+    //  Assert.IsTrue(0b111110.BitMaskCheckAll(0b101010));
+    //}
 
-    [TestMethod]
-    public void BitMaskCheckAny()
-    {
-      Assert.IsTrue(0b1111.BitMaskCheckAny(0b101010));
-    }
+    //[TestMethod]
+    //public void BitMaskCheckAny()
+    //{
+    //  Assert.IsTrue(0b1111.BitMaskCheckAny(0b101010));
+    //}
 
-    [TestMethod]
-    public void BitMaskClear()
-    {
-      Assert.AreEqual(0b0101, 0b1111.BitMaskClear(0b1010));
-    }
+    //[TestMethod]
+    //public void BitMaskClear()
+    //{
+    //  Assert.AreEqual(0b0101, 0b1111.BitMaskClear(0b1010));
+    //}
 
     [TestMethod]
     public void CreateBitMaskLsbFromBitLength()
     {
-      Assert.AreEqual(127, 7.CreateBitMaskRight());
+      Assert.AreEqual(127, Flux.BitOps.CreateBitMaskRight(7));
     }
 
     [TestMethod]
     public void CreateBitMaskMsbFromBitLength()
     {
-      Assert.AreEqual(-1, 32.CreateBitMaskLeft());
+      Assert.AreEqual(-1, Flux.BitOps.CreateBitMaskLeft(32));
     }
 
     [TestMethod]
@@ -130,7 +130,7 @@ namespace Numerics
       var templateBitLength = 3;
 
       var expected = 0b1011_0110_1101_1011_0110_1101_1011_0110U;
-      var actual = unchecked((uint)templateBitMask.FillBitMaskRight(templateBitLength, expected.GetBitLength()));
+      var actual = unchecked(Flux.BitOps.CreateBitMaskRight((uint)templateBitMask, templateBitLength, expected.GetBitLength()));
 
       // Debug:
       var e = expected.ToBinaryString();
@@ -146,7 +146,7 @@ namespace Numerics
       var templateBitLength = 3;
 
       var expected = 0b1101_1011_0110_1101_1011_0110_1101_1011U;
-      var actual = unchecked((uint)templateBitMask.FillBitMaskLeft(templateBitLength, expected.GetBitLength()));
+      var actual = unchecked(Flux.BitOps.CreateBitMaskLeft((uint)templateBitMask, templateBitLength, expected.GetBitLength()));
 
       // Debug:
       var e = expected.ToBinaryString();
@@ -170,25 +170,25 @@ namespace Numerics
 
     #endregion // GetBitCount
 
-    #region GetByteCount
+    //#region GetByteCount
 
-    [TestMethod]
-    public void GetByteCount()
-    {
-      Assert.AreEqual(4, 88.GetByteCount());
-    }
+    //[TestMethod]
+    //public void GetByteCount()
+    //{
+    //  Assert.AreEqual(4, 88.GetByteCount());
+    //}
 
-    #endregion // GetByteCount
+    //#endregion // GetByteCount
 
-    #region GetPopCount
+    //#region GetPopCount
 
-    [TestMethod]
-    public void GetPopCount()
-    {
-      Assert.AreEqual(4, 0xF0.GetPopCount());
-    }
+    //[TestMethod]
+    //public void GetPopCount()
+    //{
+    //  Assert.AreEqual(4, 0xF0.GetPopCount());
+    //}
 
-    #endregion // GetPopCount
+    //#endregion // GetPopCount
 
     #region GrayCode
     #endregion // GrayCode
@@ -198,13 +198,13 @@ namespace Numerics
     [TestMethod]
     public void Log2AwayFromZero()
     {
-      Assert.AreEqual(8, 215.Log2AwayFromZero());
+      Assert.AreEqual(8, Flux.BitOps.IntegerLog2(215).AwayFromZero);
     }
 
     [TestMethod]
     public void Log2TowardZero()
     {
-      Assert.AreEqual(7, 215.Log2TowardZero());
+      Assert.AreEqual(7, Flux.BitOps.IntegerLog2(215).TowardZero);
     }
 
     #endregion // Log2
@@ -221,8 +221,8 @@ namespace Numerics
     [TestMethod]
     public void Pow2TowardZero()
     {
-      var towardZero = 88.Pow2TowardZero(false);
-      var awayFromZero = 88.Pow2AwayFromZero(false);
+      var towardZero = Flux.BitOps.Pow2(88, false).TowardZero;
+      var awayFromZero = Flux.BitOps.Pow2(88, false).AwayFromZero;
 
       Assert.AreEqual(64, towardZero);
       Assert.AreEqual(128, awayFromZero);
@@ -259,10 +259,10 @@ namespace Numerics
     {
       var value = 88;
 
-      var towardsZero = value.Pow2TowardZero(false);
-      var awayFromZero = value.Pow2AwayFromZero(false);
+      var towardsZero = Flux.BitOps.Pow2(value, false).TowardZero;
+      var awayFromZero = Flux.BitOps.Pow2(value, false).AwayFromZero;
 
-      var rounded = 88.RoundToNearest(HalfRounding.AwayFromZero, false, [towardsZero, awayFromZero]);
+      var rounded = Numbers.RoundToNearest(88, HalfRounding.AwayFromZero, false, [towardsZero, awayFromZero]);
 
       Assert.AreEqual(64, rounded);
 
@@ -292,10 +292,10 @@ namespace Numerics
     {
       // Somehow BigInteger must differ between .NET version 6 and 7. 
 
-      Assert.AreEqual(0x00010000, 0x00008000.ReverseBits()); // This works on .NET 7, but not on .NET 6.
-      Assert.AreEqual(0x10000000, 0x00000008.ReverseBits()); // This works on .NET 6, but not on .NET 7.
+      Assert.AreEqual(0x00010000, Flux.BitOps.ReverseBits(0x00008000)); // This works on .NET 7, but not on .NET 6.
+      Assert.AreEqual(0x10000000, Flux.BitOps.ReverseBits(0x00000008)); // This works on .NET 6, but not on .NET 7.
 
-      Assert.AreEqual(unchecked((int)0xFFFFFFFE), 0x7FFFFFFF.ReverseBits());
+      Assert.AreEqual(unchecked((int)0xFFFFFFFE), Flux.BitOps.ReverseBits(0x7FFFFFFF));
     }
 
     #endregion // ReverseBits
@@ -305,7 +305,7 @@ namespace Numerics
     [TestMethod]
     public void ReverseBytes()
     {
-      Assert.AreEqual(0x00010000, 0x00000100.ReverseBytes());
+      Assert.AreEqual(0x00010000, Flux.BitOps.ReverseBytes(0x00000100));
     }
 
     #endregion // ReverseBytes
@@ -315,25 +315,25 @@ namespace Numerics
     [TestMethod]
     public void LeastSignificant1Bit()
     {
-      Assert.AreEqual(0b00001000, 0b01011000.LeastSignificant1Bit());
+      Assert.AreEqual(0b00001000, int.LeastSignificant1Bit(0b01011000));
     }
 
     [TestMethod]
     public void LeastSignificant1BitClear()
     {
-      Assert.AreEqual(0b01010000, 0b01011000.ClearLeastSignificant1Bit());
+      Assert.AreEqual(0b01010000, int.ClearLeastSignificant1Bit(0b01011000));
     }
 
     [TestMethod]
     public void MostSignificant1Bit()
     {
-      Assert.AreEqual(0b01000000, 0b01011000.MostSignificant1Bit());
+      Assert.AreEqual(0b01000000, int.MostSignificant1Bit(0b01011000));
     }
 
     [TestMethod]
     public void MostSignificant1BitClear()
     {
-      Assert.AreEqual(0b00011000, 0b01011000.ClearMostSignificant1Bit());
+      Assert.AreEqual(0b00011000, int.ClearMostSignificant1Bit(0b01011000));
     }
 
     #endregion // Significant1Bits

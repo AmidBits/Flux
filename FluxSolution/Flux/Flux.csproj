@@ -7,9 +7,7 @@
 		<LangVersion>preview</LangVersion>
 	</PropertyGroup>
 
-	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-	  <DefineConstants>$(DefineConstants);INCLUDE_SCRATCH</DefineConstants>
-	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'" />
 
 	<ItemGroup>
 	  <None Remove="Resources\world-map.svg" />
@@ -17,7 +15,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <None Include="Types\IEnumerable-ext.cs" />
+	  <None Include="X-types\IEnumerable-ext.cs" />
 	</ItemGroup>
 
 	<ItemGroup>

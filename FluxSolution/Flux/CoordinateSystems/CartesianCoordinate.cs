@@ -108,7 +108,7 @@ namespace Flux.CoordinateSystems
       );
     }
 
-    public System.Drawing.Point ToPoint(HalfRounding mode) => new(System.Convert.ToInt32(m_v[0].RoundHalf(mode)), System.Convert.ToInt32(m_v[1].RoundHalf(mode)));
+    public System.Drawing.Point ToPoint(HalfRounding mode) => new(System.Convert.ToInt32(double.RoundHalf(m_v[0], mode)), System.Convert.ToInt32(double.RoundHalf(m_v[1], mode)));
 
     public System.Drawing.PointF ToPointF() => new((float)m_v[0], (float)m_v[1]);
 

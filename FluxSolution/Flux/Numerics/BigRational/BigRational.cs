@@ -586,14 +586,14 @@ namespace Flux.Numerics
         var lowerPow = System.Numerics.BigInteger.One;
 
         var upperX = System.Numerics.BigInteger.CreateChecked(2);
-        var upperPow = upperX.IPow(n);
+        var upperPow = BinaryIntegers.Pow(upperX, n);
 
         while (upperPow.CompareTo(a) < 0)
         {
           lowerX = upperX;
           lowerPow = upperPow;
           upperX = (lowerX + lowerX);
-          upperPow = upperX.IPow(n);
+          upperPow = BinaryIntegers.Pow(upperX, n);
         }
 
         if (upperPow.Equals(a))
@@ -609,7 +609,7 @@ namespace Flux.Numerics
           if (testX.Equals(lowerX) || testX.Equals(upperX))
             break;
 
-          var testPow = testX.IPow(n);
+          var testPow = BinaryIntegers.Pow(testX, n);
 
           if (testPow.Equals(a))
             return (testX, true); // We found an exact answer.

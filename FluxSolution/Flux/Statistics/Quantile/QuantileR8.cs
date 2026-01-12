@@ -2,7 +2,7 @@ namespace Flux.Statistics.Quantile
 {
   /// <summary>
   /// <para>Linear interpolation of the approximate medians for order statistics.</para>
-  /// <see href="https://en.wikipedia.org/wiki/Quantile#Estimating_quantiles_from_a_sample"/>
+  /// <para><see href="https://en.wikipedia.org/wiki/Quantile#Estimating_quantiles_from_a_sample"/></para>
   /// </summary>
   public record class R8
     : IQuantileEstimatable

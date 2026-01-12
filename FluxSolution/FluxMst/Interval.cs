@@ -15,13 +15,13 @@ namespace Numerics
     [TestMethod]
     public void Fold()
     {
-      Assert.AreEqual(3.5, (6.5).FoldAcross(0, 5));
+      Assert.AreEqual(3.5, Numbers.FoldAcross(6.5, 0, 5));
     }
 
     [TestMethod]
     public void Rescale()
     {
-      Assert.AreEqual(25, (7.5).Rescale(0, 5, 10, 20));
+      Assert.AreEqual(25, Numbers.Rescale(7.5, 0, 5, 10, 20));
     }
 
     [TestMethod]

@@ -22,11 +22,11 @@ namespace Flux
   {
     /// <summary>Creates a new sequence of all IP addresses in the specified MulticastV4 block.</summary>
     public static System.Collections.Generic.IEnumerable<System.Net.IPAddress> GetAllIPAddresses(this MulticastV4Block source)
-      => source.GetMinIPAddress().GetRange(source.GetMaxIPAddress());
+      => System.Net.IPAddress.GetRange(source.GetMinIPAddress(), source.GetMaxIPAddress());
 
     /// <summary>Returns the maximum IP address in the specified MulticastV4 block.</summary>
     public static System.Net.IPAddress GetMaxIPAddress(this MulticastV4Block source)
-      => new(GetMaxValue(source).ReverseBytes());
+      => new(BitOps.ReverseBytes(GetMaxValue(source)));
 
     /// <summary>Returns the maximum address (big endian) in the specified MulticastV4 block.</summary>
     public static long GetMaxValue(this MulticastV4Block source)
@@ -34,7 +34,7 @@ namespace Flux
 
     /// <summary>Returns the minimum IP address in the specified MulticastV4 block.</summary>
     public static System.Net.IPAddress GetMinIPAddress(this MulticastV4Block source)
-      => new(GetMinValue(source).ReverseBytes());
+      => new(BitOps.ReverseBytes(GetMinValue(source)));
 
     /// <summary>Returns the minimum address (big endian) in the specified MulticastV4 block.</summary>
     public static long GetMinValue(this MulticastV4Block source)

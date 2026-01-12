@@ -2,9 +2,9 @@ namespace Flux.Statistics.Quantile
 {
   /// <summary>
   /// <para>Piecewise linear function where the knots are the values midway through the steps of the empirical distribution function.</para>
-  /// <see href="https://en.wikipedia.org/wiki/Quantile#Estimating_quantiles_from_a_sample"/>
+  /// <para><see href="https://en.wikipedia.org/wiki/Quantile#Estimating_quantiles_from_a_sample"/></para>
   /// </summary>
-  /// <remarks>This quantile is equivalent to <see cref="QuartileMethod3"/></remarks>
+  /// <remarks>This quantile is equivalent to <see cref="Quartile.Method3"/></remarks>
   public record class R5
     : IQuantileEstimatable
   {

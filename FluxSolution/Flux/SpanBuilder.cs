@@ -12,7 +12,7 @@ namespace Flux
 
     public SpanBuilder(int capacity)
     {
-      m_array = capacity >= 1 ? System.Buffers.ArrayPool<T>.Shared.Rent(int.Max(capacity, DefaultBufferSize).Pow2AwayFromZero(false)) : [];
+      m_array = capacity >= 1 ? System.Buffers.ArrayPool<T>.Shared.Rent(BitOps.Pow2(int.Max(capacity, DefaultBufferSize), false).AwayFromZero) : [];
 
       m_head = m_array.Length / 2;
       m_tail = m_array.Length / 2;
@@ -32,16 +32,14 @@ namespace Flux
     {
       get
       {
-        System.ArgumentOutOfRangeException.ThrowIfNegative(index);
-        System.ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(index, Length);
+        System.Index.AssertInRange(index, Length);
 
         return m_array[m_head + index];
       }
 
       set
       {
-        System.ArgumentOutOfRangeException.ThrowIfNegative(index);
-        System.ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(index, Length);
+        System.Index.AssertInRange(index, Length);
 
         m_array[m_head + index] = value;
       }
@@ -175,7 +173,7 @@ namespace Flux
       {
         var totalSize = FreePrepend + Length + needAppend + FreeAppend;
 
-        var array = System.Buffers.ArrayPool<T>.Shared.Rent(int.Max(totalSize, DefaultBufferSize).Pow2AwayFromZero(true));
+        var array = System.Buffers.ArrayPool<T>.Shared.Rent(BitOps.Pow2(int.Max(totalSize, DefaultBufferSize), true).AwayFromZero);
 
         var head = (m_array.Length - totalNeed) / 2;
         var tail = head + Length + needAppend;
@@ -222,7 +220,7 @@ namespace Flux
       {
         var totalSize = FreePrepend + Length + FreeAppend + needInsert;
 
-        var array = System.Buffers.ArrayPool<T>.Shared.Rent(int.Max(totalSize, DefaultBufferSize).Pow2AwayFromZero(true));
+        var array = System.Buffers.ArrayPool<T>.Shared.Rent(BitOps.Pow2(int.Max(totalSize, DefaultBufferSize), true).AwayFromZero);
 
         var head = (array.Length - totalNeed) / 2;
         var tail = head + Length + needInsert;
@@ -257,7 +255,7 @@ namespace Flux
       {
         var totalSize = FreePrepend + needPrepend + Length + FreeAppend;
 
-        var array = System.Buffers.ArrayPool<T>.Shared.Rent(int.Max(totalSize, DefaultBufferSize).Pow2AwayFromZero(true));
+        var array = System.Buffers.ArrayPool<T>.Shared.Rent(BitOps.Pow2(int.Max(totalSize, DefaultBufferSize), true).AwayFromZero);
 
         var head = (array.Length - totalNeed) / 2;
         var tail = head + needPrepend + Length;
@@ -305,6 +303,8 @@ namespace Flux
 
     public SpanBuilder<T> Insert(int index, int length)
     {
+      System.Index.AssertInRange(index, Length);
+
       var insertArrayIndex = EnsureCapacityInsert(index, length);
 
       System.Array.Clear(m_array, insertArrayIndex, length);
@@ -314,6 +314,8 @@ namespace Flux
 
     public SpanBuilder<T> Insert(int index, T fill, int length)
     {
+      System.Index.AssertInRange(index, Length);
+
       var insertArrayIndex = EnsureCapacityInsert(index, length);
 
       while (--length >= 0)
@@ -331,6 +333,8 @@ namespace Flux
     /// <returns></returns>
     public SpanBuilder<T> Insert(int index, System.Collections.Generic.ICollection<T> collection)
     {
+      System.Index.AssertInRange(index, Length);
+
       var insertArrayIndex = EnsureCapacityInsert(index, collection.Count);
 
       collection.CopyTo(m_array, insertArrayIndex);
@@ -347,6 +351,8 @@ namespace Flux
     /// <returns></returns>
     public SpanBuilder<T> Insert(int index, params System.ReadOnlySpan<T> span)
     {
+      System.Index.AssertInRange(index, Length);
+
       var insertArrayIndex = EnsureCapacityInsert(index, span.Length);
 
       span.CopyTo(m_array.AsSpan().Slice(insertArrayIndex, span.Length));
@@ -619,11 +625,7 @@ namespace Flux
       var prependArrayIndex = EnsureCapacityPrepend(count);
 
       while (count-- > 0)
-      {
-        m_array[prependArrayIndex] = item;
-
-        prependArrayIndex++;
-      }
+        m_array[prependArrayIndex++] = item;
 
       return this;
     }
@@ -680,11 +682,7 @@ namespace Flux
     /// <returns></returns>
     public SpanBuilder<T> Remove(int index, int length)
     {
-      System.ArgumentOutOfRangeException.ThrowIfNegative(index);
-      System.ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(index, Length);
-
-      System.ArgumentOutOfRangeException.ThrowIfNegative(length);
-      System.ArgumentOutOfRangeException.ThrowIfGreaterThan(index + length, Length);
+      System.Range.AssertInRange(index, length, Length);
 
       if (index == 0)
         return RemoveLeft(length);
@@ -692,17 +690,17 @@ namespace Flux
       if (index + length == Length)
         return RemoveRight(length);
 
-      var actualIndex = m_head + index;
+      var removeIndex = m_head + index;
 
-      if (m_head <= m_array.Length - m_tail) // Shrink from start.
+      if (m_head <= m_array.Length - m_tail) // If there is less room at the head, shrink from the head.
       {
-        System.Array.Copy(m_array, m_head, m_array, m_head + length, actualIndex - m_head);
+        System.Array.Copy(m_array, m_head, m_array, m_head + length, removeIndex - m_head);
 
         m_head += length;
       }
-      else // Otherwise shrink from end.
+      else // Otherwise there is less room at the tail, so shrink from the tail.
       {
-        System.Array.Copy(m_array, actualIndex + length, m_array, actualIndex, m_tail - actualIndex - length);
+        System.Array.Copy(m_array, removeIndex + length, m_array, removeIndex, m_tail - removeIndex - length);
 
         m_tail -= length;
       }
@@ -723,62 +721,11 @@ namespace Flux
     }
 
     /// <summary>
-    /// <para>Removes the specified element at [index] from the <see cref="SpanBuilder{T}"/>.</para>
-    /// </summary>
-    /// <param name="index"></param>
-    /// <returns></returns>
-    public SpanBuilder<T> RemoveAt(int index)
-    {
-      System.ArgumentOutOfRangeException.ThrowIfNegative(index);
-      System.ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(index, Length);
-
-      var removeIndex = m_head + index;
-
-      System.Array.Copy(m_array, removeIndex + 1, m_array, removeIndex, m_tail - removeIndex - 1);
-
-      m_tail--;
-
-      return this;
-    }
-
-    /// <summary>
-    /// <para>Removes <paramref name="count"/> elements on the left (at the beginning) of a <see cref="SpanBuilder{T}"/>.</para>
-    /// </summary>
-    /// <param name="count"></param>
-    /// <returns></returns>
-    /// <exception cref="System.ArgumentOutOfRangeException"></exception>
-    public SpanBuilder<T> RemoveLeft(int count)
-    {
-      System.ArgumentOutOfRangeException.ThrowIfNegative(count);
-      System.ArgumentOutOfRangeException.ThrowIfGreaterThan(count, Length);
-
-      m_head += count;
-
-      return this;
-    }
-
-    /// <summary>
-    /// <para>Removes <paramref name="count"/> elements on the right (at the end) of a <see cref="SpanBuilder{T}"/>.</para>
-    /// </summary>
-    /// <param name="count"></param>
-    /// <returns></returns>
-    /// <exception cref="System.ArgumentOutOfRangeException"></exception>
-    public SpanBuilder<T> RemoveRight(int count)
-    {
-      System.ArgumentOutOfRangeException.ThrowIfNegative(count);
-      System.ArgumentOutOfRangeException.ThrowIfGreaterThan(count, Length);
-
-      m_tail -= count;
-
-      return this;
-    }
-
-    /// <summary>
     /// <para>Remove all elements satisfying the <paramref name="predicate"/> from the <see cref="SpanBuilder{T}">.</para>
     /// </summary>
     /// <param name="predicate"></param>
     /// <returns></returns>
-    public SpanBuilder<T> RemoveWhere(System.Func<T, int, bool> predicate)
+    public SpanBuilder<T> Remove(System.Func<T, int, bool> predicate)
     {
       System.ArgumentNullException.ThrowIfNull(predicate);
 
@@ -797,6 +744,36 @@ namespace Flux
       return this;
     }
 
+    /// <summary>
+    /// <para>Removes <paramref name="count"/> elements on the left (at the beginning) of a <see cref="SpanBuilder{T}"/>.</para>
+    /// </summary>
+    /// <param name="count"></param>
+    /// <returns></returns>
+    /// <exception cref="System.ArgumentOutOfRangeException"></exception>
+    public SpanBuilder<T> RemoveLeft(int count)
+    {
+      System.Index.AssertInRange(count - 1, Length);
+
+      m_head += count;
+
+      return this;
+    }
+
+    /// <summary>
+    /// <para>Removes <paramref name="count"/> elements on the right (at the end) of a <see cref="SpanBuilder{T}"/>.</para>
+    /// </summary>
+    /// <param name="count"></param>
+    /// <returns></returns>
+    /// <exception cref="System.ArgumentOutOfRangeException"></exception>
+    public SpanBuilder<T> RemoveRight(int count)
+    {
+      System.Index.AssertInRange(count - 1, Length);
+
+      m_tail -= count;
+
+      return this;
+    }
+
     #endregion
 
     #region Replace
@@ -810,21 +787,15 @@ namespace Flux
     /// <returns></returns>
     public SpanBuilder<T> Replace(int index, int length, System.ReadOnlySpan<T> replacement)
     {
-      System.ArgumentOutOfRangeException.ThrowIfNegative(index);
-      System.ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(index, Length);
+      System.Range.AssertInRange(index, length, Length);
 
-      System.ArgumentOutOfRangeException.ThrowIfNegative(length);
-      System.ArgumentOutOfRangeException.ThrowIfGreaterThan(index + length, Length);
+      if (replacement.Length > length) // If the replacement is longer than what it replaces, ensure capacity.
+        EnsureCapacityInsert(index, replacement.Length - length);
 
-      var replacementLength = replacement.Length;
+      replacement.CopyTo(m_array.AsSpan(m_head + index, replacement.Length)); // Always insert replacement.
 
-      if (replacementLength > length) // If the replacement if longer, extend capacity if needed.
-        EnsureCapacityInsert(index, replacementLength - length);
-
-      replacement.CopyTo(m_array.AsSpan(m_head + index, replacementLength)); // Always insert replacement.
-
-      if (replacementLength < length) // If replacement is shorter, remove the remainder.
-        Remove(index + replacementLength, length - replacementLength);
+      if (replacement.Length < length) // If replacement is shorter, remove the remainder.
+        Remove(index + replacement.Length, length - replacement.Length);
 
       return this;
     }
@@ -842,30 +813,39 @@ namespace Flux
       return Replace(offset, length, replacement);
     }
 
-    public SpanBuilder<T> ReplaceAll(System.Func<T, bool> predicate, System.Func<T, T> replacementSelector)
+    /// <summary>
+    /// <para>Replaces all elements satisfying a <paramref name="predicate"/> with the result from a <paramref name="replacementSelector"/> in the <see cref="SpanBuilder{T}"/>.</para>
+    /// </summary>
+    /// <param name="predicate"></param>
+    /// <param name="replacementSelector"></param>
+    /// <returns></returns>
+    public SpanBuilder<T> Replace(System.Func<T, int, bool> predicate, System.Func<T, T> replacementSelector)
     {
+      var index = 0;
+
       for (var mark = m_head; mark < m_tail; mark++)
-        if (m_array[mark] is var c && predicate(c))
+        if (m_array[mark] is var c && predicate(c, index++))
           m_array[mark] = replacementSelector(c);
 
       return this;
     }
 
-    public SpanBuilder<T> ReplaceAll(System.Func<T, T> replacementSelector, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
-    {
-      equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
-
-      return ReplaceAll(c => !equalityComparer.Equals(replacementSelector(c), c), replacementSelector);
-    }
-
     /// <summary>
-    /// <para>Replaces all elements satisfying the <paramref name="predicate"/> with <paramref name="replacement"/> in the <see cref="SpanBuilder{T}"/>.</para>
+    /// <para>Replaces all elements satisfying a <paramref name="predicate"/> with the result from a <paramref name="replacementSelector"/> in the <see cref="SpanBuilder{T}"/>.</para>
     /// </summary>
     /// <param name="predicate"></param>
-    /// <param name="count"></param>
+    /// <param name="replacementSelector"></param>
+    /// <returns></returns>
+    public SpanBuilder<T> Replace(System.Func<T, bool> predicate, System.Func<T, T> replacementSelector)
+      => Replace((e, i) => predicate(e), replacementSelector);
+
+    /// <summary>
+    /// <para>Replaces all elements satisfying a <paramref name="predicate"/> with a <paramref name="replacement"/> in the <see cref="SpanBuilder{T}"/>.</para>
+    /// </summary>
+    /// <param name="predicate"></param>
     /// <param name="replacement"></param>
     /// <returns></returns>
-    public SpanBuilder<T> ReplaceWhere(System.Func<T, int, bool> predicate, System.ReadOnlySpan<T> replacement)
+    public SpanBuilder<T> Replace(System.Func<T, int, bool> predicate, System.ReadOnlySpan<T> replacement)
     {
       for (var index = Length - 1; index >= 0; index--)
         if (predicate(m_array[m_head + index], index))
@@ -874,17 +854,14 @@ namespace Flux
       return this;
     }
 
-    //public SpanBuilder<T> ReplaceIfEqualAt(int startAt, System.ReadOnlySpan<T> find, System.ReadOnlySpan<T> replacement, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
-    //{
-    //  equalityComparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
-
-    //  var sm = this;
-
-    //  if (AsReadOnlySpan()[startAt..].IsCommonPrefix(find, equalityComparer))
-    //    sm = sm.Replace(startAt, find.Length, replacement);
-
-    //  return sm;
-    //}
+    /// <summary>
+    /// <para>Replaces all elements satisfying a <paramref name="predicate"/> with a <paramref name="replacement"/> in the <see cref="SpanBuilder{T}"/>.</para>
+    /// </summary>
+    /// <param name="predicate"></param>
+    /// <param name="replacement"></param>
+    /// <returns></returns>
+    public SpanBuilder<T> Replace(System.Func<T, bool> predicate, System.ReadOnlySpan<T> replacement)
+      => Replace((e, i) => predicate(e), replacement);
 
     #endregion
 
@@ -899,11 +876,7 @@ namespace Flux
     /// <exception cref="System.ArgumentOutOfRangeException"></exception>
     public SpanBuilder<T> Reverse(int index, int length)
     {
-      System.ArgumentOutOfRangeException.ThrowIfNegative(index);
-      System.ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(index, Length);
-
-      System.ArgumentOutOfRangeException.ThrowIfNegative(length);
-      System.ArgumentOutOfRangeException.ThrowIfGreaterThan(index + length, Length);
+      System.Range.AssertInRange(index, length, Length);
 
       var left = index;
       var right = index + length;
@@ -923,19 +896,23 @@ namespace Flux
 
     #endregion
 
-    //#region Slice
+    #region Slice
 
-    //public SpanBuilder<T> Slice(int index, int length)
-    //{
-    //  source.CopyTo(index, buffer, length);
+    public SpanBuilder<T> Slice(int index, int length)
+    {
+      System.Range.AssertInRange(index, length, Length);
 
-    //  return new System.Text.StringBuilder().Append(buffer, 0, length);
-    //}
+      return new SpanBuilder<T>(AsReadOnlySpan().Slice(index, length));
+    }
 
-    //public System.Text.StringBuilder Slice(int index, char[] buffer)
-    //  => Slice(source, index, source.Length, buffer);
+    public SpanBuilder<T> Slice(System.Range range)
+    {
+      var (offset, length) = range.GetOffsetAndLength(Length);
 
-    //#endregion
+      return Slice(offset, length);
+    }
+
+    #endregion
 
     #region Swap..
 
@@ -973,7 +950,15 @@ namespace Flux
     /// </summary>
     /// <param name="predicate"></param>
     /// <returns></returns>
-    public SpanBuilder<T> TrimLeft(System.Func<T, int, bool> predicate, int maxTrimLength = int.MaxValue)
+    public SpanBuilder<T> TrimCommonPrefix(System.Func<T, int, bool> predicate, int maxTrimLength = int.MaxValue)
+      => RemoveLeft(AsReadOnlySpan().CommonPrefixLength(predicate, maxTrimLength));
+
+    /// <summary>
+    /// <para>Trims all consecutive occurences that satisfies the <paramref name="predicate"/> at the beginning of the <see cref="SpanBuilder{T}"/>.</para>
+    /// </summary>
+    /// <param name="predicate"></param>
+    /// <returns></returns>
+    public SpanBuilder<T> TrimCommonPrefix(System.Func<T, bool> predicate, int maxTrimLength = int.MaxValue)
       => RemoveLeft(AsReadOnlySpan().CommonPrefixLength(predicate, maxTrimLength));
 
     /// <summary>
@@ -981,7 +966,15 @@ namespace Flux
     /// </summary>
     /// <param name="predicate"></param>
     /// <returns></returns>
-    public SpanBuilder<T> TrimRight(System.Func<T, int, bool> predicate, int maxTrimLength = int.MaxValue)
+    public SpanBuilder<T> TrimCommonSuffix(System.Func<T, int, bool> predicate, int maxTrimLength = int.MaxValue)
+      => RemoveRight(AsReadOnlySpan().CommonSuffixLength(predicate, maxTrimLength));
+
+    /// <summary>
+    /// <para>Trims all consecutive occurences that satisfies the <paramref name="predicate"/> at the end of the <see cref="SpanBuilder{T}"/>.</para>
+    /// </summary>
+    /// <param name="predicate"></param>
+    /// <returns></returns>
+    public SpanBuilder<T> TrimCommonSuffix(System.Func<T, bool> predicate, int maxTrimLength = int.MaxValue)
       => RemoveRight(AsReadOnlySpan().CommonSuffixLength(predicate, maxTrimLength));
 
     #endregion Trim methods

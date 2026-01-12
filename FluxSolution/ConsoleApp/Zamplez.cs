@@ -26,7 +26,7 @@ namespace ConsoleApp
       RunCoordinateSystems();
       RunDataStructuresGraph();
       RunImmutableDataStructures();
-      RunLocale();
+      RunLocaleInformation();
       ParallelVsSerial.Run();
       RunPhoneticAlgorithms();
       RunReflection();
@@ -143,7 +143,7 @@ namespace ConsoleApp
       {
         var rng = new System.Random();
 
-        var m_ap = 2.GetAscendingPrimes().Take(100).ToArray(); // Primes.
+        var m_ap = BinaryIntegers.GetAscendingPrimes(2).Take(100).ToArray(); // Primes.
         var m_rn = System.Linq.Enumerable.Range(0, 100).ToArray(); // Rational.
         var m_en = System.Linq.Enumerable.Range(1, 200).Where(i => (i & 1) == 0).ToArray(); // Even.
         var m_on = System.Linq.Enumerable.Range(1, 200).Where(i => (i & 1) != 0).ToArray(); // Odd.
@@ -315,10 +315,10 @@ namespace ConsoleApp
 
       System.ArgumentOutOfRangeException.ThrowIfNegative(value);
 
-      var (q, remainder) = value.TruncRem(1);
+      var (q, remainder) = Numbers.TruncMod(value, 1);
       var quotient = int.CreateChecked(q);
 
-      var p2TowardsZero = quotient.MostSignificant1Bit();
+      var p2TowardsZero = int.MostSignificant1Bit(quotient);
       var p2AwayFromZero = (p2TowardsZero < quotient || remainder > 0) ? (p2TowardsZero == 0 ? 1 : p2TowardsZero << 1) : p2TowardsZero;
 
       var p2TowardsZerop = p2TowardsZero == value ? p2TowardsZero >> 1 : p2TowardsZero;
@@ -350,32 +350,32 @@ namespace ConsoleApp
 
       //      n = 0;
       //      var nlpow2 = n.NextLargerPowerOf2();
-      var np2TowardsZero = (int)n.RoundToNearest(HalfRounding.TowardZero, false, [n.Pow2TowardZero(false), n.Pow2AwayFromZero(false)]);
+      var np2TowardsZero = (int)Numbers.RoundToNearest(n, HalfRounding.TowardZero, false, [Flux.BitOps.Pow2(n, false).TowardZero, Flux.BitOps.Pow2(n, false).AwayFromZero]);
       System.Console.WriteLine($" Pow2TowardsZero = {np2TowardsZero}");
-      var np2AwayFromZero = (int)n.RoundToNearest(HalfRounding.AwayFromZero, false, [n.Pow2TowardZero(false), n.Pow2AwayFromZero(false)]);
+      var np2AwayFromZero = (int)Numbers.RoundToNearest(n, HalfRounding.AwayFromZero, false, [Flux.BitOps.Pow2(n, false).TowardZero, Flux.BitOps.Pow2(n, false).AwayFromZero]);
       System.Console.WriteLine($"Pow2AwayFromZero = {np2AwayFromZero}");
 
-      var birbits = n.ReverseBits();
+      var birbits = BitOps.ReverseBits(n);
       System.Console.WriteLine($"    Reverse Bits = {birbits.ToBinaryString()}");
-      var birbyts = n.ReverseBytes();
+      var birbyts = BitOps.ReverseBytes(n);
       System.Console.WriteLine($"   Reverse Bytes = {birbyts.ToBinaryString()}");
 
-      var bfl = n.BitFoldLeft();
+      var bfl = int.BitFoldLeft(n);
       System.Console.WriteLine($"   Bit-Fold Left = {bfl}");
       var bfls = bfl.ToBinaryString();
       System.Console.WriteLine($"       As Binary = {bfls}");
-      var bfr = n.BitFoldLeft();
+      var bfr = int.BitFoldLeft(n);
       System.Console.WriteLine($"  Bit-Fold Right = {bfr}");
       var bfrs = bfr.ToBinaryString();
       System.Console.WriteLine($"       As Binary = {bfrs}");
       //var bsbl = n.GetShortestBitLength();
       var bln = n.GetBitLength();
       //var l2 = bi.IntegerLog2();
-      var ms1b = n.MostSignificant1Bit();
-      var bmr = n.GetBitLength().CreateBitMaskRight();
+      var ms1b = int.MostSignificant1Bit(n);
+      var bmr = BitOps.CreateBitMaskRight(n.GetBitLength());
       var bmrs = bmr.ToBinaryString();
       var bmrsl = bmrs.Length;
-      var bml = n.GetBitLength().CreateBitMaskLeft();
+      var bml = BitOps.CreateBitMaskLeft(n.GetBitLength());
       var bmls = bml.ToBinaryString();
       var bmlsl = bmls.Length;
     }
@@ -578,18 +578,24 @@ namespace ConsoleApp
 
     #endregion
 
-    #region RunLocale
+    #region RunLocaleInformation
 
     /// <summary>Run the locale zample.</summary>
-    public static void RunLocale()
+    public static void RunLocaleInformation()
     {
       System.Console.WriteLine();
-      System.Console.WriteLine(nameof(RunLocale));
+      System.Console.WriteLine(nameof(RunLocaleInformation));
       System.Console.WriteLine();
+
+      System.Console.WriteLine($"System.Runtime.InteropServices.RuntimeInformation.Framework = {System.Runtime.InteropServices.RuntimeInformation.Framework}");
+      System.Console.WriteLine($"System.Runtime.InteropServices.RuntimeInformation.OS = {System.Runtime.InteropServices.RuntimeInformation.OS}");
+
+      System.Console.WriteLine($"System.Net.IPAddress.GlobalAddress = {System.Net.IPAddress.GlobalAddress}");
+      System.Console.WriteLine($"System.Net.IPAddress.LocalAddress = {System.Net.IPAddress.LocalAddress}");
 
       //System.Console.WriteLine(Flux.Locale.GetProperties().ToConsoleString(k => k, v => v.ToString()));
       //System.Console.WriteLine(Flux.Locale.GetProperties().ToArray().ToConsoleString(k => k, v => v.ToString()));
-      System.Console.WriteLine(Flux.EnvironmentExtensions.GetProperties().ToRank2Array().ToConsoleString(ConsoleFormatOptions.Default));
+      //System.Console.WriteLine(Flux.EnvironmentExtensions.GetProperties().ToRank2Array().ToConsoleString(ConsoleFormatOptions.Default));
       //System.Console.WriteLine(Flux.Locale.GetProperties().ToJaggedArray().ToTwoDimensionalArray().Rank2ToConsoleString());
 
       //System.Console.WriteLine($"AppDomainDirectory = \"{new System.IO.DirectoryInfo(System.AppDomain.CurrentDomain.BaseDirectory)}\"");
@@ -647,7 +653,7 @@ namespace ConsoleApp
       System.Console.WriteLine(nameof(RunPhoneticAlgorithms));
       System.Console.WriteLine();
 
-      var ipaes = typeof(Flux.PhoneticAlgorithm.IPhoneticallyEncodable).GetDerived().Select(t => (Flux.PhoneticAlgorithm.IPhoneticallyEncodable)System.Activator.CreateInstance(t));
+      var ipaes = typeof(Flux.PhoneticAlgorithm.IPhoneticallyEncodable).GetDerived().Select(t => (Flux.PhoneticAlgorithm.IPhoneticallyEncodable?)System.Activator.CreateInstance(t));
       var names = new string[] { "Dougal", "Glinde", "Plumridge", "Simak", "Webberley", "Ashcraft", "Ashcroft", "Asicroft", "Schmidt", "Schneider", "Lloyd", "Pfister" };
 
       foreach (var ipae in ipaes)

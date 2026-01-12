@@ -1,5 +1,3 @@
-using Flux.Units;
-
 namespace Flux.CoordinateSystems
 {
   /// <summary>
@@ -200,7 +198,7 @@ namespace Flux.CoordinateSystems
     #region Implemented interfaces
 
     public string ToString(string? format, System.IFormatProvider? formatProvider)
-      => $"<{Radius.ToString(format ?? 3.GetFormatWithCountDecimals(), formatProvider)}, {Inclination.ToUnitString(Units.AngleUnit.Degree, format ?? 6.GetFormatWithCountDecimals(), formatProvider)} / {Elevation.ToUnitString(Units.AngleUnit.Degree, format ?? 6.GetFormatWithCountDecimals(), formatProvider)}, {Azimuth.ToUnitString(Units.AngleUnit.Degree, format ?? 6.GetFormatWithCountDecimals(), formatProvider)}>";
+      => $"<{Radius.ToString(format ?? BinaryIntegers.GetFormatStringWithCountDecimals(3), formatProvider)}, {Inclination.ToUnitString(Units.AngleUnit.Degree, format ?? BinaryIntegers.GetFormatStringWithCountDecimals(6), formatProvider)} / {Elevation.ToUnitString(Units.AngleUnit.Degree, format ?? BinaryIntegers.GetFormatStringWithCountDecimals(6), formatProvider)}, {Azimuth.ToUnitString(Units.AngleUnit.Degree, format ?? BinaryIntegers.GetFormatStringWithCountDecimals(6), formatProvider)}>";
 
     #endregion // Implemented interfaces
 

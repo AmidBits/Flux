@@ -36,11 +36,11 @@ namespace Flux.Dsp.WaveProcessors
     public MonoFolder() : this(0, 0) { }
 
     public double ProcessMonoWave(double wave)
-      => (m_multiplier * (wave + m_polarBias)).FoldAcross(-1, 1);
+      => Numbers.FoldAcross(m_multiplier * (wave + m_polarBias), -1, 1);
 
     public Waves.IWaveMono<double> ProcessMonoWave(Waves.IWaveMono<double> mono) => (Waves.WaveMono<double>)ProcessMonoWave(mono.Wave);
 
     public static double ApplyFolder(double sample, double polarBias, double multiplier)
-      => (multiplier * (sample + polarBias)).FoldAcross(-1, 1);
+      => Numbers.FoldAcross(multiplier * (sample + polarBias), -1, 1);
   }
 }

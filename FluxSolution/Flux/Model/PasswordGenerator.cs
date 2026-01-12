@@ -103,7 +103,7 @@ namespace Flux.Model
     {
       for (var index = ushort.MaxValue; index > 0; index--)
       {
-        yield return characterPool.GetRandomElements(1, rng).First();
+        yield return characterPool.RandomElements(1, rng).First();
       }
     }
     /// <summary>Creates a new sequence where all chars from the entire set of specified characters are randomly distributed over and over (unbiased).</summary>
@@ -113,7 +113,7 @@ namespace Flux.Model
 
       for (var index = ushort.MaxValue / characterPool.Length; index > 0; index--)
       {
-        foreach (var character in characterPool.Distinct().GetRandomElements(1, rng))
+        foreach (var character in characterPool.Distinct().RandomElements(1, rng))
         {
           yield return character;
         }

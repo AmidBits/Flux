@@ -27,7 +27,7 @@ namespace Flux.Model.Maze
 
           if (atBoundary2 || (!atBoundary1 && RandomNumberGenerator.Next(2) == 0)) // should close out
           {
-            if (run.TryRandom(out var member, RandomNumberGenerator) && member.Edges.TryGetValue(direction1, out var edgeCell))
+            if (run.TryGetRandomElement(out var member, RandomNumberGenerator) && member.Edges.TryGetValue(direction1, out var edgeCell))
               member.ConnectPath(edgeCell, true);
 
             run.Clear();

@@ -14,7 +14,7 @@ namespace Flux
       for (var i = 1; i < radices.Length; i++)
         radices[i] = radices[i - 1] - 1;
 
-      return n.CountPermutationsWithoutRepetition(radices.Length);
+      return BinaryIntegers.CountPermutationsWithoutRepetition(n, radices.Length);
     }
 
     /// <summary>

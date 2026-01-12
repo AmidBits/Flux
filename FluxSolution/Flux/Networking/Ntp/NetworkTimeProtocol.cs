@@ -160,11 +160,11 @@
 
     [System.CLSCompliant(false)]
     public static System.TimeSpan ConvertNtpShortFormatToTimeSpan(ushort seconds, ushort fraction)
-      => System.TimeSpan.FromSeconds(seconds + fraction.ConvertToFraction(10));
+      => System.TimeSpan.FromSeconds(BinaryIntegers.ConvertToFraction(seconds + fraction, 10));
 
     [System.CLSCompliant(false)]
     public static System.DateTime ConvertNtpTimestampFormatToDateTime(uint seconds, uint fraction)
-      => NetworkTimeProtocol.PrimeEpoch.AddSeconds(seconds + fraction.ConvertToFraction(10));
+      => NetworkTimeProtocol.PrimeEpoch.AddSeconds(BinaryIntegers.ConvertToFraction(seconds + fraction, 10));
 
     #endregion // Conversion methods
 
@@ -184,7 +184,8 @@
         socket.Receive(bytes);
 
         clientReception = System.DateTime.UtcNow;
-      };
+      }
+      ;
 
       return bytes;
     }

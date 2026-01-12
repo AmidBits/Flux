@@ -6,13 +6,15 @@ namespace Flux
     /// <param name="source"></param>
     /// <param name="apothem"></param>
     /// <returns></returns>
-    public static double GetRegularPolygonAreaByApothem(this Numerics.Geometry.Polygons.PolygonType source, double apothem) => (int)source * (apothem * apothem) * double.Tan(double.Pi / (int)source);
+    public static double GetRegularPolygonAreaByApothem(this Numerics.Geometry.Polygons.PolygonType source, double apothem)
+      => (int)source * (apothem * apothem) * double.Tan(double.Pi / (int)source);
 
     /// <summary></summary>
     /// <param name="source"></param>
     /// <param name="sideLength"></param>
     /// <returns></returns>
-    public static double GetRegularPolygonAreaBySideLength(this Numerics.Geometry.Polygons.PolygonType source, double sideLength) => (int)source * (sideLength * sideLength) * (double.Pi / (int)source).Cot() / 4;
+    public static double GetRegularPolygonAreaBySideLength(this Numerics.Geometry.Polygons.PolygonType source, double sideLength)
+      => (int)source * (sideLength * sideLength) * double.Cot(double.Pi / (int)source) / 4;
 
     /// <summary>
     /// <para></para>
@@ -21,22 +23,26 @@ namespace Flux
     /// <param name="source"></param>
     /// <param name="apothem"></param>
     /// <returns></returns>
-    public static double GetRegularPolygonCircumradiusByApothem(this Numerics.Geometry.Polygons.PolygonType source, double apothem) => apothem / double.Cos(double.Pi / (int)source);
+    public static double GetRegularPolygonCircumradiusByApothem(this Numerics.Geometry.Polygons.PolygonType source, double apothem)
+      => apothem / double.Cos(double.Pi / (int)source);
 
     /// <summary></summary>
     /// <param name="source"></param>
     /// <param name="sideLength"></param>
     /// <returns></returns>
-    public static double GetRegularPolygonCircumradiusBySideLength(this Numerics.Geometry.Polygons.PolygonType source, double sideLength) => sideLength / (2 * double.Sin(double.Pi / (int)source));
+    public static double GetRegularPolygonCircumradiusBySideLength(this Numerics.Geometry.Polygons.PolygonType source, double sideLength)
+      => sideLength / (2 * double.Sin(double.Pi / (int)source));
 
     /// <summary></summary>
     /// <see href="https://en.wikipedia.org/wiki/Regular_polygon#Angles"/>
     /// <returns></returns>
-    public static Units.Angle GetRegularPolygonInteriorAngle(this Numerics.Geometry.Polygons.PolygonType source) => new(((int)source - 2) * double.Pi / ((int)source));
+    public static Units.Angle GetRegularPolygonInteriorAngle(this Numerics.Geometry.Polygons.PolygonType source)
+      => new(((int)source - 2) * double.Pi / ((int)source));
 
     /// <summary>An n-sided convex regular polygon is denoted by its Schläfli symbol {n}. For n < 3, we have two degenerate cases (Monogon and Digon).</summary>
     /// <see href="https://en.wikipedia.org/wiki/Schl%C3%A4fli_symbol"/>
-    public static int GetSchläfliSymbol(this Numerics.Geometry.Polygons.PolygonType source) => (int)source;
+    public static int GetSchläfliSymbol(this Numerics.Geometry.Polygons.PolygonType source)
+      => (int)source;
 
     //  // https://en.wikipedia.org/wiki/List_of_polygons#List_of_n-gons_by_Greek_numerical_prefixes
     //  public static string GetSystematicPolygonName(this int source)

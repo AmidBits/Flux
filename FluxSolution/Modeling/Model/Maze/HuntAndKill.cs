@@ -9,7 +9,7 @@ namespace Flux.Model.Maze
     {
       System.ArgumentNullException.ThrowIfNull(grid);
 
-      grid.Values.TryRandom(out var current, RandomNumberGenerator);
+      grid.Values.TryGetRandomElement(out var current, RandomNumberGenerator);
 
       while (current != null)
       {
@@ -17,7 +17,7 @@ namespace Flux.Model.Maze
 
         if (unvisited.Any())
         {
-          unvisited.TryRandom(out var unvisitedElement, RandomNumberGenerator);
+          unvisited.TryGetRandomElement(out var unvisitedElement, RandomNumberGenerator);
 
           current = current.ConnectPath(unvisitedElement, true);
         }
@@ -31,7 +31,7 @@ namespace Flux.Model.Maze
 
             if (visited.Any())
             {
-              visited.TryRandom(out var visitedElement, RandomNumberGenerator);
+              visited.TryGetRandomElement(out var visitedElement, RandomNumberGenerator);
 
               cell.ConnectPath(visitedElement, true);
 

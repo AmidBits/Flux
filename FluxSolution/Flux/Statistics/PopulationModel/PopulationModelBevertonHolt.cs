@@ -30,7 +30,6 @@ namespace Flux.Statistics.PopulationModel
     /// <summary>The carrying capacity in the environment (M).</summary>
     public double CarryingCapacity { get => m_carryingCapacity; init => m_carryingCapacity = value; }
 
-    /// <returns>The number of individuals at time Nt+1.</returns>
     public IPopulationModelable ModelPopulation()
       => new PopulationModelBevertonHolt(Compute(m_population, m_growthRate, m_carryingCapacity), m_growthRate, m_carryingCapacity);
 

@@ -128,7 +128,7 @@ namespace Flux
       {
         (minValue, maxValue) = source.GetExtentRelative(minValue, maxValue, 1);
 
-        return value.FoldAcross(minValue, maxValue);
+        return Numbers.FoldAcross(value, minValue, maxValue);
       }
 
       /// <summary>
@@ -151,10 +151,10 @@ namespace Flux
           while (magnitude-- > 0)
           {
             if (source is IntervalNotation.Open or IntervalNotation.HalfOpenLeft)
-              minValue = minValue.IncrementNative();
+              minValue = Numbers.NativeIncrement(minValue);
 
             if (source is IntervalNotation.Open or IntervalNotation.HalfOpenRight)
-              maxValue = maxValue.DecrementNative();
+              maxValue = Numbers.NativeDecrement(maxValue);
           }
 
           AssertValid(IntervalNotation.Closed, minValue, maxValue, "magnitude");
@@ -192,7 +192,14 @@ namespace Flux
       }
 
       /// <summary>
-      /// <para>Calculates the offset and length of an <see cref="Interval{T}"/>. The offset is the same as <see cref="Interval{T}.MinValue"/> of <paramref name="source"/>.</para>
+      /// <para>Calculates the offset and length of an interval (<paramref name="minValue"/>, <paramref name="maxValue"/>) in a specified <see cref="IntervalNotation"/>.</para>
+      /// <example>
+      /// <para>Example:</para>
+      /// <code>(2, 3).<see cref="IntervalNotation.Closed"/> = (2, 3)</code>
+      /// <code>(2, 3).<see cref="IntervalNotation.HalfOpenLeft"/> = (3, 2)</code>
+      /// <code>(2, 3).<see cref="IntervalNotation.HalfOpenRight"/> = (2, 2)</code>
+      /// <code>(2, 3).<see cref="IntervalNotation.Open"/> = (3, 1)</code>
+      /// </example>
       /// </summary>
       /// <typeparam name="T"></typeparam>
       /// <param name="source"></param>
@@ -206,9 +213,9 @@ namespace Flux
         if (source is IntervalNotation.HalfOpenLeft or IntervalNotation.Open)
           index++;
 
-        if (source == IntervalNotation.Closed)
+        if (source is IntervalNotation.Closed)
           length++;
-        else if (source == IntervalNotation.Open)
+        else if (source is IntervalNotation.Open)
           length--;
 
         if (length <= 0)
@@ -217,6 +224,17 @@ namespace Flux
         return (index, length);
       }
 
+      /// <summary>
+      /// <para>Inverts a <see cref="IntervalNotation"/>.</para>
+      /// <example>
+      /// <code><see cref="IntervalNotation.Closed"/> = <see cref="IntervalNotation.Open"/> </code>
+      /// <code><see cref="IntervalNotation.HalfOpenLeft"/> = <see cref="IntervalNotation.HalfOpenRight"/> </code>
+      /// <code><see cref="IntervalNotation.HalfOpenRight"/> = <see cref="IntervalNotation.HalfOpenLeft"/> </code>
+      /// <code><see cref="IntervalNotation.Open"/> = <see cref="IntervalNotation.Closed"/> </code>
+      /// </example>
+      /// </summary>
+      /// <returns>The 'opposite' <see cref="IntervalNotation"/>.</returns>
+      /// <exception cref="NotImplementedException"></exception>
       public IntervalNotation InvertNotation()
         => (source == IntervalNotation.Closed) ? IntervalNotation.Open
         : (source == IntervalNotation.Open) ? IntervalNotation.Closed
@@ -317,7 +335,7 @@ namespace Flux
       {
         System.ArgumentOutOfRangeException.ThrowIfNegative(iterations);
 
-        var step = (stop - start).Sign();
+        var step = Numbers.UnitSign(stop - start);
 
         while (iterations-- > 0)
         {
@@ -415,7 +433,7 @@ namespace Flux
       {
         (minValue, maxValue) = source.GetExtentAbsolute(minValue, maxValue, TNumber.One);
 
-        return value.WrapAround(minValue, maxValue);
+        return Numbers.WrapAround(value, minValue, maxValue);
       }
 
       /// <summary>
@@ -431,7 +449,7 @@ namespace Flux
       {
         (minValue, maxValue) = source.GetExtentRelative(minValue, maxValue, 1);
 
-        return value.WrapAround(minValue, maxValue);
+        return Numbers.WrapAround(value, minValue, maxValue);
       }
 
       //public TNumber Wrap<TNumber>(TNumber value, TNumber minValue, TNumber maxValue)
@@ -439,7 +457,7 @@ namespace Flux
       //{
       //  (minValue, maxValue) = source.GetExtentAbsolute(minValue, maxValue, 0);
 
-      //  return value.WrapAround(minValue, maxValue);
+      //  return NumberFunctions.WrapAround(value, minValue, maxValue);
       //}
     }
   }

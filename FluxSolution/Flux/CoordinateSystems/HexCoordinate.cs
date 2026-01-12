@@ -141,9 +141,9 @@ namespace Flux.CoordinateSystems
       where TSource : System.Numerics.IFloatingPoint<TSource>
       where TTarget : System.Numerics.INumber<TTarget>
     {
-      var rQ = sq.RoundHalf(mode);
-      var rR = sr.RoundHalf(mode);
-      var rS = ss.RoundHalf(mode);
+      var rQ = FloatingPoints.RoundHalf(sq, mode);
+      var rR = FloatingPoints.RoundHalf(sr, mode);
+      var rS = FloatingPoints.RoundHalf(ss, mode);
 
       var aQ = TSource.Abs(rQ - sq);
       var aR = TSource.Abs(rR - sr);
@@ -286,7 +286,7 @@ namespace Flux.CoordinateSystems
 
     /// <summary>Computes the count of hexes in the range of, i.e. any hex that is on or inside, the specified radius.</summary>
     public static int ComputeRangeCount(int radius)
-      => 0.LoopRange(6, radius + 1).AsParallel().Sum() + 1;
+      => Numbers.LoopRange(0, 6, radius + 1).AsParallel().Sum() + 1;
 
     /// <summary>Computes the count of hexes in the ring of the specified radius.</summary>
     public static int ComputeRingCount(int radius)

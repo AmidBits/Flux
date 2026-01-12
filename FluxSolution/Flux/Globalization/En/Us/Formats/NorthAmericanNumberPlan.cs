@@ -51,19 +51,19 @@ namespace Flux.Globalization.En.Us
     {
       System.ArgumentNullException.ThrowIfNull(phoneNumberWithAlphabeticMnemonics);
 
-      var sm = new System.Text.StringBuilder();
+      var sb = new System.Text.StringBuilder();
 
       foreach (var c in phoneNumberWithAlphabeticMnemonics)
       {
         if (c >= 'A' && c <= 'Z')
-          sm.Append(@"22233344455566677778889999"[c - 'A']);
+          sb.Append(@"22233344455566677778889999"[c - 'A']);
         else if (c >= 'a' && c <= 'z')
-          sm.Append(@"22233344455566677778889999"[c - 'a']);
+          sb.Append(@"22233344455566677778889999"[c - 'a']);
         else
-          sm.Append(c);
+          sb.Append(c);
       }
 
-      return sm.ToString();
+      return sb.ToString();
     }
 
     public readonly override string? ToString()

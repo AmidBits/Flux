@@ -192,6 +192,6 @@ namespace Flux.PlanetaryScience
 
     #endregion // Implemented interfaces
 
-    public override string ToString() => ToString(3.GetFormatWithCountDecimals(), null); // Up to three decimals.
+    public override string ToString() => ToString(BinaryIntegers.GetFormatStringWithCountDecimals(3), null); // Up to three decimals.
   }
 }

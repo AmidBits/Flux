@@ -2,9 +2,13 @@ Clear-Host
 
 $base = [System.IO.DirectoryInfo]"E:\Media\Audio"
 
-function Build-Playlist([string]$playlistName, [string[]]$directories, [string]$filter = "*.mp3")
+function Build-Playlist([string]$playlist, [string[]]$directories, [string]$filter = "*.mp3")
 {
-    $playlistFileInfo = [System.IO.FileInfo][System.IO.Path]::Combine($base, "Playlists\$playlistName.m3u8")
+    $playlistFileInfo = [System.IO.FileInfo][System.IO.Path]::Combine($base, "Playlists\$playlist.m3u8")
+
+    [System.IO.Directory]::GetParent($playlistFileInfo.FullName).Create()
+
+    $playlistName = $playlistFileInfo.BaseName
 
     $m3u8 = $playlistFileInfo.CreateText();
 
@@ -52,16 +56,21 @@ Build-Playlist "Personal Jesus" ("Tracks\Collections", "Tracks\MediaTracks", "Tr
 
 Build-Playlist "Svensk Musik" ("Tracks\Collections\Adolphson & Falk", "Tracks\Collections\Gyllene Tider", "Tracks\Collections\Lustans Lakejer", "Tracks\Collections\Noice", "Tracks\Collections\Ratata")
 
-Build-Playlist "Lindeman" ("Comedy") "*Lindeman*.mp3"
+Build-Playlist "Lindeman's" ("Comedy") "*Lindeman*.mp3"
 
 Build-Playlist "Talk & Comedy" ("Comedy")
 
 Build-Playlist "X-mas" ("Tracks\X-mas")
 
+Build-Playlist "Agamemnon (Seneca the Younger)" ("Books\Lucius Annaeus Seneca the Younger\Agamemnon")
 Build-Playlist "Always Looking Up (Michael J. Fox)" ("Books\Michael J. Fox\Always Looking Up")
 Build-Playlist "Art Of War (Sun Tzu)" ("Books\Sun Tzu\Art of War")
 Build-Playlist "George Washington (J. Ellis)" ("Books\Joseph J. Ellis\His Excellency - George Washington")
 Build-Playlist "Letting Go Of God (Julia Sweeney)" ("Books\Julia Sweeney\Letting Go Of God")
+Build-Playlist "Medea (Seneca the Younger)" ("Books\Lucius Annaeus Seneca the Younger\Medea (Version 2)")
 Build-Playlist "Meditations (Marcus Aurelius)" ("Books\Marcus Aurelius Antoninus\Meditations")
 Build-Playlist "Moral Letters to Lucilius (Seneca the Younger)" ("Books\Lucius Annaeus Seneca the Younger\Lucilius Epistulae")
+Build-Playlist "Oedipus (Seneca the Younger)" ("Books\Lucius Annaeus Seneca the Younger\Oedipus")
 Build-Playlist "The Divine Comedy (Dante Alighieri)" ("Books\Dante Alighieri\The Divine Comedy")
+Build-Playlist "Thyestes (Seneca the Younger)" ("Books\Lucius Annaeus Seneca the Younger\Thyestes")
+Build-Playlist "Troades (Seneca the Younger)" ("Books\Lucius Annaeus Seneca the Younger\Troades")

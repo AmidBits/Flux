@@ -159,9 +159,9 @@
     public bool IsSubsetOf(System.Collections.Generic.IEnumerable<TValue> other)
       => this.ScanSetCounts(other, false) is var (unfoundCount, uniqueCount) && unfoundCount >= 0 && uniqueCount == Count;
 
-    public bool IsSupersetOf(System.Collections.Generic.IEnumerable<TValue> other) => this.ContainsAll(other);
+    public bool IsSupersetOf(System.Collections.Generic.IEnumerable<TValue> other) => this.ToHashSet().All(e => other.Contains(e));
 
-    public bool Overlaps(System.Collections.Generic.IEnumerable<TValue> other) => this.ContainsAny(other);
+    public bool Overlaps(System.Collections.Generic.IEnumerable<TValue> other) => this.ToHashSet().Any(e => other.Contains(e));
 
     public bool SetEquals(System.Collections.Generic.IEnumerable<TValue> other)
       => this.ScanSetCounts(other, true) is var (unfoundCount, uniqueCount) && unfoundCount == 0 && uniqueCount == Count;

@@ -84,14 +84,14 @@ namespace ConsoleApp
 
         if (textlist.Count == 0 || ($"{textlist[^2]} {textlist[^1]}" is var last && last.EndsWith('.')))
         {
-          textlist.AddRange(reWhitespace.Split(dict3.Keys.Where(two => char.IsUpper(two[0])).Random()));
+          textlist.AddRange(reWhitespace.Split(dict3.Keys.Where(two => char.IsUpper(two[0])).GetRandomElement()));
 
           last = $"{textlist[^2]} {textlist[^1]}";
         }
 
         try
         {
-          var next = dict3[last].Random();
+          var next = dict3[last].GetRandomElement();
 
           textlist.Add(next);
         }
@@ -110,7 +110,7 @@ namespace ConsoleApp
       for (var n = System.UInt128.Zero; n <= maxN; n++)
       {
         for (var k = System.UInt128.Zero; k <= n; k++)
-          System.Console.Write($"{n.BinomialCoefficient(k)} ");
+          System.Console.Write($"{BinaryIntegers.BinomialCoefficient(n, k)} ");
 
         System.Console.WriteLine();
       }
@@ -333,129 +333,96 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
+      var gosps = System.Runtime.InteropServices.RuntimeInformation.GetOsPlatforms();
+      var osp = System.Runtime.InteropServices.RuntimeInformation.OsPlatform;
+
+      var fw = System.Runtime.InteropServices.RuntimeInformation.Framework;
+
+      var os = System.Runtime.InteropServices.RuntimeInformation.OS;
+
+      var fqdn = System.Net.Dns.GetFullyQualifiedDomainName(out var hn);
+
+      fqdn = $"{hn}.level.domain.zone";
+
+      var isqdn = System.Net.Dns.IsQualifiedDomainName(fqdn, out var lc);
+
+      var x = typeof(System.Runtime.InteropServices.OSPlatform).GetProperties().Where(pi => pi.PropertyType == typeof(System.Runtime.InteropServices.OSPlatform)).Select(pi => pi.GetValue(null)).Cast<System.Runtime.InteropServices.OSPlatform>().ToArray();
+      //.Select(mi => mi.Name.Substring(2)).Order()]
 
 
-      var sbx = new Flux.SpanBuilder<char>();
-      sbx.Append("This is the 1 time it happened.");
-      sbx.MakeNumbersFixedLength(6, 0, sbx.Length);
-      sbx.InsertOrdinalIndicatorSuffix((s1, s2) => true);
-      sbx.NormalizeConsecutive(1, char.IsDigit);
+      //var rsaBitSize = 4096;
 
-      var totf = Flux.Resources.GetScowlTwoOfTwelveFull().Select(a => a[5]).ToArray();
+      //var rsa = Flux.Cipher.Asymmetric.RsaCng.CreateRsaKeyPair(rsaBitSize);
 
-      var ipa = System.Globalization.CultureInfo.GetCultureInfo("en-gb").ReadIpaFile();
-      var ipalength = ipa.Length;
+      ////System.IO.File.WriteAllText($"../../../../private-{rsaBitSize}.pem", rsa.PrivateText);
+      ////System.IO.File.WriteAllText($"../../../../public-{rsaBitSize}.pem", rsa.PublicText);
 
-      var words = ipa.Split('\r', '\n').Select(s => s.Split('\t')[0]);
+      //var sourceText = "Hello";
+      //var sourceLength = sourceText.Length;
 
-      var cdws = words.AsParallel().Select(w => (w, d: Flux.ReadOnlySpanExtensions.JaroWinklerDistance<char>("untill", w))).Where(t => t.d < 0.15).OrderBy(t => t.d).ToArray();
+      //var uncryptedBytes = Flux.Transcode.Utf8.Default.DecodeString(sourceText);
 
+      //var encryptedBytes = Flux.Cipher.Asymmetric.RsaCng.Default.Encrypt(uncryptedBytes, rsa.PublicKey);
 
-      //var match = System.Text.RegularExpressions.Regex.Match(ipa, @"\t.*\n");
+      //var decrypedBytes = Flux.Cipher.Asymmetric.RsaCng.Default.Decrypt(encryptedBytes, rsa.PrivateKey);
 
-      var removed = ipa.AsSpan().AsSpan().ReplaceRegex(@"\t.*(?=\n|$)", string.Empty);
-      var removeds = removed.ToString();
+      //var targetText = Flux.Transcode.Utf8.Default.EncodeString(decrypedBytes);
+      //var targetLength = targetText.Length;
 
-
-      ipa.AsSpan().AsSpan()[4] = 'x';
-
-      //var matches = System.Text.RegularExpressions.Regex.Matches(ipa, @"^..b.$", RegexOptions.Multiline).ToArray();
-
-      var matches1 = System.Text.RegularExpressions.Regex.Replace(ipa, @"\s.*\n", "\n");
-      var matches1len = matches1.Length;
-
-      var matches2 = System.Text.RegularExpressions.Regex.Matches(ipa, "(^|\n).*\t");
-
-      var sub1 = "geeksforgeeks".AsSpan().LongestRepeatingSubstring();
-      var sub1s = "geeksforgeeks".AsSpan()[sub1];
-      var subs = "SSABBASABBASS".AsSpan().LongestRepeatingSubstring();
-      var subss = "TTABBASABBASS".AsSpan()[subs];
-
-
-
-      // 0, 1, 2, 3, 4, 5, 6, 7, 8, 9
-
-      // 6, 5, 4, 3, 2, 1, 0, 9, 8, 7
-
-      // 9, 8, 7, 6, 5, 4, 3, 2, 1, 0
-      // 7, 8, 9, 0, 1, 2, 3, 4, 5, 6
-
-      var x = new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
-
-      x.Rotate(3);
-      x.Rotate(-3);
-
-      x.AsReadOnlySpan().CommonPrefixLength([2, 4, 6, 8]);
-
-
-      //var directory = System.IO.Directory.GetCurrentDirectory();
-
-      //var test = new System.IO.FileInfo(@"\Resources\Scowl\2of12full.txt");
-
-      //var urix = @"\Resources\Scowl\2of12full.txt".ToUri();
-
-      var fi = @"\Resources\Scowl\2of12full.txt".ToFileInfo();
-      var di = @"\Resources\Scowl\".ToDirectoryInfo();
+      //return;
 
 
 
-      var file = @"file:///Resources\Scowl\2of12full.txt";
-      var furi = file.ToFileInfo();
-      var path = @"file://\Resources\Scowl\";
-
-      if (@"file://\Resources\Scowl\2of12full.txt".ToUri().TryGetStream(out var stream))
-        using (stream)
-        {
-        }
-
-      var isuri = Uri.TryCreate(file, UriKind.RelativeOrAbsolute, out Uri uriResult);
-
-      var fullfile = System.IO.Path.GetFullPath(file);
-      var fullpath = System.IO.Path.GetFullPath(path);
-
-      var isfile = System.IO.Path.IsPathRooted(file);
-      var ispath = System.IO.Path.IsPathRooted(path);
-      var fqfile = System.IO.Path.IsPathFullyQualified(file);
-      var fqpath = System.IO.Path.IsPathFullyQualified(path);
-      var isurifile = System.Uri.IsWellFormedUriString(file, UriKind.RelativeOrAbsolute);
-      var isuripath = System.Uri.IsWellFormedUriString(path, UriKind.RelativeOrAbsolute);
-
-      var urifile = new System.Uri(file);
-      var uripath = new System.Uri(path);
-
-      var filedi = new System.IO.DirectoryInfo(file);
-      var filefi = new System.IO.FileInfo(file);
-      var fileuri = new System.Uri(file);
-
-      var pathdi = new System.IO.DirectoryInfo(path);
-      var pathfi = new System.IO.FileInfo(path);
-      var pathuri = new System.Uri(path);
-
-      var uri = new System.Uri(@"file://\Resources\Scowl\2of12full.txt");
-      var uri2 = new System.Uri(@"file://\Resources\Scowl\");
-
-      //var words = System.Globalization.CultureInfo.ReadIpaString(System.Globalization.CultureInfo.CurrentCulture);
 
 
-      var points1 = new System.Numerics.Vector<double>[5];
-      points1[0] = System.Numerics.Vector.Create<double>(5, 0, 0, 0); // edge[0]: (6 - 5)(4 + 0) = 4
-      points1[1] = System.Numerics.Vector.Create<double>(6, 4, 0, 0); // edge[1]: (4 - 6)(5 + 4) = -18
-      points1[2] = System.Numerics.Vector.Create<double>(4, 5, 0, 0); // edge[2]: (1 - 4)(5 + 5) = -30
-      points1[3] = System.Numerics.Vector.Create<double>(1, 5, 0, 0); // edge[3]: (1 - 1)(0 + 5) = 0
-      points1[4] = System.Numerics.Vector.Create<double>(1, 0, 0, 0); // edge[4]: (5 - 1)(0 + 0) = 0
+      //var un = "Hello";
+      //var pwd = "World";
+      //var iterations = 999;
 
-      var points2 = new System.Numerics.Vector<double>[5];
-      points2[0] = System.Numerics.Vector.Create<double>(5, 0, 0, 0); // edge[0]: (6 - 5)(4 + 0) = 4
-      points2[1] = System.Numerics.Vector.Create<double>(1, 0, 0, 0); // edge[4]: (5 - 1)(0 + 0) = 0
-      points2[2] = System.Numerics.Vector.Create<double>(1, 5, 0, 0); // edge[3]: (1 - 1)(0 + 5) = 0
-      points2[3] = System.Numerics.Vector.Create<double>(4, 5, 0, 0); // edge[2]: (1 - 4)(5 + 5) = -30
-      points2[4] = System.Numerics.Vector.Create<double>(6, 4, 0, 0); // edge[1]: (4 - 6)(5 + 4) = -18
+      //var (Key, IV) = Flux.Cipher.Helper.GenerateKeyAndIv(un, pwd, iterations, System.Security.Cryptography.HashAlgorithmName.SHA3_512, Flux.Cipher.Symmetric.AesCng.Default.MaxLegalKeySize, Flux.Cipher.Symmetric.AesCng.Default.MaxLegalBlockSize);
 
-      var sumedges1 = points1.ComputeAreaSigned2();
-      var sumedges2 = points2.ComputeAreaSigned2();
+      //var sourceText = "TOBEORNOTTOBEORTOBEORNOT";
+      //var sourceLength = sourceText.Length;
 
-      var asum = points1.PartitionTuple2(true, (v1, v2, i) => System.Numerics.Vector.CrossProduct2(v2, v1)).Sum();
+      //var uncompressedBytes = System.Text.Encoding.UTF8.GetBytes(sourceText);
 
+      //var compressedBytes = Flux.Compressor.Deflate.Default.Compress(uncompressedBytes);
+
+      //var encryptedBytes = Flux.Cipher.Symmetric.AesCng.Default.Encrypt(compressedBytes, Key, IV);
+
+      //var encodedString = Flux.Transcode.Base85.Default.EncodeString(encryptedBytes);
+
+      //var decodedBytes = Flux.Transcode.Base85.Default.DecodeString(encodedString);
+
+      //var decryptedBytes = Flux.Cipher.Symmetric.AesCng.Default.Decrypt(decodedBytes, Key, IV);
+
+      //var decompressedBytes = Flux.Compressor.Deflate.Default.Decompress(decryptedBytes);
+
+      //var targetText = System.Text.Encoding.UTF8.GetString(decompressedBytes);
+      //var targetLength = targetText.Length;
+
+      //return;
+
+
+
+
+
+      //var sbx = new Flux.SpanBuilder<char>();
+      //sbx.Append("This is the 1 time it happened.");
+      //sbx.Replace(5, 6, "translates");
+      //sbx.Remove(2, 1); // "i"
+      //sbx.Remove(0, 4); // "Ths "
+      //sbx.Remove(24, 6); // "pened."
+      //sbx.Remove(17, 4); // " is "
+      //sbx.MakeNumbersFixedLength(6, 0, sbx.Length);
+      //sbx.Insert(7, '1', 3);
+      //sbx.MakeNumbersFixedLength(13, 0, sbx.Length);
+      //sbx.InsertOrdinalIndicatorSuffix((s1, s2) => true);
+      //sbx.NormalizeConsecutive(1, c => char.IsDigit(c) && c == '0');
+      //sbx.AsSpan().CapitalizeWords(0..);
+      //sbx.AsSpan().UncapitalizeWords(0..);
+      //sbx.AsSpan().ToUpper(1..);
+      //sbx.AsSpan().ToLower(1..);
 
 
 
@@ -531,7 +498,7 @@ namespace ConsoleApp
       while (!exit)
       {
         string chosenResponse = "";
-        string userInput = System.Console.ReadLine().ToLower();
+        string userInput = (System.Console.ReadLine() ?? string.Empty).ToLower();
         // remove punctuation at end of input
         userInput = System.Text.RegularExpressions.Regex.Replace(userInput, @"[^\w\s]{1,}$", "");
 
@@ -599,7 +566,7 @@ namespace ConsoleApp
         using var stream = uri.GetStream();
         using var reader = new System.IO.StreamReader(stream, System.Text.Encoding.UTF8);
 
-        string txtLine = "";
+        string? txtLine;
         var tempResponseCollector = new System.Collections.Generic.List<string>();
         while ((txtLine = reader.ReadLine()) != null)
         {

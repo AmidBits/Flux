@@ -6,12 +6,12 @@ namespace Flux
     /// <para></para>
     /// <para><see href="https://en.wikipedia.org/wiki/Continued_fraction"/></para>
     /// </summary>
-    /// <typeparam name="TNumber"></typeparam>
+    /// <typeparam name="TFloat"></typeparam>
     /// <param name="source"></param>
     /// <param name="maxCoefficients"></param>
     /// <returns></returns>
-    public static System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GenerateContinuedFractionCoefficients<TNumber>(this TNumber source, int maxCoefficients = 97)
-      where TNumber : System.Numerics.IFloatingPoint<TNumber>
+    public static System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GenerateContinuedFractionCoefficients<TFloat>(this TFloat source, int maxCoefficients = 97)
+      where TFloat : System.Numerics.IFloatingPoint<TFloat>
     {
       System.ArgumentOutOfRangeException.ThrowIfNegative(maxCoefficients);
 
@@ -21,7 +21,7 @@ namespace Flux
 
       var previous = System.Numerics.BigInteger.Zero;
 
-      while (TNumber.Truncate(source) is var wholePart && !TNumber.IsZero(wholePart) && --maxCoefficients >= 0 && !TNumber.IsInfinity(wholePart))
+      while (TFloat.Truncate(source) is var wholePart && !TFloat.IsZero(wholePart) && --maxCoefficients >= 0 && !TFloat.IsInfinity(wholePart))
       {
         var current = System.Numerics.BigInteger.CreateChecked(wholePart);
 
@@ -32,7 +32,7 @@ namespace Flux
         //if (a.AsReadOnlySpan().CommonSuffixLength(a.Last()) > 23)
         //  break;
 
-        source = TNumber.One / (source - wholePart);
+        source = TFloat.One / (source - wholePart);
 
         previous = current;
       }

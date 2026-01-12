@@ -4,7 +4,7 @@ namespace Flux.Statistics.Quartile
   /// <para>This interpolates between data points to find the pth empirical quantile</para>
   /// <para><see href="https://en.wikipedia.org/wiki/Quartile#Method_4"/></para>
   /// </summary>
-  /// <remarks>Quartile method 4 is equivalent to <see cref="QuantileR6"/>.</remarks>
+  /// <remarks>Quartile method 4 is equivalent to <see cref="Quantile.R6"/>.</remarks>
   public record class Method4
     : IQuartileComputable
   {

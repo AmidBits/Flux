@@ -27,7 +27,7 @@
         var vms = source.Slice(vme.Current.Index, vme.Current.Length);
 
         if (double.TryParse(vms, System.Globalization.NumberStyles.Number, cultureInfo, out var value))
-          return new(significantDigits.HasValue ? (value / 100).RoundByPrecision(mode, significantDigits.Value, 10) : value / 100);
+          return new(significantDigits.HasValue ? FloatingPoints.RoundByPrecision(value / 100, mode, significantDigits.Value, 10) : value / 100);
       }
 
       throw new System.ArgumentException("Parse failed.", nameof(source));

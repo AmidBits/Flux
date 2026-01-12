@@ -2,7 +2,7 @@ namespace Flux.Statistics.Percentile
 {
   /// <summary>
   /// <para>One definition of percentile, often given in texts, is that the P-th percentile of a list of N ordered values (sorted from least to greatest) is the smallest value in the list such that no more than P percent of the data is strictly less than the value and at least P percent of the data is less than or equal to that value.</para>
-  /// <see href="https://en.wikipedia.org/wiki/Percentile#The_nearest-rank_method"/>
+  /// <para><see href="https://en.wikipedia.org/wiki/Percentile#The_nearest-rank_method"/></para>
   /// </summary>
   public record class NearestRank
     : IPercentileComputable

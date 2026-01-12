@@ -73,23 +73,23 @@ namespace Flux
 
     public static string ToConsoleString<TVertexValue, TEdgeValue>(this DataStructures.Graphs.IGraph<TVertexValue, TEdgeValue> source)
     {
-      var sm = new System.Text.StringBuilder();
+      var sb = new System.Text.StringBuilder();
 
-      sm = sm.AppendLine(source.ToString()).AppendLine();
+      sb = sb.AppendLine(source.ToString()).AppendLine();
 
       var v = source.GetVertices().ToList();
 
       var e = source.GetEdges().ToList();
 
-      sm = sm.AppendLine(@"Vertices (x, value, degree):");
-      sm = sm.AppendJoin(System.Environment.NewLine, v).AppendLine();
+      sb = sb.AppendLine(@"Vertices (x, value, degree):");
+      sb = sb.AppendJoin(System.Environment.NewLine, v).AppendLine();
 
-      sm = sm.AppendLine();
+      sb = sb.AppendLine();
 
-      sm = sm.AppendLine(@"Edges (x, y, value):");
-      sm = sm.AppendJoin(System.Environment.NewLine, e).AppendLine();
+      sb = sb.AppendLine(@"Edges (x, y, value):");
+      sb = sb.AppendJoin(System.Environment.NewLine, e).AppendLine();
 
-      return sm.ToString();
+      return sb.ToString();
     }
 
     public static DataStructures.Graphs.IGraph<TVertexValue, TEdgeValue> TransposeToCopy<TVertexValue, TEdgeValue>(this DataStructures.Graphs.IGraph<TVertexValue, TEdgeValue> source)

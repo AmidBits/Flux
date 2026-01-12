@@ -41,7 +41,7 @@ namespace Flux.RandomNumberGenerators
         case SeedEnum.TimerMechanism:
           var t = (uint)System.Diagnostics.Stopwatch.GetTimestamp();
           m_w = t;
-          m_z = t.ReverseBits();
+          m_z = BitOps.ReverseBits(t);
           break;
       }
     }

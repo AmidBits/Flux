@@ -34,7 +34,6 @@ namespace Flux.Statistics.PopulationModel
     /// <summary>The number of individuals emigrating into the population between Nt and Nt+1 (E).</summary>
     public double Emigrated { get => m_emigrated; init => m_emigrated = value; }
 
-    /// <returns>The number of individuals at time Nt+1.</returns>
     public IPopulationModelable ModelPopulation()
       => new PopulationModelBide(Compute(m_population, m_births, m_immigrated, m_deaths, m_emigrated), m_births, m_immigrated, m_deaths, m_emigrated);
 

@@ -2,7 +2,7 @@ namespace Flux.Statistics.Quantile
 {
   /// <summary>
   /// <para>The resulting quantile estimates are approximately unbiased for the expected order statistics if x is normally distributed.</para>
-  /// <see href="https://en.wikipedia.org/wiki/Quantile#Estimating_quantiles_from_a_sample"/>
+  /// <para><see href="https://en.wikipedia.org/wiki/Quantile#Estimating_quantiles_from_a_sample"/></para>
   /// </summary>
   public record class R9
     : IQuantileEstimatable

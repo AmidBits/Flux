@@ -21,7 +21,7 @@ namespace WpfApp
       index = 0;
       comboBoxSeedNumber.Items.Clear();
       comboBoxSeedNumber.Items.Insert(index++, "Rnd");
-      foreach (var pn in 2.GetAscendingPrimes().TakeWhile(p => p < 100))
+      foreach (var pn in BinaryIntegers.GetAscendingPrimes(2).TakeWhile(p => p < 100))
         comboBoxSeedNumber.Items.Insert(index++, pn.ToString());
       comboBoxSeedNumber.SelectedIndex = 0;
 

@@ -2,13 +2,196 @@ namespace Flux
 {
   public static class SpanBuilderExtensions
   {
-    extension<T>(SpanBuilder<T> source)
-    {
-
-    }
-
     extension(SpanBuilder<char> source)
     {
+      //#region Un/Capitalize
+      ///// <summary>
+      ///// <para>Capitalize any lower-case character with a lower case character on the right and, a whitespace on the left or that is at the beginning.</para>
+      ///// </summary>
+      ///// <param name="index"></param>
+      ///// <param name="length"></param>
+      ///// <param name="cultureInfo"></param>
+      ///// <returns></returns>
+
+      //public SpanBuilder<char> CapitalizeWords(int index, int length, System.Globalization.CultureInfo? cultureInfo = null)
+      //{
+      //  System.ArgumentNullException.ThrowIfNull(source);
+
+      //  source.AsSpan().CapitalizeWords(index, length, cultureInfo);
+
+      //  return source;
+      //}
+
+      ///// <summary>
+      ///// <para>Capitalize any lower-case character with a lower case character on the right and, a whitespace on the left or that is at the beginning.</para>
+      ///// </summary>
+      ///// <param name="range"></param>
+      ///// <param name="cultureInfo"></param>
+      ///// <returns></returns>
+      //public SpanBuilder<char> CapitalizeWords(System.Range range, System.Globalization.CultureInfo? cultureInfo = null)
+      //{
+      //  System.ArgumentNullException.ThrowIfNull(source);
+
+      //  source.AsSpan().CapitalizeWords(range, cultureInfo);
+
+      //  return source;
+      //}
+
+      ///// <summary>
+      ///// <para>Capitalize any lower-case character with a lower case character on the right and, a whitespace on the left or that is at the beginning.</para>
+      ///// </summary>
+      ///// <param name="cultureInfo"></param>
+      ///// <returns></returns>
+      //public SpanBuilder<char> CapitalizeWords(System.Globalization.CultureInfo? cultureInfo = null)
+      //{
+      //  System.ArgumentNullException.ThrowIfNull(source);
+
+      //  source.AsSpan().CapitalizeWords(0, source.Length, cultureInfo);
+
+      //  return source;
+      //}
+
+      ///// <summary>
+      ///// <para>Uncapitalize any upper-case character with a lower case character on the right and, a whitespace on the left or that is at the beginning.</para>
+      ///// </summary>
+      ///// <param name="index"></param>
+      ///// <param name="length"></param>
+      ///// <param name="cultureInfo"></param>
+      ///// <returns></returns>
+      //public SpanBuilder<char> UncapitalizeWords(int index, int length, System.Globalization.CultureInfo? cultureInfo = null)
+      //{
+      //  System.ArgumentNullException.ThrowIfNull(source);
+
+      //  source.AsSpan().UncapitalizeWords(index, length, cultureInfo);
+
+      //  return source;
+      //}
+
+      ///// <summary>
+      ///// <para>Uncapitalize any upper-case character with a lower case character on the right and, a whitespace on the left or that is at the beginning.</para>
+      ///// </summary>
+      ///// <param name="range"></param>
+      ///// <param name="cultureInfo"></param>
+      ///// <returns></returns>
+      //public SpanBuilder<char> UncapitalizeWords(System.Range range, System.Globalization.CultureInfo? cultureInfo = null)
+      //{
+      //  System.ArgumentNullException.ThrowIfNull(source);
+
+      //  source.AsSpan().UncapitalizeWords(range, cultureInfo);
+
+      //  return source;
+      //}
+
+      ///// <summary>
+      ///// <para>Uncapitalize any upper-case character with a lower case character on the right and, a whitespace on the left or that is at the beginning.</para>
+      ///// </summary>
+      ///// <param name="cultureInfo"></param>
+      ///// <returns></returns>
+      //public SpanBuilder<char> UncapitalizeWords(System.Globalization.CultureInfo? cultureInfo = null)
+      //{
+      //  System.ArgumentNullException.ThrowIfNull(source);
+
+      //  source.AsSpan().UncapitalizeWords(cultureInfo);
+
+      //  return source;
+      //}
+
+      //#endregion
+
+      //#region ToLower/Upper
+
+      ///// <summary>
+      ///// <para>Convert all characters, in the specified range, to upper case.</para>
+      ///// </summary>
+      ///// <param name="index"></param>
+      ///// <param name="length"></param>
+      ///// <param name="cultureInfo">If null, the current culture is used.</param>
+      ///// <returns></returns>
+      //public SpanBuilder<char> ToLower(int index, int length, System.Globalization.CultureInfo? cultureInfo = null)
+      //{
+      //  System.ArgumentNullException.ThrowIfNull(source);
+
+      //  source.AsSpan().ToLower(index, length, cultureInfo);
+
+      //  return source;
+      //}
+
+      ///// <summary>
+      ///// <para>Convert all characters, in the specified range, to upper case.</para>
+      ///// </summary>
+      ///// <param name="range"></param>
+      ///// <param name="cultureInfo">If null, the current culture is used.</param>
+      ///// <returns></returns>
+      //public SpanBuilder<char> ToLower(System.Range range, System.Globalization.CultureInfo? cultureInfo = null)
+      //{
+      //  System.ArgumentNullException.ThrowIfNull(source);
+
+      //  source.AsSpan().ToLower(range, cultureInfo);
+
+      //  return source;
+      //}
+
+      ///// <summary>
+      ///// <para>Convert all characters, in the specified range, to upper case.</para>
+      ///// </summary>
+      ///// <param name="cultureInfo">If null, the current culture is used.</param>
+      ///// <returns></returns>
+      //public SpanBuilder<char> ToLower(System.Globalization.CultureInfo? cultureInfo = null)
+      //{
+      //  System.ArgumentNullException.ThrowIfNull(source);
+
+      //  source.AsSpan().ToLower(cultureInfo);
+
+      //  return source;
+      //}
+
+      ///// <summary>
+      ///// <para>Convert all characters, in the specified range, to upper case.</para>
+      ///// </summary>
+      ///// <param name="index"></param>
+      ///// <param name="length"></param>
+      ///// <param name="cultureInfo">If null, the current culture is used.</param>
+      ///// <returns></returns>
+      //public SpanBuilder<char> ToUpper(int index, int length, System.Globalization.CultureInfo? cultureInfo = null)
+      //{
+      //  System.ArgumentNullException.ThrowIfNull(source);
+
+      //  source.AsSpan().ToUpper(index, length, cultureInfo);
+
+      //  return source;
+      //}
+
+      ///// <summary>
+      ///// <para>Convert all characters, in the specified range, to upper case.</para>
+      ///// </summary>
+      ///// <param name="range"></param>
+      ///// <param name="cultureInfo">If null, the current culture is used.</param>
+      ///// <returns></returns>
+      //public SpanBuilder<char> ToUpper(System.Range range, System.Globalization.CultureInfo? cultureInfo = null)
+      //{
+      //  System.ArgumentNullException.ThrowIfNull(source);
+
+      //  source.AsSpan().ToUpper(range, cultureInfo);
+
+      //  return source;
+      //}
+
+      ///// <summary>
+      ///// <para>Convert all characters, in the specified range, to upper case.</para>
+      ///// </summary>
+      ///// <param name="cultureInfo">If null, the current culture is used.</param>
+      ///// <returns></returns>
+      //public SpanBuilder<char> ToUpper(System.Globalization.CultureInfo? cultureInfo = null)
+      //{
+      //  System.ArgumentNullException.ThrowIfNull(source);
+
+      //  source.AsSpan().ToUpper(cultureInfo);
+
+      //  return source;
+      //}
+
+      //#endregion
+
       #region InsertOrdinalIndicatorSuffix
 
       /// <summary>Returns the source with ordinal extensions (e.g. rd, th, etc.) added for all numeric substrings (e.g. 3rd, 12th, etc.), if the predicate is satisfied.</summary>
@@ -64,7 +247,9 @@ namespace Flux
       {
         System.ArgumentNullException.ThrowIfNull(source);
 
-        var endIndex = System.Range.AssertInRange(index, length, source.Length);
+        System.Index.AssertInRange(index, source.Length);
+
+        var endIndex = index + length - 1;
 
         bool wasDigit = false;
         var digitCount = 0;
@@ -87,6 +272,13 @@ namespace Flux
           source.Insert(0, '0', fixedLength - digitCount);
 
         return source;
+      }
+
+      public SpanBuilder<char> MakeNumbersFixedLength(int fixedLength, System.Range range)
+      {
+        var (offset, length) = range.GetOffsetAndLength(source.Length);
+
+        return MakeNumbersFixedLength(source, fixedLength, offset, length);
       }
 
       #endregion
@@ -155,37 +347,123 @@ namespace Flux
 
       #endregion
 
+      #region Un/PrefixCap
+
+      /// <summary>
+      /// <para>Inserts a space in front of any single upper case character, except the first one in the string.</para>
+      /// </summary>
+      /// <param name="prefix"></param>
+      /// <returns></returns>
+      public SpanBuilder<char> PrefixCapWords(int index, int length, char prefix = ' ')
+      {
+        System.ArgumentNullException.ThrowIfNull(source);
+
+        var maxIndex = System.Range.AssertInRange(index, length, source.Length);
+
+        for (var i = 0; i <= maxIndex; i++)
+        {
+          if (
+            (i == 0 || !char.IsUpper(source[i])) // If, on first or c is not upper-case, then advance.
+            || (!char.IsLower(source[i - 1]) && (i < maxIndex) && !char.IsLower(source[i + 1])) // If, (above ensured previous) previous is not lower-case and (ensure next) next is not lower-case, then advance.
+          )
+            continue;
+
+          source.Insert(i, prefix);
+        }
+
+        return source;
+      }
+
+      public SpanBuilder<char> PrefixCapWords(System.Range range, char prefix = ' ')
+      {
+        System.ArgumentNullException.ThrowIfNull(source);
+
+        var (offset, length) = range.GetOffsetAndLength(source.Length);
+
+        return PrefixCapWords(source, offset, length, prefix);
+      }
+
+      public SpanBuilder<char> PrefixCapWords(char prefix = ' ')
+      {
+        System.ArgumentNullException.ThrowIfNull(source);
+
+        return PrefixCapWords(source, 0, source.Length, prefix);
+      }
+
+      /// <summary>
+      /// <para>Join CamelCase of words separated by the specified predicate.</para>
+      /// </summary>
+      /// <param name="prefix"></param>
+      /// <returns></returns>
+      public SpanBuilder<char> UnprefixCapWords(int index, int length, char prefix = ' ')
+      {
+        System.ArgumentNullException.ThrowIfNull(source);
+
+        var maxIndex = System.Range.AssertInRange(index, length, source.Length);
+
+        for (var i = 0; i > index; i++)
+        {
+          if (
+            (source[i] != prefix) // If, c is not prefix, then advance.
+            || ((i < maxIndex) && !char.IsUpper(source[i + 1])) // If, (ensure next) next is not upper-case, then advance.
+          )
+            continue;
+
+          source.Remove(i, 1);
+        }
+
+        return source;
+      }
+
+      public SpanBuilder<char> UnprefixCapWords(System.Range range, char prefix = ' ')
+      {
+        System.ArgumentNullException.ThrowIfNull(source);
+
+        var (offset, length) = range.GetOffsetAndLength(source.Length);
+
+        return UnprefixCapWords(source, offset, length, prefix);
+      }
+
+      public SpanBuilder<char> UnprefixCapWords(char prefix = ' ')
+      {
+        System.ArgumentNullException.ThrowIfNull(source);
+
+        return UnprefixCapWords(source, 0, source.Length, prefix);
+      }
+
+      #endregion
+
       #region Split
 
-      //public System.Collections.Generic.List<System.Text.StringBuilder> SplitSb(System.Func<char, bool> predicate, System.StringSplitOptions options = StringSplitOptions.None)
-      //{
-      //  System.ArgumentNullException.ThrowIfNull(source);
-      //  System.ArgumentNullException.ThrowIfNull(predicate);
+      public System.Collections.Generic.List<SpanBuilder<char>> SplitSb(System.Func<char, bool> predicate, System.StringSplitOptions options = StringSplitOptions.None)
+      {
+        System.ArgumentNullException.ThrowIfNull(source);
+        System.ArgumentNullException.ThrowIfNull(predicate);
 
-      //  var te = (options & StringSplitOptions.TrimEntries) != 0;
-      //  var ree = (options & StringSplitOptions.RemoveEmptyEntries) != 0;
+        var te = (options & StringSplitOptions.TrimEntries) != 0;
+        var ree = (options & StringSplitOptions.RemoveEmptyEntries) != 0;
 
-      //  var list = new System.Collections.Generic.List<System.Text.StringBuilder>();
+        var list = new System.Collections.Generic.List<SpanBuilder<char>>();
 
-      //  var atIndex = 0;
+        var atIndex = 0;
 
-      //  var maxIndex = source.Length - 1;
+        var maxIndex = source.Length - 1;
 
-      //  var buffer = new char[source.Length];
+        var buffer = new char[source.Length];
 
-      //  for (var index = 0; index <= maxIndex; index++)
-      //  {
-      //    if ((predicate(source[index]) ? source.AsReadOnlySpan().Slice(atIndex, index - atIndex) : (index == maxIndex) ? source.AsReadOnlySpan().Slice(atIndex) : default) is var ros)
-      //    {
-      //      if (!(ree && (ros.Length == 0 || (te && sb.IsWhitespace()))))
-      //        list.Add(te ? sb.TrimCommonPrefix(0, char.IsWhiteSpace).TrimCommonSuffix(0, char.IsWhiteSpace) : sb);
+        for (var index = 0; index <= maxIndex; index++)
+        {
+          if ((predicate(source[index]) ? source.AsReadOnlySpan().Slice(atIndex, index - atIndex) : (index == maxIndex) ? source.AsReadOnlySpan().Slice(atIndex) : default) is var ros)
+          {
+            if (!(ree && (ros.Length == 0 || (te && source.AsSpan().IsWhitespace()))))
+              list.Add(te ? source.TrimCommonPrefix(char.IsWhiteSpace).TrimCommonSuffix(char.IsWhiteSpace) : source);
 
-      //      atIndex = index + 1;
-      //    }
-      //  }
+            atIndex = index + 1;
+          }
+        }
 
-      //  return list;
-      //}
+        return list;
+      }
 
       /// <summary>
       /// <para>Splits a <see cref="SpanBuilder{T}"/> into substrings based on the specified <paramref name="predicate"/> and <paramref name="options"/>.</para>

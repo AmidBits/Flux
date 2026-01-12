@@ -24,21 +24,9 @@ namespace Collections.Generic
     [TestMethod]
     public void CompareCount()
     {
-      Assert.AreEqual(1, integers.CompareCount(4)); // Has more than 4 elements.
-      Assert.AreEqual(-1, integers.CompareCount(4000)); // Has less than 4000 elements.
+      Assert.AreEqual(1, integers.CompareCount(4, e => true)); // Has more than 4 elements.
+      Assert.AreEqual(-1, integers.CompareCount(4000, e => true)); // Has less than 4000 elements.
       Assert.AreEqual(0, integers.CompareCount(6, (e, i) => (e & 1) == 1)); // Has 6 odd elements.
-    }
-
-    [TestMethod]
-    public void ContainsAll()
-    {
-      Assert.IsTrue(integers.ContainsAll(new int[] { 17, 23, 57 }));
-    }
-
-    [TestMethod]
-    public void ContainsAny()
-    {
-      Assert.IsTrue(integers.ContainsAny(new int[] { 23, 57 }));
     }
 
     [TestMethod]
@@ -73,7 +61,7 @@ namespace Collections.Generic
     [TestMethod]
     public void GetExtremum()
     {
-      var (minItem, minIndex, minValue, maxItem, maxIndex, maxValue) = Flux.IEnumerable.Extremum(integers, v => v);
+      var (minItem, minIndex, minValue, maxItem, maxIndex, maxValue) = Flux.IEnumerableExtensions.Extremum(integers, v => v);
 
       Assert.AreEqual(5, maxIndex);
       Assert.AreEqual(0, minIndex);

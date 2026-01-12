@@ -4,7 +4,7 @@ namespace Flux.Statistics.Quartile
   /// <para>This method is not implemented at this time.</para>
   /// <para><see href="https://en.wikipedia.org/wiki/Quartile#Method_3"/></para>
   /// </summary>
-  /// <remarks>Quartile method 3 is equivalent to <see cref="QuantileR5"/>.</remarks>
+  /// <remarks>Quartile method 3 is equivalent to <see cref="Quantile.R5"/>.</remarks>
   public record class Method3
     : IQuartileComputable
   {

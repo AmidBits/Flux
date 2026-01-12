@@ -2,7 +2,7 @@ namespace Flux.Statistics.Percentile
 {
   /// <summary>
   /// <para>From Microsoft Excel (up to and including version 2013 by means of the PERCENTILE.INC function). Noted as an alternative by NIST.</para>
-  /// <see href="https://en.wikipedia.org/wiki/Percentile#Second_variant,_C_=_1"/>
+  /// <para><see href="https://en.wikipedia.org/wiki/Percentile#Second_variant,_C_=_1"/></para>
   /// </summary>
   public record class Variant2
     : IPercentileComputable
