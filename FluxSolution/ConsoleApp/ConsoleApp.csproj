@@ -29,10 +29,6 @@
 	  </None>
 	</ItemGroup>
 
-	<ItemGroup>
-	  <PackageReference Include="ScottPlot" Version="5.1.57" />
-	</ItemGroup>
-
 	<!--<PropertyGroup>
 		<RuntimeIdentifier>win-x86</RuntimeIdentifier>
 		<PublishSingleFile>true</PublishSingleFile>

@@ -14,18 +14,47 @@ namespace Flux.RandomNumberGenerators
 
     public override int Next(int minValue, int maxValue) => (int)NextInt64(minValue, maxValue);
 
-    public override void NextBytes(byte[] buffer) => NextBytes(buffer.AsSpan());
+    public override void NextBytes(byte[] buffer) => NextBytes((System.Span<byte>)buffer);
 
     public override void NextBytes(Span<byte> buffer)
     {
-      for (var index = 0; index < buffer.Length;)
+      var index = 0;
+
+      while (index < buffer.Length)
       {
-        var length = int.Min(buffer.Length - index, 8);
+        var sample = SampleUInt64();
 
-        SampleUInt64().TryWriteToBuffer(buffer.Slice(index, length), Endianess.LittleEndian, out var _);
-
-        index += length;
+        switch (buffer.Length - index)
+        {
+          case >= 8:
+            System.Buffers.Binary.BinaryPrimitives.WriteUInt64LittleEndian(buffer[index..], sample);
+            index += 8;
+            break;
+          case >= 4:
+            System.Buffers.Binary.BinaryPrimitives.WriteUInt32LittleEndian(buffer[index..], (uint)sample);
+            index += 4;
+            break;
+          case >= 2:
+            System.Buffers.Binary.BinaryPrimitives.WriteUInt16LittleEndian(buffer[index..], (ushort)sample);
+            index += 2;
+            break;
+          case 1:
+            buffer[index++] = (byte)sample;
+            break;
+          default:
+            throw new System.InvalidOperationException();
+        }
       }
+
+      //for (var index = 0; index < buffer.Length;)
+      //{
+      //  var length = int.Min(buffer.Length - index, 8);
+
+      //  SampleUInt64().TryWriteToBuffer(buffer.Slice(index, length), Endianess.LittleEndian, out var _);
+      //  System.Buffers.Binary.BinaryPrimitives.WriteUInt64LittleEndian(buffer.Slice(index, length), SampleUInt64());
+
+      //  index += length;
+      //}
     }
 
     public override long NextInt64() => (long)(SampleUInt64() % long.MaxValue);

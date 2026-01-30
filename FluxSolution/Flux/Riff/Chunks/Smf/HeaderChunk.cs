@@ -10,9 +10,9 @@ namespace Flux.Riff.Chunks.Smf
   {
     public const string ID = @"MThd";
 
-    public Format Format { get => (Format)m_buffer.AsReadOnlySpan(8).ReadUInt16(Endianess.BigEndian); set => ((ushort)value).TryWriteToBuffer(m_buffer.AsSpan(8), Endianess.BigEndian, out var _); }
-    [System.CLSCompliant(false)] public ushort Tracks { get => m_buffer.AsReadOnlySpan(10).ReadUInt16(Endianess.BigEndian); set { value.WriteBytes(m_buffer.AsSpan(10), Endianess.BigEndian); } }
-    public short Division { get => m_buffer.AsReadOnlySpan(12).ReadInt16(Endianess.BigEndian); set { value.WriteBytes(m_buffer.AsSpan(12), Endianess.BigEndian); } }
+    public Format Format { get => (Format)System.Buffers.Binary.BinaryPrimitives.ReadUInt16BigEndian(new System.ReadOnlySpan<byte>(m_buffer, 8, 2)); set => System.Buffers.Binary.BinaryPrimitives.WriteUInt16BigEndian(new System.Span<byte>(m_buffer, 8, 2), (ushort)value); }
+    [System.CLSCompliant(false)] public ushort Tracks { get => System.Buffers.Binary.BinaryPrimitives.ReadUInt16BigEndian(new System.ReadOnlySpan<byte>(m_buffer, 10, 2)); set { System.Buffers.Binary.BinaryPrimitives.WriteUInt16BigEndian(new System.Span<byte>(m_buffer, 10, 2), value); } }
+    public short Division { get => System.Buffers.Binary.BinaryPrimitives.ReadInt16BigEndian(new System.ReadOnlySpan<byte>(m_buffer, 12, 2)); set { System.Buffers.Binary.BinaryPrimitives.WriteInt16BigEndian(new System.Span<byte>(m_buffer, 12, 2), value); } }
 
     public string NextChunkPreview => System.Text.Encoding.ASCII.GetString(m_buffer, 14, 4);
 

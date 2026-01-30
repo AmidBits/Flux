@@ -103,9 +103,9 @@ namespace Flux.CoordinateSystems
       rng ??= System.Random.Shared;
 
       return new(
-        rng.NextDouble(double.Pi),
-        rng.NextDouble(double.Tau),
-        rng.NextDouble(MinAltitudeInMeters, MaxAltitudeInMeters)
+        rng.NextNumber(double.Pi),
+        rng.NextNumber(double.Tau),
+        rng.NextNumber(MinAltitudeInMeters, MaxAltitudeInMeters)
       );
     }
 

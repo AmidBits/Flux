@@ -14,7 +14,7 @@ namespace Numerics
       expected = (4, 1);
       actual = int.CeilingDivRem(-11, -3);
       Assert.AreEqual(expected, actual);
-      expected = (3, -1);
+      expected = (4, 2);
       actual = int.CeilingDivRem(-10, -3);
       Assert.AreEqual(expected, actual);
     }

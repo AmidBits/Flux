@@ -2,6 +2,30 @@ Clear-Host
 
 $base = [System.IO.DirectoryInfo]"E:\Media\Audio"
 
+function Add-ToPlaylist([string]$playlist, [string[]]$directories, [string]$filter = "*.mp3")
+{
+    $playlistFileInfo = [System.IO.FileInfo][System.IO.Path]::Combine($base, "Playlists\$playlist.m3u8")
+
+    [System.IO.Directory]::GetParent($playlistFileInfo.FullName).Create()
+
+    $playlistName = $playlistFileInfo.BaseName
+
+    $m3u8 = $playlistFileInfo.AppendText();
+
+    $fileInfos = ($directories | ForEach-Object { $directory = [System.IO.DirectoryInfo][System.IO.Path]::Combine($base, $_); $directory.EnumerateFiles($filter, [System.IO.SearchOption]::AllDirectories) } | Sort-Object { $_.FullName })
+
+    foreach($fileInfo in $fileInfos) {
+        $filePath = [System.IO.Path]::GetRelativePath([System.IO.Path]::Combine($base, "Playlists"), $fileInfo.FullName)
+        $filePath = $filePath.Replace("\", "/")
+        #$filePath = $filePath.Replace(' ', "%20")
+        $m3u8.WriteLine($filePath)
+    }
+
+    $m3u8.Close()
+
+    Write-Host "Add-ToPlaylist: $playlistName $directories $filter"
+}
+
 function Build-Playlist([string]$playlist, [string[]]$directories, [string]$filter = "*.mp3")
 {
     $playlistFileInfo = [System.IO.FileInfo][System.IO.Path]::Combine($base, "Playlists\$playlist.m3u8")
@@ -27,8 +51,36 @@ function Build-Playlist([string]$playlist, [string[]]$directories, [string]$filt
 
     $m3u8.Close()
 
-    Write-Host $playlistName
+    Write-Host "Build-Playlist: $playlistName"
 }
+
+function New-Playlist([string]$playlist)
+{
+    $playlistFileInfo = [System.IO.FileInfo][System.IO.Path]::Combine($base, "Playlists\$playlist.m3u8")
+
+    [System.IO.Directory]::GetParent($playlistFileInfo.FullName).Create()
+
+    $playlistName = $playlistFileInfo.BaseName
+
+    $m3u8 = $playlistFileInfo.CreateText();
+
+    $m3u8.WriteLine("#EXTM3U");
+    #$m3u8.WriteLine("#$($playlistFileInfo.Name)");
+    $m3u8.WriteLine("#PLAYLIST:$playlistName");
+
+    $m3u8.Close()
+
+    Write-Host "New-PlayList: $playlistName"
+}
+
+New-Playlist "Svenskt"
+Add-ToPlaylist "Svenskt" ("Tracks\Collections\Adolphson & Falk", "Tracks\Collections\Alf Robertson", "Tracks\Collections\Freestyle", "Tracks\Collections\Gyllene Tider", "Tracks\Collections\Lustans Lakejer", "Tracks\Collections\Magnum Bonum", "Tracks\Collections\Noice", "Tracks\Collections\Ratata")
+Add-ToPlaylist "Svenskt" ("Tracks\Miscellaneous") "Björn Rosenström - *.mp3"
+Add-ToPlaylist "Svenskt" ("Tracks\Miscellaneous") "Bo Kaspers Orkester - *.mp3"
+Add-ToPlaylist "Svenskt" ("Tracks\Miscellaneous") "Nasa - *.mp3"
+Add-ToPlaylist "Svenskt" ("Tracks\Miscellaneous") "Niels Jensen - *.mp3"
+Add-ToPlaylist "Svenskt" ("Tracks\Miscellaneous") "Onkel Konkel - *.mp3"
+Add-ToPlaylist "Svenskt" ("Tracks\Miscellaneous") "Page - *.mp3"
 
 Build-Playlist "Billy Idol" ("Tracks\Collections\Billy Idol")
 Build-Playlist "Depeche Mode" ("Tracks\Collections\Depeche Mode")
@@ -56,7 +108,7 @@ Build-Playlist "Personal Jesus" ("Tracks\Collections", "Tracks\MediaTracks", "Tr
 
 Build-Playlist "Svensk Musik" ("Tracks\Collections\Adolphson & Falk", "Tracks\Collections\Gyllene Tider", "Tracks\Collections\Lustans Lakejer", "Tracks\Collections\Noice", "Tracks\Collections\Ratata")
 
-Build-Playlist "Lindeman's" ("Comedy") "*Lindeman*.mp3"
+Build-Playlist "Lindeman" ("Comedy") "*Lindeman*.mp3"
 
 Build-Playlist "Talk & Comedy" ("Comedy")
 

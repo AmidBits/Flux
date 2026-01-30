@@ -1,5 +1,5 @@
 
-namespace Flux
+namespace Flux.Combinations
 {
   /// <summary>
   /// <para>McCaffrey's combination algoritm.</para>
@@ -17,7 +17,7 @@ namespace Flux
       {
         combinadic[i] = CalculateLargestRankBelowThreshold(n, reducingK, diminishingRank);
 
-        diminishingRank -= BinaryIntegers.BinomialCoefficient(combinadic[i], reducingK);
+        diminishingRank -= IBinaryInteger.BinomialCoefficient(combinadic[i], reducingK);
         reducingK--;
       }
     }
@@ -33,14 +33,14 @@ namespace Flux
     {
       var i = n2 - 1;
 
-      while (BinaryIntegers.BinomialCoefficient(i, k2) > threshold)
+      while (IBinaryInteger.BinomialCoefficient(i, k2) > threshold)
         i--;
 
       return i;
     }
 
     public static int CountCombinationsWithoutRepetition(int n, int k)
-      => (int)BinaryIntegers.CountCombinationsWithoutRepetition(System.Numerics.BigInteger.CreateChecked(n), k);
+      => (int)IBinaryInteger.CountCombinationsWithoutRepetition(System.Numerics.BigInteger.CreateChecked(n), k);
 
     public static int Rank(System.ReadOnlySpan<int> combination, int n, int k, System.Span<int> workspace)
     {
@@ -56,12 +56,12 @@ namespace Flux
       {
         workspace[i] = dualOfZero - workspace[i]; // Map to combinadic.
 
-        dualOfCombinadic += BinaryIntegers.BinomialCoefficient(workspace[i], reducingK); // Calculate dual of combinadic (by accumulation).
+        dualOfCombinadic += IBinaryInteger.BinomialCoefficient(workspace[i], reducingK); // Calculate dual of combinadic (by accumulation).
 
         reducingK--;
       }
 
-      var dual = BinaryIntegers.BinomialCoefficient(n, k) - 1 - dualOfCombinadic;
+      var dual = IBinaryInteger.BinomialCoefficient(n, k) - 1 - dualOfCombinadic;
 
       return dual;
     }
@@ -70,7 +70,7 @@ namespace Flux
     {
       var dualOfZero = n - 1;
 
-      var dual = BinaryIntegers.BinomialCoefficient(n, k) - 1 - rank;
+      var dual = IBinaryInteger.BinomialCoefficient(n, k) - 1 - rank;
 
       CalculateCombinadic(combination, n, k, dual);
 

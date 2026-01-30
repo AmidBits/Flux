@@ -15,12 +15,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <None Include="X-types\IEnumerable-ext.cs" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <PackageReference Include="BenchmarkDotNet" Version="0.15.6" />
-	  <PackageReference Include="BenchmarkDotNet.Annotations" Version="0.15.6" />
+	  <None Include="Built-in Types\IEnumerable-ext.cs" />
 	</ItemGroup>
 
 	<ItemGroup>

@@ -133,12 +133,12 @@ namespace Flux.Numerics.Geometry.Ellipses
     {
       try
       {
-        if ((source?.GetType().IsNumericsIBinaryInteger(true) ?? false) && Convert.ToInt64(source) is long i64)
+        if ((source?.GetType().IsIBinaryInteger(true) ?? false) && Convert.ToInt64(source) is long i64)
         {
           result = i64;
           return true;
         }
-        else if ((source?.GetType().IsNumericsIBinaryInteger(true) ?? false) && Convert.ToDouble(source) is double d64)
+        else if ((source?.GetType().IsIBinaryInteger(true) ?? false) && Convert.ToDouble(source) is double d64)
         {
           result = d64;
           return true;
@@ -175,7 +175,7 @@ namespace Flux.Numerics.Geometry.Ellipses
         var angle = arcOffset + index * arc;
 
         if (maxRandomness > 0)
-          angle += rng.NextDouble(0, arc * maxRandomness);
+          angle += rng.NextNumber(0, arc * maxRandomness);
 
         var (x, y) = CoordinateSystems.PolarCoordinate.ConvertPolarToCartesian2(1, angle);
 
@@ -206,7 +206,7 @@ namespace Flux.Numerics.Geometry.Ellipses
         var angle = arcOffset + index * arc;
 
         if (maxRandomness > 0)
-          angle += rng.NextDouble(0, arc * maxRandomness);
+          angle += rng.NextNumber(0, arc * maxRandomness);
 
         var (x, y) = CoordinateSystems.PolarCoordinate.ConvertPolarToCartesian2Ex(1, angle);
 

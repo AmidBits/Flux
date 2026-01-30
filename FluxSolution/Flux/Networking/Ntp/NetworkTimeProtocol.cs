@@ -104,20 +104,20 @@
     /// <para>Root Delay (rootdelay): Total round-trip delay to the reference clock, in NTP short format.</para>
     /// </summary>
     public System.TimeSpan RootDelay => ConvertNtpShortFormatToTimeSpan(RootDelaySeconds, RootDelayFraction);
-    [System.CLSCompliant(false)] public ushort RootDelaySeconds => m_data.AsReadOnlySpan(4).ReadUInt16(Endianess.BigEndian);
-    [System.CLSCompliant(false)] public ushort RootDelayFraction => m_data.AsReadOnlySpan(6).ReadUInt16(Endianess.BigEndian);
+    [System.CLSCompliant(false)] public ushort RootDelaySeconds => System.Buffers.Binary.BinaryPrimitives.ReadUInt16BigEndian(new System.ReadOnlySpan<byte>(m_data, 4, 2));
+    [System.CLSCompliant(false)] public ushort RootDelayFraction => System.Buffers.Binary.BinaryPrimitives.ReadUInt16BigEndian(new System.ReadOnlySpan<byte>(m_data, 6, 2));
 
     /// <summary>
     /// <para>Root Dispersion (rootdisp): Total dispersion to the reference clock, in NTP short format.</para>
     /// </summary>
     public System.TimeSpan RootDispersion => ConvertNtpShortFormatToTimeSpan(RootDispersionSeconds, RootDispersionFraction);
-    [System.CLSCompliant(false)] public ushort RootDispersionSeconds => m_data.AsReadOnlySpan(8).ReadUInt16(Endianess.BigEndian);
-    [System.CLSCompliant(false)] public ushort RootDispersionFraction => m_data.AsReadOnlySpan(10).ReadUInt16(Endianess.BigEndian);
+    [System.CLSCompliant(false)] public ushort RootDispersionSeconds => System.Buffers.Binary.BinaryPrimitives.ReadUInt16BigEndian(new System.ReadOnlySpan<byte>(m_data, 8, 2));
+    [System.CLSCompliant(false)] public ushort RootDispersionFraction => System.Buffers.Binary.BinaryPrimitives.ReadUInt16BigEndian(new System.ReadOnlySpan<byte>(m_data, 10, 2));
 
     /// <summary>
     /// <para>Reference ID (refid): 32-bit code identifying the particular server or reference clock. The interpretation depends on the value in the stratum field.</para>
     /// </summary>
-    [System.CLSCompliant(false)] public uint ReferenceID => m_data.AsReadOnlySpan(12).ReadUInt32(Endianess.BigEndian);
+    [System.CLSCompliant(false)] public uint ReferenceID => System.Buffers.Binary.BinaryPrimitives.ReadUInt32BigEndian(new System.ReadOnlySpan<byte>(m_data, 12, 4));
 
     /// <summary>
     /// <para>For packet stratum 0 (unspecified or invalid), this is a four-character ASCII [RFC1345] string, called the "kiss code", used for debugging and monitoring purposes.</para>
@@ -130,29 +130,29 @@
     /// <para>Reference Timestamp (UTC): Time when the system clock was last set or corrected, in NTP timestamp format.</para>
     /// </summary>
     public System.DateTime ReferenceTimestampUtc => ConvertNtpTimestampFormatToDateTime(ReferenceTimestampSeconds, ReferenceTimestampFraction);
-    [System.CLSCompliant(false)] public uint ReferenceTimestampSeconds => m_data.AsReadOnlySpan(16).ReadUInt32(Endianess.BigEndian);
-    [System.CLSCompliant(false)] public uint ReferenceTimestampFraction => m_data.AsReadOnlySpan(20).ReadUInt32(Endianess.BigEndian);
+    [System.CLSCompliant(false)] public uint ReferenceTimestampSeconds => System.Buffers.Binary.BinaryPrimitives.ReadUInt32BigEndian(new System.ReadOnlySpan<byte>(m_data, 16, 4));
+    [System.CLSCompliant(false)] public uint ReferenceTimestampFraction => System.Buffers.Binary.BinaryPrimitives.ReadUInt32BigEndian(new System.ReadOnlySpan<byte>(m_data, 20, 4));
 
     /// <summary>
     /// <para>Origin Timestamp (UTC): Time at the client when the request departed for the server, in NTP timestamp format.</para>
     /// </summary>
     public System.DateTime OriginTimestampUtc => ConvertNtpTimestampFormatToDateTime(OriginTimestampSeconds, OriginTimestampFraction);
-    [System.CLSCompliant(false)] public uint OriginTimestampSeconds => m_data.AsReadOnlySpan(24).ReadUInt32(Endianess.BigEndian);
-    [System.CLSCompliant(false)] public uint OriginTimestampFraction => m_data.AsReadOnlySpan(28).ReadUInt32(Endianess.BigEndian);
+    [System.CLSCompliant(false)] public uint OriginTimestampSeconds => System.Buffers.Binary.BinaryPrimitives.ReadUInt32BigEndian(new System.ReadOnlySpan<byte>(m_data, 24, 4));
+    [System.CLSCompliant(false)] public uint OriginTimestampFraction => System.Buffers.Binary.BinaryPrimitives.ReadUInt32BigEndian(new System.ReadOnlySpan<byte>(m_data, 28, 4));
 
     /// <summary>
     /// <para>Receive Timestamp (UTC): Time at the server when the request arrived from the client, in NTP timestamp format.</para>
     /// </summary>
     public System.DateTime ReceiveTimestampUtc => ConvertNtpTimestampFormatToDateTime(ReceiveTimestampSeconds, ReceiveTimestampFraction);
-    [System.CLSCompliant(false)] public uint ReceiveTimestampSeconds => m_data.AsReadOnlySpan(32).ReadUInt32(Endianess.BigEndian);
-    [System.CLSCompliant(false)] public uint ReceiveTimestampFraction => m_data.AsReadOnlySpan(36).ReadUInt32(Endianess.BigEndian);
+    [System.CLSCompliant(false)] public uint ReceiveTimestampSeconds => System.Buffers.Binary.BinaryPrimitives.ReadUInt32BigEndian(new System.ReadOnlySpan<byte>(m_data, 32, 4));
+    [System.CLSCompliant(false)] public uint ReceiveTimestampFraction => System.Buffers.Binary.BinaryPrimitives.ReadUInt32BigEndian(new System.ReadOnlySpan<byte>(m_data, 36, 4));
 
     /// <summary>
     /// <para>Transmit Timestamp (UTC): Time at the server when the response left for the client, in NTP timestamp format.</para>
     /// </summary>
     public System.DateTime TransmitTimestampUtc => ConvertNtpTimestampFormatToDateTime(TransmitTimestampSeconds, TransmitTimestampFraction);
-    [System.CLSCompliant(false)] public uint TransmitTimestampSeconds => m_data.AsReadOnlySpan(40).ReadUInt32(Endianess.BigEndian);
-    [System.CLSCompliant(false)] public uint TransmitTimestampFraction => m_data.AsReadOnlySpan(44).ReadUInt32(Endianess.BigEndian);
+    [System.CLSCompliant(false)] public uint TransmitTimestampSeconds => System.Buffers.Binary.BinaryPrimitives.ReadUInt32BigEndian(new System.ReadOnlySpan<byte>(m_data, 40, 4));
+    [System.CLSCompliant(false)] public uint TransmitTimestampFraction => System.Buffers.Binary.BinaryPrimitives.ReadUInt32BigEndian(new System.ReadOnlySpan<byte>(m_data, 44, 4));
 
     #region Static methods
 
@@ -160,11 +160,11 @@
 
     [System.CLSCompliant(false)]
     public static System.TimeSpan ConvertNtpShortFormatToTimeSpan(ushort seconds, ushort fraction)
-      => System.TimeSpan.FromSeconds(BinaryIntegers.ConvertToFraction(seconds + fraction, 10));
+      => System.TimeSpan.FromSeconds(seconds) + System.TimeSpan.FromSeconds(fraction / (double)uint.MaxValue);
 
     [System.CLSCompliant(false)]
     public static System.DateTime ConvertNtpTimestampFormatToDateTime(uint seconds, uint fraction)
-      => NetworkTimeProtocol.PrimeEpoch.AddSeconds(BinaryIntegers.ConvertToFraction(seconds + fraction, 10));
+      => NetworkTimeProtocol.PrimeEpoch.AddSeconds(seconds).AddSeconds(fraction / (double)uint.MaxValue);
 
     #endregion // Conversion methods
 

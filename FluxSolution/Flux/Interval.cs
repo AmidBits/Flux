@@ -12,7 +12,7 @@
       /// <summary>
       /// <para>The unit interval represents [0, 1].</para>
       /// </summary>
-      public static Interval<TNumber> Unit => new(TNumber.Zero, TNumber.One);
+      public static Interval<TNumber> UnitInterval => new(TNumber.Zero, TNumber.One);
     }
 
     extension<TFloat>(Interval<TFloat> source)
@@ -31,12 +31,20 @@
       /// <returns></returns>
       public Interval<TNumber> Round<TNumber>(HalfRounding minValueRounding, HalfRounding maxValueRounding, out TNumber minValue, out TNumber maxValue)
         where TNumber : System.Numerics.INumber<TNumber>
-        => new(minValue = TNumber.CreateChecked(FloatingPoints.RoundHalf(source.MinValue, minValueRounding)), maxValue = TNumber.CreateChecked(FloatingPoints.RoundHalf(source.MaxValue, maxValueRounding)));
+        => new(minValue = TNumber.CreateChecked(IFloatingPoint.RoundHalf(source.MinValue, minValueRounding)), maxValue = TNumber.CreateChecked(IFloatingPoint.RoundHalf(source.MaxValue, maxValueRounding)));
     }
 
+    //// https://math.stackexchange.com/a/4894702
     extension<TInteger>(Interval<TInteger> source)
       where TInteger : System.Numerics.IBinaryInteger<TInteger>
     {
+      public TInteger CountMultiplesInRange(TInteger k, IntervalNotation intervalNotation = IntervalNotation.Closed)
+      {
+        var (minValue, maxValue) = intervalNotation.GetExtentRelative(source.MinValue, source.MaxValue, 1);
+
+        return IBinaryInteger.FlooredDivRem(maxValue, k).Quotient - IBinaryInteger.CeilingDivRem(minValue, k).Quotient + TInteger.One;
+      }
+
       /// <summary>
       /// <para>Creates a new <see cref="Interval{T}"/> based on a <paramref name="guess"/> and how the guess <paramref name="compare"/> (as in <see cref="System.IComparable{T}"/>) to a number which is a member of the <paramref name="source"/> interval.</para>
       /// <para>If <paramref name="compare"/> is less than 0 (guess is too low): <c>[<paramref name="guess"/> + 1, <see cref="Interval{T}.MaxValue"/>]</c>.</para>
@@ -90,49 +98,73 @@
     extension<TNumber>(Interval<TNumber> source)
       where TNumber : System.Numerics.INumber<TNumber>
     {
+      /// <summary>
+      /// <para>(min + max) / 2</para>
+      /// </summary>
       public TNumber Center
         => (source.MinValue + source.MaxValue) / TNumber.CreateChecked(2);
 
-      public TNumber Size
-        => source.MaxValue - source.MinValue;
+      /// <summary>
+      /// <para>abs(min - max)</para>
+      /// </summary>
+      public TNumber Diameter
+        => TNumber.Abs(source.MinValue - source.MaxValue);
 
+      /// <summary>
+      /// <para>abs(min - max) / 2</para>
+      /// </summary>
+      public TNumber Radius
+        => TNumber.Abs(source.MinValue - source.MaxValue) / TNumber.CreateChecked(2);
+
+      public TNumber CountMultiplesInRanger(TNumber k, IntervalNotation intervalNotation = IntervalNotation.Closed)
+      {
+        var (minValue, maxValue) = intervalNotation.GetExtentRelative(source.MinValue, source.MaxValue, 1);
+
+        //return ((maxValue - minValue) - TNumber.One) / k;
+
+        //return (maxValue / k) - (minValue / k) + (minValue % k > TNumber.Zero ? TNumber.One : TNumber.Zero) + TNumber.One;
+
+        return (maxValue - (maxValue % k) - minValue - ((-minValue) % k)) / k + TNumber.One;
+      }
+
+      /// <summary>
+      /// <para>Creates a new sequence of values by iterating over an <see cref="Interval{TSelf}"/> with the specified <paramref name="stepSize"/> and <paramref name="intervalNotation"/>.</para>
+      /// </summary>
+      /// <param name="stepSize">The step-size between iterations. A positive number iterates in the direction of min-max. A negative number iterates in the direction of max-min.</param>
+      /// <param name="intervalNotation">Indicates how to handle the interval endpoints.</param>
+      /// <returns></returns>
+      /// <exception cref="System.ArgumentOutOfRangeException"></exception>
+      public System.Collections.Generic.IEnumerable<TNumber> Iterate(TNumber stepSize, IntervalNotation intervalNotation = IntervalNotation.Closed)
+      {
+        var (minValue, maxValue) = intervalNotation.GetExtentAbsolute(source.MinValue, source.MaxValue, TNumber.Abs(stepSize));
+
+        if (TNumber.IsNegative(stepSize)) return INumber.LoopVerge(maxValue, stepSize).TakeWhile(n => n >= minValue);
+        else if (!TNumber.IsZero(stepSize)) return INumber.LoopVerge(minValue, stepSize).TakeWhile(n => n <= maxValue);
+        else throw new System.ArgumentOutOfRangeException(nameof(stepSize));
+      }
+
+      /// <summary>
+      /// <para>Sub-divides an interval into sub-intervals.</para>
+      /// </summary>
+      /// <typeparam name="TInteger"></typeparam>
+      /// <param name="count"></param>
+      /// <returns></returns>
       public System.Collections.Generic.IEnumerable<Interval<TNumber>> Subdivide<TInteger>(TInteger count)
         where TInteger : System.Numerics.IBinaryInteger<TInteger>
       {
-        TNumber subintervalSize = source.Size / TNumber.CreateChecked(count);
+        var q = source.Diameter / TNumber.CreateChecked(count);
+        var r = source.Diameter - (q * TNumber.CreateChecked(count));
+
+        var minValue = source.MinValue;
 
         for (var index = TInteger.Zero; index < count; index++)
         {
-          var minValue = source.MinValue + TNumber.CreateChecked(index) * subintervalSize;
-          var maxValue = minValue + subintervalSize;
+          var maxValue = minValue + q + (TNumber.CreateChecked(index) < r ? TNumber.One : TNumber.Zero);
 
           yield return new Interval<TNumber>(minValue, maxValue);
+
+          minValue = maxValue;
         }
-      }
-    }
-
-    extension<TNumber>(Interval<TNumber> source)
-      where TNumber : System.Numerics.INumber<TNumber>
-    {
-      /// <summary>
-      /// <para>Creates a new sequence of values by iterating over the <paramref name="source"/> <see cref="Interval{TSelf}"/> using the <paramref name="constraint"/> .</para>
-      /// </summary>
-      /// <param name="source">The <see cref="Interval{TSelf}"/>.</param>
-      /// <param name="step">The stepping size between iterations. A positive number iterates from mean to extent, whereas a negative number iterates from extent to mean.</param>
-      /// <param name="order">Iterate the range in either <see cref="SortOrder"/> order.</param>
-      /// <param name="intervalNotation">Specified by <see cref="IntervalNotation"/>.</param>
-      /// <returns></returns>
-      /// <exception cref="System.ArgumentOutOfRangeException"></exception>
-      public System.Collections.Generic.IEnumerable<TNumber> IterateRange(TNumber step)
-      {
-        var (minValue, maxValue) = (source.MinValue, source.MaxValue);
-
-        if (TNumber.IsNegative(step)) // A negative number yields a descending sequence from maxValue to minValue of the interval.
-          return Numbers.LoopVerge(maxValue, step).TakeWhile(n => n >= minValue);
-        else if (!TNumber.IsZero(step)) // Any positive number but zero yields an ascending sequence from minValue to maxValue of the interval.
-          return Numbers.LoopVerge(minValue, step).TakeWhile(n => n <= maxValue);
-        else // The argument "step" is zero and that is an invalid value.
-          throw new System.ArgumentOutOfRangeException(nameof(step));
       }
 
       /// <summary>

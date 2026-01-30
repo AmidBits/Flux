@@ -1,7 +1,4 @@
-﻿using System;
-using System.Linq;
-using Flux;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Flux;
 
 namespace NetFx.ReadOnlySpan
 {
@@ -158,8 +155,8 @@ namespace NetFx.ReadOnlySpan
     [TestMethod]
     public void SetExcept()
     {
-      var a = System.Linq.Enumerable.Range(1, 5).ToArray().AsReadOnlySpan();
-      var b = System.Linq.Enumerable.Range(4, 9).ToArray().AsReadOnlySpan();
+      var a = System.Linq.Enumerable.Range(1, 5).ToArray().AsSpan();
+      var b = System.Linq.Enumerable.Range(4, 9).ToArray().AsSpan();
 
       var expected = new int[] { 1, 2, 3 };
       var actual = a.Except(b).ToArray();
@@ -170,8 +167,8 @@ namespace NetFx.ReadOnlySpan
     [TestMethod]
     public void SetIntersect()
     {
-      var a = System.Linq.Enumerable.Range(1, 5).ToArray().AsReadOnlySpan();
-      var b = System.Linq.Enumerable.Range(4, 9).ToArray().AsReadOnlySpan();
+      var a = System.Linq.Enumerable.Range(1, 5).ToArray().AsSpan();
+      var b = System.Linq.Enumerable.Range(4, 9).ToArray().AsSpan();
 
       var expected = new int[] { 4, 5 };
       var actual = a.Intersect(b).Order().ToArray();
@@ -182,8 +179,8 @@ namespace NetFx.ReadOnlySpan
     [TestMethod]
     public void SetPowerSet()
     {
-      var a = System.Linq.Enumerable.Range(1, 5).ToArray().AsReadOnlySpan();
-      var b = System.Linq.Enumerable.Range(4, 9).ToArray().AsReadOnlySpan();
+      var a = System.Linq.Enumerable.Range(1, 5).ToArray().AsSpan();
+      var b = System.Linq.Enumerable.Range(4, 9).ToArray().AsSpan();
 
       var expected = new int[][] { [], [1], [2], [3], [4], [5], [1, 2], [1, 3], [1, 4], [1, 5], [2, 3], [2, 4], [2, 5], [3, 4], [3, 5], [4, 5], [1, 2, 3], [1, 2, 4], [1, 2, 5], [1, 3, 4], [1, 3, 5], [1, 4, 5], [2, 3, 4], [2, 3, 5], [2, 4, 5], [3, 4, 5], [1, 2, 3, 4], [1, 2, 3, 5], [1, 2, 4, 5], [1, 3, 4, 5], [2, 3, 4, 5], [1, 2, 3, 4, 5] };
 
@@ -195,8 +192,8 @@ namespace NetFx.ReadOnlySpan
     [TestMethod]
     public void SetSymmetricExcept()
     {
-      var a = System.Linq.Enumerable.Range(1, 5).ToArray().AsReadOnlySpan();
-      var b = System.Linq.Enumerable.Range(4, 9).ToArray().AsReadOnlySpan();
+      var a = System.Linq.Enumerable.Range(1, 5).ToArray().AsSpan();
+      var b = System.Linq.Enumerable.Range(4, 9).ToArray().AsSpan();
 
       var expected = new int[] { 1, 2, 3, 6, 7, 8, 9, 10, 11, 12 };
       var actual = a.SymmetricExcept(b).ToArray(); System.Array.Sort(actual);
@@ -207,8 +204,8 @@ namespace NetFx.ReadOnlySpan
     [TestMethod]
     public void SetUnion()
     {
-      var a = System.Linq.Enumerable.Range(1, 5).ToArray().AsReadOnlySpan();
-      var b = System.Linq.Enumerable.Range(4, 9).ToArray().AsReadOnlySpan();
+      var a = System.Linq.Enumerable.Range(1, 5).ToArray().AsSpan();
+      var b = System.Linq.Enumerable.Range(4, 9).ToArray().AsSpan();
 
       var expected = new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 };
       var actual = a.Union(b).ToArray();
@@ -219,8 +216,8 @@ namespace NetFx.ReadOnlySpan
     [TestMethod]
     public void SetUnionAll()
     {
-      var a = System.Linq.Enumerable.Range(1, 5).ToArray().AsReadOnlySpan();
-      var b = System.Linq.Enumerable.Range(4, 9).ToArray().AsReadOnlySpan();
+      var a = System.Linq.Enumerable.Range(1, 5).ToArray().AsSpan();
+      var b = System.Linq.Enumerable.Range(4, 9).ToArray().AsSpan();
 
       var expected = new int[] { 1, 2, 3, 4, 5, 4, 5, 6, 7, 8, 9, 10, 11, 12 };
       var actual = a.UnionAll(b);

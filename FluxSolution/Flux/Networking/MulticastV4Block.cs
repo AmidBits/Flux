@@ -1,43 +1,54 @@
 namespace Flux
 {
-  // https://en.wikipedia.org/wiki/Multicast_address
+  /// <summary>
+  /// <para>All IPv4 blocks where each entry is the start and end address combined in a <see cref="long"/>.</para>
+  /// <para>The most-significant 32-bits is a start address and the least-significant 32-bits is an end address.</para>
+  /// <para><see href="https://en.wikipedia.org/wiki/Multicast_address"/></para>
+  /// </summary>
   public enum MulticastV4Block
     : long
   {
-    LocalSubnetwork = unchecked((long)0xE0000000E00000FF),
-    InternetworkControl = unchecked((long)0xE0000100E00001FF),
-    AdHocBlock1 = unchecked((long)0xE0000200E000FFFF),
-    Reserved1 = unchecked((long)0xE0010000E001FFFF),
-    AdHocBlock2 = unchecked((long)0xE0030000E004FFFF),
-    Reserved2 = unchecked((long)0xE1000000E7FFFFFF),
-    SourceSpecificMulticast = unchecked((long)0xE8000000E8FFFFFF),
-    GlopAddressing = unchecked((long)0xE9000000E9FBFFFF),
-    AdHocBlock3 = unchecked((long)0xE9FC0000E9FFFFFF),
-    UnicastPrefixBased = unchecked((long)0xEA000000EAFFFFFF),
-    Reserved3 = unchecked((long)0xEB000000EEFFFFFF),
-    AdministrativelyScoped = unchecked((long)0xEF000000EFFFFFFF),
+    LocalSubnetwork = unchecked((long)0xff0000e0000000e0UL), // 224.0.0.0 to 224.0.0.255
+    InternetworkControl = unchecked((long)0xff0100e0000100e0UL), // 224.0.1.0 to 224.0.1.255
+    AdHocBlock1 = unchecked((long)0xffff00e0000200e0UL), // 224.0.2.0 to 224.0.255.255
+    Reserved1 = unchecked((long)0xffff01e0000001e0UL), // 224.1.0.0 to 224.1.255.255
+    SdpSapBlock = unchecked((long)0xffff02e0000002e0), // 224.2.0.0 to 224.2.255.255
+    AdHocBlock2 = unchecked((long)0xffff04e0000003e0UL), // 224.3.0.0 to 224.4.255.255
+    Reserved2 = unchecked((long)0xffffffe0000005e0UL), // 224.5.0.0 to 224.255.255.255
+    Reserved3 = unchecked((long)0xffffffe7000000e1UL), // 225.0.0.0 to 231.255.255.255
+    SourceSpecificMulticast = unchecked((long)0xffffffe8000000e8UL), // 232.0.0.0 to 232.255.255.255
+    GlopAddressing = unchecked((long)0xfffffbe9000000e9UL), // 233.0.0.0 to 233.251.255.255
+    AdHocBlock3 = unchecked((long)0xffffffe90000fce9UL), // 233.252.0.0 to 233.255.255.255
+    UnicastPrefixBased = unchecked((long)0xffffffea000000eaUL), // 234.0.0.0 to 234.255.255.255
+    Reserved4 = unchecked((long)0xffffffee000000ebUL), // 235.0.0.0 to 238.255.255.255
+    AdministrativelyScoped = unchecked((long)0xffffffef000000efUL), // 239.0.0.0 to 239.255.255.255
   }
 
   public static partial class MulticastV4BlockExtensions
   {
-    /// <summary>Creates a new sequence of all IP addresses in the specified MulticastV4 block.</summary>
-    public static System.Collections.Generic.IEnumerable<System.Net.IPAddress> GetAllIPAddresses(this MulticastV4Block source)
-      => System.Net.IPAddress.GetRange(source.GetMinIPAddress(), source.GetMaxIPAddress());
+    /// <summary>
+    /// <para>Returns the minimum and maximum IP address in the specified MulticastV4 block.</summary>
+    /// </summary>
+    /// <param name="source"></param>
+    /// <returns></returns>
+    public static (System.Net.IPAddress StartAddress, System.Net.IPAddress EndAddress) GetIPAddresses(this MulticastV4Block source)
+    {
+      var minAddress = new System.Net.IPAddress((uint)source & 0xFFFFFFFFU);
+      var maxAddress = new System.Net.IPAddress((uint)((ulong)source >>> 32));
 
-    /// <summary>Returns the maximum IP address in the specified MulticastV4 block.</summary>
-    public static System.Net.IPAddress GetMaxIPAddress(this MulticastV4Block source)
-      => new(BitOps.ReverseBytes(GetMaxValue(source)));
+      return (minAddress, maxAddress);
+    }
 
-    /// <summary>Returns the maximum address (big endian) in the specified MulticastV4 block.</summary>
-    public static long GetMaxValue(this MulticastV4Block source)
-      => (uint)unchecked((ulong)source & 0xFFFFFFFFU);
+    /// <summary>
+    /// <para>Creates a new sequence with all IP addresses in the specified MulticastV4 block.</para>
+    /// </summary>
+    /// <param name="source"></param>
+    /// <returns></returns>
+    public static System.Collections.Generic.IEnumerable<System.Net.IPAddress> GetIPAddressRange(this MulticastV4Block source)
+    {
+      var (minAddress, maxAddress) = GetIPAddresses(source);
 
-    /// <summary>Returns the minimum IP address in the specified MulticastV4 block.</summary>
-    public static System.Net.IPAddress GetMinIPAddress(this MulticastV4Block source)
-      => new(BitOps.ReverseBytes(GetMinValue(source)));
-
-    /// <summary>Returns the minimum address (big endian) in the specified MulticastV4 block.</summary>
-    public static long GetMinValue(this MulticastV4Block source)
-      => (uint)unchecked((ulong)source >> 32);
+      return System.Net.IPAddress.GetRange(minAddress, maxAddress);
+    }
   }
 }

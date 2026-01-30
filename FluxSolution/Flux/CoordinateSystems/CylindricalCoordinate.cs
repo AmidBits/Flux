@@ -125,9 +125,9 @@ namespace Flux.CoordinateSystems
       rng ??= System.Random.Shared;
 
       return new(
-        rng.NextDouble(radius),
-        rng.NextDouble(double.Tau),
-        rng.NextDouble(height)
+        rng.NextNumber(radius),
+        rng.NextNumber(double.Tau),
+        rng.NextNumber(height)
       );
     }
 
@@ -138,9 +138,9 @@ namespace Flux.CoordinateSystems
       var rORh = rng.NextBoolean(); // Determines whether radius or height is fixed.
 
       return new(
-        rORh ? radius : rng.NextDouble(radius), // Either fixed (on curved surface), or random.
-        rng.NextDouble(double.Tau),
-        rORh ? rng.NextDouble(height) : (rng.NextBoolean() ? height : 0) // Either random, or fixed (at one of the poles).
+        rORh ? radius : rng.NextNumber(radius), // Either fixed (on curved surface), or random.
+        rng.NextNumber(double.Tau),
+        rORh ? rng.NextNumber(height) : (rng.NextBoolean() ? height : 0) // Either random, or fixed (at one of the poles).
       );
     }
 
@@ -176,7 +176,7 @@ namespace Flux.CoordinateSystems
     #region Implemented interfaces
 
     public string ToString(string? format, System.IFormatProvider? formatProvider)
-      => $"<{Radius.ToString(format ?? BinaryIntegers.GetFormatStringWithCountDecimals(3), formatProvider)}, {Azimuth.ToUnitString(Units.AngleUnit.Degree, format ?? BinaryIntegers.GetFormatStringWithCountDecimals(6), formatProvider)}, {Height.ToString(format ?? BinaryIntegers.GetFormatStringWithCountDecimals(3), formatProvider)}>";
+      => $"<{Radius.ToString(format ?? IBinaryInteger.GetFormatStringWithCountDecimals(3), formatProvider)}, {Azimuth.ToUnitString(Units.AngleUnit.Degree, format ?? IBinaryInteger.GetFormatStringWithCountDecimals(6), formatProvider)}, {Height.ToString(format ?? IBinaryInteger.GetFormatStringWithCountDecimals(3), formatProvider)}>";
 
     #endregion // Implemented interfaces
 

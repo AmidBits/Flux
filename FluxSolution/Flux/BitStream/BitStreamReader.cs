@@ -19,7 +19,7 @@ namespace Flux.IO.BitStream
     public int BitCount => m_bitCount;
 
     /// <summary>The intermediate 64-bit storage buffer.</summary>
-    public long BitField => unchecked((long)(m_bitField & BitOps.CreateBitMaskRight((ulong)m_bitCount)));
+    public long BitField => unchecked((long)(m_bitField & IBinaryInteger.CreateBitMaskRight((ulong)m_bitCount)));
 
     /// <summary>The total number of bits read through the bit stream.</summary>
     public int TotalReadBits { get; private set; }
@@ -70,7 +70,7 @@ namespace Flux.IO.BitStream
 
         var movingBitCount = int.Min(neededBitCount, bufferBitCount);
 
-        var mask = BitOps.CreateBitMaskRight((ulong)movingBitCount);
+        var mask = IBinaryInteger.CreateBitMaskRight((ulong)movingBitCount);
 
         bits <<= movingBitCount; // Make room for moving bits.
 
@@ -115,7 +115,7 @@ namespace Flux.IO.BitStream
 
       m_bitCount -= actualBitCount;
 
-      var bitField = unchecked((long)((m_bitField >> m_bitCount) & BitOps.CreateBitMaskRight((ulong)actualBitCount)));
+      var bitField = unchecked((long)((m_bitField >> m_bitCount) & IBinaryInteger.CreateBitMaskRight((ulong)actualBitCount)));
 
       TotalReadBits += actualBitCount;
 

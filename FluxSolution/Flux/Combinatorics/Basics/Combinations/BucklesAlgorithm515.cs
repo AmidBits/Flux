@@ -47,7 +47,7 @@ namespace Flux.Combinations
     /// <param name="k"></param>
     /// <returns></returns>
     public static int CountCombinationsWithoutRepetition(int n, int k)
-      => (int)BinaryIntegers.CountCombinationsWithoutRepetition(System.Numerics.BigInteger.CreateChecked(n), k);
+      => (int)IBinaryInteger.CountCombinationsWithoutRepetition(System.Numerics.BigInteger.CreateChecked(n), k);
 
     /// <summary>
     /// <para>Gets a single combination corresponding to the <paramref name="rank"/>.</para>

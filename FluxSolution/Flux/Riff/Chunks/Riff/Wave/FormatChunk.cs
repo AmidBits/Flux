@@ -23,7 +23,7 @@ namespace Flux.Riff.Chunks.Riff.Wave
     [System.CLSCompliant(false)] public ushort ExtensionSize { get => System.BitConverter.ToUInt16(m_buffer, 24); set { System.BitConverter.GetBytes(value).CopyTo(m_buffer, 24); } }
     [System.CLSCompliant(false)] public ushort ValidBitsPerSample { get => System.BitConverter.ToUInt16(m_buffer, 26); set { System.BitConverter.GetBytes(value).CopyTo(m_buffer, 26); } }
     [System.CLSCompliant(false)] public uint ChannelMask { get => System.BitConverter.ToUInt32(m_buffer, 28); set { System.BitConverter.GetBytes(value).CopyTo(m_buffer, 28); } }
-    public System.Guid SubFormat { get { var bytes = new byte[16]; m_buffer.AsReadOnlySpan().Slice(32, 16).CopyTo(bytes); return new System.Guid(bytes); } set => value.ToByteArray().CopyTo(m_buffer, 32); }
+    public System.Guid SubFormat { get { var bytes = new byte[16]; m_buffer.AsSpan().Slice(32, 16).CopyTo(bytes); return new System.Guid(bytes); } set => value.ToByteArray().CopyTo(m_buffer, 32); }
 
     #endregion // 22 bytes of extended data.
 

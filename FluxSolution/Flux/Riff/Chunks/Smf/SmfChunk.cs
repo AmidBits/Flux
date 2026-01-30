@@ -14,12 +14,12 @@ namespace Flux.Riff.Chunks.Smf
     /// <summary>
     /// <para>The chunk size for Smf uses BigEndian as opposed to the riff's.</para>
     /// </summary>
-    override public int ChunkSize { get => m_buffer.AsReadOnlySpan(4).ReadInt32(Endianess.BigEndian); set { value.WriteBytes(m_buffer.AsSpan(4), Endianess.BigEndian); } }
+    override public int ChunkSize { get => System.Buffers.Binary.BinaryPrimitives.ReadInt32BigEndian(new System.ReadOnlySpan<byte>(m_buffer, 4, 4)); set { System.Buffers.Binary.BinaryPrimitives.WriteInt32BigEndian(new System.Span<byte>(m_buffer, 4, 4), value); } }
 
     public System.Span<byte> ChunkData => m_buffer.AsSpan()[8..];
 
     public SmfChunk(System.ReadOnlySpan<byte> bytes) : base(bytes.Length) => bytes.CopyTo(m_buffer);
-    public SmfChunk(byte[] bytes) : this(bytes.AsReadOnlySpan()) { }
+    public SmfChunk(byte[] bytes) : this(bytes.AsSpan()) { }
 
     public SmfChunk(string chunkID, int chunkSize) : base(chunkID, chunkSize) { }
   }

@@ -110,8 +110,8 @@ namespace Flux.CoordinateSystems
       rng ??= System.Random.Shared;
 
       return new(
-        rng.NextDouble(radius),
-        rng.NextDouble(double.Tau)
+        rng.NextNumber(radius),
+        rng.NextNumber(double.Tau)
       );
     }
 
@@ -121,7 +121,7 @@ namespace Flux.CoordinateSystems
 
       return new(
         radius,
-        rng.NextDouble(double.Tau)
+        rng.NextNumber(double.Tau)
       );
     }
 
@@ -197,7 +197,7 @@ namespace Flux.CoordinateSystems
     #region Implemented interfaces
 
     public string ToString(string? format, System.IFormatProvider? formatProvider)
-      => $"<{Radius.ToUnitString(format: format ?? BinaryIntegers.GetFormatStringWithCountDecimals(3), provider: formatProvider)}, {Azimuth.ToUnitString(Units.AngleUnit.Degree, format ?? BinaryIntegers.GetFormatStringWithCountDecimals(6), formatProvider)}>";
+      => $"<{Radius.ToUnitString(format: format ?? IBinaryInteger.GetFormatStringWithCountDecimals(3), provider: formatProvider)}, {Azimuth.ToUnitString(Units.AngleUnit.Degree, format ?? IBinaryInteger.GetFormatStringWithCountDecimals(6), formatProvider)}>";
 
     #endregion // Implemented interfaces
 

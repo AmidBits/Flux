@@ -1,6 +1,4 @@
-using System.Diagnostics;
 using Flux;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace FluxMst.Randomness
 {
@@ -10,9 +8,9 @@ namespace FluxMst.Randomness
     [TestMethod]
     public void BigInteger()
     {
-      for (var i = 1; i < short.MaxValue; i++)
+      for (var i = 1; i < byte.MaxValue; i++)
       {
-        var rv = Flux.RandomNumberGenerators.SscRng.Shared.NextBigInteger(i);
+        var rv = Flux.RandomNumberGenerators.SscRng.Shared.NextNumberEx<System.Numerics.BigInteger>(i);
 
         Assert.IsTrue(rv >= 0 && rv < (System.Numerics.BigInteger.One << i));
       }
@@ -62,14 +60,14 @@ namespace FluxMst.Randomness
 
       for (var i = 1; i < short.MaxValue; i++)
       {
-        var rv = Flux.RandomNumberGenerators.SscRng.Shared.NextDouble(i);
+        var rv = Flux.RandomNumberGenerators.SscRng.Shared.NextNumber<double>(i);
 
         Assert.IsTrue(rv >= 0 && rv < i);
       }
 
       for (var i = short.MinValue; i < 0; i++)
       {
-        var rv = Flux.RandomNumberGenerators.SscRng.Shared.NextDouble(i, 0);
+        var rv = Flux.RandomNumberGenerators.SscRng.Shared.NextNumber<double>(i, 0);
 
         Assert.IsTrue(rv >= i && rv < 0);
       }
@@ -196,14 +194,14 @@ namespace FluxMst.Randomness
 
       for (var i = 1; i < short.MaxValue; i++)
       {
-        var rv = cr.NextDouble(i);
+        var rv = cr.NextNumber<double>(i);
 
         Assert.IsTrue(rv >= 0 && rv < i);
       }
 
       for (var i = short.MinValue; i < 0; i++)
       {
-        var rv = cr.NextDouble(i, 0);
+        var rv = cr.NextNumber<double>(i, 0);
 
         Assert.IsTrue(rv >= i && rv < 0);
       }
@@ -214,9 +212,9 @@ namespace FluxMst.Randomness
     {
       var cr = new Flux.RandomNumberGenerators.SscRng();
 
-      for (var i = 1; i < short.MaxValue; i++)
+      for (var i = 1; i < byte.MaxValue; i++)
       {
-        var rv = cr.NextBigInteger(i);
+        var rv = cr.NextNumberEx<System.Numerics.BigInteger>(i);
         Assert.IsTrue(rv >= 0 && rv < (System.Numerics.BigInteger.One << i));
       }
 
@@ -278,14 +276,14 @@ namespace FluxMst.Randomness
 
       for (var i = 1; i < short.MaxValue; i++)
       {
-        var rv = cr.NextDouble(i);
+        var rv = cr.NextNumber<double>(i);
 
         Assert.IsTrue(rv >= 0 && rv < i);
       }
 
       for (var i = short.MinValue; i < 0; i++)
       {
-        var rv = cr.NextDouble(i, 0);
+        var rv = cr.NextNumber<double>(i, 0);
 
         Assert.IsTrue(rv >= i && rv < 0);
       }
@@ -296,9 +294,9 @@ namespace FluxMst.Randomness
     {
       var cr = new Flux.RandomNumberGenerators.Isaac32();
 
-      for (var i = 1; i < short.MaxValue; i++)
+      for (var i = 1; i < sbyte.MaxValue; i++)
       {
-        var rv = cr.NextBigInteger(i);
+        var rv = cr.NextNumberEx<System.Numerics.BigInteger>(i);
         Assert.IsTrue(rv >= 0 && rv < (System.Numerics.BigInteger.One << i));
       }
 
@@ -326,7 +324,7 @@ namespace FluxMst.Randomness
     {
       for (var i = 1; i < sbyte.MaxValue; i++)
       {
-        var rv = Flux.RandomNumberGenerators.SimpleRng.Shared.NextBigInteger(i);
+        var rv = Flux.RandomNumberGenerators.SimpleRng.Shared.NextNumberEx<System.Numerics.BigInteger>(i);
         Assert.IsTrue(rv >= 0 && rv < (System.Numerics.BigInteger.One << i));
       }
     }
@@ -368,7 +366,7 @@ namespace FluxMst.Randomness
     {
       for (var i = 1; i < short.MaxValue; i++)
       {
-        var rv = Flux.RandomNumberGenerators.SimpleRng.Shared.NextDouble(i);
+        var rv = Flux.RandomNumberGenerators.SimpleRng.Shared.NextNumber<double>(i);
         Assert.IsTrue(rv >= 0 && rv < i);
       }
     }
@@ -378,7 +376,7 @@ namespace FluxMst.Randomness
     {
       for (var i = short.MinValue; i < 0; i++)
       {
-        var rv = Flux.RandomNumberGenerators.SimpleRng.Shared.NextDouble(i, 0);
+        var rv = Flux.RandomNumberGenerators.SimpleRng.Shared.NextNumber<double>(i, 0);
         Assert.IsTrue(rv >= i && rv < 0);
       }
     }
@@ -452,7 +450,7 @@ namespace FluxMst.Randomness
     {
       for (var i = 1; i < sbyte.MaxValue; i++)
       {
-        var rv = Flux.RandomNumberGenerators.SplitMix64.Shared.NextBigInteger(i);
+        var rv = Flux.RandomNumberGenerators.SplitMix64.Shared.NextNumberEx<System.Numerics.BigInteger>(i);
         Assert.IsTrue(rv >= 0 && rv < (System.Numerics.BigInteger.One << i));
       }
     }
@@ -492,7 +490,7 @@ namespace FluxMst.Randomness
     {
       for (var i = 1; i < short.MaxValue; i++)
       {
-        var rv = Flux.RandomNumberGenerators.SplitMix64.Shared.NextDouble(i);
+        var rv = Flux.RandomNumberGenerators.SplitMix64.Shared.NextNumber<double>(i);
         Assert.IsTrue(rv >= 0 && rv < i);
       }
     }
@@ -502,7 +500,7 @@ namespace FluxMst.Randomness
     {
       for (var i = short.MinValue; i < 0; i++)
       {
-        var rv = Flux.RandomNumberGenerators.SplitMix64.Shared.NextDouble(i, 0);
+        var rv = Flux.RandomNumberGenerators.SplitMix64.Shared.NextNumber<double>(i, 0);
         Assert.IsTrue(rv >= i && rv < 0);
       }
     }
@@ -576,7 +574,7 @@ namespace FluxMst.Randomness
     {
       for (var i = 1; i < sbyte.MaxValue; i++)
       {
-        var rv = Flux.RandomNumberGenerators.Xoshiro128P.Shared.NextBigInteger(i);
+        var rv = Flux.RandomNumberGenerators.Xoshiro128P.Shared.NextNumberEx<System.Numerics.BigInteger>(i);
         Assert.IsTrue(rv >= 0 && rv < (System.Numerics.BigInteger.One << i));
       }
     }
@@ -618,7 +616,7 @@ namespace FluxMst.Randomness
     {
       for (var i = 1; i < short.MaxValue; i++)
       {
-        var rv = Flux.RandomNumberGenerators.Xoshiro128P.Shared.NextDouble(i);
+        var rv = Flux.RandomNumberGenerators.Xoshiro128P.Shared.NextNumber<double>(i);
         Assert.IsTrue(rv >= 0 && rv < i);
       }
     }
@@ -628,7 +626,7 @@ namespace FluxMst.Randomness
     {
       for (var i = short.MinValue; i < 0; i++)
       {
-        var rv = Flux.RandomNumberGenerators.Xoshiro128P.Shared.NextDouble(i, 0);
+        var rv = Flux.RandomNumberGenerators.Xoshiro128P.Shared.NextNumber<double>(i, 0);
         Assert.IsTrue(rv >= i && rv < 0);
       }
     }
@@ -702,7 +700,7 @@ namespace FluxMst.Randomness
     {
       for (var i = 1; i < sbyte.MaxValue; i++)
       {
-        var rv = Flux.RandomNumberGenerators.Xoshiro128SS.Shared.NextBigInteger(i);
+        var rv = Flux.RandomNumberGenerators.Xoshiro128SS.Shared.NextNumberEx<System.Numerics.BigInteger>(i);
         Assert.IsTrue(rv >= 0 && rv < (System.Numerics.BigInteger.One << i));
       }
     }
@@ -744,7 +742,7 @@ namespace FluxMst.Randomness
     {
       for (var i = 1; i < short.MaxValue; i++)
       {
-        var rv = Flux.RandomNumberGenerators.Xoshiro128SS.Shared.NextDouble(i);
+        var rv = Flux.RandomNumberGenerators.Xoshiro128SS.Shared.NextNumber<double>(i);
         Assert.IsTrue(rv >= 0 && rv < i);
       }
     }
@@ -754,7 +752,7 @@ namespace FluxMst.Randomness
     {
       for (var i = short.MinValue; i < 0; i++)
       {
-        var rv = Flux.RandomNumberGenerators.Xoshiro128SS.Shared.NextDouble(i, 0);
+        var rv = Flux.RandomNumberGenerators.Xoshiro128SS.Shared.NextNumber<double>(i, 0);
         Assert.IsTrue(rv >= i && rv < 0);
       }
     }
@@ -828,7 +826,7 @@ namespace FluxMst.Randomness
     {
       for (var i = 1; i < sbyte.MaxValue; i++)
       {
-        var rv = Flux.RandomNumberGenerators.Xoshiro256P.Shared.NextBigInteger(i);
+        var rv = Flux.RandomNumberGenerators.Xoshiro256P.Shared.NextNumberEx<System.Numerics.BigInteger>(i);
         Assert.IsTrue(rv >= 0 && rv < (System.Numerics.BigInteger.One << i));
       }
     }
@@ -868,7 +866,7 @@ namespace FluxMst.Randomness
     {
       for (var i = 1; i < short.MaxValue; i++)
       {
-        var rv = Flux.RandomNumberGenerators.Xoshiro256P.Shared.NextDouble(i);
+        var rv = Flux.RandomNumberGenerators.Xoshiro256P.Shared.NextNumber<double>(i);
         Assert.IsTrue(rv >= 0 && rv < i);
       }
     }
@@ -878,7 +876,7 @@ namespace FluxMst.Randomness
     {
       for (var i = short.MinValue; i < 0; i++)
       {
-        var rv = Flux.RandomNumberGenerators.Xoshiro256P.Shared.NextDouble(i, 0);
+        var rv = Flux.RandomNumberGenerators.Xoshiro256P.Shared.NextNumber<double>(i, 0);
         Assert.IsTrue(rv >= i && rv < 0);
       }
     }
@@ -952,7 +950,7 @@ namespace FluxMst.Randomness
     {
       for (var i = 1; i < sbyte.MaxValue; i++)
       {
-        var rv = Flux.RandomNumberGenerators.Xoshiro256SS.Shared.NextBigInteger(i);
+        var rv = Flux.RandomNumberGenerators.Xoshiro256SS.Shared.NextNumberEx<System.Numerics.BigInteger>(i);
         Assert.IsTrue(rv >= 0 && rv < (System.Numerics.BigInteger.One << i));
       }
     }
@@ -992,7 +990,7 @@ namespace FluxMst.Randomness
     {
       for (var i = 1; i < short.MaxValue; i++)
       {
-        var rv = Flux.RandomNumberGenerators.Xoshiro256SS.Shared.NextDouble(i);
+        var rv = Flux.RandomNumberGenerators.Xoshiro256SS.Shared.NextNumber<double>(i);
         Assert.IsTrue(rv >= 0 && rv < i);
       }
     }
@@ -1002,7 +1000,7 @@ namespace FluxMst.Randomness
     {
       for (var i = short.MinValue; i < 0; i++)
       {
-        var rv = Flux.RandomNumberGenerators.Xoshiro256SS.Shared.NextDouble(i, 0);
+        var rv = Flux.RandomNumberGenerators.Xoshiro256SS.Shared.NextNumber<double>(i, 0);
         Assert.IsTrue(rv >= i && rv < 0);
       }
     }

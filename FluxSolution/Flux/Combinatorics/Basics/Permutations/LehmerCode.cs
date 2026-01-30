@@ -1,4 +1,4 @@
-namespace Flux
+namespace Flux.Permutations
 {
   /// <summary>
   /// <para>Permutations without repetitions.</para>
@@ -14,7 +14,7 @@ namespace Flux
       for (var i = 1; i < radices.Length; i++)
         radices[i] = radices[i - 1] - 1;
 
-      return BinaryIntegers.CountPermutationsWithoutRepetition(n, radices.Length);
+      return IBinaryInteger.CountPermutationsWithoutRepetition(n, radices.Length);
     }
 
     /// <summary>

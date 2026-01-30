@@ -23,7 +23,7 @@ namespace Flux.Riff.Chunks
     protected byte[] m_buffer = [];
 
     public string ChunkID { get => System.Text.Encoding.ASCII.GetString(m_buffer, 0, 4); set { System.Text.Encoding.ASCII.GetBytes((value ?? throw new System.ArgumentNullException(nameof(value)))[..4]).CopyTo(m_buffer, 0); } }
-    virtual public int ChunkSize { get => m_buffer.AsReadOnlySpan(4).ReadInt32(Endianess.LittleEndian); set { value.WriteBytes(m_buffer.AsSpan(4), Endianess.LittleEndian); } }
+    virtual public int ChunkSize { get => System.Buffers.Binary.BinaryPrimitives.ReadInt32LittleEndian(new System.ReadOnlySpan<byte>(m_buffer, 4, 4)); set { System.Buffers.Binary.BinaryPrimitives.WriteInt32LittleEndian(new System.Span<byte>(m_buffer, 4, 4), value); } }
 
     /// <summary>
     /// <para>Initialize the chunk buffer to <paramref name="bufferSize"/>. The fields ChunkID and ChunkData are included in this size.</para>

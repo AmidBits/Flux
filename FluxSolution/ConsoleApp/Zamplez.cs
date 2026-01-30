@@ -34,6 +34,7 @@ namespace ConsoleApp
       RunRulesEngine();
       RunISetOps();
       RunStatistics();
+      RunStats();
       RunTemporal();
 
 #if INCLUDE_SWAR
@@ -143,7 +144,7 @@ namespace ConsoleApp
       {
         var rng = new System.Random();
 
-        var m_ap = BinaryIntegers.GetAscendingPrimes(2).Take(100).ToArray(); // Primes.
+        var m_ap = IBinaryInteger.GetAscendingPrimes(2).Take(100).ToArray(); // Primes.
         var m_rn = System.Linq.Enumerable.Range(0, 100).ToArray(); // Rational.
         var m_en = System.Linq.Enumerable.Range(1, 200).Where(i => (i & 1) == 0).ToArray(); // Even.
         var m_on = System.Linq.Enumerable.Range(1, 200).Where(i => (i & 1) != 0).ToArray(); // Odd.
@@ -315,7 +316,7 @@ namespace ConsoleApp
 
       System.ArgumentOutOfRangeException.ThrowIfNegative(value);
 
-      var (q, remainder) = Numbers.TruncMod(value, 1);
+      var (q, remainder) = INumber.ITruncatedDivRem(value, 1);
       var quotient = int.CreateChecked(q);
 
       var p2TowardsZero = int.MostSignificant1Bit(quotient);
@@ -350,14 +351,14 @@ namespace ConsoleApp
 
       //      n = 0;
       //      var nlpow2 = n.NextLargerPowerOf2();
-      var np2TowardsZero = (int)Numbers.RoundToNearest(n, HalfRounding.TowardZero, false, [Flux.BitOps.Pow2(n, false).TowardZero, Flux.BitOps.Pow2(n, false).AwayFromZero]);
+      var np2TowardsZero = (int)INumber.RoundToNearest(n, HalfRounding.TowardZero, false, [Flux.IBinaryInteger.RoundDownToPowerOf2(n, false), Flux.IBinaryInteger.RoundUpToPowerOf2(n, false)]);
       System.Console.WriteLine($" Pow2TowardsZero = {np2TowardsZero}");
-      var np2AwayFromZero = (int)Numbers.RoundToNearest(n, HalfRounding.AwayFromZero, false, [Flux.BitOps.Pow2(n, false).TowardZero, Flux.BitOps.Pow2(n, false).AwayFromZero]);
+      var np2AwayFromZero = (int)INumber.RoundToNearest(n, HalfRounding.AwayFromZero, false, [Flux.IBinaryInteger.RoundDownToPowerOf2(n, false), Flux.IBinaryInteger.RoundUpToPowerOf2(n, false)]);
       System.Console.WriteLine($"Pow2AwayFromZero = {np2AwayFromZero}");
 
-      var birbits = BitOps.ReverseBits(n);
+      var birbits = IBinaryInteger.ReverseBits(n);
       System.Console.WriteLine($"    Reverse Bits = {birbits.ToBinaryString()}");
-      var birbyts = BitOps.ReverseBytes(n);
+      var birbyts = IBinaryInteger.ReverseBytes(n);
       System.Console.WriteLine($"   Reverse Bytes = {birbyts.ToBinaryString()}");
 
       var bfl = int.BitFoldLeft(n);
@@ -372,10 +373,10 @@ namespace ConsoleApp
       var bln = n.GetBitLength();
       //var l2 = bi.IntegerLog2();
       var ms1b = int.MostSignificant1Bit(n);
-      var bmr = BitOps.CreateBitMaskRight(n.GetBitLength());
+      var bmr = IBinaryInteger.CreateBitMaskRight(n.GetBitLength());
       var bmrs = bmr.ToBinaryString();
       var bmrsl = bmrs.Length;
-      var bml = BitOps.CreateBitMaskLeft(n.GetBitLength());
+      var bml = IBinaryInteger.CreateBitMaskLeft(n.GetBitLength());
       var bmls = bml.ToBinaryString();
       var bmlsl = bmls.Length;
     }
@@ -867,8 +868,8 @@ namespace ConsoleApp
 
       RunQuantiles(a);
       System.Console.WriteLine();
-      RunQuartiles(a);
-      System.Console.WriteLine();
+      //RunQuartiles(a);
+      //System.Console.WriteLine();
 
       var b = new System.Collections.Generic.List<double>() { 7, 15, 36, 39, 40, 41 };
       System.Console.WriteLine($"For {{{string.Join(", ", b)}}}:");
@@ -876,18 +877,18 @@ namespace ConsoleApp
 
       RunQuantiles(b);
       System.Console.WriteLine();
-      RunQuartiles(b);
-      System.Console.WriteLine();
+      //RunQuartiles(b);
+      //System.Console.WriteLine();
     }
 
-    static void RunQuartiles(System.Collections.Generic.List<double> x)
-    {
-      System.Console.WriteLine($"The computed quartiles:");
-      System.Console.WriteLine($"Method 1: {new Flux.Statistics.Quartile.Method1().ComputeQuartiles(x)}");
-      System.Console.WriteLine($"Method 2: {new Flux.Statistics.Quartile.Method2().ComputeQuartiles(x)}");
-      System.Console.WriteLine($"Method 3: {new Flux.Statistics.Quartile.Method3().ComputeQuartiles(x)}");
-      System.Console.WriteLine($"Method 4: {new Flux.Statistics.Quartile.Method4().ComputeQuartiles(x)}");
-    }
+    //static void RunQuartiles(System.Collections.Generic.List<double> x)
+    //{
+    //  System.Console.WriteLine($"The computed quartiles:");
+    //  System.Console.WriteLine($"Method 1: {new Flux.Statistics.Quartile.Method1().ComputeQuartiles(x)}");
+    //  System.Console.WriteLine($"Method 2: {new Flux.Statistics.Quartile.Method2().ComputeQuartiles(x)}");
+    //  System.Console.WriteLine($"Method 3: {new Flux.Statistics.Quartile.Method3().ComputeQuartiles(x)}");
+    //  System.Console.WriteLine($"Method 4: {new Flux.Statistics.Quartile.Method4().ComputeQuartiles(x)}");
+    //}
 
     static void RunQuantiles(System.Collections.Generic.List<double> x)
     {
@@ -898,15 +899,15 @@ namespace ConsoleApp
       {
         var values = new double[]
         {
-          Flux.Statistics.Quantile.R1.Default.EstimateQuantileValue(x, p),
-          Flux.Statistics.Quantile.R2.Default.EstimateQuantileValue(x, p),
-          Flux.Statistics.Quantile.R3.Default.EstimateQuantileValue(x, p),
-          Flux.Statistics.Quantile.R4.Default.EstimateQuantileValue(x, p),
-          Flux.Statistics.Quantile.R5.Default.EstimateQuantileValue(x, p),
-          Flux.Statistics.Quantile.R6.Default.EstimateQuantileValue(x, p),
-          Flux.Statistics.Quantile.R7.Default.EstimateQuantileValue(x, p),
-          Flux.Statistics.Quantile.R8.Default.EstimateQuantileValue(x, p),
-          Flux.Statistics.Quantile.R9.Default.EstimateQuantileValue(x, p),
+          INumber.QuantileR1(x.AsSpan(), p),
+          INumber.QuantileR2(x.AsSpan(), p),
+          INumber.QuantileR3(x.AsSpan(), p),
+          INumber.QuantileR4(x.AsSpan(), p),
+          INumber.QuantileR5(x.AsSpan(), p),
+          INumber.QuantileR6(x.AsSpan(), p),
+          INumber.QuantileR7(x.AsSpan(), p),
+          INumber.QuantileR8(x.AsSpan(), p),
+          INumber.QuantileR9(x.AsSpan(), p),
         };
 
         System.Console.WriteLine($"The estimated quantiles of {p:N2}:");

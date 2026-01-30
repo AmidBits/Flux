@@ -1,4 +1,4 @@
-namespace Flux
+namespace Flux.Permutations
 {
   /// <summary>
   /// <para>Flexible lexiographically ordered permutation algorithm with repetition by index.</para>
@@ -43,14 +43,31 @@ namespace Flux
       return new(minIndex, maxIndex + minIndex - TInteger.One);
     }
 
+    public static TInteger Rank<TSymbol, TInteger>(System.ReadOnlySpan<TSymbol> permutation, System.ReadOnlySpan<TSymbol> alphabet)
+      where TInteger : System.Numerics.IBinaryInteger<TInteger>
+    {
+      var rank = TInteger.Zero;
+
+      var k = TInteger.One;
+
+      for (var i = permutation.Length - 1; i >= 0; i--)
+      {
+        rank += TInteger.CreateChecked(alphabet.IndexOf(permutation[i]) + 1) * k;
+
+        k *= TInteger.CreateChecked(alphabet.Length);
+      }
+
+      return rank;
+    }
+
     /// <summary>
     /// <para><see href="https://stackoverflow.com/a/20446640/3178666"/></para>
     /// </summary>
     /// <typeparam name="TSymbol"></typeparam>
     /// <param name="alphabet"></param>
     /// <param name="rank"></param>
-    /// <returns></returns>
-    public static void Unrank<TSymbol, TInteger>(System.Span<TSymbol> permutation, TInteger rank, System.ReadOnlySpan<TSymbol> alphabet)
+    /// <returns>A span representing the portion of the permutationBuffer used for the unranked permutation.</returns>
+    public static System.ReadOnlySpan<TSymbol> Unrank<TSymbol, TInteger>(System.Span<TSymbol> permutationBuffer, TInteger rank, System.ReadOnlySpan<TSymbol> alphabet)
       where TInteger : System.Numerics.IBinaryInteger<TInteger>
     {
       /*
@@ -66,7 +83,7 @@ namespace Flux
        */
 
       var n = TInteger.CreateChecked(alphabet.Length);
-      var k = permutation.Length;
+      var k = permutationBuffer.Length;
 
       while (rank > TInteger.Zero)
       {
@@ -74,10 +91,12 @@ namespace Flux
 
         r = (TInteger.IsZero(r) ? q : q + TInteger.One) - TInteger.One;
 
-        permutation[--k] = alphabet[int.CreateChecked(rank - r * n - TInteger.One)];
+        permutationBuffer[--k] = alphabet[int.CreateChecked(rank - r * n - TInteger.One)];
 
         rank = r;
       }
+
+      return permutationBuffer.Slice(k);
     }
   }
 }

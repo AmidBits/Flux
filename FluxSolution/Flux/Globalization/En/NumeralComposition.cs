@@ -92,9 +92,9 @@ namespace Flux.Globalization.En
 
             sb.TrimCommonPrefix(0, "One-");
 
-            sb.Append(BinaryIntegers.GetOrdinalIndicatorSuffix(0));
+            sb.Append(IBinaryInteger.GetOrdinalIndicatorSuffix(0));
 
-            if (Flux.Numbers.IsConsideredPlural(fractionalPartAsWholeNumber))
+            if (Flux.INumber.IsConsideredPlural(fractionalPartAsWholeNumber))
               sb.Append('s');
 
             stringBuilder.Append(' ');
@@ -258,7 +258,7 @@ namespace Flux.Globalization.En
     public static System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetCompoundNumbers<TInteger>(TInteger value, TInteger maxCutoff)
       where TInteger : System.Numerics.IBinaryInteger<TInteger>
     {
-      yield return System.Numerics.BigInteger.CreateChecked(Flux.Numbers.Sign(value));
+      yield return System.Numerics.BigInteger.CreateChecked(Flux.INumber.Sign(value));
 
       foreach (var compoundNumber in GetCompoundNumbers(System.Numerics.BigInteger.Abs(System.Numerics.BigInteger.CreateChecked(value)), System.Numerics.BigInteger.CreateChecked(maxCutoff)))
         yield return compoundNumber;

@@ -12,7 +12,7 @@ namespace Flux
 
     public SpanBuilder(int capacity)
     {
-      m_array = capacity >= 1 ? System.Buffers.ArrayPool<T>.Shared.Rent(BitOps.Pow2(int.Max(capacity, DefaultBufferSize), false).AwayFromZero) : [];
+      m_array = capacity >= 1 ? System.Buffers.ArrayPool<T>.Shared.Rent(IBinaryInteger.RoundUpToPowerOf2(int.Max(capacity, DefaultBufferSize), false)) : [];
 
       m_head = m_array.Length / 2;
       m_tail = m_array.Length / 2;
@@ -173,7 +173,7 @@ namespace Flux
       {
         var totalSize = FreePrepend + Length + needAppend + FreeAppend;
 
-        var array = System.Buffers.ArrayPool<T>.Shared.Rent(BitOps.Pow2(int.Max(totalSize, DefaultBufferSize), true).AwayFromZero);
+        var array = System.Buffers.ArrayPool<T>.Shared.Rent(IBinaryInteger.RoundUpToPowerOf2(int.Max(totalSize, DefaultBufferSize), true));
 
         var head = (m_array.Length - totalNeed) / 2;
         var tail = head + Length + needAppend;
@@ -220,7 +220,7 @@ namespace Flux
       {
         var totalSize = FreePrepend + Length + FreeAppend + needInsert;
 
-        var array = System.Buffers.ArrayPool<T>.Shared.Rent(BitOps.Pow2(int.Max(totalSize, DefaultBufferSize), true).AwayFromZero);
+        var array = System.Buffers.ArrayPool<T>.Shared.Rent(IBinaryInteger.RoundUpToPowerOf2(int.Max(totalSize, DefaultBufferSize), true));
 
         var head = (array.Length - totalNeed) / 2;
         var tail = head + Length + needInsert;
@@ -255,7 +255,7 @@ namespace Flux
       {
         var totalSize = FreePrepend + needPrepend + Length + FreeAppend;
 
-        var array = System.Buffers.ArrayPool<T>.Shared.Rent(BitOps.Pow2(int.Max(totalSize, DefaultBufferSize), true).AwayFromZero);
+        var array = System.Buffers.ArrayPool<T>.Shared.Rent(IBinaryInteger.RoundUpToPowerOf2(int.Max(totalSize, DefaultBufferSize), true));
 
         var head = (array.Length - totalNeed) / 2;
         var tail = head + needPrepend + Length;

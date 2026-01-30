@@ -13,7 +13,7 @@ namespace Flux.Probabilities
 
       crng.Value!.GetBytes(bytes.Value);
 
-      return bytes.Value.AsReadOnlySpan().ReadInt32(Endianess.LittleEndian) & int.MaxValue;
+      return System.Buffers.Binary.BinaryPrimitives.ReadInt32LittleEndian(bytes.Value) & int.MaxValue;
     }
 
     public static double NextDouble()

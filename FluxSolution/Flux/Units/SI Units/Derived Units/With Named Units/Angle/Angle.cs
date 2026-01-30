@@ -215,7 +215,7 @@
     /// <param name="angle"></param>
     /// <returns></returns>
     /// <remarks>Values outside the interval [0, 360)) are wrapped, i.e. 370 = 10, -10 = 350, etc.</remarks>
-    public static Angle AsAzimuth(Angle angle) => new(Numbers.WrapAround(angle.Value, 0, double.Tau) % double.Tau);
+    public static Angle AsAzimuth(Angle angle) => new(INumber.WrapAround(angle.Value, 0, double.Tau) % double.Tau);
 
     /// <summary>
     /// <para>Creates an azimuth <see cref="Angle"/> from <paramref name="value"/> and <paramref name="unit"/>, i.e. a value in the interval [0, 360].</para>
@@ -232,7 +232,7 @@
     /// <param name="angle"></param>
     /// <returns></returns>
     /// <remarks>Values outside the interval [-90, +90] are folded, i.e. +100 = +80, -100 = -80, etc.</remarks>
-    public static Angle AsLatitude(Angle angle) => new(Numbers.FoldAcross(angle.Value, double.Pi / -2, double.Pi / 2));
+    public static Angle AsLatitude(Angle angle) => new(INumber.FoldAcross(angle.Value, double.Pi / -2, double.Pi / 2));
 
     /// <summary>
     /// <para>Creates a longitude <see cref="Angle"/> from <paramref name="value"/> and <paramref name="unit"/>, i.e. a value in the interval [-90, +90].</para>
@@ -672,7 +672,7 @@
 
       return value.ToString(format, formatProvider)
           + (fullName
-          ? spacing.ToSpacingString() + unit.GetUnitName(Numbers.IsConsideredPlural(value))
+          ? spacing.ToSpacingString() + unit.GetUnitName(INumber.IsConsideredPlural(value))
           : (unit.HasUnitSpacing(true) ? spacing : UnicodeSpacing.None).ToSpacingString() + unit.GetUnitSymbol(true)
           );
     }

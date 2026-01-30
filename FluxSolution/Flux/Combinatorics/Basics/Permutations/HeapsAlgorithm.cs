@@ -1,4 +1,4 @@
-﻿namespace Flux
+﻿namespace Flux.Permutations
 {
   /// <summary>
   /// <para>Heap's algorithm. All possible permutations, without repeats, of n objects.</para>

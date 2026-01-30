@@ -111,9 +111,9 @@ namespace Flux.CoordinateSystems
       rng ??= System.Random.Shared;
 
       return new(
-        rng.NextDouble(radius),
-        rng.NextDouble(double.Pi),
-        rng.NextDouble(double.Tau)
+        rng.NextNumber(radius),
+        rng.NextNumber(double.Pi),
+        rng.NextNumber(double.Tau)
       );
     }
 
@@ -123,8 +123,8 @@ namespace Flux.CoordinateSystems
 
       return new(
         radius,
-        rng.NextDouble(double.Pi),
-        rng.NextDouble(double.Tau)
+        rng.NextNumber(double.Pi),
+        rng.NextNumber(double.Tau)
       );
     }
 
@@ -198,7 +198,7 @@ namespace Flux.CoordinateSystems
     #region Implemented interfaces
 
     public string ToString(string? format, System.IFormatProvider? formatProvider)
-      => $"<{Radius.ToString(format ?? BinaryIntegers.GetFormatStringWithCountDecimals(3), formatProvider)}, {Inclination.ToUnitString(Units.AngleUnit.Degree, format ?? BinaryIntegers.GetFormatStringWithCountDecimals(6), formatProvider)} / {Elevation.ToUnitString(Units.AngleUnit.Degree, format ?? BinaryIntegers.GetFormatStringWithCountDecimals(6), formatProvider)}, {Azimuth.ToUnitString(Units.AngleUnit.Degree, format ?? BinaryIntegers.GetFormatStringWithCountDecimals(6), formatProvider)}>";
+      => $"<{Radius.ToString(format ?? IBinaryInteger.GetFormatStringWithCountDecimals(3), formatProvider)}, {Inclination.ToUnitString(Units.AngleUnit.Degree, format ?? IBinaryInteger.GetFormatStringWithCountDecimals(6), formatProvider)} / {Elevation.ToUnitString(Units.AngleUnit.Degree, format ?? IBinaryInteger.GetFormatStringWithCountDecimals(6), formatProvider)}, {Azimuth.ToUnitString(Units.AngleUnit.Degree, format ?? IBinaryInteger.GetFormatStringWithCountDecimals(6), formatProvider)}>";
 
     #endregion // Implemented interfaces
 

@@ -295,6 +295,6 @@
 
     #endregion // Implemented interfaces
 
-    public override string ToString() => $"{GetType().Name} {{ BitCount = {m_bitLength} }}";
+    public override string ToString() => $"{GetType().Name} {{ BitCount = {m_bitLength - 1} }}";
   }
 }

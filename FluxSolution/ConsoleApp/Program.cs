@@ -110,42 +110,42 @@ namespace ConsoleApp
       for (var n = System.UInt128.Zero; n <= maxN; n++)
       {
         for (var k = System.UInt128.Zero; k <= n; k++)
-          System.Console.Write($"{BinaryIntegers.BinomialCoefficient(n, k)} ");
+          System.Console.Write($"{IBinaryInteger.BinomialCoefficient(n, k)} ");
 
         System.Console.WriteLine();
       }
     }
 
-    private static void TestDspWithPlot()
-    {
-      var wg = new Flux.Dsp.WaveGenerators.TriangleWave();
-      var wp = new Flux.Dsp.WaveProcessors.MonoQuadratic(Flux.Dsp.WaveProcessors.MonoQuadraticMode.Symmetric, .75);
+    //private static void TestDspWithPlot()
+    //{
+    //  var wg = new Flux.Dsp.WaveGenerators.TriangleWave();
+    //  var wp = new Flux.Dsp.WaveProcessors.MonoQuadratic(Flux.Dsp.WaveProcessors.MonoQuadraticMode.Symmetric, .75);
 
-      var listx = new System.Collections.Generic.List<double>();
-      var lists = new System.Collections.Generic.List<double>();
-      var listsi = new System.Collections.Generic.List<double>();
-      var listy = new System.Collections.Generic.List<double>();
-      var listyi = new System.Collections.Generic.List<double>();
+    //  var listx = new System.Collections.Generic.List<double>();
+    //  var lists = new System.Collections.Generic.List<double>();
+    //  var listsi = new System.Collections.Generic.List<double>();
+    //  var listy = new System.Collections.Generic.List<double>();
+    //  var listyi = new System.Collections.Generic.List<double>();
 
 
-      for (var phase = 0.0; phase <= double.Tau; phase += double.Tau / 100)
-      {
-        var signal = wg.GenerateMonoWavePi2(phase);
-        var signali = (Flux.Dsp.Waves.WaveMono<double>)(-signal.Wave);
-        listx.Add(phase);
-        lists.Add(signal.Wave);
-        listsi.Add(signali.Wave);
-        listy.Add(wp.ProcessMonoWave(signal).Wave);
-        listyi.Add(wp.ProcessMonoWave(signali).Wave);
-      }
+    //  for (var phase = 0.0; phase <= double.Tau; phase += double.Tau / 100)
+    //  {
+    //    var signal = wg.GenerateMonoWavePi2(phase);
+    //    var signali = (Flux.Dsp.Waves.WaveMono<double>)(-signal.Wave);
+    //    listx.Add(phase);
+    //    lists.Add(signal.Wave);
+    //    listsi.Add(signali.Wave);
+    //    listy.Add(wp.ProcessMonoWave(signal).Wave);
+    //    listyi.Add(wp.ProcessMonoWave(signali).Wave);
+    //  }
 
-      ScottPlot.Plot plt = new();
-      plt.Add.Scatter(listx, lists, ScottPlot.Color.Gray(55));
-      plt.Add.Scatter(listx, listsi, ScottPlot.Color.Gray(200));
-      plt.Add.Scatter(listx, listy, ScottPlot.Color.FromColor(System.Drawing.Color.DarkGreen));
-      plt.Add.Scatter(listx, listyi, ScottPlot.Color.FromColor(System.Drawing.Color.LightGreen));
-      plt.SavePng("C:\\Users\\Rob\\source\\repos\\AmidBits\\Flux\\FluxSolution\\ConsoleApp\\quickstart.png", 400, 300);
-    }
+    //  ScottPlot.Plot plt = new();
+    //  plt.Add.Scatter(listx, lists, ScottPlot.Color.Gray(55));
+    //  plt.Add.Scatter(listx, listsi, ScottPlot.Color.Gray(200));
+    //  plt.Add.Scatter(listx, listy, ScottPlot.Color.FromColor(System.Drawing.Color.DarkGreen));
+    //  plt.Add.Scatter(listx, listyi, ScottPlot.Color.FromColor(System.Drawing.Color.LightGreen));
+    //  plt.SavePng("C:\\Users\\Rob\\source\\repos\\AmidBits\\Flux\\FluxSolution\\ConsoleApp\\quickstart.png", 400, 300);
+    //}
 
     private static double LoadBearingCapacityAluExt(double sectionDiameter, double wallThickness, double length, double tensileStrength)
       => 0.44 * (sectionDiameter + wallThickness) * length * tensileStrength;
@@ -328,10 +328,45 @@ namespace ConsoleApp
 
     #endregion // Mock DataTables
 
+    public static bool IsPrimeCandidate<TInteger>(TInteger n)
+      where TInteger : System.Numerics.IBinaryInteger<TInteger>
+      => n >= TInteger.CreateChecked(2) && (n <= TInteger.CreateChecked(3) || (n % TInteger.CreateChecked(6) is var m && (m == TInteger.One || m == TInteger.CreateChecked(5))));
+
     private static void TimedMain(string[] _)
     {
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
+
+      System.Console.WriteLine(Flux.Diagnostics.Performance.Measure(() => string.Join(',', IBinaryInteger.GetCompositeNumbers<int>().Take(10)), 1000));
+      System.Console.WriteLine(Flux.Diagnostics.Performance.Measure(() => string.Join(',', IBinaryInteger.GetHighlyCompositeNumbers<int>().Take(10)), 1000));
+      //System.Console.WriteLine(Flux.Diagnostics.Performance.Measure(() => string.Join(',', IBinaryInteger.GetSuperiorHighlyCompositeNumbers<int>(100).Take(10)), 10));
+
+
+      var log = double.Log(999, 10);
+
+      var (logf, logc) = IFloatingPoint.IsNearInteger(log, out var ilog) ? (ilog, ilog) : (double.Floor(log), double.Ceiling(log));
+
+      var source = 2039;
+      var bin2gray = IBinaryInteger.ConvertBinaryToGray(source);
+      var gray2bin = IBinaryInteger.ConvertGrayToBinary(bin2gray);
+
+
+
+      //var radix = 10;
+      //foreach (var r in INumber.LoopCustom((System.Numerics.BigInteger)(-20), (r, i) => r <= ulong.MaxValue, (r, i) => checked(r += 1)).Take(101))
+      //{
+      //  var lr = IBinaryInteger.IntegerLog(r, radix);
+      //  System.Console.WriteLine($"{r} = {lr} : {(r < 0 ? "abs" : string.Empty)}({IBinaryInteger.IsPowOf(System.Numerics.BigInteger.Abs(r), radix)}) : {double.Log(double.CreateChecked(r), radix)}");
+      //}
+
+      //for (var i = 0; i <= 33; i++)
+      //  System.Console.WriteLine($"{i:D2} = {Flux.IBinaryInteger.RoundDownToPowerOf2(i, true):D2} : {Flux.IBinaryInteger.RoundDownToPowerOf2(i, false):D2} : {Flux.IBinaryInteger.RoundUpToPowerOf2(i, false):D2} : {Flux.IBinaryInteger.RoundUpToPowerOf2(i, true):D2}");
+
+      //return;
+
+
+
+
 
       var gosps = System.Runtime.InteropServices.RuntimeInformation.GetOsPlatforms();
       var osp = System.Runtime.InteropServices.RuntimeInformation.OsPlatform;
@@ -342,35 +377,11 @@ namespace ConsoleApp
 
       var fqdn = System.Net.Dns.GetFullyQualifiedDomainName(out var hn);
 
+      var isqdn1 = System.Net.Dns.IsQualifiedDomainName(fqdn, out var lc1);
+
       fqdn = $"{hn}.level.domain.zone";
 
-      var isqdn = System.Net.Dns.IsQualifiedDomainName(fqdn, out var lc);
-
-      var x = typeof(System.Runtime.InteropServices.OSPlatform).GetProperties().Where(pi => pi.PropertyType == typeof(System.Runtime.InteropServices.OSPlatform)).Select(pi => pi.GetValue(null)).Cast<System.Runtime.InteropServices.OSPlatform>().ToArray();
-      //.Select(mi => mi.Name.Substring(2)).Order()]
-
-
-      //var rsaBitSize = 4096;
-
-      //var rsa = Flux.Cipher.Asymmetric.RsaCng.CreateRsaKeyPair(rsaBitSize);
-
-      ////System.IO.File.WriteAllText($"../../../../private-{rsaBitSize}.pem", rsa.PrivateText);
-      ////System.IO.File.WriteAllText($"../../../../public-{rsaBitSize}.pem", rsa.PublicText);
-
-      //var sourceText = "Hello";
-      //var sourceLength = sourceText.Length;
-
-      //var uncryptedBytes = Flux.Transcode.Utf8.Default.DecodeString(sourceText);
-
-      //var encryptedBytes = Flux.Cipher.Asymmetric.RsaCng.Default.Encrypt(uncryptedBytes, rsa.PublicKey);
-
-      //var decrypedBytes = Flux.Cipher.Asymmetric.RsaCng.Default.Decrypt(encryptedBytes, rsa.PrivateKey);
-
-      //var targetText = Flux.Transcode.Utf8.Default.EncodeString(decrypedBytes);
-      //var targetLength = targetText.Length;
-
-      //return;
-
+      var isqdn2 = System.Net.Dns.IsQualifiedDomainName(fqdn, out var lc2);
 
 
 

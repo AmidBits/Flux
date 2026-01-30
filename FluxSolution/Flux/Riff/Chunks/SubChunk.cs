@@ -15,7 +15,7 @@ namespace Flux.Riff.Chunks
 
     public SubChunk(System.ReadOnlySpan<byte> bytes) : base(bytes.Length) => bytes.CopyTo(m_buffer);
 
-    public SubChunk(byte[] bytes) : this(bytes.AsReadOnlySpan()) { }
+    public SubChunk(byte[] bytes) : this(bytes.AsSpan()) { }
 
     public SubChunk(string chunkID, int chunkSize) : base(chunkID, chunkSize) { }
   }

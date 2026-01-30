@@ -67,7 +67,7 @@ namespace SystemArrays
       System.Console.WriteLine(System.Array.Rank2ToConsoleString(flip0InPlace, cso));
       System.Console.WriteLine();
 
-      System.Array.Flip(TwoDimensionalArrayAxis.Row, flip0InPlace);
+      System.Array.Flip(ArrayAxis.Row, flip0InPlace);
       //flip0InPlace.Flip0();
 
       System.Console.WriteLine(nameof(flip0InPlace));
@@ -108,7 +108,7 @@ namespace SystemArrays
       System.Console.WriteLine();
 
       var flip0ToCopy = new int[4, 4];
-      System.Array.Flip(TwoDimensionalArrayAxis.Row, initial, flip0ToCopy);
+      System.Array.Flip(ArrayAxis.Row, initial, flip0ToCopy);
       //initial.Flip0(flip0ToCopy);
       System.Console.WriteLine(nameof(flip0ToCopy));
       System.Console.WriteLine(System.Array.Rank2ToConsoleString(flip0ToCopy, cso));
@@ -147,7 +147,7 @@ namespace SystemArrays
       System.Console.WriteLine(System.Array.Rank2ToConsoleString(flip1InPlace, cso));
       System.Console.WriteLine();
 
-      System.Array.Flip(TwoDimensionalArrayAxis.Column, flip1InPlace);
+      System.Array.Flip(ArrayAxis.Column, flip1InPlace);
       //flip1InPlace.Flip1();
 
       System.Console.WriteLine(nameof(flip1InPlace));
@@ -188,7 +188,7 @@ namespace SystemArrays
       System.Console.WriteLine();
 
       var flip1ToCopy = new int[4, 4];
-      System.Array.Flip(TwoDimensionalArrayAxis.Column, initial, flip1ToCopy);
+      System.Array.Flip(ArrayAxis.Column, initial, flip1ToCopy);
       //initial.Flip1(flip1ToCopy);
       System.Console.WriteLine(nameof(flip1ToCopy));
       System.Console.WriteLine(System.Array.Rank2ToConsoleString(flip1ToCopy, cso));
@@ -229,14 +229,14 @@ namespace SystemArrays
       System.Console.WriteLine(System.Array.Rank2ToConsoleString(initial, cso));
       System.Console.WriteLine();
 
-      var insertToCopy = System.Array.InsertToCopy(TwoDimensionalArrayAxis.Row, initial, 2, 2);
+      var insertToCopy = System.Array.InsertToCopy(ArrayAxis.Row, initial, 2, 2);
       //var insertToCopy = initial.InsertToCopy(0, 2, 2, [0]);
 
       System.Console.WriteLine($"{nameof(insertToCopy)}: 2 rows");
       System.Console.WriteLine(System.Array.Rank2ToConsoleString(insertToCopy, cso));
       System.Console.WriteLine();
 
-      insertToCopy = System.Array.InsertToCopy(TwoDimensionalArrayAxis.Column, insertToCopy, 2, 2);
+      insertToCopy = System.Array.InsertToCopy(ArrayAxis.Column, insertToCopy, 2, 2);
       //insertToCopy = insertToCopy.InsertToCopy(1, 2, 2, [0]);
 
       System.Console.WriteLine($"{nameof(insertToCopy)}: 2 columns");
@@ -274,14 +274,14 @@ namespace SystemArrays
       System.Console.WriteLine(System.Array.Rank2ToConsoleString(initial, cso));
       System.Console.WriteLine();
 
-      var removeToCopy = System.Array.RemoveBySkipping(TwoDimensionalArrayAxis.Row, i => i is 1 or 2, initial, System.Array.CreateNew(initial, -2, 0));
+      var removeToCopy = System.Array.RemoveBySkipping(ArrayAxis.Row, i => i is 1 or 2, initial, System.Array.CreateNew(initial, -2, 0));
       //var removeToCopy = initial.Copy0Remove(initial.NewResize(-2, 0), [1, 2]);
 
       System.Console.WriteLine($"{nameof(removeToCopy)}: 2 rows");
       System.Console.WriteLine(System.Array.Rank2ToConsoleString(removeToCopy, cso));
       System.Console.WriteLine();
 
-      removeToCopy = System.Array.RemoveBySkipping(TwoDimensionalArrayAxis.Column, i => i is 1 or 2, removeToCopy, System.Array.CreateNew(removeToCopy, 0, -2));
+      removeToCopy = System.Array.RemoveBySkipping(ArrayAxis.Column, i => i is 1 or 2, removeToCopy, System.Array.CreateNew(removeToCopy, 0, -2));
       //removeToCopy = removeToCopy.Copy1Remove(removeToCopy.NewResize(0, -2), [1, 2]);
 
       System.Console.WriteLine($"{nameof(removeToCopy)}: 2 columns");

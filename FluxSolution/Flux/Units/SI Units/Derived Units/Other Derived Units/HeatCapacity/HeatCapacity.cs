@@ -91,7 +91,7 @@ namespace Flux.Units
     {
       var value = GetUnitValue(unit);
 
-      return value.ToString(format, formatProvider) + spacing.ToSpacingString() + (fullName ? unit.GetUnitName(Numbers.IsConsideredPlural(value)) : unit.GetUnitSymbol(false));
+      return value.ToString(format, formatProvider) + spacing.ToSpacingString() + (fullName ? unit.GetUnitName(INumber.IsConsideredPlural(value)) : unit.GetUnitSymbol(false));
     }
 
     #endregion // IUnitValueQuantifiable<>

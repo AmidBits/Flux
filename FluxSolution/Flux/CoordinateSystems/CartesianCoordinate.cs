@@ -258,14 +258,14 @@ namespace Flux.CoordinateSystems
     {
       rng ??= System.Random.Shared;
 
-      return new(rng.NextDouble(maxX), rng.NextDouble(maxY));
+      return new(rng.NextNumber(maxX), rng.NextNumber(maxY));
     }
 
     public static CartesianCoordinate CreateRandom(double maxX, double maxY, double maxZ, System.Random? rng = null)
     {
       rng ??= System.Random.Shared;
 
-      return new(rng.NextDouble(maxX), rng.NextDouble(maxY), rng.NextDouble(maxZ));
+      return new(rng.NextNumber(maxX), rng.NextNumber(maxY), rng.NextNumber(maxZ));
     }
 
     #endregion // Static methods

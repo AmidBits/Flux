@@ -1,4 +1,4 @@
-namespace Flux
+namespace Flux.Permutations
 {
   /// <summary>
   /// <para>A linear time permutation algorithm, non-lexicographically ordered, without repeats, by rank or permutation.</para>

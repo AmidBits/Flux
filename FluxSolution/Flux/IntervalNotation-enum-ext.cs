@@ -128,7 +128,7 @@ namespace Flux
       {
         (minValue, maxValue) = source.GetExtentRelative(minValue, maxValue, 1);
 
-        return Numbers.FoldAcross(value, minValue, maxValue);
+        return INumber.FoldAcross(value, minValue, maxValue);
       }
 
       /// <summary>
@@ -151,10 +151,10 @@ namespace Flux
           while (magnitude-- > 0)
           {
             if (source is IntervalNotation.Open or IntervalNotation.HalfOpenLeft)
-              minValue = Numbers.NativeIncrement(minValue);
+              minValue = INumber.NativeIncrement(minValue);
 
             if (source is IntervalNotation.Open or IntervalNotation.HalfOpenRight)
-              maxValue = Numbers.NativeDecrement(maxValue);
+              maxValue = INumber.NativeDecrement(maxValue);
           }
 
           AssertValid(IntervalNotation.Closed, minValue, maxValue, "magnitude");
@@ -335,7 +335,7 @@ namespace Flux
       {
         System.ArgumentOutOfRangeException.ThrowIfNegative(iterations);
 
-        var step = Numbers.UnitSign(stop - start);
+        var step = INumber.UnitSign(stop - start);
 
         while (iterations-- > 0)
         {
@@ -433,7 +433,7 @@ namespace Flux
       {
         (minValue, maxValue) = source.GetExtentAbsolute(minValue, maxValue, TNumber.One);
 
-        return Numbers.WrapAround(value, minValue, maxValue);
+        return INumber.WrapAround(value, minValue, maxValue);
       }
 
       /// <summary>
@@ -449,7 +449,7 @@ namespace Flux
       {
         (minValue, maxValue) = source.GetExtentRelative(minValue, maxValue, 1);
 
-        return Numbers.WrapAround(value, minValue, maxValue);
+        return INumber.WrapAround(value, minValue, maxValue);
       }
 
       //public TNumber Wrap<TNumber>(TNumber value, TNumber minValue, TNumber maxValue)

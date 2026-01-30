@@ -22,7 +22,7 @@ namespace Flux.PlanetaryScience
     private readonly Units.Angle m_angle;
 
     private Latitude(double angleDeg)
-      => m_angle = new(Numbers.FoldAcross(angleDeg, MinValue, MaxValue), Units.AngleUnit.Degree);
+      => m_angle = new(INumber.FoldAcross(angleDeg, MinValue, MaxValue), Units.AngleUnit.Degree);
 
     /// <summary>Creates a new <see cref="Latitude"/> from the specified <paramref name="angle"/>.</summary>
     public Latitude(Units.Angle angle)
@@ -43,7 +43,7 @@ namespace Flux.PlanetaryScience
     public double GetMercatorProjectedY()
       => double.Clamp(double.Log(double.Tan(double.Pi / 4 + Angle.Value / 2)), -double.Pi, double.Pi);
 
-    public string ToDecimalString() => m_angle.GetUnitValue(Units.AngleUnit.Degree).ToString(BinaryIntegers.GetFormatStringWithCountDecimals(6));
+    public string ToDecimalString() => m_angle.GetUnitValue(Units.AngleUnit.Degree).ToString(IBinaryInteger.GetFormatStringWithCountDecimals(6));
 
     public string ToDmsNotationString()
     {
