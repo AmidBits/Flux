@@ -2,6 +2,8 @@ namespace Flux
 {
   public static class VectorOfTExtensions
   {
+    #region Vector (non-collection) computations
+
     extension(System.Numerics.Vector)
     {
       /// <summary>Returns the angle for the source point to the other two specified points.</summary>>
@@ -106,7 +108,7 @@ namespace Flux
         var remainder = new T[System.Numerics.Vector<T>.Count];
 
         for (var i = System.Numerics.Vector<T>.Count - 1; i >= 0; i--)
-          (quotient[i], remainder[i]) = IBinaryInteger.CeilingDivRem(source[i], divisor[i]);
+          (quotient[i], remainder[i]) = BinaryInteger.CeilingDivRem(source[i], divisor[i]);
 
         return (new System.Numerics.Vector<T>(quotient), new System.Numerics.Vector<T>(remainder));
       }
@@ -118,7 +120,7 @@ namespace Flux
         var remainder = new T[System.Numerics.Vector<T>.Count];
 
         for (var i = System.Numerics.Vector<T>.Count - 1; i >= 0; i--)
-          (quotient[i], remainder[i]) = IBinaryInteger.ClosestDivRem(source[i], divisor[i]);
+          (quotient[i], remainder[i]) = BinaryInteger.ClosestDivRem(source[i], divisor[i]);
 
         return (new System.Numerics.Vector<T>(quotient), new System.Numerics.Vector<T>(remainder));
       }
@@ -130,7 +132,7 @@ namespace Flux
         var remainder = new T[System.Numerics.Vector<T>.Count];
 
         for (var i = System.Numerics.Vector<T>.Count - 1; i >= 0; i--)
-          (quotient[i], remainder[i]) = IBinaryInteger.EuclideanDivRem(source[i], divisor[i]);
+          (quotient[i], remainder[i]) = BinaryInteger.EuclideanDivRem(source[i], divisor[i]);
 
         return (new System.Numerics.Vector<T>(quotient), new System.Numerics.Vector<T>(remainder));
       }
@@ -142,7 +144,7 @@ namespace Flux
         var remainder = new T[System.Numerics.Vector<T>.Count];
 
         for (var i = System.Numerics.Vector<T>.Count - 1; i >= 0; i--)
-          (quotient[i], remainder[i]) = IBinaryInteger.FlooredDivRem(source[i], divisor[i]);
+          (quotient[i], remainder[i]) = BinaryInteger.FlooredDivRem(source[i], divisor[i]);
 
         return (new System.Numerics.Vector<T>(quotient), new System.Numerics.Vector<T>(remainder));
       }
@@ -154,7 +156,7 @@ namespace Flux
         var remainder = new T[System.Numerics.Vector<T>.Count];
 
         for (var i = System.Numerics.Vector<T>.Count - 1; i >= 0; i--)
-          (quotient[i], remainder[i]) = IBinaryInteger.RoundedDivRem(source[i], divisor[i]);
+          (quotient[i], remainder[i]) = BinaryInteger.RoundedDivRem(source[i], divisor[i]);
 
         return (new System.Numerics.Vector<T>(quotient), new System.Numerics.Vector<T>(remainder));
       }
@@ -177,9 +179,9 @@ namespace Flux
       /// <typeparam name="T"></typeparam>
       /// <param name="vector"></param>
       /// <returns></returns>
-      public static System.Numerics.Vector<T> EuclideanLength<T>(System.Numerics.Vector<T> value)
+      public static double EuclideanLength<T>(System.Numerics.Vector<T> value)
         where T : System.Numerics.INumber<T>
-        => System.Numerics.Vector.SquareRoot(System.Numerics.Vector.Create(EuclideanLengthSquared(value)));
+        => double.Sqrt(double.CreateChecked(EuclideanLengthSquared(value)));
 
       /// <summary>
       /// <para>Returns the Euclidean length squared of a <see cref="System.Numerics.Vector{T}"/>.</para>
@@ -382,7 +384,7 @@ namespace Flux
       /// <returns></returns>
       public static System.Numerics.Vector<T> Normalize<T>(System.Numerics.Vector<T> value)
         where T : System.Numerics.INumber<T>
-        => System.Numerics.Vector.Divide(value, EuclideanLength(value));
+        => System.Numerics.Vector.Divide(value, T.CreateChecked(EuclideanLength(value)));
 
       /// <summary>
       /// <para>Power function using exponentiation by squaring,</para>
@@ -496,8 +498,9 @@ namespace Flux
 
       /// <summary>
       /// <para>Create a new vector triple product for three <see cref="System.Numerics.Vector{T}"/>.</para>
-      /// <para><c>Cross3D(a, Cross3D(b, c))</c></para>
+      /// <para></para>
       /// <para><see href="https://en.wikipedia.org/wiki/Triple_product#Vector_triple_product"/></para>
+      /// <example>Operation: <c>CrossProduct3(a, CrossProduct3(b, c))</c></example>
       /// </summary>
       /// <typeparam name="T"></typeparam>
       /// <param name="source"></param>
@@ -508,6 +511,8 @@ namespace Flux
         where T : System.Numerics.INumber<T>
         => CrossProduct3(source, CrossProduct3(second, third));
     }
+
+    #endregion
 
     #region Vector collection (shape) algorithms
 
@@ -520,19 +525,19 @@ namespace Flux
       /// <summary>
       /// <para>Compute the surface area of a simple (non-intersecting sides) polygon. The resulting area will be negative or positive. (2D)</para>
       /// </summary>
-      public TNumber ComputeAreaSigned2()
-        => source.AggregateTuple2(TNumber.Zero, true, (a, e1, e2, i) => a + CrossProduct2(e1, e2), (a, i) => a / TNumber.CreateChecked(2));
+      public double ComputeAreaSigned2()
+        => source.AggregateTuple2(0.0, true, (a, e1, e2, i) => a + double.CreateChecked(CrossProduct2(e1, e2)), (a, i) => a / 2);
 
       /// <summary>
       /// <para>Compute the surface area of the polygon. (2D)</para>
       /// </summary>
-      public TNumber ComputeArea2()
-        => TNumber.Abs(ComputeAreaSigned2(source));
+      public double ComputeArea2()
+        => double.Abs(ComputeAreaSigned2(source));
 
       /// <summary>
       /// <para>Compute the surface area of a simple (non-intersecting sides) polygon. The resulting area will be negative or positive. (3D)</para>
       /// </summary>
-      public TNumber ComputeAreaSigned3()
+      public double ComputeAreaSigned3()
       {
         var (x, y, z) = (TNumber.Zero, TNumber.Zero, TNumber.Zero);
 
@@ -543,30 +548,30 @@ namespace Flux
           z += cp3[2];
         }
 
-        return System.Numerics.Vector.Dot(Create(x, y, z, TNumber.Zero), UnitNormal(source)) / TNumber.CreateChecked(2);
+        return double.CreateChecked(System.Numerics.Vector.Dot(Create(x, y, z, TNumber.Zero), UnitNormal(source))) / 2;
       }
 
       /// <summary>
       /// <para>Compute the surface area of the polygon. (3D)</para>
       /// </summary>
-      public TNumber ComputeArea3()
-        => TNumber.Abs(ComputeAreaSigned3(source));
+      public double ComputeArea3()
+        => double.Abs(ComputeAreaSigned3(source));
 
       /// <summary>Returns the centroid (a.k.a. geometric center, arithmetic mean, barycenter, etc.) point of the polygon. (2D/3D)</summary>
       public System.Numerics.Vector<TNumber> ComputeCentroid()
         => source.Aggregate(System.Numerics.Vector<TNumber>.Zero, (a, e, index) => a + e, (a, count) => a / TNumber.CreateChecked(count));
 
       /// <summary>Compute the perimeter length of the polygon. (2D/3D)</summary>
-      public TNumber ComputePerimeter()
-        => source.AggregateTuple2(TNumber.Zero, true, (a, e1, e2, i) => a + EuclideanLength(e2 - e1)[0], (a, i) => a);
+      public double ComputePerimeter()
+        => source.AggregateTuple2(0.0, true, (a, e1, e2, i) => a + EuclideanLength(e2 - e1), (a, i) => a);
 
       /// <summary>Returns a sequence triplet angles.</summary>
-      public System.Collections.Generic.IEnumerable<double> GetAngles()
-        => source.PartitionTuple3(2, (v1, v2, v3, index) => System.Numerics.Vector.AngleBetween(v2, v1, v3));
+      public System.Collections.Generic.List<double> GetAngles()
+        => [.. source.PartitionTuple3(2, (v1, v2, v3, index) => System.Numerics.Vector.AngleBetween(v2, v1, v3))];
 
       /// <summary>Returns a sequence triplet angles.</summary>
-      public System.Collections.Generic.IEnumerable<(System.Numerics.Vector<TNumber> v1, System.Numerics.Vector<TNumber> v2, System.Numerics.Vector<TNumber> v3, int index, double angle)> GetAnglesEx()
-        => source.PartitionTuple3(2, (v1, v2, v3, index) => (v1, v2, v3, index, System.Numerics.Vector.AngleBetween(v2, v1, v3)));
+      public System.Collections.Generic.List<(System.Numerics.Vector<TNumber> v1, System.Numerics.Vector<TNumber> v2, System.Numerics.Vector<TNumber> v3, int index, double angle)> GetAnglesEx()
+        => [.. source.PartitionTuple3(2, (v1, v2, v3, index) => (v1, v2, v3, index, System.Numerics.Vector.AngleBetween(v2, v1, v3)))];
 
       public bool InsidePolygon(System.Numerics.Vector<TNumber> vector)
         => double.Abs(AngleSum(source, vector)) > 1;
@@ -592,83 +597,89 @@ namespace Flux
 
       /// <summary>Determines whether the polygon is equiangular, i.e. all angles are the same. (2D/3D)</summary>
       public bool IsEquiangularPolygon()
-      {
-        System.ArgumentNullException.ThrowIfNull(source);
+        => source.PartitionTuple3(2, (v1, v2, v3, index) => AngleBetween(v2, v1, v3)).Distinct().Skip(1).Any();
+      //{
+      //  System.ArgumentNullException.ThrowIfNull(source);
 
-        using var e = source.PartitionTuple3(2, (v1, v2, v3, index) => AngleBetween(v2, v1, v3)).GetEnumerator();
+      //  using var e = source.PartitionTuple3(2, (v1, v2, v3, index) => AngleBetween(v2, v1, v3)).GetEnumerator();
 
-        if (e.MoveNext())
-        {
-          var initialAngle = e.Current;
+      //  if (e.MoveNext())
+      //  {
+      //    var initialAngle = e.Current;
 
-          while (e.MoveNext())
-            if (initialAngle != e.Current)
-              return false;
-        }
+      //    while (e.MoveNext())
+      //      if (initialAngle != e.Current)
+      //        return false;
+      //  }
 
-        return true;
-      }
+      //  return true;
+      //}
 
       /// <summary>Determines whether the polygon is equiateral, i.e. all sides have the same length.</summary>
       public bool IsEquilateralPolygon()
-      {
-        System.ArgumentNullException.ThrowIfNull(source);
+        => source.PartitionTuple2(true, (v1, v2, index) => EuclideanLength(v2 - v1)).Distinct().Skip(1).Any();
+      //{
+      //  System.ArgumentNullException.ThrowIfNull(source);
 
-        using var e = source.PartitionTuple2(true, (v1, v2, index) => EuclideanLength(v2 - v1)).GetEnumerator();
+      //  using var e = source.PartitionTuple2(true, (v1, v2, index) => EuclideanLength(v2 - v1)).GetEnumerator();
 
-        if (e.MoveNext())
-        {
-          var initialLength = e.Current;
+      //  if (e.MoveNext())
+      //  {
+      //    var initialLength = e.Current;
 
-          while (e.MoveNext())
-            if (initialLength != e.Current)
-              return false;
-        }
+      //    while (e.MoveNext())
+      //      if (initialLength != e.Current)
+      //        return false;
+      //  }
 
-        return true;
-      }
+      //  return true;
+      //}
 
       /// <summary>Creates a new sequence with the midpoints between all vertices in the sequence.</summary>
-      public System.Collections.Generic.IEnumerable<System.Numerics.Vector<TNumber>> GetMidpoints()
-        => source.PartitionTuple2(true, (e1, e2, index) => (e2 + e1) / TNumber.CreateChecked(2));
+      public System.Collections.Generic.List<System.Numerics.Vector<TNumber>> GetMidpoints()
+        => [.. source.PartitionTuple2(true, (e1, e2, index) => (e2 + e1) / TNumber.CreateChecked(2))];
 
       /// <summary>Creates a new sequence of triplets consisting of the leading vector, a newly computed midling vector and the trailing vector.</summary>
-      public System.Collections.Generic.IEnumerable<(System.Numerics.Vector<TNumber> v1, System.Numerics.Vector<TNumber> vm, System.Numerics.Vector<TNumber> v2, int index)> GetMidpointsEx()
-        => source.PartitionTuple2(true, (e1, e2, index) => (e1, (e2 + e1) / TNumber.CreateChecked(2), e2, index));
+      public System.Collections.Generic.List<(System.Numerics.Vector<TNumber> v1, System.Numerics.Vector<TNumber> vm, System.Numerics.Vector<TNumber> v2, int index)> GetMidpointsEx()
+        => [.. source.PartitionTuple2(true, (e1, e2, index) => (e1, (e2 + e1) / TNumber.CreateChecked(2), e2, index))];
 
       /// <summary>Returns a sequence of triangles from the centroid to all midpoints and vertices. Creates a triangle fan from the centroid point. (2D/3D)</summary>
       /// <seealso cref="http://paulbourke.net/geometry/polygonmesh/"/>
       /// <remarks>Applicable to any shape. (Figure 1 and 8 in link)</remarks>
-      public System.Collections.Generic.IEnumerable<System.Collections.Generic.List<System.Numerics.Vector<TNumber>>> SplitAlongMidpoints()
+      public System.Collections.Generic.List<System.Collections.Generic.List<System.Numerics.Vector<TNumber>>> SplitAlongMidpoints()
       {
+        var polygons = new System.Collections.Generic.List<System.Collections.Generic.List<System.Numerics.Vector<TNumber>>>();
+
         var midpointPolygon = new System.Collections.Generic.List<System.Numerics.Vector<TNumber>>();
 
         foreach (var pair in GetMidpointsEx(source).PartitionTuple2(true, (a, b, index) => (a, b)))
         {
           midpointPolygon.Add(pair.a.vm);
 
-          yield return new System.Collections.Generic.List<System.Numerics.Vector<TNumber>>() { pair.a.v2, pair.b.vm, pair.a.vm };
+          polygons.Add(new System.Collections.Generic.List<System.Numerics.Vector<TNumber>>() { pair.a.v2, pair.b.vm, pair.a.vm });
         }
 
-        yield return midpointPolygon;
+        polygons.Add(midpointPolygon);
+
+        return polygons;
       }
 
       /// <summary>Returns a sequence of triangles from the centroid to all midpoints and vertices. Creates a triangle fan from the centroid point. (2D/3D)</summary>
       /// <seealso cref="http://paulbourke.net/geometry/polygonmesh/"/>
       /// <remarks>Applicable to any shape. (Figure 5 in link)</remarks>
-      public System.Collections.Generic.IEnumerable<System.Collections.Generic.List<System.Numerics.Vector<TNumber>>> SplitCentroidToMidpoints()
-        => ComputeCentroid(source) is var c ? GetMidpoints(source).PartitionTuple2(true, (v1, v2, index) => new System.Collections.Generic.List<System.Numerics.Vector<TNumber>>() { c, v1, v2 }) : throw new System.InvalidOperationException();
+      public System.Collections.Generic.List<System.Collections.Generic.List<System.Numerics.Vector<TNumber>>> SplitCentroidToMidpoints()
+        => ComputeCentroid(source) is var c ? [.. GetMidpoints(source).PartitionTuple2(true, (v1, v2, index) => new System.Collections.Generic.List<System.Numerics.Vector<TNumber>>() { c, v1, v2 })] : throw new System.InvalidOperationException();
 
       /// <summary>Returns a sequence of triangles from the centroid to all vertices. Creates a triangle fan from the centroid point. (2D/3D)</summary>
       /// <seealso cref="http://paulbourke.net/geometry/polygonmesh/"/>
       /// <remarks>Applicable to any shape. (Figure 3 and 10 in link)</remarks>
-      public System.Collections.Generic.IEnumerable<System.Collections.Generic.List<System.Numerics.Vector<TNumber>>> SplitCentroidToVertices()
-        => ComputeCentroid(source) is var c ? source.PartitionTuple2(true, (v1, v2, index) => new System.Collections.Generic.List<System.Numerics.Vector<TNumber>>() { c, v1, v2 }) : throw new System.InvalidOperationException();
+      public System.Collections.Generic.List<System.Collections.Generic.List<System.Numerics.Vector<TNumber>>> SplitCentroidToVertices()
+        => ComputeCentroid(source) is var c ? [.. source.PartitionTuple2(true, (v1, v2, index) => new System.Collections.Generic.List<System.Numerics.Vector<TNumber>>() { c, v1, v2 })] : throw new System.InvalidOperationException();
 
       /// <summary>Returns two polygons by splitting the polygon at two points. (2D/3D)</summary>
       /// <seealso cref="http://paulbourke.net/geometry/polygonmesh/"/>
       /// <remarks>Applicable to any shape. (Figure 2 if odd count vertices and figure 9 if even count vertices, in link)</remarks>
-      public System.Collections.Generic.IEnumerable<System.Collections.Generic.List<System.Numerics.Vector<TNumber>>> SplitInHalf(int index, double mu = 0.5)
+      public System.Collections.Generic.List<System.Collections.Generic.List<System.Numerics.Vector<TNumber>>> SplitInHalf(int index, double mu = 0.5)
       {
         var half1 = new System.Collections.Generic.List<System.Numerics.Vector<TNumber>>();
         var half2 = new System.Collections.Generic.List<System.Numerics.Vector<TNumber>>();
@@ -706,7 +717,7 @@ namespace Flux
       /// <summary>Returns two polygons by splitting the polygon at two points. (2D/3D)</summary>
       /// <seealso cref="http://paulbourke.net/geometry/polygonmesh/"/>
       /// <remarks>Applicable to any shape. (Figure 2 if odd count vertices and figure 9 if even count vertices, in link)</remarks>
-      public System.Collections.Generic.IEnumerable<System.Collections.Generic.List<System.Numerics.Vector<TNumber>>> SplitInHalf()
+      public System.Collections.Generic.List<System.Collections.Generic.List<System.Numerics.Vector<TNumber>>> SplitInHalf()
       {
         var polygon1 = new System.Collections.Generic.List<System.Numerics.Vector<TNumber>>();
         var polygon2 = new System.Collections.Generic.List<System.Numerics.Vector<TNumber>>();
@@ -734,21 +745,22 @@ namespace Flux
         polygon1.Add(polygon2[0]);
         polygon2.Add(polygon1[0]);
 
-        yield return polygon1;
-        yield return polygon2;
+        return [polygon1, polygon2];
       }
 
       /// <summary>Returns a sequence of triangles from the specified polygon index to all midpoints, splitting all triangles at their midpoint along the polygon perimeter. Creates a triangle fan from the specified point. (2D/3D)</summary>
       /// <seealso cref="http://paulbourke.net/geometry/polygonmesh/"/>
       /// <remarks>Applicable to any shape. (Figure 2, in link)</remarks>
-      public System.Collections.Generic.IEnumerable<System.Collections.Generic.List<System.Numerics.Vector<TNumber>>> SplitMidpointToMidpoints(int index)
-        => source.GetMidpoints().ToList().SplitVertexToMidpoints(index);
+      public System.Collections.Generic.List<System.Collections.Generic.List<System.Numerics.Vector<TNumber>>> SplitMidpointToMidpoints(int index)
+        => [.. source.GetMidpoints().ToList().SplitVertexToMidpoints(index)];
 
       /// <summary>Returns a sequence of triangles from the specified polygon index to all midpoints, splitting all triangles at their midpoint along the polygon perimeter. Creates a triangle fan from the specified point. (2D/3D)</summary>
       /// <seealso cref="http://paulbourke.net/geometry/polygonmesh/"/>
       /// <remarks>Applicable to any shape. (Figure 2, in link)</remarks>
-      public System.Collections.Generic.IEnumerable<System.Collections.Generic.List<System.Numerics.Vector<TNumber>>> SplitVertexToMidpoints(int index)
+      public System.Collections.Generic.List<System.Collections.Generic.List<System.Numerics.Vector<TNumber>>> SplitVertexToMidpoints(int index)
       {
+        var polygons = new System.Collections.Generic.List<System.Collections.Generic.List<System.Numerics.Vector<TNumber>>>();
+
         var angles = GetAnglesEx(source).ToList();
 
         if (index < 0 || index > angles.Count - 1)
@@ -766,26 +778,32 @@ namespace Flux
           var triplet = angles[i % angles.Count];
           var midpoint23 = System.Numerics.Vector.Lerp(triplet.v2, triplet.v3, 0.5f);
 
-          yield return new System.Collections.Generic.List<System.Numerics.Vector<TNumber>>() { vertex, triplet.v2, midpoint23 };
-          yield return new System.Collections.Generic.List<System.Numerics.Vector<TNumber>>() { vertex, midpoint23, triplet.v3 };
+          polygons.Add([vertex, triplet.v2, midpoint23]);
+          polygons.Add([vertex, midpoint23, triplet.v3]);
         }
+
+        return polygons;
       }
 
       /// <summary>Returns a sequence of triangles from the specified polygon index to all other points. Creates a triangle fan from the specified point. (2D/3D)</summary>
       /// <seealso cref="http://paulbourke.net/geometry/polygonmesh/"/>
       /// <remarks>Applicable to any shape with more than 3 vertices. (Figure 9, in link)</remarks>
-      public System.Collections.Generic.IEnumerable<System.Collections.Generic.List<System.Numerics.Vector<TNumber>>> SplitVertexToVertices(int index)
+      public System.Collections.Generic.List<System.Collections.Generic.List<System.Numerics.Vector<TNumber>>> SplitVertexToVertices(int index)
       {
+        var polygons = new System.Collections.Generic.List<System.Collections.Generic.List<System.Numerics.Vector<TNumber>>>();
+
         var indices = source.Select((e, i) => i).ToList();
 
         while (indices.Count >= 3)
         {
           var ii1 = (index + 1) % source.Count;
 
-          yield return new System.Collections.Generic.List<System.Numerics.Vector<TNumber>>() { source[indices[index]], source[indices[ii1]], source[indices[(index + 2) % source.Count]] };
+          polygons.Add([source[indices[index]], source[indices[ii1]], source[indices[(index + 2) % source.Count]]]);
 
           indices.RemoveAt(ii1);
         }
+
+        return polygons;
 
         //var angles = GetAnglesEx(source).ToList();
 

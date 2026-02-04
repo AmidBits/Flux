@@ -17,7 +17,7 @@ namespace Flux.Combinations
       {
         combinadic[i] = CalculateLargestRankBelowThreshold(n, reducingK, diminishingRank);
 
-        diminishingRank -= IBinaryInteger.BinomialCoefficient(combinadic[i], reducingK);
+        diminishingRank -= BinaryInteger.BinomialCoefficient(combinadic[i], reducingK);
         reducingK--;
       }
     }
@@ -33,14 +33,14 @@ namespace Flux.Combinations
     {
       var i = n2 - 1;
 
-      while (IBinaryInteger.BinomialCoefficient(i, k2) > threshold)
+      while (BinaryInteger.BinomialCoefficient(i, k2) > threshold)
         i--;
 
       return i;
     }
 
     public static int CountCombinationsWithoutRepetition(int n, int k)
-      => (int)IBinaryInteger.CountCombinationsWithoutRepetition(System.Numerics.BigInteger.CreateChecked(n), k);
+      => (int)BinaryInteger.CountCombinationsWithoutRepetition(System.Numerics.BigInteger.CreateChecked(n), k);
 
     public static int Rank(System.ReadOnlySpan<int> combination, int n, int k, System.Span<int> workspace)
     {
@@ -56,12 +56,12 @@ namespace Flux.Combinations
       {
         workspace[i] = dualOfZero - workspace[i]; // Map to combinadic.
 
-        dualOfCombinadic += IBinaryInteger.BinomialCoefficient(workspace[i], reducingK); // Calculate dual of combinadic (by accumulation).
+        dualOfCombinadic += BinaryInteger.BinomialCoefficient(workspace[i], reducingK); // Calculate dual of combinadic (by accumulation).
 
         reducingK--;
       }
 
-      var dual = IBinaryInteger.BinomialCoefficient(n, k) - 1 - dualOfCombinadic;
+      var dual = BinaryInteger.BinomialCoefficient(n, k) - 1 - dualOfCombinadic;
 
       return dual;
     }
@@ -70,7 +70,7 @@ namespace Flux.Combinations
     {
       var dualOfZero = n - 1;
 
-      var dual = IBinaryInteger.BinomialCoefficient(n, k) - 1 - rank;
+      var dual = BinaryInteger.BinomialCoefficient(n, k) - 1 - rank;
 
       CalculateCombinadic(combination, n, k, dual);
 

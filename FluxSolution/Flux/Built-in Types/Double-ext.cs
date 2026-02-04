@@ -6,36 +6,6 @@
     public const double MinDefaultTolerance = -1e-10d;
 
     /// <summary>
-    /// <para>The largest integer that can be stored in a <see cref="System.Double"/> without losing precision is <c>9,007,199,254,740,992</c>.</para>
-    /// <para>This is because a <see cref="System.Double"/> is a base-2/binary double-precision floating point with a 53-bit significand and 15-16 digits of precision, which means it can precisely represent integers up to 9,007,199,254,740,992 = <c>(1 &lt;&lt; 53)</c> = 2⁵³, before precision starts to degrade.</para>
-    /// </summary>
-    public const double MaxPreciseInteger = +9007199254740992;
-    /// <summary>
-    /// <para>The smallest integer that can be stored in a <see cref="System.Double"/> without losing precision is <c>-9,007,199,254,740,992</c>.</para>
-    /// <para>This is because a <see cref="System.Double"/> is a base-2/binary double-precision floating point with a 53-bit significand and 15-16 digits of precision, which means it can precisely represent integers down to -9,007,199,254,740,992 = <c>-(1 &lt;&lt; 53)</c> = -2⁵³, before precision starts to degrade.</para>
-    /// </summary>
-    public const double MinPreciseInteger = -9007199254740992;
-
-    /// <summary>
-    /// <para>The largest prime integer that precisely fit in a double.</para>
-    /// </summary>
-    public const double MaxPrimeNumber = 9007199254740881;
-
-    ///// <summary>
-    ///// <para>The double type has a precision of about 15-17 significant digits.</para>
-    ///// </summary>
-    ///// <summary>
-    ///// <para>The double type has a precision of about 15-17 significant digits.</para>
-    ///// </summary>
-    //public const int SignificantDigits = 15;
-
-    ///// <summary>
-    ///// <para>The number of bits in the significand field.</para>
-    ///// </summary>
-    ///// <remarks>Although only 52 bits are explicitly stored, the complete significand is 53 bits (the extra bit is derived).</remarks>
-    //public const int SignificandBits = 53;
-
-    /// <summary>
     /// <para>The default epsilon scalar used for near-integer functions.</para>
     /// </summary>
     public const double DefaultEpsilonScalar = 1e-12d;
@@ -46,37 +16,30 @@
       /// <para>The largest integer that can be stored in a <see cref="System.Double"/> without losing precision is <c>9,007,199,254,740,992</c>.</para>
       /// <para>This is because a <see cref="System.Double"/> is a base-2/binary double-precision floating point with a 53-bit mantissa and 15-16 digits of precision, which means it can precisely represent integers up to 9,007,199,254,740,992 = <c>(1 &lt;&lt; 53)</c> = 2⁵³, before precision starts to degrade.</para>
       /// </summary>
-      public static double MaxPreciseInteger => MaxPreciseInteger;
+      public static double MaxPreciseInteger => +9007199254740992;
 
       /// <summary>
       /// <para>The smallest integer that can be stored in a <see cref="System.Double"/> without losing precision is <c>-9,007,199,254,740,992</c>.</para>
       /// <para>This is because a <see cref="System.Double"/> is a base-2/binary double-precision floating point with a 53-bit mantissa and 15-16 digits of precision, which means it can precisely represent integers down to -9,007,199,254,740,992 = <c>-(1 &lt;&lt; 53)</c> = -2⁵³, before precision starts to degrade.</para>
       /// </summary>
-      public static double MinPreciseInteger => MinPreciseInteger;
+      public static double MinPreciseInteger => -9007199254740992;
 
       /// <summary>
       /// <para>The largest prime integer that precisely fit in a double.</para>
       /// </summary>
-      public static double MaxPrimeNumber => MaxPrimeNumber;
-
-      ///// <summary>
-      ///// <para>The total number of bits in the significand field of a <see cref="System.Double"/>.</para>
-      ///// </summary>
-      ///// <remarks>Although only 52 bits are explicitly stored, the complete significand is 53 bits (the extra bit is derived).</remarks>
-      //public static int SignificandBits => SignificandBits;
-
-      ///// <summary>
-      ///// <para>A <see cref="System.Double"/> has a precision of about 15-17 significant digits.</para>
-      ///// <para>The minimum number of significant digits of a <see cref="System.Double"/>.</para>
-      ///// </summary>
-      //public static int SignificantDigits => SignificantDigits;
+      public static double MaxPrimeNumber => 9007199254740881;
 
       /// <summary>
-      /// <para>The default epsilon scalar (1e-12d) used for near-integer functions.</para>
+      /// <para>A <see cref="System.Double"/> has a precision of about 15-17 significant digits.</para>
       /// </summary>
-      public static double DefaultEpsilonScalar => DefaultEpsilonScalar;
+      public static int MaxExactSignificantDigits => 15;
 
-      #region Get..Components
+      /// <summary>
+      /// <para>The default base epsilon (1e-12d) used for near-equality functions.</para>
+      /// </summary>
+      public static double DefaultBaseEpsilon => 1e-12d;
+
+      #region GetComponents
 
       /// <summary>
       /// <para>Get the three binary64 parts of a 64-bit floating point both raw (but shifted to LSB) as out parameters and returned adjusted (see below).</para>
@@ -88,21 +51,21 @@
       /// <returns>
       /// <para>The three adjusted binary64 parts as a tuple: <c>(int Binary64Sign = 1 or -1, int Binary64ExponentUnbiased = [−1022, +1023], long Binary64Significand53 = [0, <see cref="MaxPreciseInteger"/>])</c>.</para>
       /// </returns>
-      public static (int Binary64Sign, int Binary64ExponentUnbiased, long Binary64Significand53) GetBinary64Components(System.Double value, out int binary64SignBit, out int binary64ExponentBiased, out long binary64Significand52)
+      public static (int Sign, int ExponentUnbiased, long Significand53) GetComponents(System.Double value, out int signBit, out int exponentBiased, out long significand52)
       {
         var bits = System.BitConverter.DoubleToUInt64Bits(value);
 
-        binary64SignBit = (int)((bits & 0x8000000000000000UL) >>> 63);
+        signBit = (int)((bits & 0x8000000000000000UL) >>> 63);
 
-        binary64ExponentBiased = (int)((bits & 0x7FF0000000000000UL) >>> 52);
+        exponentBiased = (int)((bits & 0x7FF0000000000000UL) >>> 52);
 
-        binary64Significand52 = (long)(bits & 0x000FFFFFFFFFFFFFUL);
+        significand52 = (long)(bits & 0x000FFFFFFFFFFFFFUL);
 
-        var sign = binary64SignBit == 0 ? 1 : -1;
+        var sign = signBit == 0 ? 1 : -1;
 
-        var exponentUnbiased = binary64ExponentBiased - 1023;
+        var exponentUnbiased = exponentBiased - 1023;
 
-        var significand53 = 0x0010000000000000L | binary64Significand52; // This is the significandPrecision above with the hidden 53-bit added.
+        var significand53 = 0x0010000000000000L | significand52; // This is the significandPrecision above with the hidden 53-bit added.
 
         return (sign, exponentUnbiased, significand53);
       }
@@ -127,6 +90,24 @@
 
         return (integralPart, fractionalPart);
       }
+
+      #endregion
+
+      #region Native..
+
+      public static double NativeDecrement(double value)
+        => double.IsNaN(value) || double.IsNegativeInfinity(value)
+        ? throw new System.ArithmeticException(value.ToString())
+        : double.IsPositiveInfinity(value)
+        ? double.MaxValue
+        : double.BitDecrement(value);
+
+      public static double NativeIncrement(double value)
+        => double.IsNaN(value) || double.IsPositiveInfinity(value)
+        ? throw new System.ArithmeticException(value.ToString())
+        : double.IsNegativeInfinity(value)
+        ? double.MinValue
+        : double.BitIncrement(value);
 
       #endregion
 

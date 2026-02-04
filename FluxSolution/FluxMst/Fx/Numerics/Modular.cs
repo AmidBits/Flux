@@ -76,17 +76,17 @@ namespace Maths
     [TestMethod]
     public void ModInv()
     {
-      var mi4and7 = IBinaryInteger.ModInv(4, 7); // mi = 2, i.e. "2 is the modular multiplicative inverse of 4 (and vice versa), mod 7".;
+      var mi4and7 = BinaryInteger.ModInv(4, 7); // mi = 2, i.e. "2 is the modular multiplicative inverse of 4 (and vice versa), mod 7".;
       Assert.AreEqual(2, mi4and7);
 
-      var mi8and11 = IBinaryInteger.ModInv(8, 11); // mi = 7, i.e. "7 is the modular inverse of 8, mod 11".
+      var mi8and11 = BinaryInteger.ModInv(8, 11); // mi = 7, i.e. "7 is the modular inverse of 8, mod 11".
       Assert.AreEqual(7, mi8and11);
     }
 
     [TestMethod]
     public void TruncMod()
     {
-      var (truncatedQuotient, remainder) = INumber.ITruncatedDivRem(9.0, 6);
+      var (truncatedQuotient, remainder) = Number.ITruncatedDivRem(9.0, 6);
 
       Assert.AreEqual(1, truncatedQuotient);
       Assert.AreEqual(3, remainder);

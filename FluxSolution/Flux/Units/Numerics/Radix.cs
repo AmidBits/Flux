@@ -98,7 +98,7 @@ namespace Flux.Units
       where TRadix : System.Numerics.IBinaryInteger<TRadix>
       => IsSingleDigit(value, radix)
       ? TInteger.One
-      : IBinaryInteger.IntegerLog(value, radix).IntegralLogAwayFromZero;
+      : BinaryInteger.IntegerLog(value, radix).IntegralLogAwayFromZero;
     //{
     //  var rdx = TInteger.CreateChecked(Units.Radix.AssertMember(radix));
 
@@ -142,7 +142,7 @@ namespace Flux.Units
     public static TInteger DropLeastSignificantDigits<TInteger, TRadix>(TInteger value, TRadix radix, TInteger count)
       where TInteger : System.Numerics.IBinaryInteger<TInteger>
       where TRadix : System.Numerics.IBinaryInteger<TRadix>
-      => value / TInteger.CreateChecked(IBinaryInteger.Pow(Units.Radix.AssertMember(radix), count));
+      => value / TInteger.CreateChecked(BinaryInteger.Pow(Units.Radix.AssertMember(radix), count));
 
     /// <summary>
     /// <para>Drop <paramref name="count"/> leading (most significant) digits of <paramref name="value"/> using base <paramref name="radix"/>.</para>
@@ -150,7 +150,7 @@ namespace Flux.Units
     public static TInteger DropMostSignificantDigits<TInteger, TRadix>(TInteger value, TRadix radix, TInteger count)
       where TInteger : System.Numerics.IBinaryInteger<TInteger>
       where TRadix : System.Numerics.IBinaryInteger<TRadix>
-      => value % TInteger.CreateChecked(IBinaryInteger.Pow(radix, DigitCount(value, radix) - count));
+      => value % TInteger.CreateChecked(BinaryInteger.Pow(radix, DigitCount(value, radix) - count));
 
     /// <summary>
     /// <para>Creates a new list with the digit place value components of <paramref name="value"/> using base <paramref name="radix"/>. E.g. 1234 return [4 (for 4 * ones), 30 (for 3 * tens), 200 (for 2 * hundreds), 1000 (for 1 * thousands)].</para>
@@ -254,7 +254,7 @@ namespace Flux.Units
       where TInteger : System.Numerics.IBinaryInteger<TInteger>
       where TRadix : System.Numerics.IBinaryInteger<TRadix>
     {
-      var mask = IBinaryInteger.CreateBitMaskRight(System.Numerics.BigInteger.CreateChecked(TInteger.Abs(bitLength))); // Create a bit-mask representing the greatest value for the bit-length.
+      var mask = BinaryInteger.CreateBitMaskRight(System.Numerics.BigInteger.CreateChecked(TInteger.Abs(bitLength))); // Create a bit-mask representing the greatest value for the bit-length.
 
       if (accountForSignBit || TInteger.IsNegative(bitLength)) // If accounting for a sign-bit, shift the SWAR to properly represent the max of a signed type.
         mask >>>= 1;
@@ -350,7 +350,7 @@ namespace Flux.Units
     public static TInteger KeepLeastSignificantDigits<TInteger, TRadix>(TInteger value, TRadix radix, TInteger count)
       where TInteger : System.Numerics.IBinaryInteger<TInteger>
       where TRadix : System.Numerics.IBinaryInteger<TRadix>
-      => value % TInteger.CreateChecked(IBinaryInteger.Pow(Units.Radix.AssertMember(radix), count));
+      => value % TInteger.CreateChecked(BinaryInteger.Pow(Units.Radix.AssertMember(radix), count));
 
     /// <summary>
     /// <para>Drop the leading digit of <paramref name="value"/> using base <paramref name="radix"/>.</para>
@@ -358,7 +358,7 @@ namespace Flux.Units
     public static TInteger KeepMostSignificantDigits<TInteger, TRadix>(TInteger value, TRadix radix, TInteger count)
       where TInteger : System.Numerics.IBinaryInteger<TInteger>
       where TRadix : System.Numerics.IBinaryInteger<TRadix>
-      => value / TInteger.CreateChecked(IBinaryInteger.Pow(radix, Units.Radix.DigitCount(value, radix) - count));
+      => value / TInteger.CreateChecked(BinaryInteger.Pow(radix, Units.Radix.DigitCount(value, radix) - count));
 
     /// <summary>
     /// <para>Reverse the digits a <paramref name="value"/> in base <paramref name="radix"/>, obtaining a new number.</para>

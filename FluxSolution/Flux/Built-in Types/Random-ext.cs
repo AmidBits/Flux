@@ -99,7 +99,7 @@ namespace Flux
       {
         System.ArgumentOutOfRangeException.ThrowIfNegativeOrZero(bitCount);
 
-        return NextNumber(source, IBinaryInteger.CreateBitMaskRight(bitCount) + TInteger.One);
+        return NextNumber(source, BinaryInteger.CreateBitMaskRight(bitCount) + TInteger.One);
       }
 
       /// <summary>

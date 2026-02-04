@@ -114,13 +114,13 @@ namespace Numerics
     [TestMethod]
     public void CreateBitMaskLsbFromBitLength()
     {
-      Assert.AreEqual(127, Flux.IBinaryInteger.CreateBitMaskRight(7));
+      Assert.AreEqual(127, Flux.BinaryInteger.CreateBitMaskRight(7));
     }
 
     [TestMethod]
     public void CreateBitMaskMsbFromBitLength()
     {
-      Assert.AreEqual(-1, Flux.IBinaryInteger.CreateBitMaskLeft(32));
+      Assert.AreEqual(-1, Flux.BinaryInteger.CreateBitMaskLeft(32));
     }
 
     [TestMethod]
@@ -130,7 +130,7 @@ namespace Numerics
       var templateBitLength = 3;
 
       var expected = 0b1011_0110_1101_1011_0110_1101_1011_0110U;
-      var actual = unchecked(Flux.IBinaryInteger.CreateBitMaskRight((uint)templateBitMask, templateBitLength, expected.GetBitLength()));
+      var actual = unchecked(Flux.BinaryInteger.CreateBitMaskRight((uint)templateBitMask, templateBitLength, expected.GetBitLength()));
 
       // Debug:
       var e = expected.ToBinaryString();
@@ -146,7 +146,7 @@ namespace Numerics
       var templateBitLength = 3;
 
       var expected = 0b1101_1011_0110_1101_1011_0110_1101_1011U;
-      var actual = unchecked(Flux.IBinaryInteger.CreateBitMaskLeft((uint)templateBitMask, templateBitLength, expected.GetBitLength()));
+      var actual = unchecked(Flux.BinaryInteger.CreateBitMaskLeft((uint)templateBitMask, templateBitLength, expected.GetBitLength()));
 
       // Debug:
       var e = expected.ToBinaryString();
@@ -198,13 +198,13 @@ namespace Numerics
     [TestMethod]
     public void Log2AwayFromZero()
     {
-      Assert.AreEqual(8, IBinaryInteger.IntegerLog(215, 2).IntegralLogAwayFromZero);
+      Assert.AreEqual(8, BinaryInteger.IntegerLog(215, 2).IntegralLogAwayFromZero);
     }
 
     [TestMethod]
     public void Log2TowardZero()
     {
-      Assert.AreEqual(4, IBinaryInteger.IntegerLog(215, 3).IntegralLogTowardZero);
+      Assert.AreEqual(4, BinaryInteger.IntegerLog(215, 3).IntegralLogTowardZero);
     }
 
     #endregion // Log2
@@ -221,8 +221,8 @@ namespace Numerics
     [TestMethod]
     public void Pow2TowardZero()
     {
-      var towardZero = Flux.IBinaryInteger.RoundDownToPowerOf2(88, false);
-      var awayFromZero = Flux.IBinaryInteger.RoundUpToPowerOf2(88, false);
+      var towardZero = Flux.BinaryInteger.RoundDownToPowerOf2(88, false);
+      var awayFromZero = Flux.BinaryInteger.RoundUpToPowerOf2(88, false);
 
       Assert.AreEqual(64, towardZero);
       Assert.AreEqual(128, awayFromZero);
@@ -259,10 +259,10 @@ namespace Numerics
     {
       var value = 88;
 
-      var towardsZero = Flux.IBinaryInteger.RoundDownToPowerOf2(value, false);
-      var awayFromZero = Flux.IBinaryInteger.RoundUpToPowerOf2(value, false);
+      var towardsZero = Flux.BinaryInteger.RoundDownToPowerOf2(value, false);
+      var awayFromZero = Flux.BinaryInteger.RoundUpToPowerOf2(value, false);
 
-      var rounded = INumber.RoundToNearest(88, HalfRounding.AwayFromZero, false, [towardsZero, awayFromZero]);
+      var rounded = Number.RoundToNearest(88, HalfRounding.AwayFromZero, false, [towardsZero, awayFromZero]);
 
       Assert.AreEqual(64, rounded);
 
@@ -292,10 +292,10 @@ namespace Numerics
     {
       // Somehow BigInteger must differ between .NET version 6 and 7. 
 
-      Assert.AreEqual(0x00010000, Flux.IBinaryInteger.ReverseBits(0x00008000)); // This works on .NET 7, but not on .NET 6.
-      Assert.AreEqual(0x10000000, Flux.IBinaryInteger.ReverseBits(0x00000008)); // This works on .NET 6, but not on .NET 7.
+      Assert.AreEqual(0x00010000, Flux.BinaryInteger.ReverseBits(0x00008000)); // This works on .NET 7, but not on .NET 6.
+      Assert.AreEqual(0x10000000, Flux.BinaryInteger.ReverseBits(0x00000008)); // This works on .NET 6, but not on .NET 7.
 
-      Assert.AreEqual(unchecked((int)0xFFFFFFFE), Flux.IBinaryInteger.ReverseBits(0x7FFFFFFF));
+      Assert.AreEqual(unchecked((int)0xFFFFFFFE), Flux.BinaryInteger.ReverseBits(0x7FFFFFFF));
     }
 
     #endregion // ReverseBits
@@ -305,7 +305,7 @@ namespace Numerics
     [TestMethod]
     public void ReverseBytes()
     {
-      Assert.AreEqual(0x00010000, Flux.IBinaryInteger.ReverseBytes(0x00000100));
+      Assert.AreEqual(0x00010000, Flux.BinaryInteger.ReverseBytes(0x00000100));
     }
 
     #endregion // ReverseBytes

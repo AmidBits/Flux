@@ -2,10 +2,6 @@ namespace Flux
 {
   public static class IComparableExtensions
   {
-    public static bool EqualsDefault<TEqualityComparer>(this TEqualityComparer source)
-      where TEqualityComparer : System.IComparable<TEqualityComparer>
-      => System.Collections.Generic.EqualityComparer<TEqualityComparer>.Default.Equals(source, default);
-
     extension<TComparable>(TComparable source)
       where TComparable : System.IComparable<TComparable>
     {
@@ -23,27 +19,26 @@ namespace Flux
       /// </summary>
       /// <returns></returns>
       public int CompareToDefault()
-        => INumber.Sign(source.CompareTo(default));
+        => Number.Sign(source.CompareTo(default));
 
       /// <summary>
       /// <para></para>
       /// </summary>
       /// <param name="minValue"></param>
       /// <param name="maxValue"></param>
-      /// <returns>0 when source is a member of the interval, -1 when source is less than the interval, +1 when source is greater than the interval.</returns>
-      public int CompareToInterval(TComparable minValue, TComparable maxValue)
-        => source.CompareTo(minValue) < 0 ? -1 : source.CompareTo(maxValue) > 0 ? +1 : 0;
+      /// <returns>
+      /// <list type="bullet">
+      /// <item><c>-1</c> when source is less-than the <paramref name="minValue"/> of the interval</item>
+      /// <item><c>0</c> when source is a member of the interval [<paramref name="minValue"/>, <paramref name="maxValue"/>]</item>
+      /// <item><c>+1</c> when source is greater-than the <paramref name="maxValue"/> of the interval</item>
+      /// </list>
+      /// </returns>
+      public int CompareToInterval(TComparable minValue, TComparable maxValue) => IntervalNotation.Closed.Compare(source, minValue, maxValue);
 
       /// <summary>
       /// <para>Returns whether a value is a member of the interval [<paramref name="minValue"/>..<paramref name="maxValue"/>].</para>
       /// </summary>
-      public bool IsMember(TComparable minValue, TComparable maxValue)
-      {
-        if (minValue.CompareTo(maxValue) > 0)
-          (minValue, maxValue) = (maxValue, minValue);
-
-        return source.CompareTo(minValue) >= 0 && source.CompareTo(maxValue) <= 0;
-      }
+      public bool IsMember(TComparable minValue, TComparable maxValue) => IntervalNotation.Closed.IsMember(source, minValue, maxValue);
     }
   }
 }

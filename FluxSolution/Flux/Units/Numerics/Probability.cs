@@ -84,7 +84,7 @@ namespace Flux.Units
     public static TProbability BinomialDistributionPmf<TProbability, TCount>(TProbability p, TCount k, TCount n)
       where TProbability : System.Numerics.IFloatingPoint<TProbability>, System.Numerics.IPowerFunctions<TProbability>
       where TCount : System.Numerics.IBinaryInteger<TCount>
-      => TProbability.CreateChecked(IBinaryInteger.BinomialCoefficient(n, k)) * TProbability.Pow(p, TProbability.CreateChecked(k)) * TProbability.Pow(TProbability.One - p, TProbability.CreateChecked(n - k));
+      => TProbability.CreateChecked(BinaryInteger.BinomialCoefficient(n, k)) * TProbability.Pow(p, TProbability.CreateChecked(k)) * TProbability.Pow(TProbability.One - p, TProbability.CreateChecked(n - k));
 
     /// <summary>
     /// <para>The the number of <paramref name="k"/> failures in a sequence of independent and identically distributed Bernoulli (each with success probability <paramref name="p"/>) trials before a specified (non-random) number of successes (denoted <paramref name="r"/>) occurs.</para>
@@ -98,7 +98,7 @@ namespace Flux.Units
     public static TProbability NegativeBinomialDistributionPmf<TProbability, TCount>(TProbability p, TCount k, TCount r)
       where TProbability : System.Numerics.IFloatingPoint<TProbability>, System.Numerics.IPowerFunctions<TProbability>
       where TCount : System.Numerics.IBinaryInteger<TCount>
-      => TProbability.CreateChecked(IBinaryInteger.BinomialCoefficient(k + r - TCount.One, k)) * TProbability.Pow(TProbability.One - p, TProbability.CreateChecked(k)) * TProbability.Pow(p, TProbability.CreateChecked(r));
+      => TProbability.CreateChecked(BinaryInteger.BinomialCoefficient(k + r - TCount.One, k)) * TProbability.Pow(TProbability.One - p, TProbability.CreateChecked(k)) * TProbability.Pow(p, TProbability.CreateChecked(r));
 
     #endregion // Binomial distribution
 
@@ -272,7 +272,7 @@ namespace Flux.Units
     public static TProbability PoissonDistributionPmf<TCount, TProbability>(TCount a, TCount k)
       where TCount : System.Numerics.IBinaryInteger<TCount>
       where TProbability : System.Numerics.IFloatingPoint<TProbability>, System.Numerics.IPowerFunctions<TProbability>
-      => TProbability.CreateChecked(IBinaryInteger.Pow(a, k)) * TProbability.Pow(TProbability.E, -TProbability.CreateChecked(a)) / TProbability.CreateChecked(IBinaryInteger.Factorial(k));
+      => TProbability.CreateChecked(BinaryInteger.Pow(a, k)) * TProbability.Pow(TProbability.E, -TProbability.CreateChecked(a)) / TProbability.CreateChecked(BinaryInteger.Factorial(k));
 
     #endregion // Poisson distribution
 

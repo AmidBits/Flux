@@ -128,7 +128,7 @@ namespace Flux
       {
         (minValue, maxValue) = source.GetExtentRelative(minValue, maxValue, 1);
 
-        return INumber.FoldAcross(value, minValue, maxValue);
+        return Number.FoldAcross(value, minValue, maxValue);
       }
 
       /// <summary>
@@ -151,10 +151,10 @@ namespace Flux
           while (magnitude-- > 0)
           {
             if (source is IntervalNotation.Open or IntervalNotation.HalfOpenLeft)
-              minValue = INumber.NativeIncrement(minValue);
+              minValue = Number.NativeIncrement(minValue);
 
             if (source is IntervalNotation.Open or IntervalNotation.HalfOpenRight)
-              maxValue = INumber.NativeDecrement(maxValue);
+              maxValue = Number.NativeDecrement(maxValue);
           }
 
           AssertValid(IntervalNotation.Closed, minValue, maxValue, "magnitude");
@@ -225,15 +225,17 @@ namespace Flux
       }
 
       /// <summary>
-      /// <para>Inverts a <see cref="IntervalNotation"/>.</para>
-      /// <example>
-      /// <code><see cref="IntervalNotation.Closed"/> = <see cref="IntervalNotation.Open"/> </code>
-      /// <code><see cref="IntervalNotation.HalfOpenLeft"/> = <see cref="IntervalNotation.HalfOpenRight"/> </code>
-      /// <code><see cref="IntervalNotation.HalfOpenRight"/> = <see cref="IntervalNotation.HalfOpenLeft"/> </code>
-      /// <code><see cref="IntervalNotation.Open"/> = <see cref="IntervalNotation.Closed"/> </code>
-      /// </example>
+      /// <para>Inverts an <see cref="IntervalNotation"/>.</para>
       /// </summary>
-      /// <returns>The 'opposite' <see cref="IntervalNotation"/>.</returns>
+      /// <returns>
+      /// <para>The 'opposite' <see cref="IntervalNotation"/>, i.e.:</para>
+      /// <list type="bullet">
+      /// <item><see cref="IntervalNotation.Closed"/> => <see cref="IntervalNotation.Open"/> </item>
+      /// <item><see cref="IntervalNotation.HalfOpenLeft"/> => <see cref="IntervalNotation.HalfOpenRight"/> </item>
+      /// <item><see cref="IntervalNotation.HalfOpenRight"/> => <see cref="IntervalNotation.HalfOpenLeft"/> </item>
+      /// <item><see cref="IntervalNotation.Open"/> => <see cref="IntervalNotation.Closed"/> </item>
+      /// </list>
+      /// </returns>
       /// <exception cref="NotImplementedException"></exception>
       public IntervalNotation InvertNotation()
         => (source == IntervalNotation.Closed) ? IntervalNotation.Open
@@ -243,7 +245,7 @@ namespace Flux
         : throw new NotImplementedException(source.ToString());
 
       /// <summary>
-      /// <para>Determines whether the interval <paramref name="minValue"/>..<paramref name="maxValue"/> is a degenerate interval, i.e. the interval consists of only a single value.</para>
+      /// <para>Determines whether an interval <paramref name="minValue"/>..<paramref name="maxValue"/> is a degenerate interval, i.e. the interval consists of only a single value.</para>
       /// </summary>
       /// <typeparam name="TComparable"></typeparam>
       /// <param name="minValue"></param>
@@ -255,13 +257,18 @@ namespace Flux
         => source == IntervalNotation.Closed && minValue.CompareTo(maxValue) == 0 && maxValue.CompareTo(minValue) == 0;
 
       /// <summary>
-      /// <para>Determines whether an interval <paramref name="minValue"/>..<paramref name="maxValue"/> in <see cref="IntervalNotation"/> represents the empty set.</para>
+      /// <para>Determines whether an interval <paramref name="minValue"/>..<paramref name="maxValue"/> with a specified <see cref="IntervalNotation"/> represents the empty set.</para>
       /// </summary>
       /// <typeparam name="TComparable"></typeparam>
       /// <param name="minValue"></param>
       /// <param name="maxValue"></param>
       /// <returns></returns>
-      /// <remarks>If <paramref name="minValue"/> equals <paramref name="maxValue"/>, all but the closed notation represents the empty set. If <paramref name="minValue"/> is greater than <paramref name="maxValue"/>, all four notations are usually taken to represent the empty set.</remarks>
+      /// <remarks>
+      /// <list type="bullet">
+      /// <item>If <paramref name="minValue"/> equals <paramref name="maxValue"/>, all but the closed notation represents the empty set.</item>
+      /// <item>If <paramref name="minValue"/> is greater than <paramref name="maxValue"/>, all four notations are usually taken to represent the empty set.</item>
+      /// </list>
+      /// </remarks>
       public bool IsEmptySet<TComparable>(TComparable minValue, TComparable maxValue)
         where TComparable : System.IComparable<TComparable>
         => (source != IntervalNotation.Closed && minValue.CompareTo(maxValue) == 0 && maxValue.CompareTo(minValue) == 0) // If minValue equals maxValue, all but the closed notation represents the empty set.
@@ -335,7 +342,7 @@ namespace Flux
       {
         System.ArgumentOutOfRangeException.ThrowIfNegative(iterations);
 
-        var step = INumber.UnitSign(stop - start);
+        var step = Number.UnitSign(stop - start);
 
         while (iterations-- > 0)
         {
@@ -433,7 +440,7 @@ namespace Flux
       {
         (minValue, maxValue) = source.GetExtentAbsolute(minValue, maxValue, TNumber.One);
 
-        return INumber.WrapAround(value, minValue, maxValue);
+        return Number.WrapAround(value, minValue, maxValue);
       }
 
       /// <summary>
@@ -449,7 +456,7 @@ namespace Flux
       {
         (minValue, maxValue) = source.GetExtentRelative(minValue, maxValue, 1);
 
-        return INumber.WrapAround(value, minValue, maxValue);
+        return Number.WrapAround(value, minValue, maxValue);
       }
 
       //public TNumber Wrap<TNumber>(TNumber value, TNumber minValue, TNumber maxValue)

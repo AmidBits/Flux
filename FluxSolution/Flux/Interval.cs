@@ -31,7 +31,7 @@
       /// <returns></returns>
       public Interval<TNumber> Round<TNumber>(HalfRounding minValueRounding, HalfRounding maxValueRounding, out TNumber minValue, out TNumber maxValue)
         where TNumber : System.Numerics.INumber<TNumber>
-        => new(minValue = TNumber.CreateChecked(IFloatingPoint.RoundHalf(source.MinValue, minValueRounding)), maxValue = TNumber.CreateChecked(IFloatingPoint.RoundHalf(source.MaxValue, maxValueRounding)));
+        => new(minValue = TNumber.CreateChecked(FloatingPoint.RoundHalf(source.MinValue, minValueRounding)), maxValue = TNumber.CreateChecked(FloatingPoint.RoundHalf(source.MaxValue, maxValueRounding)));
     }
 
     //// https://math.stackexchange.com/a/4894702
@@ -42,7 +42,7 @@
       {
         var (minValue, maxValue) = intervalNotation.GetExtentRelative(source.MinValue, source.MaxValue, 1);
 
-        return IBinaryInteger.FlooredDivRem(maxValue, k).Quotient - IBinaryInteger.CeilingDivRem(minValue, k).Quotient + TInteger.One;
+        return BinaryInteger.FlooredDivRem(maxValue, k).Quotient - BinaryInteger.CeilingDivRem(minValue, k).Quotient + TInteger.One;
       }
 
       /// <summary>
@@ -138,8 +138,8 @@
       {
         var (minValue, maxValue) = intervalNotation.GetExtentAbsolute(source.MinValue, source.MaxValue, TNumber.Abs(stepSize));
 
-        if (TNumber.IsNegative(stepSize)) return INumber.LoopVerge(maxValue, stepSize).TakeWhile(n => n >= minValue);
-        else if (!TNumber.IsZero(stepSize)) return INumber.LoopVerge(minValue, stepSize).TakeWhile(n => n <= maxValue);
+        if (TNumber.IsNegative(stepSize)) return Number.LoopVerge(maxValue, stepSize).TakeWhile(n => n >= minValue);
+        else if (!TNumber.IsZero(stepSize)) return Number.LoopVerge(minValue, stepSize).TakeWhile(n => n <= maxValue);
         else throw new System.ArgumentOutOfRangeException(nameof(stepSize));
       }
 

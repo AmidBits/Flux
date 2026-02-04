@@ -2630,12 +2630,12 @@
       #region SplitByLength
 
       /// <summary>
-      /// <para>Splits a <see cref="System.ReadOnlySpan{T}"/> into smaller ranges by a specified <paramref name="length"/>. If the source.Length is not a multiple of <paramref name="length"/> the last .</para>
+      /// <para>Splits a <see cref="System.ReadOnlySpan{T}"/> into smaller sub-ranges by a specified <paramref name="subLength"/>. The last range may contain less elements.</para>
       /// </summary>
-      /// <param name="length"></param>
+      /// <param name="subLength"></param>
       /// <returns></returns>
-      public System.Collections.Generic.IEnumerable<System.Range> SplitByLength(int length)
-        => IBinaryInteger.GenerateSubRanges(source.Length, length);
+      public System.Collections.Generic.List<System.Range> SplitBySubLength(int subLength)
+        => BinaryInteger.GenerateSubRangesBySubLength(source.Length, subLength);
 
       #endregion
 
@@ -3266,7 +3266,7 @@
 
         if (prefixBits > 0)
         {
-          bitBuffer = TInteger.CreateChecked(source[byteIndex++] & IBinaryInteger.CreateBitMaskRight(prefixBits)); // Note that byteIndex advances if there are prefixBits.
+          bitBuffer = TInteger.CreateChecked(source[byteIndex++] & BinaryInteger.CreateBitMaskRight(prefixBits)); // Note that byteIndex advances if there are prefixBits.
 
           if (prefixBits > count)
             bitBuffer >>>= prefixBits - count;
@@ -3276,7 +3276,7 @@
           bitBuffer = (bitBuffer << 8) | TInteger.CreateChecked(source[byteIndex + i]);
 
         if (suffixBits > 0)
-          bitBuffer = (bitBuffer << suffixBits) | (TInteger.CreateChecked((source[byteIndex + byteLength] >> (8 - suffixBits)) & IBinaryInteger.CreateBitMaskRight(suffixBits)));
+          bitBuffer = (bitBuffer << suffixBits) | (TInteger.CreateChecked((source[byteIndex + byteLength] >> (8 - suffixBits)) & BinaryInteger.CreateBitMaskRight(suffixBits)));
 
         return bitBuffer;
       }

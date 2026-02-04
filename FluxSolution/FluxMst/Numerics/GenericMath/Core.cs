@@ -9,19 +9,19 @@ namespace Maths
     [TestMethod]
     public void DetentInterval()
     {
-      Assert.AreEqual(520, INumber.DetentInterval(515, 20, 5));
+      Assert.AreEqual(520, Number.DetentInterval(515, 20, 5));
     }
 
     [TestMethod]
     public void DetentPosition()
     {
-      Assert.AreEqual(520, INumber.DetentPosition(515, 520, 5));
+      Assert.AreEqual(520, Number.DetentPosition(515, 520, 5));
     }
 
     [TestMethod]
     public void DetentZero()
     {
-      Assert.AreEqual(0, INumber.DetentPosition(4, 0, 5));
+      Assert.AreEqual(0, Number.DetentPosition(4, 0, 5));
     }
 
     [TestMethod]
@@ -37,52 +37,52 @@ namespace Maths
     [TestMethod]
     public void Gcd()
     {
-      Assert.AreEqual(3, Flux.IBinaryInteger.Gcd(21, 6));
+      Assert.AreEqual(3, Flux.BinaryInteger.Gcd(21, 6));
     }
 
     [TestMethod]
     public void Lcm()
     {
-      Assert.AreEqual(42, Flux.IBinaryInteger.Lcm(21, 6));
+      Assert.AreEqual(42, Flux.BinaryInteger.Lcm(21, 6));
     }
 
     [TestMethod]
     public void Factorial()
     {
-      Assert.AreEqual(362880, IBinaryInteger.Factorial(9), nameof(IBinaryInteger.Factorial));
+      Assert.AreEqual(362880, BinaryInteger.Factorial(9), nameof(BinaryInteger.Factorial));
       //Assert.AreEqual(362880, 9.SplitFactorial(), nameof(Flux.BinaryInteger.SplitFactorial));
-      Assert.AreEqual(System.Numerics.BigInteger.Parse("8320987112741390144276341183223364380754172606361245952449277696409600000000000000"), IBinaryInteger.Factorial(new System.Numerics.BigInteger(60)), nameof(IBinaryInteger.Factorial));
+      Assert.AreEqual(System.Numerics.BigInteger.Parse("8320987112741390144276341183223364380754172606361245952449277696409600000000000000"), BinaryInteger.Factorial(new System.Numerics.BigInteger(60)), nameof(BinaryInteger.Factorial));
       //Assert.AreEqual(479001600, 12.SplitFactorial(), nameof(Flux.BinaryInteger.SplitFactorial));
     }
 
     [TestMethod]
     public void GreatestCommonDivisor()
     {
-      Assert.AreEqual(3, Flux.IBinaryInteger.GreatestCommonDivisor(21, 6));
+      Assert.AreEqual(3, Flux.BinaryInteger.GreatestCommonDivisor(21, 6));
     }
 
     [TestMethod]
     public void IntegerRootN()
     {
-      Assert.AreEqual((3, 3), INumber.RootN(27, 3));
+      Assert.AreEqual((3, 3), Number.RootN(27, 3));
     }
 
     [TestMethod]
     public void IntegerSqrt()
     {
-      Assert.AreEqual(4, IBinaryInteger.IntegerSqrt(21));
+      Assert.AreEqual(4, BinaryInteger.IntegerSqrt(21));
     }
 
     [TestMethod]
     public void IsCoprime()
     {
-      Assert.IsTrue(Flux.IBinaryInteger.IsCoprime(23, 43));
+      Assert.IsTrue(Flux.BinaryInteger.IsCoprime(23, 43));
     }
 
     [TestMethod]
     public void IntegerPow()
     {
-      Assert.AreEqual(10000000000, IBinaryInteger.Pow(10L, 10));
+      Assert.AreEqual(10000000000, BinaryInteger.Pow(10L, 10));
     }
 
     //[TestMethod]
@@ -95,8 +95,8 @@ namespace Maths
     [TestMethod]
     public void IsPow()
     {
-      Assert.IsTrue(IBinaryInteger.IsPowOf(100, 10));
-      Assert.IsFalse(IBinaryInteger.IsPowOf(101, 10));
+      Assert.IsTrue(BinaryInteger.IsPowOf(100, 10));
+      Assert.IsFalse(BinaryInteger.IsPowOf(101, 10));
     }
 
     [TestMethod]
@@ -104,9 +104,9 @@ namespace Maths
     {
       var v = 15;
 
-      var iq = IBinaryInteger.IntegerSqrt(v);
+      var iq = BinaryInteger.IntegerSqrt(v);
 
-      var isiq = IBinaryInteger.IsIntegerSqrt(v, iq);
+      var isiq = BinaryInteger.IsIntegerSqrt(v, iq);
 
       Assert.IsTrue(isiq);
     }
@@ -116,9 +116,9 @@ namespace Maths
     {
       var v = 15;
 
-      var iq = IBinaryInteger.IntegerSqrt(v);
+      var iq = BinaryInteger.IntegerSqrt(v);
 
-      var ispiq = IBinaryInteger.IsPerfectIntegerSqrt(v, iq);
+      var ispiq = BinaryInteger.IsPerfectIntegerSqrt(v, iq);
 
       Assert.IsFalse(ispiq);
     }
@@ -138,8 +138,8 @@ namespace Maths
     [TestMethod]
     public void ModInv()
     {
-      Assert.AreEqual(2, IBinaryInteger.ModInv(4, 7));
-      Assert.AreEqual(7, IBinaryInteger.ModInv(8, 11));
+      Assert.AreEqual(2, BinaryInteger.ModInv(4, 7));
+      Assert.AreEqual(7, BinaryInteger.ModInv(8, 11));
     }
 
     [TestMethod]
@@ -148,10 +148,10 @@ namespace Maths
       var n = 512d;
       var m = 20;
 
-      var (multipleTowardsZero, nNearestMultiple, multipleAwayFromZero) = INumber.MultipleOf(n, m, false, HalfRounding.AwayFromZero);
+      var (multipleTowardsZero, nNearestMultiple, multipleAwayFromZero) = Number.MultipleOf(n, m, false, HalfRounding.AwayFromZero);
       //n.MultipleOfNearest(m, false, HalfRounding.AwayFromZero, out var multipleTowardsZero, out var multipleAwayFromZero);
 
-      var nearestMultiple = INumber.RoundToNearest(n, HalfRounding.TowardZero, false, [multipleTowardsZero, multipleAwayFromZero]);
+      var nearestMultiple = Number.RoundToNearest(n, HalfRounding.TowardZero, false, [multipleTowardsZero, multipleAwayFromZero]);
 
       Assert.AreEqual(520, nearestMultiple);
 

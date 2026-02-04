@@ -9,7 +9,7 @@ namespace Numerics
     [TestMethod]
     public void InterpolateCosine()
     {
-      Assert.AreEqual(5.732233047033631, IFloatingPoint.InterpolateCosine(5.0, 10, 0.25)); ;
+      Assert.AreEqual(5.732233047033631, FloatingPoint.InterpolateCosine(5.0, 10, 0.25)); ;
     }
 
     //[TestMethod]

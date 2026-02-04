@@ -2,6 +2,46 @@
 {
   public static partial class CharExtensions
   {
+    /// <summary>
+    /// <para>"PLUS SIGN" = U+002B = '−'</para>
+    /// </summary>
+    internal const char PlusSign = '\u002B';
+
+    /// <summary>
+    /// <para>"DOUBLE-STRUCK CAPITAL C" = U+2102 = 'ℂ'</para>
+    /// </summary>
+    internal const char DoubleStruckCapitalC = '\u2102';
+
+    /// <summary>
+    /// <para>"DOUBLE-STRUCK CAPITAL N" = U+2115 = 'ℕ'</para>
+    /// </summary>
+    internal const char DoubleStruckCapitalN = '\u2115';
+
+    /// <summary>
+    /// <para>"DOUBLE-STRUCK CAPITAL Q" = U+211A = 'ℚ'</para>
+    /// </summary>
+    internal const char DoubleStruckCapitalQ = '\u211A';
+
+    /// <summary>
+    /// <para>"DOUBLE-STRUCK CAPITAL R" = U+211D = 'ℝ'</para>
+    /// </summary>
+    internal const char DoubleStruckCapitalR = '\u211D';
+
+    /// <summary>
+    /// <para>"DOUBLE-STRUCK CAPITAL Z" = U+2124 = 'ℤ'</para>
+    /// </summary>
+    internal const char DoubleStruckCapitalZ = '\u2124';
+
+    /// <summary>
+    /// <para>"MINUS SIGN" = U+2212 = '−'</para>
+    /// </summary>
+    internal const char MinusSign = '\u2212';
+
+    /// <summary>
+    /// <para>"INFINITY" = U+221E = '∞'</para>
+    /// </summary>
+    internal const char Infinity = '\u221E';
+
     #region Subscript/superscript dictionaries
 
     //public const string SubscriptAlphaLower = "ₐ\0\0\0ₑ\0\0ₕᵢⱼₖₗₘₙₒₚ\0ᵣₛₜᵤᵥ\0ₓ\0\0";

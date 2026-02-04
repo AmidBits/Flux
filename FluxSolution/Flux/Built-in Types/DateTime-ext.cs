@@ -247,24 +247,24 @@ namespace Flux
       }
 
       /// <summary>Yields the dates in the month of the source.</summary>
-      public System.Collections.Generic.IEnumerable<System.DateTime> GetDatesInMonth()
-        => System.DateTime.StartOfMonth(source.Year, source.Month).GetDates(System.DateTime.DaysInMonth(source.Year, source.Month));
+      public System.Collections.Generic.List<System.DateTime> GetDatesInMonth()
+        => [.. System.DateTime.StartOfMonth(source.Year, source.Month).GetDates(System.DateTime.DaysInMonth(source.Year, source.Month))];
 
       /// <summary>Yields the dates in the current calendar quarter of the source.</summary>
-      public System.Collections.Generic.IEnumerable<System.DateTime> GetDatesInQuarter()
-        => System.DateTime.StartOfQuarter(source.Year, source.Quarter).GetDatesTo(System.DateTime.EndOfQuarter(source.Year, source.Quarter), true);
+      public System.Collections.Generic.List<System.DateTime> GetDatesInQuarter()
+        => [.. System.DateTime.StartOfQuarter(source.Year, source.Quarter).GetDatesTo(System.DateTime.EndOfQuarter(source.Year, source.Quarter), true)];
 
       /// <summary>Yields the dates in the week of the source.</summary>
-      public System.Collections.Generic.IEnumerable<System.DateTime> GetDatesInWeek()
-        => source.FirstDayOfWeek().GetDates(7);
+      public System.Collections.Generic.List<System.DateTime> GetDatesInWeek()
+        => [.. source.FirstDayOfWeek().GetDates(7)];
 
       /// <summary>Yields the dates in the year of the source.</summary>
-      public System.Collections.Generic.IEnumerable<System.DateTime> GetDatesInYear()
-        => System.DateTime.StartOfYear(source.Year).GetDates(System.DateTime.DaysInYear(source.Year));
+      public System.Collections.Generic.List<System.DateTime> GetDatesInYear()
+        => [.. System.DateTime.StartOfYear(source.Year).GetDates(System.DateTime.DaysInYear(source.Year))];
 
       /// <summary>Yields a sequence of dates between the source and the specified target, which can be included or not.</summary>
       public System.Collections.Generic.IEnumerable<System.DateTime> GetDatesTo(System.DateTime target, bool includeTarget)
-        => source.GetDates((target - source).Days is var numberOfDays && includeTarget ? numberOfDays + INumber.Sign(numberOfDays) : numberOfDays);
+        => source.GetDates((target - source).Days is var numberOfDays && includeTarget ? numberOfDays + Number.Sign(numberOfDays) : numberOfDays);
 
       #endregion
 

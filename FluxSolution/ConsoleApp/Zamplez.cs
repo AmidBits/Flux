@@ -144,7 +144,7 @@ namespace ConsoleApp
       {
         var rng = new System.Random();
 
-        var m_ap = IBinaryInteger.GetAscendingPrimes(2).Take(100).ToArray(); // Primes.
+        var m_ap = BinaryInteger.GetAscendingPrimes(2).Take(100).ToArray(); // Primes.
         var m_rn = System.Linq.Enumerable.Range(0, 100).ToArray(); // Rational.
         var m_en = System.Linq.Enumerable.Range(1, 200).Where(i => (i & 1) == 0).ToArray(); // Even.
         var m_on = System.Linq.Enumerable.Range(1, 200).Where(i => (i & 1) != 0).ToArray(); // Odd.
@@ -316,7 +316,7 @@ namespace ConsoleApp
 
       System.ArgumentOutOfRangeException.ThrowIfNegative(value);
 
-      var (q, remainder) = INumber.ITruncatedDivRem(value, 1);
+      var (q, remainder) = Number.ITruncatedDivRem(value, 1);
       var quotient = int.CreateChecked(q);
 
       var p2TowardsZero = int.MostSignificant1Bit(quotient);
@@ -351,14 +351,14 @@ namespace ConsoleApp
 
       //      n = 0;
       //      var nlpow2 = n.NextLargerPowerOf2();
-      var np2TowardsZero = (int)INumber.RoundToNearest(n, HalfRounding.TowardZero, false, [Flux.IBinaryInteger.RoundDownToPowerOf2(n, false), Flux.IBinaryInteger.RoundUpToPowerOf2(n, false)]);
+      var np2TowardsZero = (int)Number.RoundToNearest(n, HalfRounding.TowardZero, false, [Flux.BinaryInteger.RoundDownToPowerOf2(n, false), Flux.BinaryInteger.RoundUpToPowerOf2(n, false)]);
       System.Console.WriteLine($" Pow2TowardsZero = {np2TowardsZero}");
-      var np2AwayFromZero = (int)INumber.RoundToNearest(n, HalfRounding.AwayFromZero, false, [Flux.IBinaryInteger.RoundDownToPowerOf2(n, false), Flux.IBinaryInteger.RoundUpToPowerOf2(n, false)]);
+      var np2AwayFromZero = (int)Number.RoundToNearest(n, HalfRounding.AwayFromZero, false, [Flux.BinaryInteger.RoundDownToPowerOf2(n, false), Flux.BinaryInteger.RoundUpToPowerOf2(n, false)]);
       System.Console.WriteLine($"Pow2AwayFromZero = {np2AwayFromZero}");
 
-      var birbits = IBinaryInteger.ReverseBits(n);
+      var birbits = BinaryInteger.ReverseBits(n);
       System.Console.WriteLine($"    Reverse Bits = {birbits.ToBinaryString()}");
-      var birbyts = IBinaryInteger.ReverseBytes(n);
+      var birbyts = BinaryInteger.ReverseBytes(n);
       System.Console.WriteLine($"   Reverse Bytes = {birbyts.ToBinaryString()}");
 
       var bfl = int.BitFoldLeft(n);
@@ -373,10 +373,10 @@ namespace ConsoleApp
       var bln = n.GetBitLength();
       //var l2 = bi.IntegerLog2();
       var ms1b = int.MostSignificant1Bit(n);
-      var bmr = IBinaryInteger.CreateBitMaskRight(n.GetBitLength());
+      var bmr = BinaryInteger.CreateBitMaskRight(n.GetBitLength());
       var bmrs = bmr.ToBinaryString();
       var bmrsl = bmrs.Length;
-      var bml = IBinaryInteger.CreateBitMaskLeft(n.GetBitLength());
+      var bml = BinaryInteger.CreateBitMaskLeft(n.GetBitLength());
       var bmls = bml.ToBinaryString();
       var bmlsl = bmls.Length;
     }
@@ -899,15 +899,15 @@ namespace ConsoleApp
       {
         var values = new double[]
         {
-          INumber.QuantileR1(x.AsSpan(), p),
-          INumber.QuantileR2(x.AsSpan(), p),
-          INumber.QuantileR3(x.AsSpan(), p),
-          INumber.QuantileR4(x.AsSpan(), p),
-          INumber.QuantileR5(x.AsSpan(), p),
-          INumber.QuantileR6(x.AsSpan(), p),
-          INumber.QuantileR7(x.AsSpan(), p),
-          INumber.QuantileR8(x.AsSpan(), p),
-          INumber.QuantileR9(x.AsSpan(), p),
+          Number.QuantileR1(x.AsSpan(), p),
+          Number.QuantileR2(x.AsSpan(), p),
+          Number.QuantileR3(x.AsSpan(), p),
+          Number.QuantileR4(x.AsSpan(), p),
+          Number.QuantileR5(x.AsSpan(), p),
+          Number.QuantileR6(x.AsSpan(), p),
+          Number.QuantileR7(x.AsSpan(), p),
+          Number.QuantileR8(x.AsSpan(), p),
+          Number.QuantileR9(x.AsSpan(), p),
         };
 
         System.Console.WriteLine($"The estimated quantiles of {p:N2}:");

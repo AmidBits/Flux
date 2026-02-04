@@ -15,12 +15,16 @@ namespace Flux
         return $"[{name}] [{dataTypeName}]{magnitude} {(nullable ? "NULL" : "NOT NULL")}";
       }
 
-      public System.Collections.Generic.IEnumerable<System.Type> GetFieldTypes()
+      public System.Collections.Generic.List<System.Type> GetFieldTypes()
       {
         System.ArgumentNullException.ThrowIfNull(source);
 
-        for (var index = 0; index < source.FieldCount; index++)
-          yield return source.GetFieldType(index);
+        var types = new System.Collections.Generic.List<System.Type>(source.FieldCount);
+
+        for (var i = 0; i < source.FieldCount; i++)
+          types.Add(source.GetFieldType(i));
+
+        return types;
       }
 
       /// <summary>
@@ -41,12 +45,16 @@ namespace Flux
       /// </summary>
       /// <param name="source"></param>
       /// <returns></returns>
-      public System.Collections.Generic.IEnumerable<string> GetNames()
+      public System.Collections.Generic.List<string> GetNames()
       {
         System.ArgumentNullException.ThrowIfNull(source);
 
-        for (var index = 0; index < source.FieldCount; index++)
-          yield return source.GetNameEx(index);
+        var names = new System.Collections.Generic.List<string>(source.FieldCount);
+
+        for (var i = 0; i < source.FieldCount; i++)
+          names.Add(source.GetNameEx(i));
+
+        return names;
       }
 
       /// <summary>
@@ -74,32 +82,40 @@ namespace Flux
       }
 
       /// <summary>Results in a sequence of strings of all column values in the current row.</summary>
-      public System.Collections.Generic.IEnumerable<string> GetStrings(string nullString)
+      public System.Collections.Generic.List<string> GetStrings(string nullString)
       {
         System.ArgumentNullException.ThrowIfNull(source);
 
-        for (var index = source.FieldCount - 1; index >= 0; index--)
-          yield return source.GetString(index, nullString);
+        var strings = new System.Collections.Generic.List<string>(source.FieldCount);
+
+        for (var i = 0; i < source.FieldCount; i++)
+          strings.Add(source.GetString(i, nullString));
+
+        return strings;
       }
 
       public string GetUrgf(string nullString)
         => string.Join((char)UnicodeInformationSeparator.UnitSeparator, GetStrings(source, nullString));
 
       /// <summary>Results in an object array of all column values in the current row.</summary>
-      public System.Collections.Generic.IEnumerable<object> GetValues()
+      public System.Collections.Generic.List<object> GetValues()
       {
         System.ArgumentNullException.ThrowIfNull(source);
 
-        for (var index = source.FieldCount - 1; index >= 0; index--)
-          yield return source.GetValue(index);
+        var values = new System.Collections.Generic.List<object>(source.FieldCount);
+
+        for (var i = 0; i < source.FieldCount; i++)
+          values.Add(source.GetValue(i));
+
+        return values;
       }
 
       public System.Collections.Generic.IDictionary<string, object> ToDictionary()
       {
         var od = new Flux.DataStructures.OrderedDictionary<string, object>();
 
-        for (var index = 0; index < source.FieldCount; index++)
-          od.Add(source.GetNameEx(index), source.GetValue(index));
+        for (var i = 0; i < source.FieldCount; i++)
+          od.Add(source.GetNameEx(i), source.GetValue(i));
 
         return od;
       }

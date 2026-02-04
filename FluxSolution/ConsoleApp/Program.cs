@@ -110,7 +110,7 @@ namespace ConsoleApp
       for (var n = System.UInt128.Zero; n <= maxN; n++)
       {
         for (var k = System.UInt128.Zero; k <= n; k++)
-          System.Console.Write($"{IBinaryInteger.BinomialCoefficient(n, k)} ");
+          System.Console.Write($"{BinaryInteger.BinomialCoefficient(n, k)} ");
 
         System.Console.WriteLine();
       }
@@ -328,27 +328,30 @@ namespace ConsoleApp
 
     #endregion // Mock DataTables
 
-    public static bool IsPrimeCandidate<TInteger>(TInteger n)
-      where TInteger : System.Numerics.IBinaryInteger<TInteger>
-      => n >= TInteger.CreateChecked(2) && (n <= TInteger.CreateChecked(3) || (n % TInteger.CreateChecked(6) is var m && (m == TInteger.One || m == TInteger.CreateChecked(5))));
-
     private static void TimedMain(string[] _)
     {
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
-      System.Console.WriteLine(Flux.Diagnostics.Performance.Measure(() => string.Join(',', IBinaryInteger.GetCompositeNumbers<int>().Take(10)), 1000));
-      System.Console.WriteLine(Flux.Diagnostics.Performance.Measure(() => string.Join(',', IBinaryInteger.GetHighlyCompositeNumbers<int>().Take(10)), 1000));
+
+
+
+
+      var srs = Flux.BinaryInteger.GenerateSubRangesBySubLength(20, 4).Select(r => r.ToInterval()).ToList();
+      var src = Flux.BinaryInteger.GenerateCountSubRanges(20, 4).Select(r => r.ToInterval()).ToList();
+
+      System.Console.WriteLine(Flux.Diagnostics.Performance.Measure(() => string.Join(',', BinaryInteger.GetCompositeNumbers<int>().Take(10)), 1000));
+      System.Console.WriteLine(Flux.Diagnostics.Performance.Measure(() => string.Join(',', BinaryInteger.GetHighlyCompositeNumbers<int>().Take(10)), 1000));
       //System.Console.WriteLine(Flux.Diagnostics.Performance.Measure(() => string.Join(',', IBinaryInteger.GetSuperiorHighlyCompositeNumbers<int>(100).Take(10)), 10));
 
 
       var log = double.Log(999, 10);
 
-      var (logf, logc) = IFloatingPoint.IsNearInteger(log, out var ilog) ? (ilog, ilog) : (double.Floor(log), double.Ceiling(log));
+      var (logf, logc) = FloatingPoint.IsNearInteger(log, out var ilog) ? (ilog, ilog) : (double.Floor(log), double.Ceiling(log));
 
       var source = 2039;
-      var bin2gray = IBinaryInteger.ConvertBinaryToGray(source);
-      var gray2bin = IBinaryInteger.ConvertGrayToBinary(bin2gray);
+      var bin2gray = BinaryInteger.ConvertBinaryToGray(source);
+      var gray2bin = BinaryInteger.ConvertGrayToBinary(bin2gray);
 
 
 

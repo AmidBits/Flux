@@ -258,19 +258,20 @@ namespace Flux
       => source.PartitionTuple2(true, (e1, e2, i) => (e2 - e1).Length()).Sum();
 
     /// <summary>Returns a sequence triplet angles.</summary>
-    public static System.Collections.Generic.IEnumerable<double> GetAngles(this System.Collections.Generic.IEnumerable<System.Numerics.Vector2> source)
-      => source.PartitionTuple3(2, (v1, v2, v3, index) => AngleBetween(v2, v1, v3));
+    public static System.Collections.Generic.List<double> GetAngles(this System.Collections.Generic.IEnumerable<System.Numerics.Vector2> source)
+      => [.. source.PartitionTuple3(2, (v1, v2, v3, index) => AngleBetween(v2, v1, v3))];
 
     /// <summary>Returns a sequence triplet angles.</summary>
-    public static System.Collections.Generic.IEnumerable<(System.Numerics.Vector2 v1, System.Numerics.Vector2 v2, System.Numerics.Vector2 v3, int index, double angle)> GetAnglesEx(this System.Collections.Generic.IEnumerable<System.Numerics.Vector2> source)
-      => source.PartitionTuple3(2, (v1, v2, v3, index) => (v1, v2, v3, index, AngleBetween(v2, v1, v3)));
+    public static System.Collections.Generic.List<(System.Numerics.Vector2 v1, System.Numerics.Vector2 v2, System.Numerics.Vector2 v3, int index, double angle)> GetAnglesEx(this System.Collections.Generic.IEnumerable<System.Numerics.Vector2> source)
+      => [.. source.PartitionTuple3(2, (v1, v2, v3, index) => (v1, v2, v3, index, AngleBetween(v2, v1, v3)))];
 
     /// <summary>Creates a new sequence with the midpoints between all vertices in the sequence.</summary>
-    public static System.Collections.Generic.IEnumerable<System.Numerics.Vector2> GetMidpoints(this System.Collections.Generic.IEnumerable<System.Numerics.Vector2> source)
-      => source.PartitionTuple2(true, (v1, v2, index) => (v1 + v2) / 2);
+    public static System.Collections.Generic.List<System.Numerics.Vector2> GetMidpoints(this System.Collections.Generic.IEnumerable<System.Numerics.Vector2> source)
+      => [.. source.PartitionTuple2(true, (v1, v2, index) => (v1 + v2) / 2)];
+
     /// <summary>Creates a new sequence of triplets consisting of the leading vector, a newly computed midling vector and the trailing vector.</summary>
-    public static System.Collections.Generic.IEnumerable<(System.Numerics.Vector2 v1, System.Numerics.Vector2 vm, System.Numerics.Vector2 v2, int index)> GetMidpointsEx(this System.Collections.Generic.IEnumerable<System.Numerics.Vector2> source)
-      => source.PartitionTuple2(true, (v1, v2, index) => (v1, (v1 + v2) / 2, v2, index));
+    public static System.Collections.Generic.List<(System.Numerics.Vector2 v1, System.Numerics.Vector2 vm, System.Numerics.Vector2 v2, int index)> GetMidpointsEx(this System.Collections.Generic.IEnumerable<System.Numerics.Vector2> source)
+      => [.. source.PartitionTuple2(true, (v1, v2, index) => (v1, (v1 + v2) / 2, v2, index))];
 
     /// <summary>Determines whether the polygon is convex. (2D/3D)</summary>
     public static bool IsConvexPolygon(this System.Collections.Generic.IEnumerable<System.Numerics.Vector2> source)
@@ -391,25 +392,31 @@ namespace Flux
     /// <summary>Returns a sequence of triangles from the centroid to all midpoints and vertices. Creates a triangle fan from the centroid point. (2D/3D)</summary>
     /// <seealso cref="http://paulbourke.net/geometry/polygonmesh/"/>
     /// <remarks>Applicable to any shape. (Figure 1 and 8 in link)</remarks>
-    public static System.Collections.Generic.IEnumerable<System.Collections.Generic.IList<System.Numerics.Vector2>> SplitAlongMidpoints(System.Collections.Generic.IEnumerable<System.Numerics.Vector2> source)
+    public static System.Collections.Generic.List<System.Collections.Generic.List<System.Numerics.Vector2>> SplitAlongMidpoints(System.Collections.Generic.IEnumerable<System.Numerics.Vector2> source)
     {
+      var polygons = new System.Collections.Generic.List<System.Collections.Generic.List<System.Numerics.Vector2>>();
+
       var midpointPolygon = new System.Collections.Generic.List<System.Numerics.Vector2>();
 
       foreach (var pair in GetMidpointsEx(source).PartitionTuple2(true, (v1, v2, index) => (v1, v2)))
       {
         midpointPolygon.Add(pair.v1.vm);
 
-        yield return new System.Collections.Generic.List<System.Numerics.Vector2>() { pair.v1.v2, pair.v2.vm, pair.v1.vm };
+        polygons.Add([pair.v1.v2, pair.v2.vm, pair.v1.vm]);
       }
 
-      yield return midpointPolygon;
+      polygons.Add(midpointPolygon);
+
+      return polygons;
     }
 
     /// <summary>Returns a sequence of triangles from the vertices of the polygon. Triangles with a vertex angle greater or equal to 0 degrees and less than 180 degrees are extracted first. Triangles are returned in the order of smallest to largest angle. (2D/3D)</summary>
     /// <seealso cref="http://paulbourke.net/geometry/polygonmesh/"/>
     /// <remarks>Applicable to any shape with more than 3 vertices.</remarks>
-    public static System.Collections.Generic.IEnumerable<System.Collections.Generic.IList<System.Numerics.Vector2>> SplitByTriangulation(this System.Collections.Generic.IEnumerable<System.Numerics.Vector2> source, Geometry.TriangulationType mode, System.Random? rng = null)
+    public static System.Collections.Generic.List<System.Collections.Generic.List<System.Numerics.Vector2>> SplitByTriangulation(this System.Collections.Generic.IEnumerable<System.Numerics.Vector2> source, Geometry.TriangulationType mode, System.Random? rng = null)
     {
+      var polygons = new System.Collections.Generic.List<System.Collections.Generic.List<System.Numerics.Vector2>>();
+
       const double halfPi = double.Pi / 2;
 
       var copy = source.ToList();
@@ -428,25 +435,28 @@ namespace Flux
           Geometry.TriangulationType.MostSquare => GetAnglesEx(copy).Aggregate((a, b) => double.Abs(a.angle - halfPi) < double.Abs(b.angle - halfPi) ? a : b),
           _ => throw new System.Exception(),
         };
-        yield return new System.Collections.Generic.List<System.Numerics.Vector2>() { triplet.v2, triplet.v3, triplet.v1 };
+
+        polygons.Add([triplet.v2, triplet.v3, triplet.v1]);
 
         copy.RemoveAt((triplet.index + 1) % copy.Count);
       }
+
+      return polygons;
     }
 
     /// <summary>Returns a new set of quadrilaterals from the polygon centroid to its midpoints and their corresponding original vertex. Method 5 in link.</summary>
     /// <seealso cref="http://paulbourke.net/geometry/polygonmesh/"/>
-    public static System.Collections.Generic.IEnumerable<System.Collections.Generic.IList<System.Numerics.Vector2>> SplitCentroidToMidpoints(this System.Collections.Generic.IEnumerable<System.Numerics.Vector2> source)
-      => ComputeCentroid(source) is var c ? GetMidpoints(source).PartitionTuple2(true, (v1, v2, index) => new System.Collections.Generic.List<System.Numerics.Vector2>() { c, v1, v2 }) : throw new System.InvalidOperationException();
+    public static System.Collections.Generic.List<System.Collections.Generic.List<System.Numerics.Vector2>> SplitCentroidToMidpoints(this System.Collections.Generic.IEnumerable<System.Numerics.Vector2> source)
+      => ComputeCentroid(source) is var c ? [.. GetMidpoints(source).PartitionTuple2(true, (v1, v2, index) => new System.Collections.Generic.List<System.Numerics.Vector2>() { c, v1, v2 })] : throw new System.InvalidOperationException();
 
     /// <summary>Returns a new set of triangles from the polygon centroid to its points. Method 3 and 10 in link.</summary>
     /// <seealso cref="http://paulbourke.net/geometry/polygonmesh/"/>
-    public static System.Collections.Generic.IEnumerable<System.Collections.Generic.IList<System.Numerics.Vector2>> SplitCentroidToVertices(this System.Collections.Generic.IEnumerable<System.Numerics.Vector2> source)
-      => ComputeCentroid(source) is var c ? source.PartitionTuple2(true, (v1, v2, index) => new System.Collections.Generic.List<System.Numerics.Vector2>() { c, v1, v2 }) : throw new System.InvalidOperationException();
+    public static System.Collections.Generic.List<System.Collections.Generic.List<System.Numerics.Vector2>> SplitCentroidToVertices(this System.Collections.Generic.IEnumerable<System.Numerics.Vector2> source)
+      => ComputeCentroid(source) is var c ? [.. source.PartitionTuple2(true, (v1, v2, index) => new System.Collections.Generic.List<System.Numerics.Vector2>() { c, v1, v2 })] : throw new System.InvalidOperationException();
 
     /// <summary>Returns a new set of polygons by splitting the polygon at two points. Method 2 in link when odd number of vertices. method 9 in link when even number of vertices.</summary>
     /// <seealso cref="http://paulbourke.net/geometry/polygonmesh/"/>
-    public static System.Collections.Generic.IEnumerable<System.Collections.Generic.IList<System.Numerics.Vector2>> SplitInHalf(this System.Collections.Generic.IEnumerable<System.Numerics.Vector2> source)
+    public static System.Collections.Generic.List<System.Collections.Generic.List<System.Numerics.Vector2>> SplitInHalf(this System.Collections.Generic.IEnumerable<System.Numerics.Vector2> source)
     {
       var polygon1 = new System.Collections.Generic.List<System.Numerics.Vector2>();
       var polygon2 = new System.Collections.Generic.List<System.Numerics.Vector2>();
@@ -476,16 +486,17 @@ namespace Flux
 
       polygon2.Add(polygon1[0]);
 
-      yield return polygon1;
-      yield return polygon2;
+      return [polygon1, polygon2];
     }
 
     /// <summary>Returns a sequence of triangles from the specified polygon index to all other points. Creates a triangle fan from the specified point. (2D/3D)</summary>
     /// <seealso cref="http://paulbourke.net/geometry/polygonmesh/"/>
     /// <remarks>Applicable to any shape with more than 3 vertices. (Figure 9, in link)</remarks>
-    public static System.Collections.Generic.IEnumerable<System.Collections.Generic.IList<System.Numerics.Vector2>> SplitVertexToVertices(this System.Collections.Generic.IList<System.Numerics.Vector2> source, int index)
+    public static System.Collections.Generic.List<System.Collections.Generic.List<System.Numerics.Vector2>> SplitVertexToVertices(this System.Collections.Generic.IList<System.Numerics.Vector2> source, int index)
     {
       System.ArgumentNullException.ThrowIfNull(source);
+
+      var polygons = new System.Collections.Generic.List<System.Collections.Generic.List<System.Numerics.Vector2>>();
 
       var vertex = source[index];
 
@@ -494,8 +505,10 @@ namespace Flux
 
       for (var i = startIndex; i < count; i++)
       {
-        yield return new System.Numerics.Vector2[] { vertex, source[i % source.Count], source[(i + 1) % source.Count] };
+        polygons.Add([vertex, source[i % source.Count], source[(i + 1) % source.Count]]);
       }
+
+      return polygons;
     }
 
     #endregion // 2D vector collection (shape) algorithms

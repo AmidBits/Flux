@@ -11,34 +11,6 @@ namespace Flux
     extension<T>(T source)
       where T : notnull
     {
-      #region GetFieldInfos
-
-      /// <summary>Enumerates all FieldInfo matching the specified binding flags. If the source is a System.Type, the fields are enumerated from the type, otherwise the instance is used.</summary>
-      /// <param name="source">An instance object or a System.Type to enumerate fields on.</param>
-      /// <param name="bindingFlags"></param>
-      public System.Reflection.FieldInfo[] GetFieldInfos(System.Reflection.BindingFlags bindingFlags = System.Reflection.BindingFlags.FlattenHierarchy | System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static)
-        => source is null
-        ? throw new System.ArgumentNullException(nameof(source))
-        : source is System.Type type
-        ? type.GetFields(bindingFlags | System.Reflection.BindingFlags.Static)
-        : source.GetType().GetFields(bindingFlags | System.Reflection.BindingFlags.Instance);
-
-      #endregion
-
-      #region GetPropertyInfos
-
-      /// <summary>Enumerates all PropertyInfo matching the specified binding flags. If the source is a System.Type, the properties are enumerated from the type, otherwise the instance is used.</summary>
-      /// <param name="source">An instance object or a System.Type to enumerate properties on.</param>
-      /// <param name="bindingFlags"></param>
-      public System.Reflection.PropertyInfo[] GetPropertyInfos(System.Reflection.BindingFlags bindingFlags = System.Reflection.BindingFlags.FlattenHierarchy | System.Reflection.BindingFlags.Public)
-        => source is null
-        ? throw new System.ArgumentNullException(nameof(source))
-        : source is System.Type type
-        ? type.GetProperties(bindingFlags | System.Reflection.BindingFlags.Static) // Static property containers.
-        : source.GetType().GetProperties(bindingFlags | System.Reflection.BindingFlags.Instance); // Instance property containers.
-
-      #endregion
-
       #region Serialize..
 
       /// <summary>

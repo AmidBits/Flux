@@ -52,7 +52,7 @@ namespace Flux.Permutations
       for (int i = 0; i < k; i++)
       {
         int idx = available.IndexOf(perm[i]);
-        rank += idx * IBinaryInteger.Factorial(n - i - 1) / IBinaryInteger.Factorial(n - k);
+        rank += idx * BinaryInteger.Factorial(n - i - 1) / BinaryInteger.Factorial(n - k);
         available.RemoveAt(idx);
       }
 
@@ -61,7 +61,7 @@ namespace Flux.Permutations
 
     public static int[] UnrankPermutationWithoutRepetition(int rank, int n, int k)
     {
-      System.ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(rank, IBinaryInteger.CountPermutationsWithoutRepetition(n, k));
+      System.ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(rank, BinaryInteger.CountPermutationsWithoutRepetition(n, k));
 
       var available = new System.Collections.Generic.List<int>(Enumerable.Range(0, n));
 
@@ -69,7 +69,7 @@ namespace Flux.Permutations
 
       for (int i = 0; i < k; i++)
       {
-        int blockSize = IBinaryInteger.Factorial(n - i - 1) / IBinaryInteger.Factorial(n - k);
+        int blockSize = BinaryInteger.Factorial(n - i - 1) / BinaryInteger.Factorial(n - k);
         int idx = rank / blockSize;
         rank %= blockSize;
         perm[i] = available[idx];
@@ -95,7 +95,7 @@ namespace Flux.Permutations
 
     public static int[] UnrankPermutationWithRepetition(int rank, int n, int k)
     {
-      System.ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(rank, IBinaryInteger.CountPermutationsWithRepetition(n, k));
+      System.ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(rank, BinaryInteger.CountPermutationsWithRepetition(n, k));
 
       var perm = new int[k];
 

@@ -15,7 +15,7 @@ namespace Flux.ChecksumGenerators
     {
       m_hash = unchecked((uint)hash);
 
-      m_lookupTable = IBinaryInteger.GetVanEckSequence(256).Take(256).Select((e, i) => (e == 0 ? i : e) * 256 * i).Select(bi => (uint)bi).ToArray();
+      m_lookupTable = BinaryInteger.GetVanEckSequence(256).Take(256).Select((e, i) => (e == 0 ? i : e) * 256 * i).Select(bi => (uint)bi).ToArray();
     }
     public Crc32(int[] lookupTable)
     {

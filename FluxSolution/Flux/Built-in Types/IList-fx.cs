@@ -31,8 +31,10 @@ namespace Flux
       /// <summary>
       /// <para>Creates a new sequence of all pair indices for which values when added equals the specified sum.</para>
       /// </summary>
-      public System.Collections.Generic.IEnumerable<(T, T)> GetPairsEqualToSum(T sum)
+      public System.Collections.Generic.List<(T, T)> GetPairsEqualToSum(T sum)
       {
+        var pairs = new System.Collections.Generic.List<(T, T)>();
+
         for (var i = 0; i < source.Count; i++)
         {
           var si = source[i];
@@ -42,9 +44,11 @@ namespace Flux
             var ti = source[i];
 
             if (si + ti == sum)
-              yield return (si, ti);
+              pairs.Add((si, ti));
           }
         }
+
+        return pairs;
       }
 
       #endregion

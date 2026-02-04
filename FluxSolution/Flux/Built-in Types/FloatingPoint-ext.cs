@@ -1,6 +1,6 @@
 ﻿namespace Flux
 {
-  public static class IFloatingPoint
+  public static class FloatingPoint
   {
     #region RoundHalfToAlternating (state variable)
 
@@ -11,6 +11,18 @@
     extension<TFloat>(TFloat)
       where TFloat : System.Numerics.IFloatingPoint<TFloat>
     {
+      public static TFloat GetBaseEpsilon()
+        => TFloat.Zero switch
+        {
+          decimal => TFloat.CreateChecked(decimal.DefaultBaseEpsilon), // ~28-29 digits precision
+          double => TFloat.CreateChecked(double.DefaultBaseEpsilon), // ~15-16 digits precision
+          float => TFloat.CreateChecked(float.DefaultBaseEpsilon), // ~7 digits precision
+          System.Runtime.InteropServices.NFloat when System.Runtime.InteropServices.NFloat.Size == 8 => TFloat.CreateChecked(double.DefaultBaseEpsilon), // ~15-16 digits precision
+          System.Runtime.InteropServices.NFloat when System.Runtime.InteropServices.NFloat.Size == 4 => TFloat.CreateChecked(float.DefaultBaseEpsilon), // ~7 digits precision
+          System.Half => TFloat.CreateChecked(System.Half.DefaultBaseEpsilon), // ~3 digits precision
+          _ => throw new NotImplementedException()
+        };
+
       #region Ceiling..
 
       /// <summary>
@@ -186,6 +198,57 @@
 
       #endregion
 
+      #region EqualsWithin
+
+      /// <summary>
+      /// <para>Perform an absolute equality test.</para>
+      /// <para>Absolute equality checks if the absolute difference between <paramref name="value"/> and <paramref name="other"/> is smaller than a predefined <paramref name="absoluteTolerance"/>. This is useful when you want to ensure the numbers are "close enough" without considering their scale.</para>
+      /// <para>Absolute equality is simpler and works well for small numbers or fixed tolerances.</para>
+      /// </summary>
+      /// <param name="value"></param>
+      /// <param name="other"></param>
+      /// <param name="absoluteTolerance">E.g. 1e-10.</param>
+      /// <returns></returns>
+      public static bool EqualsWithinAbsoluteTolerance(TFloat value, TFloat other, TFloat absoluteTolerance)
+      {
+        if (value == other)
+          return true;
+
+        if (TFloat.IsNaN(value) || TFloat.IsNaN(other))
+          return false;
+
+        if (TFloat.IsInfinity(value) || TFloat.IsInfinity(other))
+          return value == other;
+
+        return TFloat.Abs(value - other) <= absoluteTolerance;
+      }
+
+      /// <summary>
+      /// <para>Perform a relative equality test.</para>
+      /// <para>Relative equality considers the scale of the numbers by dividing the absolute difference by the magnitude of the numbers. This is useful when comparing numbers that may vary significantly in scale.</para>
+      /// <para>Relative equality is better for larger numbers or numbers with varying scales, as it adjusts the tolerance dynamically.</para>
+      /// </summary>
+      /// <typeparam name="TRelativeTolerance"></typeparam>
+      /// <param name="value"></param>
+      /// <param name="other"></param>
+      /// <param name="relativeTolerance">E.g. 1e-10.</param>
+      /// <returns></returns>
+      public static bool EqualsWithinRelativeTolerance(TFloat value, TFloat other, TFloat relativeTolerance)
+      {
+        if (value == other)
+          return true;
+
+        if (TFloat.IsNaN(value) || TFloat.IsNaN(other))
+          return false;
+
+        if (TFloat.IsInfinity(value) || TFloat.IsInfinity(other))
+          return value == other;
+
+        return TFloat.Abs(value - other) <= relativeTolerance * TFloat.Abs(TFloat.MaxMagnitude(value, other));
+      }
+
+      #endregion
+
       #region FallingFactorial (generalized)
 
       /// <summary>
@@ -242,7 +305,7 @@
         => (TFloat.CreateChecked(3) * a * b * c) / (a * b + b * c + c * a);
 
       public static System.Collections.Generic.IEnumerable<TFloat> HarmonicSequence(TFloat a, TFloat d)
-        => INumber.ArithmeticSequence(a, d).Select(an => TFloat.One / an);
+        => Number.ArithmeticSequence(a, d).Select(an => TFloat.One / an);
 
       public static TFloat HarmonicSequenceNthTerm<TInteger>(TFloat a, TFloat d, TInteger n)
         where TInteger : System.Numerics.IBinaryInteger<TInteger>
@@ -376,11 +439,11 @@
       public static TFloat NativeDecrement(TFloat value)
         => value switch
         {
-          decimal dfp128 => TFloat.CreateChecked(dfp128 - 1e-28m),
-          double bfp64 => TFloat.CreateChecked(double.BitDecrement(bfp64)),
-          float bfp32 => TFloat.CreateChecked(float.BitDecrement(bfp32)),
-          System.Half bfp16 => TFloat.CreateChecked(System.Half.BitDecrement(bfp16)),
-          System.Runtime.InteropServices.NFloat nf => TFloat.CreateChecked(System.Runtime.InteropServices.NFloat.BitDecrement(nf)),
+          decimal dfp128 => TFloat.CreateChecked(decimal.NativeDecrement(dfp128)),
+          double bfp64 => TFloat.CreateChecked(double.NativeDecrement(bfp64)),
+          float bfp32 => TFloat.CreateChecked(float.NativeDecrement(bfp32)),
+          System.Half bfp16 => TFloat.CreateChecked(System.Half.NativeDecrement(bfp16)),
+          System.Runtime.InteropServices.NFloat nf => TFloat.CreateChecked(System.Runtime.InteropServices.NFloat.NativeDecrement(nf)),
           _ => throw new System.NotImplementedException(),
         };
 
@@ -393,11 +456,11 @@
       public static TFloat NativeIncrement(TFloat value)
         => value switch
         {
-          decimal dfp128 => TFloat.CreateChecked(dfp128 + 1e-28m),
-          double bfp64 => TFloat.CreateChecked(double.BitIncrement(bfp64)),
-          float bfp32 => TFloat.CreateChecked(float.BitIncrement(bfp32)),
-          System.Half bfp16 => TFloat.CreateChecked(System.Half.BitIncrement(bfp16)),
-          System.Runtime.InteropServices.NFloat nf => TFloat.CreateChecked(System.Runtime.InteropServices.NFloat.BitIncrement(nf)),
+          decimal dfp128 => TFloat.CreateChecked(decimal.NativeIncrement(dfp128)),
+          double bfp64 => TFloat.CreateChecked(double.NativeIncrement(bfp64)),
+          float bfp32 => TFloat.CreateChecked(float.NativeIncrement(bfp32)),
+          System.Half bfp16 => TFloat.CreateChecked(System.Half.NativeIncrement(bfp16)),
+          System.Runtime.InteropServices.NFloat nf => TFloat.CreateChecked(System.Runtime.InteropServices.NFloat.NativeIncrement(nf)),
           _ => throw new System.NotImplementedException(),
         };
 
@@ -407,30 +470,89 @@
 
       /// <summary>
       /// <para>Indicates whether a <paramref name="value"/> is near an integer and if so outputs the <paramref name="integer"/> as a parameter.</para>
+      /// <para>The algorithm queries <see cref="GetBaseEpsilon{TFloat}"/> for a default tolerance value.</para>
       /// </summary>
-      /// <typeparam name="TFloat"></typeparam>
       /// <param name="value"></param>
       /// <param name="integer"></param>
       /// <returns></returns>
       public static bool IsNearInteger(TFloat value, out TFloat integer)
-      {
-        var scaledEpsilon = ScaledEpsilon(value);
+        => IsNearInteger(value, out integer, GetBaseEpsilon<TFloat>());
+      // Older works!
+      //{
+      //  var half = TFloat.CreateChecked(0.5);
 
+      //  integer = value >= TFloat.Zero ? TFloat.Floor(value + half) : TFloat.Ceiling(value - half); // Find mathematically nearest integer without midpoint bias.
+
+      //  var scaledEpsilon = ScaledBaseEpsilon(value);
+
+      //  return TFloat.Abs(value - integer) <= scaledEpsilon;
+      //}
+
+      /// <summary>
+      /// <para>Indicates whether a <paramref name="value"/> is near an integer and if so outputs the <paramref name="integer"/> as a parameter.</para>
+      /// <para>The algorithm applies <paramref name="baseEpsilon"/> for a custom tolerance level.</para>
+      /// </summary>
+      /// <param name="value"></param>
+      /// <param name="integer"></param>
+      /// <param name="baseEpsilon"></param>
+      /// <returns></returns>
+      public static bool IsNearInteger(TFloat value, out TFloat integer, TFloat baseEpsilon)
+      {
         var half = TFloat.CreateChecked(0.5);
 
         integer = value >= TFloat.Zero ? TFloat.Floor(value + half) : TFloat.Ceiling(value - half); // Find mathematically nearest integer without midpoint bias.
 
-        return TFloat.Abs(value - integer) <= scaledEpsilon;
+        return TFloat.Abs(value - integer) <= baseEpsilon * (TFloat.One + value);
       }
 
       /// <summary>
-      /// <para>If a value is near an integer, round to that integer, otherwise return the value. This algorithm uses <see cref="GetScaledEpsilon{TFloat}(TFloat)"/> which is based on <typeparamref name="TFloat"/>.</para>
+      /// <para>If a value is near an integer, round to that integer, otherwise return the value.</para>
+      /// <para>The algorithm queries <see cref="GetBaseEpsilon{TFloat}"/> for a default tolerance value.</para>
       /// </summary>
       /// <typeparam name="TFloat"></typeparam>
       /// <param name="value"></param>
       /// <returns></returns>
       public static TFloat RoundNearInteger(TFloat value)
-        => IsNearInteger(value, out var integer) ? integer : value;
+        => IsNearInteger(value, out var integer, GetBaseEpsilon<TFloat>()) ? integer : value;
+
+      /// <summary>
+      /// <para>If a value is near an integer, round to that integer, otherwise return the value.</para>
+      /// <para>The algorithm applies <paramref name="baseEpsilon"/> for a custom tolerance level.</para>
+      /// </summary>
+      /// <param name="value"></param>
+      /// <param name="baseEpsilon"></param>
+      /// <returns></returns>
+      public static TFloat RoundNearInteger(TFloat value, TFloat baseEpsilon)
+        => IsNearInteger(value, out var integer, baseEpsilon) ? integer : value;
+
+      #endregion
+
+      #region NearlyEqual
+
+      public static bool NearlyEqual(TFloat value, TFloat other)
+        => NearlyEqual(value, other, GetBaseEpsilon<TFloat>());
+
+      /// <summary>
+      /// <para>Perform both an absolute and a relative equality test for more robust comparisons. Returns true if any test is considered equal, otherwise false.</para>
+      /// </summary>
+      /// <typeparam name="TBaseEpsilon"></typeparam>
+      /// <param name="value"></param>
+      /// <param name="other"></param>
+      /// <param name="baseEpsilon">E.g. 1e-12</param>
+      /// <returns></returns>
+      public static bool NearlyEqual(TFloat value, TFloat other, TFloat baseEpsilon)
+      {
+        if (value == other)
+          return true;
+
+        if (TFloat.IsNaN(value) || TFloat.IsNaN(other))
+          return false;
+
+        if (TFloat.IsInfinity(value) || TFloat.IsInfinity(other))
+          return value == other;
+
+        return TFloat.Abs(value - other) <= (baseEpsilon * (TFloat.One + TFloat.Abs(TFloat.MaxMagnitude(value, other))));
+      }
 
       #endregion
 
@@ -563,20 +685,22 @@
 
       #region ScaledEpsilon
 
-      public static TFloat ScaledEpsilon(TFloat value)
+
+      public static TFloat ScaledBaseEpsilon(TFloat value)
       {
         var baseEpsilon = value switch
         {
-          decimal => TFloat.CreateChecked(decimal.DefaultEpsilonScalar), // ~28-29 digits precision
-          double => TFloat.CreateChecked(double.DefaultEpsilonScalar), // ~15-16 digits precision
-          float => TFloat.CreateChecked(float.DefaultEpsilonScalar), // ~7 digits precision
-          System.Runtime.InteropServices.NFloat when System.Runtime.InteropServices.NFloat.Size == 8 => TFloat.CreateChecked(double.DefaultEpsilonScalar),
-          System.Runtime.InteropServices.NFloat when System.Runtime.InteropServices.NFloat.Size == 4 => TFloat.CreateChecked(float.DefaultEpsilonScalar),
-          System.Half => TFloat.CreateChecked(1e-3f), // ~3 digits precision
+          decimal => TFloat.CreateChecked(decimal.DefaultBaseEpsilon), // ~28-29 digits precision
+          double => TFloat.CreateChecked(double.DefaultBaseEpsilon), // ~15-16 digits precision
+          float => TFloat.CreateChecked(float.DefaultBaseEpsilon), // ~7 digits precision
+          System.Runtime.InteropServices.NFloat when System.Runtime.InteropServices.NFloat.Size == 8 => TFloat.CreateChecked(double.DefaultBaseEpsilon), // ~15-16 digits precision
+          System.Runtime.InteropServices.NFloat when System.Runtime.InteropServices.NFloat.Size == 4 => TFloat.CreateChecked(float.DefaultBaseEpsilon), // ~7 digits precision
+          System.Half => TFloat.CreateChecked(System.Half.DefaultBaseEpsilon), // ~3 digits precision
           _ => throw new NotImplementedException()
         };
 
-        return TFloat.Abs(value) * baseEpsilon + baseEpsilon;
+        return baseEpsilon + baseEpsilon * TFloat.Abs(value); // Multiplying base-epsilon works well for large numbers, add base-epsilon works for numbers near zero where scaling would make the tolerance too small.
+        //return baseEpsilon * (TFloat.One + TFloat.Abs(value)); // Alternative, mathematically the same.
       }
 
       #endregion
@@ -643,7 +767,7 @@
       /// <param name="radix"></param>
       /// <returns></returns>
       public static TFloat RescaleLogarithmicToLinear(TFloat y, TFloat y0, TFloat y1, TFloat x0, TFloat x1, TFloat radix)
-        => INumber.Rescale(TFloat.Log(y, radix), TFloat.Log(y0, radix), TFloat.Log(y1, radix), x0, x1); // Extract the numbers and use the standard Rescale() function for the math.
+        => Number.Rescale(TFloat.Log(y, radix), TFloat.Log(y0, radix), TFloat.Log(y1, radix), x0, x1); // Extract the numbers and use the standard Rescale() function for the math.
     }
 
     extension<TFloat>(TFloat)
@@ -663,7 +787,7 @@
       /// <param name="radix"></param>
       /// <returns></returns>
       public static TFloat RescaleLinearToLogarithmic(TFloat x, TFloat x0, TFloat x1, TFloat y0, TFloat y1, TFloat radix)
-      => TFloat.Pow(radix, INumber.Rescale(x, x0, x1, TFloat.Log(y0, radix), TFloat.Log(y1, radix))); // Extract the numbers and use the standard Rescale() function for the math.
+      => TFloat.Pow(radix, Number.Rescale(x, x0, x1, TFloat.Log(y0, radix), TFloat.Log(y1, radix))); // Extract the numbers and use the standard Rescale() function for the math.
     }
 
     extension<TFloat>(TFloat)
@@ -799,6 +923,11 @@
     {
       #region ToBigRational
 
+      /// <summary>
+      /// <para>Creates a new <see cref="Numerics.BigRational"/> by approximating over a specified number of iterations.</para>
+      /// </summary>
+      /// <param name="maxApproximationIterations"></param>
+      /// <returns></returns>
       public Numerics.BigRational ToBigRational(int maxApproximationIterations = 101)
       {
         if (TFloat.IsZero(x)) return Numerics.BigRational.Zero;
@@ -822,7 +951,7 @@
           return ar + System.Numerics.BigInteger.CreateChecked(xW);
         }
 
-        for (var counter = 0; counter < maxApproximationIterations && !TFloat.IsZero(x); counter++)
+        while (--maxApproximationIterations >= 0 && !TFloat.IsZero(x))
         {
           var r = TFloat.One / x;
           var rR = TFloat.Round(r);
@@ -849,10 +978,10 @@
 
       #endregion
 
-      #region ToStringWithCountDecimals
+      #region ToStringWithCustomDecimals
 
-      public string ToStringWithCountDecimals(int numberOfDecimals = 339)
-        => x.ToString(IBinaryInteger.GetFormatStringWithCountDecimals(numberOfDecimals), null);
+      public string ToStringWithCustomDecimals(int numberOfDecimals = 339)
+        => x.ToString(BinaryInteger.GetFormatStringWithCountDecimals(numberOfDecimals), null);
 
       #endregion
     }

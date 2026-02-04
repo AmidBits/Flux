@@ -15,7 +15,7 @@ namespace Flux.RandomNumberGenerators
     private System.UInt128 m_state;
 
     private Lecuyer128(System.UInt128 seed) => m_state = unchecked((seed << 1) | 1);
-    public Lecuyer128() : this(IBinaryInteger.ReverseBits((System.UInt128)System.Diagnostics.Stopwatch.GetTimestamp()) | (System.UInt128)System.Diagnostics.Stopwatch.GetTimestamp()) { }
+    public Lecuyer128() : this(BinaryInteger.ReverseBits((System.UInt128)System.Diagnostics.Stopwatch.GetTimestamp()) | (System.UInt128)System.Diagnostics.Stopwatch.GetTimestamp()) { }
 
     internal override ulong SampleUInt64()
     {

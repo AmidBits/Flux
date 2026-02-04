@@ -9,7 +9,7 @@
       var n = 5;
       var k = 3;
 
-      for (var i = Flux.IBinaryInteger.CountCombinationsWithoutRepetition(n, k) - 1; i >= 0; i--)
+      for (var i = Flux.BinaryInteger.CountCombinationsWithoutRepetition(n, k) - 1; i >= 0; i--)
       {
         var ucn = Flux.Combinations.CombinatorialNumberSystem.UnrankCombinationWithoutRepetition(i, n, k);
         var rcn = Flux.Combinations.CombinatorialNumberSystem.RankCombinationWithoutRepetition(ucn, n, k);
@@ -27,7 +27,7 @@
       var n = 5;
       var k = 3;
 
-      for (var i = Flux.IBinaryInteger.CountCombinationsWithRepetition(n, k) - 1; i >= 0; i--)
+      for (var i = Flux.BinaryInteger.CountCombinationsWithRepetition(n, k) - 1; i >= 0; i--)
       {
         var ucr = Flux.Combinations.CombinatorialNumberSystem.UnrankCombinationWithRepetition(i, n, k);
         var rcr = Flux.Combinations.CombinatorialNumberSystem.RankCombinationWithRepetition(ucr, n, k);
@@ -45,7 +45,7 @@
       var n = 5;
       var k = 3;
 
-      for (var i = Flux.IBinaryInteger.CountPermutationsWithoutRepetition(n, k) - 1; i >= 0; i--)
+      for (var i = Flux.BinaryInteger.CountPermutationsWithoutRepetition(n, k) - 1; i >= 0; i--)
       {
         var upn = Flux.Permutations.Factoradic.UnrankPermutationWithoutRepetition(i, n, k);
         var rpn = Flux.Permutations.Factoradic.RankPermutationWithoutRepetition(upn, n, k);
@@ -63,7 +63,7 @@
       var n = 5;
       var k = 3;
 
-      for (var i = Flux.IBinaryInteger.CountPermutationsWithRepetition(n, k) - 1; i >= 0; i--)
+      for (var i = Flux.BinaryInteger.CountPermutationsWithRepetition(n, k) - 1; i >= 0; i--)
       {
         var upr = Flux.Permutations.Factoradic.UnrankPermutationWithRepetition(i, n, k);
         var rpr = Flux.Permutations.Factoradic.RankPermutationWithRepetition(upr, n, k);

@@ -10,14 +10,14 @@
 
       for (var i = 0; i < k; i++)
         for (var j = (i == 0 ? 0 : combo[i - 1] + 1); j < combo[i]; j++)
-          rank += IBinaryInteger.BinomialCoefficient(n - j - 1, k - i - 1);
+          rank += BinaryInteger.BinomialCoefficient(n - j - 1, k - i - 1);
 
       return rank;
     }
 
     public static int[] UnrankCombinationWithoutRepetition(int rank, int n, int k)
     {
-      System.ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(rank, IBinaryInteger.CountCombinationsWithoutRepetition(n, k));
+      System.ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(rank, BinaryInteger.CountCombinationsWithoutRepetition(n, k));
 
       var combo = new int[k];
 
@@ -25,9 +25,9 @@
 
       for (var i = 0; i < k; i++)
       {
-        while (IBinaryInteger.BinomialCoefficient(n - x - 1, k - i - 1) <= rank)
+        while (BinaryInteger.BinomialCoefficient(n - x - 1, k - i - 1) <= rank)
         {
-          rank -= IBinaryInteger.BinomialCoefficient(n - x - 1, k - i - 1);
+          rank -= BinaryInteger.BinomialCoefficient(n - x - 1, k - i - 1);
 
           x++;
         }
@@ -48,14 +48,14 @@
 
       for (var i = 0; i < k; i++)
         for (var j = (i == 0 ? 0 : combo[i - 1]); j < combo[i]; j++)
-          rank += IBinaryInteger.BinomialCoefficient(n - j + k - i - 2, k - i - 1);
+          rank += BinaryInteger.BinomialCoefficient(n - j + k - i - 2, k - i - 1);
 
       return rank;
     }
 
     public static int[] UnrankCombinationWithRepetition(int rank, int n, int k)
     {
-      System.ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(rank, IBinaryInteger.CountCombinationsWithRepetition(n, k));
+      System.ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(rank, BinaryInteger.CountCombinationsWithRepetition(n, k));
 
       var combo = new int[k];
 
@@ -63,9 +63,9 @@
 
       for (var i = 0; i < k; i++)
       {
-        while (IBinaryInteger.BinomialCoefficient(n - x + k - i - 2, k - i - 1) <= rank)
+        while (BinaryInteger.BinomialCoefficient(n - x + k - i - 2, k - i - 1) <= rank)
         {
-          rank -= IBinaryInteger.BinomialCoefficient(n - x + k - i - 2, k - i - 1);
+          rank -= BinaryInteger.BinomialCoefficient(n - x + k - i - 2, k - i - 1);
 
           x++;
         }

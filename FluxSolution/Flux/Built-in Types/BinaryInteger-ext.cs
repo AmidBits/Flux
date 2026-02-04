@@ -1,7 +1,9 @@
 ﻿#define ROOTN_NEWTONRAPSON // or ROOTN_BINARYMETHOD
+using System.Data;
+
 namespace Flux
 {
-  public static class IBinaryInteger
+  public static class BinaryInteger
   {
     extension<TInteger>(TInteger)
       where TInteger : System.Numerics.IBinaryInteger<TInteger>
@@ -16,7 +18,7 @@ namespace Flux
       /// <typeparam name="TSelf"></typeparam>
       /// <returns></returns>
       public static System.Collections.Generic.IEnumerable<(TInteger Number, TInteger AliqoutSum)> GetAbundantNumbers()
-        => INumber.LoopVerge(TInteger.CreateChecked(3), TInteger.One).AsParallel().AsOrdered().Select(n => (Number: n, SumDivisors(n).AliquotSum)).Where(x => x.AliquotSum > x.Number);
+        => Number.LoopVerge(TInteger.CreateChecked(3), TInteger.One).AsParallel().AsOrdered().Select(n => (Number: n, SumDivisors(n).AliquotSum)).Where(x => x.AliquotSum > x.Number);
 
       /// <summary>
       /// <para>Creates a new sequence of highly abundant numbers.</para>
@@ -32,7 +34,7 @@ namespace Flux
       {
         var largestSumOfDivisors = TInteger.Zero;
 
-        foreach (var index in INumber.LoopVerge(TInteger.One, TInteger.One))
+        foreach (var index in Number.LoopVerge(TInteger.One, TInteger.One))
           if (SumDivisors(index).Sum is var sumOfDivisors && sumOfDivisors > largestSumOfDivisors)
           {
             yield return (index, sumOfDivisors);
@@ -274,7 +276,7 @@ namespace Flux
       /// <typeparam name="TInteger"></typeparam>
       /// <returns></returns>
       public static System.Collections.Generic.IEnumerable<TInteger> GetCatalanSequence()
-        => INumber.LoopVerge(TInteger.Zero, TInteger.One).AsParallel().AsOrdered().Select(GetCatalanNumber);
+        => Number.LoopVerge(TInteger.Zero, TInteger.One).AsParallel().AsOrdered().Select(GetCatalanNumber);
 
       #endregion
 
@@ -311,7 +313,7 @@ namespace Flux
       /// <see href="https://en.wikipedia.org/wiki/Centered_polygonal_number"/>
       /// <remarks>This function runs indefinitely, if allowed.</remarks>
       public static System.Collections.Generic.IEnumerable<TInteger> GetCenteredPolygonalNumberSequence(TInteger k)
-        => INumber.LoopVerge(TInteger.Zero, TInteger.One).Select(n => GetCenteredPolygonalNumber(k, n));
+        => Number.LoopVerge(TInteger.Zero, TInteger.One).Select(n => GetCenteredPolygonalNumber(k, n));
 
       #endregion
 
@@ -324,7 +326,7 @@ namespace Flux
       /// <remarks>This function generate results until the type <typeparamref name="TInteger"/> under/overflows in any calculation. No exception is thrown.</remarks>
       /// <returns></returns>
       public static System.Collections.Generic.IEnumerable<TInteger> GetCompositeNumbers()
-        => INumber.LoopVerge(TInteger.One, TInteger.One).AsParallel().AsOrdered().Where(IsCompositeNumber);
+        => Number.LoopVerge(TInteger.One, TInteger.One).AsParallel().AsOrdered().Where(IsCompositeNumber);
 
       /// <summary>
       /// <para>Creates a new sequence of highly composite numbers.</para>
@@ -336,7 +338,7 @@ namespace Flux
       {
         var largestCount = TInteger.Zero;
 
-        foreach (var tuple in INumber.LoopVerge(TInteger.One, TInteger.One).AsParallel().AsOrdered().Select(n => (Number: n, Count: CountDivisors(n))))
+        foreach (var tuple in Number.LoopVerge(TInteger.One, TInteger.One).AsParallel().AsOrdered().Select(n => (Number: n, Count: CountDivisors(n))))
           if (tuple.Count > largestCount)
           {
             yield return tuple;
@@ -604,7 +606,7 @@ namespace Flux
       {
         if (TInteger.IsZero(n)) throw new System.DivideByZeroException();
 
-        var q = TInteger.CreateChecked(INumber.Sign(n)) * ((TInteger.IsNegative(a) == TInteger.IsNegative(n) ? a : (a - (n - TInteger.CopySign(TInteger.One, n)))) / n);
+        var q = TInteger.CreateChecked(Number.Sign(n)) * ((TInteger.IsNegative(a) == TInteger.IsNegative(n) ? a : (a - (n - TInteger.CopySign(TInteger.One, n)))) / n);
 
         return (q, a - TInteger.Abs(n) * q);
       }
@@ -976,16 +978,31 @@ namespace Flux
       #region GenerateSubRanges
 
       /// <summary>
-      /// <para>Generates a new sequence of <see cref="System.Range"/> objects of <paramref name="subLength"/> (except the last may be shorter) from the total length of a super-sequence. Essentially "splitting" a sequence into specified sub-lengths.</para>
+      /// <para>Generates a new sequence of <see cref="System.Range"/> objects, each with <paramref name="subLength"/> (the last may contain less) elements from the total length of a super-sequence.</para>
+      /// <para>How many items do you want in each sub-range?</para>
       /// </summary>
       /// <param name="length"></param>
       /// <param name="subLength"></param>
       /// <returns></returns>
-      public static System.Collections.Generic.IEnumerable<System.Range> GenerateSubRanges(TInteger length, TInteger subLength)
+      public static System.Collections.Generic.List<System.Range> GenerateSubRangesBySubLength(TInteger length, TInteger subLength)
       {
+        var subRanges = new System.Collections.Generic.List<System.Range>();
+
         for (var index = TInteger.Zero; index < length; index += subLength)
-          yield return RangeExtensions.FromOffsetAndLength(int.CreateChecked(index), int.CreateChecked(TInteger.Min(subLength, length - index)));
+          subRanges.Add(RangeExtensions.FromOffsetAndLength(int.CreateChecked(index), int.CreateChecked(TInteger.Min(subLength, length - index))));
+
+        return subRanges;
       }
+
+      /// <summary>
+      /// <para>Generates a new sequence with <paramref name="count"/> <see cref="System.Range"/> objects.</para>
+      /// <para>How many sub-ranges do you want?</para>
+      /// </summary>
+      /// <param name="length"></param>
+      /// <param name="count"></param>
+      /// <returns></returns>
+      public static System.Collections.Generic.List<System.Range> GenerateCountSubRanges(TInteger length, TInteger count)
+        => GenerateSubRangesBySubLength(length, CeilingDivRem(length, count).Quotient);
 
       #endregion
 
@@ -1190,7 +1207,7 @@ namespace Flux
 
         var logR = System.Numerics.BigInteger.Log(System.Numerics.BigInteger.CreateChecked(abs), double.CreateChecked(Units.Radix.AssertMember(radix)));
 
-        var ilogR = TInteger.CreateChecked(IFloatingPoint.IsNearInteger(logR, out var integer) ? integer : double.Floor(logR));
+        var ilogR = TInteger.CreateChecked(FloatingPoint.IsNearInteger(logR, out var integer) ? integer : double.Floor(logR));
 
         return (TInteger.CopySign(ilogR, value), TInteger.CopySign(IsPowOf(abs, radix) ? ilogR : ilogR + TInteger.One, value));
       }
@@ -1209,7 +1226,7 @@ namespace Flux
 
         var log10 = System.Numerics.BigInteger.Log10(System.Numerics.BigInteger.CreateChecked(TInteger.Abs(value)));
 
-        var ilog10 = IFloatingPoint.IsNearInteger(log10, out var integer) ? integer : double.Floor(log10);
+        var ilog10 = FloatingPoint.IsNearInteger(log10, out var integer) ? integer : double.Floor(log10);
 
         return TInteger.CopySign(TInteger.CreateChecked(ilog10), value);
       }
@@ -1228,7 +1245,7 @@ namespace Flux
 
         var logE = System.Numerics.BigInteger.Log(System.Numerics.BigInteger.CreateChecked(TInteger.Abs(value)));
 
-        var ilogE = IFloatingPoint.IsNearInteger(logE, out var integer) ? integer : double.Floor(logE);
+        var ilogE = FloatingPoint.IsNearInteger(logE, out var integer) ? integer : double.Floor(logE);
 
         return TInteger.CopySign(TInteger.CreateChecked(ilogE), value);
       }
@@ -1377,7 +1394,7 @@ namespace Flux
       /// <typeparam name="TInteger"></typeparam>
       /// <returns></returns>
       public static System.Collections.Generic.IEnumerable<TInteger> GetMersenneNumberSequence()
-        => INumber.LoopVerge(TInteger.One, TInteger.One).Select(GetMersenneNumber);
+        => Number.LoopVerge(TInteger.One, TInteger.One).Select(GetMersenneNumber);
 
       /// <summary>
       /// <para>Creates a new sequence of Mersenne primes.</para>
@@ -1717,7 +1734,7 @@ namespace Flux
       {
         var log = System.Numerics.BigInteger.Log(System.Numerics.BigInteger.CreateChecked(value), double.CreateChecked(Units.Radix.AssertMember(radix)));
 
-        return IFloatingPoint.IsNearInteger(log, out var ilog) && Pow(TInteger.CreateChecked(radix), TInteger.CreateChecked(ilog)) == value;
+        return FloatingPoint.IsNearInteger(log, out var ilog) && Pow(TInteger.CreateChecked(radix), TInteger.CreateChecked(ilog)) == value;
       }
 
       /// <summary>
@@ -2121,7 +2138,7 @@ namespace Flux
         {
           TInteger result;
 
-          foreach (var root in INumber.LoopVerge(TInteger.One, TInteger.One))
+          foreach (var root in Number.LoopVerge(TInteger.One, TInteger.One))
           {
             try { result = Pow(root, nth); } catch { break; }
 

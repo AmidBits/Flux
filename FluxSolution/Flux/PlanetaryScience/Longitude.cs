@@ -14,7 +14,7 @@ namespace Flux.PlanetaryScience
     private readonly Units.Angle m_angle;
 
     private Longitude(double angleDeg)
-      => m_angle = new(INumber.WrapAround(angleDeg, MinValue, MaxValue), Units.AngleUnit.Degree);
+      => m_angle = new(Number.WrapAround(angleDeg, MinValue, MaxValue), Units.AngleUnit.Degree);
 
     /// <summary>Creates a new <see cref="Longitude"/> from the specified <paramref name="angle"/>.</summary>
     public Longitude(Units.Angle angle)
@@ -39,7 +39,7 @@ namespace Flux.PlanetaryScience
     public double GetMercatorProjectedX()
       => Angle.GetUnitValue(Units.AngleUnit.Radian);
 
-    public string ToDecimalString() => m_angle.GetUnitValue(Units.AngleUnit.Degree).ToString(IBinaryInteger.GetFormatStringWithCountDecimals(6));
+    public string ToDecimalString() => m_angle.GetUnitValue(Units.AngleUnit.Degree).ToString(BinaryInteger.GetFormatStringWithCountDecimals(6));
 
     public string ToDmsNotationString()
     {

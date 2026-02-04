@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static partial class INumber
+  public static partial class Number
   {
     /// <summary>
     /// <para>Sign step function that guarantees [-1, 0, 1] for output.</para>
@@ -123,9 +123,9 @@ namespace Flux
       /// <param name="proximity">This is the absolute tolerance of proximity, on either side of the <paramref name="position"/>.</param>
       /// <returns></returns>
       public static TNumber DetentPosition(TNumber value, TNumber position, TNumber proximity)
-        => EqualsWithinAbsoluteTolerance(position, value, proximity)
-        ? position // Detent to the position.
-        : value;
+        => TNumber.Abs(position - value) <= proximity // Inquire whether the difference is within to specified proximity.
+        ? position // If so, detent to the position.
+        : value; // Otherwise leave it where it is.
 
       #endregion
 
@@ -136,21 +136,29 @@ namespace Flux
       /// <para>Absolute equality checks if the absolute difference between <paramref name="value"/> and <paramref name="other"/> is smaller than a predefined <paramref name="absoluteTolerance"/>. This is useful when you want to ensure the numbers are "close enough" without considering their scale.</para>
       /// <para>Absolute equality is simpler and works well for small numbers or fixed tolerances.</para>
       /// </summary>
-      /// <typeparam name="TNumber"></typeparam>
       /// <param name="value"></param>
       /// <param name="other"></param>
       /// <param name="absoluteTolerance">E.g. 1e-10.</param>
       /// <returns></returns>
       public static bool EqualsWithinAbsoluteTolerance(TNumber value, TNumber other, TNumber absoluteTolerance)
-        => value == other
-        || TNumber.Abs(value - other) <= absoluteTolerance;
+      {
+        if (value == other)
+          return true;
+
+        if (TNumber.IsNaN(value) || TNumber.IsNaN(other))
+          return false;
+
+        if (TNumber.IsInfinity(value) || TNumber.IsInfinity(other))
+          return value == other;
+
+        return TNumber.Abs(value - other) <= absoluteTolerance;
+      }
 
       /// <summary>
       /// <para>Perform a relative equality test.</para>
       /// <para>Relative equality considers the scale of the numbers by dividing the absolute difference by the magnitude of the numbers. This is useful when comparing numbers that may vary significantly in scale.</para>
-      /// <para>Relative equality is better for large numbers or numbers with varying scales, as it adjusts the tolerance dynamically.</para>
+      /// <para>Relative equality is better for larger numbers or numbers with varying scales, as it adjusts the tolerance dynamically.</para>
       /// </summary>
-      /// <typeparam name="TNumber"></typeparam>
       /// <typeparam name="TRelativeTolerance"></typeparam>
       /// <param name="value"></param>
       /// <param name="other"></param>
@@ -158,46 +166,41 @@ namespace Flux
       /// <returns></returns>
       public static bool EqualsWithinRelativeTolerance<TRelativeTolerance>(TNumber value, TNumber other, TRelativeTolerance relativeTolerance)
         where TRelativeTolerance : System.Numerics.IFloatingPoint<TRelativeTolerance>
-        => value == other
-        || TRelativeTolerance.CreateChecked(TNumber.Abs(value - other)) <= relativeTolerance * TRelativeTolerance.CreateChecked(TNumber.Abs(TNumber.MaxMagnitude(value, other)));
+      {
+        if (value == other)
+          return true;
 
-      /// <summary>
-      /// <para>Perform both an absolute and a relative equality test for more robust comparisons. Returns true if any test is considered equal, otherwise false.</para>
-      /// </summary>
-      /// <typeparam name="TNumber"></typeparam>
-      /// <typeparam name="TRelativeTolerance"></typeparam>
-      /// <param name="value"></param>
-      /// <param name="other"></param>
-      /// <param name="absoluteTolerance">E.g. 1e-10.</param>
-      /// <param name="relativeTolerance">E.g. 1e-10.</param>
-      /// <returns></returns>
-      public static bool EqualsWithinTolerance<TRelativeTolerance>(TNumber value, TNumber other, TNumber absoluteTolerance, TRelativeTolerance relativeTolerance)
-        where TRelativeTolerance : System.Numerics.IFloatingPoint<TRelativeTolerance>
-        => EqualsWithinAbsoluteTolerance(value, other, absoluteTolerance) || EqualsWithinRelativeTolerance(value, other, relativeTolerance);
+        if (TNumber.IsNaN(value) || TNumber.IsNaN(other))
+          return false;
+
+        if (TNumber.IsInfinity(value) || TNumber.IsInfinity(other))
+          return value == other;
+
+        return TRelativeTolerance.CreateChecked(TNumber.Abs(value - other)) <= relativeTolerance * TRelativeTolerance.CreateChecked(TNumber.Abs(TNumber.MaxMagnitude(value, other)));
+      }
 
       /// <summary>
       /// <para>Perform an equality test involving the most (integer part) or the least (fraction part) <typeparamref name="TSignificantDigits"/> using the specified <paramref name="radix"/>.</para>
-      /// <para>Positive means most <paramref name="significantDigits"/> tolerance on the fraction part.</para>
-      /// <para>Negative means least <paramref name="significantDigits"/> tolerance on the integer part.</para>
+      /// <para>Negative means most <paramref name="significantDigits"/> tolerance on the fraction part.</para>
+      /// <para>Positive means least <paramref name="significantDigits"/> tolerance on the integer part.</para>
       /// <para><see href="https://stackoverflow.com/questions/9180385/is-this-value-valid-float-comparison-that-accounts-for-value-set-number-of-decimal-place"/></para>
       /// </summary>
-      /// <typeparam name="TNumber"></typeparam>
       /// <typeparam name="TSignificantDigits"></typeparam>
       /// <typeparam name="TRadix"></typeparam>
       /// <param name="value"></param>
       /// <param name="other"></param>
-      /// <param name="significantDigits">The tolerance, as the number of significant digits, considered for equality. A positive value for most significant digits on the right side (fraction part). A negative value for least significant digits on the left side (integer part).</param>
-      /// <param name="radix"></param>
+      /// <param name="significantDigits">The tolerance, as the number of significant digits, considered for equality. A negative value for most significant digits on the right side (fraction part). A positive value for least significant digits on the left side (integer part).</param>
+      /// <param name="radix">&gt; 2</param>
       /// <remarks>
-      /// <para>EqualsWithinSignificantDigits(1000.02, 1000.015, 2, 10); // The difference of abs(<paramref name="value"/> - <paramref name="other"/>) is less than or equal to <paramref name="significantDigits"/> in <paramref name="radix"/>, i.e. 0.01 for radix 10.</para>
-      /// <para>EqualsWithinSignificantDigits(1334.261, 1235.272, -2, 10); // The difference of abs(<paramref name="value"/> - <paramref name="other"/>) is less than or equal to negative <paramref name="significantDigits"/> in <paramref name="radix"/>, i.e. 100 for radix 10.</para>
+      /// <para><see langword="true"/> = EqualsWithinSignificantDigits(1000.02, 1000.015, -2, 10); // The difference of abs(<paramref name="value"/> - <paramref name="other"/>) is less than or equal to <paramref name="significantDigits"/> in <paramref name="radix"/>, i.e. 0.01 for radix 10.</para>
+      /// <para><see langword="true"/> = EqualsWithinSignificantDigits(1334.261, 1235.272, 2, 10); // The difference of abs(<paramref name="value"/> - <paramref name="other"/>) is less than or equal to negative <paramref name="significantDigits"/> in <paramref name="radix"/>, i.e. 100 for radix 10.</para>
       /// </remarks>
       /// <returns></returns>
       public static bool EqualsWithinSignificantDigits<TSignificantDigits, TRadix>(TNumber value, TNumber other, TSignificantDigits significantDigits, TRadix radix)
         where TSignificantDigits : System.Numerics.IBinaryInteger<TSignificantDigits>
         where TRadix : System.Numerics.IBinaryInteger<TRadix>
-        => value == other
-        || (double.CreateChecked(TNumber.Abs(value - other)) <= double.Pow(double.CreateChecked(Units.Radix.AssertMember(radix)), -double.CreateChecked(significantDigits)));
+        => value == other // The value and other are equal.
+        || (double.CreateChecked(TNumber.Abs(value - other)) <= double.Pow(double.CreateChecked(Units.Radix.AssertMember(radix)), double.CreateChecked(significantDigits))); // The difference is LTE to the signed significant digits raised-to-the-power-of radix.
 
       #endregion
 
@@ -370,7 +373,7 @@ namespace Flux
       {
         var logR = double.Log(double.CreateChecked(value), double.CreateChecked(radix));
 
-        var ilogR = IFloatingPoint.IsNearInteger(logR, out var integer) ? integer : double.Floor(logR);
+        var ilogR = FloatingPoint.IsNearInteger(logR, out var integer) ? integer : double.Floor(logR);
 
         return (TNumber.CreateChecked(ilogR), logR);
       }
@@ -384,7 +387,7 @@ namespace Flux
       {
         var log10 = double.Log10(double.CreateChecked(value));
 
-        var ilog10 = IFloatingPoint.IsNearInteger(log10, out var integer) ? integer : double.Floor(log10);
+        var ilog10 = FloatingPoint.IsNearInteger(log10, out var integer) ? integer : double.Floor(log10);
 
         return (TNumber.CreateChecked(ilog10), log10);
       }
@@ -398,7 +401,7 @@ namespace Flux
       {
         var logE = double.Log(double.CreateChecked(value));
 
-        var ilogE = IFloatingPoint.IsNearInteger(logE, out var integer) ? integer : double.Floor(logE);
+        var ilogE = FloatingPoint.IsNearInteger(logE, out var integer) ? integer : double.Floor(logE);
 
         return (TNumber.CreateChecked(ilogE), logE);
       }
@@ -604,29 +607,28 @@ namespace Flux
       #region Native..
 
       /// <summary>
-      /// <para>Decrements a value. If integer, then by 1. If floating-point, then by "bit-decrement". If decimal, by 1e-28m.</para>
+      /// <para>Decrements a number. If integer, then by +1. If floating-point, then by "bit-decrement". If decimal, by 1e-28m.</para>
       /// </summary>
-      /// <typeparam name="TNumber"></typeparam>
       /// <param name="value"></param>
       /// <returns></returns>
-      /// <remarks>Infimum, for integer types equal (<paramref name="value"/> - 1) and for floating point types equal (<paramref name="value"/> - epsilon). Other types are not implemented at this time.</remarks>
+      /// <exception cref="System.NotImplementedException"></exception>
       public static TNumber NativeDecrement(TNumber value)
         => value.GetType().IsIBinaryInteger()
         ? checked(value - TNumber.One) // Binary integers are fundamentally the same, so simply subtract one.
         : value switch // Floating point types have structures depending on specific operations to decrement.
         {
-          decimal dfp128 => TNumber.CreateChecked(dfp128 - 1e-28m),
-          double bfp64 => TNumber.CreateChecked(double.BitDecrement(bfp64)),
-          float bfp32 => TNumber.CreateChecked(float.BitDecrement(bfp32)),
-          System.Half bfp16 => TNumber.CreateChecked(System.Half.BitDecrement(bfp16)),
-          System.Runtime.InteropServices.NFloat nf => TNumber.CreateChecked(System.Runtime.InteropServices.NFloat.BitDecrement(nf)),
+          decimal dfp128 => TNumber.CreateChecked(decimal.NativeDecrement(dfp128)),
+          double bfp64 => TNumber.CreateChecked(double.NativeDecrement(bfp64)),
+          float bfp32 => TNumber.CreateChecked(float.NativeDecrement(bfp32)),
+          System.Half bfp16 => TNumber.CreateChecked(System.Half.NativeDecrement(bfp16)),
+          System.Runtime.InteropServices.NFloat nf => TNumber.CreateChecked(System.Runtime.InteropServices.NFloat.NativeDecrement(nf)),
           _ => throw new System.NotImplementedException()
         };
 
       /// <summary>
-      /// <para>Increments a value. If integer, then by 1. If floating-point, then by "bit-increment". If decimal, by 1e-28m.</para>
+      /// <para>Increments a number. If integer, then by -1, otherwise by native-increment.</para>
       /// </summary>
-      /// <remarks>Supremum, for integer types equal (<paramref name="value"/> + 1) and for floating point types equal (<paramref name="value"/> + epsilon). Other types are not implemented at this time.</remarks>
+      /// <param name="value"></param>
       /// <returns></returns>
       /// <exception cref="System.NotImplementedException"></exception>
       public static TNumber NativeIncrement(TNumber value)
@@ -634,11 +636,11 @@ namespace Flux
         ? checked(value + TNumber.One) // Binary integers are fundamentally the same, so simply add one.
         : value switch // Floating point types have structures depending on specific operations to increment.
         {
-          decimal dfp128 => TNumber.CreateChecked(dfp128 + 1e-28m),
-          double bfp64 => TNumber.CreateChecked(double.BitIncrement(bfp64)),
-          float bfp32 => TNumber.CreateChecked(float.BitIncrement(bfp32)),
-          System.Half bfp16 => TNumber.CreateChecked(System.Half.BitIncrement(bfp16)),
-          System.Runtime.InteropServices.NFloat nf => TNumber.CreateChecked(System.Runtime.InteropServices.NFloat.BitIncrement(nf)),
+          decimal dfp128 => TNumber.CreateChecked(decimal.NativeIncrement(dfp128)),
+          double bfp64 => TNumber.CreateChecked(double.NativeIncrement(bfp64)),
+          float bfp32 => TNumber.CreateChecked(float.NativeIncrement(bfp32)),
+          System.Half bfp16 => TNumber.CreateChecked(System.Half.NativeIncrement(bfp16)),
+          System.Runtime.InteropServices.NFloat nf => TNumber.CreateChecked(System.Runtime.InteropServices.NFloat.NativeIncrement(nf)),
           _ => throw new System.NotImplementedException()
         };
 
@@ -942,7 +944,7 @@ namespace Flux
       {
         var cbrt = double.Cbrt(double.CreateChecked(value));
 
-        var icbrt = IFloatingPoint.IsNearInteger(cbrt, out var integer) ? integer : double.Floor(cbrt);
+        var icbrt = FloatingPoint.IsNearInteger(cbrt, out var integer) ? integer : double.Floor(cbrt);
 
         return (TNumber.CreateChecked(icbrt), cbrt);
       }
@@ -952,7 +954,7 @@ namespace Flux
       {
         var rootn = double.RootN(double.CreateChecked(value), int.CreateChecked(nth));
 
-        var irootn = IFloatingPoint.IsNearInteger(rootn, out var integer) ? integer : double.Floor(rootn);
+        var irootn = FloatingPoint.IsNearInteger(rootn, out var integer) ? integer : double.Floor(rootn);
 
         return (TNumber.CreateChecked(irootn), rootn);
       }
@@ -961,7 +963,7 @@ namespace Flux
       {
         var sqrt = double.Sqrt(double.CreateChecked(value));
 
-        var isqrt = IFloatingPoint.IsNearInteger(sqrt, out var integer) ? integer : double.Floor(sqrt);
+        var isqrt = FloatingPoint.IsNearInteger(sqrt, out var integer) ? integer : double.Floor(sqrt);
 
         return (TNumber.CreateChecked(isqrt), sqrt);
       }

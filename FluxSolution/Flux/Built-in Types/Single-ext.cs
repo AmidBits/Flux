@@ -6,34 +6,6 @@
     public const float MinDefaultTolerance = -1e-6f;
 
     /// <summary>
-    /// <para>The largest integer that can be stored in a <see cref="System.Single"/> without losing precision is <c>16,777,216</c>.</para>
-    /// <para>This is because a <see cref="System.Single"/> is a base-2/binary single-precision floating point with a 24-bit significand, which means it can precisely represent integers up to 16,777,216 = <c>(1 &lt;&lt; 24)</c> = 2²⁴, before precision starts to degrade.</para>
-    /// </summary>
-    public const float MaxPreciseInteger = +16777216;
-
-    /// <summary>
-    /// <para>The smallest integer that can be stored in a <see cref="System.Single"/> without losing precision is <c>-16,777,216</c>.</para>
-    /// <para>This is because a <see cref="System.Single"/> is a base-2/binary single-precision floating point with a 24-bit significand, which means it can precisely represent integers down to -16,777,216 = <c>-(1 &lt;&lt; 24)</c> = -2²⁴, before precision starts to degrade.</para>
-    /// </summary>
-    public const float MinPreciseInteger = -16777216;
-
-    /// <summary>
-    /// <para>The largest prime integer that precisely fit in a float.</para>
-    /// </summary>
-    public const float MaxPrimeNumber = 16777213;
-
-    ///// <summary>
-    ///// <para>The number of bits in the significand field.</para>
-    ///// </summary>
-    ///// <remarks>Although only 23 bits are explicitly stored, the complete significand is 24 bits (the extra bit is derived).</remarks>
-    //public const int SignificandBits = 24;
-
-    ///// <summary>
-    ///// <para>The single type has a precision of about 6-9 significant digits.</para>
-    ///// </summary>
-    //public const int SignificantDigits = 6;
-
-    /// <summary>
     /// <para>The default epsilon scalar used for near-integer functions.</para>
     /// </summary>
     public const float DefaultEpsilonScalar = 1e-6f;
@@ -44,36 +16,30 @@
       /// <para>The largest integer that can be stored in a <see cref="System.Single"/> without losing precision is <c>16,777,216</c>.</para>
       /// <para>This is because a <see cref="System.Single"/> is a base-2/binary single-precision floating point with a 24-bit mantissa, which means it can precisely represent integers up to 16,777,216 = <c>(1 &lt;&lt; 24)</c> = 2²⁴, before precision starts to degrade.</para>
       /// </summary>
-      public static float MaxPreciseInteger => MaxPreciseInteger;
+      public static float MaxPreciseInteger => +16777216;
+
       /// <summary>
       /// <para>The smallest integer that can be stored in a <see cref="System.Single"/> without losing precision is <c>-16,777,216</c>.</para>
       /// <para>This is because a <see cref="System.Single"/> is a base-2/binary single-precision floating point with a 24-bit mantissa, which means it can precisely represent integers down to -16,777,216 = <c>-(1 &lt;&lt; 24)</c> = -2²⁴, before precision starts to degrade.</para>
       /// </summary>
-      public static float MinPreciseInteger => MinPreciseInteger;
+      public static float MinPreciseInteger => -16777216;
 
       /// <summary>
-      /// <para>The largest prime integer that precisely fit in a float.</para>
+      /// <para>The largest prime integer that precisely fit in a <see cref="System.Single"/>.</para>
       /// </summary>
-      public static float MaxPrimeNumber => MaxPrimeNumber;
+      public static float MaxPrimeNumber => 16777213;
 
-      ///// <summary>
-      ///// <para>The number of bits in the significand field of a <see cref="System.Single"/>.</para>
-      ///// </summary>
-      ///// <remarks>Although only 23 bits are explicitly stored, the complete significand is 24 bits (the extra bit is derived).</remarks>
-      //public static int SignificandBits => SignificandBits;
-
-      ///// <summary>
-      ///// <para>A <see cref="System.Single"/> has a precision of about 6-9 significant digits.</para>
-      ///// <para>The minimum number of significant digits of a <see cref="System.Single"/>, i.e. 6.</para>
-      ///// </summary>
-      //public static int SignificantDigits => SignificantDigits;
+      /// <summary>
+      /// <para>A <see cref="System.Single"/> has a precision of about 6-9 significant digits.</para>
+      /// </summary>
+      public static int MaxExactSignificantDigits => 6;
 
       /// <summary>
       /// <para>The default epsilon scalar (1e-6f) used for near-integer functions.</para>
       /// </summary>
-      public static float DefaultEpsilonScalar => DefaultEpsilonScalar;
+      public static float DefaultBaseEpsilon => 1e-6f;
 
-      #region Get..Components
+      #region GetComponents
 
       /// <summary>
       /// <para>Get the three binary32 parts of a 32-bit floating point both raw (but shifted to LSB) as out parameters and returned adjusted (see below).</para>
@@ -85,18 +51,18 @@
       /// <returns>
       /// <para>The three adjusted binary32 parts as a tuple: <c>(int Binary32Sign = 1 or -1, int Binary32ExponentUnbiased = [−126, +127], long Binary32Significand24 = [0, <see cref="MaxPreciseInteger"/>])</c>.</para>
       /// </returns>
-      public static (int Binary32Sign, int Binary32ExponentUnbiased, long Binary32Significand24) GetBinary32Components(System.Single value, out int binary32SignBit, out int binary32ExponentBiased, out int binary32Significand23)
+      public static (int Sign, int ExponentUnbiased, long Significand24) GetComponents(System.Single value, out int signBit, out int exponentBiased, out int significand23)
       {
         var bits = System.BitConverter.SingleToUInt32Bits(value);
 
-        binary32SignBit = (int)((bits & 0x80000000U) >>> 31);
-        binary32ExponentBiased = (int)((bits & 0x7FF00000U) >>> 23);
-        binary32Significand23 = (int)(bits & 0x007FFFFFU);
+        signBit = (int)((bits & 0x80000000U) >>> 31);
+        exponentBiased = (int)((bits & 0x7FF00000U) >>> 23);
+        significand23 = (int)(bits & 0x007FFFFFU);
 
         return (
-          binary32SignBit == 0 ? 1 : -1,
-          binary32ExponentBiased - 127,
-          (binary32ExponentBiased & 0x00100000) | binary32Significand23
+          signBit == 0 ? 1 : -1,
+          exponentBiased - 127,
+          (exponentBiased & 0x00100000) | significand23
         );
       }
 
@@ -120,6 +86,24 @@
 
         return (integralPart, fractionalPart);
       }
+
+      #endregion
+
+      #region Native..
+
+      public static float NativeDecrement(float value)
+        => float.IsNaN(value) || float.IsNegativeInfinity(value)
+        ? throw new System.ArithmeticException(value.ToString())
+        : float.IsPositiveInfinity(value)
+        ? float.MaxValue
+        : float.BitDecrement(value);
+
+      public static float NativeIncrement(float value)
+        => float.IsNaN(value) || float.IsPositiveInfinity(value)
+        ? throw new System.ArithmeticException(value.ToString())
+        : float.IsNegativeInfinity(value)
+        ? float.MinValue
+        : float.BitIncrement(value);
 
       #endregion
     }
