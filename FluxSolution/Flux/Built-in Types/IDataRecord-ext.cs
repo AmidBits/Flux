@@ -4,7 +4,13 @@ namespace Flux
   {
     extension(System.Data.IDataRecord source)
     {
-      public string GetDefaultTsqlDefinition(int index, bool nullable = true)
+      /// <summary>
+      /// <para>Creates a string with the default T-SQL definition for the field at <paramref name="index"/> in a <see cref="System.Data.IDataRecord"/>.</para>
+      /// </summary>
+      /// <param name="index"></param>
+      /// <param name="nullable"></param>
+      /// <returns></returns>
+      public string CreateDefaultTsqlDefinition(int index, bool nullable = true)
       {
         System.ArgumentNullException.ThrowIfNull(source);
 
@@ -15,6 +21,24 @@ namespace Flux
         return $"[{name}] [{dataTypeName}]{magnitude} {(nullable ? "NULL" : "NOT NULL")}";
       }
 
+      /// <summary>
+      /// <para>Generates a hash for a recordset using field names and types for the generation.</para>
+      /// </summary>
+      /// <returns></returns>
+      public int GenerateRecordSetHash()
+        => System.HashCode.Combine(source.GetNames().SequenceHashCode(), source.GetFieldTypes().SequenceHashCode());
+
+      /// <summary>
+      /// <para>Generates a hash for a record using <see cref="GenerateRecordSetHash(System.Data.IDataRecord)"/> and the values in a <see cref="System.Data.IDataRecord"/>.</para>
+      /// </summary>
+      /// <returns></returns>
+      public int GenerateRecordHash()
+        => System.HashCode.Combine(source.GenerateRecordSetHash(), source.GetValues().SequenceHashCode());
+
+      /// <summary>
+      /// <para>Returns a list of <see cref="System.Type"/> representing the type of each field in a <see cref="System.Data.IDataRecord"/>.</para>
+      /// </summary>
+      /// <returns></returns>
       public System.Collections.Generic.List<System.Type> GetFieldTypes()
       {
         System.ArgumentNullException.ThrowIfNull(source);
@@ -28,9 +52,9 @@ namespace Flux
       }
 
       /// <summary>
-      /// <para>Returns a string with the column name (header) for the specified index in the current row. This version will replace null or blank names with "Column_N" where N is the column index + 1.</para>
+      /// <para>Creates a new string with the column name (header) of the specified <paramref name="index"/> in a <see cref="System.Data.IDataRecord"/>.</para>
+      /// <para>This version will replace null or blank names with "Column_N" where N is the column index + 1.</para>
       /// </summary>
-      /// <param name="source"></param>
       /// <param name="index"></param>
       /// <returns></returns>
       public string GetNameEx(int index)
@@ -41,9 +65,8 @@ namespace Flux
       }
 
       /// <summary>
-      /// <para>Results in a string array of all column names.</para>
+      /// <para>Creates a list with all column names in a <see cref="System.Data.IDataRecord"/>.</para>
       /// </summary>
-      /// <param name="source"></param>
       /// <returns></returns>
       public System.Collections.Generic.List<string> GetNames()
       {
@@ -58,22 +81,11 @@ namespace Flux
       }
 
       /// <summary>
-      /// <para></para>
+      /// <para>Creates a new string with the field value of <paramref name="index"/> in a <see cref="System.Data.IDataRecord"/>.</para>
       /// </summary>
-      /// <param name="source"></param>
+      /// <param name="index"></param>
+      /// <param name="nullString"></param>
       /// <returns></returns>
-      public int GetRecordSetHash()
-        => System.HashCode.Combine(source.GetNames().SequenceHashCode(), source.GetFieldTypes().SequenceHashCode());
-
-      /// <summary>
-      /// <para></para>
-      /// </summary>
-      /// <param name="source"></param>
-      /// <returns></returns>
-      public int GetRecordHash()
-        => System.HashCode.Combine(source.GetRecordSetHash(), source.GetValues().SequenceHashCode());
-
-      /// <summary>Results in a string array of all column values in the current row.</summary>
       public string GetString(int index, string nullString)
       {
         System.ArgumentNullException.ThrowIfNull(source);
@@ -81,7 +93,11 @@ namespace Flux
         return source.IsDBNull(index) ? nullString : source.GetValue(index).ToString() ?? nullString;
       }
 
-      /// <summary>Results in a sequence of strings of all column values in the current row.</summary>
+      /// <summary>
+      /// <para>Creates a list of <see cref="System.String"/> with all field values in a <see cref="System.Data.IDataRecord"/>.</para>
+      /// </summary>
+      /// <param name="nullString"></param>
+      /// <returns></returns>
       public System.Collections.Generic.List<string> GetStrings(string nullString)
       {
         System.ArgumentNullException.ThrowIfNull(source);
@@ -95,9 +111,12 @@ namespace Flux
       }
 
       public string GetUrgf(string nullString)
-        => string.Join((char)UnicodeInformationSeparator.UnitSeparator, GetStrings(source, nullString));
+        => string.Join('\u001F', GetStrings(source, nullString));
 
-      /// <summary>Results in an object array of all column values in the current row.</summary>
+      /// <summary>
+      /// <para>Creates a list of <see cref="object"/> with all field values in a <see cref="System.Data.IDataRecord"/>.</para>
+      /// </summary>
+      /// <returns></returns>
       public System.Collections.Generic.List<object> GetValues()
       {
         System.ArgumentNullException.ThrowIfNull(source);
@@ -110,6 +129,10 @@ namespace Flux
         return values;
       }
 
+      /// <summary>
+      /// <para>Creates a new <see cref="System.Collections.Generic.IDictionary{TKey, TValue}"/> with all field names and values in a <see cref="System.Data.IDataRecord"/>.</para>
+      /// </summary>
+      /// <returns></returns>
       public System.Collections.Generic.IDictionary<string, object> ToDictionary()
       {
         var od = new Flux.DataStructures.OrderedDictionary<string, object>();

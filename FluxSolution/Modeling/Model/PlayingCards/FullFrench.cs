@@ -1,5 +1,3 @@
-using System.Linq;
-
 namespace Flux.Model.PlayingCards.FullFrench
 {
   //public enum CardEnum
@@ -324,6 +322,6 @@ namespace Flux.Model.PlayingCards.FullFrench
     public override int GetHashCode()
       => System.HashCode.Combine(Deck, Rune);
     public override string ToString()
-      => $"{GetType().Name} {{ {GetRank(Rune)} of {GetSuit(Rune)} '{Rune}' {Rune.UnicodeUnotationEncode()}, Deck #{Deck} }}";
+      => $"{GetType().Name} {{ {GetRank(Rune)} of {GetSuit(Rune)} '{Rune}' {Rune.ToUnicodeUnotationString()}, Deck #{Deck} }}";
   }
 }

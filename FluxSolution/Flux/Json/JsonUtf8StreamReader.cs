@@ -23,7 +23,7 @@ namespace Flux.Json
 
     public bool Read()
     {
-      while (!m_jsonReader.Read()) // Read could be unsuccessful due to insufficient bufer size, retrying in loop with additional buffer segments.
+      while (!m_jsonReader.Read()) // Read could be unsuccessful due to insufficient buffer size, retrying in loop with additional buffer segments.
       {
         if (m_isFinalBlock)
           return false;

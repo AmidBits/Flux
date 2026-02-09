@@ -129,7 +129,7 @@ namespace Flux
 
         distance![y] = 0; // Distance from the source node.
 
-        while (y != vertexCount) // Iterate until source reaches the number of vertices.
+        while (y != vertexCount) // Until source reaches the number of vertices.
         {
           var best = vertexCount;
 

@@ -139,7 +139,7 @@ namespace Flux.Dsp.Oscillators
       if (ReversePhase)
         phaseShift = -phaseShift;
 
-      m_phase = IntervalNotation.Closed.Wrap(m_phase + phaseShift, 0d, 1d); // Ensure phase wraps within cycle.
+      m_phase = IntervalNotation.Closed.WrapAround(m_phase + phaseShift, 0d, 1d); // Ensure phase wraps within cycle.
 
       System.Diagnostics.Debug.Assert(Current >= -1 && Current <= 1);
 

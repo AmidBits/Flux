@@ -66,54 +66,48 @@ namespace Flux
       /// <para>+1 means that <paramref name="value"/> is greater-than(-or-equal) to <paramref name="maxValue"/>, and hence not a member of the interval.</para>
       /// </returns>
       /// <exception cref="NotImplementedException"></exception>
-      public int Compare<TComparable>(TComparable value, TComparable minValue, TComparable maxValue)
+      public int CompareWith<TComparable>(TComparable value, TComparable minValue, TComparable maxValue)
         where TComparable : System.IComparable<TComparable>
       {
         var vcmpmin = value.CompareTo(minValue);
         var vcmpmax = value.CompareTo(maxValue);
 
-        return (source == IntervalNotation.Closed)
-        ? vcmpmin < 0 ? -1 : vcmpmax > 0 ? +1 : 0
-        : (source == IntervalNotation.HalfOpenLeft)
-        ? vcmpmin <= 0 ? -1 : vcmpmax > 0 ? +1 : 0
-        : (source == IntervalNotation.HalfOpenRight)
-        ? vcmpmin < 0 ? -1 : vcmpmax >= 0 ? +1 : 0
-        : (source == IntervalNotation.Open)
-        ? vcmpmin <= 0 ? -1 : vcmpmax >= 0 ? +1 : 0
-        : throw new System.ArgumentOutOfRangeException(nameof(source));
+        if (source == IntervalNotation.Closed) return vcmpmin < 0 ? -1 : vcmpmax > 0 ? +1 : 0;
+        else if (source == IntervalNotation.HalfOpenLeft) return vcmpmin <= 0 ? -1 : vcmpmax > 0 ? +1 : 0;
+        else if (source == IntervalNotation.HalfOpenRight) return vcmpmin < 0 ? -1 : vcmpmax >= 0 ? +1 : 0;
+        else if (source == IntervalNotation.Open) return vcmpmin <= 0 ? -1 : vcmpmax >= 0 ? +1 : 0;
+        else throw new NotImplementedException();
       }
 
-      public int CompareMinValue<TComparable>(TComparable value, TComparable minValue)
-        where TComparable : System.IComparable<TComparable>
-      {
-        var vcmpmin = value.CompareTo(minValue);
+      //public int CompareWithMinValue<TComparable>(TComparable value, TComparable minValue)
+      //  where TComparable : System.IComparable<TComparable>
+      //{
+      //  var vcmpmin = value.CompareTo(minValue);
 
-        return (source == IntervalNotation.Closed)
-        ? vcmpmin
-        : (source == IntervalNotation.HalfOpenLeft)
-        ? vcmpmin <= 0 ? -1 : +1
-        : (source == IntervalNotation.HalfOpenRight)
-        ? vcmpmin < 0 ? -1 : +1
-        : (source == IntervalNotation.Open)
-        ? vcmpmin <= 0 ? -1 : +1
-        : throw new System.ArgumentOutOfRangeException(nameof(source));
-      }
+      //  return source switch
+      //  {
+      //    IntervalNotation.Closed => vcmpmin,
+      //    IntervalNotation.HalfOpenLeft => vcmpmin <= 0 ? -1 : +1,
+      //    IntervalNotation.HalfOpenRight => vcmpmin < 0 ? -1 : +1,
+      //    IntervalNotation.Open => vcmpmin <= 0 ? -1 : +1,
+      //    _ => throw new NotImplementedException()
+      //  };
+      //}
 
-      public int CompareMaxValue<TComparable>(TComparable value, TComparable maxValue)
-        where TComparable : System.IComparable<TComparable>
-      {
-        var vcmpmax = value.CompareTo(maxValue);
+      //public int CompareWithMaxValue<TComparable>(TComparable value, TComparable maxValue)
+      //  where TComparable : System.IComparable<TComparable>
+      //{
+      //  var vcmpmax = value.CompareTo(maxValue);
 
-        return (source == IntervalNotation.Closed)
-        ? vcmpmax
-        : (source == IntervalNotation.HalfOpenLeft)
-        ? vcmpmax > 0 ? +1 : -1
-        : (source == IntervalNotation.HalfOpenRight)
-        ? vcmpmax >= 0 ? +1 : -1
-        : (source == IntervalNotation.Open)
-        ? vcmpmax >= 0 ? +1 : -1
-        : throw new System.ArgumentOutOfRangeException(nameof(source));
-      }
+      //  return source switch
+      //  {
+      //    IntervalNotation.Closed => vcmpmax,
+      //    IntervalNotation.HalfOpenLeft => vcmpmax > 0 ? +1 : -1,
+      //    IntervalNotation.HalfOpenRight => vcmpmax >= 0 ? +1 : -1,
+      //    IntervalNotation.Open => vcmpmax >= 0 ? +1 : -1,
+      //    _ => throw new NotImplementedException()
+      //  };
+      //}
 
       /// <summary>
       /// <para>Folds an out-of-bound <paramref name="value"/> (back and forth) across the closed interval [<paramref name="minValue"/>, <paramref name="maxValue"/>], until the <paramref name="value"/> is within the closed interval.</para>
@@ -148,7 +142,9 @@ namespace Flux
       {
         if (source != IntervalNotation.Closed)
         {
-          while (magnitude-- > 0)
+          System.ArgumentOutOfRangeException.ThrowIfNegative(magnitude);
+
+          while (--magnitude >= 0)
           {
             if (source is IntervalNotation.Open or IntervalNotation.HalfOpenLeft)
               minValue = Number.NativeIncrement(minValue);
@@ -157,7 +153,7 @@ namespace Flux
               maxValue = Number.NativeDecrement(maxValue);
           }
 
-          AssertValid(IntervalNotation.Closed, minValue, maxValue, "magnitude");
+          AssertValid(IntervalNotation.Closed, minValue, maxValue, "relative-magnitude");
         }
 
         return (minValue, maxValue);
@@ -179,13 +175,15 @@ namespace Flux
       {
         if (source != IntervalNotation.Closed)
         {
+          System.ArgumentOutOfRangeException.ThrowIfNegative(margin);
+
           if (source is IntervalNotation.Open or IntervalNotation.HalfOpenLeft)
             minValue += margin;
 
           if (source is IntervalNotation.Open or IntervalNotation.HalfOpenRight)
             maxValue -= margin;
 
-          AssertValid(IntervalNotation.Closed, minValue, maxValue, "minMargin/maxMargin");
+          AssertValid(IntervalNotation.Closed, minValue, maxValue, "absolute-margin");
         }
 
         return (minValue, maxValue);
@@ -285,7 +283,7 @@ namespace Flux
       public bool IsMember<TComparable>(TComparable value, TComparable minValue, TComparable maxValue)
         where TComparable : System.IComparable<TComparable>
       {
-        try { return Compare(source, value, minValue, maxValue) == 0; }
+        try { return CompareWith(source, value, minValue, maxValue) == 0; }
         catch { return false; }
       }
 
@@ -305,71 +303,17 @@ namespace Flux
         || (source == IntervalNotation.HalfOpenLeft && minValue.CompareTo(maxValue) < 0 && maxValue.CompareTo(minValue) >= 0)
         || (source == IntervalNotation.Open && minValue.CompareTo(maxValue) < 0 && maxValue.CompareTo(minValue) > 0);
 
-      /// <summary>
-      /// <para>Loop back-and-forth between <paramref name="start"/> and <paramref name="stop"/> in <paramref name="step"/>s for a number of <paramref name="iterations"/>.</para>
-      /// </summary>
-      /// <typeparam name="TInteger"></typeparam>
-      /// <param name="source">The interval-notation to apply for the first and last number in the loop.</param>
-      /// <param name="start">The first number in the loop (which may not appear in the output depending on the interval-notation).</param>
-      /// <param name="stop">The last number in the loop (which may not appear in the output depending on the interval-notation).</param>
-      /// <param name="step">The size to increase the counter by for each loop.</param>
-      /// <param name="iterations">The number of times to repeat the entire loop.</param>
-      /// <returns></returns>
-      public System.Collections.Generic.IEnumerable<TInteger> LoopBackAndForth<TInteger>(TInteger start, TInteger stop, int iterations = 1)
-        where TInteger : System.Numerics.IBinaryInteger<TInteger>
+      public System.Collections.Generic.IEnumerable<TNumber> Loop<TNumber>(TNumber minValue, TNumber maxValue, TNumber stepSize, IntervalNotation intervalNotation = IntervalNotation.Closed)
+        where TNumber : System.Numerics.INumber<TNumber>
       {
-        System.ArgumentOutOfRangeException.ThrowIfNegative(iterations);
+        System.ArgumentOutOfRangeException.ThrowIfZero(stepSize);
 
-        while (iterations-- > 0)
-        {
-          foreach (var item in source.LoopBetween(start, stop, 1)) yield return item;
-          foreach (var item in source.InvertNotation().LoopBetween(stop, start, 1)) yield return item;
-        }
+        (minValue, maxValue) = intervalNotation.GetExtentAbsolute(minValue, maxValue, TNumber.Abs(stepSize));
+
+        return TNumber.IsNegative(stepSize)
+          ? Number.ArithmeticSequence(maxValue, stepSize).TakeWhile(n => n >= minValue)
+          : Number.ArithmeticSequence(minValue, stepSize).TakeWhile(n => n <= maxValue);
       }
-
-      /// <summary>
-      /// <para>Loop between <paramref name="start"/> and <paramref name="stop"/> in <paramref name="step"/>s for a number of <paramref name="iterations"/>.</para>
-      /// </summary>
-      /// <typeparam name="TInteger"></typeparam>
-      /// <param name="source">The interval-notation to apply for the first and last number in the loop.</param>
-      /// <param name="start">The first number in the loop (which may not appear in the output depending on the interval-notation).</param>
-      /// <param name="stop">The last number in the loop (which may not appear in the output depending on the interval-notation).</param>
-      /// <param name="step">The size to increase the counter by for each loop.</param>
-      /// <param name="iterations">The number of times to repeat the entire loop.</param>
-      /// <returns></returns>
-      public System.Collections.Generic.IEnumerable<TInteger> LoopBetween<TInteger>(TInteger start, TInteger stop, int iterations = 1)
-        where TInteger : System.Numerics.IBinaryInteger<TInteger>
-      {
-        System.ArgumentOutOfRangeException.ThrowIfNegative(iterations);
-
-        var step = Number.UnitSign(stop - start);
-
-        while (iterations-- > 0)
-        {
-          if (source is IntervalNotation.Closed or IntervalNotation.HalfOpenRight)
-            yield return start;
-
-          for (var index = start + step; index != stop; index += step)
-            yield return index;
-
-          if (source is IntervalNotation.Closed or IntervalNotation.HalfOpenLeft)
-            yield return stop;
-        }
-      }
-
-      /// <summary>
-      /// <para>Loop the range from <paramref name="start"/> and <paramref name="count"/> numbers in <paramref name="step"/>s for a number of <paramref name="iterations"/>.</para>
-      /// </summary>
-      /// <typeparam name="TInteger"></typeparam>
-      /// <param name="source">The interval-notation to apply for the first and last number in the loop.</param>
-      /// <param name="start">The first number in the loop (which may not appear in the output depending on the interval-notation).</param>
-      /// <param name="count">The count of numbers the loop should produce.</param>
-      /// <param name="step">The size to increase the counter by for each loop.</param>
-      /// <param name="iterations">The number of times to repeat the entire loop.</param>
-      /// <returns></returns>
-      public System.Collections.Generic.IEnumerable<TInteger> LoopRange<TInteger>(TInteger start, TInteger count, int iterations = 1)
-        where TInteger : System.Numerics.IBinaryInteger<TInteger>
-        => source.LoopBetween(start, start + count - TInteger.CopySign(TInteger.One, count), iterations);
 
       /// <summary>
       /// <para>Gets a char representing the <see cref="IntervalNotation"/> (specified by <paramref name="source"/>) on the left hand side.</para>
@@ -435,7 +379,7 @@ namespace Flux
       /// <param name="minValue"></param>
       /// <param name="maxValue"></param>
       /// <returns></returns>
-      public TNumber Wrap<TNumber>(TNumber value, TNumber minValue, TNumber maxValue)
+      public TNumber WrapAround<TNumber>(TNumber value, TNumber minValue, TNumber maxValue)
         where TNumber : System.Numerics.INumber<TNumber>
       {
         (minValue, maxValue) = source.GetExtentAbsolute(minValue, maxValue, TNumber.One);
@@ -451,7 +395,7 @@ namespace Flux
       /// <param name="minValue"></param>
       /// <param name="maxValue"></param>
       /// <returns></returns>
-      public TNumber WrapNative<TNumber>(TNumber value, TNumber minValue, TNumber maxValue)
+      public TNumber WrapAroundNative<TNumber>(TNumber value, TNumber minValue, TNumber maxValue)
         where TNumber : System.Numerics.INumber<TNumber>
       {
         (minValue, maxValue) = source.GetExtentRelative(minValue, maxValue, 1);

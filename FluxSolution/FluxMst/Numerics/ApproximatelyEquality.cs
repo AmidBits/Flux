@@ -23,14 +23,14 @@ namespace Numerics
     [TestMethod]
     public void EqualsWithinSignificantDigits()
     {
-      Assert.IsFalse(Number.EqualsWithinSignificantDigits(5.5, 5, 1, 10));
-      Assert.IsTrue(Number.EqualsWithinSignificantDigits(5.5, 5, -1, 10));
+      Assert.IsFalse(Number.EqualsWithinSignificantDigits(5.5, 5, -1, 10));
+      Assert.IsTrue(Number.EqualsWithinSignificantDigits(5.5, 5, 1, 10));
 
-      Assert.IsFalse(Number.EqualsWithinSignificantDigits(1000.02, 1000.015, 3, 10));
-      Assert.IsTrue(Number.EqualsWithinSignificantDigits(1000.02, 1000.015, 2, 10));
+      Assert.IsFalse(Number.EqualsWithinSignificantDigits(1000.02, 1000.015, -3, 10));
+      Assert.IsTrue(Number.EqualsWithinSignificantDigits(1000.02, 1000.015, -2, 10));
 
-      Assert.IsFalse(Number.EqualsWithinSignificantDigits(1334.261, 1235.272, -1, 10));
-      Assert.IsTrue(Number.EqualsWithinSignificantDigits(1334.261, 1235.272, -2, 10));
+      Assert.IsFalse(Number.EqualsWithinSignificantDigits(1334.261, 1235.272, 1, 10));
+      Assert.IsTrue(Number.EqualsWithinSignificantDigits(1334.261, 1235.272, 2, 10));
     }
   }
 }

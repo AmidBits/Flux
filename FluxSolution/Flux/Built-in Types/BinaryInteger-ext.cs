@@ -18,7 +18,7 @@ namespace Flux
       /// <typeparam name="TSelf"></typeparam>
       /// <returns></returns>
       public static System.Collections.Generic.IEnumerable<(TInteger Number, TInteger AliqoutSum)> GetAbundantNumbers()
-        => Number.LoopVerge(TInteger.CreateChecked(3), TInteger.One).AsParallel().AsOrdered().Select(n => (Number: n, SumDivisors(n).AliquotSum)).Where(x => x.AliquotSum > x.Number);
+        => Number.ArithmeticSequence(TInteger.CreateChecked(3), TInteger.One).AsParallel().AsOrdered().Select(n => (Number: n, SumDivisors(n).AliquotSum)).Where(x => x.AliquotSum > x.Number);
 
       /// <summary>
       /// <para>Creates a new sequence of highly abundant numbers.</para>
@@ -34,7 +34,7 @@ namespace Flux
       {
         var largestSumOfDivisors = TInteger.Zero;
 
-        foreach (var index in Number.LoopVerge(TInteger.One, TInteger.One))
+        foreach (var index in Number.ArithmeticSequence(TInteger.One, TInteger.One))
           if (SumDivisors(index).Sum is var sumOfDivisors && sumOfDivisors > largestSumOfDivisors)
           {
             yield return (index, sumOfDivisors);
@@ -123,7 +123,7 @@ namespace Flux
 
         while (true)
         {
-          yield return l1;
+          yield return l1.ToList();
 
           try
           {
@@ -133,8 +133,8 @@ namespace Flux
 
               l1.Clear(); // This is now the current, and l0 became the previous.
 
-              l1.Add(l1[0] - l0[0]);
               l1.Add(l0[^1]);
+              l1.Insert(0, l1[0] - l0[0]);
 
               for (var i = 2; i <= l0.Count; i++)
                 l1.Add(l0[i - 1] + l1[i - 1]);
@@ -276,7 +276,7 @@ namespace Flux
       /// <typeparam name="TInteger"></typeparam>
       /// <returns></returns>
       public static System.Collections.Generic.IEnumerable<TInteger> GetCatalanSequence()
-        => Number.LoopVerge(TInteger.Zero, TInteger.One).AsParallel().AsOrdered().Select(GetCatalanNumber);
+        => Number.ArithmeticSequence(TInteger.Zero, TInteger.One).AsParallel().AsOrdered().Select(GetCatalanNumber);
 
       #endregion
 
@@ -313,7 +313,7 @@ namespace Flux
       /// <see href="https://en.wikipedia.org/wiki/Centered_polygonal_number"/>
       /// <remarks>This function runs indefinitely, if allowed.</remarks>
       public static System.Collections.Generic.IEnumerable<TInteger> GetCenteredPolygonalNumberSequence(TInteger k)
-        => Number.LoopVerge(TInteger.Zero, TInteger.One).Select(n => GetCenteredPolygonalNumber(k, n));
+        => Number.ArithmeticSequence(TInteger.Zero, TInteger.One).Select(n => GetCenteredPolygonalNumber(k, n));
 
       #endregion
 
@@ -326,7 +326,7 @@ namespace Flux
       /// <remarks>This function generate results until the type <typeparamref name="TInteger"/> under/overflows in any calculation. No exception is thrown.</remarks>
       /// <returns></returns>
       public static System.Collections.Generic.IEnumerable<TInteger> GetCompositeNumbers()
-        => Number.LoopVerge(TInteger.One, TInteger.One).AsParallel().AsOrdered().Where(IsCompositeNumber);
+        => Number.ArithmeticSequence(TInteger.One, TInteger.One).AsParallel().AsOrdered().Where(IsCompositeNumber);
 
       /// <summary>
       /// <para>Creates a new sequence of highly composite numbers.</para>
@@ -338,7 +338,7 @@ namespace Flux
       {
         var largestCount = TInteger.Zero;
 
-        foreach (var tuple in Number.LoopVerge(TInteger.One, TInteger.One).AsParallel().AsOrdered().Select(n => (Number: n, Count: CountDivisors(n))))
+        foreach (var tuple in Number.ArithmeticSequence(TInteger.One, TInteger.One).AsParallel().AsOrdered().Select(n => (Number: n, Count: CountDivisors(n))))
           if (tuple.Count > largestCount)
           {
             yield return tuple;
@@ -1394,7 +1394,7 @@ namespace Flux
       /// <typeparam name="TInteger"></typeparam>
       /// <returns></returns>
       public static System.Collections.Generic.IEnumerable<TInteger> GetMersenneNumberSequence()
-        => Number.LoopVerge(TInteger.One, TInteger.One).Select(GetMersenneNumber);
+        => Number.ArithmeticSequence(TInteger.One, TInteger.One).Select(GetMersenneNumber);
 
       /// <summary>
       /// <para>Creates a new sequence of Mersenne primes.</para>
@@ -2138,7 +2138,7 @@ namespace Flux
         {
           TInteger result;
 
-          foreach (var root in Number.LoopVerge(TInteger.One, TInteger.One))
+          foreach (var root in Number.ArithmeticSequence(TInteger.One, TInteger.One))
           {
             try { result = Pow(root, nth); } catch { break; }
 

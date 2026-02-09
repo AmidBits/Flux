@@ -2,20 +2,6 @@
 {
   public static partial class StringExtensions
   {
-    /// <summary>
-    /// <para>: "−∞"</para>
-    /// </summary>
-    public const string NegativeInfinity = "\u2212\u221E";
-
-    /// <summary>
-    /// <para>: "+∞"</para>
-    /// </summary>
-    public const string PositiveInfinity = "\u002B\u221E";
-
-    extension(System.String)
-    {
-    }
-
     extension(System.String source)
     {
       /// <summary>Indicates whether the content of the string is possibly of slavo/germanic origin.</summary>

@@ -39,6 +39,11 @@
 
       public static System.Numerics.Complex Atanh(System.Numerics.Complex z)
         => 0.5 * System.Numerics.Complex.Log(1 + z) - 0.5 * System.Numerics.Complex.Log(1 - z);
+
+      /// <summary>
+      /// <para>Main classification number system: "DOUBLE-STRUCK CAPITAL C" = U+2102 = '&#x2102;'</para>
+      /// </summary>
+      public static char NumberClassificationSymbol => '\u2102';
     }
   }
 }

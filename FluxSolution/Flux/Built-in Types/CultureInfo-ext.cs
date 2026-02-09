@@ -141,17 +141,20 @@ namespace Flux
       /// <param name="source"></param>
       /// <returns></returns>
       /// <exception cref="System.NotImplementedException"></exception>
-      public System.ReadOnlySpan<char> GetConsonants()
+      public string GetConsonantsAsChars()
       {
         source ??= System.Globalization.CultureInfo.CurrentCulture;
 
         return source.TwoLetterISOLanguageName switch
         {
-          "en" => "bcdfghjklmnpqrstvwxyzBCDFGHJKLMNPQRSTVWXYZ",
+          "en" or "iv" => "bcdfghjklmnpqrstvwxyzBCDFGHJKLMNPQRSTVWXYZ",
           "se" => "bcdfghjklmnpqrstvwxzBCDFGHJKLMNPQRSTVWXZ",
           _ => throw new System.NotImplementedException(nameof(source))
         };
       }
+
+      public System.Collections.Generic.List<System.Text.Rune> GetConsonantsAsRunes()
+        => [.. GetConsonantsAsChars(source).Select(c => new System.Text.Rune(c))];
 
       /// <summary>
       /// <para></para>
@@ -159,17 +162,20 @@ namespace Flux
       /// <param name="source"></param>
       /// <param name="culture">If null, then <see cref="System.Globalization.CultureInfo.CurrentCulture"/></param>
       /// <returns></returns>
-      public System.ReadOnlySpan<char> GetVowels()
+      public string GetVowelsAsChars()
       {
         source ??= System.Globalization.CultureInfo.CurrentCulture;
 
         return source.TwoLetterISOLanguageName switch
         {
-          "en" => "aeiouyAEIOUY",
+          "en" or "iv" => "aeiouyAEIOUY",
           "se" => "aeiouy'\u00E5\u00E4\u00F6AEIOUY\u00C5\u00C4\u00D6", // The additional characters are å, ä, ö and Å, Ä, Ö.
           _ => throw new System.NotImplementedException(nameof(source))
         };
       }
+
+      public System.Collections.Generic.List<System.Text.Rune> GetVowelsAsRunes()
+        => [.. GetVowelsAsChars(source).Select(c => new System.Text.Rune(c))];
 
       /// <summary>
       /// <para>Load an IPA file based on the specified <see cref="System.Globalization.CultureInfo"/>.</para>

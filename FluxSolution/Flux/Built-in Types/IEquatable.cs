@@ -2,8 +2,15 @@ namespace Flux
 {
   public static class IEquatableExtensions
   {
-    public static bool EqualsDefault<IEquatable>(this IEquatable source)
+    extension<IEquatable>(IEquatable source)
       where IEquatable : System.IEquatable<IEquatable>
-      => source.Equals(default);
+    {
+      /// <summary>
+      /// <para>Indicates whether an <see cref="System.IEquatable{T}"/> equals <see langword="default"/>.</para>
+      /// </summary>
+      /// <returns></returns>
+      public bool EqualsDefault()
+        => source.Equals(default);
+    }
   }
 }

@@ -64,7 +64,7 @@ namespace Maths
     [TestMethod]
     public void IntegerRootN()
     {
-      Assert.AreEqual((3, 3), Number.RootN(27, 3));
+      Assert.AreEqual(3, BinaryInteger.IntegerRootN(27, 3));
     }
 
     [TestMethod]

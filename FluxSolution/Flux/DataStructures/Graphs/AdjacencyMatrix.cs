@@ -218,7 +218,7 @@
 
         distance![source] = 0; // Distance from the source node.
 
-        while (source != vertexCount) // Iterate until source reaches the number of vertices.
+        while (source != vertexCount) // Until source reaches the number of vertices.
         {
           var best = vertexCount;
 

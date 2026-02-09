@@ -249,7 +249,7 @@
     /// <param name="angle"></param>
     /// <returns></returns>
     /// <remarks>Values outside the interval [-180, +180] are wrapped, i.e. 190 = -170, -190 = +170, etc.</remarks>
-    public static Angle AsLongitude(Angle angle) => new(IntervalNotation.Closed.Wrap(angle.Value, -double.Pi, double.Pi));
+    public static Angle AsLongitude(Angle angle) => new(IntervalNotation.Closed.WrapAround(angle.Value, -double.Pi, double.Pi));
 
     /// <summary>
     /// <para>Creates a longitude <see cref="Angle"/> from <paramref name="value"/> and <paramref name="unit"/>, i.e. a value in the interval [-180, +180].</para>

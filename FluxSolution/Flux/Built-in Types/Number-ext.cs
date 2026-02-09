@@ -3,7 +3,7 @@ namespace Flux
   public static partial class Number
   {
     /// <summary>
-    /// <para>Sign step function that guarantees [-1, 0, 1] for output.</para>
+    /// <para>Sign step function that guarantees [-1, 0, 1] for output (not just less-than-zero and greater-than-zero).</para>
     /// <para><see href="https://en.wikipedia.org/wiki/Sign_function"/></para>
     /// <para><seealso href="https://en.wikipedia.org/wiki/Step_function"/></para>
     /// </summary>
@@ -16,82 +16,96 @@ namespace Flux
     extension<TNumber>(TNumber)
       where TNumber : System.Numerics.INumber<TNumber>
     {
-      #region Arithmetic progression
+      #region ArithmeticMean (type of average)
 
+      /// <summary>
+      /// <para><see href="https://en.wikipedia.org/wiki/Arithmetic_mean"/></para>
+      /// </summary>
+      /// <typeparam name="TFloat"></typeparam>
+      /// <param name="sumOfTerms"></param>
+      /// <param name="terms"></param>
+      /// <returns></returns>
       public static TFloat ArithmeticMean<TFloat>(out TFloat sumOfTerms, params System.Collections.Generic.IEnumerable<TNumber> terms)
         where TFloat : System.Numerics.IFloatingPoint<TFloat>
       {
         sumOfTerms = TFloat.CreateChecked(terms.Sum(out var countOfTerms));
 
-        return checked(sumOfTerms / TFloat.CreateChecked(countOfTerms));
+        return sumOfTerms / TFloat.CreateChecked(countOfTerms);
       }
 
-      public static TFloat ArithmeticMeanOfTwoTerms<TFloat>(out TFloat sumOfTerms, TNumber a, TNumber b)
-        where TFloat : System.Numerics.IFloatingPoint<TFloat>
-      {
-        sumOfTerms = TFloat.CreateChecked(a + b);
+      #endregion
 
-        return sumOfTerms / TFloat.CreateChecked(2);
-      }
+      #region ArithmeticSequence.. (progression)
 
       /// <summary>
-      /// <para>Creates a new sequence of non-zero numbers where each term after the first <paramref name="firstTerm"/> is found by multiplying the previous one by a fixed, non-zero number called the <paramref name="d"/>.</para>
-      /// <para><see href="https://en.wikipedia.org/wiki/Geometric_progression"/></para>
+      /// <para>Creates a new sequence of non-zero numbers where each term after the first <paramref name="a1"/> is found by multiplying the previous one by a fixed, non-zero number called the <paramref name="commonDifference"/>.</para>
+      /// <para><see href="https://en.wikipedia.org/wiki/Arithmetic_progression"/></para>
       /// </summary>
       /// <remarks>This function runs indefinitely, if allowed.</remarks>
-      /// <typeparam name="TFloat"></typeparam>
-      /// <param name="a"></param>
-      /// <param name="d"></param>
+      /// <param name="a1">The first term.</param>
+      /// <param name="commonDifference">The common difference of the arithmetic sequence.</param>
       /// <returns></returns>
       /// <exception cref="System.ArgumentOutOfRangeException"></exception>
-      public static System.Collections.Generic.IEnumerable<TNumber> ArithmeticSequence(TNumber a, TNumber d)
+      public static System.Collections.Generic.IEnumerable<TNumber> ArithmeticSequence(TNumber a1, TNumber commonDifference)
       {
-        System.ArgumentOutOfRangeException.ThrowIfZero(a);
-        System.ArgumentOutOfRangeException.ThrowIfZero(d);
+        System.ArgumentOutOfRangeException.ThrowIfZero(commonDifference);
 
         for (var n = 0; true; n++) // We can start at zero..
-          yield return checked(a + TNumber.CreateChecked(n) * d); // ..and get away with NOT subtracting one from n: (a + n * d)
+          yield return checked(a1 + TNumber.CreateChecked(n) * commonDifference); // ..and get away with NOT subtracting one from n: (a + n * d)
       }
 
       /// <summary>
-      /// <para>Get the <paramref name="nth"/> term of a geometric sequence with the specified <paramref name="commonRatio"/>.</para>
+      /// <para>Get the <paramref name="n"/> term of a geometric sequence with the specified <paramref name="commonRatio"/>.</para>
       /// </summary>
       /// <typeparam name="TInteger"></typeparam>
-      /// <param name="a"></param>
-      /// <param name="d"></param>
-      /// <param name="n"></param>
+      /// <param name="a1">The first term.</param>
+      /// <param name="commonDifference">The common difference of the arithmetic sequence.</param>
+      /// <param name="n">The term to retrieve.</param>
       /// <returns></returns>
-      public static TNumber ArithmeticSequenceNthTerm<TInteger>(TNumber a, TNumber d, TInteger n)
+      public static TNumber ArithmeticSequenceNthTerm<TInteger>(TNumber a1, TNumber commonDifference, TInteger n)
         where TInteger : System.Numerics.IBinaryInteger<TInteger>
-        => a + TNumber.CreateChecked(n - TInteger.One) * d; // (a + (n - 1) * d)
+      {
+        System.ArgumentOutOfRangeException.ThrowIfZero(commonDifference);
+
+        return a1 + TNumber.CreateChecked(n - TInteger.One) * commonDifference; // (a + (n - 1) * d)
+      }
+
+      #endregion
+
+      #region ArithmeticSeries.. (sum)
 
       /// <summary>
-      /// <para>Gets the geometric series (sum) of a geometric sequence with infinite terms and the specified <paramref name="d"/>.</para>
+      /// <para>Gets the mean of the arithmetic series of an arithmetic sequence with the specified <paramref name="a1"/>, <paramref name="commonDifference"/> and <paramref name="n"/> terms.</para>
+      /// <para><see href="https://en.wikipedia.org/wiki/Arithmetic_progression#Sum"/></para>
       /// </summary>
-      /// <param name="d">The common ratio of the geometric sequence.</param>
+      /// <param name="a1">The first term.</param>
+      /// <param name="commonDifference">The common difference of the arithmetic sequence.</param>
+      /// <param name="n">The number of terms.</param>
       /// <returns></returns>
-      public static TNumber ArithmeticSeriesMeanOfNTerms<TInteger>(TNumber a, TNumber d, TInteger n)
+      public static TNumber ArithmeticSeriesMeanOfNTerms<TInteger>(TNumber a1, TNumber commonDifference, TInteger n)
         where TInteger : System.Numerics.IBinaryInteger<TInteger>
-        => (a + ArithmeticSequenceNthTerm(a, d, n)) / TNumber.CreateChecked(2);
+        => (a1 + ArithmeticSequenceNthTerm(a1, commonDifference, n)) / TNumber.CreateChecked(2);
 
       ///// <summary>
-      ///// <para>Gets the geometric series (sum) of a geometric sequence with infinite terms and the specified <paramref name="d"/>.</para>
+      ///// <para>Gets the arithmetic series (sum) of a arithmetic sequence with infinite terms and the specified <paramref name="d"/>.</para>
       ///// </summary>
-      ///// <param name="d">The common ratio of the geometric sequence.</param>
+      ///// <param name="d">The common ratio of the arithmetic sequence.</param>
       ///// <returns></returns>
       //public static TNumber ArithmeticSeriesOfInfiniteTerms<TNumber>(this TNumber a, TNumber d)
       //  where TNumber : System.Numerics.INumber<TNumber>
       //  => ()
 
       /// <summary>
-      /// <para>Gets the geometric series (sum) of a geometric sequence with <paramref name="n"/> terms and the specified <paramref name="d"/>.</para>
+      /// <para>Gets the arithmetic series of an arithmetic sequence with the specified <paramref name="a1"/>, <paramref name="commonDifference"/> and <paramref name="n"/> terms.</para>
+      /// <para><see href="https://en.wikipedia.org/wiki/Arithmetic_progression#Sum"/></para>
       /// </summary>
-      /// <param name="d">The common ratio of the geometric sequence.</param>
-      /// <param name="n">The term of which to find the sum up until.</param>
+      /// <param name="a1">The first term.</param>
+      /// <param name="commonDifference">The common difference of the arithmetic sequence.</param>
+      /// <param name="n">The number of terms.</param>
       /// <returns></returns>
-      public static TNumber ArithmeticSeriesOfNTerms<TInteger>(TNumber a, TNumber d, TInteger n)
+      public static TNumber ArithmeticSeriesOfNTerms<TInteger>(TNumber a1, TNumber commonDifference, TInteger n)
         where TInteger : System.Numerics.IBinaryInteger<TInteger>
-        => TNumber.CreateChecked(n) * (a + ArithmeticSequenceNthTerm(a, d, n)) / TNumber.CreateChecked(2);
+        => TNumber.CreateChecked(n) * (a1 + ArithmeticSequenceNthTerm(a1, commonDifference, n)) / TNumber.CreateChecked(2);
 
       #endregion
 
@@ -276,16 +290,18 @@ namespace Flux
 
       #endregion
 
-      #region Geometric progression
+      #region GeometricMean (type of average)
 
       /// <summary>
-      /// <para></para>
+      /// <para>The geometric mean is a mean or average which indicates a central tendency of a finite collection of positive real numbers by using the product of their values (as opposed to the arithmetic mean, which uses their sum).</para>
+      /// <para>Each term in a geometric series is the geometric mean of the term before it and the term after it, in the same way that each term of an arithmetic series is the arithmetic mean of its neighbors.</para>
+      /// <para><see href="https://en.wikipedia.org/wiki/Geometric_mean"/></para>
       /// </summary>
-      /// <typeparam name="TNumber"></typeparam>
       /// <typeparam name="TFloat"></typeparam>
-      /// <param name="productOfTerms"></param>
+      /// <param name="productOfTerms">The product of out parameter</param>
       /// <param name="terms"></param>
       /// <returns></returns>
+
       public static TFloat GeometricMean<TFloat>(out TFloat productOfTerms, params System.Collections.Generic.IEnumerable<TNumber> terms)
         where TFloat : System.Numerics.IFloatingPoint<TFloat>, System.Numerics.IRootFunctions<TFloat>
       {
@@ -294,16 +310,18 @@ namespace Flux
         return checked(TFloat.RootN(productOfTerms, countOfTerms));
       }
 
+      #endregion
+
+      #region GeometricSequence (progression)
+
       /// <summary>
-      /// <para>Creates a new sequence of non-zero numbers where each term after the first <paramref name="firstTerm"/> is found by multiplying the previous one by a fixed, non-zero number called the <paramref name="commonRatio"/>.</para>
+      /// <para>Creates a new sequence of non-zero numbers where each term after the first <paramref name="a1"/> is found by multiplying the previous one by a fixed, non-zero number called the <paramref name="commonRatio"/>.</para>
       /// <para><see href="https://en.wikipedia.org/wiki/Geometric_progression"/></para>
       /// </summary>
       /// <remarks>This function runs indefinitely, if allowed.</remarks>
-      /// <typeparam name="TFloat"></typeparam>
-      /// <param name="firstTerm"></param>
+      /// <param name="a1"></param>
       /// <param name="commonRatio"></param>
       /// <returns></returns>
-      /// <exception cref="System.ArgumentOutOfRangeException"></exception>
       public static System.Collections.Generic.IEnumerable<TNumber> GeometricSequence(TNumber a1, TNumber commonRatio)
       {
         System.ArgumentOutOfRangeException.ThrowIfZero(a1);
@@ -313,23 +331,29 @@ namespace Flux
         {
           yield return a1;
 
-          try
-          {
-            checked { a1 *= commonRatio; }
-          }
-          catch { break; }
+          try { checked { a1 *= commonRatio; } } catch { break; }
         }
       }
 
+      #endregion
+
+      #region GeometricSeries.. (sum)
+
       /// <summary>
-      /// <para>Gets the geometric series (sum) of a geometric sequence with infinite terms and the specified <paramref name="commonRatio"/>.</para>
+      /// <para></para>
+      /// <para>Gets the geometric series of a geometric sequence with infinite terms after the first <paramref name="a1"/> with the specified <paramref name="commonRatio"/>. The sum of a geometric progression's terms is called a geometric series.</para>
+      /// <para><see href="https://en.wikipedia.org/wiki/Geometric_series"/></para>
       /// </summary>
       /// <param name="commonRatio">The common ratio of the geometric sequence.</param>
       /// <returns></returns>
-      public static TNumber GeometricSeriesOfInfiniteTerms(TNumber a1, TNumber commonRatio)
-        => commonRatio < TNumber.One
-        ? a1 / (TNumber.One - commonRatio)
-        : throw new System.ArithmeticException();
+      public static TFloat GeometricSeriesOfInfiniteTerms<TFloat>(TNumber a1, TFloat commonRatio)
+        where TFloat : System.Numerics.IFloatingPoint<TFloat>
+      {
+        if (commonRatio >= TFloat.One)
+          throw new System.ArithmeticException("The geometric series is divergent.");
+
+        return TFloat.CreateChecked(a1) / (TFloat.One - commonRatio);
+      }
 
       #endregion
 
@@ -356,55 +380,6 @@ namespace Flux
       /// <returns></returns>
       public static TNumber KroneckerDelta(TNumber value, TNumber other)
         => value == other ? TNumber.One : TNumber.Zero;
-
-      #endregion
-
-      #region Log..
-
-      /// <summary>
-      /// <para>Computes the logarithm of a value in the specified radix (base) and returns the largest integral LTE (less-than-or-equal) and the smallest integral GTE (greater-than-or-equal) to value.</para>
-      /// <para>Uses the <see cref="System.Double"/> functionality.</para>
-      /// </summary>
-      /// <typeparam name="TRadix"></typeparam>
-      /// <param name="radix">Can be any </param>
-      /// <returns>The (IntegralTowardZero, the "raw" LogR, and IntegralAwayFromZero) of the result.</returns>
-      public static (TNumber IntegralLog, double Log) LogR<TRadix>(TNumber value, TRadix radix)
-        where TRadix : System.Numerics.INumber<TRadix>
-      {
-        var logR = double.Log(double.CreateChecked(value), double.CreateChecked(radix));
-
-        var ilogR = FloatingPoint.IsNearInteger(logR, out var integer) ? integer : double.Floor(logR);
-
-        return (TNumber.CreateChecked(ilogR), logR);
-      }
-
-      /// <summary>
-      /// <para>Computes the base-10 logarithm of a value.</para>
-      /// <para>Uses the <see cref="System.Double"/> functionality.</para>
-      /// </summary>
-      /// <returns>The (IntegralTowardZero, the "raw" Log10, and IntegralAwayFromZero) of the result.</returns>
-      public static (TNumber IntegralLog, double Log) Log10(TNumber value)
-      {
-        var log10 = double.Log10(double.CreateChecked(value));
-
-        var ilog10 = FloatingPoint.IsNearInteger(log10, out var integer) ? integer : double.Floor(log10);
-
-        return (TNumber.CreateChecked(ilog10), log10);
-      }
-
-      /// <summary>
-      /// <para>Computes the natural (base-E) logarithm of a value.</para>
-      /// <para>Uses the <see cref="System.Double"/> functionality.</para>
-      /// </summary>
-      /// <returns>The (IntegralTowardZero, the "raw" LogE, and IntegralAwayFromZero) of the result.</returns>
-      public static (TNumber IntegralLog, double Log) LogE(TNumber value)
-      {
-        var logE = double.Log(double.CreateChecked(value));
-
-        var ilogE = FloatingPoint.IsNearInteger(logE, out var integer) ? integer : double.Floor(logE);
-
-        return (TNumber.CreateChecked(ilogE), logE);
-      }
 
       #endregion
 
@@ -477,64 +452,6 @@ namespace Flux
               throw new System.ArgumentOutOfRangeException(nameof(direction));
           }
         }
-      }
-
-      /// <summary>
-      /// <para>Creates a new sequence of <paramref name="count"/> numbers (or as many as possible) using <typeparamref name="TNumber"/> starting at <paramref name="number"/> and spaced by <paramref name="stepSize"/>.</para>
-      /// <para>If the loop logic overflows/underflows for any reason, the enumeration is simply terminated, no exceptions are thrown.</para>
-      /// </summary>
-      /// <typeparam name="TNumber"></typeparam>
-      /// <typeparam name="TCount"></typeparam>
-      /// <param name="number"></param>
-      /// <param name="stepSize"></param>
-      /// <param name="count"></param>
-      /// <returns></returns>
-      public static System.Collections.Generic.IEnumerable<TNumber> LoopRange<TCount>(TNumber startNumber, TNumber stepSize, TCount count)
-        where TCount : System.Numerics.IBinaryInteger<TCount>
-      {
-        System.ArgumentOutOfRangeException.ThrowIfZero(stepSize);
-        System.ArgumentOutOfRangeException.ThrowIfNegativeOrZero(count);
-
-        var index = TCount.Zero;
-
-        TNumber number;
-
-        while (index < count)
-          checked
-          {
-            number = startNumber + TNumber.CreateChecked(index) * stepSize;
-
-            yield return number;
-
-            index++;
-          }
-      }
-
-      /// <summary>
-      /// <para>Creates a new sequence with as many numbers as possible, starting at <paramref name="startNumber"/> and spaced by <paramref name="stepSize"/>.</para>
-      /// <para>If the loop logic overflows/underflows for any reason, e.g. type limits, etc., the enumeration is simply terminated, no exceptions are thrown.</para>
-      /// </summary>
-      /// <remarks>Please note! If <typeparamref name="TNumber"/> is unlimited in nature (e.g. <see cref="System.Numerics.BigInteger"/>) enumeration is indefinite to the extent of system resources.</remarks>
-      /// <param name="startNumber"></param>
-      /// <param name="stepSize"></param>
-      /// <returns></returns>
-      public static System.Collections.Generic.IEnumerable<TNumber> LoopVerge(TNumber startNumber, TNumber stepSize)
-      {
-        System.ArgumentOutOfRangeException.ThrowIfZero(stepSize);
-
-        var index = TNumber.Zero;
-
-        TNumber loopNumber;
-
-        while (true)
-          checked
-          {
-            try { loopNumber = startNumber + index * stepSize; } catch { break; }
-
-            yield return loopNumber;
-
-            try { index++; } catch { break; }
-          }
       }
 
       #endregion
@@ -645,30 +562,6 @@ namespace Flux
         };
 
       #endregion
-
-      //#region Pow
-
-      ///// <summary>
-      ///// <para>Computes a value raised to to a given <paramref name="exponent"/>.</para>
-      ///// <para>Uses the <see cref="System.Double"/> functionality.</para>
-      ///// </summary>
-      ///// <typeparam name="TNumber"></typeparam>
-      ///// <typeparam name="TExponent"></typeparam>
-      ///// <param name="exponent"></param>
-      ///// <returns>The (IntegralTowardZero, the "raw" Pow, and IntegralAwayFromZero) of the result.</returns>
-      //public static (TNumber IntegralTowardZero, TNumber IntegralAwayFromZero, TNumber NearestIntegral, double Pow) Pow<TExponent>(TNumber value, TExponent exponent)
-      //  where TExponent : System.Numerics.INumber<TExponent>
-      //{
-      //  var pow = double.Pow(double.CreateChecked(value), double.CreateChecked(exponent));
-
-      //  var (tz, afz) = IFloatingPoint.GetSurroundingIntegrals(pow);
-
-      //  var ni = RoundToNearest(pow, HalfRounding.ToEven, false, [tz, afz]);
-
-      //  return (TNumber.CreateChecked(tz), TNumber.CreateChecked(afz), TNumber.CreateChecked(ni), pow);
-      //}
-
-      //#endregion
 
       #region Quantiles
 
@@ -937,38 +830,6 @@ namespace Flux
       /// <returns></returns>
       public static TNumber Rescale(TNumber value, TNumber minSource, TNumber maxSource, TNumber minTarget, TNumber maxTarget)
         => minTarget + (maxTarget - minTarget) * (value - minSource) / (maxSource - minSource);
-
-      #region ..Root functions (Cube, Nth, Square)
-
-      public static (TNumber IntegralCubeRoot, double CubeRoot) Cbrt(TNumber value)
-      {
-        var cbrt = double.Cbrt(double.CreateChecked(value));
-
-        var icbrt = FloatingPoint.IsNearInteger(cbrt, out var integer) ? integer : double.Floor(cbrt);
-
-        return (TNumber.CreateChecked(icbrt), cbrt);
-      }
-
-      public static (TNumber IntegralRootN, double RootN) RootN<TNth>(TNumber value, TNth nth)
-        where TNth : System.Numerics.IBinaryInteger<TNth>
-      {
-        var rootn = double.RootN(double.CreateChecked(value), int.CreateChecked(nth));
-
-        var irootn = FloatingPoint.IsNearInteger(rootn, out var integer) ? integer : double.Floor(rootn);
-
-        return (TNumber.CreateChecked(irootn), rootn);
-      }
-
-      public static (TNumber IntegralSquareRoot, double SquareRoot) Sqrt(TNumber value)
-      {
-        var sqrt = double.Sqrt(double.CreateChecked(value));
-
-        var isqrt = FloatingPoint.IsNearInteger(sqrt, out var integer) ? integer : double.Floor(sqrt);
-
-        return (TNumber.CreateChecked(isqrt), sqrt);
-      }
-
-      #endregion
 
       #region RoundToNearest
 

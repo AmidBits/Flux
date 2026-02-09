@@ -3578,7 +3578,7 @@
       {
         var length = 0;
         for (var i = source.Length - 1; i >= 0; i--)
-          length += source[i].Utf8SequenceLength();
+          length += source[i].Utf8SequenceLength;
         return length;
       }
 

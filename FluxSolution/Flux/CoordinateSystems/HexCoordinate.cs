@@ -286,7 +286,7 @@ namespace Flux.CoordinateSystems
 
     /// <summary>Computes the count of hexes in the range of, i.e. any hex that is on or inside, the specified radius.</summary>
     public static int ComputeRangeCount(int radius)
-      => Number.LoopRange(0, 6, radius + 1).AsParallel().Sum() + 1;
+      => Number.ArithmeticSequence(0, 6).Take(radius + 1).AsParallel().Sum() + 1;
 
     /// <summary>Computes the count of hexes in the ring of the specified radius.</summary>
     public static int ComputeRingCount(int radius)

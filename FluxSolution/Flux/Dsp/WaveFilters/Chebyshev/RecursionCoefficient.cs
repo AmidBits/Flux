@@ -46,7 +46,7 @@ namespace Flux.Dsp.WaveFilters.Chebyshev
       A[2] = 1.0;
       B[2] = 1.0;
 
-      for (var P = 1; P <= (NP / 2); P++) // Loop for each pole-pair.
+      for (var P = 1; P <= (NP / 2); P++) // Loop for each pair of poles.
       {
         var (A0, A1, A2, B1, B2) = Subroutine(FC, LH, PR, NP, P);
 

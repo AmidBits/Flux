@@ -151,7 +151,7 @@ namespace Flux
 
       return (
         double.Sqrt(alpha * alpha + beta * beta),
-        IntervalNotation.Closed.Wrap(double.RadiansToDegrees(double.Atan2(beta, alpha)), 0.0, 360.0)
+        IntervalNotation.Closed.WrapAround(double.RadiansToDegrees(double.Atan2(beta, alpha)), 0.0, 360.0)
       );
     }
 

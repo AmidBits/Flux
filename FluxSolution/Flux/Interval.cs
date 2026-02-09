@@ -134,14 +134,8 @@
       /// <param name="intervalNotation">Indicates how to handle the interval endpoints.</param>
       /// <returns></returns>
       /// <exception cref="System.ArgumentOutOfRangeException"></exception>
-      public System.Collections.Generic.IEnumerable<TNumber> Iterate(TNumber stepSize, IntervalNotation intervalNotation = IntervalNotation.Closed)
-      {
-        var (minValue, maxValue) = intervalNotation.GetExtentAbsolute(source.MinValue, source.MaxValue, TNumber.Abs(stepSize));
-
-        if (TNumber.IsNegative(stepSize)) return Number.LoopVerge(maxValue, stepSize).TakeWhile(n => n >= minValue);
-        else if (!TNumber.IsZero(stepSize)) return Number.LoopVerge(minValue, stepSize).TakeWhile(n => n <= maxValue);
-        else throw new System.ArgumentOutOfRangeException(nameof(stepSize));
-      }
+      public System.Collections.Generic.IEnumerable<TNumber> Loop(TNumber stepSize)
+        => IntervalNotation.Closed.Loop(source.MinValue, source.MaxValue, stepSize);
 
       /// <summary>
       /// <para>Sub-divides an interval into sub-intervals.</para>
@@ -179,7 +173,7 @@
       {
         var (minValue, maxValue) = (source.MinValue, source.MaxValue);
 
-        var cmp = IntervalNotation.Closed.Compare(value, minValue, maxValue);
+        var cmp = IntervalNotation.Closed.CompareWith(value, minValue, maxValue);
 
         var addon = value != minValue && value != maxValue ? TNumber.One : TNumber.Zero;
 

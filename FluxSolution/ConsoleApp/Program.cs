@@ -333,25 +333,48 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
+      var testxt = "this is a test to see about the capitalization.";
+
+      testxt.AsSpan().AsSpan().CapitalizeWords();
+      testxt.AsSpan().AsSpan().UncapitalizeWords();
 
 
+      var uus = "First there is U+0041, then U+0042, and lastly there is U+0043.";
+      var uusl = System.Text.Rune.ParseUnicodeUnotations(uus);
 
+      var csl = @"A \u00E7, and a \U0001F47D, then a \x00E7.";
+      var csll = System.Text.Rune.ParseCsUnicodeLiterals(csl);
 
-      var srs = Flux.BinaryInteger.GenerateSubRangesBySubLength(20, 4).Select(r => r.ToInterval()).ToList();
-      var src = Flux.BinaryInteger.GenerateCountSubRanges(20, 4).Select(r => r.ToInterval()).ToList();
+      var ncr = @"A &#x0041; and another &#66; oh and a &#x00000043;.";
+      var ncrl = System.Text.Rune.ParseMlNumericCharacterReferences(ncr);
 
-      System.Console.WriteLine(Flux.Diagnostics.Performance.Measure(() => string.Join(',', BinaryInteger.GetCompositeNumbers<int>().Take(10)), 1000));
-      System.Console.WriteLine(Flux.Diagnostics.Performance.Measure(() => string.Join(',', BinaryInteger.GetHighlyCompositeNumbers<int>().Take(10)), 1000));
-      //System.Console.WriteLine(Flux.Diagnostics.Performance.Measure(() => string.Join(',', IBinaryInteger.GetSuperiorHighlyCompositeNumbers<int>(100).Take(10)), 10));
+      var r = new System.Text.Rune(0x1F680);
 
+      var c0 = r.ToString()[0];
+      var c1 = r.ToString()[1];
 
-      var log = double.Log(999, 10);
+      var rvs = r.ToVerboseString();
+      var rcsutf16ls = r.ToCsharpUtf16LiteralString();
+      var rcsutf32ls = r.ToCsharpUtf32LiteralString();
+      var rcsvhls = r.ToCsharpVariableHexLiteralString();
+      var rdncrs = r.ToDecimalNumericCharacterReferenceString();
+      var rhncrs = r.ToHexadecimalNumericCharacterReferenceString();
 
-      var (logf, logc) = FloatingPoint.IsNearInteger(log, out var ilog) ? (ilog, ilog) : (double.Floor(log), double.Ceiling(log));
+      var c0vs = c0.ToVerboseString();
+      var c0csutf16ls = c0.ToCsharpUtf16LiteralString();
+      var c0csvhls = c0.ToCsharpVariableHexLiteralString();
 
-      var source = 2039;
-      var bin2gray = BinaryInteger.ConvertBinaryToGray(source);
-      var gray2bin = BinaryInteger.ConvertGrayToBinary(bin2gray);
+      var c1vs = c1.ToVerboseString();
+      var c1csutf16ls = c1.ToCsharpUtf16LiteralString();
+      var c1csvhls = c1.ToCsharpVariableHexLiteralString();
+
+      var cvs = 'z'.ToVerboseString();
+
+      var gs = Number.GeometricSequence(1, 10).Take(10).ToArray();
+
+      var gm = Number.GeometricMean(out double product, 1, 2, 8, 16);
+
+      var gmbl = FloatingPoint.GeometricMean(1.0, 2, 8, 16);
 
 
 

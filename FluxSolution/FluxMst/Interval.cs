@@ -27,14 +27,14 @@ namespace Numerics
     [TestMethod]
     public void WrapAround()
     {
-      Assert.AreEqual(2.5, IntervalNotation.Closed.Wrap(7.5, 1.0, 5.0));
+      Assert.AreEqual(2.5, IntervalNotation.Closed.WrapAround(7.5, 1.0, 5.0));
     }
 
     [TestMethod]
     public void WrapAroundHalfOpenMax()
     {
       var expected = -1;
-      var actual = Flux.IntervalNotation.HalfOpenRight.Wrap(7, -2, 2);
+      var actual = Flux.IntervalNotation.HalfOpenRight.WrapAround(7, -2, 2);
 
       Assert.AreEqual(expected, actual);
     }
@@ -43,7 +43,7 @@ namespace Numerics
     public void WrapAroundHalfOpenMin()
     {
       var expected = -1;
-      var actual = Flux.IntervalNotation.HalfOpenLeft.Wrap(7, -2, 2);
+      var actual = Flux.IntervalNotation.HalfOpenLeft.WrapAround(7, -2, 2);
 
       Assert.AreEqual(expected, actual);
     }

@@ -277,7 +277,7 @@ namespace Flux.Globalization.En
 
             yield return bi; // Add the place value used above (e.g. 1,000,000).
 
-            absNumber -= quotient * bi; // Set number by subtracting the values just processed (e.g. 7 * 1,000,000 = 7,000,000) and continue loop.
+            absNumber -= quotient * bi; // Set number by subtracting the values just processed (e.g. 7 * 1,000,000 = 7,000,000) and continue.
           }
 
       if (absNumber >= 20) // If the number is GTE 20 (it's less than 100 at this point), do it.

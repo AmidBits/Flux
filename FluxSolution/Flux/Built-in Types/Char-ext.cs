@@ -2,51 +2,50 @@
 {
   public static partial class CharExtensions
   {
-    /// <summary>
-    /// <para>"PLUS SIGN" = U+002B = '−'</para>
-    /// </summary>
-    internal const char PlusSign = '\u002B';
+    #region ..LatinStrokes (letters)
 
-    /// <summary>
-    /// <para>"DOUBLE-STRUCK CAPITAL C" = U+2102 = 'ℂ'</para>
-    /// </summary>
-    internal const char DoubleStruckCapitalC = '\u2102';
+    private static readonly System.Collections.Generic.Dictionary<char, char> m_latinStrokes = new()
+    {
+      { '\u023A', 'A' }, // Latin Capital Letter A with stroke
+      { '\u0243', 'B' }, // Latin Capital Letter B with stroke
+      { '\u0180', 'b' }, // Latin Small Letter B with stroke
+      { '\u023B', 'C' }, // Latin Capital Letter C with stroke
+      { '\u023C', 'c' }, // Latin Small Letter C with stroke
+      { '\u0110', 'D' }, // Latin Capital Letter D with stroke
+      { '\u0111', 'd' }, // Latin Small Letter D with stroke
+      { '\u0246', 'E' }, // Latin Capital Letter E with stroke
+      { '\u0247', 'e' }, // Latin Small Letter E with stroke
+      { '\u01E4', 'G' }, // Latin Capital Letter G with stroke
+      { '\u01E5', 'g' }, // Latin Small Letter G with stroke
+      { '\u0126', 'H' }, // Latin Capital Letter H with stroke
+      { '\u0127', 'h' }, // Latin Small Letter H with stroke
+      { '\u0197', 'I' }, // Latin Capital Letter I with stroke
+      { '\u0248', 'J' }, // Latin Capital Letter J with stroke
+      { '\u0249', 'j' }, // Latin Small Letter J with stroke
+      { '\u0141', 'L' }, // Latin Capital Letter L with stroke
+      { '\u0142', 'l' }, // Latin Small Letter L with stroke
+      { '\u00D8', 'O' }, // Latin Capital letter O with stroke
+      { '\u01FE', 'O' }, // Latin Capital letter O with stroke and acute
+      { '\u00F8', 'o' }, // Latin Small Letter O with stroke
+      { '\u01FF', 'o' }, // Latin Small Letter O with stroke and acute
+      { '\u024C', 'R' }, // Latin Capital letter R with stroke
+      { '\u024D', 'r' }, // Latin Small Letter R with stroke
+      { '\u0166', 'T' }, // Latin Capital Letter T with stroke
+      { '\u023E', 'T' }, // Latin Capital Letter T with diagonal stroke
+      { '\u0167', 't' }, // Latin Small Letter T with stroke
+      { '\u024E', 'Y' }, // Latin Capital letter Y with stroke
+      { '\u024F', 'y' }, // Latin Small Letter Y with stroke
+      { '\u01B5', 'Z' }, // Latin Capital Letter Z with stroke
+      { '\u01B6', 'z' }, // Latin Small Letter Z with stroke
+    };
 
-    /// <summary>
-    /// <para>"DOUBLE-STRUCK CAPITAL N" = U+2115 = 'ℕ'</para>
-    /// </summary>
-    internal const char DoubleStruckCapitalN = '\u2115';
+    #endregion
 
-    /// <summary>
-    /// <para>"DOUBLE-STRUCK CAPITAL Q" = U+211A = 'ℚ'</para>
-    /// </summary>
-    internal const char DoubleStruckCapitalQ = '\u211A';
-
-    /// <summary>
-    /// <para>"DOUBLE-STRUCK CAPITAL R" = U+211D = 'ℝ'</para>
-    /// </summary>
-    internal const char DoubleStruckCapitalR = '\u211D';
-
-    /// <summary>
-    /// <para>"DOUBLE-STRUCK CAPITAL Z" = U+2124 = 'ℤ'</para>
-    /// </summary>
-    internal const char DoubleStruckCapitalZ = '\u2124';
-
-    /// <summary>
-    /// <para>"MINUS SIGN" = U+2212 = '−'</para>
-    /// </summary>
-    internal const char MinusSign = '\u2212';
-
-    /// <summary>
-    /// <para>"INFINITY" = U+221E = '∞'</para>
-    /// </summary>
-    internal const char Infinity = '\u221E';
-
-    #region Subscript/superscript dictionaries
+    #region Subscript/Superscript dictionaries
 
     //public const string SubscriptAlphaLower = "ₐ\0\0\0ₑ\0\0ₕᵢⱼₖₗₘₙₒₚ\0ᵣₛₜᵤᵥ\0ₓ\0\0";
     //public const string SubscriptNumeric = "₀₁₂₃₄₅₆₇₈₉";
-    private static System.Collections.Generic.Dictionary<char, char> m_subscriptDictionary = new()
+    private static readonly System.Collections.Generic.Dictionary<char, char> m_subscriptDictionary = new()
     {
       { '\u0028', '\u208D' },
       { '\u0029', '\u208E' },
@@ -83,7 +82,7 @@
 
     //public const string SuperscriptAlphaLower = "ᵃᵇᶜᵈᵉᶠᵍʰⁱʲᵏˡᵐⁿᵒᵖ\0ʳˢᵗᵘᵛʷˣʸᶻ";
     //public const string SuperscriptNumeric = "⁰¹²³⁴⁵⁶⁷⁸⁹";
-    private static System.Collections.Generic.Dictionary<char, char> m_superscriptDictionary = new()
+    private static readonly System.Collections.Generic.Dictionary<char, char> m_superscriptDictionary = new()
     {
       { '\u0028', '\u207D' },
       { '\u0029', '\u207E' },
@@ -164,7 +163,53 @@
 
     extension(System.Char)
     {
-      #region ControlPicture
+      #region AssertUnicodeCodepoint
+
+      public static char AssertUnicodeCodepoint(char character)
+      {
+        if (char.IsSurrogate(character))
+          throw new System.ArgumentOutOfRangeException($"Not a unicode codepoint. The character (\\u{(int)character:X4}) is a surrogate, a partial UTF-16 encoding, and not a full unicode character.");
+
+        return character;
+      }
+
+      #endregion
+
+      #region ..BasicLatinLetterY
+
+      /// <summary>
+      /// <para>Indicates whether the character is the letter 'Y' or 'y', i.e. ignore case.</para>
+      /// </summary>
+      /// <param name="character">The <see cref="System.Char"/> to check.</param>
+      /// <returns></returns>
+      /// <remarks>Provided for consistent check against consonants and vowels in English.</remarks>
+      public static bool IsBasicLatinLetterY(char character)
+        => character is 'y' or 'Y';
+
+      #endregion
+
+      #region ..Consonant
+
+      /// <summary>
+      /// <para>Indicates whether a <see cref="char"/> is a consonant in the specified <paramref name="cultureInfo"/>.</para>
+      /// </summary>
+      /// <param name="character"></param>
+      /// <param name="culture">The culture to use.</param>
+      /// <returns></returns>
+      public static bool IsConsonant(char character, System.Globalization.CultureInfo cultureInfo)
+        => char.IsLetter(character) && cultureInfo.GetConsonantsAsChars().Contains(character);
+
+      /// <summary>
+      /// <para>Indicates whether a <see cref="char"/> is a consonant in the current culture.</para>
+      /// </summary>
+      /// <param name="character"></param>
+      /// <returns></returns>
+      public static bool IsConsonant(char character)
+        => IsConsonant(character, System.Globalization.CultureInfo.CurrentCulture);
+
+      #endregion
+
+      #region ..ControlPicture
 
       /// <summary>
       /// <para>Control Pictures is a Unicode block containing characters for graphically representing the C0 control codes, and other control characters.</para>
@@ -179,19 +224,20 @@
       /// <para><seealso href="https://en.wikipedia.org/wiki/Delete_character"/></para>
       /// <para><seealso href="https://en.wikipedia.org/wiki/Specials_(Unicode_block)#Replacement_character"/></para>
       /// </summary>
+      /// <param name="character"></param>
       /// <returns></returns>
-      public static char GetControlPicture(char c)
-        => c is >= '\u0000' and <= '\u0020' // C0 control codes, U+0000—U+001F, from the Basic Latin block.
-        ? (char)(c + 2400) // Yields C0 control pictures.
-        : c is '\u007F' // Delete character.
+      public static char GetControlPicture(char character)
+        => character is >= '\u0000' and <= '\u0020' // C0 control codes, U+0000—U+001F, from the Basic Latin block.
+        ? (char)(character + 2400) // Yields C0 control pictures.
+        : character is '\u007F' // Delete character.
         ? '\u2421' // Yields DEL
-        : c is '\u0085' // The NEL (Next Line) is the only C1 control code that has a designated Unicode "control picture".
+        : character is '\u0085' // The NEL (Next Line) is the only C1 control code that has a designated Unicode "control picture".
         ? '\u2424' // Yields NL (Newline)
         ///: source is >= '\u2028' and <= '\u2029'
         ///? '\u2424' // LS and PS (Line Separator and Paragraph Separator).
-        : c is >= '\u0080' and <= '\u009F' // C1 control codes, U+0080-U+009F, from the Latin-1 Supplement block.
+        : character is >= '\u0080' and <= '\u009F' // C1 control codes, U+0080-U+009F, from the Latin-1 Supplement block.
         ? '\uFFFD' // There are no Unicode "control picture" for these (except NEL, above) so here we use the replacement character (seealso above) for these.
-        : c;
+        : character;
 
       /// <summary>
       /// <para>Control Pictures is a Unicode block containing characters for graphically representing the C0 control codes, and other control characters.</para>
@@ -206,13 +252,15 @@
       /// <para><seealso href="https://en.wikipedia.org/wiki/Delete_character"/></para>
       /// <para><seealso href="https://en.wikipedia.org/wiki/Specials_(Unicode_block)#Replacement_character"/></para>
       /// </summary>
+      /// <param name="character"></param>
+      /// <param name="picture"></param>
       /// <returns></returns>
-      public static bool TryGetControlPicture(char c, out char picture)
+      public static bool TryGetControlPicture(char character, out char picture)
       {
-        try { picture = GetControlPicture(c); }
-        catch { picture = c; }
+        try { picture = GetControlPicture(character); }
+        catch { picture = character; }
 
-        return picture != c;
+        return picture != character;
       }
 
       #endregion
@@ -220,11 +268,13 @@
       #region FoldToAscii
 
       /// <summary>
-      /// <para>Folds chars representing characters above ASCII as a reasonable ASCII equivalent. Only characters from certain blocks are converted.</para>
+      /// <para>Folds a character representing other characters above ASCII as a reasonable ASCII equivalent. Only characters from certain blocks are converted.</para>
       /// </summary>
-      public static string FoldToAscii(char c)
+      /// <param name="character"></param>
+      /// <returns></returns>
+      public static string FoldToAscii(char character)
       {
-        switch (c)
+        switch (character)
         {
           case '\u00C0': // [LATIN CAPITAL LETTER A WITH GRAVE]
           case '\u00C1': // [LATIN CAPITAL LETTER A WITH ACUTE]
@@ -1698,76 +1748,79 @@
           case '\uFF5E': // [FULLWIDTH TILDE]
             return "~";
           default:
-            return c.ToString();
+            return character.ToString();
         }
       }
 
       #endregion
 
-      /// <summary>
-      /// <para>Indicates whether the character is the letter 'Y' or 'y', i.e. ignore case.</para>
-      /// </summary>
-      /// <param name="source">The <see cref="System.Char"/> to check.</param>
-      /// <returns></returns>
-      /// <remarks>Provided for consistent check against consonants and vowels in English.</remarks>
-      public static bool IsBasicLatinLetterY(char c)
-        => c is 'y' or 'Y';
+      #region ..LatinStroke (letters)
 
       /// <summary>
-      /// <para>Indicates whether a <see cref="char"/> is a consonant in the specified <paramref name="culture"/>.</para>
+      /// <para>Indicates whether a character is a latin diacritical stroke, and outputs the <paramref name="replacementCharacter"/>.</para>
       /// </summary>
-      /// <param name="source"></param>
-      /// <param name="culture">If null, then <see cref="System.Globalization.CultureInfo.CurrentCulture"/></param>
+      /// <param name="character">The character to evaluate.</param>
+      /// <param name="replacementCharacter">The out parameter with the latin character replacing the latin stroke.</param>
       /// <returns></returns>
-      public static bool IsConsonant(char source, System.Globalization.CultureInfo? culture = null)
-      {
-        culture ??= System.Globalization.CultureInfo.CurrentCulture;
+      public static bool IsLatinStroke(char character, out char replacementCharacter)
+        => m_latinStrokes.TryGetValue(character, out replacementCharacter);
 
-        return char.IsLetter(source) && MemoryExtensions.Contains(culture.GetConsonants(), source);
-      }
+      /// <summary>
+      /// <para>Indicates whether a character is a latin diacritical stroke.</para>
+      /// </summary>
+      /// <param name="character">The character to evaluate.</param>
+      /// <returns></returns>
+      public static bool IsLatinStroke(char character)
+        => IsLatinStroke(character, out var _);
+
+      /// <summary>
+      /// <para>Replaces a latin stroke letter with a plain letter, i.e. a letter without a diacritic is returned in its place. Characters that are not latin stroke letters are returned as-is.</para>
+      /// </summary>
+      /// <param name="character">The character to evaluate.</param>
+      /// <returns></returns>
+      public static char ReplaceLatinStroke(char character)
+        => IsLatinStroke(character, out var replacementCharacter) ? replacementCharacter : character;
+
+      /// <summary>
+      /// <para>Attempts to replace a latin stroke letter with a plain letter and indicates whether a replacement was made.</para>
+      /// </summary>
+      /// <param name="character"></param>
+      /// <param name="replacementCharacter"></param>
+      /// <returns></returns>
+      public static bool TryReplaceLatinStroke(char character, out char replacementCharacter)
+        => character != (replacementCharacter = ReplaceLatinStroke(character));
+
+      #endregion
 
       #region IsPrintableAscii
 
       /// <summary>
       /// <para>Returns whether a character is a printable from the ASCII table, i.e. any character from U+0020 (32 = ' ' space) to U+007E (126 = '~' tilde), both inclusive.</para>
       /// </summary>
-      /// <param name="source"></param>
+      /// <param name="character"></param>
       /// <returns></returns>
-      public static bool IsPrintableAscii(char c)
-        => c is >= '\u0020' and <= '\u007E';
+      public static bool IsPrintableAscii(char character)
+        => character is >= '\u0020' and <= '\u007E';
 
       #endregion
-
-      /// <summary>
-      /// <para>Indicates whether a <see cref="char"/> is a vowel in the specified <paramref name="culture"/>.</para>
-      /// </summary>
-      /// <param name="source"></param>
-      /// <param name="culture">If null, then <see cref="System.Globalization.CultureInfo.CurrentCulture"/></param>
-      /// <returns></returns>
-      public static bool IsVowel(char source, System.Globalization.CultureInfo? culture = null)
-      {
-        culture ??= System.Globalization.CultureInfo.CurrentCulture;
-
-        return char.IsLetter(source) && MemoryExtensions.Contains(culture.GetVowels(), source);
-      }
 
       #region ..Subscript
 
       /// <summary>
       /// <para>Indicates whether the specified Unicode character is categorized as a subscript character.</para>
       /// </summary>
-      /// <param name="c"></param>
+      /// <param name="character"></param>
       /// <returns></returns>
-      public static bool IsSubscript(char c)
-        => m_subscriptDictionary.ContainsKey(c);
+      public static bool IsSubscript(char character)
+        => m_subscriptDictionary.ContainsKey(character);
 
       /// <summary>
       /// <para>Converts the value of a Unicode character to its subscript equivalent.</para>
       /// </summary>
-      /// <param name="c"></param>
+      /// <param name="character"></param>
       /// <returns></returns>
-      public static char ToSubscript(char c)
-        => m_subscriptDictionary.TryGetValue(c, out var subscriptCharacter) ? subscriptCharacter : c;
+      public static char ToSubscript(char character)
+        => m_subscriptDictionary.TryGetValue(character, out var subscriptCharacter) ? subscriptCharacter : character;
 
       public static bool TryConvertToSubscript(char c, out char subscriptCharacter)
         => (subscriptCharacter = ToSubscript(c)) != c;
@@ -1779,46 +1832,132 @@
       /// <summary>
       /// <para>Indicates whether the specified Unicode character is categorized as a superscript character.</para>
       /// </summary>
-      /// <param name="c"></param>
+      /// <param name="character"></param>
       /// <returns></returns>
-      public static bool IsSuperscript(char c)
-        => m_superscriptDictionary.ContainsKey(c);
+      public static bool IsSuperscript(char character)
+        => m_superscriptDictionary.ContainsKey(character);
 
       /// <summary>
       /// <para>Converts the value of a Unicode character to its superscript equivalent.</para>
       /// </summary>
-      /// <param name="c"></param>
+      /// <param name="character"></param>
       /// <returns></returns>
-      public static char ToSuperscript(char c)
-        => m_superscriptDictionary.TryGetValue(c, out var superscriptCharacter) ? superscriptCharacter : c;
+      public static char ToSuperscript(char character)
+        => m_superscriptDictionary.TryGetValue(character, out var superscriptCharacter) ? superscriptCharacter : character;
 
-      public static bool TryConvertToSuperscript(char c, out char superscriptCharacter)
-        => (superscriptCharacter = ToSuperscript(c)) != c;
+      public static bool TryConvertToSuperscript(char character, out char superscriptCharacter)
+        => (superscriptCharacter = ToSuperscript(character)) != character;
+
+      #endregion
+
+      #region ..Vowel
+
+      /// <summary>
+      /// <para>Indicates whether a <see cref="char"/> is a vowel in the specified <paramref name="cultureInfo"/>.</para>
+      /// </summary>
+      /// <param name="character"></param>
+      /// <param name="cultureInfo">The culture to use.</param>
+      /// <returns></returns>
+      public static bool IsVowel(char character, System.Globalization.CultureInfo cultureInfo)
+        => char.IsLetter(character) && cultureInfo.GetVowelsAsChars().Contains(character);
+
+      /// <summary>
+      /// <para>Indicates whether a <see cref="char"/> is a vowel in the current culture.</para>
+      /// </summary>
+      /// <param name="character"></param>
+      /// <returns></returns>
+      public static bool IsVowel(char character)
+        => IsVowel(character, System.Globalization.CultureInfo.CurrentCulture);
 
       #endregion
     }
 
-    extension(System.Char source)
+    extension(System.Char character)
     {
+      #region ToCsharpUtf16LiteralString
+
+      public string ToCsharpUtf16LiteralString()
+        => $"\\u{(int)character:X4}";
+
+      #endregion
+
+      #region ToCsharpVariableHexLiteralString
+
+      public string ToCsharpVariableHexLiteralString()
+        => $"\\x{(int)character:X1}";
+
+      #endregion
+
+      #region ToDecimalNumericCharacterReferenceString
+
+      /// <summary>
+      /// <para>a numeric character reference refers to a character by its Universal Coded Character Set/Unicode code point, and uses the format: <code>&amp;#nnnn;</code> where nnnn is the code point in decimal form.</para>
+      /// </summary>
+      /// <param name="rune"></param>
+      /// <returns></returns>
+      public string ToDecimalNumericCharacterReferenceString()
+        => $"&#{(int)char.AssertUnicodeCodepoint(character)};";
+
+      #endregion
+
+      #region ToHexadecimalNumericCharacterReferenceString
+
+      /// <summary>
+      /// <para>a numeric character reference refers to a character by its Universal Coded Character Set/Unicode code point, and uses the format: <code>&amp;#xhhhh;</code> where the x must be lowercase in XML documents, hhhh is the code point in hexadecimal form.</para>
+      /// </summary>
+      /// <param name="rune"></param>
+      /// <returns></returns>
+      public string ToHexadecimalNumericCharacterReferenceString()
+        => $"&#x{(int)char.AssertUnicodeCodepoint(character):X1};";
+
+      #endregion
+
+      #region ToUnicodeUnotationString
+
+      /// <summary>
+      /// <para>Convert the Unicode codepoint (rune) to the string representation format "U+XXXX" (at least 4 hex characters, more if needed).</para>
+      /// </summary>
+      /// <returns></returns>
+      public string ToUnicodeUnotationString()
+        => $"U+{(int)char.AssertUnicodeCodepoint(character):X4}";
+
+      #endregion
+
       #region ToVerboseString
 
       public string ToVerboseString()
-      {
-        var uc = char.GetUnicodeCategory(source);
-
-        return $"{source.UnicodeUnotationEncode()} '{source}' ({uc}, {uc.ToUnicodeCategoryMajorMinor()})";
-      }
+        => char.IsSurrogate(character)
+        ? $"UTF-16 0x{(int)character:X4} {(char.IsHighSurrogate(character) ? "High" : char.IsLowSurrogate(character) ? "Low" : string.Empty)}-{char.GetUnicodeCategory(character)}"
+        : $"{ToUnicodeUnotationString(character)} '{character}' {char.GetUnicodeCategory(character)}";
 
       #endregion
 
       #region Utf8SequenceLength
 
-      public int Utf8SequenceLength()
-        => (source <= 0x7F)
+      /// <summary>
+      /// <para>A char is a UTF‑16 code unit, not a full Unicode character. For UTF‑8 (which is variable-length) encoding, the number of bytes depends on the Unicode code point it represents:</para>
+      /// <list type="bullet">
+      /// <item><c>0x0000 to 0x007F</c> = 1 byte</item>
+      /// <item><c>0x0080 to 0x07FF</c> = 2 bytes</item>
+      /// <item><c>0x0800 to 0xFFFF</c> = 3 bytes</item>
+      /// <item>* <c>0x10000 to 0x10FFFF</c> = 4 bytes (requires surrogate pairs in UTF-16)</item>
+      /// </list>
+      /// <para><i>This property is for a single char, which means the last bullet does not apply here, i.e. a single (high or low) surrogate which equals half of a surrogate pair and therefor 2 bytes</i>.</para>
+      /// </summary>
+      /// <remarks>
+      /// <para>A char is always a single UTF‑16 code unit (16 bits). However, a Unicode character may require one or two UTF‑16 code units:</para>
+      /// <list type="bullet">
+      /// <item>Most characters (Basic Multilingual Plane, U+0000 to U+FFFF) fit in 1 char.</item>
+      /// <item>Supplementary characters (U+10000 and above, e.g., many emojis) require 2 char values - a surrogate pair.</item>
+      /// </list>
+      /// </remarks>
+      [System.Diagnostics.Contracts.Pure]
+      public int Utf8SequenceLength
+        => (character <= 0x007F) // 0x0000 to 0x007F 
         ? 1
-        : (source <= 0x7FF || char.IsLowSurrogate(source) || char.IsHighSurrogate(source))
+        : (character <= 0x07FF) // 0x0080 to 0x07FF
         ? 2
-        : 3;
+        : 3; // 0x0800 to 0xFFFF. 
 
       #endregion
     }

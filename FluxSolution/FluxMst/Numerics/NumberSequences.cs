@@ -258,10 +258,10 @@ namespace Maths
     [TestMethod]
     public void GetBellTriangle()
     {
-      var expected = new System.Numerics.BigInteger[][] { new System.Numerics.BigInteger[] { 1 }, new System.Numerics.BigInteger[] { 1, 2 }, new System.Numerics.BigInteger[] { 2, 3, 5 }, new System.Numerics.BigInteger[] { 5, 7, 10, 15 }, new System.Numerics.BigInteger[] { 15, 20, 27, 37, 52 }, new System.Numerics.BigInteger[] { 52, 67, 87, 114, 151, 203 }, new System.Numerics.BigInteger[] { 203, 255, 322, 409, 523, 674, 877 } };
-      var actual = BinaryInteger.GetBellTriangle<System.Numerics.BigInteger>().Take(expected.Length).ToArray();
+      var expected = new System.Numerics.BigInteger[][] { new System.Numerics.BigInteger[] { 1 }, new System.Numerics.BigInteger[] { 1, 2 }, new System.Numerics.BigInteger[] { 2, 3, 5 }, new System.Numerics.BigInteger[] { 5, 7, 10, 15 }, new System.Numerics.BigInteger[] { 15, 20, 27, 37, 52 }, new System.Numerics.BigInteger[] { 52, 67, 87, 114, 151, 203 }, new System.Numerics.BigInteger[] { 203, 255, 322, 409, 523, 674, 877 } }.ToList();
+      var actual = BinaryInteger.GetBellTriangle<System.Numerics.BigInteger>().Take(expected.Count).Select(l => l.ToArray()).ToList();
 
-      for (var index = 0; index < expected.Length; index++)
+      for (var index = 0; index < expected.Count; index++)
         Assert.IsTrue(actual[index].SequenceEqual(expected[index]));
     }
 

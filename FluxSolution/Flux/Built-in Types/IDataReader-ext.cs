@@ -114,9 +114,9 @@ namespace Flux
       {
         var schemaTable = source.GetSchemaTableEx();
 
-        try { tsqlCurrentDefinitions = schemaTable.Rows.Cast<System.Data.DataRow>().Select(row => (string)row[CsTsqlDefinitionCurrent]).ToArray(); } catch { tsqlCurrentDefinitions = null; }
-        try { tsqlDefaultDefinitions = schemaTable.Rows.Cast<System.Data.DataRow>().Select(row => (string)row[CsTsqlDefinitionDefault]).ToArray(); } catch { tsqlDefaultDefinitions = null; }
-        try { tsqlAdaptedDefinitions = schemaTable.Rows.Cast<System.Data.DataRow>().Select(row => (string)row[CsTsqlDefinitionAdapted]).ToArray(); } catch { tsqlAdaptedDefinitions = null; }
+        try { tsqlCurrentDefinitions = [.. schemaTable.Rows.Cast<System.Data.DataRow>().Select(row => (string)row[CsTsqlDefinitionCurrent])]; } catch { tsqlCurrentDefinitions = null; }
+        try { tsqlDefaultDefinitions = [.. schemaTable.Rows.Cast<System.Data.DataRow>().Select(row => (string)row[CsTsqlDefinitionDefault])]; } catch { tsqlDefaultDefinitions = null; }
+        try { tsqlAdaptedDefinitions = [.. schemaTable.Rows.Cast<System.Data.DataRow>().Select(row => (string)row[CsTsqlDefinitionAdapted])]; } catch { tsqlAdaptedDefinitions = null; }
 
         return schemaTable;
       }
@@ -135,7 +135,7 @@ namespace Flux
           if (length == array.Length)
             System.Array.Resize(ref array, array.Length * 2);
 
-          array[length++] = source.GetValues().ToArray();
+          array[length++] = [.. source.GetValues()];
         }
 
         if (length < array.Length)
