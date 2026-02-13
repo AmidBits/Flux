@@ -1,7 +1,4 @@
 ﻿#if NET7_0_OR_GREATER
-using Flux;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
 namespace Dsp
 {
   [TestClass]
@@ -30,8 +27,8 @@ namespace Dsp
     [TestMethod]
     public void SineWave()
     {
-      Assert.AreEqual(1, m_sineWave.GenerateMonoWaveUi(0.25).Wave, SingleExtensions.MaxDefaultTolerance);
-      Assert.AreEqual(-1, m_sineWave.GenerateMonoWaveUi(0.75).Wave, SingleExtensions.MaxDefaultTolerance);
+      Assert.AreEqual(1, m_sineWave.GenerateMonoWaveUi(0.25).Wave, Flux.Dsp.Tools.PositiveThreshold);
+      Assert.AreEqual(-1, m_sineWave.GenerateMonoWaveUi(0.75).Wave, Flux.Dsp.Tools.PositiveThreshold);
     }
 
     [TestMethod]

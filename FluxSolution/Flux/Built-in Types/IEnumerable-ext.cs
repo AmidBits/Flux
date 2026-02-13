@@ -748,7 +748,7 @@ namespace Flux
       /// <returns></returns>
       /// <exception cref="System.ArgumentNullException"></exception>
       /// <exception cref="System.ArgumentException"></exception>
-      public (TSource? MinItem, int MinIndex, TValue? MinValue, TSource? MaxItem, int MaxIndex, TValue? MaxValue) Extremum<TValue>(System.Func<TSource, TValue> valueSelector, System.Collections.Generic.IComparer<TValue>? comparer = null)
+      public (TSource? MinElement, int MinIndex, TValue? MinValue, TSource? MaxElement, int MaxIndex, TValue? MaxValue) Extremum<TValue>(System.Func<TSource, TValue> valueSelector, System.Collections.Generic.IComparer<TValue>? comparer = null)
       {
         System.ArgumentNullException.ThrowIfNull(source);
         System.ArgumentNullException.ThrowIfNull(valueSelector);

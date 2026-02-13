@@ -47,7 +47,7 @@
     ZeroWidthNoBreakSpace = 0xFEFF,
   }
 
-  public static partial class Unicode
+  public static partial class UnicodeSpacingExtensions
   {
     public static System.Globalization.NumberFormatInfo GetSiNumberFormatInfo(UnicodeSpacing unicodeSpacing = UnicodeSpacing.ThinSpace)
     {
@@ -56,21 +56,24 @@
       return nfi;
     }
 
-    /// <summary>
-    /// <para>Create a string containing the string representation of <paramref name="spacing"/>.</para>
-    /// </summary>
-    /// <param name="spacing"></param>
-    /// <returns></returns>
-    public static string ToSpacingString(this UnicodeSpacing spacing)
-      => spacing == UnicodeSpacing.None ? string.Empty : ((char)(int)spacing).ToString();
+    extension(UnicodeSpacing unicodeSpacing)
+    {
+      /// <summary>
+      /// <para>Create a string containing the string representation of <paramref name="unicodeSpacing"/>.</para>
+      /// </summary>
+      /// <param name="unicodeSpacing"></param>
+      /// <returns></returns>
+      public string ToSpacingString()
+        => unicodeSpacing == UnicodeSpacing.None ? string.Empty : ((char)(int)unicodeSpacing).ToString();
 
-    /// <summary>
-    /// <para>Attempt to get the spacing character <paramref name="spaceChar"/> for <paramref name="spacing"/>.</para>
-    /// </summary>
-    /// <param name="spacing"></param>
-    /// <param name="spaceChar"></param>
-    /// <returns></returns>
-    public static bool TryGetSpacingChar(this UnicodeSpacing spacing, out char spaceChar)
-      => (spaceChar = (char)(int)spacing) != '\0';
+      /// <summary>
+      /// <para>Attempt to get the spacing character <paramref name="spaceChar"/> for <paramref name="unicodeSpacing"/>.</para>
+      /// </summary>
+      /// <param name="unicodeSpacing"></param>
+      /// <param name="spaceChar"></param>
+      /// <returns></returns>
+      public bool TryGetSpacingChar(out char spaceChar)
+        => (spaceChar = (char)(int)unicodeSpacing) != '\0';
+    }
   }
 }

@@ -7,25 +7,25 @@
       /// <summary>
       /// <para>The largest integer that can be stored in a <see cref="System.Runtime.InteropServices.NFloat"/> without losing precision.</para>
       /// </summary>
-      public static System.Runtime.InteropServices.NFloat MaxPreciseInteger
-        => System.Runtime.InteropServices.NFloat.Size == 8 ? System.Runtime.InteropServices.NFloat.CreateChecked(double.MaxPreciseInteger)
-        : System.Runtime.InteropServices.NFloat.Size == 4 ? System.Runtime.InteropServices.NFloat.CreateChecked(float.MaxPreciseInteger)
+      public static System.Runtime.InteropServices.NFloat MaxExactInteger
+        => System.Runtime.InteropServices.NFloat.Size == 8 ? System.Runtime.InteropServices.NFloat.CreateChecked(double.MaxExactInteger)
+        : System.Runtime.InteropServices.NFloat.Size == 4 ? System.Runtime.InteropServices.NFloat.CreateChecked(float.MaxExactInteger)
         : throw new System.NotImplementedException();
 
       /// <summary>
       /// <para>The smallest integer that can be stored in a <see cref="System.Runtime.InteropServices.NFloat"/> without losing precision.</para>
       /// </summary>
-      public static System.Runtime.InteropServices.NFloat MinPreciseInteger
-        => System.Runtime.InteropServices.NFloat.Size == 8 ? System.Runtime.InteropServices.NFloat.CreateChecked(double.MinPreciseInteger)
-        : System.Runtime.InteropServices.NFloat.Size == 4 ? System.Runtime.InteropServices.NFloat.CreateChecked(float.MinPreciseInteger)
+      public static System.Runtime.InteropServices.NFloat MinExactInteger
+        => System.Runtime.InteropServices.NFloat.Size == 8 ? System.Runtime.InteropServices.NFloat.CreateChecked(double.MinExactInteger)
+        : System.Runtime.InteropServices.NFloat.Size == 4 ? System.Runtime.InteropServices.NFloat.CreateChecked(float.MinExactInteger)
         : throw new System.NotImplementedException();
 
       /// <summary>
       /// <para>The largest prime integer that precisely fit in a <see cref="System.Runtime.InteropServices.NFloat"/>.</para>
       /// </summary>
-      public static double MaxPrimeNumber
-        => System.Runtime.InteropServices.NFloat.Size == 8 ? System.Runtime.InteropServices.NFloat.CreateChecked(double.MaxPrimeNumber)
-        : System.Runtime.InteropServices.NFloat.Size == 4 ? System.Runtime.InteropServices.NFloat.CreateChecked(float.MaxPrimeNumber)
+      public static double MaxExactPrimeNumber
+        => System.Runtime.InteropServices.NFloat.Size == 8 ? System.Runtime.InteropServices.NFloat.CreateChecked(double.MaxExactPrimeNumber)
+        : System.Runtime.InteropServices.NFloat.Size == 4 ? System.Runtime.InteropServices.NFloat.CreateChecked(float.MaxExactPrimeNumber)
         : throw new System.NotImplementedException();
 
       /// <summary>

@@ -3,6 +3,9 @@ namespace Flux.Dsp
   // https://github.com/safchain/sa_dsp/blob/master/jni/dsp/limit/SimpleLimit.cpp
   public static class Tools
   {
+    public static double NegativeThreshold => -1e-3;
+    public static double PositiveThreshold => 1e-3;
+
     /// <summary>Returns the absolute phase (negative phase align correctly on positive side) normalized to unit interval [0, 1).</summary>
     public static double AbsolutePhaseUi(double phaseMu)
       => phaseMu < 0

@@ -29,9 +29,9 @@ namespace Flux.Dsp.WaveProcessors
     { }
 
     private static double ModifyExponent(double exponent)
-      => (exponent < SingleExtensions.MinDefaultTolerance)
+      => (exponent < Tools.NegativeThreshold)
       ? exponent + 1.11
-      : (exponent > SingleExtensions.MaxDefaultTolerance)
+      : (exponent > Tools.PositiveThreshold)
       ? exponent * 11.1
       : 0;
 

@@ -1754,16 +1754,13 @@
 
       #endregion
 
-      #region ..LatinStroke (letters)
-
       /// <summary>
-      /// <para>Indicates whether a character is a latin diacritical stroke, and outputs the <paramref name="replacementCharacter"/>.</para>
+      /// <para>Locates the Unicode range and block name of the <paramref name="character"/>.</para>
       /// </summary>
-      /// <param name="character">The character to evaluate.</param>
-      /// <param name="replacementCharacter">The out parameter with the latin character replacing the latin stroke.</param>
-      /// <returns></returns>
-      public static bool IsLatinStroke(char character, out char replacementCharacter)
-        => m_latinStrokes.TryGetValue(character, out replacementCharacter);
+      public static System.Collections.Generic.KeyValuePair<string, System.Text.Unicode.UnicodeRange> GetUnicodeRange(char character)
+        => System.Text.Unicode.UnicodeRange.GetUnicodeRanges().InfimumSupremum(t2 => t2.Value.FirstCodePoint, System.Text.Rune.AssertValid(character, nameof(character)), false).InfimumItem;
+
+      #region ..LatinStroke..
 
       /// <summary>
       /// <para>Indicates whether a character is a latin diacritical stroke.</para>
@@ -1771,15 +1768,15 @@
       /// <param name="character">The character to evaluate.</param>
       /// <returns></returns>
       public static bool IsLatinStroke(char character)
-        => IsLatinStroke(character, out var _);
+        => m_latinStrokes.ContainsKey(character);
 
       /// <summary>
       /// <para>Replaces a latin stroke letter with a plain letter, i.e. a letter without a diacritic is returned in its place. Characters that are not latin stroke letters are returned as-is.</para>
       /// </summary>
       /// <param name="character">The character to evaluate.</param>
       /// <returns></returns>
-      public static char ReplaceLatinStroke(char character)
-        => IsLatinStroke(character, out var replacementCharacter) ? replacementCharacter : character;
+      public static char GetLatinStrokeReplacement(char character)
+        => m_latinStrokes.TryGetValue(character, out var replacementCharacter) ? replacementCharacter : character;
 
       /// <summary>
       /// <para>Attempts to replace a latin stroke letter with a plain letter and indicates whether a replacement was made.</para>
@@ -1787,8 +1784,8 @@
       /// <param name="character"></param>
       /// <param name="replacementCharacter"></param>
       /// <returns></returns>
-      public static bool TryReplaceLatinStroke(char character, out char replacementCharacter)
-        => character != (replacementCharacter = ReplaceLatinStroke(character));
+      public static bool TryGetLatinStrokeReplacement(char character, out char replacementCharacter)
+        => m_latinStrokes.TryGetValue(character, out replacementCharacter);
 
       #endregion
 
@@ -1807,46 +1804,74 @@
       #region ..Subscript
 
       /// <summary>
-      /// <para>Indicates whether the specified Unicode character is categorized as a subscript character.</para>
+      /// <para>Indicates whether a specified character is a subscript character.</para>
       /// </summary>
       /// <param name="character"></param>
       /// <returns></returns>
       public static bool IsSubscript(char character)
-        => m_subscriptDictionary.ContainsKey(character);
+        => m_subscriptDictionary.ContainsValue(character);
 
       /// <summary>
-      /// <para>Converts the value of a Unicode character to its subscript equivalent.</para>
+      /// <para>Indicates whether a character is a subscript equivalent character.</para>
       /// </summary>
       /// <param name="character"></param>
       /// <returns></returns>
-      public static char ToSubscript(char character)
+      public static bool IsSubscriptEquivalent(char character)
+        => m_subscriptDictionary.ContainsKey(character);
+
+      /// <summary>
+      /// <para>Converts a character to its subscript equivalent, if possible, otherwise the input character is returned.</para>
+      /// </summary>
+      /// <param name="character"></param>
+      /// <returns></returns>
+      public static char ConvertToSubscript(char character)
         => m_subscriptDictionary.TryGetValue(character, out var subscriptCharacter) ? subscriptCharacter : character;
 
-      public static bool TryConvertToSubscript(char c, out char subscriptCharacter)
-        => (subscriptCharacter = ToSubscript(c)) != c;
+      /// <summary>
+      /// <para>Attemps to convert a character to subscript, if possible, otherwise the specified character is returned as an out parameter.</para>
+      /// </summary>
+      /// <param name="character"></param>
+      /// <param name="subscriptCharacter"></param>
+      /// <returns>An indication whether a conversion was made.</returns>
+      public static bool TryConvertToSubscript(char character, out char subscriptCharacter)
+        => m_subscriptDictionary.TryGetValue(character, out subscriptCharacter);
 
       #endregion
 
       #region ..Superscript
 
       /// <summary>
-      /// <para>Indicates whether the specified Unicode character is categorized as a superscript character.</para>
+      /// <para>Indicates whether a character is a superscript character.</para>
       /// </summary>
       /// <param name="character"></param>
       /// <returns></returns>
       public static bool IsSuperscript(char character)
-        => m_superscriptDictionary.ContainsKey(character);
+        => m_superscriptDictionary.ContainsValue(character);
 
       /// <summary>
-      /// <para>Converts the value of a Unicode character to its superscript equivalent.</para>
+      /// <para>Indicates whether a character is a superscript equivalent character.</para>
       /// </summary>
       /// <param name="character"></param>
       /// <returns></returns>
-      public static char ToSuperscript(char character)
+      public static bool IsSuperscriptEquivalent(char character)
+        => m_subscriptDictionary.ContainsKey(character);
+
+      /// <summary>
+      /// <para>Converts a character to its superscript equivalent, if possible, otherwise the input character is returned.</para>
+      /// </summary>
+      /// <param name="character"></param>
+      /// <returns></returns>
+      public static char ConvertToSuperscript(char character)
         => m_superscriptDictionary.TryGetValue(character, out var superscriptCharacter) ? superscriptCharacter : character;
 
+      /// <summary>
+      /// <para>Attemps to convert a character to superscript, if possible, otherwise the specified character is returned as an out parameter.</para>
+      /// </summary>
+      /// <param name="character"></param>
+      /// <param name="superscriptCharacter"></param>
+      /// <returns>An indication whether a conversion was made.</returns>
       public static bool TryConvertToSuperscript(char character, out char superscriptCharacter)
-        => (superscriptCharacter = ToSuperscript(character)) != character;
+        => m_superscriptDictionary.TryGetValue(character, out superscriptCharacter);
 
       #endregion
 

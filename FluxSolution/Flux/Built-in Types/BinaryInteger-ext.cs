@@ -1,7 +1,4 @@
-﻿#define ROOTN_NEWTONRAPSON // or ROOTN_BINARYMETHOD
-using System.Data;
-
-namespace Flux
+﻿namespace Flux
 {
   public static class BinaryInteger
   {
@@ -266,7 +263,7 @@ namespace Flux
       /// <param name="number"></param>
       /// <returns></returns>
       public static TInteger GetCatalanNumber(TInteger n)
-        => Factorial(n + n) / (Factorial(n + TInteger.One) * Factorial(n));
+        => checked(Factorial(n + n) / (Factorial(n + TInteger.One) * Factorial(n)));
 
       /// <summary>
       /// <para>Creates a new sequence with Catalan numbers.</para>
@@ -794,8 +791,11 @@ namespace Flux
 
         var result = TInteger.One;
 
-        for (var two = result + result; n > TInteger.Zero; n -= two)
-          result *= n;
+        checked
+        {
+          for (var two = result + result; n > TInteger.Zero; n -= two)
+            result *= n;
+        }
 
         return result;
       }
@@ -909,19 +909,11 @@ namespace Flux
         {
           yield return n1;
 
-          try
-          {
-            checked { n1 += n2; }
-          }
-          catch { break; }
+          try { checked { n1 += n2; } } catch { break; }
 
           yield return n2;
 
-          try
-          {
-            checked { n2 += n1; }
-          }
-          catch { break; }
+          try { checked { n2 += n1; } } catch { break; }
         }
       }
 
@@ -934,15 +926,18 @@ namespace Flux
       /// <returns></returns>
       public static bool IsFibonacciNumber(TInteger n)
       {
-        var four = TInteger.CreateChecked(4);
+        checked
+        {
+          var four = TInteger.CreateChecked(4);
 
-        var fivens = TInteger.CreateChecked(5) * n * n;
-        var fp4 = fivens + four;
-        var fp4sr = IntegerSqrt(fp4);
-        var fm4 = fivens - four;
-        var fm4sr = IntegerSqrt(fm4);
+          var fivens = TInteger.CreateChecked(5) * n * n;
+          var fp4 = fivens + four;
+          var fp4sr = IntegerSqrt(fp4);
+          var fm4 = fivens - four;
+          var fm4sr = IntegerSqrt(fm4);
 
-        return fp4sr * fp4sr == fp4 || fm4sr * fm4sr == fm4;
+          return fp4sr * fp4sr == fp4 || fm4sr * fm4sr == fm4;
+        }
       }
 
       #endregion
@@ -1357,8 +1352,6 @@ namespace Flux
       /// <para>Creates a new sequence with Leonardo numbers.</para>
       /// <para><see href="https://en.wikipedia.org/wiki/Leonardo_number"/></para>
       /// </summary>
-      /// <remarks>This function generate results until the type <typeparamref name="TInteger"/> under/overflows in any calculation. No exception is thrown.</remarks>
-      /// <typeparam name="TInteger"></typeparam>
       /// <param name="first"></param>
       /// <param name="second"></param>
       /// <param name="step"></param>
@@ -1384,8 +1377,8 @@ namespace Flux
       /// <typeparam name="TInteger"></typeparam>
       /// <param name="value"></param>
       /// <returns></returns>
-      public static TInteger GetMersenneNumber(TInteger n)
-        => checked((TInteger.One << int.CreateChecked(n)) - TInteger.One);
+      public static TInteger GetMersenneNumber(TInteger number)
+        => checked((TInteger.One << int.CreateChecked(number)) - TInteger.One);
 
       /// <summary>`
       /// <para>Creates a new sequence of Mersenne numbers.</para>
@@ -2415,17 +2408,16 @@ namespace Flux
       #region GetSphenicNumbers
 
       /// <summary>
-      /// <para>Yields a sequence of all sphenic numbers less than <paramref name="n"/>.</para>
+      /// <para>Yields a sequence of all sphenic numbers less than <paramref name="cutoffNumber"/>.</para>
       /// <para><see href="https://en.wikipedia.org/wiki/Sphenic_number"/></para>
       /// </summary>
-      /// <typeparam name="TSelf"></typeparam>
-      /// <param name="n"></param>
+      /// <param name="cutoffNumber"></param>
       /// <returns></returns>
-      public static System.Collections.Generic.IEnumerable<TInteger> GetSphenicNumbers(TInteger n)
+      public static System.Collections.Generic.IEnumerable<TInteger> GetSphenicNumbers(TInteger cutoffNumber)
       {
         checked
         {
-          for (var i = TInteger.CreateChecked(30); i < n; i++)
+          for (var i = TInteger.CreateChecked(30); i < cutoffNumber; i++)
           {
             var count = 0;
 
@@ -2443,7 +2435,7 @@ namespace Flux
                 count++;
               }
 
-              if (count == 0 && j > n / (j * j))
+              if (count == 0 && j > cutoffNumber / (j * j))
                 break;
 
               if (count == 1 && j > (k / j))
@@ -2657,18 +2649,18 @@ namespace Flux
       #region Van Eck's sequence
 
       /// <summary>
-      /// <para>Creates a new Van Eck's sequence, starting with the specified <paramref name="n"/> (where 0 yields the original sequence).</para>
+      /// <para>Creates a new Van Eck's sequence, starting with the specified <paramref name="minNumber"/> (where 0 yields the original sequence).</para>
       /// <para><see href="https://en.wikipedia.org/wiki/Van_Eck%27s_sequence"/></para>
       /// </summary>
-      /// <param name="n"></param>
+      /// <param name="minNumber"></param>
       /// <returns></returns>
       /// <exception cref="System.ArgumentOutOfRangeException"></exception>
-      public static System.Collections.Generic.IEnumerable<TInteger> GetVanEckSequence(TInteger n)
+      public static System.Collections.Generic.IEnumerable<TInteger> GetVanEcksSequence(TInteger minNumber)
       {
-        System.ArgumentOutOfRangeException.ThrowIfNegative(n);
+        System.ArgumentOutOfRangeException.ThrowIfNegative(minNumber);
 
         var lasts = new System.Collections.Generic.Dictionary<TInteger, TInteger>();
-        var last = n;
+        var last = minNumber;
 
         checked
         {

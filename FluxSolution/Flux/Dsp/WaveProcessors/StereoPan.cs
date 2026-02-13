@@ -12,12 +12,12 @@ namespace Flux.Dsp.WaveProcessors
       {
         m_position = double.Clamp(value, -1, 1);
 
-        if (m_position > SingleExtensions.MaxDefaultTolerance)
+        if (m_position > Tools.PositiveThreshold)
         {
           m_positionInvAbs = 1 - m_position;
           m_scaledAbs = m_position * 0.5;
         }
-        else if (m_position < SingleExtensions.MinDefaultTolerance)
+        else if (m_position < Tools.NegativeThreshold)
         {
           m_positionInvAbs = -1 + m_position;
           m_scaledAbs = m_position * -0.5;
@@ -33,9 +33,9 @@ namespace Flux.Dsp.WaveProcessors
     }
 
     public (double leftWave, double rightWave) ProcessStereoWave(double leftWave, double rightWave)
-      => (m_position > SingleExtensions.MaxDefaultTolerance)
+      => (m_position > Tools.PositiveThreshold)
       ? (leftWave * m_positionInvAbs, leftWave * m_scaledAbs + rightWave * m_scaledAbsInv)
-      : (m_position < SingleExtensions.MinDefaultTolerance)
+      : (m_position < Tools.NegativeThreshold)
       ? (leftWave * m_scaledAbsInv + rightWave * m_scaledAbs, rightWave * m_positionInvAbs)
       : (leftWave, rightWave);
 
@@ -44,9 +44,9 @@ namespace Flux.Dsp.WaveProcessors
     /// <summary>Apply stereo pan across the stereo field.</summary>
     /// <param name="position">Pan position in the range [-1, 1], where -1 means more of the stereo to the left, 1 means more of the stereo to the right and 0 means no change.</param>
     public static (double left, double right) Apply(double position, double left, double right)
-      => (position > SingleExtensions.MaxDefaultTolerance && position * 0.5 is var scaledRightAbs)
+      => (position > Tools.PositiveThreshold && position * 0.5 is var scaledRightAbs)
       ? (left * (1 - position), left * scaledRightAbs + right * (1 - scaledRightAbs))
-      : (position < SingleExtensions.MinDefaultTolerance && position * -0.5 is var scaledLeftAbs)
+      : (position < Tools.NegativeThreshold && position * -0.5 is var scaledLeftAbs)
       ? (left * (1 - scaledLeftAbs) + right * scaledLeftAbs, right * (-1 + position))
       : (left, right);
   }

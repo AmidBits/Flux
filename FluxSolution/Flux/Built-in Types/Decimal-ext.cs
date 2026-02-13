@@ -8,18 +8,18 @@
       /// <para>The largest integer that can be stored in a <see cref="System.Decimal"/> without losing precision is 79,228,162,514,264,337,593,543,950,335.</para>
       /// <para>The <see cref="System.Decimal"/> type is a base-10 high-precision decimal, which means it can precisely represent integers up to 79,228,162,514,264,337,593,543,950,335 (approximately 7.9×10²⁸). This is because the decimal type has a precision of 28-29 significant digits and does not use floating-point approximations for integers within this range. Beyond this value, precision may be lost.</para>
       /// </summary>
-      public static decimal MaxPreciseInteger => 79228162514264337593543950335m;
+      public static decimal MaxExactInteger => 79228162514264337593543950335m;
 
       /// <summary>
       /// <para>The smallest integer that can be stored in a <see cref="System.Decimal"/> without losing precision is -79,228,162,514,264,337,593,543,950,335.</para>
       /// <para>The <see cref="System.Decimal"/> type is a base-10 high-precision decimal, which means it can precisely represent integers down to -79,228,162,514,264,337,593,543,950,335 (approximately -7.9×10²⁸). This is because the decimal type has a precision of 28-29 significant digits and does not use floating-point approximations for integers within this range. Beyond this value, precision may be lost.</para>
       /// </summary>
-      public static decimal MinPreciseInteger => -79228162514264337593543950335m;
+      public static decimal MinExactInteger => -79228162514264337593543950335m;
 
       /// <summary>
       /// <para>The largest prime integer that precisely fit in a decimal.</para>
       /// </summary>
-      public static decimal MaxPrimeNumber => 79228162514264337593543950297m;
+      public static decimal MaxExactPrimeNumber => 79228162514264337593543950297m;
 
       /// <summary>
       /// <para>The decimal type has a precision of 28-29 significant digits.</para>

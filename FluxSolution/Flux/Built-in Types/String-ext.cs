@@ -67,6 +67,20 @@
 
       #endregion
 
+      /// <summary>Remove diacritical marks.</summary>
+      public System.Text.StringBuilder RemoveUnicodeMarks()
+      {
+        System.ArgumentNullException.ThrowIfNull(source);
+
+        var sb = new System.Text.StringBuilder();
+
+        foreach (var c in source.Normalize(System.Text.NormalizationForm.FormKD))
+          if (System.Globalization.CharUnicodeInfo.GetUnicodeCategory(c) is not System.Globalization.UnicodeCategory.NonSpacingMark and not System.Globalization.UnicodeCategory.SpacingCombiningMark and not System.Globalization.UnicodeCategory.EnclosingMark)
+            sb.Append(c);
+
+        return sb;
+      }
+
       //#region ToSpanMaker
 
       ///// <summary>Creates a new <see cref="SpanMaker{T}"/> with the <paramref name="source"/> as content.</summary>

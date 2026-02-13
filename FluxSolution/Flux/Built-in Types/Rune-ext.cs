@@ -13,8 +13,17 @@ namespace Flux
 
     extension(System.Text.Rune)
     {
-      public static bool IsSingleCharRepresentable(int int32)
-        => int32 <= 0xFFFF && System.Text.Rune.IsValid(int32);
+      public static bool IsRepresentableAsSingleChar(int value)
+        => value <= 0xFFFF && System.Text.Rune.IsValid(value);
+
+      #region AssertValid
+
+      public static int AssertValid(int value, string? paramName = "value")
+        => System.Text.Rune.IsValid(value)
+        ? value
+        : throw new System.ArgumentException($"Invalid codepoint value.", paramName);
+
+      #endregion
 
       #region ..BasicLatinLetterY
 
@@ -106,25 +115,13 @@ namespace Flux
 
       #endregion
 
-      #region ..LatinStroke (letters)
-
       /// <summary>
-      /// <para>Indicates whether a rune is a latin diacritical stroke, and outputs the <paramref name="replacementRune"/>.</para>
+      /// <para>Locates the Unicode range and block name of the <paramref name="rune"/>.</para>
       /// </summary>
-      /// <param name="rune">The rune to evaluate.</param>
-      /// <param name="replacementRune">The out parameter with the latin rune replacing the latin stroke.</param>
-      /// <returns></returns>
-      public static bool IsLatinStroke(System.Text.Rune rune, out System.Text.Rune replacementRune)
-      {
-        if (IsSingleCharRepresentable(rune.Value) && char.IsLatinStroke((char)rune.Value, out var replacementCharacter))
-        {
-          replacementRune = new(replacementCharacter);
-          return true;
-        }
+      public static System.Collections.Generic.KeyValuePair<string, System.Text.Unicode.UnicodeRange> GetUnicodeRange(System.Text.Rune rune)
+        => System.Text.Unicode.UnicodeRange.GetUnicodeRanges().InfimumSupremum(t2 => t2.Value.FirstCodePoint, rune.Value, false).InfimumItem;
 
-        replacementRune = rune;
-        return false;
-      }
+      #region ..LatinStroke..
 
       /// <summary>
       /// <para>Indicates whether a rune is a latin diacritical stroke.</para>
@@ -132,15 +129,15 @@ namespace Flux
       /// <param name="rune">The rune to evaluate.</param>
       /// <returns></returns>
       public static bool IsLatinStroke(System.Text.Rune rune)
-        => IsLatinStroke(rune, out var _);
+        => IsRepresentableAsSingleChar(rune.Value) && char.IsLatinStroke((char)rune.Value);
 
       /// <summary>
       /// <para>Replaces a latin stroke letter with a plain letter, i.e. a letter without a diacritic is returned in its place. Characters that are not latin stroke letters are returned as-is.</para>
       /// </summary>
       /// <param name="rune">The rune to evaluate.</param>
       /// <returns></returns>
-      public static System.Text.Rune ReplaceLatinStroke(System.Text.Rune rune)
-        => IsLatinStroke(rune, out var replacementRune) ? replacementRune : rune;
+      public static System.Text.Rune GetLatinStrokeReplacement(System.Text.Rune rune)
+        => IsRepresentableAsSingleChar(rune.Value) ? new(char.GetLatinStrokeReplacement((char)rune.Value)) : rune;
 
       /// <summary>
       /// <para>Attempts to replace a latin stroke letter with a plain letter and indicates whether a replacement was made.</para>
@@ -148,8 +145,8 @@ namespace Flux
       /// <param name="rune"></param>
       /// <param name="replacementCharacter"></param>
       /// <returns></returns>
-      public static bool TryReplaceLatinStroke(System.Text.Rune rune, out System.Text.Rune replacementRune)
-        => rune != (replacementRune = ReplaceLatinStroke(rune));
+      public static bool TryGetLatinStrokeReplacement(System.Text.Rune rune, out System.Text.Rune replacementRune)
+        => rune != (replacementRune = GetLatinStrokeReplacement(rune));
 
       #endregion
 
@@ -261,46 +258,74 @@ namespace Flux
       #region ..Subscript
 
       /// <summary>
-      /// <para>Indicates whether the specified Unicode character is categorized as a subscript character.</para>
+      /// <para>Indicates whether a specified rune is a subscript rune.</para>
       /// </summary>
-      /// <param name="c"></param>
+      /// <param name="rune"></param>
       /// <returns></returns>
       public static bool IsSubscript(System.Text.Rune rune)
-        => System.Char.IsSubscript((char)rune.Value);
+        => IsRepresentableAsSingleChar(rune.Value) && char.IsSubscript((char)rune.Value);
 
       /// <summary>
-      /// <para>Converts the value of a Unicode character to its subscript equivalent.</para>
+      /// <para>Indicates whether a rune is a subscript equivalent rune.</para>
       /// </summary>
-      /// <param name="c"></param>
+      /// <param name="rune"></param>
       /// <returns></returns>
-      public static System.Text.Rune ToSubscript(System.Text.Rune rune)
-        => System.Char.TryConvertToSubscript((char)rune.Value, out var subscriptCharacter) ? (System.Text.Rune)subscriptCharacter : rune;
+      public static bool IsSubscriptEquivalent(System.Text.Rune rune)
+        => IsRepresentableAsSingleChar(rune.Value) && char.IsSubscriptEquivalent((char)rune.Value);
 
-      public static bool TryConvertToSubscript(System.Text.Rune rune, out System.Text.Rune subscriptCharacter)
-        => (subscriptCharacter = ToSubscript(rune)) == rune;
+      /// <summary>
+      /// <para>Converts a rune to its subscript equivalent, if possible, otherwise the input rune is returned.</para>
+      /// </summary>
+      /// <param name="rune"></param>
+      /// <returns></returns>
+      public static System.Text.Rune ConvertToSubscript(System.Text.Rune rune)
+        => IsRepresentableAsSingleChar(rune.Value) ? new(char.ConvertToSubscript((char)rune.Value)) : rune;
+
+      /// <summary>
+      /// <para>Attemps to convert a rune to subscript, if possible, otherwise the input rune is returned as an out parameter, and returns an indication whether a conversion was made.</para>
+      /// </summary>
+      /// <param name="rune"></param>
+      /// <param name="subscriptRune"></param>
+      /// <returns></returns>
+      public static bool TryConvertToSubscript(System.Text.Rune rune, out System.Text.Rune subscriptRune)
+        => rune != (subscriptRune = ConvertToSubscript(rune));
 
       #endregion
 
       #region ..Superscript
 
       /// <summary>
-      /// <para>Indicates whether the specified Unicode character is categorized as a superscript character.</para>
+      /// <para>Indicates whether a rune is a superscript rune.</para>
       /// </summary>
-      /// <param name="c"></param>
+      /// <param name="rune"></param>
       /// <returns></returns>
       public static bool IsSuperscript(System.Text.Rune rune)
-        => System.Char.IsSuperscript((char)rune.Value);
+        => IsRepresentableAsSingleChar(rune.Value) && char.IsSuperscript((char)rune.Value);
 
       /// <summary>
-      /// <para>Converts the value of a Unicode character to its superscript equivalent.</para>
+      /// <para>Indicates whether a rune is a superscript equivalent rune.</para>
       /// </summary>
-      /// <param name="c"></param>
+      /// <param name="rune"></param>
       /// <returns></returns>
-      public static System.Text.Rune ToSuperscript(System.Text.Rune rune)
-        => System.Char.TryConvertToSuperscript((char)rune.Value, out var superscriptCharacter) ? (System.Text.Rune)superscriptCharacter : rune;
+      public static bool IsSuperscriptEquivalent(System.Text.Rune rune)
+        => IsRepresentableAsSingleChar(rune.Value) && char.IsSuperscriptEquivalent((char)rune.Value);
 
-      public static bool TryConvertToSuperscript(System.Text.Rune rune, out System.Text.Rune superscriptCharacter)
-        => (superscriptCharacter = ToSuperscript(rune)) == rune;
+      /// <summary>
+      /// <para>Converts a rune to its superscript equivalent, if possible, otherwise the input rune is returned.</para>
+      /// </summary>
+      /// <param name="rune"></param>
+      /// <returns></returns>
+      public static System.Text.Rune ConvertToSuperscript(System.Text.Rune rune)
+        => IsRepresentableAsSingleChar(rune.Value) ? new(char.ConvertToSuperscript((char)rune.Value)) : rune;
+
+      /// <summary>
+      /// <para>Attemps to convert a rune to superscript, if possible, otherwise the specified rune is returned as an out parameter.</para>
+      /// </summary>
+      /// <param name="rune"></param>
+      /// <param name="superscriptRune"></param>
+      /// <returns>An indication whether a conversion was made.</returns>
+      public static bool TryConvertToSuperscript(System.Text.Rune rune, out System.Text.Rune superscriptRune)
+        => rune != (superscriptRune = ConvertToSuperscript(rune));
 
       #endregion
 

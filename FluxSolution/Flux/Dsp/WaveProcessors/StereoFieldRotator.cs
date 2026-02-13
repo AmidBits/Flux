@@ -14,7 +14,7 @@ namespace Flux.Dsp.WaveProcessors
       {
         m_angle = double.Clamp(value, -1.0, 1.0);
 
-        if (m_angle > SingleExtensions.MaxDefaultTolerance || m_angle < SingleExtensions.MinDefaultTolerance)
+        if (m_angle > Tools.PositiveThreshold || m_angle < Tools.NegativeThreshold)
           (m_sinC, m_cosC) = double.SinCos(m_angle * double.Pi);
         else
           m_sinC = m_cosC = 1.0;
@@ -31,6 +31,6 @@ namespace Flux.Dsp.WaveProcessors
     /// <param name="left">Left stereo sample.</param>
     /// <param name="right">Right stereo sample.</param>
     public static (double left, double right) Apply(double angle, double left, double right)
-      => (angle > SingleExtensions.MaxDefaultTolerance || angle < SingleExtensions.MinDefaultTolerance) && angle * double.Pi is var anglePi && double.Cos(anglePi) is var cos && double.Sin(anglePi) is var sin ? (left * cos - right * sin, left * sin + right * cos) : (left, right);
+      => (angle > Tools.PositiveThreshold || angle < Tools.NegativeThreshold) && angle * double.Pi is var anglePi && double.Cos(anglePi) is var cos && double.Sin(anglePi) is var sin ? (left * cos - right * sin, left * sin + right * cos) : (left, right);
   }
 }

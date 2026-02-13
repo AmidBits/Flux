@@ -15,7 +15,7 @@ namespace Flux.Dsp.WaveProcessors
       {
         m_contour = double.Clamp(value, -1.0, 1.0);
 
-        m_contourScaled = m_contour > DoubleExtensions.MaxDefaultTolerance || m_contour < DoubleExtensions.MinDefaultTolerance ? (-m_contour * 0.1 + 1) : 0;
+        m_contourScaled = m_contour > Tools.PositiveThreshold || m_contour < Tools.NegativeThreshold ? (-m_contour * 0.1 + 1) : 0;
       }
     }
 

@@ -112,14 +112,14 @@ namespace Flux.Dsp.Oscillators
       foreach (var processor in PreProcessors)
         Current = processor.ProcessMonoWave(new Waves.WaveMono<double>(Current)).Wave;
 
-      if (AmplitudeModulator != null && m_amplitudeModulation > SingleExtensions.MaxDefaultTolerance)
+      if (AmplitudeModulator != null && m_amplitudeModulation > Tools.PositiveThreshold)
       {
         Current *= AmplitudeModulator.NextSample() * m_amplitudeModulation + 1;
 
         Current /= m_amplitudeModulation + 1; // Reset the amplitude after AM applied.
       }
 
-      if (RingModulator != null && m_ringModulation > SingleExtensions.MaxDefaultTolerance)
+      if (RingModulator != null && m_ringModulation > Tools.PositiveThreshold)
         Current *= RingModulator.NextSample() * m_ringModulation;
 
       foreach (var processor in PostProcessors)
@@ -130,10 +130,10 @@ namespace Flux.Dsp.Oscillators
 
       var phaseShift = normalizedFrequency.Value; // Normal phase shift for the current frequency.
 
-      if (PhaseModulator != null && m_phaseModulation > SingleExtensions.MaxDefaultTolerance)
+      if (PhaseModulator != null && m_phaseModulation > Tools.PositiveThreshold)
         phaseShift += 0.1 * PhaseModulator.Next(normalizedFrequency.Value) * m_phaseModulation;
 
-      if (FrequencyModulator != null && m_frequencyModulation > SingleExtensions.MaxDefaultTolerance)
+      if (FrequencyModulator != null && m_frequencyModulation > Tools.PositiveThreshold)
         phaseShift += normalizedFrequency.Value * FrequencyModulator.NextSample() * m_frequencyModulation;
 
       if (ReversePhase)

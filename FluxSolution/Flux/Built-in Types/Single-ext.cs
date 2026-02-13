@@ -2,32 +2,24 @@
 {
   public static partial class SingleExtensions
   {
-    public const float MaxDefaultTolerance = +1e-6f;
-    public const float MinDefaultTolerance = -1e-6f;
-
-    /// <summary>
-    /// <para>The default epsilon scalar used for near-integer functions.</para>
-    /// </summary>
-    public const float DefaultEpsilonScalar = 1e-6f;
-
     extension(System.Single)
     {
       /// <summary>
       /// <para>The largest integer that can be stored in a <see cref="System.Single"/> without losing precision is <c>16,777,216</c>.</para>
       /// <para>This is because a <see cref="System.Single"/> is a base-2/binary single-precision floating point with a 24-bit mantissa, which means it can precisely represent integers up to 16,777,216 = <c>(1 &lt;&lt; 24)</c> = 2²⁴, before precision starts to degrade.</para>
       /// </summary>
-      public static float MaxPreciseInteger => +16777216;
+      public static float MaxExactInteger => +16777216;
 
       /// <summary>
       /// <para>The smallest integer that can be stored in a <see cref="System.Single"/> without losing precision is <c>-16,777,216</c>.</para>
       /// <para>This is because a <see cref="System.Single"/> is a base-2/binary single-precision floating point with a 24-bit mantissa, which means it can precisely represent integers down to -16,777,216 = <c>-(1 &lt;&lt; 24)</c> = -2²⁴, before precision starts to degrade.</para>
       /// </summary>
-      public static float MinPreciseInteger => -16777216;
+      public static float MinExactInteger => -16777216;
 
       /// <summary>
       /// <para>The largest prime integer that precisely fit in a <see cref="System.Single"/>.</para>
       /// </summary>
-      public static float MaxPrimeNumber => 16777213;
+      public static float MaxExactPrimeNumber => 16777213;
 
       /// <summary>
       /// <para>A <see cref="System.Single"/> has a precision of about 6-9 significant digits.</para>

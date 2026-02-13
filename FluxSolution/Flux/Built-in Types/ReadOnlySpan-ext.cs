@@ -1545,7 +1545,7 @@
         var v1 = new double[tn + 1]; // Row of costs, current row.
 
         for (var j = tn - 1; j >= 0; j--)
-          v0[j] = j * costOfInsertion; // Initialize the 'previous' (swapped to 'v1' in loop) row.
+          v0[j] = j; // Initialize the 'previous' (swapped to 'v1' in loop) row.
 
         for (var i = 0; i < sn; i++)
         {
@@ -1557,7 +1557,7 @@
               v0[j + 1] + costOfDeletion, // Deletion.
               double.Min(
                 v1[j] + costOfInsertion, // Insertion.
-                v1[j] + (equalityComparer.Equals(source[i], target[j]) ? 0 : costOfSubstitution) // Substitution.
+                v0[j] + (equalityComparer.Equals(source[i], target[j]) ? 0 : costOfSubstitution) // Substitution.
               )
             );
           }
@@ -2135,26 +2135,26 @@
         for (int ti = 0; ti <= tn; ti++)
           v0[ti] = ti; // Initialize v1 (the previous row of costs) to an edit distance for empty source items, i.e. the the number of characters to delete from target.
 
-        for (int si = 1; si <= sn; si++)
+        for (var i = 1; i <= sn; i++)
         {
           (v0, v1, v2) = (v2, v0, v1); // Rotate and reuse buffered rows of the cost matrix.
 
-          v0[0] = si; // Edit distance is delete (i) chars from source to match empty target.
+          v0[0] = i; // Edit distance is delete (i) chars from source to match empty target.
 
-          var sourceItem = source[si - 1];
+          var sourceItem = source[i - 1];
 
-          for (int ti = 1; ti <= tn; ti++)
+          for (var j = 1; j <= tn; j++)
           {
-            var targetItem = target[ti - 1];
+            var targetItem = target[j - 1];
 
-            v0[ti] = int.Min(
+            v0[j] = int.Min(
               int.Min(
-                v1[ti] + 1, // Deletion.
-                v0[ti - 1] + 1 // Insertion.
+                v1[j] + 1, // Deletion.
+                v0[j - 1] + 1 // Insertion.
               ),
               int.Min(
-                v1[ti - 1] + System.Convert.ToInt32(!equalityComparer.Equals(sourceItem, targetItem)), // Substitution.
-                si > 1 && ti > 1 && equalityComparer.Equals(sourceItem, target[ti - 2]) && equalityComparer.Equals(source[si - 2], targetItem) ? v2[ti - 2] + 1 : int.MaxValue // Transposition.
+                v1[j - 1] + System.Convert.ToInt32(!equalityComparer.Equals(sourceItem, targetItem)), // Substitution.
+                i > 1 && j > 1 && equalityComparer.Equals(sourceItem, target[j - 2]) && equalityComparer.Equals(source[i - 2], targetItem) ? v2[j - 2] + 1 : int.MaxValue // Transposition.
               )
             );
           }
@@ -2288,7 +2288,7 @@
         var v0 = new double[tn + 1]; // Row of costs, current row.
 
         for (var j = tn - 1; j >= 0; j--)
-          v0[j] = j * costOfInsertion; // Initialize v1 (the previous row of costs) to an edit distance for empty source items, i.e. the the number of characters to delete from target.
+          v0[j] = j; // Initialize v1 (the previous row of costs) to an edit distance for empty source items, i.e. the the number of characters to delete from target.
 
         for (var i = 1; i <= sn; i++)
         {

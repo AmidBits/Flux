@@ -23,17 +23,6 @@
           _ => throw new NotImplementedException()
         };
 
-      #region Ceiling..
-
-      /// <summary>
-      /// <para>Computes ceiling with tolerance if near an integer.</para>
-      /// </summary>
-      /// <returns></returns>
-      public static TFloat CeilingWithTolerance(TFloat x)
-        => IsNearInteger(x, out var ix) ? ix : TFloat.Ceiling(x);
-
-      #endregion
-
       #region CompareToFraction..
 
       /// <summary>
@@ -189,13 +178,6 @@
         return Envelop(x * m) / m;
       }
 
-      /// <summary>
-      /// <para>Computes envelop with tolerance if near an integer.</para>
-      /// </summary>
-      /// <returns></returns>
-      public static TFloat EnvelopWithTolerance(TFloat x)
-        => IsNearInteger(x, out var ix) ? ix : TFloat.Truncate(x);
-
       #endregion
 
       #region EqualsWithin
@@ -275,17 +257,6 @@
 
         return result;
       }
-
-      #endregion
-
-      #region Floor..
-
-      /// <summary>
-      /// <para>Computes floor with tolerance if near an integer.</para>
-      /// </summary>
-      /// <returns></returns>
-      public static TFloat FloorWithTolerance(TFloat x)
-        => IsNearInteger(x, out var ix) ? ix : TFloat.Floor(x);
 
       #endregion
 
@@ -453,22 +424,22 @@
 
       #endregion
 
-      #region MachineEpsilon
+      //#region MachineEpsilon
 
-      /// <summary>
-      /// <para>Machine epsilon computed on the fly.</para>
-      /// </summary>
-      public static TFloat MachineEpsilon()
-      {
-        var epsilon = TFloat.One;
+      ///// <summary>
+      ///// <para>Machine epsilon computed on the fly.</para>
+      ///// </summary>
+      //public static TFloat MachineEpsilon()
+      //{
+      //  var epsilon = TFloat.One;
 
-        while (epsilon / TFloat.CreateChecked(2) is var halfEpsilon && (TFloat.One + halfEpsilon) > TFloat.One)
-          epsilon = halfEpsilon;
+      //  while (epsilon / TFloat.CreateChecked(2) is var halfEpsilon && (TFloat.One + halfEpsilon) > TFloat.One)
+      //    epsilon = halfEpsilon;
 
-        return epsilon;
-      }
+      //  return epsilon;
+      //}
 
-      #endregion
+      //#endregion
 
       #region Native..
 
@@ -513,27 +484,8 @@
 
       /// <summary>
       /// <para>Indicates whether a <paramref name="value"/> is near an integer and if so outputs the <paramref name="integer"/> as a parameter.</para>
-      /// <para>The algorithm queries <see cref="GetBaseEpsilon{TFloat}"/> for a default tolerance value.</para>
-      /// </summary>
-      /// <param name="value"></param>
-      /// <param name="integer"></param>
-      /// <returns></returns>
-      public static bool IsNearInteger(TFloat value, out TFloat integer)
-        => IsNearInteger(value, out integer, GetBaseEpsilon<TFloat>());
-      // Older works!
-      //{
-      //  var half = TFloat.CreateChecked(0.5);
-
-      //  integer = value >= TFloat.Zero ? TFloat.Floor(value + half) : TFloat.Ceiling(value - half); // Find mathematically nearest integer without midpoint bias.
-
-      //  var scaledEpsilon = ScaledBaseEpsilon(value);
-
-      //  return TFloat.Abs(value - integer) <= scaledEpsilon;
-      //}
-
-      /// <summary>
-      /// <para>Indicates whether a <paramref name="value"/> is near an integer and if so outputs the <paramref name="integer"/> as a parameter.</para>
-      /// <para>The algorithm applies <paramref name="baseEpsilon"/> for a custom tolerance level.</para>
+      /// <para>The algorithm applies the specified <paramref name="baseEpsilon"/> for custom tolerance.</para>
+      /// <para><see cref="GetBaseEpsilon{TFloat}"/> is the default tolerance and essentially corresponds to calculation errors.</para>
       /// </summary>
       /// <param name="value"></param>
       /// <param name="integer"></param>
@@ -549,18 +501,20 @@
       }
 
       /// <summary>
-      /// <para>If a value is near an integer, round to that integer, otherwise return the value.</para>
-      /// <para>The algorithm queries <see cref="GetBaseEpsilon{TFloat}"/> for a default tolerance value.</para>
+      /// <para>Indicates whether a <paramref name="value"/> is near an integer and if so outputs the <paramref name="integer"/> as a parameter.</para>
+      /// <para>The algorithm queries <see cref="GetBaseEpsilon{TFloat}"/> for a default tolerance level.</para>
+      /// <para><see cref="GetBaseEpsilon{TFloat}"/> is the default tolerance and essentially corresponds to calculation errors.</para>
       /// </summary>
-      /// <typeparam name="TFloat"></typeparam>
       /// <param name="value"></param>
+      /// <param name="integer"></param>
       /// <returns></returns>
-      public static TFloat RoundNearInteger(TFloat value)
-        => IsNearInteger(value, out var integer, GetBaseEpsilon<TFloat>()) ? integer : value;
+      public static bool IsNearInteger(TFloat value, out TFloat integer)
+        => IsNearInteger(value, out integer, GetBaseEpsilon<TFloat>());
 
       /// <summary>
       /// <para>If a value is near an integer, round to that integer, otherwise return the value.</para>
-      /// <para>The algorithm applies <paramref name="baseEpsilon"/> for a custom tolerance level.</para>
+      /// <para>The algorithm applies the specified <paramref name="baseEpsilon"/> for custom tolerance.</para>
+      /// <para><see cref="GetBaseEpsilon{TFloat}"/> is the default tolerance and essentially corresponds to calculation errors.</para>
       /// </summary>
       /// <param name="value"></param>
       /// <param name="baseEpsilon"></param>
@@ -568,36 +522,117 @@
       public static TFloat RoundNearInteger(TFloat value, TFloat baseEpsilon)
         => IsNearInteger(value, out var integer, baseEpsilon) ? integer : value;
 
+      /// <summary>
+      /// <para>If a value is near an integer, round to that integer, otherwise return the value.</para>
+      /// <para>The algorithm queries <see cref="GetBaseEpsilon{TFloat}"/> for a default tolerance level.</para>
+      /// <para><see cref="GetBaseEpsilon{TFloat}"/> is the default tolerance and essentially corresponds to calculation errors.</para>
+      /// </summary>
+      /// <param name="value"></param>
+      /// <returns></returns>
+      public static TFloat RoundNearInteger(TFloat value)
+        => IsNearInteger(value, out var integer, GetBaseEpsilon<TFloat>()) ? integer : value;
+
       #endregion
 
-      #region NearlyEqual
-
-      public static bool NearlyEqual(TFloat value, TFloat other)
-        => NearlyEqual(value, other, GetBaseEpsilon<TFloat>());
+      #region ..NearNumber
 
       /// <summary>
       /// <para>Perform both an absolute and a relative equality test for more robust comparisons. Returns true if any test is considered equal, otherwise false.</para>
+      /// <para>The algorithm applies the specified <paramref name="baseEpsilon"/> for custom tolerance.</para>
+      /// <para><see cref="GetBaseEpsilon{TFloat}"/> is the default tolerance and essentially corresponds to calculation errors.</para>
       /// </summary>
-      /// <typeparam name="TBaseEpsilon"></typeparam>
       /// <param name="value"></param>
-      /// <param name="other"></param>
+      /// <param name="number"></param>
       /// <param name="baseEpsilon">E.g. 1e-12</param>
       /// <returns></returns>
-      public static bool NearlyEqual(TFloat value, TFloat other, TFloat baseEpsilon)
+      public static bool IsNearNumber(TFloat value, TFloat number, TFloat baseEpsilon)
       {
-        if (value == other)
+        if (value == number)
           return true;
 
-        if (TFloat.IsNaN(value) || TFloat.IsNaN(other))
+        if (TFloat.IsNaN(value) || TFloat.IsNaN(number))
           return false;
 
-        if (TFloat.IsInfinity(value) || TFloat.IsInfinity(other))
-          return value == other;
+        if (TFloat.IsInfinity(value) || TFloat.IsInfinity(number))
+          return value == number;
 
-        return TFloat.Abs(value - other) <= (baseEpsilon * (TFloat.One + TFloat.Abs(TFloat.MaxMagnitude(value, other))));
+        var difference = TFloat.Abs(value - number);
+        var tolerance = (baseEpsilon * (TFloat.One + TFloat.Abs(TFloat.MaxMagnitude(value, number))));
+
+        return difference <= tolerance;
       }
 
+      /// <summary>
+      /// <para>Perform both an absolute and a relative equality test for more robust comparisons. Returns true if any test is considered equal, otherwise false.</para>
+      /// <para>The algorithm queries <see cref="GetBaseEpsilon{TFloat}"/> for tolerance.</para>
+      /// <para><see cref="GetBaseEpsilon{TFloat}"/> is the default tolerance and essentially corresponds to calculation errors.</para>
+      /// </summary>
+      /// <param name="value"></param>
+      /// <param name="number"></param>
+      /// <returns></returns>
+      public static bool IsNearNumber(TFloat value, TFloat number)
+        => IsNearNumber(value, number, GetBaseEpsilon<TFloat>());
+
+      /// <summary>
+      /// <para>If a value is near a number, round to that number, otherwise return the value.</para>
+      /// <para>The algorithm applies the specified <paramref name="baseEpsilon"/> for custom tolerance.</para>
+      /// <para><see cref="GetBaseEpsilon{TFloat}"/> is the default tolerance and essentially corresponds to calculation errors.</para>
+      /// </summary>
+      /// <param name="value"></param>
+      /// <param name="baseEpsilon"></param>
+      /// <returns></returns>
+      public static TFloat RoundNearNumber(TFloat value, TFloat number, TFloat baseEpsilon)
+        => IsNearNumber(value, number, baseEpsilon) ? number : value;
+
+      /// <summary>
+      /// <para>If a value is near a number, round to that number, otherwise return the value.</para>
+      /// <para>The algorithm queries <see cref="GetBaseEpsilon{TFloat}"/> for a default tolerance level.</para>
+      /// <para><see cref="GetBaseEpsilon{TFloat}"/> is the default tolerance and essentially corresponds to calculation errors.</para>
+      /// </summary>
+      /// <param name="value"></param>
+      /// <returns></returns>
+      public static TFloat RoundNearNumber(TFloat value, TFloat number)
+        => IsNearNumber(value, number, GetBaseEpsilon<TFloat>()) ? number : value;
+
       #endregion
+
+      //#region ..NearlyEqual
+
+      ///// <summary>
+      ///// <para>Perform both an absolute and a relative equality test for more robust comparisons. Returns true if any test is considered equal, otherwise false.</para>
+      ///// <para>The algorithm applies the specified <paramref name="baseEpsilon"/> for custom tolerance.</para>
+      ///// <para><see cref="GetBaseEpsilon{TFloat}"/> is the default tolerance and essentially corresponds to calculation errors.</para>
+      ///// </summary>
+      ///// <param name="value"></param>
+      ///// <param name="other"></param>
+      ///// <param name="baseEpsilon">E.g. 1e-12</param>
+      ///// <returns></returns>
+      //public static bool IsNearlyEqual(TFloat value, TFloat other, TFloat baseEpsilon)
+      //{
+      //  if (value == other)
+      //    return true;
+
+      //  if (TFloat.IsNaN(value) || TFloat.IsNaN(other))
+      //    return false;
+
+      //  if (TFloat.IsInfinity(value) || TFloat.IsInfinity(other))
+      //    return value == other;
+
+      //  return TFloat.Abs(value - other) <= (baseEpsilon * (TFloat.One + TFloat.Abs(TFloat.MaxMagnitude(value, other))));
+      //}
+
+      ///// <summary>
+      ///// <para>Perform both an absolute and a relative equality test for more robust comparisons. Returns true if any test is considered equal, otherwise false.</para>
+      ///// <para>The algorithm queries <see cref="GetBaseEpsilon{TFloat}"/> for tolerance.</para>
+      ///// <para><see cref="GetBaseEpsilon{TFloat}"/> is the default tolerance and essentially corresponds to calculation errors.</para>
+      ///// </summary>
+      ///// <param name="value"></param>
+      ///// <param name="other"></param>
+      ///// <returns></returns>
+      //public static bool IsNearlyEqual(TFloat value, TFloat other)
+      //  => IsNearlyEqual(value, other, GetBaseEpsilon<TFloat>());
+
+      //#endregion
 
       #region FallingFactorial (generalized)
 
@@ -726,28 +761,6 @@
 
       #endregion
 
-      #region ScaledEpsilon
-
-
-      public static TFloat ScaledBaseEpsilon(TFloat value)
-      {
-        var baseEpsilon = value switch
-        {
-          decimal => TFloat.CreateChecked(decimal.DefaultBaseEpsilon), // ~28-29 digits precision
-          double => TFloat.CreateChecked(double.DefaultBaseEpsilon), // ~15-16 digits precision
-          float => TFloat.CreateChecked(float.DefaultBaseEpsilon), // ~7 digits precision
-          System.Runtime.InteropServices.NFloat when System.Runtime.InteropServices.NFloat.Size == 8 => TFloat.CreateChecked(double.DefaultBaseEpsilon), // ~15-16 digits precision
-          System.Runtime.InteropServices.NFloat when System.Runtime.InteropServices.NFloat.Size == 4 => TFloat.CreateChecked(float.DefaultBaseEpsilon), // ~7 digits precision
-          System.Half => TFloat.CreateChecked(System.Half.DefaultBaseEpsilon), // ~3 digits precision
-          _ => throw new NotImplementedException()
-        };
-
-        return baseEpsilon + baseEpsilon * TFloat.Abs(value); // Multiplying base-epsilon works well for large numbers, add base-epsilon works for numbers near zero where scaling would make the tolerance too small.
-        //return baseEpsilon * (TFloat.One + TFloat.Abs(value)); // Alternative, mathematically the same.
-      }
-
-      #endregion
-
       #region Truncate..
 
       /// <summary>
@@ -765,20 +778,12 @@
         return TFloat.Truncate(x * m) / m;
       }
 
-      /// <summary>
-      /// <para>Computes truncate with tolerance if near an integer.</para>
-      /// </summary>
-      /// <returns></returns>
-      public static TFloat TruncateWithTolerance(TFloat x)
-        => IsNearInteger(x, out var ix) ? ix : TFloat.Truncate(x);
-
       #endregion
     }
 
     extension<TFloat>(TFloat)
       where TFloat : System.Numerics.IFloatingPoint<TFloat>, System.Numerics.ILogarithmicFunctions<TFloat>
     {
-
       #region HarmonicSeries.. (sum)
 
       /// <summary>

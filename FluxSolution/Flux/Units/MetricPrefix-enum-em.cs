@@ -119,7 +119,7 @@ namespace Flux
     /// <param name="source"></param>
     /// <returns></returns>
     public static string ToShortScaleWord(this Units.MetricPrefix source)
-      => Globalization.En.NumeralComposition.GetCardinalNumeral(source.GetMetricPrefixValue(), Globalization.En.NamingScale.ShortScale);
+      => NumeralComposition.GetNumeral(source.GetMetricPrefixValue(), NumeralComposition.NumeralScale.ShortScale);
 
     /// <summary>
     /// <para>Gets a long-scale string if available, otherwise <see cref="string.Empty"/>.</para>
@@ -127,6 +127,6 @@ namespace Flux
     /// <param name="source"></param>
     /// <returns></returns>
     public static string ToLongScaleWord(this Units.MetricPrefix source)
-      => Globalization.En.NumeralComposition.GetCardinalNumeral(source.GetMetricPrefixValue(), Globalization.En.NamingScale.LongScale);
+      => NumeralComposition.GetNumeral(source.GetMetricPrefixValue(), NumeralComposition.NumeralScale.LongScale);
   }
 }

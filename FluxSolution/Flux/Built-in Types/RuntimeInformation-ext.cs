@@ -40,7 +40,7 @@ namespace Flux
       /// <summary>
       /// <para>Gets the current runtime OS-platform.</para>
       /// </summary>
-      /// <remarks>Note that to compare what the current OS platform is, do not use this, but the </remarks>
+      /// <remarks>Note that to compare what the current OS platform is, do not use this. Query the <see cref="System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform)"/> instead.</remarks>
       /// <returns></returns>
       /// <exception cref="System.NotImplementedException"></exception>
       public static System.Runtime.InteropServices.OSPlatform OsPlatform

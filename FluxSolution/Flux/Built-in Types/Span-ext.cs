@@ -459,17 +459,12 @@ namespace Flux
       {
         cultureInfo ??= System.Globalization.CultureInfo.CurrentCulture;
 
-        var c = source[0];
-        if (char.IsLower(c))
-          source[0] = char.ToUpper(c, cultureInfo);
-
-        var minIndex = 1;
         var maxIndex = source.Length - 1;
 
-        for (var i = minIndex; i < maxIndex; i++)
+        for (var i = 0; i < maxIndex; i++)
         {
-          c = source[i];
-          if (char.IsWhiteSpace(source[i - 1]) && char.IsLower(c) && char.IsLower(source[i + 1]))
+          var c = source[i];
+          if ((i == 0 || char.IsWhiteSpace(source[i - 1])) && char.IsLower(c) && char.IsLower(source[i + 1]))
             source[i] = char.ToUpper(c, cultureInfo);
         }
 
@@ -487,17 +482,12 @@ namespace Flux
       {
         cultureInfo ??= System.Globalization.CultureInfo.CurrentCulture;
 
-        var c = source[0];
-        if (char.IsUpper(c))
-          source[0] = char.ToLower(c, cultureInfo);
-
-        var minIndex = 1;
         var maxIndex = source.Length - 1;
 
-        for (var i = minIndex; i < maxIndex; i++)
+        for (var i = 0; i < maxIndex; i++)
         {
-          c = source[i];
-          if (char.IsWhiteSpace(source[i - 1]) && char.IsUpper(c) && char.IsLower(source[i + 1]))
+          var c = source[i];
+          if ((i == 0 || char.IsWhiteSpace(source[i - 1])) && char.IsUpper(c) && char.IsLower(source[i + 1]))
             source[i] = char.ToLower(c, cultureInfo);
         }
 

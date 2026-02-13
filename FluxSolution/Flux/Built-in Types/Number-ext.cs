@@ -121,10 +121,10 @@ namespace Flux
       /// <param name="proximity">This is the absolute tolerance of proximity, on either side of an <paramref name="interval"/>.</param>
       /// <returns></returns>
       public static TNumber DetentInterval(TNumber value, TNumber interval, TNumber proximity)
-        => TNumber.CreateChecked(int.CreateChecked(value / interval)) * interval is var tzInterval && TNumber.Abs(tzInterval - value) <= proximity
-        ? tzInterval
-        : tzInterval + interval is var afzInterval && TNumber.Abs(afzInterval - value) <= proximity
-        ? afzInterval
+        => TNumber.CreateChecked(int.CreateChecked(value / interval)) * interval is var tzPosition && TNumber.Abs(tzPosition - value) <= proximity
+        ? tzPosition
+        : tzPosition + interval is var afzPosition && TNumber.Abs(afzPosition - value) <= proximity
+        ? afzPosition
         : value;
 
       /// <summary>

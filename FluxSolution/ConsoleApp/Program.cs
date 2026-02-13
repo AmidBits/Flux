@@ -333,81 +333,26 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
-      var testxt = "this is a test to see about the capitalization.";
-
-      testxt.AsSpan().AsSpan().CapitalizeWords();
-      testxt.AsSpan().AsSpan().UncapitalizeWords();
 
 
-      var uus = "First there is U+0041, then U+0042, and lastly there is U+0043.";
-      var uusl = System.Text.Rune.ParseUnicodeUnotations(uus);
+      return;
 
-      var csl = @"A \u00E7, and a \U0001F47D, then a \x00E7.";
-      var csll = System.Text.Rune.ParseCsUnicodeLiterals(csl);
+      //var gosps = System.Runtime.InteropServices.RuntimeInformation.GetOsPlatforms();
+      //var osp = System.Runtime.InteropServices.RuntimeInformation.OsPlatform;
 
-      var ncr = @"A &#x0041; and another &#66; oh and a &#x00000043;.";
-      var ncrl = System.Text.Rune.ParseMlNumericCharacterReferences(ncr);
+      //var fw = System.Runtime.InteropServices.RuntimeInformation.Framework;
 
-      var r = new System.Text.Rune(0x1F680);
+      //var os = System.Runtime.InteropServices.RuntimeInformation.OS;
 
-      var c0 = r.ToString()[0];
-      var c1 = r.ToString()[1];
+      //var fqdn = System.Net.Dns.GetFullyQualifiedDomainName(out var hn);
 
-      var rvs = r.ToVerboseString();
-      var rcsutf16ls = r.ToCsharpUtf16LiteralString();
-      var rcsutf32ls = r.ToCsharpUtf32LiteralString();
-      var rcsvhls = r.ToCsharpVariableHexLiteralString();
-      var rdncrs = r.ToDecimalNumericCharacterReferenceString();
-      var rhncrs = r.ToHexadecimalNumericCharacterReferenceString();
+      //var isqdn1 = System.Net.Dns.IsQualifiedDomainName(fqdn, out var lc1);
 
-      var c0vs = c0.ToVerboseString();
-      var c0csutf16ls = c0.ToCsharpUtf16LiteralString();
-      var c0csvhls = c0.ToCsharpVariableHexLiteralString();
+      //fqdn = $"{hn}.level.domain.zone";
 
-      var c1vs = c1.ToVerboseString();
-      var c1csutf16ls = c1.ToCsharpUtf16LiteralString();
-      var c1csvhls = c1.ToCsharpVariableHexLiteralString();
-
-      var cvs = 'z'.ToVerboseString();
-
-      var gs = Number.GeometricSequence(1, 10).Take(10).ToArray();
-
-      var gm = Number.GeometricMean(out double product, 1, 2, 8, 16);
-
-      var gmbl = FloatingPoint.GeometricMean(1.0, 2, 8, 16);
-
-
-
-      //var radix = 10;
-      //foreach (var r in INumber.LoopCustom((System.Numerics.BigInteger)(-20), (r, i) => r <= ulong.MaxValue, (r, i) => checked(r += 1)).Take(101))
-      //{
-      //  var lr = IBinaryInteger.IntegerLog(r, radix);
-      //  System.Console.WriteLine($"{r} = {lr} : {(r < 0 ? "abs" : string.Empty)}({IBinaryInteger.IsPowOf(System.Numerics.BigInteger.Abs(r), radix)}) : {double.Log(double.CreateChecked(r), radix)}");
-      //}
-
-      //for (var i = 0; i <= 33; i++)
-      //  System.Console.WriteLine($"{i:D2} = {Flux.IBinaryInteger.RoundDownToPowerOf2(i, true):D2} : {Flux.IBinaryInteger.RoundDownToPowerOf2(i, false):D2} : {Flux.IBinaryInteger.RoundUpToPowerOf2(i, false):D2} : {Flux.IBinaryInteger.RoundUpToPowerOf2(i, true):D2}");
-
+      //var isqdn2 = System.Net.Dns.IsQualifiedDomainName(fqdn, out var lc2);
       //return;
 
-
-
-
-
-      var gosps = System.Runtime.InteropServices.RuntimeInformation.GetOsPlatforms();
-      var osp = System.Runtime.InteropServices.RuntimeInformation.OsPlatform;
-
-      var fw = System.Runtime.InteropServices.RuntimeInformation.Framework;
-
-      var os = System.Runtime.InteropServices.RuntimeInformation.OS;
-
-      var fqdn = System.Net.Dns.GetFullyQualifiedDomainName(out var hn);
-
-      var isqdn1 = System.Net.Dns.IsQualifiedDomainName(fqdn, out var lc1);
-
-      fqdn = $"{hn}.level.domain.zone";
-
-      var isqdn2 = System.Net.Dns.IsQualifiedDomainName(fqdn, out var lc2);
 
 
 
@@ -456,10 +401,10 @@ namespace ConsoleApp
       //sbx.MakeNumbersFixedLength(13, 0, sbx.Length);
       //sbx.InsertOrdinalIndicatorSuffix((s1, s2) => true);
       //sbx.NormalizeConsecutive(1, c => char.IsDigit(c) && c == '0');
-      //sbx.AsSpan().CapitalizeWords(0..);
-      //sbx.AsSpan().UncapitalizeWords(0..);
-      //sbx.AsSpan().ToUpper(1..);
-      //sbx.AsSpan().ToLower(1..);
+      //sbx.AsSpan().CapitalizeWords();
+      //sbx.AsSpan().UncapitalizeWords();
+      //sbx.AsSpan().ToUpper();
+      //sbx.AsSpan().ToLower();
 
 
 
@@ -495,6 +440,21 @@ namespace ConsoleApp
       //  System.Console.Write(" : ");
       //  System.Console.WriteLine(string.Join(',', permutation));
       //}
+
+      var m1 = Flux.NumeralComposition.GetExtremum(Flux.NumeralComposition.NumeralScale.CommonScale);
+      var m2 = Flux.NumeralComposition.GetExtremum(Flux.NumeralComposition.NumeralScale.LongScale);
+      var m3 = Flux.NumeralComposition.GetExtremum(Flux.NumeralComposition.NumeralScale.ShortScale);
+
+      var number = 2039;
+
+      var cardinalNumerals = Flux.NumeralComposition.GetCardinalNumerals(number, out var cardinalNumbers);
+
+      var tcns = number.ToCardinalNumeralString();
+      var tons = number.ToOrdinalNumeralString();
+
+      var tcnsf = (20.39).ToCardinalNumeralString();
+
+      var ordinalNumerals = Flux.NumeralComposition.GetOrdinalNumerals(number, out var ordinalNumbers);
 
     }
 

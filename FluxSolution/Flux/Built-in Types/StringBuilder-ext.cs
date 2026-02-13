@@ -57,50 +57,38 @@ namespace Flux
       #region Un/Capitalize
 
       /// <summary>Capitalize any lower-case character with a lower case character on the right and, a whitespace on the left or that is at the beginning.</summary>
-      public System.Text.StringBuilder CapitalizeWords(System.Globalization.CultureInfo? culture = null)
+      public System.Text.StringBuilder CapitalizeWords(System.Globalization.CultureInfo? cultureInfo = null)
       {
         System.ArgumentNullException.ThrowIfNull(source);
 
-        culture ??= System.Globalization.CultureInfo.CurrentCulture;
+        cultureInfo ??= System.Globalization.CultureInfo.CurrentCulture;
 
         var maxIndex = source.Length - 1;
 
-        for (var index = maxIndex; index >= 0; index--)
+        for (var i = 0; i < maxIndex; i++)
         {
-          var c = source[index]; // Avoid multiple indexers.
-
-          if (!char.IsLower(c)) continue; // If, c is not lower-case, advance.
-
-          if ((index > 0) && !char.IsWhiteSpace(source[index - 1])) continue; // If, (ensure previous) previous is not white-space, advance.
-
-          if ((index < maxIndex) && !char.IsLower(source[index + 1])) continue; // If, (ensure next) next is not lower-case, advance.
-
-          source[index] = char.ToUpper(c, culture);
+          var c = source[i];
+          if ((i == 0 || char.IsWhiteSpace(source[i - 1])) && char.IsLower(c) && char.IsLower(source[i + 1]))
+            source[i] = char.ToUpper(c, cultureInfo);
         }
 
         return source;
       }
 
       /// <summary>Uncapitalize any upper-case character with a lower case character on the right and, a whitespace on the left or that is at the beginning.</summary>
-      public System.Text.StringBuilder UncapitalizeWords(System.Globalization.CultureInfo? culture = null)
+      public System.Text.StringBuilder UncapitalizeWords(System.Globalization.CultureInfo? cultureInfo = null)
       {
         System.ArgumentNullException.ThrowIfNull(source);
 
-        culture ??= System.Globalization.CultureInfo.CurrentCulture;
+        cultureInfo ??= System.Globalization.CultureInfo.CurrentCulture;
 
         var maxIndex = source.Length - 1;
 
-        for (var index = maxIndex; index >= 0; index--)
+        for (var i = 0; i < maxIndex; i++)
         {
-          var c = source[index]; // Avoid multiple indexers.
-
-          if (!char.IsUpper(c)) continue; // If, c is not upper-case, advance.
-
-          if ((index > 0) && !char.IsWhiteSpace(source[index - 1])) continue; // If, (ensure previous) previous is not white-space, advance.
-
-          if ((index < maxIndex) && !char.IsLower(source[index + 1])) continue; // If, (ensure next) next is not lower-case, advance.
-
-          source[index] = char.ToLower(c, culture);
+          var c = source[i];
+          if ((i == 0 || char.IsWhiteSpace(source[i - 1])) && char.IsUpper(c) && char.IsLower(source[i + 1]))
+            source[i] = char.ToLower(c, cultureInfo);
         }
 
         return source;
@@ -1316,7 +1304,7 @@ namespace Flux
         System.ArgumentNullException.ThrowIfNull(source);
 
         for (var index = source.Length - 1; index >= 0; index--)
-          if (char.IsLatinStroke(source[index], out var replacement))
+          if (char.TryGetLatinStrokeReplacement(source[index], out var replacement))
             source[index] = replacement;
 
         return source;

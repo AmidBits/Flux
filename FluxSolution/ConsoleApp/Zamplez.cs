@@ -567,7 +567,7 @@ namespace ConsoleApp
         var r = System.Security.Cryptography.RandomNumberGenerator.GetInt32(0, 31);
 
         if (!bst.Contains(r))
-          bst = bst.Add(r, r.ToEnglishWordString());
+          bst = bst.Add(r, r.ToCardinalNumeralString());
       }
 
       System.Console.WriteLine(bst.ToConsoleBlock().ToString());
