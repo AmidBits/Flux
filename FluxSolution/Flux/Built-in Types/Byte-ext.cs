@@ -26,6 +26,14 @@ namespace Flux
 
         return value;
       }
+
+      /// <summary>
+      /// <para></para>
+      /// </summary>
+      /// <param name="value"></param>
+      /// <returns></returns>
+      public static string ToUriPercentEncoding(byte value)
+        => $"%{value:X2}";
     }
   }
 }

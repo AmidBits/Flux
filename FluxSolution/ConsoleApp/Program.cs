@@ -334,7 +334,12 @@ namespace ConsoleApp
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
 
+      var s = "Hello World! 100% safe?";
+      var es = s.EncodeUriPercentEncoding();
+      var ds = es.DecodeUriPercentEncoding();
 
+      var tueos = System.Text.Rune.ToUriPercentEncoding(((System.Text.Rune)'∆'));
+      // 11100010 98+128 10000010 10000110
       return;
 
       //var gosps = System.Runtime.InteropServices.RuntimeInformation.GetOsPlatforms();

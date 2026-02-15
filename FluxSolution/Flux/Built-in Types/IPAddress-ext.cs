@@ -5,6 +5,7 @@ namespace Flux
     extension(System.Net.IPAddress)
     {
       #region FromBigInteger/ToBigInteger
+
       /// <summary>
       /// <para>Convert the <paramref name="source"/> to an IP address.</para>
       /// </summary>
@@ -14,7 +15,7 @@ namespace Flux
       /// <exception cref="System.ArgumentOutOfRangeException"></exception>
       public static System.Net.IPAddress FromBigInteger(System.Numerics.BigInteger source)
       {
-        var bytes = new byte[source >= 0 && source <= System.UInt64.MaxValue ? 4 : source > System.UInt64.MaxValue && source <= System.UInt128.MaxValue ? 16 : throw new System.ArgumentOutOfRangeException(nameof(source))];
+        System.Span<byte> bytes = stackalloc byte[source >= 0 && source <= System.UInt64.MaxValue ? 4 : source > System.UInt64.MaxValue && source <= System.UInt128.MaxValue ? 16 : throw new System.ArgumentOutOfRangeException(nameof(source))];
 
         switch (bytes.Length)
         {
@@ -69,7 +70,7 @@ namespace Flux
 
         if (sourceBytes.Length != subnetMaskBytes.Length) throw new System.ArgumentException(@"Incompatible source address and subnet mask.");
 
-        var broadcastAddress = new byte[sourceBytes.Length];
+        System.Span<byte> broadcastAddress = stackalloc byte[sourceBytes.Length];
         for (var i = 0; i < broadcastAddress.Length; i++)
           broadcastAddress[i] = (byte)(sourceBytes[i] | (subnetMaskBytes[i] ^ 255));
         return new System.Net.IPAddress(broadcastAddress);
@@ -97,7 +98,7 @@ namespace Flux
 
         if (sourceBytes.Length != subnetMaskBytes.Length) throw new System.ArgumentException(@"Incompatible source address and subnet mask.");
 
-        var networkAddress = new byte[sourceBytes.Length];
+        System.Span<byte> networkAddress = stackalloc byte[sourceBytes.Length];
         for (var i = 0; i < networkAddress.Length; i++)
           networkAddress[i] = (byte)(sourceBytes[i] & (subnetMaskBytes[i]));
         return new System.Net.IPAddress(networkAddress);
@@ -372,10 +373,8 @@ namespace Flux
         var bytes = source.GetAddressBytes();
 
         var words = new short[bytes.Length / 2];
-
         for (var index = 0; index < bytes.Length; index += 2)
           words[index / 2] = unchecked((short)(bytes[index] << 8 | bytes[index + 1]));
-
         return words;
       }
 

@@ -1754,11 +1754,52 @@
 
       #endregion
 
+      #region GetUnicodeRange
+
       /// <summary>
       /// <para>Locates the Unicode range and block name of the <paramref name="character"/>.</para>
       /// </summary>
       public static System.Collections.Generic.KeyValuePair<string, System.Text.Unicode.UnicodeRange> GetUnicodeRange(char character)
         => System.Text.Unicode.UnicodeRange.GetUnicodeRanges().InfimumSupremum(t2 => t2.Value.FirstCodePoint, System.Text.Rune.AssertValid(character, nameof(character)), false).InfimumItem;
+
+      #endregion
+
+      #region IsUriReserved
+
+      /// <summary>
+      /// <para>URIs include components and subcomponents that are delimited by characters in the "reserved" set. These characters are called "reserved" because they may(or may not) be defined as delimiters by the generic syntax, by each scheme-specific syntax, or by the implementation-specific syntax of a URI's dereferencing algorithm.</para>
+      /// <para>If data for a URI component would conflict with a reserved character's purpose as a delimiter, then the conflicting data must be percent-encoded before the URI is formed.</para>
+      /// <para>reserved = <c>gen-delims</c> and <c>sub-delims</c></para>
+      /// <para>gen-delims = "<c>:/?#[]@</c>"</para>
+      /// <para>sub-delims = "<c>!$&amp;&apos;()*+,;=</c>"</para>
+      /// <para>The purpose of reserved characters is to provide a set of delimiting characters that are distinguishable from other data within a URI.</para>
+      /// <para>URIs that differ in the replacement of a reserved character with its corresponding percent-encoded octet are not equivalent. Percent-encoding a reserved character, or decoding a percent-encoded octet that corresponds to a reserved character, will change how the URI is interpreted by most applications.Thus, characters in the reserved set are protected from normalization and are therefore safe to be used by scheme-specific and producer-specific algorithms for delimiting data subcomponents within a URI.</para>
+      /// <para><see href="https://www.rfc-editor.org/rfc/rfc3986"/></para>
+      /// </summary>
+      /// <param name="source"></param>
+      /// <returns></returns>
+      public static bool IsUriReserved(char source)
+        => source is
+        /* gen-delims: */ ':' or '/' or '?' or '#' or '[' or ']' or '@' or
+        /* sub-delims: */ '!' or '$' or '&' or '\'' or '(' or ')' or '*' or '+' or ',' or ';' or '=';
+
+      #endregion
+
+      #region IsUriUnreserved
+
+      /// <summary>
+      /// <para>Characters that are allowed in a URI but do not have a reserved purpose are called unreserved. These include uppercase and lowercase letters, decimal digits, hyphen, period, underscore, and tilde.</para>
+      /// <para>unreserved = <c>ALPHA</c>, <c>DIGIT</c> or "<c>-._~</c>"</para>
+      /// <para>URIs that differ in the replacement of an unreserved character with its corresponding percent-encoded US-ASCII octet are equivalent: they identify the same resource. However, URI comparison implementations not always perform normalization prior to comparison (see Section 6).</para>
+      /// <para>For consistency, percent-encoded octets in the ranges of ALPHA (%41-%5A and %61-%7A), DIGIT (%30-%39), hyphen (%2D), period (%2E), underscore (%5F), or tilde (%7E) should not be created by URI producers and, when found in a URI, should be decoded to their corresponding unreserved characters by URI normalizers.</para>
+      /// <para><see href="https://www.rfc-editor.org/rfc/rfc3986"/></para>
+      /// </summary>
+      /// <param name="source"></param>
+      /// <returns></returns>
+      public static bool IsUriUnreserved(char source)
+        => char.IsAsciiLetterOrDigit(source) || (source is '-' or '.' or '_' or '~');
+
+      #endregion
 
       #region ..LatinStroke..
 
@@ -1875,6 +1916,67 @@
 
       #endregion
 
+      #region ToCsharpUtf16LiteralString
+
+      public static string ToCsharpUtf16LiteralString(System.Char character)
+        => System.Text.Rune.ToCsharpUtf16Literal(new System.Text.Rune(char.AssertUnicodeCodepoint(character)));
+
+      #endregion
+
+      #region ToCsharpVariableHexLiteral
+
+      public static string ToCsharpVariableHexLiteral(System.Char character)
+        => System.Text.Rune.ToCsharpVariableHexLiteral(new System.Text.Rune(char.AssertUnicodeCodepoint(character)));
+
+      #endregion
+
+      #region ToDecimalNumericCharacterReference
+
+      /// <summary>
+      /// <para>a numeric character reference refers to a character by its Universal Coded Character Set/Unicode code point, and uses the format: <code>&amp;#nnnn;</code> where nnnn is the code point in decimal form.</para>
+      /// </summary>
+      /// <param name="rune"></param>
+      /// <returns></returns>
+      public static string ToDecimalNumericCharacterReference(System.Char character)
+        => System.Text.Rune.ToDecimalNumericCharacterReference(new System.Text.Rune(char.AssertUnicodeCodepoint(character)));
+
+      #endregion
+
+      #region ToHexadecimalNumericCharacterReference
+
+      /// <summary>
+      /// <para>a numeric character reference refers to a character by its Universal Coded Character Set/Unicode code point, and uses the format: <code>&amp;#xhhhh;</code> where the x must be lowercase in XML documents, hhhh is the code point in hexadecimal form.</para>
+      /// </summary>
+      /// <param name="rune"></param>
+      /// <returns></returns>
+      public static string ToHexadecimalNumericCharacterReference(System.Char character)
+        => System.Text.Rune.ToHexadecimalNumericCharacterReference(new System.Text.Rune(char.AssertUnicodeCodepoint(character)));
+
+      #endregion
+
+      #region ToUnicodeUnotation
+
+      /// <summary>
+      /// <para>Convert the Unicode codepoint (rune) to the string representation format "U+XXXX" (at least 4 hex characters, more if needed).</para>
+      /// </summary>
+      /// <returns></returns>
+      public static string ToUnicodeUnotation(System.Char character)
+        => System.Text.Rune.ToUnicodeUnotation(new System.Text.Rune(char.AssertUnicodeCodepoint(character)));
+
+      #endregion
+
+      #region ToUriPercentEncoding
+
+      /// <summary>
+      /// <para>Convert the Unicode codepoint (rune) to the string representation format "U+XXXX" (at least 4 hex characters, more if needed).</para>
+      /// <para><see href="https://www.rfc-editor.org/rfc/rfc3986"/></para>
+      /// </summary>
+      /// <returns></returns>
+      public static string ToUriPercentEncoding(System.Char character)
+        => System.Text.Rune.ToUriPercentEncoding(new System.Text.Rune(char.AssertUnicodeCodepoint(character)));
+
+      #endregion
+
       #region ..Vowel
 
       /// <summary>
@@ -1899,61 +2001,12 @@
 
     extension(System.Char character)
     {
-      #region ToCsharpUtf16LiteralString
-
-      public string ToCsharpUtf16LiteralString()
-        => $"\\u{(int)character:X4}";
-
-      #endregion
-
-      #region ToCsharpVariableHexLiteralString
-
-      public string ToCsharpVariableHexLiteralString()
-        => $"\\x{(int)character:X1}";
-
-      #endregion
-
-      #region ToDecimalNumericCharacterReferenceString
-
-      /// <summary>
-      /// <para>a numeric character reference refers to a character by its Universal Coded Character Set/Unicode code point, and uses the format: <code>&amp;#nnnn;</code> where nnnn is the code point in decimal form.</para>
-      /// </summary>
-      /// <param name="rune"></param>
-      /// <returns></returns>
-      public string ToDecimalNumericCharacterReferenceString()
-        => $"&#{(int)char.AssertUnicodeCodepoint(character)};";
-
-      #endregion
-
-      #region ToHexadecimalNumericCharacterReferenceString
-
-      /// <summary>
-      /// <para>a numeric character reference refers to a character by its Universal Coded Character Set/Unicode code point, and uses the format: <code>&amp;#xhhhh;</code> where the x must be lowercase in XML documents, hhhh is the code point in hexadecimal form.</para>
-      /// </summary>
-      /// <param name="rune"></param>
-      /// <returns></returns>
-      public string ToHexadecimalNumericCharacterReferenceString()
-        => $"&#x{(int)char.AssertUnicodeCodepoint(character):X1};";
-
-      #endregion
-
-      #region ToUnicodeUnotationString
-
-      /// <summary>
-      /// <para>Convert the Unicode codepoint (rune) to the string representation format "U+XXXX" (at least 4 hex characters, more if needed).</para>
-      /// </summary>
-      /// <returns></returns>
-      public string ToUnicodeUnotationString()
-        => $"U+{(int)char.AssertUnicodeCodepoint(character):X4}";
-
-      #endregion
-
       #region ToVerboseString
 
       public string ToVerboseString()
         => char.IsSurrogate(character)
         ? $"UTF-16 0x{(int)character:X4} {(char.IsHighSurrogate(character) ? "High" : char.IsLowSurrogate(character) ? "Low" : string.Empty)}-{char.GetUnicodeCategory(character)}"
-        : $"{ToUnicodeUnotationString(character)} '{character}' {char.GetUnicodeCategory(character)}";
+        : $"{ToUnicodeUnotation(character)} '{character}' {char.GetUnicodeCategory(character)}";
 
       #endregion
 

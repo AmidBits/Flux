@@ -159,7 +159,9 @@
       /// <param name="x"></param>
       /// <returns></returns>
       public static TFloat Envelop(TFloat x)
-        => TFloat.IsNegative(x) ? TFloat.Floor(x) : TFloat.Ceiling(x);
+        => TFloat.IsNegative(x)
+        ? TFloat.Floor(x)
+        : TFloat.Ceiling(x);
 
       /// <summary>
       /// <para>Equivalent to the opposite effect of the Truncate() functionality, i.e. instead of truncating the fraction and essentially executing a round-toward-zero, envelop the fraction and essentially execute a round-away-from-zero.</para>
@@ -169,64 +171,15 @@
       /// <typeparam name="TFloat"></typeparam>
       /// <typeparam name="TInteger"></typeparam>
       /// <param name="x"></param>
-      /// <param name="digits"></param>
+      /// <param name="significantDigits"></param>
       /// <returns></returns>
-      public static TFloat Envelop(TFloat x, int digits)
+      public static TFloat Envelop(TFloat x, int significantDigits)
       {
-        var m = TFloat.CreateChecked(System.Numerics.BigInteger.Pow(10, digits));
+        System.ArgumentOutOfRangeException.ThrowIfNegative(significantDigits);
+
+        var m = TFloat.CreateChecked(System.Numerics.BigInteger.Pow(10, significantDigits));
 
         return Envelop(x * m) / m;
-      }
-
-      #endregion
-
-      #region EqualsWithin
-
-      /// <summary>
-      /// <para>Perform an absolute equality test.</para>
-      /// <para>Absolute equality checks if the absolute difference between <paramref name="value"/> and <paramref name="other"/> is smaller than a predefined <paramref name="absoluteTolerance"/>. This is useful when you want to ensure the numbers are "close enough" without considering their scale.</para>
-      /// <para>Absolute equality is simpler and works well for small numbers or fixed tolerances.</para>
-      /// </summary>
-      /// <param name="value"></param>
-      /// <param name="other"></param>
-      /// <param name="absoluteTolerance">E.g. 1e-10.</param>
-      /// <returns></returns>
-      public static bool EqualsWithinAbsoluteTolerance(TFloat value, TFloat other, TFloat absoluteTolerance)
-      {
-        if (value == other)
-          return true;
-
-        if (TFloat.IsNaN(value) || TFloat.IsNaN(other))
-          return false;
-
-        if (TFloat.IsInfinity(value) || TFloat.IsInfinity(other))
-          return value == other;
-
-        return TFloat.Abs(value - other) <= absoluteTolerance;
-      }
-
-      /// <summary>
-      /// <para>Perform a relative equality test.</para>
-      /// <para>Relative equality considers the scale of the numbers by dividing the absolute difference by the magnitude of the numbers. This is useful when comparing numbers that may vary significantly in scale.</para>
-      /// <para>Relative equality is better for larger numbers or numbers with varying scales, as it adjusts the tolerance dynamically.</para>
-      /// </summary>
-      /// <typeparam name="TRelativeTolerance"></typeparam>
-      /// <param name="value"></param>
-      /// <param name="other"></param>
-      /// <param name="relativeTolerance">E.g. 1e-10.</param>
-      /// <returns></returns>
-      public static bool EqualsWithinRelativeTolerance(TFloat value, TFloat other, TFloat relativeTolerance)
-      {
-        if (value == other)
-          return true;
-
-        if (TFloat.IsNaN(value) || TFloat.IsNaN(other))
-          return false;
-
-        if (TFloat.IsInfinity(value) || TFloat.IsInfinity(other))
-          return value == other;
-
-        return TFloat.Abs(value - other) <= relativeTolerance * TFloat.Abs(TFloat.MaxMagnitude(value, other));
       }
 
       #endregion
@@ -301,7 +254,6 @@
         => (TFloat.CreateChecked(3) * x1 * x2 * x3) / (x1 * x2 + x2 * x3 + x3 * x1);
 
       #endregion
-
       #region HarmonicSequence.. (progression)
 
       /// <summary>
@@ -424,23 +376,6 @@
 
       #endregion
 
-      //#region MachineEpsilon
-
-      ///// <summary>
-      ///// <para>Machine epsilon computed on the fly.</para>
-      ///// </summary>
-      //public static TFloat MachineEpsilon()
-      //{
-      //  var epsilon = TFloat.One;
-
-      //  while (epsilon / TFloat.CreateChecked(2) is var halfEpsilon && (TFloat.One + halfEpsilon) > TFloat.One)
-      //    epsilon = halfEpsilon;
-
-      //  return epsilon;
-      //}
-
-      //#endregion
-
       #region Native..
 
       /// <summary>
@@ -557,7 +492,7 @@
           return value == number;
 
         var difference = TFloat.Abs(value - number);
-        var tolerance = (baseEpsilon * (TFloat.One + TFloat.Abs(TFloat.MaxMagnitude(value, number))));
+        var tolerance = baseEpsilon * (TFloat.One + TFloat.Abs(TFloat.MaxMagnitude(value, number)));
 
         return difference <= tolerance;
       }
@@ -595,44 +530,6 @@
         => IsNearNumber(value, number, GetBaseEpsilon<TFloat>()) ? number : value;
 
       #endregion
-
-      //#region ..NearlyEqual
-
-      ///// <summary>
-      ///// <para>Perform both an absolute and a relative equality test for more robust comparisons. Returns true if any test is considered equal, otherwise false.</para>
-      ///// <para>The algorithm applies the specified <paramref name="baseEpsilon"/> for custom tolerance.</para>
-      ///// <para><see cref="GetBaseEpsilon{TFloat}"/> is the default tolerance and essentially corresponds to calculation errors.</para>
-      ///// </summary>
-      ///// <param name="value"></param>
-      ///// <param name="other"></param>
-      ///// <param name="baseEpsilon">E.g. 1e-12</param>
-      ///// <returns></returns>
-      //public static bool IsNearlyEqual(TFloat value, TFloat other, TFloat baseEpsilon)
-      //{
-      //  if (value == other)
-      //    return true;
-
-      //  if (TFloat.IsNaN(value) || TFloat.IsNaN(other))
-      //    return false;
-
-      //  if (TFloat.IsInfinity(value) || TFloat.IsInfinity(other))
-      //    return value == other;
-
-      //  return TFloat.Abs(value - other) <= (baseEpsilon * (TFloat.One + TFloat.Abs(TFloat.MaxMagnitude(value, other))));
-      //}
-
-      ///// <summary>
-      ///// <para>Perform both an absolute and a relative equality test for more robust comparisons. Returns true if any test is considered equal, otherwise false.</para>
-      ///// <para>The algorithm queries <see cref="GetBaseEpsilon{TFloat}"/> for tolerance.</para>
-      ///// <para><see cref="GetBaseEpsilon{TFloat}"/> is the default tolerance and essentially corresponds to calculation errors.</para>
-      ///// </summary>
-      ///// <param name="value"></param>
-      ///// <param name="other"></param>
-      ///// <returns></returns>
-      //public static bool IsNearlyEqual(TFloat value, TFloat other)
-      //  => IsNearlyEqual(value, other, GetBaseEpsilon<TFloat>());
-
-      //#endregion
 
       #region FallingFactorial (generalized)
 
@@ -769,11 +666,13 @@
       /// <typeparam name="TFloat"></typeparam>
       /// <typeparam name="TInteger"></typeparam>
       /// <param name="x"></param>
-      /// <param name="digits"></param>
+      /// <param name="significantDigits"></param>
       /// <returns></returns>
-      public static TFloat Truncate(TFloat x, int digits)
+      public static TFloat Truncate(TFloat x, int significantDigits)
       {
-        var m = TFloat.CreateChecked(System.Numerics.BigInteger.Pow(10, digits));
+        System.ArgumentOutOfRangeException.ThrowIfNegative(significantDigits);
+
+        var m = TFloat.CreateChecked(System.Numerics.BigInteger.Pow(10, significantDigits));
 
         return TFloat.Truncate(x * m) / m;
       }
@@ -1048,7 +947,7 @@
       #region ToStringWithCustomDecimals
 
       public string ToStringWithCustomDecimals(int numberOfDecimals = 339)
-        => x.ToString(BinaryInteger.GetFormatStringWithCountDecimals(numberOfDecimals), null);
+        => x.ToString(BinaryInteger.CreateFormatStringWithCountDecimals(numberOfDecimals), null);
 
       #endregion
     }

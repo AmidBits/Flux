@@ -43,7 +43,7 @@ namespace Flux.Permutations
 
     #region Permutations without repetition
 
-    public static int RankPermutationWithoutRepetition(System.ReadOnlySpan<int> perm, int n, int k)
+    public static int RankPermutationWithoutRepetition(System.ReadOnlySpan<int> permutation, int n, int k)
     {
       var available = new System.Collections.Generic.List<int>(Enumerable.Range(0, n));
 
@@ -51,7 +51,7 @@ namespace Flux.Permutations
 
       for (int i = 0; i < k; i++)
       {
-        int idx = available.IndexOf(perm[i]);
+        int idx = available.IndexOf(permutation[i]);
         rank += idx * BinaryInteger.Factorial(n - i - 1) / BinaryInteger.Factorial(n - k);
         available.RemoveAt(idx);
       }
@@ -65,30 +65,30 @@ namespace Flux.Permutations
 
       var available = new System.Collections.Generic.List<int>(Enumerable.Range(0, n));
 
-      var perm = new int[k];
+      var permutation = new int[k];
 
       for (int i = 0; i < k; i++)
       {
         int blockSize = BinaryInteger.Factorial(n - i - 1) / BinaryInteger.Factorial(n - k);
         int idx = rank / blockSize;
         rank %= blockSize;
-        perm[i] = available[idx];
+        permutation[i] = available[idx];
         available.RemoveAt(idx);
       }
 
-      return perm;
+      return permutation;
     }
 
     #endregion
 
     #region Permutations with repetition
 
-    public static int RankPermutationWithRepetition(System.ReadOnlySpan<int> perm, int n, int k)
+    public static int RankPermutationWithRepetition(System.ReadOnlySpan<int> permutation, int n, int k)
     {
       var rank = 0;
 
       for (var i = 0; i < k; i++)
-        rank = rank * n + perm[i];
+        rank = rank * n + permutation[i];
 
       return rank;
     }
@@ -97,16 +97,16 @@ namespace Flux.Permutations
     {
       System.ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(rank, BinaryInteger.CountPermutationsWithRepetition(n, k));
 
-      var perm = new int[k];
+      var permutation = new int[k];
 
       for (int i = k - 1; i >= 0; i--)
       {
-        perm[i] = rank % n;
+        permutation[i] = rank % n;
 
         rank /= n;
       }
 
-      return perm;
+      return permutation;
     }
 
     #endregion

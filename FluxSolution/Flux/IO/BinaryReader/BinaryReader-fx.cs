@@ -6,13 +6,10 @@
     {
       System.ArgumentNullException.ThrowIfNull(source);
 
-      var bytes = new byte[numberOfBytes];
-
-      source.Read(bytes, 0, numberOfBytes);
-
+      System.Span<byte> bytes = stackalloc byte[numberOfBytes];
+      source.Read(bytes);
       if (reverseBytes)
-        System.Array.Reverse(bytes);
-
+        bytes.Reverse();
       return new System.Numerics.BigInteger(bytes);
     }
   }

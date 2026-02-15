@@ -6,7 +6,7 @@ namespace Flux
     {
       public static System.Guid FromInt128(System.Int128 int128)
       {
-        var bytes = new byte[16];
+        System.Span<byte> bytes = stackalloc byte[16];
 
         System.Buffers.Binary.BinaryPrimitives.WriteInt128LittleEndian(bytes, int128);
 

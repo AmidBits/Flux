@@ -39,7 +39,7 @@ namespace Flux.PlanetaryScience
     public double GetMercatorProjectedX()
       => Angle.GetUnitValue(Units.AngleUnit.Radian);
 
-    public string ToDecimalString() => m_angle.GetUnitValue(Units.AngleUnit.Degree).ToString(BinaryInteger.GetFormatStringWithCountDecimals(6));
+    public string ToDecimalString() => m_angle.GetUnitValue(Units.AngleUnit.Degree).ToString(BinaryInteger.CreateFormatStringWithCountDecimals(6));
 
     public string ToDmsNotationString()
     {

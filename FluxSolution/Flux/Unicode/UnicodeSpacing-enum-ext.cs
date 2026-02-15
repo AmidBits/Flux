@@ -49,13 +49,6 @@
 
   public static partial class UnicodeSpacingExtensions
   {
-    public static System.Globalization.NumberFormatInfo GetSiNumberFormatInfo(UnicodeSpacing unicodeSpacing = UnicodeSpacing.ThinSpace)
-    {
-      var nfi = (System.Globalization.NumberFormatInfo)System.Globalization.CultureInfo.InvariantCulture.NumberFormat.Clone();
-      nfi.NumberGroupSeparator = unicodeSpacing.ToSpacingString();
-      return nfi;
-    }
-
     extension(UnicodeSpacing unicodeSpacing)
     {
       /// <summary>

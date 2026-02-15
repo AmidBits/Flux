@@ -12,7 +12,7 @@ namespace Flux
         length = byteArray.Length - 1;
 
         if (length > 0 && byteArray[length] == 0)
-          Array.Resize(ref byteArray, length);
+          System.Array.Resize(ref byteArray, length);
         else
           length++;
 

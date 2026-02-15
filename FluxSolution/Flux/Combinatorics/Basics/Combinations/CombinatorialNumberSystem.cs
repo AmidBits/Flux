@@ -4,12 +4,12 @@
   {
     #region Combinations without repetition
 
-    public static int RankCombinationWithoutRepetition(System.ReadOnlySpan<int> combo, int n, int k)
+    public static int RankCombinationWithoutRepetition(System.ReadOnlySpan<int> combination, int n, int k)
     {
       var rank = 0;
 
       for (var i = 0; i < k; i++)
-        for (var j = (i == 0 ? 0 : combo[i - 1] + 1); j < combo[i]; j++)
+        for (var j = (i == 0 ? 0 : combination[i - 1] + 1); j < combination[i]; j++)
           rank += BinaryInteger.BinomialCoefficient(n - j - 1, k - i - 1);
 
       return rank;
@@ -19,7 +19,7 @@
     {
       System.ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(rank, BinaryInteger.CountCombinationsWithoutRepetition(n, k));
 
-      var combo = new int[k];
+      var combination = new int[k];
 
       var x = 0;
 
@@ -32,22 +32,22 @@
           x++;
         }
 
-        combo[i] = x++;
+        combination[i] = x++;
       }
 
-      return combo;
+      return combination;
     }
 
     #endregion
 
     #region Combinations with repetition
 
-    public static int RankCombinationWithRepetition(System.ReadOnlySpan<int> combo, int n, int k)
+    public static int RankCombinationWithRepetition(System.ReadOnlySpan<int> combination, int n, int k)
     {
       var rank = 0;
 
       for (var i = 0; i < k; i++)
-        for (var j = (i == 0 ? 0 : combo[i - 1]); j < combo[i]; j++)
+        for (var j = (i == 0 ? 0 : combination[i - 1]); j < combination[i]; j++)
           rank += BinaryInteger.BinomialCoefficient(n - j + k - i - 2, k - i - 1);
 
       return rank;
@@ -57,7 +57,7 @@
     {
       System.ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(rank, BinaryInteger.CountCombinationsWithRepetition(n, k));
 
-      var combo = new int[k];
+      var combination = new int[k];
 
       var x = 0;
 
@@ -70,10 +70,10 @@
           x++;
         }
 
-        combo[i] = x;
+        combination[i] = x;
       }
 
-      return combo;
+      return combination;
     }
 
     #endregion

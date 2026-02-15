@@ -8,7 +8,7 @@ namespace Flux.HashGenerators.Specialized
   /// </remarks>
   public static class LmHash
   {
-    private static readonly byte[] m_defaultHalf = new byte[] { 0xAA, 0xD3, 0xB4, 0x35, 0xB5, 0x14, 0x04, 0xEE };
+    private static readonly byte[] m_defaultHalf = [0xAA, 0xD3, 0xB4, 0x35, 0xB5, 0x14, 0x04, 0xEE];
 
     private static byte[] ComputeHalf(byte[] half)
     {

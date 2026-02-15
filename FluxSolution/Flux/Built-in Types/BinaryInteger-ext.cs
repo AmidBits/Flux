@@ -5,144 +5,6 @@
     extension<TInteger>(TInteger)
       where TInteger : System.Numerics.IBinaryInteger<TInteger>
     {
-      #region Abundant numbers (including highly & super abundant)
-
-      /// <summary>
-      /// <para>Creates a new sequence of 2-tuples, each with an abundant number and its aliquot sum.</para>
-      /// <para><see href="https://en.wikipedia.org/wiki/Abundant_number"/></para>
-      /// </summary>
-      /// <remarks>This function generate results until the type <typeparamref name="TInteger"/> under/overflows in any calculation. No exception is thrown.</remarks>
-      /// <typeparam name="TSelf"></typeparam>
-      /// <returns></returns>
-      public static System.Collections.Generic.IEnumerable<(TInteger Number, TInteger AliqoutSum)> GetAbundantNumbers()
-        => Number.ArithmeticSequence(TInteger.CreateChecked(3), TInteger.One).AsParallel().AsOrdered().Select(n => (Number: n, SumDivisors(n).AliquotSum)).Where(x => x.AliquotSum > x.Number);
-
-      /// <summary>
-      /// <para>Creates a new sequence of highly abundant numbers.</para>
-      /// <para><see href="https://en.wikipedia.org/wiki/Highly_abundant_number"/></para>
-      /// </summary>
-      /// <remarks>
-      /// <para>Not all highly abundant numbers are abundant numbers.</para>
-      /// <para>This function generate results until the type <typeparamref name="TInteger"/> under/overflows in any calculation. No exception is thrown.</para>
-      /// </remarks>
-      /// <typeparam name="TSelf"></typeparam>
-      /// <returns></returns>
-      public static System.Collections.Generic.IEnumerable<(TInteger Number, TInteger Sum)> GetHighlyAbundantNumbers()
-      {
-        var largestSumOfDivisors = TInteger.Zero;
-
-        foreach (var index in Number.ArithmeticSequence(TInteger.One, TInteger.One))
-          if (SumDivisors(index).Sum is var sumOfDivisors && sumOfDivisors > largestSumOfDivisors)
-          {
-            yield return (index, sumOfDivisors);
-
-            largestSumOfDivisors = sumOfDivisors;
-          }
-      }
-
-      /// <summary>
-      /// <para>Creates a new sequence of super-abundant numbers.</para>
-      /// <para><see href="https://en.wikipedia.org/wiki/Superabundant_number"/></para>
-      /// </summary>
-      /// <remarks>
-      /// <para>All superabundant numbers are highly abundant.</para>
-      /// <para>This function generate results until the type <typeparamref name="TInteger"/> under/overflows in any calculation. No exception is thrown.</para>
-      /// </remarks>
-      /// <typeparam name="TSelf"></typeparam>
-      /// <returns></returns>
-      public static System.Collections.Generic.IEnumerable<(TInteger Number, TInteger Sum)> GetSuperAbundantNumbers()
-      {
-        var largestValue = 0.0;
-
-        foreach (var tuple in GetHighlyAbundantNumbers<TInteger>())
-          if ((double.CreateChecked(tuple.Sum) / double.CreateChecked(tuple.Number)) is var value && value > largestValue)
-          {
-            yield return tuple;
-
-            largestValue = value;
-          }
-      }
-
-      /// <summary>
-      /// <para>Determines whether the <paramref name="number"/> is an abundant number.</para>
-      /// <para><see href="https://en.wikipedia.org/wiki/Abundant_number"/></para>
-      /// </summary>
-      /// <typeparam name="TSelf"></typeparam>
-      /// <param name="number"></param>
-      /// <returns></returns>
-      public static bool IsAbundantNumber(TInteger n)
-        => SumDivisors(n).AliquotSum > n;
-
-      #endregion
-
-      #region Bell numbers
-
-      /// <summary>
-      /// <para>Creates a new sequence of Bell numbers.</para>
-      /// <para><see href="https://en.wikipedia.org/wiki/Bell_number"/></para>
-      /// </summary>
-      /// <remarks>This function generate results until the type <typeparamref name="TInteger"/> under/overflows in any calculation. No exception is thrown.</remarks>
-      /// <typeparam name="TInteger"></typeparam>
-      /// <returns></returns>
-      public static System.Collections.Generic.IEnumerable<TInteger> GetBellNumbers()
-        => GetBellTriangle<TInteger>().Select(a => a[0]);
-
-      /// <summary>
-      /// <para>Creates a new sequence with arrays (i.e. row) of Bell numbers in a Bell triangle.</para>
-      /// <para><see href="https://en.wikipedia.org/wiki/Bell_triangle"/></para>
-      /// <para><seealso href="https://en.wikipedia.org/wiki/Bell_number"/></para>
-      /// </summary>
-      /// <remarks>This function generate results until the type <typeparamref name="TInteger"/> under/overflows in any calculation. No exception is thrown.</remarks>
-      /// <typeparam name="TInteger"></typeparam>
-      /// <returns></returns>
-      public static System.Collections.Generic.IEnumerable<System.Collections.Generic.List<TInteger>> GetBellTriangle()
-      {
-        foreach (var list in GetBellTriangleAugmented<TInteger>().Skip(1))
-        {
-          list.RemoveAt(0);
-
-          yield return list;
-        }
-      }
-
-      /// <summary>
-      /// <para>Creates a new sequence with arrays (i.e. row) of Bell numbers in an augmented Bell triangle.</para>
-      /// <para><see href="https://en.wikipedia.org/wiki/Bell_triangle"/></para>
-      /// <para><seealso href="https://en.wikipedia.org/wiki/Bell_number"/></para>
-      /// </summary>
-      /// <remarks>This function generate results until the type <typeparamref name="TInteger"/> under/overflows in any calculation. No exception is thrown.</remarks>
-      /// <typeparam name="TInteger"></typeparam>
-      /// <returns></returns>
-      public static System.Collections.Generic.IEnumerable<System.Collections.Generic.List<TInteger>> GetBellTriangleAugmented()
-      {
-        var l1 = new System.Collections.Generic.List<TInteger>() { TInteger.One }; // This is the current.
-        var l0 = new System.Collections.Generic.List<TInteger>(); // This is the previous.
-
-        while (true)
-        {
-          yield return l1.ToList();
-
-          try
-          {
-            checked
-            {
-              (l1, l0) = (l0, l1); // Rotate and reuse the lists is much faster and less resource intensive.
-
-              l1.Clear(); // This is now the current, and l0 became the previous.
-
-              l1.Add(l0[^1]);
-              l1.Insert(0, l1[0] - l0[0]);
-
-              for (var i = 2; i <= l0.Count; i++)
-                l1.Add(l0[i - 1] + l1[i - 1]);
-            }
-          }
-          catch { break; }
-        }
-      }
-
-      #endregion
-
       #region BinomialCoefficient
 
       /// <summary>
@@ -253,30 +115,6 @@
 
       #endregion
 
-      #region Catalan number
-
-      /// <summary>
-      /// <para>Returns the Catalan number for the specified <paramref name="number"/>.</para>
-      /// <para><see href="https://en.wikipedia.org/wiki/Catalan_number"/></para>
-      /// </summary>
-      /// <typeparam name="TInteger"></typeparam>
-      /// <param name="number"></param>
-      /// <returns></returns>
-      public static TInteger GetCatalanNumber(TInteger n)
-        => checked(Factorial(n + n) / (Factorial(n + TInteger.One) * Factorial(n)));
-
-      /// <summary>
-      /// <para>Creates a new sequence with Catalan numbers.</para>
-      /// <para><see href="https://en.wikipedia.org/wiki/Catalan_number"/></para>
-      /// </summary>
-      /// <remarks>This function runs indefinitely, if allowed.</remarks>
-      /// <typeparam name="TInteger"></typeparam>
-      /// <returns></returns>
-      public static System.Collections.Generic.IEnumerable<TInteger> GetCatalanSequence()
-        => Number.ArithmeticSequence(TInteger.Zero, TInteger.One).AsParallel().AsOrdered().Select(GetCatalanNumber);
-
-      #endregion
-
       #region Centered Polygonal number
 
       /// <summary>
@@ -311,67 +149,6 @@
       /// <remarks>This function runs indefinitely, if allowed.</remarks>
       public static System.Collections.Generic.IEnumerable<TInteger> GetCenteredPolygonalNumberSequence(TInteger k)
         => Number.ArithmeticSequence(TInteger.Zero, TInteger.One).Select(n => GetCenteredPolygonalNumber(k, n));
-
-      #endregion
-
-      #region Composite numbers (including highly composite)
-
-      /// <summary>
-      /// <para>Generates a new sequence of composite numbers.</para>
-      /// <para><see href="https://en.wikipedia.org/wiki/Composite_number"/></para>
-      /// </summary>
-      /// <remarks>This function generate results until the type <typeparamref name="TInteger"/> under/overflows in any calculation. No exception is thrown.</remarks>
-      /// <returns></returns>
-      public static System.Collections.Generic.IEnumerable<TInteger> GetCompositeNumbers()
-        => Number.ArithmeticSequence(TInteger.One, TInteger.One).AsParallel().AsOrdered().Where(IsCompositeNumber);
-
-      /// <summary>
-      /// <para>Creates a new sequence of highly composite numbers.</para>
-      /// <para><see href="https://en.wikipedia.org/wiki/Highly_composite_number"/></para>
-      /// </summary>
-      /// <remarks>This function generate results until the type <typeparamref name="TInteger"/> under/overflows in any calculation. No exception is thrown.</remarks>
-      /// <returns></returns>
-      public static System.Collections.Generic.IEnumerable<(TInteger Number, TInteger Count)> GetHighlyCompositeNumbers()
-      {
-        var largestCount = TInteger.Zero;
-
-        foreach (var tuple in Number.ArithmeticSequence(TInteger.One, TInteger.One).AsParallel().AsOrdered().Select(n => (Number: n, Count: CountDivisors(n))))
-          if (tuple.Count > largestCount)
-          {
-            yield return tuple;
-
-            largestCount = tuple.Count;
-          }
-      }
-
-      /// <summary>
-      /// <para>Determines if the <paramref name="number"/> is a composite number, i.e. not a prime and not a unit (1).</para>
-      /// </summary>
-      /// <param name="n"></param>
-      /// <returns></returns>
-      public static bool IsCompositeNumber(TInteger n)
-        => !IsPrimeNumber(n) // If it's not a prime..
-        && n > TInteger.One; // ..and not a unit (1).
-
-      /// <summary>
-      /// <para>Determines if the <paramref name="number"/> is a highly composite number.</para>
-      /// </summary>
-      /// <param name="n"></param>
-      /// <returns></returns>
-      public static bool IsHighlyCompositeNumber(TInteger n)
-      {
-        var ncd = CountDivisors(n); // Count number of divisors of N
-
-        for (var i = n - TInteger.One; i >= TInteger.One; i--) // Loop to count number of factors of every number less than n.
-        {
-          var icd = CountDivisors(i);
-
-          if (icd >= ncd) // If any number less than n has more factors than n, then return false.
-            return false;
-        }
-
-        return true;
-      }
 
       #endregion
 
@@ -484,6 +261,23 @@
           result |= (bitMask & TInteger.CreateChecked((1 << r) - 1)) << (bitLength - r);
 
         return result;
+      }
+
+      #endregion
+
+      #region CreateFormatStringWithCountDecimals
+
+      /// <summary>
+      /// <para>Returns a string format for a specified number of fractional digits.</para>
+      /// </summary>
+      /// <returns></returns>
+      /// <exception cref="System.ArgumentOutOfRangeException"></exception>
+      public static string CreateFormatStringWithCountDecimals(TInteger count)
+      {
+        System.ArgumentOutOfRangeException.ThrowIfLessThan(count, TInteger.One);
+        System.ArgumentOutOfRangeException.ThrowIfGreaterThan(count, TInteger.CreateChecked(339));
+
+        return "0." + new string('#', int.CreateChecked(count));
       }
 
       #endregion
@@ -891,57 +685,6 @@
 
       #endregion
 
-      #region Fibonacci number/sequence
-
-      /// <summary>
-      /// <para>Creates a new sequence of <typeparamref name="TInteger"/> with Fibonacci numbers.</para>
-      /// <para><see href="https://en.wikipedia.org/wiki/Fibonacci_number"/></para>
-      /// </summary>
-      /// <remarks>This function generate results until the type <typeparamref name="TInteger"/> under/overflows in any calculation. No exception is thrown.</remarks>
-      /// <typeparam name="TInteger"></typeparam>
-      /// <returns></returns>
-      public static System.Collections.Generic.IEnumerable<TInteger> GetFibonacciSequence()
-      {
-        var n1 = TInteger.Zero;
-        var n2 = TInteger.One;
-
-        while (true)
-        {
-          yield return n1;
-
-          try { checked { n1 += n2; } } catch { break; }
-
-          yield return n2;
-
-          try { checked { n2 += n1; } } catch { break; }
-        }
-      }
-
-      /// <summary>
-      /// <para>Determines whether the <paramref name="number"/> is a Fibonacci number.</para>
-      /// <para><see href="https://en.wikipedia.org/wiki/Fibonacci_number"/></para>
-      /// </summary>
-      /// <typeparam name="TInteger"></typeparam>
-      /// <param name="number"></param>
-      /// <returns></returns>
-      public static bool IsFibonacciNumber(TInteger n)
-      {
-        checked
-        {
-          var four = TInteger.CreateChecked(4);
-
-          var fivens = TInteger.CreateChecked(5) * n * n;
-          var fp4 = fivens + four;
-          var fp4sr = IntegerSqrt(fp4);
-          var fm4 = fivens - four;
-          var fm4sr = IntegerSqrt(fm4);
-
-          return fp4sr * fp4sr == fp4 || fm4sr * fm4sr == fm4;
-        }
-      }
-
-      #endregion
-
       #region Gray
 
       /// <summary>
@@ -1001,24 +744,747 @@
 
       #endregion
 
-      #region GetFormatStringWithCountDecimals
+      #region Numbers & Sequences
+
+      #region GetAbundantNumbers
 
       /// <summary>
-      /// <para>Returns a string format for a specified number of fractional digits.</para>
+      /// <para>Creates a new sequence of 2-tuples, each with an abundant number and its aliquot sum.</para>
+      /// <para><see href="https://en.wikipedia.org/wiki/Abundant_number"/></para>
       /// </summary>
+      /// <remarks>This function generate results until the type <typeparamref name="TInteger"/> under/overflows in any calculation. No exception is thrown.</remarks>
+      /// <typeparam name="TSelf"></typeparam>
       /// <returns></returns>
-      /// <exception cref="System.ArgumentOutOfRangeException"></exception>
-      public static string GetFormatStringWithCountDecimals(TInteger count)
-      {
-        System.ArgumentOutOfRangeException.ThrowIfLessThan(count, TInteger.One);
-        System.ArgumentOutOfRangeException.ThrowIfGreaterThan(count, TInteger.CreateChecked(339));
+      public static System.Collections.Generic.IEnumerable<(TInteger Number, TInteger AliqoutSum)> GetAbundantNumbers()
+        => Number.ArithmeticSequence(TInteger.CreateChecked(3), TInteger.One).AsParallel().AsOrdered().Select(n => (Number: n, SumDivisors(n).AliquotSum)).Where(x => x.AliquotSum > x.Number);
 
-        return "0." + new string('#', int.CreateChecked(count));
+      #endregion
+
+      #region GetHighlyAbundantNumbers
+
+      /// <summary>
+      /// <para>Creates a new sequence of highly abundant numbers.</para>
+      /// <para><see href="https://en.wikipedia.org/wiki/Highly_abundant_number"/></para>
+      /// </summary>
+      /// <remarks>
+      /// <para>Not all highly abundant numbers are abundant numbers.</para>
+      /// <para>This function generate results until the type <typeparamref name="TInteger"/> under/overflows in any calculation. No exception is thrown.</para>
+      /// </remarks>
+      /// <typeparam name="TSelf"></typeparam>
+      /// <returns></returns>
+      public static System.Collections.Generic.IEnumerable<(TInteger Number, TInteger Sum)> GetHighlyAbundantNumbers()
+      {
+        var largestSumOfDivisors = TInteger.Zero;
+
+        foreach (var index in Number.ArithmeticSequence(TInteger.One, TInteger.One))
+          if (SumDivisors(index).Sum is var sumOfDivisors && sumOfDivisors > largestSumOfDivisors)
+          {
+            yield return (index, sumOfDivisors);
+
+            largestSumOfDivisors = sumOfDivisors;
+          }
       }
 
       #endregion
 
-      #region Greatest common divisor (GCD)
+      #region GetSuperAbundantNumbers
+
+      /// <summary>
+      /// <para>Creates a new sequence of super-abundant numbers.</para>
+      /// <para><see href="https://en.wikipedia.org/wiki/Superabundant_number"/></para>
+      /// </summary>
+      /// <remarks>
+      /// <para>All superabundant numbers are highly abundant.</para>
+      /// <para>This function generate results until the type <typeparamref name="TInteger"/> under/overflows in any calculation. No exception is thrown.</para>
+      /// </remarks>
+      /// <typeparam name="TSelf"></typeparam>
+      /// <returns></returns>
+      public static System.Collections.Generic.IEnumerable<(TInteger Number, TInteger Sum)> GetSuperAbundantNumbers()
+      {
+        var largestValue = 0.0;
+
+        foreach (var tuple in GetHighlyAbundantNumbers<TInteger>())
+          if ((double.CreateChecked(tuple.Sum) / double.CreateChecked(tuple.Number)) is var value && value > largestValue)
+          {
+            yield return tuple;
+
+            largestValue = value;
+          }
+      }
+
+      #endregion
+
+      #region IsAbundantNumber
+
+      /// <summary>
+      /// <para>Determines whether the <paramref name="number"/> is an abundant number.</para>
+      /// <para><see href="https://en.wikipedia.org/wiki/Abundant_number"/></para>
+      /// </summary>
+      /// <typeparam name="TSelf"></typeparam>
+      /// <param name="number"></param>
+      /// <returns></returns>
+      public static bool IsAbundantNumber(TInteger n)
+        => SumDivisors(n).AliquotSum > n;
+
+      #endregion
+
+      #region GetBellNumbers
+
+      /// <summary>
+      /// <para>Creates a new sequence of Bell numbers.</para>
+      /// <para><see href="https://en.wikipedia.org/wiki/Bell_number"/></para>
+      /// </summary>
+      /// <remarks>This function generate results until the type <typeparamref name="TInteger"/> under/overflows in any calculation. No exception is thrown.</remarks>
+      /// <typeparam name="TInteger"></typeparam>
+      /// <returns></returns>
+      public static System.Collections.Generic.IEnumerable<TInteger> GetBellNumbers()
+        => GetBellTriangle<TInteger>().Select(a => a[0]);
+
+      #endregion
+
+      #region GetBellTriangle
+
+      /// <summary>
+      /// <para>Creates a new sequence with arrays (i.e. row) of Bell numbers in a Bell triangle.</para>
+      /// <para><see href="https://en.wikipedia.org/wiki/Bell_triangle"/></para>
+      /// <para><seealso href="https://en.wikipedia.org/wiki/Bell_number"/></para>
+      /// </summary>
+      /// <remarks>This function generate results until the type <typeparamref name="TInteger"/> under/overflows in any calculation. No exception is thrown.</remarks>
+      /// <typeparam name="TInteger"></typeparam>
+      /// <returns></returns>
+      public static System.Collections.Generic.IEnumerable<System.Collections.Generic.List<TInteger>> GetBellTriangle()
+      {
+        foreach (var list in GetBellTriangleAugmented<TInteger>().Skip(1))
+        {
+          list.RemoveAt(0);
+
+          yield return list;
+        }
+      }
+
+      #endregion
+
+      #region GetBellTriangleAugmented
+
+      /// <summary>
+      /// <para>Creates a new sequence with arrays (i.e. row) of Bell numbers in an augmented Bell triangle.</para>
+      /// <para><see href="https://en.wikipedia.org/wiki/Bell_triangle"/></para>
+      /// <para><seealso href="https://en.wikipedia.org/wiki/Bell_number"/></para>
+      /// </summary>
+      /// <remarks>This function generate results until the type <typeparamref name="TInteger"/> under/overflows in any calculation. No exception is thrown.</remarks>
+      /// <typeparam name="TInteger"></typeparam>
+      /// <returns></returns>
+      public static System.Collections.Generic.IEnumerable<System.Collections.Generic.List<TInteger>> GetBellTriangleAugmented()
+      {
+        var l1 = new System.Collections.Generic.List<TInteger>() { TInteger.One }; // This is the current.
+        var l0 = new System.Collections.Generic.List<TInteger>(); // This is the previous.
+
+        while (true)
+        {
+          yield return l1.ToList();
+
+          try
+          {
+            checked
+            {
+              (l1, l0) = (l0, l1); // Rotate and reuse the lists is much faster and less resource intensive.
+
+              l1.Clear(); // This is now the current, and l0 became the previous.
+
+              l1.Add(l0[^1]);
+              l1.Insert(0, l1[0] - l0[0]);
+
+              for (var i = 2; i <= l0.Count; i++)
+                l1.Add(l0[i - 1] + l1[i - 1]);
+            }
+          }
+          catch { break; }
+        }
+      }
+
+      #endregion
+
+      #region GetCatalanNumber
+
+      /// <summary>
+      /// <para>Returns the Catalan number for the specified <paramref name="number"/>.</para>
+      /// <para><see href="https://en.wikipedia.org/wiki/Catalan_number"/></para>
+      /// </summary>
+      /// <typeparam name="TInteger"></typeparam>
+      /// <param name="number"></param>
+      /// <returns></returns>
+      public static TInteger GetCatalanNumber(TInteger n)
+        => checked(Factorial(n + n) / (Factorial(n + TInteger.One) * Factorial(n)));
+
+      #endregion
+
+      #region GetCatalanSequence
+
+      /// <summary>
+      /// <para>Creates a new sequence with Catalan numbers.</para>
+      /// <para><see href="https://en.wikipedia.org/wiki/Catalan_number"/></para>
+      /// </summary>
+      /// <remarks>This function runs indefinitely, if allowed.</remarks>
+      /// <typeparam name="TInteger"></typeparam>
+      /// <returns></returns>
+      public static System.Collections.Generic.IEnumerable<TInteger> GetCatalanSequence()
+        => Number.ArithmeticSequence(TInteger.Zero, TInteger.One).AsParallel().AsOrdered().Select(GetCatalanNumber);
+
+      #endregion
+
+      #region GetCompositeNumbers
+
+      /// <summary>
+      /// <para>Generates a new sequence of composite numbers.</para>
+      /// <para><see href="https://en.wikipedia.org/wiki/Composite_number"/></para>
+      /// </summary>
+      /// <remarks>This function generate results until the type <typeparamref name="TInteger"/> under/overflows in any calculation. No exception is thrown.</remarks>
+      /// <returns></returns>
+      public static System.Collections.Generic.IEnumerable<TInteger> GetCompositeNumbers()
+        => Number.ArithmeticSequence(TInteger.One, TInteger.One).AsParallel().AsOrdered().Where(IsCompositeNumber);
+
+      #endregion
+
+      #region GetHighlyCompositeNumbers
+
+      /// <summary>
+      /// <para>Creates a new sequence of highly composite numbers.</para>
+      /// <para><see href="https://en.wikipedia.org/wiki/Highly_composite_number"/></para>
+      /// </summary>
+      /// <remarks>This function generate results until the type <typeparamref name="TInteger"/> under/overflows in any calculation. No exception is thrown.</remarks>
+      /// <returns></returns>
+      public static System.Collections.Generic.IEnumerable<(TInteger Number, TInteger Count)> GetHighlyCompositeNumbers()
+      {
+        var largestCount = TInteger.Zero;
+
+        foreach (var tuple in Number.ArithmeticSequence(TInteger.One, TInteger.One).AsParallel().AsOrdered().Select(n => (Number: n, Count: CountDivisors(n))))
+          if (tuple.Count > largestCount)
+          {
+            yield return tuple;
+
+            largestCount = tuple.Count;
+          }
+      }
+
+      #endregion
+
+      #region IsCompositeNumber
+
+      /// <summary>
+      /// <para>Determines if the <paramref name="number"/> is a composite number, i.e. not a prime and not a unit (1).</para>
+      /// </summary>
+      /// <param name="n"></param>
+      /// <returns></returns>
+      public static bool IsCompositeNumber(TInteger n)
+        => !IsPrimeNumber(n) // If it's not a prime..
+        && n > TInteger.One; // ..and not a unit (1).
+
+      #endregion
+
+      #region IsHighlyCompositeNumber
+
+      /// <summary>
+      /// <para>Determines if the <paramref name="number"/> is a highly composite number.</para>
+      /// </summary>
+      /// <param name="n"></param>
+      /// <returns></returns>
+      public static bool IsHighlyCompositeNumber(TInteger n)
+      {
+        var ncd = CountDivisors(n); // Count number of divisors of N
+
+        for (var i = n - TInteger.One; i >= TInteger.One; i--) // Loop to count number of factors of every number less than n.
+        {
+          var icd = CountDivisors(i);
+
+          if (icd >= ncd) // If any number less than n has more factors than n, then return false.
+            return false;
+        }
+
+        return true;
+      }
+
+      #endregion
+
+      #region GetFibonacciSequence
+
+      /// <summary>
+      /// <para>Creates a new sequence of <typeparamref name="TInteger"/> with Fibonacci numbers.</para>
+      /// <para><see href="https://en.wikipedia.org/wiki/Fibonacci_number"/></para>
+      /// </summary>
+      /// <remarks>This function generate results until the type <typeparamref name="TInteger"/> under/overflows in any calculation. No exception is thrown.</remarks>
+      /// <typeparam name="TInteger"></typeparam>
+      /// <returns></returns>
+      public static System.Collections.Generic.IEnumerable<TInteger> GetFibonacciSequence()
+      {
+        var n1 = TInteger.Zero;
+        var n2 = TInteger.One;
+
+        while (true)
+        {
+          yield return n1;
+
+          try { checked { n1 += n2; } } catch { break; }
+
+          yield return n2;
+
+          try { checked { n2 += n1; } } catch { break; }
+        }
+      }
+
+      #endregion
+
+      #region IsFibonacciNumber
+
+      /// <summary>
+      /// <para>Determines whether the <paramref name="number"/> is a Fibonacci number.</para>
+      /// <para><see href="https://en.wikipedia.org/wiki/Fibonacci_number"/></para>
+      /// </summary>
+      /// <typeparam name="TInteger"></typeparam>
+      /// <param name="number"></param>
+      /// <returns></returns>
+      public static bool IsFibonacciNumber(TInteger n)
+      {
+        checked
+        {
+          var four = TInteger.CreateChecked(4);
+
+          var fivens = TInteger.CreateChecked(5) * n * n;
+          var fp4 = fivens + four;
+          var fp4sr = IntegerSqrt(fp4);
+          var fm4 = fivens - four;
+          var fm4sr = IntegerSqrt(fm4);
+
+          return fp4sr * fp4sr == fp4 || fm4sr * fm4sr == fm4;
+        }
+      }
+
+      #endregion
+
+      #region GetLeonardoSequence
+
+      /// <summary>
+      /// <para>Creates a new sequence with Leonardo numbers.</para>
+      /// <para><see href="https://en.wikipedia.org/wiki/Leonardo_number"/></para>
+      /// </summary>
+      /// <param name="first"></param>
+      /// <param name="second"></param>
+      /// <param name="step"></param>
+      /// <returns></returns>
+      public static System.Collections.Generic.IEnumerable<TInteger> GetLeonardoSequence(TInteger first, TInteger second, TInteger step)
+      {
+        while (true)
+        {
+          yield return first;
+
+          checked { (first, second) = (second, first + second + step); }
+        }
+      }
+
+      #endregion
+
+      #region GetMersenneNumber
+
+      /// <summary>
+      /// <para>Computes the Mersenne number for the specified <paramref name="value"/>.</para>
+      /// <para><see href="https://en.wikipedia.org/wiki/Mersenne_number"/></para>
+      /// </summary>
+      /// <typeparam name="TInteger"></typeparam>
+      /// <param name="value"></param>
+      /// <returns></returns>
+      public static TInteger GetMersenneNumber(TInteger number)
+        => checked((TInteger.One << int.CreateChecked(number)) - TInteger.One);
+
+      #endregion
+
+      #region GetMersenneNumberSequence
+
+      /// <summary>`
+      /// <para>Creates a new sequence of Mersenne numbers.</para>
+      /// <para><see href="https://en.wikipedia.org/wiki/Mersenne_number"/></para>
+      /// </summary>
+      /// <typeparam name="TInteger"></typeparam>
+      /// <returns></returns>
+      public static System.Collections.Generic.IEnumerable<TInteger> GetMersenneNumberSequence()
+        => Number.ArithmeticSequence(TInteger.One, TInteger.One).Select(GetMersenneNumber);
+
+      #endregion
+
+      #region GetMersennePrimeSequence
+
+      /// <summary>
+      /// <para>Creates a new sequence of Mersenne primes.</para>
+      /// <para><see href="https://en.wikipedia.org/wiki/Mersenne_number"/></para>
+      /// </summary>
+      /// <typeparam name="TInteger"></typeparam>
+      /// <returns></returns>
+      public static System.Collections.Generic.IEnumerable<TInteger> GetMersennePrimeSequence()
+        => GetMersenneNumberSequence<TInteger>().Where(IsPrimeNumber);
+
+      #endregion
+
+      #region GetMoserDeBruijnSequence
+
+      /// <summary>Creates a sequence of Moser/DeBruijn numbers.</summary>
+      /// <see href="https://en.wikipedia.org/wiki/Moser%E2%80%93De_Bruijn_sequence"/>
+      /// <seealso cref="https://www.geeksforgeeks.org/moser-de-bruijn-sequence/"/>
+      public static System.Collections.Generic.List<TInteger> GetMoserDeBruijnSequence(TInteger n)
+      {
+        System.ArgumentOutOfRangeException.ThrowIfNegative(n);
+
+        var sequence = new System.Collections.Generic.List<TInteger>(int.CreateChecked(n)) { TInteger.Zero };
+
+        if (n > TInteger.Zero)
+          sequence.Add(TInteger.One);
+
+        for (var i = TInteger.CreateChecked(2); i < n; i++)
+        {
+          var (q, r) = TInteger.DivRem(i, TInteger.CreateChecked(2));
+
+          var next = TInteger.CreateChecked(4) * sequence[int.CreateChecked(q)];
+
+          if (!TInteger.IsZero(r)) // Zero remainder: S(2 * n) = 4 * S(n)
+            next++; // Non-zero remainder: S(2 * n + 1) = 4 * S(n) + 1
+
+          sequence.Add(next);
+        }
+
+        return sequence;
+      }
+
+      #endregion
+
+      #region GetPadovanSequence
+
+      /// <summary>
+      /// <para>Creates a new sequence with Padovan numbers.</para>
+      /// <para><see href="https://en.wikipedia.org/wiki/Padovan_sequence"/></para>
+      /// </summary>
+      /// <remarks>This function generate results until the type <typeparamref name="TInteger"/> under/overflows in any calculation. No exception is thrown.</remarks>
+      /// <typeparam name="TSelf"></typeparam>
+      /// <returns></returns>
+      public static System.Collections.Generic.IEnumerable<TInteger> GetPadovanSequence()
+      {
+        TInteger p1 = TInteger.One, p2 = TInteger.One, p3 = TInteger.One;
+
+        yield return p1;
+        yield return p2;
+        yield return p3;
+
+        TInteger pn;
+
+        while (true)
+        {
+          try
+          {
+            pn = checked(p2 + p3);
+          }
+          catch { break; }
+
+          yield return pn;
+
+          p3 = p2;
+          p2 = p1;
+          p1 = pn;
+        }
+      }
+
+      #endregion
+
+      #region GetPerrinNumbers
+
+      /// <summary>
+      /// <para>Creates an indefinite sequence of Perrin numbers.</para>
+      /// <para><see href="https://en.wikipedia.org/wiki/Perrin_number"/></para>
+      /// </summary>
+      /// <remarks>This function generate results until the type <typeparamref name="TInteger"/> under/overflows in any calculation. No exception is thrown.</remarks>
+      /// <typeparam name="TSelf"></typeparam>
+      /// <returns></returns>
+      public static System.Collections.Generic.IEnumerable<TInteger> GetPerrinNumbers()
+      {
+        TInteger a = TInteger.CreateChecked(3), b = TInteger.Zero, c = TInteger.CreateChecked(2);
+
+        yield return a;
+        yield return b;
+        yield return c;
+
+        TInteger p;
+
+        while (true)
+        {
+          try
+          {
+            p = checked(a + b);
+          }
+          catch { break; }
+
+          a = b;
+          b = c;
+          c = p;
+
+          yield return p;
+        }
+      }
+
+      #endregion
+
+      #region GetAscendingPrimeNumbers
+
+      /// <summary>
+      /// <para>Creates a new sequence of ascending possible primes, greater-than-or-equal-to a specified number.</para>
+      /// </summary>
+      /// <param name="n"></param>
+      /// <returns></returns>
+      private static System.Collections.Generic.IEnumerable<TInteger> GetAscendingPrimeCandidates(TInteger n)
+      {
+        var one = TInteger.CreateChecked(1);
+        var two = TInteger.CreateChecked(2);
+        var three = TInteger.CreateChecked(3);
+        var six = TInteger.CreateChecked(6);
+
+        if (n < two)
+          n = two;
+
+        if (n <= two)
+          yield return two;
+
+        if (n <= three)
+          yield return three;
+
+        checked
+        {
+          var (q, r) = FlooredDivRem(n, six);
+
+          var hi = q * six;
+
+          if (r > one)
+            hi += six;
+
+          if (r <= one)
+          {
+            try { n = hi + one; } catch { yield break; }
+            yield return n;
+
+            try { hi += six; } catch { yield break; }
+          }
+
+          while (true)
+          {
+            try { n = hi - one; } catch { break; }
+            yield return n;
+
+            try { n = hi + one; } catch { break; }
+            yield return n;
+
+            try { hi += six; } catch { break; }
+          }
+        }
+      }
+
+      /// <summary>
+      /// <para>Creates a new sequence ascending prime numbers, greater-than-or-equal-to a specified number.</para>
+      /// </summary>
+      /// <remarks>This function generate results until the type <typeparamref name="TInteger"/> under/overflows in any calculation. No exception is thrown.</remarks>
+      /// <param name="n"></param>
+      /// <returns></returns>
+      public static System.Collections.Generic.IEnumerable<TInteger> GetAscendingPrimeNumbers(TInteger n)
+        => GetAscendingPrimeCandidates(n).AsParallel().AsOrdered().Where(IsPrimeNumber);
+
+      #endregion
+
+      #region GetDescendingPrimeNumbers
+
+      /// <summary>Creates a new sequence of descending possible primes, less-than-or-equal-to a specified number.</summary>
+      private static System.Collections.Generic.IEnumerable<TInteger> GetDescendingPrimeCandidates(TInteger n)
+      {
+        var zero = TInteger.CreateChecked(0);
+        var one = TInteger.CreateChecked(1);
+        var two = TInteger.CreateChecked(2);
+        var three = TInteger.CreateChecked(3);
+        var five = TInteger.CreateChecked(5);
+        var six = TInteger.CreateChecked(6);
+
+        if (n < two)
+          n = two;
+
+        checked
+        {
+          var (q, r) = FlooredDivRem(n, six);
+
+          var lo = q * six;
+
+          if (r == five)
+            lo += six;
+
+          if (r == zero || r == five)
+          {
+            try { n = lo - one; } catch { yield break; }
+            yield return n;
+
+            try { lo -= six; } catch { yield break; }
+          }
+
+          while (lo > zero)
+          {
+            try { n = lo + one; } catch { break; }
+            yield return n;
+
+            try { n = lo - one; } catch { break; }
+            yield return n;
+
+            try { lo -= six; } catch { break; }
+          }
+        }
+
+        if (n >= three)
+          yield return three;
+
+        if (n >= two)
+          yield return two;
+      }
+
+      /// <summary>
+      /// <para>Creates a new sequence descending prime numbers, less-than-or-equal-to a specified number.</para>
+      /// </summary>
+      /// <remarks>This function generate results until the type <typeparamref name="TInteger"/> under/overflows in any calculation. No exception is thrown.</remarks>
+      /// <param name="n"></param>
+      /// <returns></returns>
+      public static System.Collections.Generic.IEnumerable<TInteger> GetDescendingPrimeNumbers(TInteger n)
+        => GetDescendingPrimeCandidates(n).AsParallel().AsOrdered().Where(IsPrimeNumber);
+
+      #endregion
+
+      #region IsPrimeCandidate
+
+      /// <summary>
+      /// <para>Determines if the number is a prime candidate. If so, it's possible a prime, and if not, it's definitely a composite.</para>
+      /// </summary>
+      /// <param name="n"></param>
+      /// <returns></returns>
+      public static bool IsPrimeCandidate(TInteger n)
+      {
+        if (n < TInteger.CreateChecked(2)) return false; // Less than 2 is no prime.
+        if (n <= TInteger.CreateChecked(3)) return true; // Less than or equal to 3, is either 2 or 3, so a prime.
+
+        return n % TInteger.CreateChecked(6) is var m && (m == TInteger.One || m == TInteger.CreateChecked(5)); // All other +-1 of any multiple of 6 is a prime candidate.
+      }
+      //=> n >= TInteger.CreateChecked(2) && (n <= TInteger.CreateChecked(3) || ());
+
+      #endregion
+
+      #region IsPrimeNumber
+
+      /// <summary>
+      /// <para>Indicates whether a number is a prime.</para>
+      /// <para>This implementation uses a Miller-Rabin deterministic algorithm for numbers less than 64-bit, and a Miller-Rabin probabilistic algorithm for larger numbers.</para>
+      /// <para><see href="https://en.wikipedia.org/wiki/Primality_test"/></para>
+      /// <para><seealso href="https://en.wikipedia.org/wiki/Prime_number"/></para>
+      /// </summary>
+      /// <param name="n"></param>
+      /// <returns></returns>
+      public static bool IsPrimeNumber(TInteger n)
+      {
+        var bi = System.Numerics.BigInteger.CreateChecked(n);
+
+        // If less-or-equal-to an unsigned 64-bit value, use Miller-Rabin 64-bit deterministic algorithm.
+
+        if (bi <= ulong.MaxValue)
+          return ulong.IsPrime(ulong.CreateChecked(n));
+
+        // Otherwise use Miller-Rabin probabilistic algorithm.
+
+        var log = System.Numerics.BigInteger.Log(bi.GetBitLength(), 1.15); // Log(bit-length, 1.17) yields an approximately 15 iterations @ 10 bits, 30 @ 100, 44 @ 1000, 59 @ 10000, and can be lowered for a higher iteration (k) count.
+
+        return MillerRabinProbabilisticIsPrime(bi, int.CreateChecked(log)); // Pass the log value as k parameter.
+      }
+
+      #endregion
+
+      #region GetSphenicNumbers
+
+      /// <summary>
+      /// <para>Yields a sequence of all sphenic numbers less than <paramref name="cutoffNumber"/>.</para>
+      /// <para><see href="https://en.wikipedia.org/wiki/Sphenic_number"/></para>
+      /// </summary>
+      /// <param name="cutoffNumber"></param>
+      /// <returns></returns>
+      public static System.Collections.Generic.IEnumerable<TInteger> GetSphenicNumbers(TInteger cutoffNumber)
+      {
+        checked
+        {
+          for (var i = TInteger.CreateChecked(30); i < cutoffNumber; i++)
+          {
+            var count = 0;
+
+            var k = i;
+
+            for (var j = TInteger.CreateChecked(2); k > TInteger.One && count <= 2; j++)
+            {
+              if (TInteger.IsZero(k % j))
+              {
+                k /= j;
+
+                if (TInteger.IsZero(k % j))
+                  break;
+
+                count++;
+              }
+
+              if (count == 0 && j > cutoffNumber / (j * j))
+                break;
+
+              if (count == 1 && j > (k / j))
+                break;
+            }
+
+            if (count == 3 && k == TInteger.One)
+              yield return i;
+          }
+        }
+      }
+
+      #endregion
+
+      #region GetVanEckSequence
+
+      /// <summary>
+      /// <para>Creates a new Van Eck's sequence, starting with the specified <paramref name="minNumber"/> (where 0 yields the original sequence).</para>
+      /// <para><see href="https://en.wikipedia.org/wiki/Van_Eck%27s_sequence"/></para>
+      /// </summary>
+      /// <param name="minNumber"></param>
+      /// <returns></returns>
+      /// <exception cref="System.ArgumentOutOfRangeException"></exception>
+      public static System.Collections.Generic.IEnumerable<TInteger> GetVanEckSequence(TInteger minNumber)
+      {
+        System.ArgumentOutOfRangeException.ThrowIfNegative(minNumber);
+
+        var lasts = new System.Collections.Generic.Dictionary<TInteger, TInteger>();
+        var last = minNumber;
+
+        checked
+        {
+          for (var index = TInteger.Zero; ; index++)
+          {
+            yield return last;
+
+            TInteger next = TInteger.Zero;
+
+            if (!lasts.TryAdd(last, index))
+            {
+              next = index - lasts[last];
+
+              lasts[last] = index;
+            }
+
+            last = next;
+          }
+        }
+      }
+
+      #endregion
+
+      #endregion
+
+      #region Gcd, GcdExt & GreatestCommonDivisor
 
       /// <summary>
       /// <para>The greatest common divisor (GCD) of two or more integers, which are not all zero, is the largest positive integer that divides each of the integers. This implementation is the binary GCD algorithm.</para>
@@ -1183,7 +1649,7 @@
 
       #endregion
 
-      #region IntegerLog/10/E
+      #region IntegerLog..
 
       /// <summary>
       /// <para>Returns the integer (toward-zero, away-from-zero) logarithm of specified a <paramref name="value"/> in a specified <paramref name="radix"/>.</para>
@@ -1323,7 +1789,7 @@
 
       #endregion
 
-      #region Least common multiple (LCM)
+      #region Lcm & LeastCommonMultiple
 
       /// <summary>
       /// <para>In arithmetic and number theory, the least common multiple (LCM) of two integers a and b, usually denoted by lcm(a, b), is the smallest positive integer that is divisible by both a and b. Since division of integers by zero is undefined, this definition has meaning only if a and b are both different from zero. However, some authors define lcm(a, 0) as 0 for all a, since 0 is the only common multiple of a and 0.</para>
@@ -1343,60 +1809,6 @@
 
         return Lcm(a, other.Aggregate(Lcm));
       }
-
-      #endregion
-
-      #region Leonardo sequence
-
-      /// <summary>
-      /// <para>Creates a new sequence with Leonardo numbers.</para>
-      /// <para><see href="https://en.wikipedia.org/wiki/Leonardo_number"/></para>
-      /// </summary>
-      /// <param name="first"></param>
-      /// <param name="second"></param>
-      /// <param name="step"></param>
-      /// <returns></returns>
-      public static System.Collections.Generic.IEnumerable<TInteger> GetLeonardoSequence(TInteger first, TInteger second, TInteger step)
-      {
-        while (true)
-        {
-          yield return first;
-
-          checked { (first, second) = (second, first + second + step); }
-        }
-      }
-
-      #endregion
-
-      #region Mersenne numbers
-
-      /// <summary>
-      /// <para>Computes the Mersenne number for the specified <paramref name="value"/>.</para>
-      /// <para><see href="https://en.wikipedia.org/wiki/Mersenne_number"/></para>
-      /// </summary>
-      /// <typeparam name="TInteger"></typeparam>
-      /// <param name="value"></param>
-      /// <returns></returns>
-      public static TInteger GetMersenneNumber(TInteger number)
-        => checked((TInteger.One << int.CreateChecked(number)) - TInteger.One);
-
-      /// <summary>`
-      /// <para>Creates a new sequence of Mersenne numbers.</para>
-      /// <para><see href="https://en.wikipedia.org/wiki/Mersenne_number"/></para>
-      /// </summary>
-      /// <typeparam name="TInteger"></typeparam>
-      /// <returns></returns>
-      public static System.Collections.Generic.IEnumerable<TInteger> GetMersenneNumberSequence()
-        => Number.ArithmeticSequence(TInteger.One, TInteger.One).Select(GetMersenneNumber);
-
-      /// <summary>
-      /// <para>Creates a new sequence of Mersenne primes.</para>
-      /// <para><see href="https://en.wikipedia.org/wiki/Mersenne_number"/></para>
-      /// </summary>
-      /// <typeparam name="TInteger"></typeparam>
-      /// <returns></returns>
-      public static System.Collections.Generic.IEnumerable<TInteger> GetMersennePrimeSequence()
-        => GetMersenneNumberSequence<TInteger>().Where(IsPrimeNumber);
 
       #endregion
 
@@ -1530,37 +1942,6 @@
 
       #endregion
 
-      #region GetMoserDeBruijnSequence
-
-      /// <summary>Creates a sequence of Moser/DeBruijn numbers.</summary>
-      /// <see href="https://en.wikipedia.org/wiki/Moser%E2%80%93De_Bruijn_sequence"/>
-      /// <seealso cref="https://www.geeksforgeeks.org/moser-de-bruijn-sequence/"/>
-      public static System.Collections.Generic.List<TInteger> GetMoserDeBruijnSequence(TInteger n)
-      {
-        System.ArgumentOutOfRangeException.ThrowIfNegative(n);
-
-        var sequence = new System.Collections.Generic.List<TInteger>(int.CreateChecked(n)) { TInteger.Zero };
-
-        if (n > TInteger.Zero)
-          sequence.Add(TInteger.One);
-
-        for (var i = TInteger.CreateChecked(2); i < n; i++)
-        {
-          var (q, r) = TInteger.DivRem(i, TInteger.CreateChecked(2));
-
-          var next = TInteger.CreateChecked(4) * sequence[int.CreateChecked(q)];
-
-          if (!TInteger.IsZero(r)) // Zero remainder: S(2 * n) = 4 * S(n)
-            next++; // Non-zero remainder: S(2 * n + 1) = 4 * S(n) + 1
-
-          sequence.Add(next);
-        }
-
-        return sequence;
-      }
-
-      #endregion
-
       #region MultiFactorial
 
       /// <summary>
@@ -1640,80 +2021,6 @@
 
       #endregion
 
-      #region Padovan sequence
-
-      /// <summary>
-      /// <para>Creates a new sequence with Padovan numbers.</para>
-      /// <para><see href="https://en.wikipedia.org/wiki/Padovan_sequence"/></para>
-      /// </summary>
-      /// <remarks>This function generate results until the type <typeparamref name="TInteger"/> under/overflows in any calculation. No exception is thrown.</remarks>
-      /// <typeparam name="TSelf"></typeparam>
-      /// <returns></returns>
-      public static System.Collections.Generic.IEnumerable<TInteger> GetPadovanSequence()
-      {
-        TInteger p1 = TInteger.One, p2 = TInteger.One, p3 = TInteger.One;
-
-        yield return p1;
-        yield return p2;
-        yield return p3;
-
-        TInteger pn;
-
-        while (true)
-        {
-          try
-          {
-            pn = checked(p2 + p3);
-          }
-          catch { break; }
-
-          yield return pn;
-
-          p3 = p2;
-          p2 = p1;
-          p1 = pn;
-        }
-      }
-
-      #endregion
-
-      #region Perrin numbers
-
-      /// <summary>
-      /// <para>Creates an indefinite sequence of Perrin numbers.</para>
-      /// <para><see href="https://en.wikipedia.org/wiki/Perrin_number"/></para>
-      /// </summary>
-      /// <remarks>This function generate results until the type <typeparamref name="TInteger"/> under/overflows in any calculation. No exception is thrown.</remarks>
-      /// <typeparam name="TSelf"></typeparam>
-      /// <returns></returns>
-      public static System.Collections.Generic.IEnumerable<TInteger> GetPerrinNumbers()
-      {
-        TInteger a = TInteger.CreateChecked(3), b = TInteger.Zero, c = TInteger.CreateChecked(2);
-
-        yield return a;
-        yield return b;
-        yield return c;
-
-        TInteger p;
-
-        while (true)
-        {
-          try
-          {
-            p = checked(a + b);
-          }
-          catch { break; }
-
-          a = b;
-          b = c;
-          c = p;
-
-          yield return p;
-        }
-      }
-
-      #endregion
-
       // PockHammer (ambiguous, removed) - use FallingFactorial/RisingFactorial instead. There is also generalized versions in the IFloatingPoint extensions class.
 
       #region Pow
@@ -1742,201 +2049,6 @@
       public static TInteger Pow<TExponent>(TInteger value, TExponent exponent)
         where TExponent : System.Numerics.IBinaryInteger<TExponent>
         => TInteger.CreateChecked(System.Numerics.BigInteger.Pow(System.Numerics.BigInteger.CreateChecked(value), int.CreateChecked(exponent)));
-
-      #endregion
-
-      #region Prime numbers
-
-      /// <summary>
-      /// <para>Creates a new sequence of ascending possible primes, greater-than-or-equal-to a specified number.</para>
-      /// </summary>
-      /// <param name="n"></param>
-      /// <returns></returns>
-      private static System.Collections.Generic.IEnumerable<TInteger> GetAscendingPrimeCandidates(TInteger n)
-      {
-        var one = TInteger.CreateChecked(1);
-        var two = TInteger.CreateChecked(2);
-        var three = TInteger.CreateChecked(3);
-        var six = TInteger.CreateChecked(6);
-
-        if (n < two)
-          n = two;
-
-        if (n <= two)
-          yield return two;
-
-        if (n <= three)
-          yield return three;
-
-        checked
-        {
-          var (q, r) = FlooredDivRem(n, six);
-
-          var hi = q * six;
-
-          if (r > one)
-            hi += six;
-
-          if (r <= one)
-          {
-            try { n = hi + one; } catch { yield break; }
-            yield return n;
-
-            try { hi += six; } catch { yield break; }
-          }
-
-          while (true)
-          {
-            try { n = hi - one; } catch { break; }
-            yield return n;
-
-            try { n = hi + one; } catch { break; }
-            yield return n;
-
-            try { hi += six; } catch { break; }
-          }
-        }
-      }
-
-      /// <summary>
-      /// <para>Creates a new sequence ascending prime numbers, greater-than-or-equal-to a specified number.</para>
-      /// </summary>
-      /// <remarks>This function generate results until the type <typeparamref name="TInteger"/> under/overflows in any calculation. No exception is thrown.</remarks>
-      /// <param name="n"></param>
-      /// <returns></returns>
-      public static System.Collections.Generic.IEnumerable<TInteger> GetAscendingPrimes(TInteger n)
-        => GetAscendingPrimeCandidates(n).AsParallel().AsOrdered().Where(IsPrimeNumber);
-
-      /// <summary>Creates a new sequence of descending possible primes, less-than-or-equal-to a specified number.</summary>
-      private static System.Collections.Generic.IEnumerable<TInteger> GetDescendingPrimeCandidates(TInteger n)
-      {
-        var zero = TInteger.CreateChecked(0);
-        var one = TInteger.CreateChecked(1);
-        var two = TInteger.CreateChecked(2);
-        var three = TInteger.CreateChecked(3);
-        var five = TInteger.CreateChecked(5);
-        var six = TInteger.CreateChecked(6);
-
-        if (n < two)
-          n = two;
-
-        checked
-        {
-          var (q, r) = FlooredDivRem(n, six);
-
-          var lo = q * six;
-
-          if (r == five)
-            lo += six;
-
-          if (r == zero || r == five)
-          {
-            try { n = lo - one; } catch { yield break; }
-            yield return n;
-
-            try { lo -= six; } catch { yield break; }
-          }
-
-          while (lo > zero)
-          {
-            try { n = lo + one; } catch { break; }
-            yield return n;
-
-            try { n = lo - one; } catch { break; }
-            yield return n;
-
-            try { lo -= six; } catch { break; }
-          }
-        }
-
-        if (n >= three)
-          yield return three;
-
-        if (n >= two)
-          yield return two;
-      }
-
-      /// <summary>
-      /// <para>Creates a new sequence descending prime numbers, less-than-or-equal-to a specified number.</para>
-      /// </summary>
-      /// <remarks>This function generate results until the type <typeparamref name="TInteger"/> under/overflows in any calculation. No exception is thrown.</remarks>
-      /// <param name="n"></param>
-      /// <returns></returns>
-      public static System.Collections.Generic.IEnumerable<TInteger> GetDescendingPrimes(TInteger n)
-        => GetDescendingPrimeCandidates(n).AsParallel().AsOrdered().Where(IsPrimeNumber);
-
-      /// <summary>
-      /// <para>Determines if the number is a prime candidate. If so, it's possible a prime, and if not, it's definitely a composite.</para>
-      /// </summary>
-      /// <param name="n"></param>
-      /// <returns></returns>
-      public static bool IsPrimeCandidate(TInteger n)
-      {
-        if (n < TInteger.CreateChecked(2)) return false; // Less than 2 is no prime.
-        if (n <= TInteger.CreateChecked(3)) return true; // Less than or equal to 3, is either 2 or 3, so a prime.
-
-        return n % TInteger.CreateChecked(6) is var m && (m == TInteger.One || m == TInteger.CreateChecked(5)); // All other +-1 of any multiple of 6 is a prime candidate.
-      }
-      //=> n >= TInteger.CreateChecked(2) && (n <= TInteger.CreateChecked(3) || ());
-
-      /// <summary>
-      /// <para>Indicates whether a number is a prime.</para>
-      /// <para>This implementation uses a Miller-Rabin deterministic algorithm for numbers less than 64-bit, and a Miller-Rabin probabilistic algorithm for larger numbers.</para>
-      /// <para><see href="https://en.wikipedia.org/wiki/Primality_test"/></para>
-      /// <para><seealso href="https://en.wikipedia.org/wiki/Prime_number"/></para>
-      /// </summary>
-      /// <param name="n"></param>
-      /// <returns></returns>
-      public static bool IsPrimeNumber(TInteger n)
-      {
-        var bi = System.Numerics.BigInteger.CreateChecked(n);
-
-        // If less-or-equal-to an unsigned 64-bit value, use Miller-Rabin 64-bit deterministic algorithm.
-
-        if (bi <= ulong.MaxValue)
-          return ulong.IsPrime(ulong.CreateChecked(n));
-
-        // Otherwise use Miller-Rabin probabilistic algorithm.
-
-        var log = System.Numerics.BigInteger.Log(bi.GetBitLength(), 1.15); // Log(bit-length, 1.17) yields an approximately 15 iterations @ 10 bits, 30 @ 100, 44 @ 1000, 59 @ 10000, and can be lowered for a higher iteration (k) count.
-
-        return MillerRabinProbabilisticIsPrime(bi, int.CreateChecked(log)); // Pass the log value as k parameter.
-      }
-
-      ///// <summary>
-      ///// <para>Computes prime candidates for a number.</para>
-      ///// </summary>
-      ///// <typeparam name="TInteger"></typeparam>
-      ///// <param name="n"></param>
-      ///// <returns></returns>
-      //public static (TInteger TowardZero, TInteger AwayFromZero) GetPossiblePrimes(TInteger n)
-      //{
-      //  var n3 = TInteger.CreateChecked(3);
-      //  var n5 = TInteger.CreateChecked(5);
-
-      //  if (n >= n5)
-      //  {
-      //    var r = n % TInteger.CreateChecked(6);
-
-      //    if (r == TInteger.One || r == n5) // E.g. 11 or 13 (12 = mod 6)
-      //      return (n, n);
-
-      //    if (TInteger.IsZero(r)) // E.g. 12 (mod 6)
-      //      return (n - TInteger.One, n + TInteger.One);
-
-      //    return (n - r + TInteger.One, n + n5 - r); // For all others we can use a formula.
-      //  }
-      //  else if (n == TInteger.CreateChecked(4))
-      //    return (n3, n5);
-      //  else if (n == n3)
-      //    return (n3, n3);
-      //  else // Less-than-or-equal-to 2:
-      //  {
-      //    var n2 = TInteger.CreateChecked(2);
-
-      //    return (n2, n2);
-      //  }
-      //}
 
       #endregion
 
@@ -2040,20 +2152,14 @@
       {
         var count = value.GetByteCount();
 
-        var bytes = System.Buffers.ArrayPool<byte>.Shared.Rent(count); // Retrieve the byte size of the number, which will be the basis for the bit reversal.
+        System.Span<byte> bytes = stackalloc byte[count]; // Retrieve the byte size of the number, which will be the basis for the bit reversal.
 
-        var span = bytes.AsSpan(0, count);
+        value.WriteLittleEndian(bytes); // Write as LittleEndian (increasing numeric significance in increasing memory addresses).
 
-        value.WriteLittleEndian(span); // Write as LittleEndian (increasing numeric significance in increasing memory addresses).
+        for (var i = bytes.Length - 1; i >= 0; i--)  // After this loop, all bits are reversed.
+          byte.ReverseBitsInPlace(ref bytes[i]); // Mirror (reverse) bits in each byte.
 
-        for (var i = span.Length - 1; i >= 0; i--)  // After this loop, all bits are reversed.
-          byte.ReverseBitsInPlace(ref span[i]); // Mirror (reverse) bits in each byte.
-
-        var result = TInteger.ReadBigEndian(span, value.GetType().IsIUnsignedNumber()); // Read as BigEndian (decreasing numeric significance in increasing memory addresses).
-
-        System.Buffers.ArrayPool<byte>.Shared.Return(bytes);
-
-        return result;
+        return TInteger.ReadBigEndian(bytes, value.GetType().IsIUnsignedNumber()); // Read as BigEndian (decreasing numeric significance in increasing memory addresses).
       }
 
       #endregion
@@ -2068,19 +2174,13 @@
       {
         var count = value.GetByteCount();
 
-        var bytes = System.Buffers.ArrayPool<byte>.Shared.Rent(count); // Retrieve the byte size of the number, which will be the basis for the bit reversal.
-
-        var span = bytes.AsSpan(0, count);
+        System.Span<byte> bytes = stackalloc byte[count]; // Retrieve the byte size of the number, which will be the basis for the bit reversal.
 
         // We can use either direction here, write-LE/read-BE or write-BE/read-LE, doesn't really matter, since the end result is the same.
 
-        value.WriteLittleEndian(span); // Write as LittleEndian (increasing numeric significance in increasing memory addresses).
+        value.WriteLittleEndian(bytes); // Write as LittleEndian (increasing numeric significance in increasing memory addresses).
 
-        var result = TInteger.ReadBigEndian(span, value.GetType().IsIUnsignedNumber()); // Read as BigEndian (decreasing numeric significance in increasing memory addresses).
-
-        System.Buffers.ArrayPool<byte>.Shared.Return(bytes);
-
-        return result;
+        return TInteger.ReadBigEndian(bytes, value.GetType().IsIUnsignedNumber()); // Read as BigEndian (decreasing numeric significance in increasing memory addresses).
       }
 
       #endregion
@@ -2292,17 +2392,13 @@
       {
         rng ??= System.Random.Shared;
 
-        var bytes = System.Buffers.ArrayPool<byte>.Shared.Rent(value.GetByteCount());
+        System.Span<byte> bytes = stackalloc byte[value.GetByteCount()];
 
         value.WriteLittleEndian(bytes);
 
         rng.Shuffle(bytes);
 
-        var result = TInteger.ReadLittleEndian(bytes, value.GetType().IsIUnsignedNumber());
-
-        System.Buffers.ArrayPool<byte>.Shared.Return(bytes);
-
-        return result;
+        return TInteger.ReadLittleEndian(bytes, value.GetType().IsIUnsignedNumber());
       }
 
       #endregion
@@ -2402,51 +2498,6 @@
             }
 
 #endif
-
-      #endregion
-
-      #region GetSphenicNumbers
-
-      /// <summary>
-      /// <para>Yields a sequence of all sphenic numbers less than <paramref name="cutoffNumber"/>.</para>
-      /// <para><see href="https://en.wikipedia.org/wiki/Sphenic_number"/></para>
-      /// </summary>
-      /// <param name="cutoffNumber"></param>
-      /// <returns></returns>
-      public static System.Collections.Generic.IEnumerable<TInteger> GetSphenicNumbers(TInteger cutoffNumber)
-      {
-        checked
-        {
-          for (var i = TInteger.CreateChecked(30); i < cutoffNumber; i++)
-          {
-            var count = 0;
-
-            var k = i;
-
-            for (var j = TInteger.CreateChecked(2); k > TInteger.One && count <= 2; j++)
-            {
-              if (TInteger.IsZero(k % j))
-              {
-                k /= j;
-
-                if (TInteger.IsZero(k % j))
-                  break;
-
-                count++;
-              }
-
-              if (count == 0 && j > cutoffNumber / (j * j))
-                break;
-
-              if (count == 1 && j > (k / j))
-                break;
-            }
-
-            if (count == 3 && k == TInteger.One)
-              yield return i;
-          }
-        }
-      }
 
       #endregion
 
@@ -2645,44 +2696,6 @@
       public static TInteger SurjectiveSnSxOrbits(TInteger x, TInteger n) => throw new System.NotImplementedException();
 
       #endregion
-
-      #region Van Eck's sequence
-
-      /// <summary>
-      /// <para>Creates a new Van Eck's sequence, starting with the specified <paramref name="minNumber"/> (where 0 yields the original sequence).</para>
-      /// <para><see href="https://en.wikipedia.org/wiki/Van_Eck%27s_sequence"/></para>
-      /// </summary>
-      /// <param name="minNumber"></param>
-      /// <returns></returns>
-      /// <exception cref="System.ArgumentOutOfRangeException"></exception>
-      public static System.Collections.Generic.IEnumerable<TInteger> GetVanEcksSequence(TInteger minNumber)
-      {
-        System.ArgumentOutOfRangeException.ThrowIfNegative(minNumber);
-
-        var lasts = new System.Collections.Generic.Dictionary<TInteger, TInteger>();
-        var last = minNumber;
-
-        checked
-        {
-          for (var index = TInteger.Zero; ; index++)
-          {
-            yield return last;
-
-            TInteger next = TInteger.Zero;
-
-            if (!lasts.TryAdd(last, index))
-            {
-              next = index - lasts[last];
-
-              lasts[last] = index;
-            }
-
-            last = next;
-          }
-        }
-      }
-
-      #endregion
     }
 
     extension<TInteger>(TInteger value) // Instance type members.
@@ -2716,7 +2729,7 @@
 
       #endregion
 
-      #region Get..Count()
+      #region GetBitCount
 
       /// <summary>
       /// <para>Returns the size, in number of bits, needed to store <paramref name="value"/>.</para>
@@ -2766,7 +2779,7 @@
 
       #endregion
 
-      #region To..OrdinalColumnName(s)
+      #region To..OrdinalColumnName..
 
       /// <summary>
       /// <para>Returns a generic <paramref name="columnNamePrefix"/> for the <paramref name="value"/> as if it was an index of a 0-based column-structure.</para>

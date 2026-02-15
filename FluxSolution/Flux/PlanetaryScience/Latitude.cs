@@ -43,7 +43,7 @@ namespace Flux.PlanetaryScience
     public double GetMercatorProjectedY()
       => double.Clamp(double.Log(double.Tan(double.Pi / 4 + Angle.Value / 2)), -double.Pi, double.Pi);
 
-    public string ToDecimalString() => m_angle.GetUnitValue(Units.AngleUnit.Degree).ToString(BinaryInteger.GetFormatStringWithCountDecimals(6));
+    public string ToDecimalString() => m_angle.GetUnitValue(Units.AngleUnit.Degree).ToString(BinaryInteger.CreateFormatStringWithCountDecimals(6));
 
     public string ToDmsNotationString()
     {

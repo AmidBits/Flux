@@ -2,17 +2,18 @@ namespace Flux
 {
   public static partial class RuneExtensions
   {
-    [System.Text.RegularExpressions.GeneratedRegex(@"(?<Prefix>&#x?)(?<Number>[0-9A-Fa-f]{1,8})(?<Suffix>;)", System.Text.RegularExpressions.RegexOptions.Compiled)]
-    public static partial System.Text.RegularExpressions.Regex RegexParseNumericCharacterReferences();
-
-    [System.Text.RegularExpressions.GeneratedRegex(@"((?<Prefix>\\u)(?<Number>[0-9A-Fa-f]{4})|(?<Prefix>\\U)(?<Number>[0-9A-Fa-f]{8})|(?<Prefix>\\x)(?<Number>[0-9A-Fa-f]{1,8}))", System.Text.RegularExpressions.RegexOptions.Compiled)]
-    public static partial System.Text.RegularExpressions.Regex RegexParseCsUnicodeLiterals();
-
-    [System.Text.RegularExpressions.GeneratedRegex(@"(?<Prefix>U\+)(?<Codepoint>[0-9A-Fa-f]{4,6})", System.Text.RegularExpressions.RegexOptions.Compiled)]
-    private static partial System.Text.RegularExpressions.Regex RegexParseUnicodeUnotations();
-
     extension(System.Text.Rune)
     {
+      /// <summary>
+      /// <para>The longest UTF-8 encoded byte sequence.</para>
+      /// </summary>
+      public static int Utf8MaxEncodedSequenceLength => 4;
+
+      /// <summary>
+      /// <para>The URI percent-encoded (%xx) octet length.</para>
+      /// </summary>
+      public static int UriPercentEncodedOctetLength => 3;
+
       public static bool IsRepresentableAsSingleChar(int value)
         => value <= 0xFFFF && System.Text.Rune.IsValid(value);
 
@@ -115,11 +116,50 @@ namespace Flux
 
       #endregion
 
+      #region GetUnicodeRange
+
       /// <summary>
       /// <para>Locates the Unicode range and block name of the <paramref name="rune"/>.</para>
       /// </summary>
       public static System.Collections.Generic.KeyValuePair<string, System.Text.Unicode.UnicodeRange> GetUnicodeRange(System.Text.Rune rune)
         => System.Text.Unicode.UnicodeRange.GetUnicodeRanges().InfimumSupremum(t2 => t2.Value.FirstCodePoint, rune.Value, false).InfimumItem;
+
+      #endregion
+
+      #region IsUriReserved
+
+      /// <summary>
+      /// <para>URIs include components and subcomponents that are delimited by characters in the "reserved" set. These characters are called "reserved" because they may(or may not) be defined as delimiters by the generic syntax, by each scheme-specific syntax, or by the implementation-specific syntax of a URI's dereferencing algorithm.</para>
+      /// <para>If data for a URI component would conflict with a reserved character's purpose as a delimiter, then the conflicting data must be percent-encoded before the URI is formed.</para>
+      /// <para>reserved = <c>gen-delims</c> and <c>sub-delims</c></para>
+      /// <para>gen-delims = "<c>:/?#[]@</c>"</para>
+      /// <para>sub-delims = "<c>!$&amp;&apos;()*+,;=</c>"</para>
+      /// <para>The purpose of reserved characters is to provide a set of delimiting characters that are distinguishable from other data within a URI.</para>
+      /// <para>URIs that differ in the replacement of a reserved character with its corresponding percent-encoded octet are not equivalent. Percent-encoding a reserved character, or decoding a percent-encoded octet that corresponds to a reserved character, will change how the URI is interpreted by most applications.Thus, characters in the reserved set are protected from normalization and are therefore safe to be used by scheme-specific and producer-specific algorithms for delimiting data subcomponents within a URI.</para>
+      /// <para><see href="https://www.rfc-editor.org/rfc/rfc3986"/></para>
+      /// </summary>
+      /// <param name="source"></param>
+      /// <returns></returns>
+      public static bool IsUriReserved(System.Text.Rune source)
+        => source.IsAscii && char.IsUriReserved((char)source.Value);
+
+      #endregion
+
+      #region IsUriUnreserved
+
+      /// <summary>
+      /// <para>Characters that are allowed in a URI but do not have a reserved purpose are called unreserved. These include uppercase and lowercase letters, decimal digits, hyphen, period, underscore, and tilde.</para>
+      /// <para>unreserved = <c>ALPHA</c>, <c>DIGIT</c> or "<c>-._~</c>"</para>
+      /// <para>URIs that differ in the replacement of an unreserved character with its corresponding percent-encoded US-ASCII octet are equivalent: they identify the same resource. However, URI comparison implementations not always perform normalization prior to comparison (see Section 6).</para>
+      /// <para>For consistency, percent-encoded octets in the ranges of ALPHA (%41-%5A and %61-%7A), DIGIT (%30-%39), hyphen (%2D), period (%2E), underscore (%5F), or tilde (%7E) should not be created by URI producers and, when found in a URI, should be decoded to their corresponding unreserved characters by URI normalizers.</para>
+      /// <para><see href="https://www.rfc-editor.org/rfc/rfc3986"/></para>
+      /// </summary>
+      /// <param name="source"></param>
+      /// <returns></returns>
+      public static bool IsUriUnreserved(System.Text.Rune source)
+        => source.IsAscii && char.IsUriUnreserved((char)source.Value);
+
+      #endregion
 
       #region ..LatinStroke..
 
@@ -147,75 +187,6 @@ namespace Flux
       /// <returns></returns>
       public static bool TryGetLatinStrokeReplacement(System.Text.Rune rune, out System.Text.Rune replacementRune)
         => rune != (replacementRune = GetLatinStrokeReplacement(rune));
-
-      #endregion
-
-      #region ParseCsUnicodeLiterals
-
-      public static System.Collections.Generic.List<(System.Range, System.Text.Rune)> ParseCsUnicodeLiterals(System.ReadOnlySpan<char> source)
-      {
-        var list = new System.Collections.Generic.List<(System.Range, System.Text.Rune)>();
-
-        var evm = RegexParseCsUnicodeLiterals().EnumerateMatches(source);
-
-        foreach (var vm in evm)
-        {
-          var index = vm.Index;
-          var length = vm.Length;
-
-          list.Add((System.Range.FromOffsetAndLength(index, length), new System.Text.Rune(int.Parse(source.Slice(index + 2, length - 2), System.Globalization.NumberStyles.HexNumber))));
-        }
-
-        return list;
-      }
-
-      #endregion
-
-      #region ParseMlNumericCharacterReferences
-
-      public static System.Collections.Generic.List<(System.Range, System.Text.Rune)> ParseMlNumericCharacterReferences(System.ReadOnlySpan<char> source)
-      {
-        var list = new System.Collections.Generic.List<(System.Range, System.Text.Rune)>();
-
-        var evm = RegexParseNumericCharacterReferences().EnumerateMatches(source);
-
-        foreach (var vm in evm)
-        {
-          var index = vm.Index;
-          var length = vm.Length;
-
-          var range = System.Range.FromOffsetAndLength(index, length);
-
-          var value = (source[index + 2] == 'x')
-            ? int.Parse(source.Slice(index + 3, length - 4), System.Globalization.NumberStyles.HexNumber)
-            : int.Parse(source.Slice(index + 2, length - 3), System.Globalization.NumberStyles.Integer);
-
-          list.Add((range, new System.Text.Rune(value)));
-        }
-
-        return list;
-      }
-
-      #endregion
-
-      #region ParseUnicodeUnotations
-
-      public static System.Collections.Generic.List<(System.Range Range, System.Text.Rune Rune)> ParseUnicodeUnotations(System.ReadOnlySpan<char> source)
-      {
-        var list = new System.Collections.Generic.List<(System.Range, System.Text.Rune)>();
-
-        var evm = RegexParseUnicodeUnotations().EnumerateMatches(source);
-
-        foreach (var vm in evm)
-        {
-          var index = vm.Index;
-          var length = vm.Length;
-
-          list.Add((System.Range.FromOffsetAndLength(index, length), new System.Text.Rune(int.Parse(source.Slice(index + 2, length - 2), System.Globalization.NumberStyles.HexNumber))));
-        }
-
-        return list;
-      }
 
       #endregion
 
@@ -329,6 +300,108 @@ namespace Flux
 
       #endregion
 
+      #region ToCsharpUtf16Literal
+
+      /// <summary>
+      /// <para>Creates a new string with a rune represented as <code>\u0000</code> (a C# UTF-16 literal string).</para>
+      /// </summary>
+      /// <returns></returns>
+      public static string ToCsharpUtf16Literal(System.Text.Rune rune)
+      {
+        System.Span<char> utf16 = stackalloc char[rune.Utf16SequenceLength];
+        rune.EncodeToUtf16(utf16);
+
+        var sb = new System.Text.StringBuilder();
+        for (var i = 0; i < utf16.Length; i++)
+          sb.Append(char.ToCsharpUtf16LiteralString(utf16[i]));
+        return sb.ToString();
+      }
+
+      #endregion
+
+      #region ToCsharpUtf32Literal
+
+      /// <summary>
+      /// <para>Creates a new string with a rune represented as <code>\U00000000</code> (a C# UTF-32 literal string).</para>
+      /// </summary>
+      /// <returns></returns>
+      public static string ToCsharpUtf32Literal(System.Text.Rune rune)
+        => $"\\U{rune.Value:X8}";
+
+      #endregion
+
+      #region ToCsharpVariableHexLiteral
+
+      /// <summary>
+      /// <para>Creates a new string with a rune represented as <code>\x000</code> (a C# variable hex literal string).</para>
+      /// </summary>
+      /// <returns></returns>
+      public static string ToCsharpVariableHexLiteral(System.Text.Rune rune)
+        => $"\\x{rune.Value:X1}";
+
+      #endregion
+
+      #region ToDecimalNumericCharacterReference
+
+      /// <summary>
+      /// <para>A decimal numeric character reference refers to a character by its Universal Coded Character Set/Unicode code point, and uses the format: <code>&amp;#nnnn;</code> where nnnn is the code point in decimal form.</para>
+      /// </summary>
+      /// <param name="rune"></param>
+      /// <returns></returns>
+      public static string ToDecimalNumericCharacterReference(System.Text.Rune rune)
+        => $"&#{rune.Value};";
+
+      #endregion
+
+      #region ToHexadecimalNumericCharacterReference
+
+      /// <summary>
+      /// <para>A hexadecimal numeric character reference refers to a character by its Universal Coded Character Set/Unicode code point, and uses the format: <code>&amp;#xhhhh;</code> where the x must be lowercase in XML documents, hhhh is the code point in hexadecimal form.</para>
+      /// </summary>
+      /// <param name="rune"></param>
+      /// <returns></returns>
+      public static string ToHexadecimalNumericCharacterReference(System.Text.Rune rune)
+        => $"&#x{rune.Value:X1};";
+
+      #endregion
+
+      #region ToUnicodeUnotation
+
+      /// <summary>
+      /// <para>Creates a new string of a rune (Unicode codepoint) in Unicode U-notation format: <code>U+XXXX</code> (at least 4 hex characters, but more if needed).</para>
+      /// </summary>
+      /// <returns></returns>
+      public static string ToUnicodeUnotation(System.Text.Rune rune)
+        => $"U+{rune.Value:X4}";
+
+      #endregion
+
+      #region ToUriPercentEncoding
+
+      /// <summary>
+      /// <para>Creates a new string of a rune URI percent-encoded: <code>%E2%88%86</code> (where the encoding can be from one up to three "percent-codes").</para>
+      /// <para><see href="https://www.rfc-editor.org/rfc/rfc3986"/></para>
+      /// </summary>
+      /// <param name="rune"></param>
+      /// <returns></returns>
+      public static string ToUriPercentEncoding(System.Text.Rune rune)
+      {
+        if (rune.Value is var utf32 && utf32 <= 0x7F)
+          return byte.ToUriPercentEncoding((byte)utf32);
+
+        System.Span<byte> bytes = stackalloc byte[System.Text.Rune.Utf8MaxEncodedSequenceLength];
+        System.Span<char> chars = stackalloc char[System.Text.Rune.Utf8MaxEncodedSequenceLength * System.Text.Rune.UriPercentEncodedOctetLength];
+
+        var length = rune.EncodeToUtf8(bytes);
+
+        for (var index = 0; index < length; index++)
+          byte.ToUriPercentEncoding((byte)bytes[index]).CopyTo(chars.Slice(index * System.Text.Rune.UriPercentEncodedOctetLength, System.Text.Rune.UriPercentEncodedOctetLength));
+
+        return chars[..(length * System.Text.Rune.UriPercentEncodedOctetLength)].ToString();
+      }
+
+      #endregion
+
       #region ..Vowel
 
       /// <summary>
@@ -353,55 +426,6 @@ namespace Flux
 
     extension(System.Text.Rune source)
     {
-      #region ToCsharpUtf16LiteralString
-
-      public string ToCsharpUtf16LiteralString()
-      {
-        System.Span<char> utf16 = stackalloc char[source.Utf16SequenceLength];
-        source.EncodeToUtf16(utf16);
-
-        var sb = new System.Text.StringBuilder();
-        for (var i = 0; i < utf16.Length; i++)
-          sb.Append(utf16[i].ToCsharpUtf16LiteralString());
-        return sb.ToString();
-      }
-
-      public string ToCsharpUtf32LiteralString()
-        => $"\\U{source.Value:X8}";
-
-      #endregion
-
-      #region ToCsharpVariableHexLiteralString
-
-      public string ToCsharpVariableHexLiteralString()
-        => $"\\x{source.Value:X1}";
-
-      #endregion
-
-      #region ToDecimalNumericCharacterReferenceString
-
-      /// <summary>
-      /// <para>a numeric character reference refers to a character by its Universal Coded Character Set/Unicode code point, and uses the format: <code>&amp;#nnnn;</code> where nnnn is the code point in decimal form.</para>
-      /// </summary>
-      /// <param name="rune"></param>
-      /// <returns></returns>
-      public string ToDecimalNumericCharacterReferenceString()
-        => $"&#{source.Value};";
-
-      #endregion
-
-      #region ToHexadecimalNumericCharacterReferenceString
-
-      /// <summary>
-      /// <para>a numeric character reference refers to a character by its Universal Coded Character Set/Unicode code point, and uses the format: <code>&amp;#xhhhh;</code> where the x must be lowercase in XML documents, hhhh is the code point in hexadecimal form.</para>
-      /// </summary>
-      /// <param name="rune"></param>
-      /// <returns></returns>
-      public string ToHexadecimalNumericCharacterReferenceString()
-        => $"&#x{source.Value:X1};";
-
-      #endregion
-
       #region GetUtfSequences
 
       /// <summary>Generate a variable number (from 1 to 2) of words (16 bits as ints) representing UTF16 encoding of the <see cref="System.Text.Rune"/>.</summary>
@@ -462,21 +486,10 @@ namespace Flux
 
       #endregion
 
-      #region ToUnicodeUnotationString
-
-      /// <summary>
-      /// <para>Convert the Unicode codepoint (rune) to the string representation format "U+XXXX" (at least 4 hex characters, more if needed).</para>
-      /// </summary>
-      /// <returns></returns>
-      public string ToUnicodeUnotationString()
-        => $"U+{source.Value:X4}";
-
-      #endregion
-
       #region ToVerboseString
 
       public string ToVerboseString()
-        => $"{ToUnicodeUnotationString(source)} '{source}' {System.Text.Rune.GetUnicodeCategory(source)}";
+        => $"{ToUnicodeUnotation(source)} '{source}' {System.Text.Rune.GetUnicodeCategory(source)}";
 
       #endregion
     }

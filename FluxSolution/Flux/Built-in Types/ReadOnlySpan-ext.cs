@@ -2,6 +2,22 @@
 {
   public static partial class ReadOnlySpanExtensions
   {
+    // All hex and decimal numeric character references &#x{xxxxxxx}; are enumerated.
+    [System.Text.RegularExpressions.GeneratedRegex(@"(?<Prefix>&#x?)(?<Number>[0-9A-Fa-f]{1,8})(?<Suffix>;)", System.Text.RegularExpressions.RegexOptions.Compiled)]
+    public static partial System.Text.RegularExpressions.Regex RegexEnumerateNumericCharacterReference();
+
+    // All three of \uxxxx (UTF-16), \UXXXXXXXX (UTF-32) and \x{xxxxxxx} (Variable Hex) C# Unicode literals are enumerated.
+    [System.Text.RegularExpressions.GeneratedRegex(@"((?<Prefix>\\u)(?<Number>[0-9A-Fa-f]{4})|(?<Prefix>\\U)(?<Number>[0-9A-Fa-f]{8})|(?<Prefix>\\x)(?<Number>[0-9A-Fa-f]{1,8}))", System.Text.RegularExpressions.RegexOptions.Compiled)]
+    public static partial System.Text.RegularExpressions.Regex RegexEnumerateCsUnicodeLiteral();
+
+    // All U+xxxx{xx} (Unicode U-notation) are enumerated.
+    [System.Text.RegularExpressions.GeneratedRegex(@"(?<Prefix>U\+)(?<Codepoint>[0-9A-Fa-f]{4,6})", System.Text.RegularExpressions.RegexOptions.Compiled)]
+    public static partial System.Text.RegularExpressions.Regex RegexEnumerateUnicodeUnotation();
+
+    // All %xx (URI percent encoding) are enumerated.
+    [System.Text.RegularExpressions.GeneratedRegexAttribute(@"(?<Prefix>%)(?<Octet>[0-9A-Fa-f]{2})", System.Text.RegularExpressions.RegexOptions.Compiled)]
+    public static partial System.Text.RegularExpressions.Regex RegexEnumerateUriPercentEncoding();
+
     #region GetAlternatingElement helpers
 
     private static int m_alternatingIndex = 0; // This is a field used for the method below.
@@ -3326,6 +3342,104 @@
 
       #endregion
 
+      #region EnumerateCsUnicodeLiteral
+
+      public System.Collections.Generic.List<(System.Range, System.Text.Rune)> EnumerateCsUnicodeLiteral(bool reverse)
+      {
+        var list = new System.Collections.Generic.List<(System.Range, System.Text.Rune)>();
+
+        var evm = RegexEnumerateCsUnicodeLiteral().EnumerateMatches(source);
+
+        foreach (var vm in evm)
+        {
+          var index = vm.Index;
+          var length = vm.Length;
+
+          list.Add((System.Range.FromOffsetAndLength(index, length), new System.Text.Rune(int.Parse(source.Slice(index + 2, length - 2), System.Globalization.NumberStyles.HexNumber))));
+        }
+
+        if (reverse) list.Reverse();
+
+        return list;
+      }
+
+      #endregion
+
+      #region EnumerateMlNumericCharacterReference
+
+      public System.Collections.Generic.List<(System.Range, System.Text.Rune)> EnumerateMlNumericCharacterReference(bool reverse)
+      {
+        var list = new System.Collections.Generic.List<(System.Range, System.Text.Rune)>();
+
+        var evm = RegexEnumerateNumericCharacterReference().EnumerateMatches(source);
+
+        foreach (var vm in evm)
+        {
+          var index = vm.Index;
+          var length = vm.Length;
+
+          var range = System.Range.FromOffsetAndLength(index, length);
+
+          var value = (source[index + 2] == 'x')
+            ? int.Parse(source.Slice(index + 3, length - 4), System.Globalization.NumberStyles.HexNumber)
+            : int.Parse(source.Slice(index + 2, length - 3), System.Globalization.NumberStyles.Integer);
+
+          list.Add((range, new System.Text.Rune(value)));
+        }
+
+        if (reverse) list.Reverse();
+
+        return list;
+      }
+
+      #endregion
+
+      #region EnumerateUnicodeUnotation
+
+      public System.Collections.Generic.List<(System.Range Range, System.Text.Rune Rune)> EnumerateUnicodeUnotation(bool reverse)
+      {
+        var list = new System.Collections.Generic.List<(System.Range, System.Text.Rune)>();
+
+        var evm = RegexEnumerateUnicodeUnotation().EnumerateMatches(source);
+
+        foreach (var vm in evm)
+        {
+          var index = vm.Index;
+          var length = vm.Length;
+
+          list.Add((System.Range.FromOffsetAndLength(index, length), new System.Text.Rune(int.Parse(source.Slice(index + 2, length - 2), System.Globalization.NumberStyles.HexNumber))));
+        }
+
+        if (reverse) list.Reverse();
+
+        return list;
+      }
+
+      #endregion
+
+      #region EnumerateUriPercentEncoding
+
+      public System.Collections.Generic.List<(System.Range, System.Text.Rune)> EnumerateUriPercentEncoding(bool reverse)
+      {
+        var list = new System.Collections.Generic.List<(System.Range, System.Text.Rune)>();
+
+        var evm = RegexEnumerateUriPercentEncoding().EnumerateMatches(source);
+
+        foreach (var vm in evm)
+        {
+          var index = vm.Index;
+          var length = vm.Length;
+
+          list.Add((System.Range.FromOffsetAndLength(index, length), new System.Text.Rune(int.Parse(source.Slice(vm.Index + 1, vm.Length - 1), System.Globalization.NumberStyles.HexNumber))));
+        }
+
+        if (reverse) list.Reverse();
+
+        return list;
+      }
+
+      #endregion
+
       #region IndexOfAny
 
       /// <summary>
@@ -3441,6 +3555,28 @@
       /// <returns></returns>
       public bool IsTextElement()
         => System.Globalization.StringInfo.GetNextTextElementLength(source) == source.Length;
+
+      #endregion
+
+      #region IsValidUriScheme
+
+      /// <summary>
+      /// <para>Indicates whether the character sequence is a valid URI scheme component.</para>
+      /// <para><see href="https://www.rfc-editor.org/rfc/rfc3986"/></para>
+      /// </summary>
+      /// <param name="source"></param>
+      /// <returns></returns>
+      public bool IsValidUriScheme()
+      {
+        if (!char.IsAsciiLetter(source[0]))
+          return false;
+
+        for (var i = source.Length - 1; i > 0; i--)
+          if (source[i] is var c && !(char.IsAsciiLetterOrDigit(c) && c is '+' or '-' or '.'))
+            return false;
+
+        return true;
+      }
 
       #endregion
 
@@ -3580,6 +3716,45 @@
         for (var i = source.Length - 1; i >= 0; i--)
           length += source[i].Utf8SequenceLength;
         return length;
+      }
+
+      #endregion
+
+      #region UriPercentEncoding
+
+      /// <summary>
+      /// <para></para>
+      /// <para><see href="https://www.rfc-editor.org/rfc/rfc3986"/></para>
+      /// </summary>
+      /// <returns></returns>
+      public string EncodeUriPercentEncoding()
+      {
+        var sb = new System.Text.StringBuilder();
+
+        foreach (var r in source.EnumerateRunes())
+          sb.Append(System.Text.Rune.IsUriUnreserved(r) ? r.ToString() : System.Text.Rune.ToUriPercentEncoding(r));
+
+        return sb.ToString();
+      }
+
+      /// <summary>
+      /// <para></para>
+      /// <para><see href="https://www.rfc-editor.org/rfc/rfc3986"/></para>
+      /// </summary>
+      /// <returns></returns>
+      public string DecodeUriPercentEncoding()
+      {
+        var sb = new System.Text.StringBuilder().Append(source);
+
+        foreach (var (range, rune) in EnumerateUriPercentEncoding(source, true))
+        {
+          var (offset, length) = range.GetOffsetAndLength(source.Length);
+
+          sb.Remove(offset, length);
+          sb.Insert(offset, rune);
+        }
+
+        return sb.ToString();
       }
 
       #endregion

@@ -242,12 +242,9 @@ namespace Flux
       {
         System.ArgumentNullException.ThrowIfNull(source);
 
-        var rarray = System.Buffers.ArrayPool<byte>.Shared.Rent(16);
-        var span = new System.Span<byte>(rarray, 0, 16);
+        System.Span<byte> span = stackalloc byte[16];
         source.NextBytes(span);
-        var guid = new System.Guid(span);
-        System.Buffers.ArrayPool<byte>.Shared.Return(rarray);
-        return guid;
+        return new System.Guid(span);
       }
 
       #endregion

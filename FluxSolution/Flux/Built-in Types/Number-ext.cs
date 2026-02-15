@@ -3,7 +3,7 @@ namespace Flux
   public static partial class Number
   {
     /// <summary>
-    /// <para>Sign step function that guarantees [-1, 0, 1] for output (not just less-than-zero and greater-than-zero).</para>
+    /// <para>Sign step function that guarantees [-<typeparamref name="TNumber"/>.One, 0, <typeparamref name="TNumber"/>.One] for output (not just less-than-zero and greater-than-zero).</para>
     /// <para><see href="https://en.wikipedia.org/wiki/Sign_function"/></para>
     /// <para><seealso href="https://en.wikipedia.org/wiki/Step_function"/></para>
     /// </summary>
@@ -34,7 +34,6 @@ namespace Flux
       }
 
       #endregion
-
       #region ArithmeticSequence.. (progression)
 
       /// <summary>
@@ -71,7 +70,6 @@ namespace Flux
       }
 
       #endregion
-
       #region ArithmeticSeries.. (sum)
 
       /// <summary>
@@ -146,40 +144,19 @@ namespace Flux
       #region EqualsWithin..
 
       /// <summary>
-      /// <para>Perform an absolute equality test.</para>
-      /// <para>Absolute equality checks if the absolute difference between <paramref name="value"/> and <paramref name="other"/> is smaller than a predefined <paramref name="absoluteTolerance"/>. This is useful when you want to ensure the numbers are "close enough" without considering their scale.</para>
+      /// <para>Perform an absolute and a relative equality test, for maximum coverage of small and large vales.</para>
+      /// <para>Absolute equality checks if the absolute difference between <paramref name="value"/> and <paramref name="other"/> is smaller than a predefined <paramref name="tolerance"/>. This is useful when you want to ensure the numbers are "close enough" without considering their scale.</para>
       /// <para>Absolute equality is simpler and works well for small numbers or fixed tolerances.</para>
-      /// </summary>
-      /// <param name="value"></param>
-      /// <param name="other"></param>
-      /// <param name="absoluteTolerance">E.g. 1e-10.</param>
-      /// <returns></returns>
-      public static bool EqualsWithinAbsoluteTolerance(TNumber value, TNumber other, TNumber absoluteTolerance)
-      {
-        if (value == other)
-          return true;
-
-        if (TNumber.IsNaN(value) || TNumber.IsNaN(other))
-          return false;
-
-        if (TNumber.IsInfinity(value) || TNumber.IsInfinity(other))
-          return value == other;
-
-        return TNumber.Abs(value - other) <= absoluteTolerance;
-      }
-
-      /// <summary>
-      /// <para>Perform a relative equality test.</para>
       /// <para>Relative equality considers the scale of the numbers by dividing the absolute difference by the magnitude of the numbers. This is useful when comparing numbers that may vary significantly in scale.</para>
       /// <para>Relative equality is better for larger numbers or numbers with varying scales, as it adjusts the tolerance dynamically.</para>
       /// </summary>
-      /// <typeparam name="TRelativeTolerance"></typeparam>
-      /// <param name="value"></param>
-      /// <param name="other"></param>
-      /// <param name="relativeTolerance">E.g. 1e-10.</param>
+      /// <typeparam name="TTolerance"></typeparam>
+      /// <param name="value">The value of interest.</param>
+      /// <param name="other">The value to compare to.</param>
+      /// <param name="tolerance">E.g. 1e-10.</param>
       /// <returns></returns>
-      public static bool EqualsWithinRelativeTolerance<TRelativeTolerance>(TNumber value, TNumber other, TRelativeTolerance relativeTolerance)
-        where TRelativeTolerance : System.Numerics.IFloatingPoint<TRelativeTolerance>
+      public static bool EqualsWithin<TTolerance>(TNumber value, TNumber other, TTolerance tolerance)
+        where TTolerance : System.Numerics.IFloatingPoint<TTolerance>
       {
         if (value == other)
           return true;
@@ -190,7 +167,10 @@ namespace Flux
         if (TNumber.IsInfinity(value) || TNumber.IsInfinity(other))
           return value == other;
 
-        return TRelativeTolerance.CreateChecked(TNumber.Abs(value - other)) <= relativeTolerance * TRelativeTolerance.CreateChecked(TNumber.Abs(TNumber.MaxMagnitude(value, other)));
+        var difference = TTolerance.CreateChecked(TNumber.Abs(value - other));
+        var comparison = tolerance * (TTolerance.One + TTolerance.CreateChecked(TNumber.Abs(TNumber.MaxMagnitude(value, other))));
+
+        return difference <= comparison; // The difference is LTE to the signed significant digits raised-to-the-power-of radix.
       }
 
       /// <summary>
@@ -201,77 +181,35 @@ namespace Flux
       /// </summary>
       /// <typeparam name="TSignificantDigits"></typeparam>
       /// <typeparam name="TRadix"></typeparam>
-      /// <param name="value"></param>
-      /// <param name="other"></param>
-      /// <param name="significantDigits">The tolerance, as the number of significant digits, considered for equality. A negative value for most significant digits on the right side (fraction part). A positive value for least significant digits on the left side (integer part).</param>
+      /// <param name="value">The value of interest.</param>
+      /// <param name="other">The value to compare to.</param>
+      /// <param name="significantDigits">The number of significant digits considered for equality. A negative value for most significant digits on the right side (fraction part). A positive value for least significant digits on the left side (integer part).</param>
       /// <param name="radix">&gt; 2</param>
       /// <remarks>
-      /// <para><see langword="true"/> = EqualsWithinSignificantDigits(1000.02, 1000.015, -2, 10); // The difference of abs(<paramref name="value"/> - <paramref name="other"/>) is less than or equal to <paramref name="significantDigits"/> in <paramref name="radix"/>, i.e. 0.01 for radix 10.</para>
-      /// <para><see langword="true"/> = EqualsWithinSignificantDigits(1334.261, 1235.272, 2, 10); // The difference of abs(<paramref name="value"/> - <paramref name="other"/>) is less than or equal to negative <paramref name="significantDigits"/> in <paramref name="radix"/>, i.e. 100 for radix 10.</para>
+      /// <para><see langword="true"/> = EqualsWithin(1000.02, 1000.015, -2, 10); // The difference of abs(<paramref name="value"/> - <paramref name="other"/>) is less than or equal to <paramref name="significantDigits"/> in <paramref name="radix"/>, i.e. 0.01 for radix 10.</para>
+      /// <para><see langword="true"/> = EqualsWithin(1334.261, 1235.272, 2, 10); // The difference of abs(<paramref name="value"/> - <paramref name="other"/>) is less than or equal to negative <paramref name="significantDigits"/> in <paramref name="radix"/>, i.e. 100 for radix 10.</para>
       /// </remarks>
       /// <returns></returns>
-      public static bool EqualsWithinSignificantDigits<TSignificantDigits, TRadix>(TNumber value, TNumber other, TSignificantDigits significantDigits, TRadix radix)
+      public static bool EqualsWithin<TSignificantDigits, TRadix>(TNumber value, TNumber other, TSignificantDigits significantDigits, TRadix radix)
         where TSignificantDigits : System.Numerics.IBinaryInteger<TSignificantDigits>
         where TRadix : System.Numerics.IBinaryInteger<TRadix>
-        => value == other // The value and other are equal.
-        || (double.CreateChecked(TNumber.Abs(value - other)) <= double.Pow(double.CreateChecked(Units.Radix.AssertMember(radix)), double.CreateChecked(significantDigits))); // The difference is LTE to the signed significant digits raised-to-the-power-of radix.
+      {
+        if (value == other) // The value and other are equal.
+          return true;
+
+        if (TNumber.IsNaN(value) || TNumber.IsNaN(other))
+          return false;
+
+        if (TNumber.IsInfinity(value) || TNumber.IsInfinity(other))
+          return value == other;
+
+        var difference = double.CreateChecked(TNumber.Abs(value - other));
+        var comparison = double.Pow(double.CreateChecked(Units.Radix.AssertMember(radix)), double.CreateChecked(significantDigits));
+
+        return difference <= comparison; // The difference is LTE to the signed significant digits raised-to-the-power-of radix.
+      }
 
       #endregion
-
-      ///// <summary>
-      ///// Finds the exact index of target in arr if present.
-      ///// If not present, returns the interpolated fractional index.
-      ///// </summary>
-      ///// <param name="sorted">Sorted numeric array</param>
-      ///// <param name="target">Number to search for</param>
-      ///// <returns>Exact index as double, or fractional interpolated position</returns>
-      //public static TFloat FindIndexOrInterpolated<TFloat>(System.Span<TNumber> sorted, TFloat target)
-      //  where TFloat : System.Numerics.IFloatingPoint<TFloat>
-      //{
-      //  if (sorted.Length == 0) throw new System.ArgumentException("Array cannot be null or empty.");
-
-      //  // Ensure array is sorted
-      //  for (int i = 1; i < sorted.Length; i++)
-      //  {
-      //    if (sorted[i] < sorted[i - 1])
-      //      throw new ArgumentException("Array must be sorted in ascending order.");
-      //  }
-
-      //  // Exact match search
-      //  for (int i = 0; i < sorted.Length; i++)
-      //  {
-      //    if (TFloat.CreateChecked(sorted[i]) == target)
-      //      return TFloat.CreateChecked(i); // Exact index
-      //  }
-
-      //  // Binary search for insertion point
-      //  int left = 0, right = sorted.Length;
-      //  while (left < right)
-      //  {
-      //    int mid = (left + right) / 2;
-      //    if (TFloat.CreateChecked(sorted[mid]) < target)
-      //      left = mid + 1;
-      //    else
-      //      right = mid;
-      //  }
-
-      //  // If before first element
-      //  if (left == 0)
-      //    return TFloat.Zero;
-
-      //  // If after last element
-      //  if (left == sorted.Length)
-      //    return TFloat.CreateChecked(sorted.Length);
-
-      //  // Interpolate fractional index
-      //  var leftVal = TFloat.CreateChecked(sorted[left - 1]);
-      //  var rightVal = TFloat.CreateChecked(sorted[left]);
-      //  if (leftVal == rightVal)
-      //    return TFloat.CreateChecked(left - 1); // Avoid division by zero
-
-      //  var fraction = (target - leftVal) / (rightVal - leftVal);
-      //  return TFloat.CreateChecked(left - 1) + fraction;
-      //}
 
       #region FoldAcross
 
@@ -311,7 +249,6 @@ namespace Flux
       }
 
       #endregion
-
       #region GeometricSequence (progression)
 
       /// <summary>
@@ -336,7 +273,6 @@ namespace Flux
       }
 
       #endregion
-
       #region GeometricSeries.. (sum)
 
       /// <summary>
@@ -817,6 +753,8 @@ namespace Flux
 
       #endregion
 
+      #region Rescale
+
       /// <summary>
       /// <para>Proportionally rescale the <paramref name="value"/> from the closed interval [<paramref name="minSource"/>, <paramref name="maxSource"/>] to the closed interval [<paramref name="minTarget"/>, <paramref name="maxTarget"/>].</para>
       /// <para>The <paramref name="value"/> retains its proportional interval ratio, e.g. a 5 from the closed interval [0, 10] becomes 50 when rescaled to the closed interval [0, 100].</para>
@@ -830,6 +768,8 @@ namespace Flux
       /// <returns></returns>
       public static TNumber Rescale(TNumber value, TNumber minSource, TNumber maxSource, TNumber minTarget, TNumber maxTarget)
         => minTarget + (maxTarget - minTarget) * (value - minSource) / (maxSource - minSource);
+
+      #endregion
 
       #region RoundToNearest
 
