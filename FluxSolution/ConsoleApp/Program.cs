@@ -333,13 +333,11 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
+      var wa = double.WrapAround(360, 0, 360);
 
-      var s = "Hello World! 100% safe?";
-      var es = s.EncodeUriPercentEncoding();
-      var ds = es.DecodeUriPercentEncoding();
+      var a0 = new Flux.Units.Angle(225, Flux.Units.AngleUnit.Degree);
+      var a1 = a0.ReverseRotation(Flux.Units.Angle.QuarterTurn);
 
-      var tueos = System.Text.Rune.ToUriPercentEncoding(((System.Text.Rune)'∆'));
-      // 11100010 98+128 10000010 10000110
       return;
 
       //var gosps = System.Runtime.InteropServices.RuntimeInformation.GetOsPlatforms();
@@ -415,36 +413,32 @@ namespace ConsoleApp
 
 
 
-      //var atoms = new char[] { 'A', 'B', 'C', 'D' };
-      //var radix = new int[3];
+      var atoms = new char[] { 'A', 'B', 'C', 'D' };
+      var radix = new int[3];
 
-      //var count = Flux.LehmerCode.GetRadixes<char>(atoms, radix);
+      var count = Flux.Permutations.LehmerCode.GetRadixes(radix, 10);
 
-      //var index = new int[radix.Length];
+      var index = new int[radix.Length];
 
-      //var permutation = new char[radix.Length];
+      var permutation = new char[radix.Length];
 
-      //System.Console.WriteLine($"{atoms.Length} choose {radix.Length} = {count}");
+      System.Console.WriteLine($"{atoms.Length} choose {radix.Length} = {count}");
 
-      //for (var i = 0; i < count; i++)
-      //{
-      //  System.Console.Write($"{(i + 1):D4} : ");
+      for (var i = 0; i < count; i++)
+      {
+        System.Console.Write($"{(i + 1):D4} : ");
 
-      //  Flux.LehmerCode.Decode(i, radix, index);
+        Flux.Permutations.LehmerCode.Unpack(i, radix, index);
 
-      //  Flux.LehmerCode.Encode(index, radix);
+        Flux.Permutations.LehmerCode.Pack(index, radix);
 
-      //  System.Console.Write(string.Join(',', index));
-      //  Flux.LehmerCode.Reindex(index.AsSpan());
+        System.Console.Write(string.Join(',', index));
 
-      //  System.Console.Write(" : ");
-      //  System.Console.Write(string.Join(',', index));
+        System.Console.Write(" : ");
+        System.Console.Write(string.Join(',', index));
 
-      //  Flux.LehmerCode.GetPermutationByIndices<char>(atoms, index.AsSpan(), permutation);
-
-      //  System.Console.Write(" : ");
-      //  System.Console.WriteLine(string.Join(',', permutation));
-      //}
+        System.Console.Write(" | ");
+      }
 
       var m1 = Flux.NumeralComposition.GetExtremum(Flux.NumeralComposition.NumeralScale.CommonScale);
       var m2 = Flux.NumeralComposition.GetExtremum(Flux.NumeralComposition.NumeralScale.LongScale);

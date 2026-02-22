@@ -7,9 +7,15 @@
   public readonly partial record struct Angle
     : System.IComparable, System.IComparable<Angle>, System.IFormattable, ISiUnitValueQuantifiable<double, AngleUnit>
   {
-    public static readonly Angle FullTurn = new(double.Tau);
-    public static readonly Angle HalfTurn = new(double.Pi);
-    public static readonly Angle QuarterTurn = new(double.Pi / 2);
+    public const double RadiansOneTurn = double.Tau;
+    public const double RadiansHalfTurn = double.Pi;
+    public const double RadiansQuarterTurn = double.Pi / 2;
+    public const double RadiansHalfQuarterTurn = double.Pi / 4;
+
+    public static readonly Angle OneTurn = new(RadiansOneTurn);
+    public static readonly Angle HalfTurn = new(RadiansHalfTurn);
+    public static readonly Angle QuarterTurn = new(RadiansQuarterTurn);
+    public static readonly Angle HalfQuarterTurn = new(RadiansHalfQuarterTurn);
 
     public static readonly Angle Zero;
 
@@ -20,7 +26,7 @@
 
     public Angle(MetricPrefix prefix, double radian) => m_value = prefix.ConvertPrefix(radian, MetricPrefix.Unprefixed);
 
-    public double InDegrees => double.RadiansToDegrees(m_value);
+    public double Degrees => double.RadiansToDegrees(m_value);
 
     public AngleNames GetAngleNames()
     {
@@ -38,47 +44,82 @@
       return angleNames;
     }
 
-    #region Static methods
-
-    #region Conversion methods
-    public static double ConvertAngleToPercentSlope(double radAngle)
-      => double.Tan(radAngle);
-
     /// <summary>
-    /// <para>Convert decimal degrees to the traditional sexagsimal unit subdivisions, a.k.a. DMS notation.</para>
-    /// <para>One degree is divided into 60 minutes (of arc), a.k.a. arcminutes, and one minute into 60 seconds (of arc), a.k.a. arcseconds, represented by degree sign, single prime and double prime.</para>
-    /// <para><see href="https://en.wikipedia.org/wiki/ISO_6709"/></para>
-    /// <para><seealso href="https://en.wikipedia.org/wiki/Degree_(angle)#Subdivisions"/></para>
-    /// <para><seealso href="https://en.wikipedia.org/wiki/Geographic_coordinate_conversion#Change_of_units_and_format"/></para>
+    /// <para>Creates a new reversed "rotational" angle using the offset. E.g. to convert from a "math" angle, i.e. standard position (x-axis or East, CCW), to compass angle (North or y-axis, CW), an offset of 90 (deg) or Tau (rad) would be used.</para>
     /// </summary>
-    /// <param name="decimalDegrees"></param>
+    /// <param name="offset">The offset arc angle to use for the conversion.</param>
     /// <returns></returns>
-    public static (int degrees, double decimalMinutes, int minutes, double decimalSeconds) ConvertDecimalDegreesToSexagesimalUnitSubdivisions(double decimalDegrees)
+    public Angle ReverseRotation(Angle offset)
     {
-      var absDegrees = double.Abs(decimalDegrees);
-      var floorAbsDegrees = double.Floor(absDegrees);
-      var degrees = double.CopySign(floorAbsDegrees, decimalDegrees);
-      var decimalMinutes = 60 * (absDegrees - floorAbsDegrees);
-      var absMinutes = double.Abs(decimalMinutes);
-      var minutes = double.Floor(absMinutes);
-      var decimalSeconds = 60 * (absMinutes - minutes);
+      var noffset = offset.Value % double.Tau;
 
-      return (int.CreateChecked(degrees), decimalMinutes, int.CreateChecked(minutes), decimalSeconds);
+      var reverse = (noffset - (m_value % double.Tau) + double.Tau) % double.Tau;
+
+      return new(reverse);
     }
 
     /// <summary>
-    /// <para>Convert the traditional sexagsimal unit subdivisions, a.k.a. DMS notation, to decimal degrees.</para>
-    /// <para>One degree is divided into 60 minutes (of arc), a.k.a. arcminutes, and one minute into 60 seconds (of arc), a.k.a. arcseconds, represented by degree sign, single prime and double prime.</para>
-    /// <para><see href="https://en.wikipedia.org/wiki/ISO_6709"/></para>
-    /// <para><seealso href="https://en.wikipedia.org/wiki/Degree_(angle)#Subdivisions"/></para>
-    /// <para><seealso href="https://en.wikipedia.org/wiki/Geographic_coordinate_conversion#Change_of_units_and_format"/></para>
+    /// <para>Creates a new azimuth, i.e. a value in the interval [0, 360). Note that 360 as a value is excluded and is represented as 0.</para>
     /// </summary>
-    /// <param name="degrees"></param>
-    /// <param name="minutes"></param>
-    /// <param name="seconds"></param>
     /// <returns></returns>
-    public static double ConvertSexagesimalUnitSubdivisionsToDecimalDegrees(double degrees, double minutes, double seconds)
-      => degrees + minutes / 60d + seconds / 3600d;
+    /// <remarks>Values outside the interval [0, 360)) are wrapped, i.e. 370 = 10, -10 = 350, etc.</remarks>
+    public Azimuth ToAzimuth() => new(Number.WrapAround(m_value, 0, double.Tau) % double.Tau, AngleUnit.Radian);
+
+    /// <summary>
+    /// <para>Creates a new latitude, i.e. a value in the interval [-90, +90].</para>
+    /// </summary>
+    /// <param name="angle"></param>
+    /// <returns></returns>
+    /// <remarks>Values outside the interval [-90, +90] are folded, i.e. +100 = +80, -100 = -80, etc.</remarks>
+    public Latitude ToLatitude() => new(Number.FoldAcross(m_value, -double.HalfPi, double.HalfPi), AngleUnit.Radian);
+
+    /// <summary>
+    /// <para>Creates a new longitude, i.e. a value in the interval [-180, +180].</para>
+    /// </summary>
+    /// <param name="angle"></param>
+    /// <returns></returns>
+    /// <remarks>Values outside the interval [-180, +180] are wrapped, i.e. 190 = -170, -190 = +170, etc.</remarks>
+    public Longitude ToLongitude() => new(IntervalNotation.Closed.WrapAround(m_value, -double.Pi, double.Pi), AngleUnit.Radian);
+
+    #region Static methods
+
+    #region Conversion methods
+
+    ///// <summary>
+    ///// <para>Convert decimal degrees to the traditional sexagsimal unit subdivisions, a.k.a. DMS notation.</para>
+    ///// <para>One degree is divided into 60 minutes (of arc), a.k.a. arcminutes, and one minute into 60 seconds (of arc), a.k.a. arcseconds, represented by degree sign, single prime and double prime.</para>
+    ///// <para><see href="https://en.wikipedia.org/wiki/ISO_6709"/></para>
+    ///// <para><seealso href="https://en.wikipedia.org/wiki/Degree_(angle)#Subdivisions"/></para>
+    ///// <para><seealso href="https://en.wikipedia.org/wiki/Geographic_coordinate_conversion#Change_of_units_and_format"/></para>
+    ///// </summary>
+    ///// <param name="decimalDegrees"></param>
+    ///// <returns></returns>
+    //public static (int degrees, double decimalMinutes, int minutes, double decimalSeconds) ConvertDecimalDegreesToSexagesimalUnitSubdivisions(double decimalDegrees)
+    //{
+    //  var absDegrees = double.Abs(decimalDegrees);
+    //  var floorAbsDegrees = double.Floor(absDegrees);
+    //  var degrees = double.CopySign(floorAbsDegrees, decimalDegrees);
+    //  var decimalMinutes = 60 * (absDegrees - floorAbsDegrees);
+    //  var absMinutes = double.Abs(decimalMinutes);
+    //  var minutes = double.Floor(absMinutes);
+    //  var decimalSeconds = 60 * (absMinutes - minutes);
+
+    //  return (int.CreateChecked(degrees), decimalMinutes, int.CreateChecked(minutes), decimalSeconds);
+    //}
+
+    ///// <summary>
+    ///// <para>Convert the traditional sexagsimal unit subdivisions, a.k.a. DMS notation, to decimal degrees.</para>
+    ///// <para>One degree is divided into 60 minutes (of arc), a.k.a. arcminutes, and one minute into 60 seconds (of arc), a.k.a. arcseconds, represented by degree sign, single prime and double prime.</para>
+    ///// <para><see href="https://en.wikipedia.org/wiki/ISO_6709"/></para>
+    ///// <para><seealso href="https://en.wikipedia.org/wiki/Degree_(angle)#Subdivisions"/></para>
+    ///// <para><seealso href="https://en.wikipedia.org/wiki/Geographic_coordinate_conversion#Change_of_units_and_format"/></para>
+    ///// </summary>
+    ///// <param name="degrees"></param>
+    ///// <param name="minutes"></param>
+    ///// <param name="seconds"></param>
+    ///// <returns></returns>
+    //public static double ConvertSexagesimalUnitSubdivisionsToDecimalDegrees(double degrees, double minutes, double seconds)
+    //  => degrees + minutes / 60d + seconds / 3600d;
 
     ///// <summary>Convert the angle specified in arcminutes to radians.</summary>
     //public static double ConvertArcminuteToRadian(double arcminAngle) => arcminAngle / 3437.7467707849396;
@@ -208,57 +249,6 @@
     }
 
     #endregion // Conversion methods
-
-    /// <summary>
-    /// <para>Ensure <paramref name="angle"/> is an azimuth, i.e. a value in the interval [0, 360). Note that 360 as a value is excluded and is represented as 0.</para>
-    /// </summary>
-    /// <param name="angle"></param>
-    /// <returns></returns>
-    /// <remarks>Values outside the interval [0, 360)) are wrapped, i.e. 370 = 10, -10 = 350, etc.</remarks>
-    public static Angle AsAzimuth(Angle angle) => new(Number.WrapAround(angle.Value, 0, double.Tau) % double.Tau);
-
-    /// <summary>
-    /// <para>Creates an azimuth <see cref="Angle"/> from <paramref name="value"/> and <paramref name="unit"/>, i.e. a value in the interval [0, 360].</para>
-    /// </summary>
-    /// <param name="value"></param>
-    /// <param name="unit"></param>
-    /// <returns></returns>
-    /// <remarks>Values outside the interval [0, 360] are wrapped, i.e. 370 = 10, -10 = 350, etc.</remarks>
-    public static Angle AsAzimuth(double value, AngleUnit unit) => AsAzimuth(new(value, unit));
-
-    /// <summary>
-    /// <para>Ensure <paramref name="angle"/> is a latitude, i.e. a value in the interval [-90, +90].</para>
-    /// </summary>
-    /// <param name="angle"></param>
-    /// <returns></returns>
-    /// <remarks>Values outside the interval [-90, +90] are folded, i.e. +100 = +80, -100 = -80, etc.</remarks>
-    public static Angle AsLatitude(Angle angle) => new(Number.FoldAcross(angle.Value, double.Pi / -2, double.Pi / 2));
-
-    /// <summary>
-    /// <para>Creates a longitude <see cref="Angle"/> from <paramref name="value"/> and <paramref name="unit"/>, i.e. a value in the interval [-90, +90].</para>
-    /// </summary>
-    /// <param name="value"></param>
-    /// <param name="unit"></param>
-    /// <returns></returns>
-    /// <remarks>Values outside the interval [-90, +90] are folded, i.e. +100 = +80, -100 = -80, etc.</remarks>
-    public static Angle AsLatitude(double value, AngleUnit unit) => AsLatitude(new(value, unit));
-
-    /// <summary>
-    /// <para>Ensure <paramref name="angle"/> is a longitude, i.e. a value in the interval [-180, +180].</para>
-    /// </summary>
-    /// <param name="angle"></param>
-    /// <returns></returns>
-    /// <remarks>Values outside the interval [-180, +180] are wrapped, i.e. 190 = -170, -190 = +170, etc.</remarks>
-    public static Angle AsLongitude(Angle angle) => new(IntervalNotation.Closed.WrapAround(angle.Value, -double.Pi, double.Pi));
-
-    /// <summary>
-    /// <para>Creates a longitude <see cref="Angle"/> from <paramref name="value"/> and <paramref name="unit"/>, i.e. a value in the interval [-180, +180].</para>
-    /// </summary>
-    /// <param name="value"></param>
-    /// <param name="unit"></param>
-    /// <returns></returns>
-    /// <remarks>Values outside the interval [-180, +180] are wrapped, i.e. 190 = -170, -190 = +170, etc.</remarks>
-    public static Angle AsLongitude(double value, AngleUnit unit) => AsLongitude(new(value, unit));
 
     #region Trigonometry static methods
 
@@ -512,9 +502,9 @@
             decimalDegrees = -decimalDegrees;
 
           if (g4.Success && (g4.Value[0] is 'N' or 'S'))
-            list.Add(new PlanetaryScience.Latitude(decimalDegrees));
+            list.Add(new Units.Latitude(decimalDegrees));
           else if (g4.Success && (g4.Value[0] is 'E' or 'W'))
-            list.Add(new PlanetaryScience.Longitude(decimalDegrees));
+            list.Add(new Units.Longitude(decimalDegrees));
           else
             throw new System.InvalidOperationException();
         }
@@ -539,7 +529,7 @@
     /// <exception cref="System.ArgumentOutOfRangeException"></exception>
     public static string ToStringDmsNotation(double decimalDegrees, AngleDmsNotation dmsNotation, PlanetaryScience.CompassCardinalAxis axis, int decimalPoints = -1, UnicodeSpacing componentSpacing = UnicodeSpacing.None)
     {
-      var (degrees, decimalMinutes, minutes, decimalSeconds) = ConvertDecimalDegreesToSexagesimalUnitSubdivisions(decimalDegrees);
+      var (degrees, decimalMinutes, minutes, decimalSeconds) = double.DecimalDegreesToSexagesimalUnitSubdivisions(decimalDegrees);
 
       var spacingString = componentSpacing.ToSpacingString();
 

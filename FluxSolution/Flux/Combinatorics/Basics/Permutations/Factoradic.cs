@@ -5,7 +5,7 @@ namespace Flux.Permutations
   /// <para><see href="https://en.wikipedia.org/wiki/Permutation"/></para>
   /// <para><see href="https://en.wikipedia.org/wiki/Factorial_number_system"/></para>
   /// </summary>
-  public static partial class Factoradic
+  public class Factoradic
   {
     /// <summary>
     /// <para>Readjust values to obtain the permutation. Start from the end and check if preceding values are lower.</para>
@@ -43,6 +43,13 @@ namespace Flux.Permutations
 
     #region Permutations without repetition
 
+    /// <summary>
+    /// <para>Rank permutation without repetition using the factorial number system.</para>
+    /// </summary>
+    /// <param name="permutation"></param>
+    /// <param name="n"></param>
+    /// <param name="k"></param>
+    /// <returns></returns>
     public static int RankPermutationWithoutRepetition(System.ReadOnlySpan<int> permutation, int n, int k)
     {
       var available = new System.Collections.Generic.List<int>(Enumerable.Range(0, n));
@@ -59,13 +66,18 @@ namespace Flux.Permutations
       return rank;
     }
 
-    public static int[] UnrankPermutationWithoutRepetition(int rank, int n, int k)
+    /// <summary>
+    /// <para>Unrank permutation without repetition using the factorial number system.</para>
+    /// </summary>
+    /// <param name="rank"></param>
+    /// <param name="n"></param>
+    /// <param name="k"></param>
+    /// <param name="permutation"></param>
+    public static void UnrankPermutationWithoutRepetition(int rank, int n, int k, System.Span<int> permutation)
     {
       System.ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(rank, BinaryInteger.CountPermutationsWithoutRepetition(n, k));
 
       var available = new System.Collections.Generic.List<int>(Enumerable.Range(0, n));
-
-      var permutation = new int[k];
 
       for (int i = 0; i < k; i++)
       {
@@ -75,14 +87,19 @@ namespace Flux.Permutations
         permutation[i] = available[idx];
         available.RemoveAt(idx);
       }
-
-      return permutation;
     }
 
     #endregion
 
     #region Permutations with repetition
 
+    /// <summary>
+    /// <para>Rank permutation with repetition using the factorial number system.</para>
+    /// </summary>
+    /// <param name="permutation"></param>
+    /// <param name="n"></param>
+    /// <param name="k"></param>
+    /// <returns></returns>
     public static int RankPermutationWithRepetition(System.ReadOnlySpan<int> permutation, int n, int k)
     {
       var rank = 0;
@@ -93,11 +110,16 @@ namespace Flux.Permutations
       return rank;
     }
 
-    public static int[] UnrankPermutationWithRepetition(int rank, int n, int k)
+    /// <summary>
+    /// <para>Unrank permutation with repetition using the factorial number system.</para>
+    /// </summary>
+    /// <param name="rank"></param>
+    /// <param name="n"></param>
+    /// <param name="k"></param>
+    /// <param name="permutation"></param>
+    public static void UnrankPermutationWithRepetition(int rank, int n, int k, System.Span<int> permutation)
     {
       System.ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(rank, BinaryInteger.CountPermutationsWithRepetition(n, k));
-
-      var permutation = new int[k];
 
       for (int i = k - 1; i >= 0; i--)
       {
@@ -105,8 +127,6 @@ namespace Flux.Permutations
 
         rank /= n;
       }
-
-      return permutation;
     }
 
     #endregion

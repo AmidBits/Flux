@@ -70,10 +70,10 @@ namespace Flux.CoordinateSystems
     public Units.Length Altitude { get => new(m_altitude); init => m_altitude = value.Value; }
 
     /// <summary>The latitude component of the geographic position. Range from -90.0 (southern hemisphere) to 90.0 degrees (northern hemisphere).</summary>
-    public PlanetaryScience.Latitude Latitude { get => new(m_latitude, Units.AngleUnit.Radian); init => m_latitude = value.Value; }
+    public Units.Latitude Latitude { get => new(m_latitude, Units.AngleUnit.Radian); init => m_latitude = value.Value; }
 
     /// <summary>The longitude component of the geographic position. Range from -180.0 (western half) to 180.0 degrees (eastern half).</summary>
-    public PlanetaryScience.Longitude Longitude { get => new(m_longitude, Units.AngleUnit.Radian); init => m_longitude = value.Value; }
+    public Units.Longitude Longitude { get => new(m_longitude, Units.AngleUnit.Radian); init => m_longitude = value.Value; }
 
     /// <summary>The diametrical opposite of the <see cref="GeographicCoordinate"/>, i.e. the opposite side of Earth's surface. This is a plain mathematical antipode.</summary>
     public GeographicCoordinate Antipode
@@ -84,7 +84,7 @@ namespace Flux.CoordinateSystems
       );
 
     /// <summary>Creates a new <see cref="SphericalCoordinate"/> from the <see cref="GeographicCoordinate"/>.</summary>
-    public SphericalCoordinate ToSphericalCoordinate()
+    public CoordinateSystems.SphericalCoordinate ToSphericalCoordinate()
     // Translates the geographic coordinate to spherical coordinate transparently. I cannot recall the reason for the System.Math.PI involvement (see remarks).
     {
       var (lat, lon, alt) = this;
@@ -470,7 +470,7 @@ namespace Flux.CoordinateSystems
     {
       try
       {
-        if (Units.Angle.TryParseDmsNotations(latitudeDms, out var latitudes) && latitudes.Single(e => e is PlanetaryScience.Latitude) is var latitudeAngle && Units.Angle.TryParseDmsNotations(longitudeDms, out var longitudes) && longitudes.Single(e => e is PlanetaryScience.Longitude) is var longitudeAngle)
+        if (Units.Angle.TryParseDmsNotations(latitudeDms, out var latitudes) && latitudes.Single(e => e is Units.Latitude) is var latitudeAngle && Units.Angle.TryParseDmsNotations(longitudeDms, out var longitudes) && longitudes.Single(e => e is Units.Longitude) is var longitudeAngle)
         {
           result = new GeographicCoordinate(latitudeAngle.Value, Units.AngleUnit.Radian, longitudeAngle.Value, Units.AngleUnit.Radian, earthRadius);
           return true;

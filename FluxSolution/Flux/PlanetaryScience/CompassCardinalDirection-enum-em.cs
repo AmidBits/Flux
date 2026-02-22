@@ -3,7 +3,7 @@ namespace Flux
   public static partial class PlanetaryScienceExtensions
   {
     /// <summary>Returns an extrapolated Azimuth, i.e. a value in the set [0, 90, 180, 270] (every 90° notch, starting at 0), from a four value cardinal direction compass point [0, 1, 2, 3].</summary>
-    public static PlanetaryScience.Azimuth GetAzimuth(this PlanetaryScience.CompassCardinalDirection source)
+    public static Units.Azimuth GetAzimuth(this PlanetaryScience.CompassCardinalDirection source)
       => new(90 * (int)source);
 
     public static PlanetaryScience.CompassCardinalAxis ToCardinalAxis(this PlanetaryScience.CompassCardinalDirection source)

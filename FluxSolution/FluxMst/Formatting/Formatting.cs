@@ -1,8 +1,4 @@
-﻿using System.Linq;
-using Flux;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-namespace Formatting
+﻿namespace Formatting
 {
   [TestClass]
   public class Dms
@@ -11,7 +7,7 @@ namespace Formatting
     public void LatitudeFormatter()
     {
       var expected = $"40\u00B011\u203215\u2033N"; // Default is to use Unicode, so we test with Unicode.
-      var actual = new Flux.PlanetaryScience.Latitude(40.1875).ToDmsNotationString();
+      var actual = new Flux.Units.Latitude(40.1875).ToDmsNotationString();
 
       var e = expected.ToCharArray(); // For comparing odd unicode choices.
       var a = actual.ToCharArray(); // For comparing odd unicode choices.
@@ -23,7 +19,7 @@ namespace Formatting
     public void LatitudeTryParse()
     {
       var expected = 40.1875;
-      var actual = Flux.PlanetaryScience.Latitude.ParseDmsNotation("40\u00B011\u2032 15\u2033 N").Value;
+      var actual = Flux.Units.Latitude.ParseDmsNotation("40\u00B011\u2032 15\u2033 N").Value;
 
       Assert.AreEqual(expected, actual);
     }
@@ -32,7 +28,7 @@ namespace Formatting
     public void LongitudeFormatter()
     {
       var expected = $"40\u00B011\u203215\u2033W"; // Default is to use Unicode, so we test with Unicode.
-      var actual = new Flux.PlanetaryScience.Longitude(-40.1875).ToDmsNotationString();
+      var actual = new Flux.Units.Longitude(-40.1875).ToDmsNotationString();
 
       var e = expected.ToCharArray(); // For comparing odd unicode choices.
       var a = actual.ToCharArray(); // For comparing odd unicode choices.
@@ -44,7 +40,7 @@ namespace Formatting
     public void LongitudeTryParse()
     {
       var expected = -40.1875;
-      var actual = Flux.PlanetaryScience.Longitude.ParseDmsNotation("40\u00B011\u2032 15\u2033 W").Value;
+      var actual = Flux.Units.Longitude.ParseDmsNotation("40\u00B011\u2032 15\u2033 W").Value;
 
       Assert.AreEqual(expected, actual);
     }

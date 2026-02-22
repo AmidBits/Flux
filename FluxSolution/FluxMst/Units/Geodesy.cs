@@ -1,6 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-namespace Units
+﻿namespace Units
 {
   [TestClass]
   public class Geodesy
@@ -10,7 +8,7 @@ namespace Units
     {
       var a = new Flux.Units.Angle(1, Flux.Units.AngleUnit.Degree);
 
-      var u = new Flux.PlanetaryScience.Azimuth(a);
+      var u = new Flux.Units.Azimuth(a);
 
       Assert.AreEqual(a.GetUnitValue(Flux.Units.AngleUnit.Degree), u.Value);
     }
@@ -20,7 +18,7 @@ namespace Units
     {
       var a = new Flux.Units.Angle(1, Flux.Units.AngleUnit.Degree);
 
-      var u = new Flux.PlanetaryScience.Latitude(a);
+      var u = new Flux.Units.Latitude(a);
 
       Assert.AreEqual(a.GetUnitValue(Flux.Units.AngleUnit.Degree), u.Value);
     }
@@ -30,7 +28,7 @@ namespace Units
     {
       var a = new Flux.Units.Angle(1, Flux.Units.AngleUnit.Degree);
 
-      var u = new Flux.PlanetaryScience.Longitude(a);
+      var u = new Flux.Units.Longitude(a);
 
       Assert.AreEqual(a.GetUnitValue(Flux.Units.AngleUnit.Degree), u.Value);
     }

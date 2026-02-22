@@ -11,6 +11,22 @@
     extension<TFloat>(TFloat)
       where TFloat : System.Numerics.IFloatingPoint<TFloat>
     {
+      public static TFloat AssertNotNaN(TFloat value, string? paramName = null)
+      {
+        if (TFloat.IsNaN(value))
+          throw new System.ArgumentOutOfRangeException(paramName ?? nameof(value), nameof(TFloat.IsNaN));
+
+        return value;
+      }
+
+      public static TFloat AssertNotInfinity(TFloat value, string? paramName = null)
+      {
+        if (TFloat.IsInfinity(value))
+          throw new System.ArgumentOutOfRangeException(paramName ?? nameof(value), nameof(TFloat.IsInfinity));
+
+        return value;
+      }
+
       public static TFloat GetBaseEpsilon()
         => TFloat.Zero switch
         {
@@ -53,98 +69,6 @@
       /// </returns>
       public static int CompareToFractionPercent(TFloat x, TFloat percent)
         => (x - TFloat.Floor(x)).CompareTo(percent);
-
-      #endregion
-
-      #region Conversions (decimal degrees, sexagesimal unit subDivision, DM/DMS, etc.)
-
-      /// <summary>
-      /// <para>Converts a <paramref name="decimalDegrees"/>, e.g. 32.221667, to sexagesimal unit subdivisions (wholeDegrees, decimalMinutes), e.g. (32, 13.3).</para>
-      /// </summary>
-      /// <param name="decimalDegrees"></param>
-      /// <returns></returns>
-      public static (TFloat wholeDegrees, TFloat decimalMinutes) DecimalDegreesToSexagesimalUnitSubdivisionsDm(TFloat decimalDegrees)
-      {
-        var absDegrees = TFloat.Abs(decimalDegrees);
-
-        var floorAbsDegrees = TFloat.Floor(absDegrees);
-
-        var wholeDegrees = TFloat.CopySign(floorAbsDegrees, decimalDegrees);
-        var decimalMinutes = TFloat.CreateChecked(60) * (absDegrees - floorAbsDegrees);
-
-        return (wholeDegrees, decimalMinutes);
-      }
-
-      /// <summary>
-      /// <para>Converts a <paramref name="decimalDegrees"/>, e.g. 32.221667, to sexagesimal unit subdivisions (wholeDegrees, wholeMinutes, decimalSeconds), e.g. (32, 13, 18).</para>
-      /// </summary>
-      /// <param name="decimalDegrees"></param>
-      /// <returns></returns>
-      public static (TFloat wholeDegrees, TFloat wholeMinutes, TFloat decimalSeconds) DecimalDegreesToSexagesimalUnitSubdivisionsDms(TFloat decimalDegrees)
-      {
-        var (wholeDegrees, decimalMinutes) = DecimalDegreesToSexagesimalUnitSubdivisionsDm(decimalDegrees);
-
-        var wholeMinutes = TFloat.Floor(decimalMinutes);
-        var decimalSeconds = TFloat.CreateChecked(60) * (decimalMinutes - wholeMinutes);
-
-        return (wholeDegrees, wholeMinutes, decimalSeconds);
-      }
-
-      /// <summary>
-      /// <para></para>
-      /// </summary>
-      /// <param name="degrees"></param>
-      /// <param name="minutes"></param>
-      /// <returns></returns>
-      public static TFloat SexagesimalUnitSubdivisionsDmToDecimalDegrees(TFloat degrees, TFloat minutes)
-        => degrees + minutes / TFloat.CreateChecked(60);
-
-      /// <summary>
-      /// <para></para>
-      /// </summary>
-      /// <param name="degrees"></param>
-      /// <param name="minutes"></param>
-      /// <param name="seconds"></param>
-      /// <returns></returns>
-      public static TFloat SexagesimalUnitSubdivisionsDmsToDecimalDegrees(TFloat degrees, TFloat minutes, TFloat seconds)
-        => degrees + minutes / TFloat.CreateChecked(60) + seconds / TFloat.CreateChecked(3600);
-
-      ///// <summary>
-      ///// <para>Convert decimal degrees to the traditional sexagsimal unit subdivisions, a.k.a. DMS notation.</para>
-      ///// <para>One degree is divided into 60 minutes (of arc), a.k.a. arcminutes, and one minute into 60 seconds (of arc), a.k.a. arcseconds, represented by degree sign, single prime and double prime.</para>
-      ///// <para><see href="https://en.wikipedia.org/wiki/ISO_6709"/></para>
-      ///// <para><seealso href="https://en.wikipedia.org/wiki/Degree_(angle)#Subdivisions"/></para>
-      ///// <para><seealso href="https://en.wikipedia.org/wiki/Geographic_coordinate_conversion#Change_of_units_and_format"/></para>
-      ///// </summary>
-      ///// <param name="decimalDegrees"></param>
-      ///// <returns></returns>
-      //public static (TFloat wholeDegrees, TFloat decimalMinutes, TFloat wholeMinutes, TFloat decimalSeconds) DecimalDegreesToSexagesimalUnitSubdivisions(TFloat decimalDegrees)
-      //{
-      //  var sixty = TFloat.CreateChecked(60);
-
-      //  var absDegrees = TFloat.Abs(decimalDegrees);
-      //  var floorAbsDegrees = TFloat.Floor(absDegrees);
-      //  var wholeDegrees = TFloat.CopySign(floorAbsDegrees, decimalDegrees);
-      //  var decimalMinutes = sixty * (absDegrees - floorAbsDegrees);
-      //  var wholeMinutes = TFloat.Floor(decimalMinutes);
-      //  var decimalSeconds = sixty * (decimalMinutes - wholeMinutes);
-
-      //  return (wholeDegrees, decimalMinutes, wholeMinutes, decimalSeconds);
-      //}
-
-      ///// <summary>
-      ///// <para>Convert the traditional sexagsimal unit subdivisions, a.k.a. DMS notation, to decimal degrees.</para>
-      ///// <para>One degree is divided into 60 minutes (of arc), a.k.a. arcminutes, and one minute into 60 seconds (of arc), a.k.a. arcseconds, represented by degree sign, single prime and double prime.</para>
-      ///// <para><see href="https://en.wikipedia.org/wiki/ISO_6709"/></para>
-      ///// <para><seealso href="https://en.wikipedia.org/wiki/Degree_(angle)#Subdivisions"/></para>
-      ///// <para><seealso href="https://en.wikipedia.org/wiki/Geographic_coordinate_conversion#Change_of_units_and_format"/></para>
-      ///// </summary>
-      ///// <param name="degrees"></param>
-      ///// <param name="minutes"></param>
-      ///// <param name="seconds"></param>
-      ///// <returns></returns>
-      //public static TFloat SexagesimalUnitSubdivisionsToDecimalDegrees(TFloat degrees, TFloat minutes, TFloat seconds)
-      //  => degrees + minutes / TFloat.CreateChecked(60) + seconds / TFloat.CreateChecked(3600);
 
       #endregion
 

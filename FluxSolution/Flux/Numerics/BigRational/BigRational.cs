@@ -41,7 +41,7 @@ namespace Flux.Numerics
     , System.Numerics.ISubtractionOperators<BigRational, BigRational, BigRational>, System.Numerics.ISubtractionOperators<BigRational, System.Numerics.BigInteger, BigRational>
     , System.Numerics.IUnaryNegationOperators<BigRational, BigRational>
     , System.Numerics.IUnaryPlusOperators<BigRational, BigRational>
-    , Units.IValueQuantifiable<double>
+  //, Units.IValueQuantifiable<double>
   {
     public static readonly BigRational EpsilonLikeDouble = new(1, 1_000_000_000_000_000, false);
     public static readonly BigRational EpsilonLikeSingle = new(1, 1_000_000, false);

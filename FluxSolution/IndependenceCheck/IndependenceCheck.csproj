@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Built-in Types\IEnumerable-ext.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Built-in Types\IEnumerable-ext.cs" />
+  </ItemGroup>
+
+</Project>

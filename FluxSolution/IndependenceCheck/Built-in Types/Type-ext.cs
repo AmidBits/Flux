@@ -1,0 +1,394 @@
+namespace Flux
+{
+  public static partial class TypeExtensions
+  {
+    #region NotSureAboutThese (clever way of finding out, but needed..)
+
+    //extension<TNumber>(TNumber value)
+    //  where TNumber : System.Numerics.INumber<TNumber>
+    //{
+    //  #region IsNumericTypeSigned/UnsignedNumber
+
+    //  /// <summary>
+    //  /// <para>Determines whether the <paramref name="value"/> is signed.</para>
+    //  /// <para><seealso href="https://stackoverflow.com/a/13609383/3178666"/></para>
+    //  /// </summary>
+    //  /// <typeparam name="TNumber"></typeparam>
+    //  /// <param name="value"></param>
+    //  /// <returns></returns>
+    //  public bool IsNumericTypeSigned()
+    //    => typeof(TNumber) is var type
+    //    && (
+    //      type.IsNumericsISignedNumber(false)
+    //      // Or if 0.CompareTo(FIELD:MinValue) > 0, i.e. zero is greater than the field value. https://stackoverflow.com/a/13609383
+    //      || TNumber.Zero.CompareTo(type.GetField("MinValue")?.GetValue(null) ?? TNumber.Zero) > 0
+    //      // Or if 0.CompareTo(PROPERTY:NegativeOne) > 0, i.e. zero is greater than the property value.
+    //      || TNumber.Zero.CompareTo(type.GetProperty("NegativeOne", System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Public)?.GetValue(null) ?? TNumber.Zero) > 0
+    //      // Or if 0.CompareTo(PROPERTY:"System.Numerics.ISignedNumber<[FULLY_QUALIFIED_TYPE_NAME]>.NegativeOne") > 0, i.e. zero is greater than the property value.
+    //      || TNumber.Zero.CompareTo(type.GetProperty($"System.Numerics.ISignedNumber<{type.FullName}>.NegativeOne", System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Public)?.GetValue(null) ?? TNumber.Zero) > 0
+    //      // Or if type is-assignable-to System.Numerics.ISignedNumber<>.
+    //      || type.IsAssignableToGenericType(typeof(System.Numerics.ISignedNumber<>))
+    //    );
+
+    //  /// <summary>
+    //  /// <para>Determines whether the <paramref name="value"/> is unsigned.</para>
+    //  /// <para><seealso href="https://stackoverflow.com/a/13609383/3178666"/></para>
+    //  /// </summary>
+    //  /// <typeparam name="TNumber"></typeparam>
+    //  /// <param name="value"></param>
+    //  /// <returns></returns>
+    //  public bool IsNumericTypeUnsigned()
+    //    => typeof(TNumber) is var type
+    //    && (
+    //      type.IsNumericsIUnsignedNumber()
+    //      // Or if 0.CompareTo(FIELD:MinValue) <= 0, i.e. zero is equal-or-less-than the number.
+    //      || TNumber.Zero.CompareTo(type.GetField("MinValue")?.GetValue(null) ?? TNumber.One) <= 0
+    //      // Or if type is-assignable-to System.Numerics.IUnsignedNumber<>.
+    //      || type.IsAssignableToGenericType(typeof(System.Numerics.IUnsignedNumber<>))
+    //    );
+
+    //  #endregion
+    //}
+
+    #endregion
+
+    extension(System.Type type)
+    {
+      #region CreateDefaultValue
+
+      /// <summary>
+      /// <para>Uses the built-in <see cref="System.Activator.CreateInstance(System.Type)"/> to return the default value of <see cref="System.Type"/>.</para>
+      /// </summary>
+      public object? CreateDefaultValue(params object?[]? args)
+        => (type?.IsValueType ?? false)
+        ? System.Activator.CreateInstance(type, args)
+        : null;
+
+      #endregion
+
+      #region Try/GetAttribute
+
+      /// <summary>
+      /// <para>Gets all <typeparamref name="TAttribute"/> attributes of a <see cref="System.Type"/>.</para>
+      /// </summary>
+      /// <typeparam name="TAttribute"></typeparam>
+      /// <param name="source"></param>
+      /// <param name="inherit"></param>
+      /// <returns></returns>
+      public System.Collections.Generic.List<TAttribute> GetAttribute<TAttribute>(bool inherit = false)
+        where TAttribute : System.Attribute
+        => [.. type.GetCustomAttributes(typeof(TAttribute), inherit).OfType<TAttribute>()];
+
+      /// <summary>
+      /// <para>Attempts to get all <typeparamref name="TAttribute"/> attributes of a <see cref="System.Type"/> and indicates whether successful.</para>
+      /// <para><see href="https://stackoverflow.com/a/37803935/3178666"/></para>
+      /// </summary>
+      /// <typeparam name="TAttribute"></typeparam>
+      /// <param name="source"></param>
+      /// <param name="attributes"></param>
+      /// <param name="inherit"></param>
+      /// <returns></returns>
+      public bool TryGetAttribute<TAttribute>(out System.Collections.Generic.List<TAttribute> attributes, bool inherit = false)
+        where TAttribute : System.Attribute
+      {
+        try { attributes = type.GetAttribute<TAttribute>(inherit); }
+        catch { attributes = []; }
+
+        return attributes is not null && attributes.Count > 0;
+      }
+
+      #endregion
+
+      #region Try/GetCsharpKeyword
+
+      /// <summary>
+      /// <para>Get the C# keyword alias of a <see cref="System.Type"/>, if it exist.</para>
+      /// <para>This was originally constructed for numeric types but expanded somewhat over time (for various reasons).</para>
+      /// <para><see href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/"/></para>
+      /// </summary>
+      public string GetCsharpKeyword()
+        => type is null ? string.Empty
+        : (type == typeof(System.Boolean)) ? "bool"
+        : (type == typeof(System.Byte)) ? typeof(System.Byte).Name.ToLowerInvariant()
+        : (type == typeof(System.Char)) ? typeof(System.Char).Name.ToLowerInvariant()
+        : (type == typeof(System.Decimal)) ? typeof(System.Decimal).Name.ToLowerInvariant()
+        : (type == typeof(System.Double)) ? typeof(System.Double).Name.ToLowerInvariant()
+        : (type == typeof(System.Enum)) ? typeof(System.Enum).Name.ToLowerInvariant()
+        : (type == typeof(System.Int16)) ? "short"
+        : (type == typeof(System.Int32)) ? "int"
+        : (type == typeof(System.Int64)) ? "long"
+        : (type == typeof(System.IntPtr)) ? "nint"
+        : (type == typeof(System.Object)) ? typeof(System.Object).Name.ToLowerInvariant() // Reference type.
+        : (type == typeof(System.SByte)) ? "sbyte"
+        : (type == typeof(System.Single)) ? "float"
+        : (type == typeof(System.String)) ? typeof(System.String).Name.ToLowerInvariant() // Reference type.
+        : (type == typeof(System.UInt16)) ? "ushort"
+        : (type == typeof(System.UInt32)) ? "uint"
+        : (type == typeof(System.UInt64)) ? "ulong"
+        : (type == typeof(System.UIntPtr)) ? "nuint"
+        : string.Empty;
+
+      /// <summary>
+      /// <para>Attempt to get the C# keyword alias of a <see cref="System.Type"/>, if it exist.</para>
+      /// <para>This was originally constructed for numeric types but expanded somewhat over time (for various reasons).</para>
+      /// <para><see href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/"/></para>
+      /// </summary>
+      public bool TryGetCsharpKeyword(out string keyword)
+      {
+        keyword = type.GetCsharpKeyword();
+
+        return !string.IsNullOrEmpty(keyword);
+      }
+
+      #endregion
+
+      #region GetDerived
+
+      /// <summary>
+      /// <para>Creates a new sequence with the derived types of a <see cref="System.Type"/> selected from types within the type assembly.</para>
+      /// </summary>
+      public System.Collections.Generic.List<System.Type> GetDerived()
+        => type.GetDerived(type.Assembly.DefinedTypes);
+
+      /// <summary>
+      /// <para>Creates a new sequence with the derived types of a <see cref="System.Type"/> in the specified <paramref name="typeCollection"/>.</para>
+      /// </summary>
+      public System.Collections.Generic.List<System.Type> GetDerived(System.Collections.Generic.IEnumerable<System.Type> typeCollection)
+        => [.. typeCollection.Where(t => t.IsSubtypeOf(type))];
+
+      #endregion
+
+      #region GetImplements
+
+      /// <summary>
+      /// <para>Creates a new list with all implemented interfaces through the inheritance chain of a <see cref="System.Type"/>.</para>
+      /// </summary>
+      /// <returns></returns>
+      public System.Collections.Generic.List<System.Type> GetImplements()
+      {
+        System.ArgumentNullException.ThrowIfNull(type);
+
+        var list = new System.Collections.Generic.List<System.Type>();
+
+        foreach (var baseType in GetInheritance(type, true))
+          foreach (var interfaceType in baseType.GetInterfaces())
+            list.Add(interfaceType);
+
+        return list;
+      }
+
+      #endregion
+
+      #region GetInheritedTypes
+
+      /// <summary>
+      /// <para>Creates a new sequence with the inheritance "chain" of base types of a <see cref="System.Type"/>, excluding the type itself. This also does not include interfaces, only baseTypes up the chain.</para>
+      /// </summary>
+      public System.Collections.Generic.List<System.Type> GetInheritance(bool includeSource)
+      {
+        System.ArgumentNullException.ThrowIfNull(type);
+
+        var list = new System.Collections.Generic.List<System.Type>();
+
+        for (var baseType = includeSource ? type : type.BaseType; baseType != null; baseType = baseType.BaseType)
+          list.Add(baseType);
+
+        return list;
+      }
+
+      #endregion
+
+      #region GetMemberDictionary
+
+      /// <summary>
+      /// <para>Creates a new dictionary with field and property members of a <see cref="System.Type"/>.</para>
+      /// </summary>
+      /// <param name="instanceOrStatic">Pass null for static values.</param>
+      /// <param name="bindingFlags"></param>
+      /// <returns></returns>
+      public System.Collections.Generic.IDictionary<System.Reflection.MemberInfo, object?> GetMemberDictionary(object? instanceOrStatic = null, System.Reflection.BindingFlags bindingFlags = System.Reflection.BindingFlags.FlattenHierarchy | System.Reflection.BindingFlags.Instance | /*System.Reflection.BindingFlags.NonPublic | */System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static)
+      {
+        var members = new DataStructures.OrderedDictionary<System.Reflection.MemberInfo, object?>();
+
+        foreach (var mi in type.GetMembers(bindingFlags))
+        {
+          object? value = null;
+
+          if (mi is System.Reflection.FieldInfo fi)
+          {
+            if (fi.IsStatic)
+              value = fi.GetValue(null); // Get the static field value.
+            else if (instanceOrStatic is not null)
+              value = fi.GetValue(instanceOrStatic); // Get the field instance value.
+          }
+
+          if (mi is System.Reflection.PropertyInfo pi)
+          {
+            if (pi.GetMethod?.IsStatic ?? false)
+              value = pi.GetValue(null); // Get the static property value.
+            else if (instanceOrStatic is not null)
+              value = pi.GetValue(instanceOrStatic); // Get the property instance value.
+          }
+
+          if (value is not null)
+            members.Add(mi, value); // Add only when there is a value.
+        }
+
+        return members;
+      }
+
+      #endregion
+
+      #region IsAssignableToGenericType
+
+      /// <summary>
+      /// <para>Indicates whether a <see cref="System.Type"/> is assignable to the specified <paramref name="genericType"/>.</para>
+      /// <para><see href="https://stackoverflow.com/a/1075059/3178666"/></para>
+      /// <example>var isUnsignedNumber = typeof(int).IsAssignableToGenericType(typeof(System.Numerics.IUnsignedNumber&lt;>));</example>
+      /// </summary>
+      public bool IsAssignableToGenericType(System.Type genericType)
+      {
+        if (IsGenericType(type, genericType) || type.GetInterfaces().AsParallel().Any(i => IsGenericType(i, genericType)))
+          return true;
+
+        //if (type.IsGenericType && type.GetGenericTypeDefinition() == genericType) // Check the type itself.
+        //  return true;
+
+        //foreach (var interfaceType in type.GetInterfaces()) // Check implemented interfaces of the type.
+        //  if (interfaceType.IsGenericType && interfaceType.GetGenericTypeDefinition() == genericType)
+        //    return true;
+
+        return type?.BaseType?.IsAssignableToGenericType(genericType) ?? false; // Check the type that it directly inherits.
+      }
+
+      #endregion
+
+      public bool IsGenericType(System.Type genericType)
+        => type is not null && type.IsGenericType && type.GetGenericTypeDefinition() == genericType;
+
+      #region IsNumerics..
+
+      /// <summary>
+      /// <para>Indicates whether a type inherits from <see cref="System.Numerics.IBinaryInteger{TSelf}"/> and optionally is a .NET primitive.</para>
+      /// </summary>
+      /// <param name="isPrimitive"></param>
+      /// <returns></returns>
+      public bool IsIBinaryInteger(bool isPrimitive = false) => SystemNullableByPass(type) is var t && t is not null && (!isPrimitive || t.IsPrimitive) && t.GetInterfaces().Any(i => IsGenericType(i, typeof(System.Numerics.IBinaryInteger<>)));
+
+      /// <summary>
+      /// <para>Indicates whether a type inherits from <see cref="System.Numerics.IFloatingPoint{TSelf}"/> and optionally is a .NET primitive.</para>
+      /// </summary>
+      /// <param name="isPrimitive"></param>
+      /// <returns></returns>
+      public bool IsIFloatingPoint(bool isPrimitive = false) => SystemNullableByPass(type) is var t && t is not null && (!isPrimitive || t.IsPrimitive) && t.GetInterfaces().Any(i => IsGenericType(i, typeof(System.Numerics.IFloatingPoint<>)));
+
+      /// <summary>
+      /// <para>Indicates whether a type inherits from <see cref="System.Numerics.INumber{TSelf}"/> and optionally is a .NET primitive.</para>
+      /// </summary>
+      /// <param name="isPrimitive"></param>
+      /// <returns></returns>
+      public bool IsINumber(bool isPrimitive = false) => SystemNullableByPass(type) is var t && t is not null && (!isPrimitive || t.IsPrimitive) && t.GetInterfaces().Any(i => IsGenericType(i, typeof(System.Numerics.INumber<>)));
+
+      /// <summary>
+      /// <para>Indicates whether a type inherits from <see cref="System.Numerics.ISignedNumber{TSelf}"/> and optionally is a .NET primitive.</para>
+      /// </summary>
+      /// <param name="isPrimitive"></param>
+      /// <returns></returns>
+      public bool IsISignedNumber(bool isPrimitive = false) => SystemNullableByPass(type) is var t && t is not null && (!isPrimitive || t.IsPrimitive) && t.GetInterfaces().Any(i => IsGenericType(i, typeof(System.Numerics.ISignedNumber<>)));
+
+      /// <summary>
+      /// <para>Indicates whether a type inherits from <see cref="System.Numerics.IUnsignedNumber{TSelf}"/> and optionally is a .NET primitive.</para>
+      /// </summary>
+      /// <param name="isPrimitive"></param>
+      /// <returns></returns>
+      public bool IsIUnsignedNumber(bool isPrimitive = false) => SystemNullableByPass(type) is var t && t is not null && (!isPrimitive || t.IsPrimitive) && t.GetInterfaces().Any(i => IsGenericType(i, typeof(System.Numerics.IUnsignedNumber<>)));
+
+      #endregion
+
+      /// <summary>
+      /// <para>Indicates whether a <see cref="System.Type"/> is a reference type.</para>
+      /// </summary>
+      public bool IsReferenceType()
+        => type.CreateDefaultValue() is null && !IsSystemNullable(type);
+
+      /// <summary>Indicates whether a <see cref="System.Type"/> is a static class, based on it being a class, abstract and sealed.</summary>
+      public bool IsStaticClass()
+        => type is null ? throw new System.ArgumentNullException(nameof(type)) : type.IsClass && type.IsAbstract && type.IsSealed;
+
+      #region IsSub/SuperTypeOf
+
+      /// <summary>
+      /// <para>Indicates whether a <see cref="System.Type"/> is a subtype of the specified <paramref name="superType"/>.</para>
+      /// </summary>
+      /// <remarks>Similar functionality as the built-in <see cref="System.Type.IsSubclassOf(System.Type)"/> but can also handle generics. This is also the same as switching the two arguments for <see cref="IsSupertypeOf(System.Type, System.Type)"/>.</remarks>
+      public bool IsSubtypeOf(System.Type superType)
+      {
+        if (type is null || superType is null || type.Equals(superType))
+          return false;
+
+        //var stigt = superType.IsGenericTypeDefinition;
+
+        //if (type.GetInterfaces().Any(it => superType.Equals((stigt && it.IsGenericType) ? it.GetGenericTypeDefinition() : it)))
+        //  return true;
+
+        //if (GetInheritance(type, false).Any(bt => superType.Equals((stigt && bt.IsGenericType) ? bt.GetGenericTypeDefinition() : bt)))
+        //  return true;
+
+        var interfaceTypes = type.GetInterfaces();
+
+        for (var index = interfaceTypes.Length - 1; index >= 0; index--)
+        {
+          var interfaceType = interfaceTypes[index];
+
+          if (superType.IsGenericTypeDefinition && interfaceType.IsGenericType)
+            interfaceType = interfaceType.GetGenericTypeDefinition();
+
+          if (superType.Equals(interfaceType))
+            return true;
+        }
+
+        var baseTypes = GetInheritance(type, false);
+
+        for (var index = baseTypes.Count - 1; index >= 0; index--)
+        {
+          var baseType = baseTypes[index];
+
+          if (superType.IsGenericTypeDefinition && baseType.IsGenericType)
+            baseType = baseType.GetGenericTypeDefinition();
+
+          if (superType.Equals(baseType))
+            return true;
+        }
+
+        return false;
+      }
+
+      /// <summary>
+      /// <para>Indicates whether a <see cref="System.Type"/> is a supertype of the specified <paramref name="subType"/>.</para>
+      /// </summary>
+      /// <remarks>This is (literally) the same as switching the two arguments for <see cref="IsSubtypeOf(System.Type, System.Type)"/>.</remarks>
+      public bool IsSupertypeOf(System.Type subType)
+        => subType.IsSubtypeOf(type);
+
+      #endregion
+
+      /// <summary>
+      /// <para>Indicates whether a <see cref="System.Type"/> is <see cref="System.Nullable{T}"/>.</para>
+      /// </summary>
+      /// <remark>Should be able to alternatively use <c>(System.Nullable.GetUnderlyingType(typeof(T)) != null)</c>.</remark>
+      /// <returns></returns>
+      public bool IsSystemNullable()
+        => type is not null && type.IsGenericType && type.GetGenericTypeDefinition() == typeof(System.Nullable<>);
+
+      /// <summary>
+      /// <para>Indicates whether a type is <see cref="System.Nullable{T}"/>. If <see cref="System.Nullable{T}"/>, outputs the <paramref name="underlyingType"/>, and if not, the type itself.</para>
+      /// </summary>
+      /// <remark>Should be able to alternatively use <c>(System.Nullable.GetUnderlyingType(typeof(T)) != null)</c>.</remark>
+      /// <param name="underlyingType"></param>
+      /// <returns></returns>
+      public System.Type SystemNullableByPass()
+        => IsSystemNullable(type) ? System.Nullable.GetUnderlyingType(type!)! : type!;
+    }
+  }
+}
+

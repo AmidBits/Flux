@@ -4,7 +4,7 @@ namespace Flux.PlanetaryScience
   /// <see href="https://en.wikipedia.org/wiki/Points_of_the_compass#32-wind_compass_rose"/>
   public enum CompassRose32Wind
   {
-    N = 0,
+    N,
     NbE,
     NNE,
     NEbN,
