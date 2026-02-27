@@ -69,7 +69,7 @@ namespace Flux.CoordinateSystems
     /// <summary>Creates new <see cref="CartesianCoordinate"/> from the <see cref="SphericalCoordinate"/>.</summary>
     public CartesianCoordinate ToCartesianCoordinate()
     {
-      var (x, y, z) = ConvertSphericalByInclinationToCartesian3(m_inclination, m_azimuth, m_radius, m_radius, m_radius);
+      var (x, y, z) = double.SphericalToCartesian(m_radius, m_inclination, m_azimuth);
 
       return new(x, y, z);
     }
@@ -99,99 +99,18 @@ namespace Flux.CoordinateSystems
     /// <remarks>All angles in radians.</remarks>
     public System.Numerics.Vector3 ToVector3()
     {
-      var (x, y, z) = ConvertSphericalByInclinationToCartesian3(m_inclination, m_azimuth, m_radius, m_radius, m_radius);
+      var (x, y, z) = double.SphericalToCartesian(m_radius, m_inclination, m_azimuth);
 
       return new((float)x, (float)y, (float)z);
     }
 
     #region Static methods
 
-    public SphericalCoordinate CreateRandom(double radius, System.Random? rng = null)
-    {
-      rng ??= System.Random.Shared;
-
-      return new(
-        rng.NextNumber(radius),
-        rng.NextNumber(double.Pi),
-        rng.NextNumber(double.Tau)
-      );
-    }
-
-    public SphericalCoordinate CreateRandomOnSurface(double radius, System.Random? rng = null)
-    {
-      rng ??= System.Random.Shared;
-
-      return new(
-        radius,
-        rng.NextNumber(double.Pi),
-        rng.NextNumber(double.Tau)
-      );
-    }
-
-    #region Conversion methods
-
-    /// <summary>
-    /// <para>Creates cartesian 3D coordinates from the inclination and azimuth of a <see cref="SphericalCoordinate"/>, but with triaxial ellipsoid as three radii for the X (A), Y (B) and Z (C) axis.</para>
-    /// <remarks>All angles in radians.</remarks>
-    /// </summary>
-    /// <param name="inclination"></param>
-    /// <param name="azimuth"></param>
-    /// <param name="radiusA"></param>
-    /// <param name="radiusB"></param>
-    /// <param name="radiusC"></param>
-    /// <returns></returns>
-    public static (double x, double y, double z) ConvertSphericalByInclinationToCartesian3(double inclination, double azimuth, double radiusA, double radiusB, double radiusC)
-    {
-      var (si, ci) = double.SinCos(inclination);
-      var (sa, ca) = double.SinCos(azimuth);
-
-      return (
-        radiusA * si * ca,
-        radiusB * si * sa,
-        radiusC * ci
-      );
-    }
-
-    /// <summary>
-    /// <para>Creates cartesian 3D coordinates from the latitude (elevation) and longitude (azimuth) of a <see cref="SphericalCoordinate"/>, but with triaxial ellipsoid as three radii for the X (A), Y (B) and Z (C) axis.</para>
-    /// <remarks>All angles in radians.</remarks>
-    /// </summary>
-    /// <param name="latitude"></param>
-    /// <param name="longitude"></param>
-    /// <param name="radiusA"></param>
-    /// <param name="radiusB"></param>
-    /// <param name="radiusC"></param>
-    /// <returns></returns>
-    public static (double x, double y, double z) ConvertSphericalByElevationToCartesian3(double latitude, double longitude, double radiusA, double radiusB, double radiusC)
-    {
-      var (slat, clat) = double.SinCos(latitude);
-      var (slon, clon) = double.SinCos(longitude);
-
-      return (
-        radiusA * clat * clon,
-        radiusB * clat * slon,
-        radiusC * slat
-      );
-    }
-
     /// <summary>Converting from inclination to elevation is simply a quarter turn (PI / 2) minus the inclination.</summary>
     public static double ConvertInclinationToElevation(double inclination) => double.Pi / 2 - inclination;
 
     /// <summary>Converting from elevation to inclination is simply a quarter turn (PI / 2) minus the elevation.</summary>
     public static double ConvertElevationToInclination(double elevation) => double.Pi / 2 - elevation;
-
-    #endregion // Conversion methods
-
-    //public static SphericalCoordinate FromCartesianCoordinates(double x, double y, double z)
-    //{
-    //  var x2y2 = x * x + y * y;
-
-    //  return new(
-    //    double.Sqrt(x2y2 + z * z), Units.LengthUnit.Meter,
-    //    double.Atan2(double.Sqrt(x2y2), z) + double.Pi, Units.AngleUnit.Radian,
-    //    double.Atan2(y, x) + double.Pi, Units.AngleUnit.Radian
-    //  );
-    //}
 
     #endregion // Static methods
 

@@ -232,32 +232,51 @@ namespace Flux.Text.Tokenization
 
       foreach (var token in tokens ?? throw new System.ArgumentNullException(nameof(tokens)))
       {
-        switch (token)
+        if (token is MathTokenLabel l)
+          output.Add(l);
+        else if (token is MathTokenNumber n)
+          output.Add(n);
+        else if (token is MathTokenOperator o)
         {
-          case MathTokenLabel t:
-            output.Add(t);
-            break;
-          case MathTokenNumber t:
-            output.Add(t);
-            break;
-          case MathTokenOperator t:
-            while (stack.Count > 0 && stack.Peek().Name == nameof(MathTokenOperator) && t.Precedence is int tp && stack.Peek() is MathTokenOperator mots && mots.Precedence is int sp && (tp < sp || (tp == sp && t.Associativity == MathTokenOperator.AssociativityLeft)))
-            {
-              output.Add(stack.Pop());
-            }
-            stack.Push(token);
-            break;
-          case MathTokenParenthesis t when t.Value == MathTokenParenthesis.SymbolLeft:
-            stack.Push(token);
-            break;
-          case MathTokenParenthesis t when t.Value == MathTokenParenthesis.SymbolRight:
-            while (stack.Count > 0 && stack.Peek().Value != MathTokenParenthesis.SymbolLeft)
-            {
-              output.Add(stack.Pop());
-            }
-            stack.Pop();
-            break;
+          while (stack.Count > 0 && stack.Peek().Name == nameof(MathTokenOperator) && o.Precedence is int tp && stack.Peek() is MathTokenOperator mots && mots.Precedence is int sp && (tp < sp || (tp == sp && o.Associativity == MathTokenOperator.AssociativityLeft)))
+            output.Add(stack.Pop());
+          stack.Push(token);
         }
+        else if (token is MathTokenParenthesis p)
+        {
+          if (p.Value == MathTokenParenthesis.SymbolLeft)
+            stack.Push(token);
+          else if (p.Value == MathTokenParenthesis.SymbolRight)
+          {
+            while (stack.Count > 0 && stack.Peek().Value != MathTokenParenthesis.SymbolLeft)
+              output.Add(stack.Pop());
+            stack.Pop();
+          }
+          else throw new System.ArgumentException($"Invalid parenthesis token: {p.ToTokenString()}", nameof(tokens));
+        }
+
+        //switch (token)
+        //{
+        //  case MathTokenLabel l:
+        //    output.Add(l);
+        //    break;
+        //  case MathTokenNumber n:
+        //    output.Add(n);
+        //    break;
+        //  case MathTokenOperator o:
+        //    while (stack.Count > 0 && stack.Peek().Name == nameof(MathTokenOperator) && o.Precedence is int tp && stack.Peek() is MathTokenOperator mots && mots.Precedence is int sp && (tp < sp || (tp == sp && o.Associativity == MathTokenOperator.AssociativityLeft)))
+        //      output.Add(stack.Pop());
+        //    stack.Push(token);
+        //    break;
+        //  case MathTokenParenthesis pl when pl.Value == MathTokenParenthesis.SymbolLeft:
+        //    stack.Push(token);
+        //    break;
+        //  case MathTokenParenthesis pr when pr.Value == MathTokenParenthesis.SymbolRight:
+        //    while (stack.Count > 0 && stack.Peek().Value != MathTokenParenthesis.SymbolLeft)
+        //      output.Add(stack.Pop());
+        //    stack.Pop();
+        //    break;
+        //}
       }
 
       output.AddRange(stack);

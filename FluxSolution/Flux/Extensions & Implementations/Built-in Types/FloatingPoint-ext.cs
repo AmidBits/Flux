@@ -44,31 +44,29 @@
       /// <summary>
       /// <para>Compare the fraction part of <paramref name="value"/> to it's midpoint (i.e. its .5).</para>
       /// </summary>
-      /// <typeparam name="TFloat"></typeparam>
-      /// <param name="value">The value to be compared.</param>
+      /// <param name="x">The value to be compared.</param>
       /// <returns>
       /// <para>The result is similar to that of the Compare/CompareTo functionality, but exactly -1, 0, or 1 is always returned.</para>
-      /// <para>-1 if <paramref name="value"/> is less-than 0.5.</para>
-      /// <para>0 if <paramref name="value"/> is equal-to 0.5.</para>
-      /// <para>1 if <paramref name="value"/> is greater-than 0.5.</para>
+      /// <para>-1 if <paramref name="x"/> is less-than 0.5.</para>
+      /// <para>0 if <paramref name="x"/> is equal-to 0.5.</para>
+      /// <para>+1 if <paramref name="x"/> is greater-than 0.5.</para>
       /// </returns>
       public static int CompareToFractionMidpoint(TFloat x)
-        => CompareToFractionPercent(x, TFloat.CreateChecked(0.5));
+        => Number.Sign((x - TFloat.Floor(x)).CompareTo(TFloat.CreateChecked(0.5)));
 
       /// <summary>
-      /// <para>Compares the fraction part of <paramref name="value"/> to the specified <paramref name="percent"/> and returns the sign of the result (i.e. -1 means less-than, 0 means equal-to, and 1 means greater-than).</para>
+      /// <para>Compares the fraction part of <paramref name="x"/> to the specified <paramref name="percent"/> and returns the sign of the result (i.e. -1 means less-than, 0 means equal-to, and 1 means greater-than).</para>
       /// </summary>
-      /// <typeparam name="Float"></typeparam>
-      /// <param name="value">The value to be compared.</param>
+      /// <param name="x">The value to be compared.</param>
       /// <param name="percent">Percent in the range [0, 1].</param>
       /// <returns>
       /// <para>The result is similar to that of the Compare/CompareTo functionality, but exactly -1, 0, or 1 is always returned.</para>
-      /// <para>-1 when <paramref name="value"/> is less than <paramref name="percent"/>.</para>
-      /// <para>0 when <paramref name="value"/> is equal to <paramref name="percent"/>.</para>
-      /// <para>1 when <paramref name="value"/> is greater than <paramref name="percent"/>.</para>
+      /// <para>-1 when <paramref name="x"/> is less than <paramref name="percent"/>.</para>
+      /// <para>0 when <paramref name="x"/> is equal to <paramref name="percent"/>.</para>
+      /// <para>+1 when <paramref name="x"/> is greater than <paramref name="percent"/>.</para>
       /// </returns>
       public static int CompareToFractionPercent(TFloat x, TFloat percent)
-        => (x - TFloat.Floor(x)).CompareTo(percent);
+        => Number.Sign((x - TFloat.Floor(x)).CompareTo(percent));
 
       #endregion
 
@@ -178,6 +176,7 @@
         => (TFloat.CreateChecked(3) * x1 * x2 * x3) / (x1 * x2 + x2 * x3 + x3 * x1);
 
       #endregion
+
       #region HarmonicSequence.. (progression)
 
       /// <summary>
@@ -605,6 +604,38 @@
     }
 
     extension<TFloat>(TFloat)
+      where TFloat : System.Numerics.IFloatingPoint<TFloat>, System.Numerics.IFloatingPointConstants<TFloat>
+    {
+      #region SphericalToGeographic
+
+      /// <summary>Creates a new <see cref="GeographicCoordinate"/> from the <see cref="SphericalCoordinate"/>.</summary>
+      /// <remarks>All angles in radians.</remarks>
+      public static (TFloat latitude, TFloat longitude, TFloat altitude) SphericalToGeographic(TFloat radius, TFloat inclination, TFloat azimuth)
+        => new(
+          TFloat.Pi / TFloat.CreateChecked(2) - inclination,
+          azimuth,
+          radius
+        );
+
+      #endregion
+
+      #region GeographicToSpherical
+
+      /// <summary>Creates a new <see cref="SphericalCoordinate"/> from the <see cref="GeographicCoordinate"/>.</summary>
+      public static (TFloat radius, TFloat inclination, TFloat azimuth) GeographicToSpherical(TFloat latitude, TFloat longitude, TFloat altitude)
+      // Translates the geographic coordinate to spherical coordinate transparently. I cannot recall the reason for the System.Math.PI involvement (see remarks).
+      {
+        return new(
+          altitude,
+          (TFloat.Pi / TFloat.CreateChecked(2)) - latitude, // Add 90 degrees to convert from [-90..+90] (elevation, lat/lon) to [+0..+180] (inclination).
+          longitude
+        );
+      }
+
+      #endregion
+    }
+
+    extension<TFloat>(TFloat)
       where TFloat : System.Numerics.IFloatingPoint<TFloat>, System.Numerics.ILogarithmicFunctions<TFloat>
     {
       #region HarmonicSeries.. (sum)
@@ -625,6 +656,8 @@
 
       #endregion
 
+      #region RescaleLogarithmicToLinear
+
       /// <summary>
       /// <para>Rescale logarithmic (Y) to linear (X).</para>
       /// <example>
@@ -640,6 +673,8 @@
       /// <returns></returns>
       public static TFloat RescaleLogarithmicToLinear(TFloat y, TFloat y0, TFloat y1, TFloat x0, TFloat x1, TFloat radix)
         => Number.Rescale(TFloat.Log(y, radix), TFloat.Log(y0, radix), TFloat.Log(y1, radix), x0, x1); // Extract the numbers and use the standard Rescale() function for the math.
+
+      #endregion
     }
 
     extension<TFloat>(TFloat)
@@ -663,6 +698,8 @@
     extension<TFloat>(TFloat)
     where TFloat : System.Numerics.IFloatingPoint<TFloat>, System.Numerics.ILogarithmicFunctions<TFloat>, System.Numerics.IPowerFunctions<TFloat>
     {
+      #region RescaleLinearToLogarithmic
+
       /// <summary>
       /// <para>Rescale linear (X) to logarithmic (Y).</para>
       /// <example>
@@ -678,6 +715,8 @@
       /// <returns></returns>
       public static TFloat RescaleLinearToLogarithmic(TFloat x, TFloat x0, TFloat x1, TFloat y0, TFloat y1, TFloat radix)
       => TFloat.Pow(radix, Number.Rescale(x, x0, x1, TFloat.Log(y0, radix), TFloat.Log(y1, radix))); // Extract the numbers and use the standard Rescale() function for the math.
+
+      #endregion
     }
 
     extension<TFloat>(TFloat)
@@ -785,8 +824,138 @@
     }
 
     extension<TFloat>(TFloat)
+      where TFloat : System.Numerics.IFloatingPoint<TFloat>, System.Numerics.IRootFunctions<TFloat>, System.Numerics.ITrigonometricFunctions<TFloat>
+    {
+      #region CartesianToPolar
+
+      /// <summary>
+      /// <para>Creates polar-coordinates (radius, azimuth) from cartesian-coordinates (x, y).</para>
+      /// <list type="bullet">
+      /// <item>When <c><paramref name="originStandardPosition"/> = true</c> then 'right-center' is 0 (i.e. positive-x and zero-y) with a counter-clockwise positive rotation angle [0, Tau]. Looking at the face of a clock it's counter-clockwise from 3 o'clock.</item>
+      /// <item>When <c><paramref name="originStandardPosition"/> = false</c> then 'center-up' is 0 (i.e. zero-x and positive-y) with a clockwise positive rotation angle [0, Tau]. Looking at the face of a clock (or a compass) it's clockwise from 12 o'clock (noon).</item>
+      /// </list>
+      /// <para><see href="https://en.wikipedia.org/wiki/Rotation_matrix#In_two_dimensions"/></para>
+      /// </summary>
+      public static (TFloat radius, TFloat azimuth) CartesianToPolar(TFloat x, TFloat y, bool originStandardPosition)
+      {
+        var azimuth = originStandardPosition ? TrigonometricFunctions.Atan2(y, x) : TrigonometricFunctions.Atan2(x, y);
+
+        if (TFloat.IsNegative(azimuth))
+          azimuth += TFloat.Tau;
+
+        return (
+          TFloat.Sqrt(x * x + y * y),
+          azimuth
+        );
+      }
+
+      #endregion
+    }
+
+    extension<TFloat>(TFloat)
       where TFloat : System.Numerics.IFloatingPoint<TFloat>, System.Numerics.ITrigonometricFunctions<TFloat>
     {
+      #region CylindricalToCartesian
+
+      /// <summary>Creates cartesian 3D coordinates from the <see cref="CylindricalCoordinate"/>.</summary>
+      /// <remarks>All angles in radians.</remarks>
+      public static (TFloat x, TFloat y, TFloat z) CylindricalToCartesian(TFloat radius, TFloat azimuth, TFloat height)
+      {
+        var (sin, cos) = TFloat.SinCos(azimuth);
+
+        return (
+          radius * cos,
+          radius * sin,
+          height
+        );
+      }
+
+      #endregion
+
+      #region SphericalToCartesian
+
+      /// <summary>
+      /// <para>Creates cartesian-coordinates from spherical-coordinates.</para>
+      /// <remarks>All angles in radians.</remarks>
+      /// </summary>
+      /// <param name="radius"></param>
+      /// <param name="inclination"></param>
+      /// <param name="azimuth"></param>
+      /// <returns></returns>
+      public static (TFloat x, TFloat y, TFloat z) SphericalToCartesian(TFloat radius, TFloat inclination, TFloat azimuth)
+      {
+        var (si, ci) = TFloat.SinCos(inclination);
+        var (sa, ca) = TFloat.SinCos(azimuth);
+
+        return (
+          radius * si * ca,
+          radius * si * sa,
+          radius * ci
+        );
+      }
+
+      #endregion
+
+      /// <summary>
+      /// <para>Creates cartesian-coordinates from spherical-coordinates, but as a triaxial ellipsoid with three radii for each of the X (A), Y (B) and Z (C) axis, instead of a single radius.</para>
+      /// <remarks>All angles in radians.</remarks>
+      /// </summary>
+      /// <param name="radiusA"></param>
+      /// <param name="radiusB"></param>
+      /// <param name="radiusC"></param>
+      /// <param name="polarAngle">The polar angle (inclination). <c>[0, Pi]</c></param>
+      /// <param name="azimuth">The azimuth angle. <c>[0, Tau)</c></param>
+      /// <returns></returns>
+      public static (double x, double y, double z) SphericalTriaxialToCartesian(double radiusA, double radiusB, double radiusC, double polarAngle, double azimuth)
+      {
+        var (si, ci) = double.SinCos(polarAngle);
+        var (sa, ca) = double.SinCos(azimuth);
+
+        return (
+          radiusA * si * ca,
+          radiusB * si * sa,
+          radiusC * ci
+        );
+      }
+
+      ///// <summary>
+      ///// <para>Creates cartesian-coordinates from the latitude (elevation) and longitude (azimuth) of a spherical-coordinate, but with triaxial ellipsoid as three radii for the X (A), Y (B) and Z (C) axis instead of just a single radius.</para>
+      ///// <remarks>All angles in radians.</remarks>
+      ///// </summary>
+      ///// <param name="radiusA"></param>
+      ///// <param name="radiusB"></param>
+      ///// <param name="radiusC"></param>
+      ///// <param name="latitude">The reduced latitude, parametric latitude, or eccentric anomaly. <c>[-Pi/2, +Pi/2]</c></param>
+      ///// <param name="longitude">The azimuth or longitude. <c>[0, Tau)</c></param>
+      ///// <returns></returns>
+      //public static (double x, double y, double z) SphericalByEquatorToCartesian(double radiusA, double radiusB, double radiusC, double latitude, double longitude)
+      //{
+      //  var (slat, clat) = double.SinCos(latitude);
+      //  var (slon, clon) = double.SinCos(longitude);
+
+      //  return (
+      //    radiusA * clat * clon,
+      //    radiusB * clat * slon,
+      //    radiusC * slat
+      //  );
+      //}
+
+      #region SphericalToCylindrical
+
+      /// <summary>Creates a new <see cref="CylindricalCoordinate"/> from the <see cref="SphericalCoordinate"/>.</summary>
+      public static (TFloat radius, TFloat azimuth, TFloat height) SphericalToCylindrical(TFloat radius, TFloat inclination, TFloat azimuth)
+      {
+        var (si, ci) = TFloat.SinCos(inclination);
+
+        return new(
+          radius * si,
+          azimuth,
+          radius * ci
+        );
+      }
+
+      #endregion
+
       #region Interpolate.. (cosine)
 
       /// <summary>
@@ -803,6 +972,78 @@
         var mu2 = (TFloat.One - TFloat.CosPi(mu)) / TFloat.CreateChecked(2);
 
         return InterpolateLinear(y0, y1, mu2);
+      }
+
+      #endregion
+
+      #region PolarToCartesian
+
+      /// <summary>
+      /// <para>Creates cartesian-coordinates (x, y) from polar-coordinates (radius, azimuth).</para>
+      /// <list type="bullet">
+      /// <item>When <c><paramref name="originStandardPosition"/> = true</c> then 'right-center' is 0 (i.e. positive-x and zero-y) with a counter-clockwise positive rotation angle [0, PI*2]. Looking at the face of a clock it's counter-clockwise from 3 o'clock.</item>
+      /// <item>When <c><paramref name="originStandardPosition"/> = false</c> then 'center-up' is 0 (i.e. zero-x and positive-y) with a clockwise positive rotation angle [0, PI*2]. Looking at the face of a clock (or a compass) it's clockwise from 12 o'clock (noon).</item>
+      /// </list>
+      /// <para><see href="https://en.wikipedia.org/wiki/Rotation_matrix#In_two_dimensions"/></para>
+      /// </summary>
+      public static (TFloat x, TFloat y) PolarToCartesian(TFloat radius, TFloat azimuth, bool originStandardPosition)
+      {
+        var (sin, cos) = TFloat.SinCos(azimuth);
+
+        return originStandardPosition ? (radius * cos, radius * sin) : (radius * sin, radius * cos);
+      }
+
+      #endregion
+    }
+
+    extension<TFloat>(TFloat)
+      where TFloat : System.Numerics.IFloatingPointIeee754<TFloat>
+    {
+      #region CartesianToCylindrical
+
+      /// <summary>Creates a new <see cref="CylindricalCoordinate"/> from a <see cref="CartesianCoordinate"/> and its (X, Y, Z) components.</summary>
+      public static (TFloat radius, TFloat azimuth, TFloat height) CartesianToCylindrical(TFloat x, TFloat y, TFloat z)
+      => (
+        TFloat.Sqrt(x * x + y * y),
+        TFloat.Atan2(y, x) % TFloat.Pi,
+        z
+      );
+
+      #endregion
+
+      #region CartesianToSpherical
+
+      /// <summary>Creates a new <see cref="SphericalCoordinate"/> from a <see cref="CartesianCoordinate"/> and its (X, Y, Z) components.</summary>
+      public static (TFloat radius, TFloat inclination, TFloat azimuth) CartesianToSpherical(TFloat x, TFloat y, TFloat z)
+      {
+        var x2y2 = x * x + y * y;
+
+        return (
+          TFloat.Sqrt(x2y2 + z * z),
+          TFloat.Atan2(TFloat.Sqrt(x2y2), z),
+          TFloat.Atan2(y, x)
+        );
+      }
+
+      #endregion // Conversion methods
+
+      #region CylindricalToSpherical
+
+      /// <summary>
+      /// <para>Creates a new <see cref="SphericalCoordinate"/> from the <see cref="CylindricalCoordinate"/>.</para>
+      /// <para><see href="https://en.wikipedia.org/wiki/Cylindrical_coordinate_system#Spherical_coordinates"/></para>
+      /// </summary>
+      /// <remarks>All angles in radians.</remarks>
+      public static (TFloat radius, TFloat inclination, TFloat azimuth) CylindricalToSpherical(TFloat radius, TFloat azimuth, TFloat height)
+      {
+        var r = radius;
+        var h = height;
+
+        return new(
+          TFloat.Sqrt(r * r + h * h),
+          (TFloat.Pi / TFloat.CreateChecked(2)) - TFloat.Atan(h / r), // "double.Atan(m_radius / m_height);", does NOT work for Takapau, New Zealand. Have to use elevation math instead of inclination, and investigate.
+          azimuth
+        );
       }
 
       #endregion

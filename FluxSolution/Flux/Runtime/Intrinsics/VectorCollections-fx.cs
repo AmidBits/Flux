@@ -203,16 +203,16 @@ namespace Flux
     #region ToString..
 
     public static string ToStringXY(this System.Collections.Generic.IEnumerable<System.Runtime.Intrinsics.Vector128<double>> source, string? format, IFormatProvider? formatProvider)
-      => string.Join(Static.CommaSpace, source.Select(v => v.ToStringXY(format, formatProvider)));
+      => string.Join(", ", source.Select(v => v.ToStringXY(format, formatProvider)));
 
     public static string ToStringXY(this System.Collections.Generic.IEnumerable<System.Runtime.Intrinsics.Vector256<double>> source, string? format, IFormatProvider? formatProvider)
-      => string.Join(Static.CommaSpace, source.Select(v => v.ToStringXY(format, formatProvider)));
+      => string.Join(", ", source.Select(v => v.ToStringXY(format, formatProvider)));
 
     public static string ToStringXYZ(this System.Collections.Generic.IEnumerable<System.Runtime.Intrinsics.Vector256<double>> source, string? format, IFormatProvider? formatProvider)
-      => string.Join(Static.CommaSpace, source.Select(v => v.ToStringXYZ(format, formatProvider)));
+      => string.Join(", ", source.Select(v => v.ToStringXYZ(format, formatProvider)));
 
     public static string ToStringXYZW(this System.Collections.Generic.IEnumerable<System.Runtime.Intrinsics.Vector256<double>> source, string? format, IFormatProvider? formatProvider)
-      => string.Join(Static.CommaSpace, source.Select(v => v.ToStringXYZW(format, formatProvider)));
+      => string.Join(", ", source.Select(v => v.ToStringXYZW(format, formatProvider)));
 
     #endregion ToString..
   }

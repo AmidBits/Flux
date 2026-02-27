@@ -2,17 +2,6 @@ namespace Flux
 {
   public static partial class Number
   {
-    /// <summary>
-    /// <para>Sign step function that guarantees [-<typeparamref name="TNumber"/>.One, 0, <typeparamref name="TNumber"/>.One] for output (not just less-than-zero and greater-than-zero).</para>
-    /// <para><see href="https://en.wikipedia.org/wiki/Sign_function"/></para>
-    /// <para><seealso href="https://en.wikipedia.org/wiki/Step_function"/></para>
-    /// </summary>
-    /// <remarks>LT zero = -1, EQ zero = 0, GT zero = +1.</remarks>
-    /// <returns></returns>
-    public static TNumber Sign<TNumber>(TNumber value)
-      where TNumber : System.Numerics.INumber<TNumber>
-      => TNumber.IsZero(value) ? value : TNumber.CopySign(TNumber.One, value);
-
     extension<TNumber>(TNumber)
       where TNumber : System.Numerics.INumber<TNumber>
     {
@@ -816,6 +805,19 @@ namespace Flux
 
       #endregion
 
+      #region Sign
+
+      /// <summary>
+      /// <para>Sign step function that guarantees one of {-<typeparamref name="TNumber"/>.One, <typeparamref name="TNumber"/>.Zero, <typeparamref name="TNumber"/>.One} for output (not just less-than-zero and greater-than-zero).</para>
+      /// <para><see href="https://en.wikipedia.org/wiki/Sign_function"/></para>
+      /// <para><seealso href="https://en.wikipedia.org/wiki/Step_function"/></para>
+      /// </summary>
+      /// <returns>Exactly -<typeparamref name="TNumber"/>.One (when <paramref name="value"/> is negative), <typeparamref name="TNumber"/>.Zero (when <paramref name="value"/> is zero) or +<typeparamref name="TNumber"/>.One (when <paramref name="value"/> is positive).</returns>
+      public static TNumber Sign(TNumber value)
+        => TNumber.IsZero(value) ? value : TNumber.CopySign(TNumber.One, value);
+
+      #endregion
+
       #region Spread
 
       /// <summary>
@@ -893,8 +895,7 @@ namespace Flux
       /// <para><see href="https://en.wikipedia.org/wiki/Step_function"/></para>
       /// <para><seealso href="https://en.wikipedia.org/wiki/Sign_function"/></para>
       /// </summary>
-      /// <remarks>LT 0 (negative) = -1, GTE 0 (not negative) = +1.</remarks>
-      /// <returns></returns>
+      /// <returns>Exactly -<typeparamref name="TNumber"/>.One (when <paramref name="value"/> is negative) or +<typeparamref name="TNumber"/>.One (when <paramref name="value"/> is positive). Zero is considered positive in the context of this function.</returns>
       public static TNumber UnitSign(TNumber value)
         => TNumber.CopySign(TNumber.One, value);
 

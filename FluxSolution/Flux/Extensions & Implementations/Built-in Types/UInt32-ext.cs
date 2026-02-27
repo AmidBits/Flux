@@ -10,6 +10,8 @@ namespace Flux
       [System.CLSCompliant(false)]
       public static uint MaxPrimeNumber => 4294967291u;
 
+      #region ReverseBits..
+
       /// <summary>
       /// <para>Bit-reversal of a uint, i.e. trade place of bit 31 with bit 0 and bit 30 with bit 1 and so on.</para>
       /// </summary>
@@ -42,6 +44,8 @@ namespace Flux
         // value = ((value & 0xFF00FF00u) >> 0x08) | ((value & 0x00FF00FFu) << 0x08);
         // value = ((value & 0xFFFF0000u) >> 0x10) | ((value & 0x0000FFFFu) << 0x10);
       }
+
+      #endregion
     }
   }
 }

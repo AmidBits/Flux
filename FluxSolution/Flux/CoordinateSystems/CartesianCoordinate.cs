@@ -88,7 +88,7 @@ namespace Flux.CoordinateSystems
     {
       var (x, y, z) = this;
 
-      var (radius, azimuth, height) = ConvertCartesian3ToCylindrical(x, y, z);
+      var (radius, azimuth, height) = double.CartesianToCylindrical(x, y, z);
 
       return new(radius, azimuth, height);
     }
@@ -117,7 +117,7 @@ namespace Flux.CoordinateSystems
     {
       var (x, y) = this;
 
-      var (radius, angle) = PolarCoordinate.ConvertCartesian2ToPolar(x, y);
+      var (radius, angle) = double.CartesianToPolar(x, y, true);
 
       return new(radius, angle);
     }
@@ -127,7 +127,7 @@ namespace Flux.CoordinateSystems
     {
       var (x, y) = this;
 
-      var (radius, angle) = PolarCoordinate.ConvertCartesian2ToPolarEx(x, y);
+      var (radius, angle) = double.CartesianToPolar(x, y, false);
 
       return new(radius, angle);
     }
@@ -137,7 +137,7 @@ namespace Flux.CoordinateSystems
     {
       var (x, y, z) = this;
 
-      var (radius, inclination, azimuth) = ConvertCartesian3ToSpherical(x, y, z);
+      var (radius, inclination, azimuth) = double.CartesianToSpherical(x, y, z);
 
       return new(radius, inclination, azimuth);
     }
@@ -186,89 +186,6 @@ namespace Flux.CoordinateSystems
 
     /// <summary>Creates a new <see cref="System.Runtime.Intrinsics.Vector256{T}"/> from a <see cref="CoordinateSystems.CartesianCoordinate"/> (with 3 (x, y, z) + 1 optional component).</summary>
     public System.Runtime.Intrinsics.Vector256<double> ToVector256D3(double w = 0) => System.Runtime.Intrinsics.Vector256.Create(X.Value, Y.Value, Z.Value, w);
-
-    #region Static methods
-
-    #region Conversion methods
-
-    /// <summary>Creates a new <see cref="CylindricalCoordinate"/> from a <see cref="CartesianCoordinate"/> and its (X, Y, Z) components.</summary>
-    public static (double radius, double azimuth, double height) ConvertCartesian3ToCylindrical(double x, double y, double z)
-      => (
-        double.Sqrt(x * x + y * y),
-        double.Atan2(y, x) % double.Pi,
-        z
-      );
-
-
-    /// <summary>Creates a new <see cref="SphericalCoordinate"/> from a <see cref="CartesianCoordinate"/> and its (X, Y, Z) components.</summary>
-    public static (double radius, double inclination, double azimuth) ConvertCartesian3ToSpherical(double x, double y, double z)
-    {
-      var x2y2 = x * x + y * y;
-
-      return (
-        double.Sqrt(x2y2 + z * z),
-        double.Atan2(double.Sqrt(x2y2), z),
-        double.Atan2(y, x)
-      );
-    }
-
-    #endregion // Conversion methods
-
-    /// <summary>
-    /// <para>Converts cartesian 2D (<paramref name="x"/>, <paramref name="y"/>) coordinates to a linear index of a grid with the <paramref name="width"/> (the length of the x-axis).</para>
-    /// </summary>
-    public static TSelf ConvertCartesian2ToLinearIndex<TSelf>(TSelf x, TSelf y, TSelf width)
-      where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      => x + (y * width);
-
-    /// <summary>
-    /// <para>Converts cartesian 3D (<paramref name="x"/>, <paramref name="y"/>, <paramref name="z"/>) coordinates to a linear index of a cube with the <paramref name="width"/> (the length of the x-axis) and <paramref name="height"/> (the length of the y-axis).</para>
-    /// </summary>
-    public static TSelf ConvertCartesian3ToLinearIndex<TSelf>(TSelf x, TSelf y, TSelf z, TSelf width, TSelf height)
-      where TSelf : System.Numerics.IBinaryInteger<TSelf>
-      => x + (y * width) + (z * width * height);
-
-    /// <summary>
-    /// <para>Converts a <paramref name="linearIndex"/> of a grid with the <paramref name="width"/> (the length of the x-axis) to cartesian 2D (x, y) coordinates.</para>
-    /// </summary>
-    public static (TSelf x, TSelf y) ConvertLinearIndexToCartesian2<TSelf>(TSelf linearIndex, TSelf width)
-      where TSelf : System.Numerics.IBinaryInteger<TSelf>
-       => (
-        linearIndex % width,
-        linearIndex / width
-      );
-
-    /// <summary>
-    /// <para>Converts a <paramref name="linearIndex"/> of a cube with the <paramref name="width"/> (the length of the x-axis) and <paramref name="height"/> (the length of the y-axis), to cartesian 3D (x, y, z) coordinates.</para>
-    /// </summary>
-    public static (TSelf x, TSelf y, TSelf z) ConvertLinearIndexToCartesian3<TSelf>(TSelf linearIndex, TSelf width, TSelf height)
-      where TSelf : System.Numerics.IBinaryInteger<TSelf>
-    {
-      var xy = width * height;
-      var irxy = linearIndex % xy;
-
-      return (
-        irxy % width,
-        irxy / width,
-        linearIndex / xy
-      );
-    }
-
-    public static CartesianCoordinate CreateRandom(double maxX, double maxY, System.Random? rng = null)
-    {
-      rng ??= System.Random.Shared;
-
-      return new(rng.NextNumber(maxX), rng.NextNumber(maxY));
-    }
-
-    public static CartesianCoordinate CreateRandom(double maxX, double maxY, double maxZ, System.Random? rng = null)
-    {
-      rng ??= System.Random.Shared;
-
-      return new(rng.NextNumber(maxX), rng.NextNumber(maxY), rng.NextNumber(maxZ));
-    }
-
-    #endregion // Static methods
 
     #region Implemented interfaces
 

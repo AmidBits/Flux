@@ -115,6 +115,22 @@
 
       #endregion
 
+      #region CartesianToLinearIndex
+
+      /// <summary>
+      /// <para>Converts cartesian-coordinates (<paramref name="x"/>, <paramref name="y"/>) to a linear index of a grid with the specified <paramref name="width"/> (the length of the x-axis).</para>
+      /// </summary>
+      public static TInteger CartesianToLinearIndex(TInteger x, TInteger y, TInteger width)
+        => x + (y * width);
+
+      /// <summary>
+      /// <para>Converts cartesian-coordinates (<paramref name="x"/>, <paramref name="y"/>, <paramref name="z"/>) to a linear index of a cube with the specified <paramref name="width"/> (the length of the x-axis) and <paramref name="height"/> (the length of the y-axis).</para>
+      /// </summary>
+      public static TInteger CartesianToLinearIndex(TInteger x, TInteger y, TInteger z, TInteger width, TInteger height)
+        => x + (y * width) + (z * width * height);
+
+      #endregion
+
       #region Centered Polygonal number
 
       /// <summary>
@@ -149,6 +165,24 @@
       /// <remarks>This function runs indefinitely, if allowed.</remarks>
       public static System.Collections.Generic.IEnumerable<TInteger> GetCenteredPolygonalNumberSequence(TInteger k)
         => Number.ArithmeticSequence(TInteger.Zero, TInteger.One).Select(n => GetCenteredPolygonalNumber(k, n));
+
+      #endregion
+
+      #region Contains..1Bits
+
+      /// <summary>
+      /// <para>Checks whether a <paramref name="value"/> contains all 1-bits of a <paramref name="bitMask"/>.</para>
+      /// </summary>
+      public static bool ContainsAll1Bits<TBitMask>(TInteger value, TBitMask bitMask)
+        where TBitMask : System.Numerics.IBinaryInteger<TBitMask>
+        => TInteger.IsZero(~value & TInteger.CreateChecked(bitMask));
+
+      /// <summary>
+      /// <para>Checks whether a <paramref name="value"/> contains any 1-bits of a <paramref name="bitMask"/>.</para>
+      /// </summary>
+      public static bool ContainsAny1Bits<TBitMask>(TInteger value, TBitMask bitMask)
+        where TBitMask : System.Numerics.IBinaryInteger<TBitMask>
+        => !TInteger.IsZero(value & TInteger.CreateChecked(bitMask));
 
       #endregion
 
@@ -691,14 +725,14 @@
       /// <para>Converts a binary number to a reflected binary Gray code.</para>
       /// <see href="https://en.wikipedia.org/wiki/Gray_code"/>
       /// </summary>
-      public static TInteger ConvertBinaryToGray(TInteger value)
+      public static TInteger BinaryToGray(TInteger value)
         => value ^ (value >>> 1);
 
       /// <summary>
       /// <para>Converts a reflected binary gray code to a binary number.</para>
       /// <see href="https://en.wikipedia.org/wiki/Gray_code"/>
       /// </summary>
-      public static TInteger ConvertGrayToBinary(TInteger value)
+      public static TInteger GrayToBinary(TInteger value)
       {
         var mask = value;
 
@@ -1812,6 +1846,41 @@
 
       #endregion
 
+      #region LinearIndexToCartesian
+
+      /// <summary>
+      /// <para>Converts a <paramref name="linearIndex"/> of a grid with the specified <paramref name="width"/> (the length of the x-axis) to cartesian-coordinates (x, y).</para>
+      /// </summary>
+      /// <param name="linearIndex"></param>
+      /// <param name="width"></param>
+      /// <returns>A 2D cartesian-coordinate.</returns>
+      public static (TInteger x, TInteger y) LinearIndexToCartesian(TInteger linearIndex, TInteger width)
+         => (
+          linearIndex % width,
+          linearIndex / width
+        );
+
+      /// <summary>
+      /// <para>Converts a <paramref name="linearIndex"/> of a cube with the <paramref name="width"/> (the length of the x-axis) and <paramref name="height"/> (the length of the y-axis), to cartesian 3D (x, y, z) coordinates.</para>
+      /// </summary>
+      /// <param name="linearIndex"></param>
+      /// <param name="width"></param>
+      /// <param name="height"></param>
+      /// <returns>A 3D cartesian-coordinate.</returns>
+      public static (TInteger x, TInteger y, TInteger z) LinearIndexToCartesian(TInteger linearIndex, TInteger width, TInteger height)
+      {
+        var xy = width * height;
+        var irxy = linearIndex % xy;
+
+        return (
+          irxy % width,
+          irxy / width,
+          linearIndex / xy
+        );
+      }
+
+      #endregion
+
       #region Modular arithmetic
 
       /// <summary>
@@ -2736,19 +2805,19 @@
       /// <para>Most types returns the underlying storage size of the type itself, e.g. <see langword="int"/> = 32 or <see langword="long"/> = 64.</para>
       /// </summary>
       /// <remarks>
-      /// <para>Some data types, e.g. <see cref="System.Numerics.BigInteger"/>, use dynamic storage strategies, making <see cref="GetBitCount{TValue}"/> dynamic, and depends on the actual number stored.</para>
+      /// <para>Some data types, e.g. <see cref="System.Numerics.BigInteger"/>, use dynamic storage strategies.</para>
       /// </remarks>
       public int GetBitCount()
         => value.GetByteCount() * 8;
 
-      ///// <summary>
-      ///// <para>Using the built-in <see cref="System.Numerics.IBinaryInteger{TInteger}.GetByteCount(TInteger)"/>.</para>
-      ///// </summary>
-      ///// <remarks>
-      ///// <para>Note that some datatypes, e.g. <see cref="System.Numerics.BigInteger"/>, use dynamic storage strategies, making <see cref="GetByteCount{TValue}"/> dynamic also.</para>
-      ///// </remarks>
-      //public int GetByteCount()
-      //  => value.GetByteCount();
+      /// <summary>
+      /// <para>Using the built-in <see cref="System.Numerics.IBinaryInteger{TInteger}.GetByteCount()"/>.</para>
+      /// </summary>
+      /// <remarks>
+      /// <para>Note that some datatypes, e.g. <see cref="System.Numerics.BigInteger"/>, use dynamic storage strategies.</para>
+      /// </remarks>
+      public int GetByteCount()
+        => value.GetByteCount();
 
       ///// <summary>
       ///// <para>Using the built-in <see cref="System.Numerics.IBinaryInteger{TInteger}.PopCount(TInteger)"/>.</para>
@@ -3379,3 +3448,6 @@
     #endregion
   }
 }
+
+// <seealso cref="http://aggregate.org/MAGIC/"/>
+// <seealso cref="http://graphics.stanford.edu/~seander/bithacks.html"/>

@@ -50,14 +50,14 @@ namespace Flux.Temporal
       }
 
       sb.Append(DayOfWeek.ToString());
-      sb.Append(Static.CommaSpace);
+      sb.Append(", ");
 
       var (year, month, day) = GetParts(calendar); // Add 0.5 to the julian date value for date strings, because of the 12 noon convention in a Julian Date.
 
       sb.Append(System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(month));
       sb.Append(' ');
       sb.Append(day);
-      sb.Append(Static.CommaSpace);
+      sb.Append(", ");
       sb.Append(year);
 
       if (year <= 0 && calendar == TemporalCalendar.GregorianCalendar)

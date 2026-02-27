@@ -65,7 +65,7 @@ namespace Flux.CoordinateSystems
 
     public CartesianCoordinate ToCartesianCoordinate()
     {
-      var (x, y, z) = ConvertCylindricalToCartesian3(m_radius, m_azimuth, m_height);
+      var (x, y, z) = double.CylindricalToCartesian(m_radius, m_azimuth, m_height);
 
       return new(x, y, z);
     }
@@ -113,23 +113,12 @@ namespace Flux.CoordinateSystems
     /// <remarks>All angles in radians.</remarks>
     public System.Numerics.Vector3 ToVector3()
     {
-      var (x, y, z) = ConvertCylindricalToCartesian3(m_radius, m_azimuth, m_height);
+      var (x, y, z) = double.CylindricalToCartesian(m_radius, m_azimuth, m_height);
 
       return new((float)x, (float)y, (float)z);
     }
 
     #region Static methods
-
-    public CylindricalCoordinate CreateRandom(double radius, double height, System.Random? rng = null)
-    {
-      rng ??= System.Random.Shared;
-
-      return new(
-        rng.NextNumber(radius),
-        rng.NextNumber(double.Tau),
-        rng.NextNumber(height)
-      );
-    }
 
     public CylindricalCoordinate CreateRandomOnSurface(double radius, double height, System.Random? rng = null)
     {
@@ -143,33 +132,6 @@ namespace Flux.CoordinateSystems
         rORh ? rng.NextNumber(height) : (rng.NextBoolean() ? height : 0) // Either random, or fixed (at one of the poles).
       );
     }
-
-    #region Conversion methods
-
-    /// <summary>Creates cartesian 3D coordinates from the <see cref="CylindricalCoordinate"/>.</summary>
-    /// <remarks>All angles in radians.</remarks>
-    public static (double x, double y, double z) ConvertCylindricalToCartesian3(double radius, double azimuth, double height)
-    {
-      var (sin, cos) = double.SinCos(azimuth);
-      var r = radius;
-
-      return (
-        r * cos,
-        r * sin,
-        height
-      );
-    }
-
-    #endregion // Conversion methods
-
-    //public static CylindricalCoordinate FromCartesianCoordinates(double x, double y, double z)
-    //{
-    //  return new(
-    //    double.Sqrt(x * x + y * y), Units.LengthUnit.Meter,
-    //    (double.Atan2(y, x) + double.Tau) % double.Tau, Units.AngleUnit.Radian,
-    //    z, Units.LengthUnit.Meter
-    //  );
-    //}
 
     #endregion // Static methods
 

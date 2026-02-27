@@ -1,4 +1,4 @@
-namespace Flux.Collections.ObjectModel
+namespace Flux
 {
   /// <summary>An ObservableCollection class with added functionality for items PropertyChanged causing OnCollectionChanged to be fired when item fields/properties are changed.</summary>
   public sealed class ObservableCollectionEx<T>

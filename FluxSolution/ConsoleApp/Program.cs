@@ -105,17 +105,6 @@ namespace ConsoleApp
 
     }
 
-    private static void Testerino(System.UInt128 maxN)
-    {
-      for (var n = System.UInt128.Zero; n <= maxN; n++)
-      {
-        for (var k = System.UInt128.Zero; k <= n; k++)
-          System.Console.Write($"{BinaryInteger.BinomialCoefficient(n, k)} ");
-
-        System.Console.WriteLine();
-      }
-    }
-
     //private static void TestDspWithPlot()
     //{
     //  var wg = new Flux.Dsp.WaveGenerators.TriangleWave();
@@ -149,59 +138,6 @@ namespace ConsoleApp
 
     private static double LoadBearingCapacityAluExt(double sectionDiameter, double wallThickness, double length, double tensileStrength)
       => 0.44 * (sectionDiameter + wallThickness) * length * tensileStrength;
-
-    //public static System.Collections.Generic.List<Flux.Numerics.BigRational> ToCfes(double n, int maxIterations = 100)
-    //{
-    //  var a = new System.Collections.Generic.List<Flux.Numerics.BigRational>();
-
-    //  var iteration = 0;
-
-    //  int w;
-    //  do
-    //  {
-    //    w = (int)double.Truncate(n);
-    //    var f = n - w;
-
-    //    a.Add(new Flux.Numerics.BigRational(w));
-
-    //    n = 1 / f;
-    //  }
-    //  while (w != 0 && iteration++ < maxIterations);
-
-    //  return a;
-    //}
-
-    //public static Flux.Numerics.BigRational FromCfes(System.Collections.Generic.List<Flux.Numerics.BigRational> cfe)
-    //{
-    //  var m = Flux.Numerics.BigRational.Zero;
-
-    //  for (var i = cfe.Count - 1; i >= 0; i--)
-    //  {
-    //    var c = cfe[i];
-
-    //    m = Flux.Numerics.BigRational.IsZero(m) ? c : c + Flux.Numerics.BigRational.One / m;
-    //  }
-
-    //  return m;
-    //}
-
-    //public static System.Collections.Generic.List<int> Fractions(int p, int q, int maxIterations = 100)
-    //{
-    //  var a = new System.Collections.Generic.List<int>();
-
-    //  var iteration = 0;
-
-    //  while (q != 0 && iteration < maxIterations)
-    //  {
-    //    a.Add(p / q);
-
-    //    (p, q) = (q, p % q);
-
-    //    iteration++;
-    //  }
-
-    //  return a;
-    //}
 
     #endregion // Stuff
 
@@ -333,12 +269,9 @@ namespace ConsoleApp
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
-      var wa = double.WrapAround(360, 0, 360);
 
-      var a0 = new Flux.Units.Angle(225, Flux.Units.AngleUnit.Degree);
-      var a1 = a0.ReverseRotation(Flux.Units.Angle.QuarterTurn);
 
-      return;
+
 
       //var gosps = System.Runtime.InteropServices.RuntimeInformation.GetOsPlatforms();
       //var osp = System.Runtime.InteropServices.RuntimeInformation.OsPlatform;

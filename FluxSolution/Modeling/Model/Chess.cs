@@ -48,16 +48,16 @@ namespace Flux.Model
 
     public static (string column, string row) IndexToLabel(int index)
     {
-      var (x, y) = CoordinateSystems.CartesianCoordinate.ConvertLinearIndexToCartesian2(index, BoardSize.X);
+      var (x, y) = int.LinearIndexToCartesian(index, BoardSize.X);
 
-      return (Files[(int)x], Ranks[(int)y]);
+      return (Files[x], Ranks[y]);
     }
 
     public static System.Drawing.Point IndexToVector(int index)
     {
-      var (x, y) = CoordinateSystems.CartesianCoordinate.ConvertLinearIndexToCartesian2(index, BoardSize.X);
+      var (x, y) = int.LinearIndexToCartesian(index, BoardSize.X);
 
-      return new System.Drawing.Point((int)x, (int)y);
+      return new System.Drawing.Point(x, y);
     }
 
     public static int LabelToIndex(string column, string row)
@@ -65,14 +65,15 @@ namespace Flux.Model
       var x = System.Array.IndexOf(Files, column);
       var y = System.Array.IndexOf(Ranks, row);
 
-      return CoordinateSystems.CartesianCoordinate.ConvertCartesian2ToLinearIndex(x, y, BoardSize.X);
+      return int.CartesianToLinearIndex(x, y, BoardSize.X);
     }
 
     public static System.Drawing.Point LabelToVector(string column, string row)
       => new(System.Array.IndexOf(Files, column), System.Array.IndexOf(Ranks, row));
 
     public static int VectorToIndex(System.Drawing.Point vector)
-      => CoordinateSystems.CartesianCoordinate.ConvertCartesian2ToLinearIndex(vector.X, vector.Y, BoardSize.X);
+      => int.CartesianToLinearIndex(vector.X, vector.Y, BoardSize.X);
+
     public static (string column, string row) VectorToLabel(System.Drawing.Point vector)
       => (Files[vector.X], Ranks[vector.Y]);
 

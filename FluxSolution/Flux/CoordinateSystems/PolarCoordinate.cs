@@ -53,14 +53,14 @@ namespace Flux.CoordinateSystems
 
     public CartesianCoordinate ToCartesianCoordinate()
     {
-      var (x, y) = ConvertPolarToCartesian2(m_radius, m_azimuth);
+      var (x, y) = double.PolarToCartesian(m_radius, m_azimuth, true);
 
       return new(x, y, 0, 0);
     }
 
     public CartesianCoordinate ToCartesianCoordinateEx()
     {
-      var (x, y) = ConvertPolarToCartesian2Ex(m_radius, m_azimuth);
+      var (x, y) = double.PolarToCartesian(m_radius, m_azimuth, false);
 
       return new(x, y, 0, 0);
     }
@@ -98,101 +98,10 @@ namespace Flux.CoordinateSystems
     /// <remarks>All angles in radians.</remarks>
     public System.Numerics.Vector2 ToVector2()
     {
-      var (x, y) = ConvertPolarToCartesian2(m_radius, m_azimuth);
+      var (x, y) = double.PolarToCartesian(m_radius, m_azimuth, true);
 
       return new((float)x, (float)y);
     }
-
-    #region Static methods
-
-    public static PolarCoordinate CreateRandom(double radius, System.Random? rng = null)
-    {
-      rng ??= System.Random.Shared;
-
-      return new(
-        rng.NextNumber(radius),
-        rng.NextNumber(double.Tau)
-      );
-    }
-
-    public static PolarCoordinate CreateRandomOnEdge(double radius, System.Random? rng = null)
-    {
-      rng ??= System.Random.Shared;
-
-      return new(
-        radius,
-        rng.NextNumber(double.Tau)
-      );
-    }
-
-    #region Conversion methods
-
-    /// <summary>
-    /// <para>Creates a <see cref="PolarCoordinate"/> from the cartesian 2D coordinates (x, y) where 'right-center' is 'zero' (i.e. positive-x and neutral-y) to a counter-clockwise rotation angle [0, PI*2] (i.e. radians). Looking at the face of a clock, this goes counter-clockwise from and to 3 o'clock.</para>
-    /// <para><see href="https://en.wikipedia.org/wiki/Rotation_matrix#In_two_dimensions"/></para>
-    /// </summary>
-    public static (double radius, double azimuth) ConvertCartesian2ToPolar(double x, double y)
-    {
-      var azimuth = double.Atan2(y, x);
-
-      if (azimuth < 0)
-        azimuth += double.Tau;
-
-      return (
-        double.Sqrt(x * x + y * y),
-        azimuth
-      );
-    }
-
-    /// <summary>
-    /// <para>Creates a <see cref="PolarCoordinate"/> from the cartesian 2D coordinates (x, y) where 'center-up' is 'zero' (i.e. neutral-x and positive-y) to a clockwise rotation angle [0, PI*2] (i.e. radians). Looking at the face of a clock, this goes clockwise from and to 12 o'clock.</para>
-    /// <para><see href="https://en.wikipedia.org/wiki/Rotation_matrix#In_two_dimensions"/></para>
-    /// </summary>
-    public static (double radius, double azimuth) ConvertCartesian2ToPolarEx(double x, double y)
-    {
-      var azimuth = double.Atan2(x, y); // Ex version is atan2(x,y) instead of atan2(y,x).
-
-      if (azimuth < 0)
-        azimuth += double.Tau;
-
-      return (
-        double.Sqrt(x * x + y * y),
-        azimuth
-      );
-    }
-
-    /// <summary>
-    /// <para>Convert the polar coordinate [0, Tau(2*Pi)] (i.e. radians) where 'zero' azimuth is 'right-center' (i.e. positive-x and neutral-y) to a cartesian 2D coordinate (x, y). Looking at the face of a clock, this goes counter-clockwise from and to 3 o'clock.</para>
-    /// <para><see href="https://en.wikipedia.org/wiki/Rotation_matrix#In_two_dimensions"/></para>
-    /// </summary>
-    public static (double x, double y) ConvertPolarToCartesian2(double radius, double azimuth)
-    {
-      var (sin, cos) = double.SinCos(azimuth);
-
-      return (radius * cos, radius * sin);
-    }
-
-    /// <summary>
-    /// <para>Convert the polar coordinate [0, Tau(2*Pi)] (i.e. radians) where 'zero' azimuth is 'center-up' (i.e. neutral-x and positive-y) to a cartesian 2D coordinate (x, y). Looking at the face of a clock, this goes clockwise from and to 12 o'clock.</para>
-    /// <para><see href="https://en.wikipedia.org/wiki/Rotation_matrix#In_two_dimensions"/></para>
-    /// </summary>
-    public static (double x, double y) ConvertPolarToCartesian2Ex(double radius, double azimuth)
-    {
-      var (sin, cos) = double.SinCos(azimuth);
-
-      return (radius * sin, radius * cos); // Ex version is (r*sin,r*cos) instead of (r*cos,r*sin).
-    }
-
-    #endregion // Conversion methods
-
-    //public static PolarCoordinate FromCartesianCoordinates(double x, double y, bool likeCompass = false)
-    //{
-    //  var (radius, angle) = likeCompass ? ConvertCartesian2ToPolarEx(x, y) : ConvertCartesian2ToPolar(x, y);
-
-    //  return new(radius, angle);
-    //}
-
-    #endregion // Static methods
 
     #region Implemented interfaces
 
