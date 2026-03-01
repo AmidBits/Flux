@@ -2,31 +2,15 @@
 {
   public static class FloatingPoint
   {
-    #region RoundHalfToAlternating (state variable)
+    #region RoundMidpointToAlternating (state variable)
 
-    private static bool m_roundHalfAlternatingState; // Internal state.
+    private static bool m_roundMidpointAlternatingState; // Internal state.
 
     #endregion
 
     extension<TFloat>(TFloat)
       where TFloat : System.Numerics.IFloatingPoint<TFloat>
     {
-      public static TFloat AssertNotNaN(TFloat value, string? paramName = null)
-      {
-        if (TFloat.IsNaN(value))
-          throw new System.ArgumentOutOfRangeException(paramName ?? nameof(value), nameof(TFloat.IsNaN));
-
-        return value;
-      }
-
-      public static TFloat AssertNotInfinity(TFloat value, string? paramName = null)
-      {
-        if (TFloat.IsInfinity(value))
-          throw new System.ArgumentOutOfRangeException(paramName ?? nameof(value), nameof(TFloat.IsInfinity));
-
-        return value;
-      }
-
       public static TFloat GetBaseEpsilon()
         => TFloat.Zero switch
         {
@@ -73,6 +57,7 @@
       #region Envelop..
 
       /// <summary>
+      /// <para>Envelops a value.</para>
       /// <para>Equivalent to the opposite effect of the Truncate() functionality, i.e. instead of truncating the fraction and essentially executing a round-toward-zero, envelop the fraction and essentially execute a round-away-from-zero.</para>
       /// <para>It can also be seen as a companion function to truncate(). Unlike truncate() which calls floor() for positive numbers and ceiling() for negative; envelope() calls ceiling() for positive numbers and floor() for negative.</para>
       /// </summary>
@@ -86,6 +71,7 @@
         : TFloat.Ceiling(x);
 
       /// <summary>
+      /// <para>Envelops a value at the specified number of <paramref name="significantDigits"/> (decimal places).</para>
       /// <para>Equivalent to the opposite effect of the Truncate() functionality, i.e. instead of truncating the fraction and essentially executing a round-toward-zero, envelop the fraction and essentially execute a round-away-from-zero.</para>
       /// <para>It can also be seen as a companion function to truncate(). Unlike truncate() which calls floor() for positive numbers and ceiling() for negative; envelope() calls ceiling() for positive numbers and floor() for negative.</para>
       /// </summary>
@@ -483,27 +469,27 @@
 
       #endregion
 
-      #region RoundHalf..
+      #region RoundMidpoint..
 
       /// <summary>
-      /// <para>Rounds a value to the nearest integer, resolving halfway cases using the specified <see cref="HalfRounding"/> <paramref name="mode"/>.</para>
+      /// <para>Rounds a value to the nearest integer, resolving halfway cases using the specified <see cref="MidpointRoundingEx"/> <paramref name="mode"/>.</para>
       /// </summary>
       /// <typeparam name="TFloat"></typeparam>
       /// <param name="value"></param>
       /// <param name="mode"></param>
       /// <returns></returns>
       /// <exception cref="System.ArgumentOutOfRangeException"></exception>
-      public static TFloat RoundHalf(TFloat x, HalfRounding mode)
+      public static TFloat RoundMidpoint(TFloat x, MidpointRoundingEx mode)
         => mode switch
         {
-          HalfRounding.ToEven or
-          HalfRounding.AwayFromZero or
-          HalfRounding.TowardZero or
-          HalfRounding.ToNegativeInfinity or
-          HalfRounding.ToPositiveInfinity => TFloat.Round(x, (MidpointRounding)(int)mode), // Use built-in .NET functionality for standard cases.
-          HalfRounding.ToAlternating => RoundHalfToAlternating(x),
-          HalfRounding.ToOdd => RoundHalfToOdd(x),
-          HalfRounding.ToRandom => RoundHalfToRandom(x),
+          MidpointRoundingEx.ToEven or
+          MidpointRoundingEx.AwayFromZero or
+          MidpointRoundingEx.TowardZero or
+          MidpointRoundingEx.ToNegativeInfinity or
+          MidpointRoundingEx.ToPositiveInfinity => TFloat.Round(x, (MidpointRounding)(int)mode), // Use built-in .NET functionality for standard cases.
+          MidpointRoundingEx.ToAlternating => RoundMidpointToAlternating(x),
+          MidpointRoundingEx.ToOdd => RoundMidpointToOdd(x),
+          MidpointRoundingEx.ToRandom => RoundMidpointToRandom(x),
           _ => throw new System.ArgumentOutOfRangeException(nameof(mode)),
         };
 
@@ -514,7 +500,7 @@
       /// <param name="value"></param>
       /// <param name="state"></param>
       /// <returns></returns>
-      public static TFloat RoundHalfToAlternating(TFloat value)
+      public static TFloat RoundMidpointToAlternating(TFloat value)
       {
         var cmp = CompareToFractionMidpoint(value);
 
@@ -528,17 +514,17 @@
         if (cmp > 0)
           return ceiling;
 
-        return (m_roundHalfAlternatingState = !m_roundHalfAlternatingState) ? floor : ceiling;
+        return (m_roundMidpointAlternatingState = !m_roundMidpointAlternatingState) ? floor : ceiling;
       }
 
       /// <summary>
       /// <para>Common rounding: round half, bias: odd.</para>
-      /// <para><see cref="HalfRounding.ToOdd"/></para>
+      /// <para><see cref="MidpointRoundingEx.ToOdd"/></para>
       /// </summary>
       /// <typeparam name="TFloat"></typeparam>
       /// <param name="value"></param>
       /// <returns></returns>
-      public static TFloat RoundHalfToOdd(TFloat value)
+      public static TFloat RoundMidpointToOdd(TFloat value)
       {
         var cmp = CompareToFractionMidpoint(value);
 
@@ -556,13 +542,13 @@
       }
 
       /// <summary>
-      /// <para><see cref="HalfRounding.ToRandom"/></para>
+      /// <para><see cref="MidpointRoundingEx.ToRandom"/></para>
       /// </summary>
       /// <typeparam name="TFloat"></typeparam>
       /// <param name="value"></param>
       /// <param name="rng"></param>
       /// <returns></returns>
-      public static TFloat RoundHalfToRandom(TFloat value)
+      public static TFloat RoundMidpointToRandom(TFloat value)
       {
         var cmp = CompareToFractionMidpoint(value);
 
@@ -584,10 +570,8 @@
       #region Truncate..
 
       /// <summary>
-      /// 
+      /// <para>Truncates a value at the specified number of <paramref name="significantDigits"/> (decimal places).</para>
       /// </summary>
-      /// <typeparam name="TFloat"></typeparam>
-      /// <typeparam name="TInteger"></typeparam>
       /// <param name="x"></param>
       /// <param name="significantDigits"></param>
       /// <returns></returns>
@@ -772,14 +756,14 @@
       /// <param name="significantDigits"></param>
       /// <param name="radix"></param>
       /// <returns></returns>
-      public static TFloat RoundByPrecision<TRadix>(TFloat x, HalfRounding mode, int significantDigits, TRadix radix)
+      public static TFloat RoundByPrecision<TRadix>(TFloat x, MidpointRoundingEx mode, int significantDigits, TRadix radix)
       where TRadix : System.Numerics.IBinaryInteger<TRadix>
       {
         System.ArgumentOutOfRangeException.ThrowIfNegative(significantDigits);
 
         var scalar = TFloat.Pow(TFloat.CreateChecked(Units.Radix.AssertMember(radix)), TFloat.CreateChecked(significantDigits));
 
-        return RoundHalf(x * scalar, mode) / scalar;
+        return RoundMidpoint(x * scalar, mode) / scalar;
       }
 
       /// <summary>
@@ -796,7 +780,7 @@
       /// <param name="radix"></param>
       /// <returns></returns>
       /// <exception cref="System.ArgumentOutOfRangeException"></exception>
-      public static TFloat RoundByTruncatedPrecision<TRadix>(TFloat x, HalfRounding mode, int significantDigits, TRadix radix)
+      public static TFloat RoundByTruncatedPrecision<TRadix>(TFloat x, MidpointRoundingEx mode, int significantDigits, TRadix radix)
         where TRadix : System.Numerics.IBinaryInteger<TRadix>
       {
         System.ArgumentOutOfRangeException.ThrowIfNegative(significantDigits);

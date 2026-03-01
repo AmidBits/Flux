@@ -271,6 +271,9 @@ namespace ConsoleApp
 
 
 
+      var apnl = BinaryInteger.GetPrimeNumbersDescending(System.UInt32.MaxValue).Take(100).ToArray();
+      return;
+
 
 
       //var gosps = System.Runtime.InteropServices.RuntimeInformation.GetOsPlatforms();

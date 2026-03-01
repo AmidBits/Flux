@@ -60,7 +60,7 @@ namespace Flux
         {
           if (dataTable.Columns.Count < array.Length)
             for (var i = dataTable.Columns.Count; i < array.Length; i++)
-              dataTable.Columns.Add(i.ToSingleOrdinalColumnName());
+              dataTable.Columns.Add(BinaryInteger.ToOrdinalFieldName(i));
 
           dataTable.Rows.Add(array);
         }

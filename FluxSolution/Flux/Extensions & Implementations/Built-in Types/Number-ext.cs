@@ -23,6 +23,7 @@ namespace Flux
       }
 
       #endregion
+
       #region ArithmeticSequence.. (progression)
 
       /// <summary>
@@ -59,6 +60,7 @@ namespace Flux
       }
 
       #endregion
+
       #region ArithmeticSeries.. (sum)
 
       /// <summary>
@@ -238,6 +240,7 @@ namespace Flux
       }
 
       #endregion
+
       #region GeometricSequence (progression)
 
       /// <summary>
@@ -262,6 +265,7 @@ namespace Flux
       }
 
       #endregion
+
       #region GeometricSeries.. (sum)
 
       /// <summary>
@@ -428,7 +432,7 @@ namespace Flux
       /// <param name="unequal"></param>
       /// <param name="mode"></param>
       /// <returns></returns>
-      public static (TNumber MultipleTowardZero, TNumber NearestMultiple, TNumber MultipleAwayFromZero) MultipleOf(TNumber value, TNumber multiple, bool unequal = false, HalfRounding mode = HalfRounding.TowardZero)
+      public static (TNumber MultipleTowardZero, TNumber NearestMultiple, TNumber MultipleAwayFromZero) MultipleOf(TNumber value, TNumber multiple, bool unequal = false, MidpointRoundingEx mode = MidpointRoundingEx.TowardZero)
       {
         var csmv = TNumber.CopySign(multiple, value);
 
@@ -762,7 +766,7 @@ namespace Flux
 
       #region RoundToNearest
 
-      public static TNumber RoundToNearest(TNumber value, HalfRounding mode, bool proper, params System.ReadOnlySpan<TNumber> values)
+      public static TNumber RoundToNearest(TNumber value, MidpointRoundingEx mode, bool proper, params System.ReadOnlySpan<TNumber> values)
       {
         System.ArgumentOutOfRangeException.ThrowIfZero(values.Length);
 
@@ -787,20 +791,18 @@ namespace Flux
           }
         }
 
-        return closestValues.Count == 0
-          ? closestValues[0]
-          : mode switch // If the distances are equal, i.e. the value is exactly halfway to all closestValues, we use the appropriate rounding strategy to resolve a winner.
-          {
-            HalfRounding.ToEven => closestValues.FirstOrValue(closestValues[0], TNumber.IsEvenInteger).Item,
-            HalfRounding.AwayFromZero => closestValues.AsSpan().InfimumSupremum(value, v => v, false) is var (infimumItem, infimumIndex, infimumValue, supremumItem, supremumIndex, supremumValue) && value >= TNumber.Zero ? (supremumIndex > -1 ? supremumValue : infimumValue) : (infimumIndex > -1 ? infimumValue : supremumValue),
-            HalfRounding.TowardZero => closestValues.AsSpan().InfimumSupremum(value, v => v, false) is var (infimumItem, infimumIndex, infimumValue, supremumItem, supremumIndex, supremumValue) && value >= TNumber.Zero ? (infimumIndex > -1 ? infimumValue : supremumValue) : (supremumIndex > -1 ? supremumValue : infimumValue),
-            HalfRounding.ToNegativeInfinity => closestValues.Min() ?? throw new System.NullReferenceException(),
-            HalfRounding.ToPositiveInfinity => closestValues.Max() ?? throw new System.NullReferenceException(),
-            HalfRounding.ToOdd => closestValues.FirstOrValue(closestValues[0], TNumber.IsOddInteger).Item,
-            HalfRounding.ToRandom => closestValues.AsSpan().GetRandomElement(),
-            HalfRounding.ToAlternating => closestValues.AsSpan().GetAlternatingElement(),
-            _ => throw new NotImplementedException(),
-          };
+        return mode switch // If the distances are equal, i.e. the value is exactly halfway to all closestValues, we use the appropriate rounding strategy to resolve a winner.
+        {
+          MidpointRoundingEx.ToEven => closestValues.FirstOrValue(closestValues[0], TNumber.IsEvenInteger).Item,
+          MidpointRoundingEx.AwayFromZero => closestValues.AsSpan().InfimumSupremum(value, v => v, false) is var (infimumItem, infimumIndex, infimumValue, supremumItem, supremumIndex, supremumValue) && value >= TNumber.Zero ? (supremumIndex > -1 ? supremumValue : infimumValue) : (infimumIndex > -1 ? infimumValue : supremumValue),
+          MidpointRoundingEx.TowardZero => closestValues.AsSpan().InfimumSupremum(value, v => v, false) is var (infimumItem, infimumIndex, infimumValue, supremumItem, supremumIndex, supremumValue) && value >= TNumber.Zero ? (infimumIndex > -1 ? infimumValue : supremumValue) : (supremumIndex > -1 ? supremumValue : infimumValue),
+          MidpointRoundingEx.ToNegativeInfinity => closestValues.Min() ?? throw new System.NullReferenceException(),
+          MidpointRoundingEx.ToPositiveInfinity => closestValues.Max() ?? throw new System.NullReferenceException(),
+          MidpointRoundingEx.ToOdd => closestValues.FirstOrValue(closestValues[0], TNumber.IsOddInteger).Item,
+          MidpointRoundingEx.ToRandom => closestValues.AsSpan().GetRandomElement(),
+          MidpointRoundingEx.ToAlternating => closestValues.AsSpan().GetAlternatingElement(),
+          _ => throw new NotImplementedException(),
+        };
       }
 
       #endregion
@@ -829,7 +831,7 @@ namespace Flux
       /// <param name="mode"></param>
       /// <param name="margin"></param>
       /// <returns></returns>
-      public static TNumber Spread(TNumber value, TNumber minValue, TNumber maxValue, HalfRounding mode, TNumber margin)
+      public static TNumber Spread(TNumber value, TNumber minValue, TNumber maxValue, MidpointRoundingEx mode, TNumber margin)
       {
         System.ArgumentOutOfRangeException.ThrowIfNegative(margin);
 
@@ -854,7 +856,7 @@ namespace Flux
       /// <param name="maxValue"></param>
       /// <param name="mode"></param>
       /// <returns></returns>
-      public static TNumber SpreadNative(TNumber value, TNumber minValue, TNumber maxValue, HalfRounding mode)
+      public static TNumber SpreadNative(TNumber value, TNumber minValue, TNumber maxValue, MidpointRoundingEx mode)
       {
         if (value < minValue || value > maxValue)
           return value; // If number is already spread, nothing to do but return it.

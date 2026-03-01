@@ -62,7 +62,7 @@ namespace Flux
 
       if (e.MoveNext() is var movedNext && movedNext)
       {
-        var columnNames = e.Current.Length.ToMultipleOrdinalColumnNames();
+        var columnNames = BinaryInteger.ToOrdinalFieldNames(e.Current.Length);
 
         if (hasFieldNames) // If has-field-names let's use those for columnNames.
           columnNames = e.Current.Select((e, i) => e?.ToString() ?? columnNames[i]).ToArray();

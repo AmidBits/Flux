@@ -822,7 +822,7 @@ namespace Flux
           else if (c < customColumnNames.Length) // Second choice, if sourceColumnNames is false, use custom column name, if present.
             columnName = customColumnNames[c];
 
-          dt.Columns.Add(columnName ?? c.ToSingleOrdinalColumnName()); // Third choice, if columnName is still null (string default), use ToSingleOrdinalColumnName(), e.g. "Column1".
+          dt.Columns.Add(columnName ?? BinaryInteger.ToOrdinalFieldName(c)); // Third choice, if columnName is still null (string default), use ToSingleOrdinalColumnName(), e.g. "Column1".
         }
 
         for (var r = sourceHasColumnNames ? 1 : 0; r < rows; r++)

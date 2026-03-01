@@ -156,11 +156,11 @@ namespace Flux
 
       while (reader.Peek() != -1)
       {
-        var dataSet = new System.Data.DataSet(dataSets.Count.ToSingleOrdinalColumnName("Set"));
+        var dataSet = new System.Data.DataSet(BinaryInteger.ToOrdinalFieldName(dataSets.Count, "Set"));
 
         do
         {
-          var dataTable = new System.Data.DataTable(dataSet.Tables.Count.ToSingleOrdinalColumnName("Table"));
+          var dataTable = new System.Data.DataTable(BinaryInteger.ToOrdinalFieldName(dataSet.Tables.Count, "Table"));
 
           do
           {
@@ -178,7 +178,7 @@ namespace Flux
             while (read != -1 && read != (int)UnicodeInformationSeparator.RecordSeparator && read != (int)UnicodeInformationSeparator.GroupSeparator && read != (int)UnicodeInformationSeparator.FileSeparator);
 
             for (var index = dataTable.Columns.Count; index < list.Count; index++)
-              dataTable.Columns.Add(index.ToSingleOrdinalColumnName());
+              dataTable.Columns.Add(BinaryInteger.ToOrdinalFieldName(index));
 
             dataTable.Rows.Add(list.ToArray());
           }

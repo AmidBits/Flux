@@ -49,7 +49,7 @@
       public static TInteger BitFoldLeft(TInteger value)
         => TInteger.IsZero(value)
         ? value
-        : (value is System.Numerics.BigInteger ? CreateBitMaskRight(TInteger.CreateChecked(value.GetBitCount())) : ~TInteger.Zero) << int.CreateChecked(TInteger.TrailingZeroCount(value));
+        : (value is System.Numerics.BigInteger ? CreateBitMaskRight(TInteger.CreateChecked(GetBitCount<TInteger>())) : ~TInteger.Zero) << int.CreateChecked(TInteger.TrailingZeroCount(value));
       //var tzc = value.GetTrailingZeroCount();
       //return BitFoldRight(value << value.GetLeadingZeroCount()) >> tzc << tzc;
 
@@ -237,7 +237,7 @@
       {
         var bitMaskRight = CreateBitMaskRight(count);
 
-        return bitMaskRight << (bitMaskRight.GetBitCount() - int.CreateChecked(count));
+        return bitMaskRight << (GetBitCount<TInteger>() - int.CreateChecked(count));
       }
 
       /// <summary>
@@ -719,6 +719,56 @@
 
       #endregion
 
+      #region GetBitCount
+
+      /// <summary>
+      /// <para>Returns the size, in number of bits, needed to store <paramref name="value"/>.</para>
+      /// <para>Most types returns the underlying storage size of the type itself, e.g. <see langword="int"/> = 32 or <see langword="long"/> = 64.</para>
+      /// </summary>
+      /// <remarks>
+      /// <para>Some data types, e.g. <see cref="System.Numerics.BigInteger"/>, use dynamic storage strategies.</para>
+      /// </remarks>
+      public static int GetBitCount()
+        => TInteger.Zero.GetByteCount() * 8;
+
+      /// <summary>
+      /// <para>Using the built-in <see cref="System.Numerics.IBinaryInteger{TInteger}.GetByteCount()"/>.</para>
+      /// </summary>
+      /// <remarks>
+      /// <para>Note that some datatypes, e.g. <see cref="System.Numerics.BigInteger"/>, use dynamic storage strategies.</para>
+      /// </remarks>
+      public static int GetByteCount()
+        => TInteger.Zero.GetByteCount();
+
+      ///// <summary>
+      ///// <para>Using the built-in <see cref="System.Numerics.IBinaryInteger{TInteger}.PopCount(TInteger)"/>.</para>
+      ///// </summary>
+      ///// <returns>The population count of <paramref name="value"/>, i.e. the number of bits set to 1 in <paramref name="value"/>.</returns>
+      //public int GetPopCount()
+      //  => int.CreateChecked(TInteger.PopCount(value));
+
+#if INCLUDE_SCRATCH
+
+      public int ScratchGetPopCount()
+      {
+        System.ArgumentOutOfRangeException.ThrowIfNegative(value);
+
+        var count = 0;
+
+        while (value > TInteger.Zero)
+        {
+          count++;
+
+          value &= value - TInteger.One; // Clear the LS1B.
+        }
+
+        return count;
+      }
+
+#endif
+
+      #endregion
+
       #region Gray
 
       /// <summary>
@@ -1084,9 +1134,9 @@
 
           var fivens = TInteger.CreateChecked(5) * n * n;
           var fp4 = fivens + four;
-          var fp4sr = IntegerSqrt(fp4);
+          var fp4sr = ISqrt(fp4);
           var fm4 = fivens - four;
-          var fm4sr = IntegerSqrt(fm4);
+          var fm4sr = ISqrt(fm4);
 
           return fp4sr * fp4sr == fp4 || fm4sr * fm4sr == fm4;
         }
@@ -1261,56 +1311,32 @@
 
       #endregion
 
-      #region GetAscendingPrimeNumbers
+      #region GetPrimeNumbersAscending
 
       /// <summary>
       /// <para>Creates a new sequence of ascending possible primes, greater-than-or-equal-to a specified number.</para>
       /// </summary>
       /// <param name="n"></param>
       /// <returns></returns>
-      private static System.Collections.Generic.IEnumerable<TInteger> GetAscendingPrimeCandidates(TInteger n)
+      private static System.Collections.Generic.IEnumerable<TInteger> GetPrimeCandidatesAscending(TInteger n)
       {
-        var one = TInteger.CreateChecked(1);
         var two = TInteger.CreateChecked(2);
-        var three = TInteger.CreateChecked(3);
-        var six = TInteger.CreateChecked(6);
-
-        if (n < two)
-          n = two;
-
         if (n <= two)
           yield return two;
 
+        var three = TInteger.CreateChecked(3);
         if (n <= three)
           yield return three;
 
-        checked
+        var six = TInteger.CreateChecked(6);
+
+        foreach (var m in Number.ArithmeticSequence(TInteger.Max(n / six * six, six), six))
         {
-          var (q, r) = FlooredDivRem(n, six);
+          if (checked(m - TInteger.One) is var m1 && m1 >= n)
+            yield return m1;
 
-          var hi = q * six;
-
-          if (r > one)
-            hi += six;
-
-          if (r <= one)
-          {
-            try { n = hi + one; } catch { yield break; }
-            yield return n;
-
-            try { hi += six; } catch { yield break; }
-          }
-
-          while (true)
-          {
-            try { n = hi - one; } catch { break; }
-            yield return n;
-
-            try { n = hi + one; } catch { break; }
-            yield return n;
-
-            try { hi += six; } catch { break; }
-          }
+          if (checked(m + TInteger.One) is var p1 && p1 >= n)
+            yield return p1;
         }
       }
 
@@ -1320,58 +1346,48 @@
       /// <remarks>This function generate results until the type <typeparamref name="TInteger"/> under/overflows in any calculation. No exception is thrown.</remarks>
       /// <param name="n"></param>
       /// <returns></returns>
-      public static System.Collections.Generic.IEnumerable<TInteger> GetAscendingPrimeNumbers(TInteger n)
-        => GetAscendingPrimeCandidates(n).AsParallel().AsOrdered().Where(IsPrimeNumber);
+      public static System.Collections.Generic.IEnumerable<TInteger> GetPrimeNumbersAscending(TInteger n)
+        => GetPrimeCandidatesAscending(n).AsParallel().AsOrdered().Where(IsPrimeNumber);
 
       #endregion
 
-      #region GetDescendingPrimeNumbers
+      #region GetPrimeNumbersDescending
 
       /// <summary>Creates a new sequence of descending possible primes, less-than-or-equal-to a specified number.</summary>
-      private static System.Collections.Generic.IEnumerable<TInteger> GetDescendingPrimeCandidates(TInteger n)
+      private static System.Collections.Generic.IEnumerable<TInteger> GetPrimeCandidatesDescending(TInteger n)
       {
-        var zero = TInteger.CreateChecked(0);
-        var one = TInteger.CreateChecked(1);
-        var two = TInteger.CreateChecked(2);
-        var three = TInteger.CreateChecked(3);
-        var five = TInteger.CreateChecked(5);
         var six = TInteger.CreateChecked(6);
 
-        if (n < two)
-          n = two;
+        var maxValue = BitFoldLeft(TInteger.One);
 
-        checked
+        if (TypeExtensions.IsISignedNumber(typeof(TInteger)))
+          maxValue >>= 1;
+
+        var maxPrimeMultiple = maxValue / six * six;
+
+        var primeMultiple = n / six * six;
+
+        if (maxPrimeMultiple - primeMultiple >= six)
+          primeMultiple += six;
+
+        for (var pm = primeMultiple; pm >= six; pm -= six)
         {
-          var (q, r) = FlooredDivRem(n, six);
+          var pc = checked(pm + TInteger.One);
 
-          var lo = q * six;
+          if (pc <= n)
+            yield return pc;
 
-          if (r == five)
-            lo += six;
+          pc = checked(pm - TInteger.One);
 
-          if (r == zero || r == five)
-          {
-            try { n = lo - one; } catch { yield break; }
-            yield return n;
-
-            try { lo -= six; } catch { yield break; }
-          }
-
-          while (lo > zero)
-          {
-            try { n = lo + one; } catch { break; }
-            yield return n;
-
-            try { n = lo - one; } catch { break; }
-            yield return n;
-
-            try { lo -= six; } catch { break; }
-          }
+          if (pc <= n)
+            yield return pc;
         }
 
+        var three = TInteger.CreateChecked(3);
         if (n >= three)
           yield return three;
 
+        var two = TInteger.CreateChecked(2);
         if (n >= two)
           yield return two;
       }
@@ -1382,8 +1398,8 @@
       /// <remarks>This function generate results until the type <typeparamref name="TInteger"/> under/overflows in any calculation. No exception is thrown.</remarks>
       /// <param name="n"></param>
       /// <returns></returns>
-      public static System.Collections.Generic.IEnumerable<TInteger> GetDescendingPrimeNumbers(TInteger n)
-        => GetDescendingPrimeCandidates(n).AsParallel().AsOrdered().Where(IsPrimeNumber);
+      public static System.Collections.Generic.IEnumerable<TInteger> GetPrimeNumbersDescending(TInteger n)
+        => GetPrimeCandidatesDescending(n).AsParallel().AsOrdered().Where(IsPrimeNumber);
 
       #endregion
 
@@ -1426,12 +1442,38 @@
 
         // Otherwise use Miller-Rabin probabilistic algorithm.
 
-        var log = System.Numerics.BigInteger.Log(bi.GetBitLength(), 1.15); // Log(bit-length, 1.17) yields an approximately 15 iterations @ 10 bits, 30 @ 100, 44 @ 1000, 59 @ 10000, and can be lowered for a higher iteration (k) count.
+        // Log(bit-length, 1.17) yields an approximately 15 iterations @ 10 bits, 30 @ 100, 44 @ 1000, 59 @ 10000, and can be lowered for a higher iteration (k) count.
+        // The lower bit-length, the higher count.
+
+        var log = System.Numerics.BigInteger.Log(bi.GetBitLength(), 1.15);
 
         return MillerRabinProbabilisticIsPrime(bi, int.CreateChecked(log)); // Pass the log value as k parameter.
       }
 
       #endregion
+
+      /// <summary>
+      /// <para>Creates a sequence of powers-of-radix values.</para>
+      /// </summary>
+      /// <typeparam name="TMinMaxInteger"></typeparam>
+      /// <param name="nth"></param>
+      /// <returns></returns>
+      public static System.Collections.Generic.IEnumerable<(TInteger Root, TInteger Number)> GetSequenceOfNthRoot(TInteger nth)
+      {
+        System.ArgumentOutOfRangeException.ThrowIfLessThan(nth, TInteger.CreateChecked(2));
+
+        checked
+        {
+          TInteger result;
+
+          foreach (var root in Number.ArithmeticSequence(TInteger.One, TInteger.One))
+          {
+            try { result = Pow(root, nth); } catch { break; }
+
+            yield return (root, result);
+          }
+        }
+      }
 
       #region GetSphenicNumbers
 
@@ -1683,7 +1725,7 @@
 
       #endregion
 
-      #region IntegerLog..
+      #region ILog..
 
       /// <summary>
       /// <para>Returns the integer (toward-zero, away-from-zero) logarithm of specified a <paramref name="value"/> in a specified <paramref name="radix"/>.</para>
@@ -1692,7 +1734,7 @@
       /// <param name="value"></param>
       /// <param name="radix"></param>
       /// <returns></returns>
-      public static (TInteger IntegralLogTowardZero, TInteger IntegralLogAwayFromZero) IntegerLog<TRadix>(TInteger value, TRadix radix)
+      public static (TInteger IntegralLogTowardZero, TInteger IntegralLogAwayFromZero) ILog<TRadix>(TInteger value, TRadix radix)
         where TRadix : System.Numerics.IBinaryInteger<TRadix>
       {
         if (TInteger.IsZero(value))
@@ -1713,7 +1755,7 @@
       /// <typeparam name="TRadix"></typeparam>
       /// <param name="value"></param>
       /// <returns></returns>
-      public static TInteger IntegerLog10<TRadix>(TInteger value)
+      public static TInteger ILog10<TRadix>(TInteger value)
         where TRadix : System.Numerics.IBinaryInteger<TRadix>
       {
         if (TInteger.IsZero(value))
@@ -1732,7 +1774,7 @@
       /// <typeparam name="TRadix"></typeparam>
       /// <param name="value"></param>
       /// <returns></returns>
-      public static TInteger IntegerLogE<TRadix>(TInteger value)
+      public static TInteger ILogE<TRadix>(TInteger value)
         where TRadix : System.Numerics.IBinaryInteger<TRadix>
       {
         if (TInteger.IsZero(value))
@@ -2284,38 +2326,15 @@
 
       #endregion
 
-      #region Root functions (GetSequenceOfNthRoot, IntegerCbrt, IsCbrt, IsPerfectCbrt, IntegerRootN, IsRootN, IsPerfectRootN, IntegerSqrt, IsSqrt, IsPerfectSqrt)
-
-      /// <summary>
-      /// <para>Creates a sequence of powers-of-radix values.</para>
-      /// </summary>
-      /// <typeparam name="TMinMaxInteger"></typeparam>
-      /// <param name="nth"></param>
-      /// <returns></returns>
-      public static System.Collections.Generic.IEnumerable<(TInteger Root, TInteger Number)> GetSequenceOfNthRoot(TInteger nth)
-      {
-        System.ArgumentOutOfRangeException.ThrowIfLessThan(nth, TInteger.CreateChecked(2));
-
-        checked
-        {
-          TInteger result;
-
-          foreach (var root in Number.ArithmeticSequence(TInteger.One, TInteger.One))
-          {
-            try { result = Pow(root, nth); } catch { break; }
-
-            yield return (root, result);
-          }
-        }
-      }
+      #region ICbrt functions
 
       /// <summary>
       /// <para>Computes the integer (floor) cube-root of a value.</para>
       /// </summary>
       /// <param name="value"></param>
       /// <returns>The square-root of the value.</returns>
-      public static TInteger IntegerCbrt(TInteger value)
-        => IntegerRootN(value, 3);
+      public static TInteger ICbrt(TInteger value)
+        => IRootN(value, 3);
 
       /// <summary>
       /// <para>Indicates whether <paramref name="value"/> is the integer (not necessarily perfect) square of <paramref name="root"/>.</para>
@@ -2324,7 +2343,7 @@
       /// <param name="value">The square value to find the square-<paramref name="root"/> of.</param>
       /// <param name="root">The resulting square-root of <paramref name="value"/>.</param>
       /// <returns>Whether the <paramref name="value"/> is the integer (not necessarily perfect) square of <paramref name="root"/>.</returns>
-      public static bool IsIntegerCbrt(TInteger value, TInteger root)
+      public static bool IsICbrt(TInteger value, TInteger root)
         => value >= (root * root * root) // If GTE to cube of root.
         && value < (root + TInteger.One) * (root + TInteger.One) * (root + TInteger.One); // And if LT to cube of (root + 1).
 
@@ -2336,8 +2355,12 @@
       /// <param name="root">The resulting square-root of <paramref name="square"/>.</param>
       /// <returns>Whether the <paramref name="square"/> is a perfect square of <paramref name="root"/>.</returns>
       /// <remarks>Not using "y == (x * x)" because risk of overflow.</remarks>
-      public static bool IsPerfectIntegerCbrt(TInteger value, TInteger root)
+      public static bool IsPerfectICbrt(TInteger value, TInteger root)
         => value == (root * root * root);
+
+      #endregion
+
+      #region IRoot functions
 
       /// <summary>
       /// <para>Computes the integer nth-root of a value.</para>
@@ -2346,26 +2369,30 @@
       /// <param name="value"></param>
       /// <param name="exponent"></param>
       /// <returns></returns>
-      public static TInteger IntegerRootN<TNth>(TInteger value, TNth nth)
+      public static TInteger IRootN<TNth>(TInteger value, TNth nth)
         where TNth : System.Numerics.IBinaryInteger<TNth>
         => TInteger.CreateChecked(NewtonRaphsonRootN(System.Numerics.BigInteger.CreateChecked(value), int.CreateChecked(nth)));
 
-      public static bool IsIntegerRootN<TNth>(TInteger value, TNth n, TInteger root)
+      public static bool IsIRootN<TNth>(TInteger value, TNth n, TInteger root)
         where TNth : System.Numerics.IBinaryInteger<TNth>
         => value >= Pow(root, n) // If GTE to nth of root.
         && value < Pow(root + TInteger.One, n); // And if LT to nth of (root + 1).
 
-      public static bool IsPerfectIntegerRootN<TNth>(TInteger value, TNth n, TInteger root)
+      public static bool IsPerfectIRootN<TNth>(TInteger value, TNth n, TInteger root)
         where TNth : System.Numerics.IBinaryInteger<TNth>
         => value == Pow(root, n);
+
+      #endregion
+
+      #region ISqrt functions
 
       /// <summary>
       /// <para>Computes the integer square-root of a value.</para>
       /// </summary>
       /// <param name="value"></param>
       /// <returns></returns>
-      public static TInteger IntegerSqrt(TInteger value)
-        => IntegerRootN(value, 2);
+      public static TInteger ISqrt(TInteger value)
+        => IRootN(value, 2);
 
       /// <summary>
       /// <para>Indicates whether <paramref name="value"/> is the integer (not necessarily perfect) square of <paramref name="root"/>.</para>
@@ -2374,7 +2401,7 @@
       /// <param name="value">The square value to find the square-<paramref name="root"/> of.</param>
       /// <param name="root">The resulting square-root of <paramref name="value"/>.</param>
       /// <returns>Whether the <paramref name="value"/> is the integer (not necessarily perfect) square of <paramref name="root"/>.</returns>
-      public static bool IsIntegerSqrt(TInteger value, TInteger root)
+      public static bool IsISqrt(TInteger value, TInteger root)
         => value >= (root * root) // If GTE to square of root.
         && value < (root + TInteger.One) * (root + TInteger.One); // And if LT to square of (root + 1).
 
@@ -2386,7 +2413,7 @@
       /// <param name="root">The resulting square-root of <paramref name="square"/>.</param>
       /// <returns>Whether the <paramref name="square"/> is a perfect square of <paramref name="root"/>.</returns>
       /// <remarks>Not using "y == (x * x)" because risk of overflow.</remarks>
-      public static bool IsPerfectIntegerSqrt(TInteger value, TInteger root)
+      public static bool IsPerfectISqrt(TInteger value, TInteger root)
         => value == (root * root);
 
       #endregion
@@ -2666,6 +2693,45 @@
 
       #endregion
 
+      #region ToOrdinalFieldName(s)
+
+      /// <summary>
+      /// <para>Returns a generic <paramref name="fieldNamePrefix"/> for the <paramref name="fieldIndex"/> as if it was an index of a 0-based column-structure.</para>
+      /// <para>+1 is added to the <paramref name="fieldIndex"/> so that the first column (the zeroth) is always "Column1", and the second column (#1) is "Column2", i.e. the column names are ordinal.</para>
+      /// </summary>
+      /// <param name="fieldIndex"></param>
+      /// <param name="numericWidth"></param>
+      /// <param name="fieldNamePrefix"></param>
+      /// <returns></returns>
+      public static string ToOrdinalFieldName(TInteger fieldIndex, int numericWidth, string fieldNamePrefix = "Column")
+        => fieldNamePrefix + (fieldIndex + TInteger.One).ToString($"D{numericWidth}", null);
+
+      /// <summary>
+      /// <para>Returns a generic <paramref name="fieldNamePrefix"/> for the <paramref name="fieldIndex"/> as if it was an index of a 0-based column-structure.</para>
+      /// <para>+1 is added to the <paramref name="fieldIndex"/> so that the first column (the zeroth) is always "Column1", and the second column (#1) is "Column2", i.e. the column names are ordinal.</para>
+      /// </summary>
+      /// <param name="fieldIndex"></param>
+      /// <param name="fieldNamePrefix"></param>
+      /// <returns></returns>
+      public static string ToOrdinalFieldName(TInteger fieldIndex, string fieldNamePrefix = "Column")
+        => ToOrdinalFieldName(fieldIndex, int.CreateChecked(fieldIndex <= TInteger.Zero ? TInteger.Zero : Units.Radix.DigitCount(fieldIndex, TInteger.CreateChecked(10))), fieldNamePrefix);
+
+      /// <summary>
+      /// <para>Creates an array of generic column-<paramref name="fieldNamePrefix"/>s for <paramref name="fieldCount"/> amount of columns.</para>
+      /// <example><paramref name="fieldCount"/> = 3, returns <c>["Column1", "Column2", "Column3"]</c></example>
+      /// </summary>
+      /// <param name="fieldCount"></param>
+      /// <param name="fieldNamePrefix"></param>
+      /// <returns></returns>
+      public static string[] ToOrdinalFieldNames(TInteger fieldCount, string fieldNamePrefix = "Column")
+      {
+        var maxWidth = int.CreateChecked(Units.Radix.DigitCount(fieldCount, 10));
+
+        return [.. Number.ArithmeticSequence(TInteger.One, fieldCount).Select(ci => ToOrdinalFieldName(ci, maxWidth, fieldNamePrefix))];
+      }
+
+      #endregion
+
       #region Twelvefold way
 
       /// <summary>
@@ -2767,7 +2833,7 @@
       #endregion
     }
 
-    extension<TInteger>(TInteger value) // Instance type members.
+    extension<TInteger>(TInteger value)
       where TInteger : System.Numerics.IBinaryInteger<TInteger>
     {
       #region GetBitLength
@@ -2780,7 +2846,7 @@
       /// </remarks>
       public int GetBitLength()
         => TInteger.IsNegative(value)
-        ? value.GetBitCount() // When value is negative, return the bit-count (i.e. based on the storage strategy).
+        ? GetBitCount<TInteger>() // When value is negative, return the bit-count (i.e. based on the storage strategy).
         : value.GetShortestBitLength(); // Otherwise, return the .NET shortest-bit-length.
 
 #if INCLUDE_SCRATCH
@@ -2798,98 +2864,6 @@
 
       #endregion
 
-      #region GetBitCount
-
-      /// <summary>
-      /// <para>Returns the size, in number of bits, needed to store <paramref name="value"/>.</para>
-      /// <para>Most types returns the underlying storage size of the type itself, e.g. <see langword="int"/> = 32 or <see langword="long"/> = 64.</para>
-      /// </summary>
-      /// <remarks>
-      /// <para>Some data types, e.g. <see cref="System.Numerics.BigInteger"/>, use dynamic storage strategies.</para>
-      /// </remarks>
-      public int GetBitCount()
-        => value.GetByteCount() * 8;
-
-      /// <summary>
-      /// <para>Using the built-in <see cref="System.Numerics.IBinaryInteger{TInteger}.GetByteCount()"/>.</para>
-      /// </summary>
-      /// <remarks>
-      /// <para>Note that some datatypes, e.g. <see cref="System.Numerics.BigInteger"/>, use dynamic storage strategies.</para>
-      /// </remarks>
-      public int GetByteCount()
-        => value.GetByteCount();
-
-      ///// <summary>
-      ///// <para>Using the built-in <see cref="System.Numerics.IBinaryInteger{TInteger}.PopCount(TInteger)"/>.</para>
-      ///// </summary>
-      ///// <returns>The population count of <paramref name="value"/>, i.e. the number of bits set to 1 in <paramref name="value"/>.</returns>
-      //public int GetPopCount()
-      //  => int.CreateChecked(TInteger.PopCount(value));
-
-#if INCLUDE_SCRATCH
-
-      public int ScratchGetPopCount()
-      {
-        System.ArgumentOutOfRangeException.ThrowIfNegative(value);
-
-        var count = 0;
-
-        while (value > TInteger.Zero)
-        {
-          count++;
-
-          value &= value - TInteger.One; // Clear the LS1B.
-        }
-
-        return count;
-      }
-
-#endif
-
-      #endregion
-
-      #region To..OrdinalColumnName..
-
-      /// <summary>
-      /// <para>Returns a generic <paramref name="columnNamePrefix"/> for the <paramref name="value"/> as if it was an index of a 0-based column-structure.</para>
-      /// <para>+1 is added to the <paramref name="value"/> so that the first column (the zeroth) is always "Column1", and the second column (#1) is "Column2", i.e. the column names are ordinal.</para>
-      /// </summary>
-      /// <typeparam name="TInteger"></typeparam>
-      /// <param name="value"></param>
-      /// <param name="numericWidth"></param>
-      /// <param name="columnNamePrefix"></param>
-      /// <returns></returns>
-      public string ToSingleOrdinalColumnName(int numericWidth, string columnNamePrefix = "Column")
-        => columnNamePrefix + (value + TInteger.One).ToString($"D{numericWidth}", null);
-
-      /// <summary>
-      /// <para>Returns a generic <paramref name="columnNamePrefix"/> for the <paramref name="value"/> as if it was an index of a 0-based column-structure.</para>
-      /// <para>+1 is added to the <paramref name="value"/> so that the first column (the zeroth) is always "Column1", and the second column (#1) is "Column2", i.e. the column names are ordinal.</para>
-      /// </summary>
-      /// <typeparam name="TInteger"></typeparam>
-      /// <param name="value"></param>
-      /// <param name="columnNamePrefix"></param>
-      /// <returns></returns>
-      public string ToSingleOrdinalColumnName(string columnNamePrefix = "Column")
-        => value.ToSingleOrdinalColumnName(int.CreateChecked(value <= TInteger.Zero ? TInteger.Zero : Units.Radix.DigitCount(value, TInteger.CreateChecked(10))), columnNamePrefix);
-
-      /// <summary>
-      /// <para>Creates an array of generic column-<paramref name="columnNamePrefix"/>s for <paramref name="value"/> amount of columns.</para>
-      /// <example><paramref name="value"/> = 3, returns <c>["Column1", "Column2", "Column3"]</c></example>
-      /// </summary>
-      /// <typeparam name="TInteger"></typeparam>
-      /// <param name="value"></param>
-      /// <param name="columnNamePrefix"></param>
-      /// <returns></returns>
-      public string[] ToMultipleOrdinalColumnNames(string columnNamePrefix = "Column")
-      {
-        var maxWidth = int.CreateChecked(Units.Radix.DigitCount(value, 10));
-
-        return [.. System.Linq.Enumerable.Range(1, int.CreateChecked(value)).Select(i => i.ToSingleOrdinalColumnName(maxWidth, columnNamePrefix))];
-      }
-
-      #endregion
-
       /// <summary>
       /// <para>Converts a <paramref name="value"/> to a binary (base 2) string based on <paramref name="minLength"/> and an <paramref name="alphabet"/> (<see cref="Base64Alphabet"/> if null).</para>
       /// </summary>
@@ -2901,7 +2875,7 @@
       /// <exception cref="System.ArgumentOutOfRangeException"></exception>
       public string ToBinaryString(int minLength = 1, string? alphabet = null)
       {
-        if (minLength <= 0) minLength = value.GetBitCount();
+        if (minLength <= 0) minLength = GetBitCount<TInteger>();
 
         alphabet ??= Units.Radix.Base62;
 
@@ -2909,7 +2883,7 @@
 
         var indices = new System.Collections.Generic.List<int>();
 
-        for (var bitIndex = int.Min(int.Max(value.GetBitLength(), minLength), value.GetBitCount()) - 1; bitIndex >= 0; bitIndex--)
+        for (var bitIndex = int.Min(int.Max(value.GetBitLength(), minLength), GetBitCount<TInteger>()) - 1; bitIndex >= 0; bitIndex--)
         {
           var bitValue = int.CreateChecked((value >>> bitIndex) & TInteger.One);
 
@@ -2934,7 +2908,7 @@
       /// <exception cref="System.ArgumentOutOfRangeException"></exception>
       public string ToDecimalString(int minLength = 1, char negativeSymbol = '\u002D', string? alphabet = null)
       {
-        if (minLength <= 0) minLength = Units.Radix.GetMaxDigitCount(value.GetBitCount(), 10, value.GetType().IsISignedNumber());
+        if (minLength <= 0) minLength = Units.Radix.GetMaxDigitCount(GetBitCount<TInteger>(), 10, value.GetType().IsISignedNumber());
 
         alphabet ??= Units.Radix.Base62;
 
@@ -2966,7 +2940,7 @@
       /// <exception cref="System.ArgumentOutOfRangeException"></exception>
       public string ToHexadecimalString(int minLength = 1, string? alphabet = null)
       {
-        if (minLength <= 0) minLength = Units.Radix.GetMaxDigitCount(value.GetBitCount(), 16, value.GetType().IsISignedNumber());
+        if (minLength <= 0) minLength = Units.Radix.GetMaxDigitCount(GetBitCount<TInteger>(), 16, value.GetType().IsISignedNumber());
 
         alphabet ??= Units.Radix.Base62;
 
@@ -2998,7 +2972,7 @@
       /// <exception cref="System.ArgumentOutOfRangeException"></exception>
       public string ToOctalString(int minLength = 1, string? alphabet = null)
       {
-        if (minLength <= 0) minLength = Units.Radix.GetMaxDigitCount(value.GetBitCount(), 8, value.GetType().IsISignedNumber());
+        if (minLength <= 0) minLength = Units.Radix.GetMaxDigitCount(GetBitCount<TInteger>(), 8, value.GetType().IsISignedNumber());
 
         alphabet ??= Units.Radix.Base62;
 
@@ -3049,7 +3023,7 @@
           return value.ToHexadecimalString(minLength, alphabet);
         else
         {
-          if (minLength <= 0) minLength = Units.Radix.GetMaxDigitCount(value.GetBitCount(), rdx, value.GetType().IsISignedNumber());
+          if (minLength <= 0) minLength = Units.Radix.GetMaxDigitCount(GetBitCount<TInteger>(), rdx, value.GetType().IsISignedNumber());
 
           alphabet ??= Units.Radix.Base62;
 

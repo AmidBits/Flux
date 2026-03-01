@@ -16,7 +16,7 @@
     public static Percentage ConvertToReversePercentage(Percentage p)
       => new(double.Abs(p.m_value) / (p.m_value + 1));
 
-    public static Percentage Parse(System.ReadOnlySpan<char> source, int? significantDigits = null, HalfRounding mode = HalfRounding.ToEven, System.Globalization.CultureInfo? cultureInfo = null)
+    public static Percentage Parse(System.ReadOnlySpan<char> source, int? significantDigits = null, MidpointRoundingEx mode = MidpointRoundingEx.ToEven, System.Globalization.CultureInfo? cultureInfo = null)
     {
       cultureInfo ??= System.Globalization.CultureInfo.InvariantCulture;
 

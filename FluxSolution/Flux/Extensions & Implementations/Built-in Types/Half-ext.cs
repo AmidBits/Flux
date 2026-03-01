@@ -34,15 +34,19 @@
       #region Native..
 
       public static System.Half NativeDecrement(System.Half value)
-        => System.Half.IsNaN(value) || System.Half.IsNegativeInfinity(value)
+        => System.Half.IsNaN(value)
         ? throw new System.ArithmeticException(value.ToString())
+        : System.Half.IsNegativeInfinity(value)
+        ? throw new System.OverflowException(value.ToString())
         : System.Half.IsPositiveInfinity(value)
         ? System.Half.MaxValue
         : System.Half.BitDecrement(value);
 
       public static System.Half NativeIncrement(System.Half value)
-        => System.Half.IsNaN(value) || System.Half.IsPositiveInfinity(value)
+        => System.Half.IsNaN(value)
         ? throw new System.ArithmeticException(value.ToString())
+        : System.Half.IsPositiveInfinity(value)
+        ? throw new System.OverflowException(value.ToString())
         : System.Half.IsNegativeInfinity(value)
         ? System.Half.MinValue
         : System.Half.BitIncrement(value);

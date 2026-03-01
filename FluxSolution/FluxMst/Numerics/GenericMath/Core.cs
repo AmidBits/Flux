@@ -64,13 +64,13 @@ namespace Maths
     [TestMethod]
     public void IntegerRootN()
     {
-      Assert.AreEqual(3, BinaryInteger.IntegerRootN(27, 3));
+      Assert.AreEqual(3, BinaryInteger.IRootN(27, 3));
     }
 
     [TestMethod]
     public void IntegerSqrt()
     {
-      Assert.AreEqual(4, BinaryInteger.IntegerSqrt(21));
+      Assert.AreEqual(4, BinaryInteger.ISqrt(21));
     }
 
     [TestMethod]
@@ -104,9 +104,9 @@ namespace Maths
     {
       var v = 15;
 
-      var iq = BinaryInteger.IntegerSqrt(v);
+      var iq = BinaryInteger.ISqrt(v);
 
-      var isiq = BinaryInteger.IsIntegerSqrt(v, iq);
+      var isiq = BinaryInteger.IsISqrt(v, iq);
 
       Assert.IsTrue(isiq);
     }
@@ -116,9 +116,9 @@ namespace Maths
     {
       var v = 15;
 
-      var iq = BinaryInteger.IntegerSqrt(v);
+      var iq = BinaryInteger.ISqrt(v);
 
-      var ispiq = BinaryInteger.IsPerfectIntegerSqrt(v, iq);
+      var ispiq = BinaryInteger.IsPerfectISqrt(v, iq);
 
       Assert.IsFalse(ispiq);
     }
@@ -148,10 +148,10 @@ namespace Maths
       var n = 512d;
       var m = 20;
 
-      var (multipleTowardsZero, nNearestMultiple, multipleAwayFromZero) = Number.MultipleOf(n, m, false, HalfRounding.AwayFromZero);
+      var (multipleTowardsZero, nNearestMultiple, multipleAwayFromZero) = Number.MultipleOf(n, m, false, MidpointRoundingEx.AwayFromZero);
       //n.MultipleOfNearest(m, false, HalfRounding.AwayFromZero, out var multipleTowardsZero, out var multipleAwayFromZero);
 
-      var nearestMultiple = Number.RoundToNearest(n, HalfRounding.TowardZero, false, [multipleTowardsZero, multipleAwayFromZero]);
+      var nearestMultiple = Number.RoundToNearest(n, MidpointRoundingEx.TowardZero, false, [multipleTowardsZero, multipleAwayFromZero]);
 
       Assert.AreEqual(520, nearestMultiple);
 

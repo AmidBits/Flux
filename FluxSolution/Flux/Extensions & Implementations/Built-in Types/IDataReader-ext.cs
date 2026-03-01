@@ -34,7 +34,7 @@ namespace Flux
           foreach (var row in schemaTable.Rows.Cast<System.Data.DataRow>())
           {
             var allowDBNullString = (bool)row[CsAllowDBNull] ? @"NULL" : @"NOT NULL";
-            var columnName = (string)row[CsColumnName] ?? ((int)row[CsColumnOrdinal]).ToSingleOrdinalColumnName();
+            var columnName = (string)row[CsColumnName] ?? BinaryInteger.ToOrdinalFieldName((int)row[CsColumnOrdinal]);
             var columnSize = (int)row[CsColumnSize];
             var dataTypeName = (string)row[CsDataTypeName];
 
@@ -97,7 +97,7 @@ namespace Flux
           {
             if (row.IsNull(CsTsqlDefinitionDefault))
             {
-              var columnName = (string)row[CsColumnName] is var s && string.IsNullOrWhiteSpace(s) ? ((int)row[CsColumnOrdinal]).ToSingleOrdinalColumnName() : s;
+              var columnName = (string)row[CsColumnName] is var s && string.IsNullOrWhiteSpace(s) ? BinaryInteger.ToOrdinalFieldName((int)row[CsColumnOrdinal]) : s;
               var dataType = row[CsDataType] == System.DBNull.Value ? typeof(object) : (System.Type)row[CsDataType];
               var dataTypeName = Data.TsqlDataType.NameFromType(dataType);
               var dataTypeArgument = Data.TsqlDataType.GetDefaultArgument(dataTypeName, true);

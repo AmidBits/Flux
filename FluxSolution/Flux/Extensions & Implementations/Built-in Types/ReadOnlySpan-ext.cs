@@ -3271,7 +3271,7 @@
         System.ArgumentOutOfRangeException.ThrowIfNegative(index);
         System.ArgumentOutOfRangeException.ThrowIfGreaterThan(index, source.Length * 8); // Cannot start beyond the source bits.
         System.ArgumentOutOfRangeException.ThrowIfNegativeOrZero(count); // Must read something.
-        System.ArgumentOutOfRangeException.ThrowIfGreaterThan(count, bitBuffer.GetBitCount()); // Cannot write beyond target (buffer) bits.
+        System.ArgumentOutOfRangeException.ThrowIfGreaterThan(count, BinaryInteger.GetBitCount<TInteger>()); // Cannot write beyond target (buffer) bits.
         System.ArgumentOutOfRangeException.ThrowIfGreaterThan(index + count, source.Length * 8); // Cannot read beyond the source bits.
 
         var (byteIndex, bitOffset) = int.DivRem(index, 8);
@@ -3987,7 +3987,7 @@
 
       return index < source.Length && source[index] is var value && !string.IsNullOrWhiteSpace(value)
         ? source[index]
-        : index.ToSingleOrdinalColumnName();
+        : BinaryInteger.ToOrdinalFieldName(index);
     }
 
     #region BalancedConstructs helpers

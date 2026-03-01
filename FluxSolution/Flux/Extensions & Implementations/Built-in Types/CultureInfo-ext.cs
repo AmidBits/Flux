@@ -32,7 +32,7 @@ namespace Flux
 
           dataTable = streamReader.ToDataTable(s => s.Length > 0, line => line.Split('\t'), source.Name);
 
-          dataTable.DefaultView.Sort = 0.ToSingleOrdinalColumnName() + " ASC";
+          dataTable.DefaultView.Sort = BinaryInteger.ToOrdinalFieldName(0) + " ASC";
 
           m_cultureInfoDataTables.Add(source, dataTable); // We cache the loaded data.
         }

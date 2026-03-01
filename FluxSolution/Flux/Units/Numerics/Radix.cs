@@ -98,7 +98,7 @@ namespace Flux.Units
       where TRadix : System.Numerics.IBinaryInteger<TRadix>
       => IsSingleDigit(value, radix)
       ? TInteger.One
-      : BinaryInteger.IntegerLog(value, radix).IntegralLogAwayFromZero;
+      : BinaryInteger.ILog(value, radix).IntegralLogAwayFromZero;
     //{
     //  var rdx = TInteger.CreateChecked(Units.Radix.AssertMember(radix));
 

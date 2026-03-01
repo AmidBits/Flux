@@ -165,7 +165,7 @@ namespace Numerics
     [TestMethod]
     public void GetBitCount()
     {
-      Assert.AreEqual(32, 88.GetBitCount());
+      Assert.AreEqual(32, BinaryInteger.GetBitCount<int>());
     }
 
     #endregion // GetBitCount
@@ -198,13 +198,13 @@ namespace Numerics
     [TestMethod]
     public void Log2AwayFromZero()
     {
-      Assert.AreEqual(8, BinaryInteger.IntegerLog(215, 2).IntegralLogAwayFromZero);
+      Assert.AreEqual(8, BinaryInteger.ILog(215, 2).IntegralLogAwayFromZero);
     }
 
     [TestMethod]
     public void Log2TowardZero()
     {
-      Assert.AreEqual(4, BinaryInteger.IntegerLog(215, 3).IntegralLogTowardZero);
+      Assert.AreEqual(4, BinaryInteger.ILog(215, 3).IntegralLogTowardZero);
     }
 
     #endregion // Log2
@@ -262,7 +262,7 @@ namespace Numerics
       var towardsZero = Flux.BinaryInteger.RoundDownToPowerOf2(value, false);
       var awayFromZero = Flux.BinaryInteger.RoundUpToPowerOf2(value, false);
 
-      var rounded = Number.RoundToNearest(88, HalfRounding.AwayFromZero, false, [towardsZero, awayFromZero]);
+      var rounded = Number.RoundToNearest(88, MidpointRoundingEx.AwayFromZero, false, [towardsZero, awayFromZero]);
 
       Assert.AreEqual(64, rounded);
 

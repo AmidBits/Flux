@@ -61,7 +61,7 @@ namespace Flux
       {
         System.ArgumentNullException.ThrowIfNull(source);
 
-        return source.GetName(index) is var name && string.IsNullOrWhiteSpace(name) ? index.ToSingleOrdinalColumnName() : name;
+        return source.GetName(index) is var name && string.IsNullOrWhiteSpace(name) ? BinaryInteger.ToOrdinalFieldName(index) : name;
       }
 
       /// <summary>

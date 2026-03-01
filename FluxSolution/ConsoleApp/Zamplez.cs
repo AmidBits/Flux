@@ -144,7 +144,7 @@ namespace ConsoleApp
       {
         var rng = new System.Random();
 
-        var m_ap = BinaryInteger.GetAscendingPrimeNumbers(2).Take(100).ToArray(); // Primes.
+        var m_ap = BinaryInteger.GetPrimeNumbersAscending(2).Take(100).ToArray(); // Primes.
         var m_rn = System.Linq.Enumerable.Range(0, 100).ToArray(); // Rational.
         var m_en = System.Linq.Enumerable.Range(1, 200).Where(i => (i & 1) == 0).ToArray(); // Even.
         var m_on = System.Linq.Enumerable.Range(1, 200).Where(i => (i & 1) != 0).ToArray(); // Odd.
@@ -351,9 +351,9 @@ namespace ConsoleApp
 
       //      n = 0;
       //      var nlpow2 = n.NextLargerPowerOf2();
-      var np2TowardsZero = (int)Number.RoundToNearest(n, HalfRounding.TowardZero, false, [Flux.BinaryInteger.RoundDownToPowerOf2(n, false), Flux.BinaryInteger.RoundUpToPowerOf2(n, false)]);
+      var np2TowardsZero = (int)Number.RoundToNearest(n, MidpointRoundingEx.TowardZero, false, [Flux.BinaryInteger.RoundDownToPowerOf2(n, false), Flux.BinaryInteger.RoundUpToPowerOf2(n, false)]);
       System.Console.WriteLine($" Pow2TowardsZero = {np2TowardsZero}");
-      var np2AwayFromZero = (int)Number.RoundToNearest(n, HalfRounding.AwayFromZero, false, [Flux.BinaryInteger.RoundDownToPowerOf2(n, false), Flux.BinaryInteger.RoundUpToPowerOf2(n, false)]);
+      var np2AwayFromZero = (int)Number.RoundToNearest(n, MidpointRoundingEx.AwayFromZero, false, [Flux.BinaryInteger.RoundDownToPowerOf2(n, false), Flux.BinaryInteger.RoundUpToPowerOf2(n, false)]);
       System.Console.WriteLine($"Pow2AwayFromZero = {np2AwayFromZero}");
 
       var birbits = BinaryInteger.ReverseBits(n);

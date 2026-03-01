@@ -31,7 +31,7 @@ namespace Flux.DataReader
     {
       if (index < 0 && index >= FieldCount) throw new System.ArgumentOutOfRangeException(nameof(index));
 
-      return index < m_fieldNames.Count ? m_fieldNames[index] : index.ToSingleOrdinalColumnName();
+      return index < m_fieldNames.Count ? m_fieldNames[index] : BinaryInteger.ToOrdinalFieldName(index);
     }
     public override int GetOrdinal(string name)
     {

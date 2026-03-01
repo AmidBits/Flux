@@ -84,15 +84,19 @@
       #region Native..
 
       public static float NativeDecrement(float value)
-        => float.IsNaN(value) || float.IsNegativeInfinity(value)
+        => float.IsNaN(value)
         ? throw new System.ArithmeticException(value.ToString())
+        : float.IsNegativeInfinity(value)
+        ? throw new System.OverflowException(value.ToString())
         : float.IsPositiveInfinity(value)
         ? float.MaxValue
         : float.BitDecrement(value);
 
       public static float NativeIncrement(float value)
-        => float.IsNaN(value) || float.IsPositiveInfinity(value)
+        => float.IsNaN(value)
         ? throw new System.ArithmeticException(value.ToString())
+        : float.IsPositiveInfinity(value)
+        ? throw new System.OverflowException(value.ToString())
         : float.IsNegativeInfinity(value)
         ? float.MinValue
         : float.BitIncrement(value);

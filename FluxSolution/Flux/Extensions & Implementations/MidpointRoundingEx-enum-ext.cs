@@ -5,10 +5,10 @@ namespace Flux
   /// <para><seealso href="http://www.jackleitch.net/2010/06/adventures-in-net-rounding-part-2-exotic-rounding-algorithms/"/></para>
   /// <para><seealso href="http://www.cplusplus.com/articles/1UCRko23/"/></para>
   /// </summary>
-  public enum HalfRounding
+  public enum MidpointRoundingEx
   {
     /// <summary>
-    /// <para>Do not call functions with <see cref="HalfRounding"/> as parameters unless you need them. Use the built-in rounding method (<see cref="System.MidpointRounding.ToEven"/>) unless you need universal rounding access.</para>
+    /// <para>Do not call functions with <see cref="MidpointRoundingEx"/> as parameters unless you need them. Use the built-in rounding method (<see cref="System.MidpointRounding.ToEven"/>) unless you need universal rounding access.</para>
     /// <para>Round to the nearest number, and when a number is halfway between two others, round to the nearest even number, if possible.</para>
     /// </summary>
     /// <remarks>
@@ -18,7 +18,7 @@ namespace Flux
     ToEven = MidpointRounding.ToEven,
 
     /// <summary>
-    /// <para>Do not call functions with <see cref="HalfRounding"/> as parameters unless you need them. Use the built-in rounding method (<see cref="System.MidpointRounding.AwayFromZero"/>) unless you need universal rounding access.</para>
+    /// <para>Do not call functions with <see cref="MidpointRoundingEx"/> as parameters unless you need them. Use the built-in rounding method (<see cref="System.MidpointRounding.AwayFromZero"/>) unless you need universal rounding access.</para>
     /// <para>Round to the nearest number, and when a number is halfway between two others, round to the number that is further from zero.</para>
     /// </summary>
     /// <remarks>
@@ -28,7 +28,7 @@ namespace Flux
     AwayFromZero = MidpointRounding.AwayFromZero,
 
     /// <summary>
-    /// <para>Do not call functions with <see cref="HalfRounding"/> as parameters unless you need them. Use the built-in rounding method (<see cref="System.MidpointRounding.ToZero"/>) unless you need universal rounding access.</para>
+    /// <para>Do not call functions with <see cref="MidpointRoundingEx"/> as parameters unless you need them. Use the built-in rounding method (<see cref="System.MidpointRounding.ToZero"/>) unless you need universal rounding access.</para>
     /// <para>Round to the nearest number, and when a number is halfway between two others, round to the number that is closer to zero.</para>
     /// </summary>
     /// <remarks>
@@ -38,7 +38,7 @@ namespace Flux
     TowardZero = MidpointRounding.ToZero,
 
     /// <summary>
-    /// <para>Do not call functions with <see cref="HalfRounding"/> as parameters unless you need them. Use the built-in rounding method (<see cref="System.MidpointRounding.ToNegativeInfinity"/>) unless you need universal rounding access.</para>
+    /// <para>Do not call functions with <see cref="MidpointRoundingEx"/> as parameters unless you need them. Use the built-in rounding method (<see cref="System.MidpointRounding.ToNegativeInfinity"/>) unless you need universal rounding access.</para>
     /// <para>Round to the nearest number, and when a number is halfway between two others, round (down) to the number that is less than.</para>
     /// </summary>
     /// <remarks>
@@ -48,7 +48,7 @@ namespace Flux
     ToNegativeInfinity = MidpointRounding.ToNegativeInfinity,
 
     /// <summary>
-    /// <para>Do not call functions with <see cref="HalfRounding"/> as parameters unless you need them. Use the built-in rounding method (<see cref="System.MidpointRounding.ToPositiveInfinity"/>) unless you need universal rounding access.</para>
+    /// <para>Do not call functions with <see cref="MidpointRoundingEx"/> as parameters unless you need them. Use the built-in rounding method (<see cref="System.MidpointRounding.ToPositiveInfinity"/>) unless you need universal rounding access.</para>
     /// <para>Round to the nearest number, and when a number is halfway between two others, round (up) to the number that is greater than.</para>
     /// </summary>
     /// <remarks>

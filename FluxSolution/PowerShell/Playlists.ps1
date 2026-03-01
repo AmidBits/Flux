@@ -89,7 +89,7 @@ Build-Playlist "Yazoo" ("Tracks\Collections\Yazoo", "Tracks\Collections\Yaz")
 Build-Playlist "Yello" ("Tracks\Collections\Yello")
 Build-Playlist "Zombies" ("Tracks\Collections\Rob Zombie", "Tracks\Collections\White Zombie")
 
-Build-Playlist "All Music" ("Tracks\Collections", "Tracks\MediaTracks", "Tracks\Miscellaneous")
+Build-Playlist "All Music" ("Tracks\Miscellaneous", "Tracks\Collections", "Tracks\Classical", "Tracks\MediaTracks")
 
 Build-Playlist "Collections" ("Tracks\Collections")
 

@@ -29,9 +29,9 @@
       /// <param name="minValue"></param>
       /// <param name="maxValue"></param>
       /// <returns></returns>
-      public Interval<TNumber> Round<TNumber>(HalfRounding minValueRounding, HalfRounding maxValueRounding, out TNumber minValue, out TNumber maxValue)
+      public Interval<TNumber> Round<TNumber>(MidpointRoundingEx minValueRounding, MidpointRoundingEx maxValueRounding, out TNumber minValue, out TNumber maxValue)
         where TNumber : System.Numerics.INumber<TNumber>
-        => new(minValue = TNumber.CreateChecked(FloatingPoint.RoundHalf(source.MinValue, minValueRounding)), maxValue = TNumber.CreateChecked(FloatingPoint.RoundHalf(source.MaxValue, maxValueRounding)));
+        => new(minValue = TNumber.CreateChecked(FloatingPoint.RoundMidpoint(source.MinValue, minValueRounding)), maxValue = TNumber.CreateChecked(FloatingPoint.RoundMidpoint(source.MaxValue, maxValueRounding)));
     }
 
     //// https://math.stackexchange.com/a/4894702

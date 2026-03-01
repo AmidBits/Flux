@@ -88,15 +88,19 @@
       #region Native..
 
       public static double NativeDecrement(double value)
-        => double.IsNaN(value) || double.IsNegativeInfinity(value)
+        => double.IsNaN(value)
         ? throw new System.ArithmeticException(value.ToString())
+        : double.IsNegativeInfinity(value)
+        ? throw new System.OverflowException(value.ToString())
         : double.IsPositiveInfinity(value)
         ? double.MaxValue
         : double.BitDecrement(value);
 
       public static double NativeIncrement(double value)
-        => double.IsNaN(value) || double.IsPositiveInfinity(value)
+        => double.IsNaN(value)
         ? throw new System.ArithmeticException(value.ToString())
+        : double.IsPositiveInfinity(value)
+        ? throw new System.OverflowException(value.ToString())
         : double.IsNegativeInfinity(value)
         ? double.MinValue
         : double.BitIncrement(value);
