@@ -16,7 +16,7 @@ namespace Flux
       {
         var rng = new System.Random();
 
-        var m_ap = BinaryInteger.GetPrimeNumbersAscending(2).Take(100).ToArray(); // Primes.
+        var m_ap = BinaryInteger.PrimeSequenceAscending(2).Take(100).ToArray(); // Primes.
         var m_rn = System.Linq.Enumerable.Range(0, 100).ToArray(); // Natural.
         var m_en = System.Linq.Enumerable.Range(1, 200).Where(i => (i & 1) == 0).ToArray(); // Even.
         var m_on = System.Linq.Enumerable.Range(1, 200).Where(i => (i & 1) != 0).ToArray(); // Odd.
@@ -70,7 +70,7 @@ namespace Flux
         "16. They drink water in a house next to the house where they smoke Blend"
       };
 
-      System.Diagnostics.Debug.WriteLine(hints.ToConsoleString<string>().ToString());
+      System.Diagnostics.Debug.WriteLine(System.Array.Rank1ToConsoleString(hints).ToString());
       System.Console.WriteLine();
 
       var amb = new Flux.AmbOperator.Amb();

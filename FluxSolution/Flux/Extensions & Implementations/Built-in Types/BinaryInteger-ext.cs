@@ -2,6 +2,8 @@
 {
   public static class BinaryInteger
   {
+    private readonly static long[] m_staticFactorials = [1, 1, 2, 6, 24, 120, 720, 5040, 40320, 362880, 3628800, 39916800, 479001600, 6227020800, 87178291200, 1307674368000, 20922789888000, 355687428096000, 6402373705728000, 121645100408832000, 2432902008176640000];
+
     extension<TInteger>(TInteger)
       where TInteger : System.Numerics.IBinaryInteger<TInteger>
     {
@@ -36,6 +38,28 @@
 
         return FallingFactorial(n, k) / Factorial(k);
       }
+
+      ///// <summary>
+      ///// <para>A more optimal approach that accumulates the falling power while dividing by each factor of the factorial in place. This minimizes the risk of overflow errors, and allow for larger coefficients to be calculated. The disadvantage of this algorithm is the necessary use of floating-point math.</para>
+      ///// </summary>
+      ///// <param name="n"></param>
+      ///// <param name="k"></param>
+      ///// <returns></returns>
+      //public static TInteger BinomialCoefficientFP(TInteger n, TInteger k)
+      //{
+      //  if (TInteger.IsNegative(k) || k > n)
+      //    return TInteger.Zero;
+
+      //  if (k > n >> 1)
+      //    k = n - k;
+
+      //  var a = 1.0;
+
+      //  for (var i = TInteger.One; i <= k; i++)
+      //    a = a * double.CreateChecked(n - k + i) / double.CreateChecked(i);
+
+      //  return TInteger.CreateChecked(a + 0.5);
+      //}
 
       #endregion
 
@@ -141,8 +165,8 @@
       /// <typeparam name="TSelf"></typeparam>
       /// <param name="numberOfSides"></param>
       /// <returns></returns>
-      public static System.Collections.Generic.IEnumerable<(TInteger LayerCount, TInteger CenterPolygonalNumber)> GetCenteredPolygonalLayers(TInteger k)
-        => GetCenteredPolygonalNumberSequence(k).PartitionTuple2(false, (previous, current, index) => (TInteger.CreateChecked(index + 2), current)).Prepend((TInteger.One, TInteger.One));
+      public static System.Collections.Generic.IEnumerable<(TInteger LayerCount, TInteger CenterPolygonalNumber)> GenerateCenteredPolygonalLayers(TInteger k)
+        => GenerateCenteredPolygonalNumberSequence(k).PartitionTuple2(false, (previous, current, index) => (TInteger.CreateChecked(index + 2), current)).Prepend((TInteger.One, TInteger.One));
       //{
       //  yield return (TInteger.One, TInteger.One);
 
@@ -163,7 +187,7 @@
       /// <summary></summary>
       /// <see href="https://en.wikipedia.org/wiki/Centered_polygonal_number"/>
       /// <remarks>This function runs indefinitely, if allowed.</remarks>
-      public static System.Collections.Generic.IEnumerable<TInteger> GetCenteredPolygonalNumberSequence(TInteger k)
+      public static System.Collections.Generic.IEnumerable<TInteger> GenerateCenteredPolygonalNumberSequence(TInteger k)
         => Number.ArithmeticSequence(TInteger.Zero, TInteger.One).Select(n => GetCenteredPolygonalNumber(k, n));
 
       #endregion
@@ -189,35 +213,49 @@
       #region Count..With.. (combinations & permutations)
 
       /// <summary>
-      /// <para>Combinations with repetition, also known as combinations with replacement, are a way to select items from a set where the order does not matter, and items can be chosen more than once.</para>
+      /// <para>Combinations with repetition, a.k.a. combinations with replacement, are a way to select items from a set where the order does not matter (combination), and items can be chosen more than once (with repeats).</para>
+      /// <para>Computes combinations with repeats: "<c>n multichoose r</c>" = <c>C(n + r - 1, r)</c> = <c>(n + r - 1)! / (r! * (n - 1)!)</c></para>
+      /// <para>A combination is a way of selecting items from a set when the order of selection does not matter. If you rearrange the same chosen items, it still counts as the same combination.</para>
+      /// <para><i><b>With</b> repetition</i> means that each item can be selected more than once.</para>
       /// </summary>
-      /// <param name="k">The number of items to choose.</param>
+      /// <param name="n">Number of distinct item types.</param>
+      /// <param name="k">Number of items to choose.</param>
       /// <returns></returns>
       public static TInteger CountCombinationsWithRepetition(TInteger n, TInteger k)
         => BinomialCoefficient(n + k - TInteger.One, k);
 
       /// <summary>
-      /// <para>Combinations without repetition refer to the selection of items from a larger set, where the order of selection does not matter and each item can only be chosen once.</para>
+      /// <para>Combinations without repetition refer to the selection of items from a larger set, where the order of selection does not matter (combination), and each item can only be chosen once (no repeats).</para>
+      /// <para>Computes combinations without repeats: "<c>n choose r</c>" = <c>C(n, k)</c> = <c>n! / (k! * (n - k)!)</c></para>
+      /// <para>A combination is a way of selecting items from a set when the order of selection does not matter. If you rearrange the same chosen items, it still counts as the same combination.</para>
+      /// <para><i><b>Without</b> repetition</i> means that once an item is selected, it cannot be selected again.</para>
       /// </summary>
-      /// <param name="k">The number of items to choose.</param>
+      /// <param name="n">Number of distinct item types.</param>
+      /// <param name="k">Number of items to choose.</param>
       /// <returns></returns>
       public static TInteger CountCombinationsWithoutRepetition(TInteger n, TInteger k)
         => BinomialCoefficient(n, k);
 
       /// <summary>
       /// <para>Permutations with repetition involve arranging a set of objects where some objects are identical. This concept is useful in various practical scenarios, such as arranging students of different grades or cars of certain colors without distinguishing between identical items.</para>
-      /// <para>A permutation is an ordered combination.</para>
+      /// <para>Computes permutations with repeats: "<c>each of the k positions has n choices</c>" = <c>P(n, k)</c> = <c>n^k</c></para>
+      /// <para>A permutation is an arrangement of items where the order matters. If you change the order, you create a different permutation.</para>
+      /// <para><i><b>With</b> repetition</i> means that each item can be selected more than once.</para>
       /// </summary>
-      /// <param name="k">The number of items to choose.</param>
+      /// <param name="n">Number of distinct item types.</param>
+      /// <param name="k">Number of items to choose.</param>
       /// <returns></returns>
       public static TInteger CountPermutationsWithRepetition(TInteger n, TInteger k)
         => TInteger.CreateChecked(System.Numerics.BigInteger.Pow(System.Numerics.BigInteger.CreateChecked(n), int.CreateChecked(k)));
 
       /// <summary>
       /// <para>Permutations without repetition refer to different groups of elements that can be done, so that two groups differ from each other only in the order the elements are placed. This situation frequently occurs when you’re working with unique physical objects that can occur only once in a permutation.</para>
-      /// <para>A permutation is an ordered combination.</para>
+      /// <para>Computes permutations without repeats: "<c>k items chosen from n distinct items</c>" = <c>P(n, k)</c> = <c>n! / (n - k)!</c></para>
+      /// <para>A permutation is an arrangement of items where the order matters. If you change the order, you create a different permutation.</para>
+      /// <para><i><b>Without</b> repetition</i> means that once an item is selected, it cannot be selected again.</para>
       /// </summary>
-      /// <param name="k">The number of items to choose.</param>
+      /// <param name="n">Number of distinct item types.</param>
+      /// <param name="k">Number of items to choose.</param>
       /// <returns></returns>
       public static TInteger CountPermutationsWithoutRepetition(TInteger n, TInteger k)
         => FallingFactorial(n, k);
@@ -480,43 +518,17 @@
       #region Divisor functions
 
       /// <summary>
-      /// <para>Creates a new list of factors (a.k.a. divisors) for the specified number.</para>
-      /// <para><see href="https://en.wikipedia.org/wiki/Divisor"/></para>
-      /// </summary>
-      /// <remarks>This implementaion does not order the result.</remarks>
-      /// <typeparam name="TInteger"></typeparam>
-      /// <param name="value"></param>
-      /// <param name="proper"></param>
-      /// <returns></returns>
-      public static void AddDivisors(TInteger n, System.Collections.Generic.ICollection<TInteger> divisors)
-      {
-        if (n > TInteger.Zero)
-          for (var i = TInteger.One; (i * i) <= n; i++)
-          {
-            var (q, r) = TInteger.DivRem(n, i);
-
-            if (TInteger.IsZero(r))
-            {
-              divisors.Add(i);
-
-              if (q != i)
-                divisors.Add(q);
-            }
-          }
-      }
-
-      /// <summary>
       /// <para>σ0()</para>
       /// <para><see href="https://en.wikipedia.org/wiki/Divisor"/></para>
       /// <para><see href="https://cp-algorithms.com/algebra/divisors.html"/></para>
       /// </summary>
-      public static TInteger CountDivisors(TInteger n)
+      public static TInteger CountDivisors(TInteger number)
       {
         var count = TInteger.One;
 
-        for (var i = TInteger.CreateChecked(2); (i * i) <= n; i++)
+        for (var i = TInteger.CreateChecked(2); (i * i) <= number; i++)
         {
-          if (TInteger.IsZero(n % i))
+          if (TInteger.IsZero(number % i))
           {
             var e = TInteger.Zero;
 
@@ -524,53 +536,84 @@
             {
               e++;
 
-              n /= i;
+              number /= i;
             }
-            while (TInteger.IsZero(n % i));
+            while (TInteger.IsZero(number % i));
 
             count *= e + TInteger.One;
           }
         }
 
-        if (n > TInteger.One)
+        if (number > TInteger.One)
           count <<= 1;
 
         return count;
       }
 
-      public static System.Collections.Generic.List<TInteger> GetDivisors(TInteger n, bool sort = false)
+      /// <summary>
+      /// <para>Creates a new list of divisors of a <paramref name="number"/>.</para>
+      /// </summary>
+      /// <param name="number"></param>
+      /// <param name="sort"></param>
+      /// <returns></returns>
+      public static System.Collections.Generic.List<TInteger> GetDivisors(TInteger number)
       {
         var divisors = new System.Collections.Generic.List<TInteger>();
-        AddDivisors(n, divisors);
-        if (sort) divisors.Sort();
+        GetDivisors(number, divisors);
         return divisors;
+      }
+
+      /// <summary>
+      /// <para>Adds the divisors of a <paramref name="number"/> to a <paramref name="collectionOfDivisors"/>.</para>
+      /// <para><see href="https://en.wikipedia.org/wiki/Divisor"/></para>
+      /// </summary>
+      /// <remarks>This implementaion does not order the result.</remarks>
+      /// <typeparam name="TInteger"></typeparam>
+      /// <param name="value"></param>
+      /// <param name="proper"></param>
+      /// <returns></returns>
+      public static void GetDivisors(TInteger number, System.Collections.Generic.ICollection<TInteger> collectionOfDivisors)
+      {
+        if (number > TInteger.Zero)
+          for (var i = TInteger.One; (i * i) <= number; i++)
+          {
+            var (q, r) = TInteger.DivRem(number, i);
+
+            if (TInteger.IsZero(r))
+            {
+              collectionOfDivisors.Add(i);
+
+              if (q != i)
+                collectionOfDivisors.Add(q);
+            }
+          }
       }
 
       /// <summary>Determines whether the <paramref name="number"/> is a deficient number.</summary>
       /// <see href="https://en.wikipedia.org/wiki/Deficient_number"/>
       /// <seealso cref="https://en.wikipedia.org/wiki/Divisor#Further_notions_and_facts"/>
-      public static bool IsDeficientNumber(TInteger n)
-        => SumDivisors(n).AliquotSum < n;
+      public static bool IsDeficientNumber(TInteger number)
+        => SumDivisors(number).AliquotSum < number;
 
       /// <summary>Determines whether the <paramref name="number"/> is a perfect number.</summary>
       /// <see href="https://en.wikipedia.org/wiki/Perfect_number"/>
-      public static bool IsPerfectNumber(TInteger n)
-        => SumDivisors(n).AliquotSum == n;
+      public static bool IsPerfectNumber(TInteger number)
+        => SumDivisors(number).AliquotSum == number;
 
       /// <summary>
       /// <para>σ1()</para>
       /// <para><see href="https://en.wikipedia.org/wiki/Divisor"/></para>
       /// <para><see href="https://cp-algorithms.com/algebra/divisors.html"/></para>
       /// </summary>
-      public static (TInteger Sum, TInteger AliquotSum) SumDivisors(TInteger n)
+      public static (TInteger Sum, TInteger AliquotSum) SumDivisors(TInteger number)
       {
         var sum = TInteger.One;
 
-        var aliquot = n;
+        var aliquot = number; // Need to remember the original number for calculating the aliquot sum, which is the sum of proper divisors (excluding itself).
 
-        for (var i = TInteger.CreateChecked(2); i * i <= n; i++)
+        for (var i = TInteger.CreateChecked(2); i * i <= number; i++)
         {
-          if (TInteger.IsZero(n % i))
+          if (TInteger.IsZero(number % i))
           {
             var e = 0;
 
@@ -578,9 +621,9 @@
             {
               e++;
 
-              n /= i;
+              number /= i;
             }
-            while (TInteger.IsZero(n % i));
+            while (TInteger.IsZero(number % i));
 
             var add = TInteger.Zero;
             var pow = TInteger.One;
@@ -596,8 +639,8 @@
           }
         }
 
-        if (n > TInteger.One)
-          sum *= TInteger.One + n;
+        if (number > TInteger.One)
+          sum *= TInteger.One + number;
 
         return (sum, sum - aliquot);
       }
@@ -677,6 +720,97 @@
           return NaiveFactorial(n);
 
         return SplitFactorial(n);
+      }
+
+      /// <summary>
+      /// <para>Computes the factorial of <paramref name="value"/>, e.g. <c>Factorial(5) => 1 * 2 * 3 * 4 * 5</c></para>
+      /// <para><see href="https://en.wikipedia.org/wiki/Factorial"/></para>
+      /// </summary>
+      /// <remarks>This plain-and-simple iterative version of factorials is faster with numbers smaller than 60 or so, and starts loosing with larger numbers.</remarks>
+      /// <typeparam name="TInteger"></typeparam>
+      private static TInteger NaiveFactorial(TInteger n)
+      {
+        System.ArgumentOutOfRangeException.ThrowIfNegative(n);
+
+        var f = TInteger.One;
+
+        if (n > f) // Only loop if value is greater than 1.
+          checked
+          {
+            f++;
+
+            for (var m = f + TInteger.One; m <= n; m++)
+              f *= m;
+          }
+
+        return f;
+      }
+
+      /// <summary>
+      /// <para>Compute the factorial using divide-and-conquer, a.k.a. split-factorial of <paramref name="value"/>.</para>
+      /// <para><see href="https://en.wikipedia.org/wiki/Factorial"/></para>
+      /// <para><see href="http://www.luschny.de/math/factorial/csharp/FactorialSplit.cs.html"/></para>
+      /// </summary>
+      /// <typeparam name="TInteger"></typeparam>
+      private static TInteger SplitFactorial(TInteger n)
+      {
+        System.ArgumentOutOfRangeException.ThrowIfNegative(n);
+
+        var two = (TInteger.One + TInteger.One);
+
+        var p = TInteger.One;
+        var r = TInteger.One;
+        var currentN = TInteger.One;
+
+        var h = TInteger.Zero;
+        var shift = TInteger.Zero;
+        var high = TInteger.One;
+
+        var log2n = int.CreateChecked(TInteger.Log2(n));
+
+        while (h != n)
+          checked
+          {
+            shift += h;
+            h = n >>> log2n--;
+            var len = high;
+            high = (h - TInteger.One) | TInteger.One;
+            len = (high - len) >>> 1;
+
+            if (len > TInteger.Zero)
+            {
+              p *= Product(len);
+              r *= p;
+            }
+          }
+
+        return r << int.CreateChecked(shift);
+
+        TInteger Product(TInteger n)
+        {
+          checked
+          {
+            var m = n >> 1;
+
+            if (TInteger.IsZero(m))
+              return currentN += two;
+
+            if (n == two)
+              return (currentN += two) * (currentN += two);
+
+            return Product(n - m) * Product(m);
+          }
+        }
+      }
+
+      private static TInteger StaticFactorial(TInteger n)
+      {
+        System.ArgumentOutOfRangeException.ThrowIfNegative(n);
+
+        if (n < TInteger.CreateChecked(m_staticFactorials.Length))
+          return TInteger.CreateChecked(m_staticFactorials[int.CreateChecked(n)]);
+
+        return TInteger.Zero;
       }
 
       #endregion
@@ -828,9 +962,9 @@
 
       #endregion
 
-      #region Numbers & Sequences
+      #region Number sequences and associated functions
 
-      #region GetAbundantNumbers
+      #region AbundantNumbers
 
       /// <summary>
       /// <para>Creates a new sequence of 2-tuples, each with an abundant number and its aliquot sum.</para>
@@ -839,12 +973,12 @@
       /// <remarks>This function generate results until the type <typeparamref name="TInteger"/> under/overflows in any calculation. No exception is thrown.</remarks>
       /// <typeparam name="TSelf"></typeparam>
       /// <returns></returns>
-      public static System.Collections.Generic.IEnumerable<(TInteger Number, TInteger AliqoutSum)> GetAbundantNumbers()
+      public static System.Collections.Generic.IEnumerable<(TInteger Number, TInteger AliqoutSum)> AbundantNumbers()
         => Number.ArithmeticSequence(TInteger.CreateChecked(3), TInteger.One).AsParallel().AsOrdered().Select(n => (Number: n, SumDivisors(n).AliquotSum)).Where(x => x.AliquotSum > x.Number);
 
       #endregion
 
-      #region GetHighlyAbundantNumbers
+      #region HighlyAbundantNumbers
 
       /// <summary>
       /// <para>Creates a new sequence of highly abundant numbers.</para>
@@ -856,7 +990,7 @@
       /// </remarks>
       /// <typeparam name="TSelf"></typeparam>
       /// <returns></returns>
-      public static System.Collections.Generic.IEnumerable<(TInteger Number, TInteger Sum)> GetHighlyAbundantNumbers()
+      public static System.Collections.Generic.IEnumerable<(TInteger Number, TInteger Sum)> HighlyAbundantNumbers()
       {
         var largestSumOfDivisors = TInteger.Zero;
 
@@ -871,7 +1005,7 @@
 
       #endregion
 
-      #region GetSuperAbundantNumbers
+      #region SuperAbundantNumbers
 
       /// <summary>
       /// <para>Creates a new sequence of super-abundant numbers.</para>
@@ -883,11 +1017,11 @@
       /// </remarks>
       /// <typeparam name="TSelf"></typeparam>
       /// <returns></returns>
-      public static System.Collections.Generic.IEnumerable<(TInteger Number, TInteger Sum)> GetSuperAbundantNumbers()
+      public static System.Collections.Generic.IEnumerable<(TInteger Number, TInteger Sum)> SuperAbundantNumbers()
       {
         var largestValue = 0.0;
 
-        foreach (var tuple in GetHighlyAbundantNumbers<TInteger>())
+        foreach (var tuple in HighlyAbundantNumbers<TInteger>())
           if ((double.CreateChecked(tuple.Sum) / double.CreateChecked(tuple.Number)) is var value && value > largestValue)
           {
             yield return tuple;
@@ -912,7 +1046,7 @@
 
       #endregion
 
-      #region GetBellNumbers
+      #region BellNumbers
 
       /// <summary>
       /// <para>Creates a new sequence of Bell numbers.</para>
@@ -921,12 +1055,12 @@
       /// <remarks>This function generate results until the type <typeparamref name="TInteger"/> under/overflows in any calculation. No exception is thrown.</remarks>
       /// <typeparam name="TInteger"></typeparam>
       /// <returns></returns>
-      public static System.Collections.Generic.IEnumerable<TInteger> GetBellNumbers()
-        => GetBellTriangle<TInteger>().Select(a => a[0]);
+      public static System.Collections.Generic.IEnumerable<TInteger> BellNumbers()
+        => BellTriangle<TInteger>().Select(a => a[0]);
 
       #endregion
 
-      #region GetBellTriangle
+      #region BellTriangle
 
       /// <summary>
       /// <para>Creates a new sequence with arrays (i.e. row) of Bell numbers in a Bell triangle.</para>
@@ -936,9 +1070,9 @@
       /// <remarks>This function generate results until the type <typeparamref name="TInteger"/> under/overflows in any calculation. No exception is thrown.</remarks>
       /// <typeparam name="TInteger"></typeparam>
       /// <returns></returns>
-      public static System.Collections.Generic.IEnumerable<System.Collections.Generic.List<TInteger>> GetBellTriangle()
+      public static System.Collections.Generic.IEnumerable<System.Collections.Generic.List<TInteger>> BellTriangle()
       {
-        foreach (var list in GetBellTriangleAugmented<TInteger>().Skip(1))
+        foreach (var list in BellTriangleAugmented<TInteger>().Skip(1))
         {
           list.RemoveAt(0);
 
@@ -948,7 +1082,7 @@
 
       #endregion
 
-      #region GetBellTriangleAugmented
+      #region BellTriangleAugmented
 
       /// <summary>
       /// <para>Creates a new sequence with arrays (i.e. row) of Bell numbers in an augmented Bell triangle.</para>
@@ -958,7 +1092,7 @@
       /// <remarks>This function generate results until the type <typeparamref name="TInteger"/> under/overflows in any calculation. No exception is thrown.</remarks>
       /// <typeparam name="TInteger"></typeparam>
       /// <returns></returns>
-      public static System.Collections.Generic.IEnumerable<System.Collections.Generic.List<TInteger>> GetBellTriangleAugmented()
+      public static System.Collections.Generic.IEnumerable<System.Collections.Generic.List<TInteger>> BellTriangleAugmented()
       {
         var l1 = new System.Collections.Generic.List<TInteger>() { TInteger.One }; // This is the current.
         var l0 = new System.Collections.Generic.List<TInteger>(); // This is the previous.
@@ -1002,7 +1136,7 @@
 
       #endregion
 
-      #region GetCatalanSequence
+      #region CatalanSequence
 
       /// <summary>
       /// <para>Creates a new sequence with Catalan numbers.</para>
@@ -1011,12 +1145,12 @@
       /// <remarks>This function runs indefinitely, if allowed.</remarks>
       /// <typeparam name="TInteger"></typeparam>
       /// <returns></returns>
-      public static System.Collections.Generic.IEnumerable<TInteger> GetCatalanSequence()
+      public static System.Collections.Generic.IEnumerable<TInteger> CatalanSequence()
         => Number.ArithmeticSequence(TInteger.Zero, TInteger.One).AsParallel().AsOrdered().Select(GetCatalanNumber);
 
       #endregion
 
-      #region GetCompositeNumbers
+      #region CompositeNumbers
 
       /// <summary>
       /// <para>Generates a new sequence of composite numbers.</para>
@@ -1024,12 +1158,12 @@
       /// </summary>
       /// <remarks>This function generate results until the type <typeparamref name="TInteger"/> under/overflows in any calculation. No exception is thrown.</remarks>
       /// <returns></returns>
-      public static System.Collections.Generic.IEnumerable<TInteger> GetCompositeNumbers()
+      public static System.Collections.Generic.IEnumerable<TInteger> CompositeNumbers()
         => Number.ArithmeticSequence(TInteger.One, TInteger.One).AsParallel().AsOrdered().Where(IsCompositeNumber);
 
       #endregion
 
-      #region GetHighlyCompositeNumbers
+      #region HighlyCompositeNumbers
 
       /// <summary>
       /// <para>Creates a new sequence of highly composite numbers.</para>
@@ -1037,7 +1171,7 @@
       /// </summary>
       /// <remarks>This function generate results until the type <typeparamref name="TInteger"/> under/overflows in any calculation. No exception is thrown.</remarks>
       /// <returns></returns>
-      public static System.Collections.Generic.IEnumerable<(TInteger Number, TInteger Count)> GetHighlyCompositeNumbers()
+      public static System.Collections.Generic.IEnumerable<(TInteger Number, TInteger Count)> HighlyCompositeNumbers()
       {
         var largestCount = TInteger.Zero;
 
@@ -1089,7 +1223,7 @@
 
       #endregion
 
-      #region GetFibonacciSequence
+      #region FibonacciSequence
 
       /// <summary>
       /// <para>Creates a new sequence of <typeparamref name="TInteger"/> with Fibonacci numbers.</para>
@@ -1098,7 +1232,7 @@
       /// <remarks>This function generate results until the type <typeparamref name="TInteger"/> under/overflows in any calculation. No exception is thrown.</remarks>
       /// <typeparam name="TInteger"></typeparam>
       /// <returns></returns>
-      public static System.Collections.Generic.IEnumerable<TInteger> GetFibonacciSequence()
+      public static System.Collections.Generic.IEnumerable<TInteger> FibonacciSequence()
       {
         var n1 = TInteger.Zero;
         var n2 = TInteger.One;
@@ -1144,7 +1278,7 @@
 
       #endregion
 
-      #region GetLeonardoSequence
+      #region LeonardoSequence
 
       /// <summary>
       /// <para>Creates a new sequence with Leonardo numbers.</para>
@@ -1154,7 +1288,7 @@
       /// <param name="second"></param>
       /// <param name="step"></param>
       /// <returns></returns>
-      public static System.Collections.Generic.IEnumerable<TInteger> GetLeonardoSequence(TInteger first, TInteger second, TInteger step)
+      public static System.Collections.Generic.IEnumerable<TInteger> LeonardoSequence(TInteger first, TInteger second, TInteger step)
       {
         while (true)
         {
@@ -1180,7 +1314,7 @@
 
       #endregion
 
-      #region GetMersenneNumberSequence
+      #region MersenneNumberSequence
 
       /// <summary>`
       /// <para>Creates a new sequence of Mersenne numbers.</para>
@@ -1188,12 +1322,12 @@
       /// </summary>
       /// <typeparam name="TInteger"></typeparam>
       /// <returns></returns>
-      public static System.Collections.Generic.IEnumerable<TInteger> GetMersenneNumberSequence()
+      public static System.Collections.Generic.IEnumerable<TInteger> MersenneNumberSequence()
         => Number.ArithmeticSequence(TInteger.One, TInteger.One).Select(GetMersenneNumber);
 
       #endregion
 
-      #region GetMersennePrimeSequence
+      #region MersennePrimeSequence
 
       /// <summary>
       /// <para>Creates a new sequence of Mersenne primes.</para>
@@ -1201,17 +1335,17 @@
       /// </summary>
       /// <typeparam name="TInteger"></typeparam>
       /// <returns></returns>
-      public static System.Collections.Generic.IEnumerable<TInteger> GetMersennePrimeSequence()
-        => GetMersenneNumberSequence<TInteger>().Where(IsPrimeNumber);
+      public static System.Collections.Generic.IEnumerable<TInteger> MersennePrimeSequence()
+        => MersenneNumberSequence<TInteger>().Where(IsPrimeNumber);
 
       #endregion
 
-      #region GetMoserDeBruijnSequence
+      #region MoserDeBruijnSequence
 
       /// <summary>Creates a sequence of Moser/DeBruijn numbers.</summary>
       /// <see href="https://en.wikipedia.org/wiki/Moser%E2%80%93De_Bruijn_sequence"/>
       /// <seealso cref="https://www.geeksforgeeks.org/moser-de-bruijn-sequence/"/>
-      public static System.Collections.Generic.List<TInteger> GetMoserDeBruijnSequence(TInteger n)
+      public static System.Collections.Generic.List<TInteger> MoserDeBruijnSequence(TInteger n)
       {
         System.ArgumentOutOfRangeException.ThrowIfNegative(n);
 
@@ -1237,7 +1371,7 @@
 
       #endregion
 
-      #region GetPadovanSequence
+      #region PadovanSequence
 
       /// <summary>
       /// <para>Creates a new sequence with Padovan numbers.</para>
@@ -1246,7 +1380,7 @@
       /// <remarks>This function generate results until the type <typeparamref name="TInteger"/> under/overflows in any calculation. No exception is thrown.</remarks>
       /// <typeparam name="TSelf"></typeparam>
       /// <returns></returns>
-      public static System.Collections.Generic.IEnumerable<TInteger> GetPadovanSequence()
+      public static System.Collections.Generic.IEnumerable<TInteger> PadovanSequence()
       {
         TInteger p1 = TInteger.One, p2 = TInteger.One, p3 = TInteger.One;
 
@@ -1274,7 +1408,7 @@
 
       #endregion
 
-      #region GetPerrinNumbers
+      #region PerrinNumbers
 
       /// <summary>
       /// <para>Creates an indefinite sequence of Perrin numbers.</para>
@@ -1283,7 +1417,7 @@
       /// <remarks>This function generate results until the type <typeparamref name="TInteger"/> under/overflows in any calculation. No exception is thrown.</remarks>
       /// <typeparam name="TSelf"></typeparam>
       /// <returns></returns>
-      public static System.Collections.Generic.IEnumerable<TInteger> GetPerrinNumbers()
+      public static System.Collections.Generic.IEnumerable<TInteger> PerrinNumbers()
       {
         TInteger a = TInteger.CreateChecked(3), b = TInteger.Zero, c = TInteger.CreateChecked(2);
 
@@ -1311,14 +1445,14 @@
 
       #endregion
 
-      #region GetPrimeNumbersAscending
+      #region PrimeSequenceAscending
 
       /// <summary>
       /// <para>Creates a new sequence of ascending possible primes, greater-than-or-equal-to a specified number.</para>
       /// </summary>
       /// <param name="n"></param>
       /// <returns></returns>
-      private static System.Collections.Generic.IEnumerable<TInteger> GetPrimeCandidatesAscending(TInteger n)
+      private static System.Collections.Generic.IEnumerable<TInteger> PrimeCandidatesAscending(TInteger n)
       {
         var two = TInteger.CreateChecked(2);
         if (n <= two)
@@ -1346,15 +1480,15 @@
       /// <remarks>This function generate results until the type <typeparamref name="TInteger"/> under/overflows in any calculation. No exception is thrown.</remarks>
       /// <param name="n"></param>
       /// <returns></returns>
-      public static System.Collections.Generic.IEnumerable<TInteger> GetPrimeNumbersAscending(TInteger n)
-        => GetPrimeCandidatesAscending(n).AsParallel().AsOrdered().Where(IsPrimeNumber);
+      public static System.Collections.Generic.IEnumerable<TInteger> PrimeSequenceAscending(TInteger n)
+        => PrimeCandidatesAscending(n).AsParallel().AsOrdered().Where(IsPrimeNumber);
 
       #endregion
 
-      #region GetPrimeNumbersDescending
+      #region PrimeSequenceDescending
 
       /// <summary>Creates a new sequence of descending possible primes, less-than-or-equal-to a specified number.</summary>
-      private static System.Collections.Generic.IEnumerable<TInteger> GetPrimeCandidatesDescending(TInteger n)
+      private static System.Collections.Generic.IEnumerable<TInteger> PrimeCandidatesDescending(TInteger n)
       {
         var six = TInteger.CreateChecked(6);
 
@@ -1398,8 +1532,8 @@
       /// <remarks>This function generate results until the type <typeparamref name="TInteger"/> under/overflows in any calculation. No exception is thrown.</remarks>
       /// <param name="n"></param>
       /// <returns></returns>
-      public static System.Collections.Generic.IEnumerable<TInteger> GetPrimeNumbersDescending(TInteger n)
-        => GetPrimeCandidatesDescending(n).AsParallel().AsOrdered().Where(IsPrimeNumber);
+      public static System.Collections.Generic.IEnumerable<TInteger> PrimeSequenceDescending(TInteger n)
+        => PrimeCandidatesDescending(n).AsParallel().AsOrdered().Where(IsPrimeNumber);
 
       #endregion
 
@@ -1438,7 +1572,7 @@
         // If less-or-equal-to an unsigned 64-bit value, use Miller-Rabin 64-bit deterministic algorithm.
 
         if (bi <= ulong.MaxValue)
-          return ulong.IsPrime(ulong.CreateChecked(n));
+          return ulong.IsPrimeDeterministic(ulong.CreateChecked(n));
 
         // Otherwise use Miller-Rabin probabilistic algorithm.
 
@@ -1447,10 +1581,12 @@
 
         var log = System.Numerics.BigInteger.Log(bi.GetBitLength(), 1.15);
 
-        return MillerRabinProbabilisticIsPrime(bi, int.CreateChecked(log)); // Pass the log value as k parameter.
+        return System.Numerics.BigInteger.IsPrimeProbabilistic(bi, int.CreateChecked(log)); // Pass the log value as k parameter.
       }
 
       #endregion
+
+      #region SequenceOfNthRoot
 
       /// <summary>
       /// <para>Creates a sequence of powers-of-radix values.</para>
@@ -1458,7 +1594,7 @@
       /// <typeparam name="TMinMaxInteger"></typeparam>
       /// <param name="nth"></param>
       /// <returns></returns>
-      public static System.Collections.Generic.IEnumerable<(TInteger Root, TInteger Number)> GetSequenceOfNthRoot(TInteger nth)
+      public static System.Collections.Generic.IEnumerable<(TInteger Root, TInteger Number)> SequenceOfNthRoot(TInteger nth)
       {
         System.ArgumentOutOfRangeException.ThrowIfLessThan(nth, TInteger.CreateChecked(2));
 
@@ -1475,7 +1611,9 @@
         }
       }
 
-      #region GetSphenicNumbers
+      #endregion
+
+      #region SphenicNumbers
 
       /// <summary>
       /// <para>Yields a sequence of all sphenic numbers less than <paramref name="cutoffNumber"/>.</para>
@@ -1483,7 +1621,7 @@
       /// </summary>
       /// <param name="cutoffNumber"></param>
       /// <returns></returns>
-      public static System.Collections.Generic.IEnumerable<TInteger> GetSphenicNumbers(TInteger cutoffNumber)
+      public static System.Collections.Generic.IEnumerable<TInteger> SphenicNumbers(TInteger cutoffNumber)
       {
         checked
         {
@@ -1520,7 +1658,7 @@
 
       #endregion
 
-      #region GetVanEckSequence
+      #region VanEcksSequence
 
       /// <summary>
       /// <para>Creates a new Van Eck's sequence, starting with the specified <paramref name="minNumber"/> (where 0 yields the original sequence).</para>
@@ -1529,7 +1667,7 @@
       /// <param name="minNumber"></param>
       /// <returns></returns>
       /// <exception cref="System.ArgumentOutOfRangeException"></exception>
-      public static System.Collections.Generic.IEnumerable<TInteger> GetVanEckSequence(TInteger minNumber)
+      public static System.Collections.Generic.IEnumerable<TInteger> VanEcksSequence(TInteger minNumber)
       {
         System.ArgumentOutOfRangeException.ThrowIfNegative(minNumber);
 
@@ -2023,7 +2161,7 @@
 
         var r = TInteger.One;
 
-        a = a % m;
+        a %= m;
 
         while (e > TInteger.Zero)
         {
@@ -2132,12 +2270,12 @@
 
       #endregion
 
-      // PockHammer (ambiguous, removed) - use FallingFactorial/RisingFactorial instead. There is also generalized versions in the IFloatingPoint extensions class.
+      // PockHammer (ambiguous, removed) - use FallingFactorial/RisingFactorial instead. There is also generalized versions in the FloatingPoint extensions class.
 
       #region Pow
 
       /// <summary>
-      /// <para>Indicates whether <paramref name="value"/> is a power of <paramref name="radix"/>.</para>
+      /// <para>Indicates whether <paramref name="value"/> is a power of <paramref name="radix"/> (base).</para>
       /// </summary>
       /// <remarks>This version also handles negative values simply by mirroring the corresponding positive value. Zero return as false.</remarks>
       public static bool IsPowOf<TRadix>(TInteger value, TRadix radix)
@@ -2168,35 +2306,40 @@
       /// <summary>
       /// <para>The number of prime factors that make up a number.</para>
       /// </summary>
+      /// <param name="number"></param>
       /// <returns></returns>
-      public static (int TotalCount, int DistinctCount) CountPrimeFactors(TInteger n)
+      public static (int TotalCount, int DistinctCount) CountPrimeFactors(TInteger number)
       {
-        var pf = GetPrimeFactors(n);
+        var pf = GetPrimeFactors(number);
 
         return (pf.Count, pf.Distinct().Count());
       }
 
-      public static System.Collections.Generic.List<TInteger> GetPrimeFactors(TInteger n)
+      /// <summary>
+      /// <para>Creates a new list of prime factors for a <paramref name="number"/>.</para>
+      /// </summary>
+      /// <param name="number"></param>
+      /// <param name="sort"></param>
+      /// <returns></returns>
+      public static System.Collections.Generic.List<TInteger> GetPrimeFactors(TInteger number)
       {
         var primeFactors = new System.Collections.Generic.List<TInteger>();
-        GetPrimeFactors(n, primeFactors);
+        GetPrimeFactors(number, primeFactors);
         return (primeFactors);
       }
 
       /// <summary>
-      /// <para>Creates a list of prime factors (a.k.a. divisors) for the <paramref name="value"/> using wheel factorization.</para>
+      /// <para>Adds the prime factors (a.k.a. divisors) for a <paramref name="number"/> to a <paramref name="collectionOfPrimeFactors"/>.</para>
       /// <para><see href="https://en.wikipedia.org/wiki/Factorization"/></para>
       /// <para><see href="https://en.wikipedia.org/wiki/Wheel_factorization"/></para>
       /// <para><see href="https://en.wikipedia.org/wiki/Integer_factorization"/></para>
       /// <para><seealso href="https://en.wikipedia.org/wiki/Divisor"/></para>
       /// </summary>
-      /// <typeparam name="TInteger"></typeparam>
-      /// <param name="value"></param>
-      /// <returns></returns>
-      /// <exception cref="System.ArgumentOutOfRangeException"></exception>
-      public static void GetPrimeFactors(TInteger n, System.Collections.Generic.ICollection<TInteger> primeFactors)
+      /// <param name="number"></param>
+      /// <param name="collectionOfPrimeFactors"></param>
+      public static void GetPrimeFactors(TInteger number, System.Collections.Generic.ICollection<TInteger> collectionOfPrimeFactors)
       {
-        System.ArgumentOutOfRangeException.ThrowIfNegativeOrZero(n);
+        System.ArgumentOutOfRangeException.ThrowIfNegativeOrZero(number);
 
         var two = TInteger.CreateChecked(2);
         var four = TInteger.CreateChecked(4);
@@ -2204,38 +2347,38 @@
 
         var m_primeFactorWheelIncrements = new TInteger[] { four, two, four, two, four, six, two, six };
 
-        while (TInteger.IsZero(n % two))
+        while (TInteger.IsZero(number % two))
         {
-          primeFactors.Add(two);
-          n /= two;
+          collectionOfPrimeFactors.Add(two);
+          number /= two;
         }
 
         var three = TInteger.CreateChecked(3);
 
-        while (TInteger.IsZero(n % three))
+        while (TInteger.IsZero(number % three))
         {
-          primeFactors.Add(three);
-          n /= three;
+          collectionOfPrimeFactors.Add(three);
+          number /= three;
         }
 
         var five = TInteger.CreateChecked(5);
 
-        while (TInteger.IsZero(n % five))
+        while (TInteger.IsZero(number % five))
         {
-          primeFactors.Add(five);
-          n /= five;
+          collectionOfPrimeFactors.Add(five);
+          number /= five;
         }
 
         TInteger k = TInteger.CreateChecked(7), k2 = k * k;
 
         var index = 0;
 
-        while (k2 <= n)
+        while (k2 <= number)
         {
-          if (TInteger.IsZero(n % k))
+          if (TInteger.IsZero(number % k))
           {
-            primeFactors.Add(k);
-            n /= k;
+            collectionOfPrimeFactors.Add(k);
+            number /= k;
           }
           else
           {
@@ -2247,8 +2390,78 @@
           }
         }
 
-        if (n > TInteger.One)
-          primeFactors.Add(n);
+        if (number > TInteger.One)
+          collectionOfPrimeFactors.Add(number);
+      }
+
+      /// <summary>
+      /// <para>The sum of all prime factors that make up a number.</para>
+      /// </summary>
+      /// <param name="number"></param>
+      /// <returns></returns>
+      public static TInteger SumAllPrimeFactors(TInteger number)
+      {
+        var two = TInteger.CreateChecked(2);
+
+        if (number < two)
+          return TInteger.Zero; // No prime factors for numbers < 2
+
+        var sum = TInteger.Zero;
+
+        while (TInteger.IsZero(number % two)) // Handle factor 2
+        {
+          sum += two;
+          number /= two;
+        }
+
+        for (var i = TInteger.CreateChecked(3); i * i <= number; i += two) // Handle odd factors
+          while (TInteger.IsZero(number % i))
+          {
+            sum += i;
+            number /= i;
+          }
+
+        if (number > TInteger.One) // If number > 1, it's prime
+          sum += number;
+
+        return sum;
+      }
+
+      /// <summary>
+      /// <para>The sum of distinct prime factors that make up a number.</para>
+      /// </summary>
+      /// <param name="number"></param>
+      /// <returns></returns>
+      public static TInteger SumDistinctPrimeFactors(TInteger number)
+      {
+        var two = TInteger.CreateChecked(2);
+
+        if (number < two)
+          return TInteger.Zero; // No prime factors for numbers < 2
+
+        var sum = TInteger.Zero;
+
+        if (TInteger.IsZero(number % two)) // Handle factor 2
+        {
+          sum += two;
+          while (TInteger.IsZero(number % two))
+            number /= two;
+        }
+
+        for (var i = TInteger.CreateChecked(3); i * i <= number; i += two) // Handle odd factors
+        {
+          if (TInteger.IsZero(number % i))
+          {
+            sum += i;
+            while (TInteger.IsZero(number % i))
+              number /= i;
+          }
+        }
+
+        if (number > TInteger.One) // If number > 1, it's prime
+          sum += number;
+
+        return sum;
       }
 
       #endregion
@@ -2371,7 +2584,7 @@
       /// <returns></returns>
       public static TInteger IRootN<TNth>(TInteger value, TNth nth)
         where TNth : System.Numerics.IBinaryInteger<TNth>
-        => TInteger.CreateChecked(NewtonRaphsonRootN(System.Numerics.BigInteger.CreateChecked(value), int.CreateChecked(nth)));
+        => TInteger.CreateChecked(System.Numerics.BigInteger.NewtonRaphsonRootN(System.Numerics.BigInteger.CreateChecked(value), int.CreateChecked(nth)));
 
       public static bool IsIRootN<TNth>(TInteger value, TNth n, TInteger root)
         where TNth : System.Numerics.IBinaryInteger<TNth>
@@ -2643,6 +2856,7 @@
       /// <summary>
       /// <para>a Stirling number of the second kind (or Stirling partition number) is the number of ways to partition a set of n objects into k non-empty subsets.</para>
       /// <para><see href="https://en.wikipedia.org/wiki/Stirling_number"/></para>
+      /// <para><see href="https://dmitrybrant.com/2008/04/29/binomial-coefficients-stirling-numbers-csharp"/></para>
       /// </summary>
       /// <typeparam name="TInteger"></typeparam>
       /// <param name="n"></param>
@@ -2732,105 +2946,105 @@
 
       #endregion
 
-      #region Twelvefold way
+      //#region Twelvefold way
 
-      /// <summary>
-      /// <para><see href="https://en.wikipedia.org/wiki/Twelvefold_way"/></para>
-      /// </summary>
-      /// <param name="x"></param>
-      /// <param name="n"></param>
-      /// <returns></returns>
-      public static TInteger AnyDistinct(TInteger x, TInteger n) => Pow(x, n);
+      ///// <summary>
+      ///// <para><see href="https://en.wikipedia.org/wiki/Twelvefold_way"/></para>
+      ///// </summary>
+      ///// <param name="x"></param>
+      ///// <param name="n"></param>
+      ///// <returns></returns>
+      //public static TInteger AnyDistinct(TInteger x, TInteger n) => Pow(x, n);
 
-      /// <summary>
-      /// <para><see href="https://en.wikipedia.org/wiki/Twelvefold_way"/></para>
-      /// </summary>
-      /// <param name="x"></param>
-      /// <param name="n"></param>
-      /// <returns></returns>
-      public static TInteger InjectiveDistinct(TInteger x, TInteger n) => FallingFactorial(x, n);
+      ///// <summary>
+      ///// <para><see href="https://en.wikipedia.org/wiki/Twelvefold_way"/></para>
+      ///// </summary>
+      ///// <param name="x"></param>
+      ///// <param name="n"></param>
+      ///// <returns></returns>
+      //public static TInteger InjectiveDistinct(TInteger x, TInteger n) => FallingFactorial(x, n);
 
-      /// <summary>
-      /// <para><see href="https://en.wikipedia.org/wiki/Twelvefold_way"/></para>
-      /// </summary>
-      /// <param name="x"></param>
-      /// <param name="n"></param>
-      /// <returns></returns>
-      public static TInteger SurjectiveDistinct(TInteger x, TInteger n) => Factorial(x) * StirlingNumber2ndKind(n, x);
+      ///// <summary>
+      ///// <para><see href="https://en.wikipedia.org/wiki/Twelvefold_way"/></para>
+      ///// </summary>
+      ///// <param name="x"></param>
+      ///// <param name="n"></param>
+      ///// <returns></returns>
+      //public static TInteger SurjectiveDistinct(TInteger x, TInteger n) => Factorial(x) * StirlingNumber2ndKind(n, x);
 
-      /// <summary>
-      /// <para><see href="https://en.wikipedia.org/wiki/Twelvefold_way"/></para>
-      /// </summary>
-      /// <param name="x"></param>
-      /// <param name="n"></param>
-      /// <returns></returns>
-      public static TInteger AnySnOrbits(TInteger x, TInteger n) => BinomialCoefficient(x + n - TInteger.One, n);
+      ///// <summary>
+      ///// <para><see href="https://en.wikipedia.org/wiki/Twelvefold_way"/></para>
+      ///// </summary>
+      ///// <param name="x"></param>
+      ///// <param name="n"></param>
+      ///// <returns></returns>
+      //public static TInteger AnySnOrbits(TInteger x, TInteger n) => BinomialCoefficient(x + n - TInteger.One, n);
 
-      /// <summary>
-      /// <para><see href="https://en.wikipedia.org/wiki/Twelvefold_way"/></para>
-      /// </summary>
-      /// <param name="x"></param>
-      /// <param name="n"></param>
-      /// <returns></returns>
-      public static TInteger InjectiveSnOrbits(TInteger x, TInteger n) => BinomialCoefficient(x, n);
+      ///// <summary>
+      ///// <para><see href="https://en.wikipedia.org/wiki/Twelvefold_way"/></para>
+      ///// </summary>
+      ///// <param name="x"></param>
+      ///// <param name="n"></param>
+      ///// <returns></returns>
+      //public static TInteger InjectiveSnOrbits(TInteger x, TInteger n) => BinomialCoefficient(x, n);
 
-      /// <summary>
-      /// <para><see href="https://en.wikipedia.org/wiki/Twelvefold_way"/></para>
-      /// </summary>
-      /// <param name="x"></param>
-      /// <param name="n"></param>
-      /// <returns></returns>
-      public static TInteger SurjectiveSnOrbits(TInteger x, TInteger n) => BinomialCoefficient(n - TInteger.One, n - x);
+      ///// <summary>
+      ///// <para><see href="https://en.wikipedia.org/wiki/Twelvefold_way"/></para>
+      ///// </summary>
+      ///// <param name="x"></param>
+      ///// <param name="n"></param>
+      ///// <returns></returns>
+      //public static TInteger SurjectiveSnOrbits(TInteger x, TInteger n) => BinomialCoefficient(n - TInteger.One, n - x);
 
-      /// <summary>
-      /// <para><see href="https://en.wikipedia.org/wiki/Twelvefold_way"/></para>
-      /// </summary>
-      /// <param name="x"></param>
-      /// <param name="n"></param>
-      /// <returns></returns>
-      public static TInteger AnySxOrbits(TInteger x, TInteger n) => throw new System.NotImplementedException();
+      ///// <summary>
+      ///// <para><see href="https://en.wikipedia.org/wiki/Twelvefold_way"/></para>
+      ///// </summary>
+      ///// <param name="x"></param>
+      ///// <param name="n"></param>
+      ///// <returns></returns>
+      //public static TInteger AnySxOrbits(TInteger x, TInteger n) => throw new System.NotImplementedException();
 
-      /// <summary>
-      /// <para><see href="https://en.wikipedia.org/wiki/Twelvefold_way"/></para>
-      /// </summary>
-      /// <param name="x"></param>
-      /// <param name="n"></param>
-      /// <returns></returns>
-      public static TInteger InjectiveSxOrbits(TInteger x, TInteger n) => throw new System.NotImplementedException();
+      ///// <summary>
+      ///// <para><see href="https://en.wikipedia.org/wiki/Twelvefold_way"/></para>
+      ///// </summary>
+      ///// <param name="x"></param>
+      ///// <param name="n"></param>
+      ///// <returns></returns>
+      //public static TInteger InjectiveSxOrbits(TInteger x, TInteger n) => throw new System.NotImplementedException();
 
-      /// <summary>
-      /// <para><see href="https://en.wikipedia.org/wiki/Twelvefold_way"/></para>
-      /// </summary>
-      /// <param name="x"></param>
-      /// <param name="n"></param>
-      /// <returns></returns>
-      public static TInteger SurjectiveSxOrbits(TInteger x, TInteger n) => StirlingNumber2ndKind(n, x);
+      ///// <summary>
+      ///// <para><see href="https://en.wikipedia.org/wiki/Twelvefold_way"/></para>
+      ///// </summary>
+      ///// <param name="x"></param>
+      ///// <param name="n"></param>
+      ///// <returns></returns>
+      //public static TInteger SurjectiveSxOrbits(TInteger x, TInteger n) => StirlingNumber2ndKind(n, x);
 
-      /// <summary>
-      /// <para><see href="https://en.wikipedia.org/wiki/Twelvefold_way"/></para>
-      /// </summary>
-      /// <param name="x"></param>
-      /// <param name="n"></param>
-      /// <returns></returns>
-      public static TInteger AnySnSxOrbits(TInteger x, TInteger n) => throw new System.NotImplementedException();
+      ///// <summary>
+      ///// <para><see href="https://en.wikipedia.org/wiki/Twelvefold_way"/></para>
+      ///// </summary>
+      ///// <param name="x"></param>
+      ///// <param name="n"></param>
+      ///// <returns></returns>
+      //public static TInteger AnySnSxOrbits(TInteger x, TInteger n) => throw new System.NotImplementedException();
 
-      /// <summary>
-      /// <para><see href="https://en.wikipedia.org/wiki/Twelvefold_way"/></para>
-      /// </summary>
-      /// <param name="x"></param>
-      /// <param name="n"></param>
-      /// <returns></returns>
-      public static TInteger InjectiveSnSxOrbits(TInteger x, TInteger n) => throw new System.NotImplementedException();
+      ///// <summary>
+      ///// <para><see href="https://en.wikipedia.org/wiki/Twelvefold_way"/></para>
+      ///// </summary>
+      ///// <param name="x"></param>
+      ///// <param name="n"></param>
+      ///// <returns></returns>
+      //public static TInteger InjectiveSnSxOrbits(TInteger x, TInteger n) => throw new System.NotImplementedException();
 
-      /// <summary>
-      /// <para><see href="https://en.wikipedia.org/wiki/Twelvefold_way"/></para>
-      /// </summary>
-      /// <param name="x"></param>
-      /// <param name="n"></param>
-      /// <returns></returns>
-      public static TInteger SurjectiveSnSxOrbits(TInteger x, TInteger n) => throw new System.NotImplementedException();
+      ///// <summary>
+      ///// <para><see href="https://en.wikipedia.org/wiki/Twelvefold_way"/></para>
+      ///// </summary>
+      ///// <param name="x"></param>
+      ///// <param name="n"></param>
+      ///// <returns></returns>
+      //public static TInteger SurjectiveSnSxOrbits(TInteger x, TInteger n) => throw new System.NotImplementedException();
 
-      #endregion
+      //#endregion
     }
 
     extension<TInteger>(TInteger value)
@@ -2839,7 +3053,7 @@
       #region GetBitLength
 
       /// <summary>
-      /// <para>Gets the size, in bits, of the shortest two's-complement representation, if <paramref name="value"/> is positive. If <paramref name="value"/> is negative, the bit-length represents the storage size of the <typeparamref name="TInteger"/>, based on byte-count (times 8).</para>
+      /// <para>Returns the size, in bits, of the shortest two's-complement representation, if <paramref name="value"/> is positive. If <paramref name="value"/> is negative, the bit-length represents the storage size of the <typeparamref name="TInteger"/>, based on byte-count (times 8).</para>
       /// </summary>
       /// <remarks>
       /// <para>The <c>bit-length(<paramref name="value"/>)</c> is the bit position (i.e. a 1-based bit-index) of the <c>most-significant-1-bit(<paramref name="value"/>)</c>. A zero-based bit-index is equal to <c>(bit-length(<paramref name="value"/>) - 1)</c>, which is also the same as calling <c>log2(<paramref name="value"/>)</c>.</para>
@@ -3106,7 +3320,7 @@
     /// <param name="n"></param>
     /// <returns></returns>
     /// <exception cref="System.ArgumentOutOfRangeException"></exception>
-    public static System.Collections.Generic.List<int> GetDeBruijnSequence(int k, int n)
+    public static System.Collections.Generic.List<int> GenerateDeBruijnSequence(int k, int n)
     {
       var sequence = new System.Collections.Generic.List<int>(DeBruijnSequenceLength(k, n));
 
@@ -3147,8 +3361,8 @@
     /// <param name="k"></param>
     /// <param name="n"></param>
     /// <returns></returns>
-    public static System.Collections.Generic.IEnumerable<int[]> GetDeBruijnSequenceExpanded(int k, int n)
-      => GetDeBruijnSequence(k, n).PartitionNgram(n, (e, i) => e.ToArray());
+    public static System.Collections.Generic.IEnumerable<int[]> GenerateDeBruijnSequenceExpanded(int k, int n)
+      => GenerateDeBruijnSequence(k, n).PartitionNgram(n, (e, i) => e.ToArray());
 
     /// <summary>
     /// <para>Creates a new expanded DeBruijn sequence of symbols based on <paramref name="k"/>, <paramref name="n"/> and <paramref name="alphabet"/>.</para>
@@ -3158,266 +3372,8 @@
     /// <param name="n"></param>
     /// <param name="alphabet"></param>
     /// <returns></returns>
-    public static System.Collections.Generic.IEnumerable<System.Collections.Generic.List<TSymbol>> GetDeBruijnSequenceExpandedSymbols<TSymbol>(int k, int n, params TSymbol[] alphabet)
-      => GetDeBruijnSequence(k, n).PartitionNgram(n, (e, i) => e.Select(i => alphabet[i]).ToList());
-
-    #endregion
-
-    #region ..Factorial (private helpers)
-
-    /// <summary>
-    /// <para>Computes the factorial of <paramref name="value"/>, e.g. <c>Factorial(5) => 1 * 2 * 3 * 4 * 5</c></para>
-    /// <para><see href="https://en.wikipedia.org/wiki/Factorial"/></para>
-    /// </summary>
-    /// <remarks>This plain-and-simple iterative version of factorials is faster with numbers smaller than 60 or so, and starts loosing with larger numbers.</remarks>
-    /// <typeparam name="TInteger"></typeparam>
-    private static TInteger NaiveFactorial<TInteger>(TInteger n)
-      where TInteger : System.Numerics.IBinaryInteger<TInteger>
-    {
-      if (TryStaticFactorial(n, out var f))
-        return f;
-
-      f = TInteger.One;
-
-      if (n > f) // Only loop if value is greater than 1.
-        checked
-        {
-          f++;
-
-          for (var m = f + TInteger.One; m <= n; m++)
-            f *= m;
-        }
-
-      return f;
-    }
-
-    /// <summary>
-    /// <para>Compute the factorial using divide-and-conquer, a.k.a. split-factorial of <paramref name="value"/>.</para>
-    /// <para><see href="https://en.wikipedia.org/wiki/Factorial"/></para>
-    /// <para><see href="http://www.luschny.de/math/factorial/csharp/FactorialSplit.cs.html"/></para>
-    /// </summary>
-    /// <typeparam name="TInteger"></typeparam>
-    private static TInteger SplitFactorial<TInteger>(this TInteger n)
-      where TInteger : System.Numerics.IBinaryInteger<TInteger>
-    {
-      if (TryStaticFactorial(n, out var f))
-        return f;
-
-      var two = (TInteger.One + TInteger.One);
-
-      var p = TInteger.One;
-      var r = TInteger.One;
-      var currentN = TInteger.One;
-
-      var h = TInteger.Zero;
-      var shift = TInteger.Zero;
-      var high = TInteger.One;
-
-      var log2n = int.CreateChecked(TInteger.Log2(n));
-
-      while (h != n)
-        checked
-        {
-          shift += h;
-          h = n >>> log2n--;
-          var len = high;
-          high = (h - TInteger.One) | TInteger.One;
-          len = (high - len) >>> 1;
-
-          if (len > TInteger.Zero)
-          {
-            p *= Product(len);
-            r *= p;
-          }
-        }
-
-      return r << int.CreateChecked(shift);
-
-      TInteger Product(TInteger n)
-      {
-        checked
-        {
-          var m = n >> 1;
-
-          if (TInteger.IsZero(m))
-            return currentN += two;
-
-          if (n == two)
-            return (currentN += two) * (currentN += two);
-
-          return Product(n - m) * Product(m);
-        }
-      }
-    }
-
-    private readonly static long[] StaticFactorials = [1, 1, 2, 6, 24, 120, 720, 5040, 40320, 362880, 3628800, 39916800, 479001600, 6227020800, 87178291200, 1307674368000, 20922789888000, 355687428096000, 6402373705728000, 121645100408832000, 2432902008176640000];
-
-    private static TInteger StaticFactorial<TInteger>(TInteger n)
-      where TInteger : System.Numerics.IBinaryInteger<TInteger>
-    {
-      System.ArgumentOutOfRangeException.ThrowIfNegative(n);
-
-      if (n < TInteger.CreateChecked(StaticFactorials.Length))
-        return TInteger.CreateChecked(StaticFactorials[int.CreateChecked(n)]);
-
-      return TInteger.Zero;
-    }
-
-    private static bool TryStaticFactorial<TInteger>(TInteger n, out TInteger factorial)
-      where TInteger : System.Numerics.IBinaryInteger<TInteger>
-    {
-      try
-      {
-        factorial = StaticFactorial(n);
-      }
-      catch
-      {
-        factorial = TInteger.Zero;
-      }
-
-      return !TInteger.IsZero(factorial);
-    }
-
-    #endregion
-
-    #region MillerRabinProbabilistic.. (private helpers, BigInteger primality test)
-
-    /// <summary>
-    /// <para>Probabilistic Miller–Rabin primality test with parallel rounds.</para>
-    /// </summary>
-    /// <param name="n"></param>
-    /// <param name="k"></param>
-    /// <returns></returns>
-    private static bool MillerRabinProbabilisticIsPrime(System.Numerics.BigInteger n, int k)
-    {
-      if (n <= 3) return n == 2 || n == 3;
-      if ((n % 2).IsZero) return false;
-
-      // Write n-1 as d*2^r
-      var d = n - 1;
-      while (d % 2 == 0) d /= 2;
-
-      var isPrime = true;
-      var lockObj = new object();
-
-      System.Threading.Tasks.Parallel.For(0, k, (i, state) =>
-      {
-        if (!isPrime) { state.Stop(); return; }
-
-        System.Numerics.BigInteger a; // Random base in [2, n-2]
-
-        lock (lockObj) { a = System.Random.Shared.NextNumber(2, n - 2); }
-
-        if (!MillerRabinProbabilisticTest(d, n, a))
-        {
-          lock (lockObj) { isPrime = false; }
-
-          state.Stop();
-        }
-      });
-
-      return isPrime;
-    }
-
-    /// <summary>
-    /// <para>Miller–Rabin test for a single base</para>
-    /// </summary>
-    /// <param name="d"></param>
-    /// <param name="n"></param>
-    /// <param name="a"></param>
-    /// <returns></returns>
-    private static bool MillerRabinProbabilisticTest(System.Numerics.BigInteger d, System.Numerics.BigInteger n, System.Numerics.BigInteger a)
-    {
-      var x = System.Numerics.BigInteger.ModPow(a, d, n);
-
-      if (x == 1 || x == n - 1) return true;
-
-      while (d != n - 1)
-      {
-        x = (x * x) % n;
-        d *= 2;
-
-        if (x == 1) return false;
-        if (x == n - 1) return true;
-      }
-
-      return false;
-    }
-
-    #endregion
-
-    #region NewtonRaphsonRootN (private helpers, faster than binary-search)
-
-    private static System.Numerics.BigInteger NewtonRaphsonRootN(System.Numerics.BigInteger value, int n)
-    {
-      System.ArgumentOutOfRangeException.ThrowIfNegative(value);
-      System.ArgumentOutOfRangeException.ThrowIfNegativeOrZero(n);
-
-      if (value == 0 || value == 1 || n == 1)
-        return value;
-
-      var guess = System.Numerics.BigInteger.One << (int)(System.Numerics.BigInteger.Log(value) / n); // Initial guess: 2^(log2(x)/n)
-
-      while (true)
-      {
-        var previousGuess = guess;
-
-        var t = System.Numerics.BigInteger.Pow(guess, n - 1);
-
-        if (t == 0)
-          throw new System.ArithmeticException(); // Avoid division by zero (shouldn't happen for valid inputs).
-
-        guess = ((n - 1) * guess + value / t) / n; // Newton iteration.
-
-        if (System.Numerics.BigInteger.Abs(guess - previousGuess) <= 1) // Adjust to ensure r^n <= x
-        {
-          while (System.Numerics.BigInteger.Pow(guess + 1, n) <= value)
-            guess++;
-
-          while (System.Numerics.BigInteger.Pow(guess, n) > value)
-            guess--;
-
-          return guess;
-        }
-      }
-    }
-
-    #endregion
-
-    #region BinarySearchRootN (private helpers, currently unused, remarked out, not as fast as Newton-Raphson)
-
-    //private static System.Numerics.BigInteger BinarySearchRootN(System.Numerics.BigInteger value, int n)
-    //{
-    //  System.ArgumentOutOfRangeException.ThrowIfNegative(value);
-    //  System.ArgumentOutOfRangeException.ThrowIfNegativeOrZero(n);
-
-    //  if (value == 0 || value == 1 || n == 1)
-    //    return value;
-
-    //  var low = System.Numerics.BigInteger.One;
-    //  var high = value;
-    //  var result = System.Numerics.BigInteger.One;
-
-    //  while (low <= high)
-    //  {
-    //    var mid = (low + high) / 2;
-    //    var midPow = System.Numerics.BigInteger.Pow(mid, n);
-
-    //    if (midPow == value)
-    //      return mid;
-    //    else if (midPow < value)
-    //    {
-    //      result = mid;
-    //      low = mid + 1;
-    //    }
-    //    else
-    //    {
-    //      high = mid - 1;
-    //    }
-    //  }
-
-    //  return result;
-    //}
+    public static System.Collections.Generic.IEnumerable<System.Collections.Generic.List<TSymbol>> GenerateDeBruijnSequenceExpandedSymbols<TSymbol>(int k, int n, params TSymbol[] alphabet)
+      => GenerateDeBruijnSequence(k, n).PartitionNgram(n, (e, i) => e.Select(i => alphabet[i]).ToList());
 
     #endregion
   }

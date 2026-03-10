@@ -239,76 +239,128 @@
         return double.Exp(LogGamma(x));
       }
 
-      /// <summary>
-      /// <para>Lanczos approximation of the gamma function.</para>
-      /// <para><see href="https://en.wikipedia.org/wiki/Gamma_function"/></para>
-      /// <para><see href="https://en.wikipedia.org/wiki/Lanczos_approximation"/></para>
-      /// </summary>
-      /// <param name="x"></param>
-      /// <returns></returns>
-      public static double GammaLanczosApproximation(double x)
-      {
-        var g = 7;
+      ///// <summary>
+      ///// <para>Lanczos approximation of the gamma function.</para>
+      ///// <para>This implementation uses <c>g = 7</c>.</para>
+      ///// </summary>
+      ///// <param name="x"></param>
+      ///// <returns></returns>
+      //public static double LanczosGamma(double x)
+      //{
+      //  var g = 7.0;
 
-        if (x < 0.5)
-          return double.Pi / (double.SinPi(x) * GammaLanczosApproximation(1 - x));
+      //  var coefficients = new double[]
+      //  {
+      //    0.99999999999980993,
+      //    676.5203681218851,
+      //   -1259.1392167224028,
+      //    771.32342877765313,
+      //   -176.61502916214059,
+      //    12.507343278686905,
+      //   -0.13857109526572012,
+      //    9.9843695780195716e-6,
+      //    1.5056327351493116e-7
+      //  };
 
-        x -= 1;
+      //  return FloatingPoint.LanczosGamma(x, coefficients);
+      //}
 
-        var a = 0.99999999999980993;
-        var t = x + g + 0.5;
+      ///// <summary>
+      ///// <para>Lanczos approximation of the log-gamma function.</para>
+      ///// <para>This implementation uses <c>g = 7</c>.</para>
+      ///// </summary>
+      ///// <param name="x"></param>
+      ///// <returns></returns>
+      //public static double LanczosLogGamma(double x)
+      //{
+      //  var g = 7.0;
 
-        a += 676.5203681218851 / (x + 1);
-        a += -1259.1392167224028 / (x + 2);
-        a += 771.32342877765313 / (x + 3);
-        a += -176.61502916214059 / (x + 4);
-        a += 12.507343278686905 / (x + 5);
-        a += -0.13857109526572012 / (x + 6);
-        a += 9.9843695780195716e-6 / (x + 7);
-        a += 1.5056327351493116e-7 / (x + 8);
+      //  var coefficients = new double[]
+      //  {
+      //    0.99999999999980993,
+      //    676.5203681218851,
+      //   -1259.1392167224028,
+      //    771.32342877765313,
+      //   -176.61502916214059,
+      //    12.507343278686905,
+      //   -0.13857109526572012,
+      //    9.9843695780195716e-6,
+      //    1.5056327351493116e-7
+      //  };
 
-        return double.Sqrt(double.Tau) * double.Pow(t, x + 0.5) * double.Exp(-t) * a;
-      }
+      //  return FloatingPoint.LanczosLogGamma(x, coefficients);
+      //}
 
-      /// <summary>
-      /// <para>Spouge's approximation.</para>
-      /// <para><see href="https://en.wikipedia.org/wiki/Gamma_function"/></para>
-      /// <para><see href="https://en.wikipedia.org/wiki/Spouge%27s_approximation"/></para>
-      /// </summary>
-      /// <param name="x"></param>
-      /// <param name="coefficients">A variable number of coefficients from <see cref="Coefficients(int)"/>.</param>
-      /// <returns></returns>
-      public static double GammaSpougesApproximation(double x, System.Collections.Generic.List<double> coefficients)
-      {
-        var accm = coefficients[0];
+      ///// <summary>
+      ///// <para>Lanczos approximation of the gamma function.</para>
+      ///// <para><see href="https://en.wikipedia.org/wiki/Gamma_function"/></para>
+      ///// <para><see href="https://en.wikipedia.org/wiki/Lanczos_approximation"/></para>
+      ///// </summary>
+      ///// <param name="x"></param>
+      ///// <returns></returns>
+      //public static double GammaLanczosApproximation(double x)
+      //{
+      //  var g = 7;
 
-        for (var k = 1; k < coefficients.Count; k++)
-          accm += coefficients[k] / (x + k);
+      //  if (x < 0.5)
+      //    return double.Pi / (double.SinPi(x) * GammaLanczosApproximation(1 - x));
 
-        accm *= double.Exp(-(x + coefficients.Count)) * double.Pow(x + coefficients.Count, x + 0.5);
+      //  x -= 1;
 
-        return accm / x;
-      }
+      //  var a = 0.99999999999980993;
+      //  var t = x + g + 0.5;
 
-      public static double GammaSpougesApproximation13(double x)
-        => GammaSpougesApproximation(x, m_coefficients13);
+      //  a += 676.5203681218851 / (x + 1);
+      //  a += -1259.1392167224028 / (x + 2);
+      //  a += 771.32342877765313 / (x + 3);
+      //  a += -176.61502916214059 / (x + 4);
+      //  a += 12.507343278686905 / (x + 5);
+      //  a += -0.13857109526572012 / (x + 6);
+      //  a += 9.9843695780195716e-6 / (x + 7);
+      //  a += 1.5056327351493116e-7 / (x + 8);
 
-      /// <summary>
-      /// <para>Stirling's approximation.</para>
-      /// <para><see href="https://en.wikipedia.org/wiki/Gamma_function"/></para>
-      /// <para><see href="https://en.wikipedia.org/wiki/Stirling%27s_approximation"/></para>
-      /// </summary>
-      /// <param name="x"></param>
-      /// <returns></returns>
-      public static double GammaStirlingsApproximation(double x)
-        => double.Sqrt(double.Tau / x) * double.Pow((x / double.E), x);
+      //  return double.Sqrt(double.Tau) * double.Pow(t, x + 0.5) * double.Exp(-t) * a;
+      //}
+
+      ///// <summary>
+      ///// <para>Spouge's approximation.</para>
+      ///// <para><see href="https://en.wikipedia.org/wiki/Gamma_function"/></para>
+      ///// <para><see href="https://en.wikipedia.org/wiki/Spouge%27s_approximation"/></para>
+      ///// </summary>
+      ///// <param name="x"></param>
+      ///// <param name="coefficients">A variable number of coefficients from <see cref="Coefficients(int)"/>.</param>
+      ///// <returns></returns>
+      //public static double GammaSpougesApproximation(double x, System.Collections.Generic.List<double> coefficients)
+      //{
+      //  var accm = coefficients[0];
+
+      //  for (var k = 1; k < coefficients.Count; k++)
+      //    accm += coefficients[k] / (x + k);
+
+      //  accm *= double.Exp(-(x + coefficients.Count)) * double.Pow(x + coefficients.Count, x + 0.5);
+
+      //  return accm / x;
+      //}
+
+      //public static double GammaSpougesApproximation13(double x)
+      //  => GammaSpougesApproximation(x, m_coefficients13);
+
+      ///// <summary>
+      ///// <para>Stirling's approximation.</para>
+      ///// <para><see href="https://en.wikipedia.org/wiki/Gamma_function"/></para>
+      ///// <para><see href="https://en.wikipedia.org/wiki/Stirling%27s_approximation"/></para>
+      ///// </summary>
+      ///// <param name="x"></param>
+      ///// <returns></returns>
+      //public static double GammaStirlingsApproximation(double x)
+      //  => double.Sqrt(double.Tau / x) * double.Pow((x / double.E), x);
 
       /// <summary>Compute log(1+x) without losing precision for small values of x.</summary>
       /// <see href="https://www.johndcook.com/blog/stand_alone_code/"/>
       /// <see href="https://www.johndcook.com/blog/csharp_log_one_plus_x/"/>
       public static double Log1p(double x)
       {
-        if (x <= -1) throw new ArgumentOutOfRangeException(nameof(x));
+        System.ArgumentOutOfRangeException.ThrowIfNegative(x);
 
         if (double.Abs(x) > 1e-4) // x is large enough that the obvious evaluation is OK
           return double.Log(1.0 + x);

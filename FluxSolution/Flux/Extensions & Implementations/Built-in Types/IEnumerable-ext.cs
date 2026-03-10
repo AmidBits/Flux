@@ -65,7 +65,7 @@ namespace Flux
         var columnNames = BinaryInteger.ToOrdinalFieldNames(e.Current.Length);
 
         if (hasFieldNames) // If has-field-names let's use those for columnNames.
-          columnNames = e.Current.Select((e, i) => e?.ToString() ?? columnNames[i]).ToArray();
+          columnNames = [.. e.Current.Select((e, i) => e?.ToString() ?? columnNames[i])];
 
         var columnTypes = columnNames.Select(cn => typeof(object)).ToArray(); // Default to System.Object for columnTypes.
 
@@ -74,7 +74,7 @@ namespace Flux
           movedNext = e.MoveNext(); // ..which may be of other types than the data, so let's move to the data.
 
           if (movedNext && adoptFieldTypes)
-            columnTypes = columnNames.Select((cn, i) => e.Current[i].GetType()).ToArray();
+            columnTypes = [.. columnNames.Select((cn, i) => e.Current[i].GetType())];
         }
 
         for (var columnIndex = 0; columnIndex < columnNames.Length; columnIndex++)
@@ -123,7 +123,7 @@ namespace Flux
     {
       var list = source.ToList();
 
-      return list.Select(t => keySelector(t)).Distinct().Select(k => new System.Collections.Generic.KeyValuePair<TKey, System.Collections.Generic.List<TValue>>(k, list.Where(t => keySelector(t).Equals(k)).Select(t => valueSelector(t)).ToList()));
+      return list.Select(t => keySelector(t)).Distinct().Select(k => new System.Collections.Generic.KeyValuePair<TKey, System.Collections.Generic.List<TValue>>(k, [.. list.Where(t => keySelector(t).Equals(k)).Select(t => valueSelector(t))]));
     }
 
     #endregion
@@ -195,6 +195,13 @@ namespace Flux
     extension<TNumber>(System.Collections.Generic.IEnumerable<TNumber> source)
       where TNumber : System.Numerics.INumber<TNumber>
     {
+      #region GetGapsInSequence
+
+      public System.Collections.Generic.IEnumerable<TNumber> GetGapsInSequence(bool includeLastFirstGap)
+        => source.PartitionTuple2(includeLastFirstGap, (leading, trailing, index) => trailing - leading);
+
+      #endregion
+
       #region Mean
 
       /// <summary>
@@ -1096,8 +1103,11 @@ namespace Flux
         System.ArgumentNullException.ThrowIfNull(source);
         System.ArgumentNullException.ThrowIfNull(resultSelector);
 
-        if (tupleSize < 2) throw new System.ArgumentOutOfRangeException(nameof(tupleSize));
-        if (tupleWrap < 0 || tupleWrap >= tupleSize) throw new System.ArgumentException($@"A {tupleSize}-tuple can only wrap from 0 to {tupleSize - 1} elements.");
+        System.ArgumentOutOfRangeException.ThrowIfLessThan(tupleSize, 2);
+
+        System.ArgumentOutOfRangeException.ThrowIfNegative(tupleWrap);
+        System.ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(tupleWrap, tupleSize);
+        //if (tupleWrap < 0 || tupleWrap >= tupleSize) throw new System.ArgumentException($@"A {tupleSize}-tuple can only wrap from 0 to {tupleSize - 1} elements.");
 
         using var e = source.GetEnumerator();
 
@@ -1871,7 +1881,7 @@ namespace Flux
               b[index] = e[index]?.MoveNext() ?? false;
 
             if (b.Any(boolean => boolean))
-              yield return resultSelector(e.Select((o, i) => b[i] ? e[i].Current : default!).ToArray());
+              yield return resultSelector([.. e.Select((o, i) => b[i] ? e[i].Current : default!)]);
             else
               yield break;
           }

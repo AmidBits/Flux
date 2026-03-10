@@ -367,7 +367,7 @@
       }
 
       sb.Append(System.Environment.NewLine);
-      sb.Append(System.Array.Rank2ToConsoleString(grid, ConsoleFormatOptions.Default with { UniformWidth = true, CenterContent = true }));
+      sb.Append(System.Array.Rank2ToConsoleString(grid, ConsoleFormatOptions.Default with { HorizontalAlignment = AlignmentHorizontal.Center, UniformWidth = true }));
 
       return sb.ToString();
     }

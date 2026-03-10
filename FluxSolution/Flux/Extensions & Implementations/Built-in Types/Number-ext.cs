@@ -44,7 +44,8 @@ namespace Flux
       }
 
       /// <summary>
-      /// <para>Get the <paramref name="n"/> term of a geometric sequence with the specified <paramref name="commonRatio"/>.</para>
+      /// <para>Get the <paramref name="n"/> term of a arithmetic sequence with the specified <paramref name="a1"/> and <paramref name="commonDifference"/>.</para>
+      /// <para><see href="https://en.wikipedia.org/wiki/Arithmetic_progression"/></para>
       /// </summary>
       /// <typeparam name="TInteger"></typeparam>
       /// <param name="a1">The first term.</param>
@@ -85,7 +86,7 @@ namespace Flux
       //  => ()
 
       /// <summary>
-      /// <para>Gets the arithmetic series of an arithmetic sequence with the specified <paramref name="a1"/>, <paramref name="commonDifference"/> and <paramref name="n"/> terms.</para>
+      /// <para>Gets the arithmetic series (sum) of an arithmetic sequence with the specified <paramref name="a1"/>, <paramref name="commonDifference"/> and <paramref name="n"/> terms.</para>
       /// <para><see href="https://en.wikipedia.org/wiki/Arithmetic_progression#Sum"/></para>
       /// </summary>
       /// <param name="a1">The first term.</param>
@@ -315,21 +316,25 @@ namespace Flux
       #region Loops/iterations
 
       /// <summary>
-      /// <para>Creates a sequence of numbers based on the standard for statement using <see cref="System.Func{T, TResult}"/> (for <paramref name="number"/>) and <see cref="System.Func{T1, T2, TResult}"/> (for <paramref name="condition"/> and <paramref name="iterator"/>).</para>
+      /// <para>Creates a sequence of numbers that are controlled through three methods: <paramref name="initialization"/>(), <paramref name="condition"/>() and <paramref name="updation"/>().</para>
       /// </summary>
-      /// <param name="startNumber">Initializes the current-loop-value.</param>
+      /// <param name="initialization">Initializes a current-loop-value.</param>
       /// <param name="condition">Conditionally allows/denies the loop to continue. In parameters are (current-loop-value, index). A false condition terminates the custom loop.</param>
-      /// <param name="iterator">Advances the loop. In parameters (current-loop-value, index).</param>
+      /// <param name="updation">Advances the loop. In parameters (current-loop-value, index).</param>
       /// <returns></returns>
-      public static System.Collections.Generic.IEnumerable<TNumber> LoopCustom(TNumber startNumber, System.Func<TNumber, int, bool> condition, System.Func<TNumber, int, TNumber> iterator)
+      public static System.Collections.Generic.IEnumerable<(TNumber Value, int Index)> LoopCustom(System.Func<TNumber> initialization, System.Func<TNumber, int, bool> condition, System.Func<TNumber, int, TNumber> updation)
       {
+        TNumber value;
+
+        try { value = initialization(); } catch { yield break; }
+
         for (var index = 0; ; index++)
         {
-          try { checked { if (!condition(startNumber, index)) break; } } catch { yield break; }
+          try { checked { if (!condition(value, index)) break; } } catch { yield break; }
 
-          yield return startNumber;
+          yield return (value, index);
 
-          try { checked { startNumber = iterator(startNumber, index); } } catch { yield break; }
+          try { checked { value = updation(value, index); } } catch { yield break; }
         }
       }
 
@@ -367,7 +372,7 @@ namespace Flux
               }
               break;
             case CoordinateSystems.ReferenceRelativeOrientationTAf.Toward:
-              meanNumber = meanNumber + stepSize * ITruncatedDivRem(TNumber.CreateChecked(count), TNumber.One + TNumber.One).Quotient;  // Setup the inital outer edge value for inward iteration.
+              meanNumber += stepSize * ITruncatedDivRem(TNumber.CreateChecked(count), TNumber.One + TNumber.One).Quotient;  // Setup the inital outer edge value for inward iteration.
 
               for (var index = count - TCount.One; index >= TCount.Zero; index--)
               {
@@ -956,10 +961,8 @@ namespace Flux
       #region ToEngineeringNotationString
 
       /// <summary>
-      /// <para></para>
+      /// <para>Creates a new string in engineering notation, a version of scientific notation in which the exponent of ten is always selected to be divisible by three to match the common metric prefixes (<see cref="Units.MetricPrefix"/>).</para>
       /// </summary>
-      /// <typeparam name="TNumber"></typeparam>
-      /// <param name="value"></param>
       /// <param name="stringBuilder"></param>
       /// <param name="unit"></param>
       /// <param name="format"></param>
@@ -984,7 +987,7 @@ namespace Flux
               ? (Units.MetricPrefix)int.CreateChecked(double.Floor(log10 / 3) * 3)
               : System.Enum.GetValues<Units.MetricPrefix>().InfimumSupremum(mp => (int)mp, int.CreateChecked(double.Floor(log10)), true).InfimumItem;
 
-            engineeringNotationValue = engineeringNotationValue * (decimal)double.Pow(10, -(int)engineeringNotationPrefix);
+            engineeringNotationValue *= (decimal)double.Pow(10, -(int)engineeringNotationPrefix);
           }
 
         var symbol = engineeringNotationPrefix.GetMetricPrefixSymbol(false);
@@ -1000,16 +1003,14 @@ namespace Flux
         return stringBuilder.ToString();
       }
 
+      public string ToEngineeringNotationString(string unit)
+        => ToEngineeringNotationString(value, null, unit, null, null);
+
+      public string ToEngineeringNotationString()
+        => ToEngineeringNotationString(value, null, null, null, null);
+
       #endregion
     }
-
-    #region Gaps in sequence
-
-    public static System.Collections.Generic.IEnumerable<TNumber> GetGapsInSequence<TNumber>(this System.Collections.Generic.IEnumerable<TNumber> source, bool includeLastFirstGap)
-      where TNumber : System.Numerics.INumber<TNumber>
-      => source.PartitionTuple2(includeLastFirstGap, (leading, trailing, index) => trailing - leading);
-
-    #endregion
 
     #region MeanMedianAbsoluteDeviation
 

@@ -271,7 +271,105 @@ namespace ConsoleApp
 
 
 
-      var apnl = BinaryInteger.GetPrimeNumbersDescending(System.UInt32.MaxValue).Take(100).ToArray();
+      var lgd = FloatingPoint.LanczosLogGamma(10d);
+      var lgf = FloatingPoint.LanczosLogGamma(10f);
+
+      var gd = FloatingPoint.LanczosGamma(5d);
+      var gf = FloatingPoint.LanczosGamma(5f);
+
+      var c = double.SpougeCoefficients(12);
+      var spgc = double.SpougeGamma(5.5, c);
+      var spga = double.SpougeGamma(5.5, 12);
+
+      var stg55 = double.StirlingGamma(5.5);
+      var slg55 = double.StirlingLogGamma(5.5);
+      var lg55 = double.LanczosGamma(5.5);
+      //var llg55 = double.LanczosLogGamma(5.5);
+
+      static System.Collections.Generic.IEnumerable<(int Index, int AscendingValue, int DescendingValue)> LoopBothWays(int startValue, int count, int step)
+      {
+        var beginValue = Number.ArithmeticSequenceNthTerm(startValue, step, 1);
+        var boundValue = startValue + Number.ArithmeticSequenceNthTerm(startValue, step, count);
+
+        return Number.ArithmeticSequence(startValue, step).Take(count).Select((n, i) => (i, n, boundValue - n));
+      }
+
+      var lbw = LoopBothWays(2, 11, 3).ToArray();
+
+      var mean = 11;
+      var step = 1;
+      var cont = 10;
+
+      var lp = Number.LoopPivot(mean, Flux.CoordinateSystems.ReferenceRelativeOrientationTAf.Toward, step, cont).ToArray();
+
+      var afnvalue = mean;
+      var afpvalue = mean;
+      var rafnvalue = mean + cont / 2 - cont;
+      var rafpvalue = mean + cont / 2;
+
+      for (var i = 0; i < cont; i++)
+      {
+        System.Console.WriteLine($"RAFN = {rafnvalue}, RAFP = {rafpvalue}, AFN = {afnvalue}, AFP = {afpvalue}");
+
+        var af = (int.Abs(step) + i);
+        afpvalue = int.IsEvenInteger(i) ? afpvalue + af : afpvalue - af;
+        afnvalue = int.IsEvenInteger(i) ? afnvalue - af : afnvalue + af;
+
+        var raf = cont - i - int.Abs(step);
+        rafnvalue = int.IsEvenInteger(i) ? rafnvalue + raf : rafnvalue - raf;
+        rafpvalue = int.IsEvenInteger(i) ? rafpvalue - raf : rafpvalue + raf;
+      }
+
+      System.Console.WriteLine();
+
+      afnvalue = mean;
+      afpvalue = mean;
+      rafnvalue = mean + cont / 2 - cont;
+      rafpvalue = mean + cont / 2;
+
+      System.Console.WriteLine($"RAFN = {rafnvalue}, RAFP = {rafpvalue}, AFN = {afnvalue}, AFP = {afpvalue}");
+
+      foreach (var (Index, AscendingValue, DescendingValue) in LoopBothWays(1, cont - 1, step))
+      {
+        afnvalue = int.IsEvenInteger(Index) ? afnvalue - AscendingValue : afnvalue + AscendingValue;
+        afpvalue = int.IsEvenInteger(Index) ? afpvalue + AscendingValue : afpvalue - AscendingValue;
+
+        rafnvalue = int.IsEvenInteger(Index) ? rafnvalue + DescendingValue : rafnvalue - DescendingValue;
+        rafpvalue = int.IsEvenInteger(Index) ? rafpvalue - DescendingValue : rafpvalue + DescendingValue;
+
+        System.Console.WriteLine($"RAFN = {rafnvalue}, RAFP = {rafpvalue}, AFN = {afnvalue}, AFP = {afpvalue}");
+      }
+
+
+      //      var seq = Number.LoopCustom(() => 16, (e, i) => true, (e, i) => (12 - i) is var ir && int.IsEvenInteger(ir) ? e - ir : e + ir).Skip(1).Take(10).ToArray();
+
+
+
+      return;
+
+      //var json = (10, "Test", new Flux.Units.Time(11)).SerializeToJson();
+      //var xml = (10, "Test", new Flux.Units.Time(11)).SerializeToXml();
+
+      //var apnl = BinaryInteger.GetPrimeNumbersAscending(System.UInt32.MinValue).Take(25).ToArray();
+
+      //var s = object.SerializeToXDocument(apnl).ToString(System.Xml.Linq.SaveOptions.DisableFormatting);
+
+      //var compressor = Flux.Compressor.Brotli.Max;
+
+      //var sc = compressor.Compress(s, System.Text.Encoding.UTF8);
+
+      //var cipher = Flux.Cipher.Symmetric.AesCng.Default;
+
+      //var (key, iv) = Flux.Cipher.Helper.GenerateKeyAndIv("Rob", "Hugo", 101, System.Security.Cryptography.HashAlgorithmName.SHA3_512, cipher.DefaultLegalKeySize, cipher.DefaultLegalBlockSize);
+
+      //var se = cipher.Encrypt(sc, key, iv);
+
+      //var sd = cipher.Decrypt(se, key, iv);
+
+      //var sdc = compressor.Decompress(sd, System.Text.Encoding.UTF8);
+
+
+
       return;
 
 

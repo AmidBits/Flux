@@ -1,5 +1,17 @@
 ﻿namespace Flux
 {
+  public enum LanczosMode
+  {
+    /// <summary>
+    /// <para>Cephes/Boost-style.</para>
+    /// </summary>
+    Standard,
+    /// <summary>
+    /// <para>Numerical Recipes-style.</para>
+    /// </summary>
+    NumericalRecipes
+  }
+
   public static class FloatingPoint
   {
     #region RoundMidpointToAlternating (state variable)
@@ -95,14 +107,14 @@
       #region FallingFactorial (generalized)
 
       /// <summary>
-      /// <para>Generalized falling factorial: x^(n)_falling(h) = x * (x - h) * (x - 2h) * ... * (x - (n-1)h)</para>
+      /// <para>Generalized factorial power: <code>x^(n)_falling(h) = x * (x - h) * (x - 2h) * ... * (x - (n-1)h)</code></para>
       /// </summary>
       /// <typeparam name="TInteger"></typeparam>
       /// <param name="x">The base, or starting value of the sequence of factors. Plays the same role as in ordinary factorial‑like expressions.</param>
       /// <param name="n">The order, or number of factors in the product. Must be non-negative. If 0, the defined result is 1.</param>
       /// <param name="h">Step size, or increment between factors. Determines how far apart the terms are spaced.</param>
       /// <returns></returns>
-      public static TFloat FallingFactorial<TInteger>(TFloat x, TInteger n, TFloat h)
+      public static TFloat FactorialPower<TInteger>(TFloat x, TInteger n, TFloat h)
         where TInteger : System.Numerics.IBinaryInteger<TInteger>
       {
         System.ArgumentOutOfRangeException.ThrowIfNegative(n);
@@ -113,7 +125,7 @@
         {
           result *= x;
 
-          x -= h; // decrement x by step h
+          x -= h; // Decrement x by step h.
         }
 
         return result;
@@ -469,6 +481,16 @@
 
       #endregion
 
+      #region Percent..ToPercent..
+
+      public static TFloat PercentAddedToPercentRemove(TFloat percentAdded)
+       => TFloat.One / (TFloat.One / percentAdded + TFloat.One);
+
+      public static TFloat PercentRemovedToPercentAdd(TFloat percentAdded)
+        => TFloat.One / (TFloat.One / percentAdded - TFloat.One);
+
+      #endregion
+
       #region RoundMidpoint..
 
       /// <summary>
@@ -590,19 +612,6 @@
     extension<TFloat>(TFloat)
       where TFloat : System.Numerics.IFloatingPoint<TFloat>, System.Numerics.IFloatingPointConstants<TFloat>
     {
-      #region SphericalToGeographic
-
-      /// <summary>Creates a new <see cref="GeographicCoordinate"/> from the <see cref="SphericalCoordinate"/>.</summary>
-      /// <remarks>All angles in radians.</remarks>
-      public static (TFloat latitude, TFloat longitude, TFloat altitude) SphericalToGeographic(TFloat radius, TFloat inclination, TFloat azimuth)
-        => new(
-          TFloat.Pi / TFloat.CreateChecked(2) - inclination,
-          azimuth,
-          radius
-        );
-
-      #endregion
-
       #region GeographicToSpherical
 
       /// <summary>Creates a new <see cref="SphericalCoordinate"/> from the <see cref="GeographicCoordinate"/>.</summary>
@@ -615,6 +624,19 @@
           longitude
         );
       }
+
+      #endregion
+
+      #region SphericalToGeographic
+
+      /// <summary>Creates a new <see cref="GeographicCoordinate"/> from the <see cref="SphericalCoordinate"/>.</summary>
+      /// <remarks>All angles in radians.</remarks>
+      public static (TFloat latitude, TFloat longitude, TFloat altitude) SphericalToGeographic(TFloat radius, TFloat inclination, TFloat azimuth)
+        => new(
+          TFloat.Pi / TFloat.CreateChecked(2) - inclination,
+          azimuth,
+          radius
+        );
 
       #endregion
     }
@@ -680,7 +702,7 @@
     }
 
     extension<TFloat>(TFloat)
-    where TFloat : System.Numerics.IFloatingPoint<TFloat>, System.Numerics.ILogarithmicFunctions<TFloat>, System.Numerics.IPowerFunctions<TFloat>
+      where TFloat : System.Numerics.IFloatingPoint<TFloat>, System.Numerics.ILogarithmicFunctions<TFloat>, System.Numerics.IPowerFunctions<TFloat>
     {
       #region RescaleLinearToLogarithmic
 
@@ -794,7 +816,7 @@
     }
 
     extension<TFloat>(TFloat)
-      where TFloat : System.Numerics.IFloatingPoint<TFloat>, System.Numerics.IRootFunctions<TFloat>
+      where TFloat : System.Numerics.IRootFunctions<TFloat>
     {
       #region HelmertsExpansionParameterK1
 
@@ -803,35 +825,6 @@
       /// </summary>
       public static TFloat HelmertsExpansionParameterK1(TFloat x)
         => TFloat.Sqrt(TFloat.One + x * x) is var k ? (k - TFloat.One) / (k + TFloat.One) : throw new System.ArithmeticException();
-
-      #endregion
-    }
-
-    extension<TFloat>(TFloat)
-      where TFloat : System.Numerics.IFloatingPoint<TFloat>, System.Numerics.IRootFunctions<TFloat>, System.Numerics.ITrigonometricFunctions<TFloat>
-    {
-      #region CartesianToPolar
-
-      /// <summary>
-      /// <para>Creates polar-coordinates (radius, azimuth) from cartesian-coordinates (x, y).</para>
-      /// <list type="bullet">
-      /// <item>When <c><paramref name="originStandardPosition"/> = true</c> then 'right-center' is 0 (i.e. positive-x and zero-y) with a counter-clockwise positive rotation angle [0, Tau]. Looking at the face of a clock it's counter-clockwise from 3 o'clock.</item>
-      /// <item>When <c><paramref name="originStandardPosition"/> = false</c> then 'center-up' is 0 (i.e. zero-x and positive-y) with a clockwise positive rotation angle [0, Tau]. Looking at the face of a clock (or a compass) it's clockwise from 12 o'clock (noon).</item>
-      /// </list>
-      /// <para><see href="https://en.wikipedia.org/wiki/Rotation_matrix#In_two_dimensions"/></para>
-      /// </summary>
-      public static (TFloat radius, TFloat azimuth) CartesianToPolar(TFloat x, TFloat y, bool originStandardPosition)
-      {
-        var azimuth = originStandardPosition ? TrigonometricFunctions.Atan2(y, x) : TrigonometricFunctions.Atan2(x, y);
-
-        if (TFloat.IsNegative(azimuth))
-          azimuth += TFloat.Tau;
-
-        return (
-          TFloat.Sqrt(x * x + y * y),
-          azimuth
-        );
-      }
 
       #endregion
     }
@@ -851,90 +844,6 @@
           radius * cos,
           radius * sin,
           height
-        );
-      }
-
-      #endregion
-
-      #region SphericalToCartesian
-
-      /// <summary>
-      /// <para>Creates cartesian-coordinates from spherical-coordinates.</para>
-      /// <remarks>All angles in radians.</remarks>
-      /// </summary>
-      /// <param name="radius"></param>
-      /// <param name="inclination"></param>
-      /// <param name="azimuth"></param>
-      /// <returns></returns>
-      public static (TFloat x, TFloat y, TFloat z) SphericalToCartesian(TFloat radius, TFloat inclination, TFloat azimuth)
-      {
-        var (si, ci) = TFloat.SinCos(inclination);
-        var (sa, ca) = TFloat.SinCos(azimuth);
-
-        return (
-          radius * si * ca,
-          radius * si * sa,
-          radius * ci
-        );
-      }
-
-      #endregion
-
-      /// <summary>
-      /// <para>Creates cartesian-coordinates from spherical-coordinates, but as a triaxial ellipsoid with three radii for each of the X (A), Y (B) and Z (C) axis, instead of a single radius.</para>
-      /// <remarks>All angles in radians.</remarks>
-      /// </summary>
-      /// <param name="radiusA"></param>
-      /// <param name="radiusB"></param>
-      /// <param name="radiusC"></param>
-      /// <param name="polarAngle">The polar angle (inclination). <c>[0, Pi]</c></param>
-      /// <param name="azimuth">The azimuth angle. <c>[0, Tau)</c></param>
-      /// <returns></returns>
-      public static (double x, double y, double z) SphericalTriaxialToCartesian(double radiusA, double radiusB, double radiusC, double polarAngle, double azimuth)
-      {
-        var (si, ci) = double.SinCos(polarAngle);
-        var (sa, ca) = double.SinCos(azimuth);
-
-        return (
-          radiusA * si * ca,
-          radiusB * si * sa,
-          radiusC * ci
-        );
-      }
-
-      ///// <summary>
-      ///// <para>Creates cartesian-coordinates from the latitude (elevation) and longitude (azimuth) of a spherical-coordinate, but with triaxial ellipsoid as three radii for the X (A), Y (B) and Z (C) axis instead of just a single radius.</para>
-      ///// <remarks>All angles in radians.</remarks>
-      ///// </summary>
-      ///// <param name="radiusA"></param>
-      ///// <param name="radiusB"></param>
-      ///// <param name="radiusC"></param>
-      ///// <param name="latitude">The reduced latitude, parametric latitude, or eccentric anomaly. <c>[-Pi/2, +Pi/2]</c></param>
-      ///// <param name="longitude">The azimuth or longitude. <c>[0, Tau)</c></param>
-      ///// <returns></returns>
-      //public static (double x, double y, double z) SphericalByEquatorToCartesian(double radiusA, double radiusB, double radiusC, double latitude, double longitude)
-      //{
-      //  var (slat, clat) = double.SinCos(latitude);
-      //  var (slon, clon) = double.SinCos(longitude);
-
-      //  return (
-      //    radiusA * clat * clon,
-      //    radiusB * clat * slon,
-      //    radiusC * slat
-      //  );
-      //}
-
-      #region SphericalToCylindrical
-
-      /// <summary>Creates a new <see cref="CylindricalCoordinate"/> from the <see cref="SphericalCoordinate"/>.</summary>
-      public static (TFloat radius, TFloat azimuth, TFloat height) SphericalToCylindrical(TFloat radius, TFloat inclination, TFloat azimuth)
-      {
-        var (si, ci) = TFloat.SinCos(inclination);
-
-        return new(
-          radius * si,
-          azimuth,
-          radius * ci
         );
       }
 
@@ -978,7 +887,122 @@
       }
 
       #endregion
+
+      #region SphericalToCartesian
+
+      /// <summary>
+      /// <para>Creates cartesian-coordinates from spherical-coordinates.</para>
+      /// <remarks>All angles in radians.</remarks>
+      /// </summary>
+      /// <param name="radius"></param>
+      /// <param name="inclination">If only elevation is known, then pass "<c>(TFloat.Pi / 2) - elevation</c>" (i.e. <c>90 - elevation</c>, in radians) as inclination.</param>
+      /// <param name="azimuth"></param>
+      /// <returns></returns>
+      public static (TFloat x, TFloat y, TFloat z) SphericalToCartesian(TFloat radius, TFloat inclination, TFloat azimuth)
+      {
+        var (si, ci) = TFloat.SinCos(inclination);
+        var (sa, ca) = TFloat.SinCos(azimuth);
+
+        return (
+          radius * si * ca,
+          radius * si * sa,
+          radius * ci
+        );
+      }
+
+      #endregion
+
+      #region SphericalToCylindrical
+
+      /// <summary>Creates a new <see cref="CylindricalCoordinate"/> from the <see cref="SphericalCoordinate"/>.</summary>
+      public static (TFloat radius, TFloat azimuth, TFloat height) SphericalToCylindrical(TFloat radius, TFloat inclination, TFloat azimuth)
+      {
+        var (si, ci) = TFloat.SinCos(inclination);
+
+        return new(
+          radius * si,
+          azimuth,
+          radius * ci
+        );
+      }
+
+      #endregion
+
+      #region SphericalTriaxialToCartesian
+
+      /// <summary>
+      /// <para>Creates cartesian-coordinates from spherical-coordinates, but as a triaxial ellipsoid with three radii for each of the X (A), Y (B) and Z (C) axis, instead of a single radius.</para>
+      /// <remarks>All angles in radians.</remarks>
+      /// </summary>
+      /// <param name="radiusA"></param>
+      /// <param name="radiusB"></param>
+      /// <param name="radiusC"></param>
+      /// <param name="polarAngle">The polar angle (inclination). <c>[0, Pi]</c></param>
+      /// <param name="azimuth">The azimuth angle. <c>[0, Tau)</c></param>
+      /// <returns></returns>
+      public static (double x, double y, double z) SphericalTriaxialToCartesian(double radiusA, double radiusB, double radiusC, double polarAngle, double azimuth)
+      {
+        var (si, ci) = double.SinCos(polarAngle);
+        var (sa, ca) = double.SinCos(azimuth);
+
+        return (
+          radiusA * si * ca,
+          radiusB * si * sa,
+          radiusC * ci
+        );
+      }
+
+      #endregion
+
+      ///// <summary>
+      ///// <para>Creates cartesian-coordinates from the latitude (elevation) and longitude (azimuth) of a spherical-coordinate, but with triaxial ellipsoid as three radii for the X (A), Y (B) and Z (C) axis instead of just a single radius.</para>
+      ///// <remarks>All angles in radians.</remarks>
+      ///// </summary>
+      ///// <param name="radiusA"></param>
+      ///// <param name="radiusB"></param>
+      ///// <param name="radiusC"></param>
+      ///// <param name="latitude">The reduced latitude, parametric latitude, or eccentric anomaly. <c>[-Pi/2, +Pi/2]</c></param>
+      ///// <param name="longitude">The azimuth or longitude. <c>[0, Tau)</c></param>
+      ///// <returns></returns>
+      //public static (double x, double y, double z) SphericalByEquatorToCartesian(double radiusA, double radiusB, double radiusC, double latitude, double longitude)
+      //{
+      //  var (slat, clat) = double.SinCos(latitude);
+      //  var (slon, clon) = double.SinCos(longitude);
+
+      //  return (
+      //    radiusA * clat * clon,
+      //    radiusB * clat * slon,
+      //    radiusC * slat
+      //  );
+      //}
     }
+
+    #region Lanczos coefficients (hardcoded for double and float)
+
+    private static readonly double[] m_coefficientsLanczosDouble = new double[]
+    {
+        0.99999999999980993,
+        676.5203681218851,
+        -1259.1392167224028,
+        771.32342877765313,
+        -176.61502916214059,
+        12.507343278686905,
+        -0.13857109526572012,
+        9.9843695780195716e-6,
+        1.5056327351493116e-7
+    };
+
+    private static readonly float[] m_coefficientsLanczosSingle = new float[]
+    {
+      1.000000000f,
+      76.18009173f,
+      -86.50532033f,
+      24.01409822f,
+      -1.231739516f,
+      0.00120858003f
+    };
+
+    #endregion
 
     extension<TFloat>(TFloat)
       where TFloat : System.Numerics.IFloatingPointIeee754<TFloat>
@@ -992,6 +1016,31 @@
         TFloat.Atan2(y, x) % TFloat.Pi,
         z
       );
+
+      #endregion
+
+      #region CartesianToPolar
+
+      /// <summary>
+      /// <para>Creates polar-coordinates (radius, azimuth) from cartesian-coordinates (x, y).</para>
+      /// <list type="bullet">
+      /// <item>When <c><paramref name="originStandardPosition"/> = true</c> then 'right-center' is 0 (i.e. positive-x and zero-y) with a counter-clockwise positive rotation angle [0, Tau]. Looking at the face of a clock it's counter-clockwise from 3 o'clock.</item>
+      /// <item>When <c><paramref name="originStandardPosition"/> = false</c> then 'center-up' is 0 (i.e. zero-x and positive-y) with a clockwise positive rotation angle [0, Tau]. Looking at the face of a clock (or a compass) it's clockwise from 12 o'clock (noon).</item>
+      /// </list>
+      /// <para><see href="https://en.wikipedia.org/wiki/Rotation_matrix#In_two_dimensions"/></para>
+      /// </summary>
+      public static (TFloat radius, TFloat azimuth) CartesianToPolar(TFloat x, TFloat y, bool originStandardPosition)
+      {
+        var azimuth = originStandardPosition ? TFloat.Atan2(y, x) : TFloat.Atan2(x, y);
+
+        if (TFloat.IsNegative(azimuth))
+          azimuth += TFloat.Tau;
+
+        return (
+          TFloat.Sqrt(x * x + y * y),
+          azimuth
+        );
+      }
 
       #endregion
 
@@ -1028,6 +1077,282 @@
           (TFloat.Pi / TFloat.CreateChecked(2)) - TFloat.Atan(h / r), // "double.Atan(m_radius / m_height);", does NOT work for Takapau, New Zealand. Have to use elevation math instead of inclination, and investigate.
           azimuth
         );
+      }
+
+      #endregion
+
+      #region LanczosGamma
+
+      /// <summary>
+      /// <para>Lanczos gamma approximation.</para>
+      /// </summary>
+      /// <param name="z"></param>
+      /// <returns></returns>
+      public static TFloat LanczosGamma(TFloat z)
+        => TFloat.Exp(LanczosLogGamma(z));
+
+      /// <summary>
+      /// <para>Lanczos log-gamma approximation.</para>
+      /// </summary>
+      /// <param name="z"></param>
+      /// <returns></returns>
+      /// <exception cref="System.NotSupportedException"></exception>
+      public static TFloat LanczosLogGamma(TFloat z)
+      {
+        if (z is double dz)
+          return TFloat.CreateChecked(LanczosLogGamma(dz, m_coefficientsLanczosDouble, 7, LanczosMode.Standard));
+        else if (z is float fz)
+          return TFloat.CreateChecked(LanczosLogGamma(fz, m_coefficientsLanczosSingle, 5, LanczosMode.NumericalRecipes));
+        else
+          throw new System.NotSupportedException($"LanczosGamma is not supported for type {typeof(TFloat)}.");
+      }
+
+      #endregion
+
+      #region LanczosLogGamma
+
+      /// <summary>
+      /// <para>Lanczos approximation of LogGamma using any <paramref name="g"/> and <paramref name="coefficients"/>.</para>
+      /// </summary>
+      /// <param name="x"></param>
+      /// <param name="g"></param>
+      /// <param name="coefficients"></param>
+      /// <returns></returns>
+      private static TFloat LanczosLogGamma(TFloat x, System.ReadOnlySpan<TFloat> coefficients, int g, LanczosMode mode)
+      {
+        var half = TFloat.CreateChecked(0.5);
+
+        if (x < half) // Reflection formula for x < 0.5
+          return TFloat.Log(TFloat.Pi) - TFloat.Log(TFloat.Abs(TFloat.SinPi(x))) - LanczosLogGamma(TFloat.One - x, coefficients, g, mode); // log(π / sin(πz)) - LogGamma(1 - z)
+
+        x -= TFloat.One; // Shift so the series uses z-1.
+
+        switch (mode)
+        {
+          case LanczosMode.Standard:
+            {
+              // Lanczos sum
+              TFloat sum = coefficients[0];
+              for (var i = 1; i < coefficients.Length; i++)
+              {
+                sum += coefficients[i] / (x + TFloat.CreateChecked(i));
+              }
+
+              var t = x + TFloat.CreateChecked(g) + half;
+
+              return TFloat.Log(TFloat.Sqrt(TFloat.Tau)) + (x + half) * TFloat.Log(t) - t + TFloat.Log(sum);
+            }
+          case LanczosMode.NumericalRecipes:
+            {
+              var y = x;
+
+              var tmp = x + TFloat.CreateChecked(g) + half;
+              tmp -= (x + half) * TFloat.Log(tmp);
+
+              var ser = TFloat.One;
+
+              for (var i = 1; i < coefficients.Length; i++)
+              {
+                y += TFloat.One;
+                ser += coefficients[i] / y;
+              }
+
+              return -tmp + TFloat.Log(TFloat.CreateChecked(TFloat.Sqrt(TFloat.Tau)) * ser);
+            }
+          default:
+            throw new NotImplementedException();
+        }
+      }
+
+      #endregion
+
+      #region SpougeGamma
+
+      /// <summary>
+      /// <para>Spouge's approximation of Gamma using any <paramref name="coefficients"/>.</para>
+      /// </summary>
+      /// <param name="z"></param>
+      /// <param name="coefficients"></param>
+      /// <returns></returns>
+      public static TFloat SpougeGamma(TFloat z, TFloat[] coefficients)
+      {
+        var half = TFloat.CreateChecked(0.5);
+
+        if (z < half) // Reflection for z < 0.5
+          return TFloat.Pi / (TFloat.SinPi(z) * SpougeGamma(TFloat.One - z, coefficients));
+
+        var sum = coefficients[0];
+        for (var k = 1; k < coefficients.Length; k++)
+          sum += coefficients[k] / (z + TFloat.CreateChecked(k - 1));
+
+        var t = z + TFloat.CreateChecked(coefficients.Length - 1);
+
+        return TFloat.Pow(t, z - half) * TFloat.Exp(-t) * sum;
+      }
+
+      /// <summary>
+      /// <para>Spouge's approximation of Gamma. The error of this approximation is less than 2e-10 for a = 12, and decreases rapidly as a increases.</para>
+      /// <para>The parameter <paramref name="a"/> controls the accuracy and convergence speed of the approximation. A larger <paramref name="a"/> generally leads to better accuracy but slower convergence, while a smaller <paramref name="a"/> may converge faster but with less accuracy.</para>
+      /// </summary>
+      /// <param name="z"></param>
+      /// <param name="a">
+      /// <list type="table">
+      /// <item>For <see cref="float"/> <c>a = 6</c> is sufficient.</item>
+      /// <item>For <see cref="double"/> <c>a = 12</c> is the sweet spot, and <c>a = 15</c> gives slightly more accuracy but risks cancellation.</item>
+      /// <item>For <see cref="decimal"/> <c>a = 10–12</c> works. The decimal type has high precision but a tiny exponent range, so Exp may overflow.</item>
+      /// <item>For arbitrary-precision types choose a proportional to the number of digits you want, e.g. for 100 digits, <c>a ≈ 30–40</c> is typical.</item>
+      /// </list>
+      /// </param>
+      /// <returns></returns>
+      public static TFloat SpougeGamma(TFloat z, int a)
+        => SpougeGamma(z, SpougeCoefficients<TFloat>(a));
+
+      #endregion
+
+      #region SpougeLogGamma
+
+      /// <summary>
+      /// <para>Spouge's approximation of LogGamma using any <paramref name="coefficients"/>.</para>
+      /// </summary>
+      /// <param name="z"></param>
+      /// <param name="coefficients"></param>
+      /// <returns></returns>
+      public static TFloat SpougeLogGamma(TFloat z, TFloat[] coefficients)
+      {
+        var half = TFloat.CreateChecked(0.5);
+
+        if (z < half) // Reflection for z < 0.5
+          return TFloat.Log(TFloat.Pi) - TFloat.Log(TFloat.SinPi(z)) - SpougeLogGamma(TFloat.One - z, coefficients);
+
+        var sum = coefficients[0]; // Compute the sum S = c0 + Σ c[k] / (z + k)
+        for (var k = 1; k < coefficients.Length; k++)
+          sum += coefficients[k] / (z + TFloat.CreateChecked(k));
+
+        var t = z + TFloat.CreateChecked(coefficients.Length);
+
+        return (z - half) * TFloat.Log(t) - t + TFloat.Log(sum);
+      }
+
+      /// <summary>
+      /// <para>Spouge's approximation of LogGamma. The error of this approximation is less than 2e-10 for a = 12, and decreases rapidly as a increases.</para>
+      /// </summary>
+      /// <param name="z"></param>
+      /// <param name="a">
+      /// <list type="table">
+      /// <item>For <see cref="float"/> <c>a = 6</c> is sufficient.</item>
+      /// <item>For <see cref="double"/> <c>a = 12</c> is the sweet spot, and <c>a = 15</c> gives slightly more accuracy but risks cancellation.</item>
+      /// <item>For <see cref="decimal"/> <c>a = 10–12</c> works. The decimal type has high precision but a tiny exponent range, so Exp may overflow.</item>
+      /// <item>For arbitrary-precision types choose a proportional to the number of digits you want, e.g. for 100 digits, <c>a ≈ 30–40</c> is typical.</item>
+      /// </list>
+      /// </param>
+      /// <returns></returns>
+      public static TFloat SpougeLogGamma(TFloat z, int a)
+        => SpougeLogGamma(z, SpougeCoefficients<TFloat>(a));
+
+      #endregion
+
+      #region SpougeCoefficients
+
+      /// <summary>
+      /// <para>Spouge's coefficients.</para>
+      /// </summary>
+      /// <param name="a">
+      /// <list type="table">
+      /// <item>For <see cref="float"/> <c>a = 6</c> is sufficient.</item>
+      /// <item>For <see cref="double"/> <c>a = 12</c> is the sweet spot, and <c>a = 15</c> gives slightly more accuracy but risks cancellation.</item>
+      /// <item>For <see cref="decimal"/> <c>a = 10–12</c> works. The decimal type has high precision but a tiny exponent range, so Exp may overflow.</item>
+      /// <item>For arbitrary-precision types choose a proportional to the number of digits you want, e.g. for 100 digits, <c>a ≈ 30–40</c> is typical.</item>
+      /// </list>
+      /// </param>
+      /// <returns></returns>
+      public static TFloat[] SpougeCoefficients(int a)
+      {
+        var c = new TFloat[a];
+
+        c[0] = TFloat.Sqrt(TFloat.Tau);
+
+        for (var k = 1; k < a; k++)
+        {
+          var sign = ((k - 1) % 2 == 0) ? TFloat.One : -TFloat.One;
+
+          var exponent = TFloat.CreateChecked(a - k);
+
+          var numerator = sign * TFloat.Pow(exponent, TFloat.CreateChecked(k) - TFloat.CreateChecked(0.5)) * TFloat.Exp(exponent);
+          var denominator = TFloat.CreateChecked(BinaryInteger.Factorial(k - 1));
+
+          c[k] = numerator / denominator;
+        }
+
+        return c;
+      }
+
+      #endregion
+
+      #region StirlingGamma
+
+      /// <summary>
+      /// <para>Stirling's approximation of Gamma. The error of this approximation is less than 1.5e-7 for n ≥ 1, and decreases rapidly as n increases.</para>
+      /// <para><see href="https://en.wikipedia.org/wiki/Stirling%27s_approximation"/></para>
+      /// <para><see href="https://en.wikipedia.org/wiki/Gamma_function"/></para>
+      /// </summary>
+      /// <param name="z"></param>
+      /// <returns></returns>
+      public static TFloat StirlingGamma(TFloat z)
+        => TFloat.Exp(StirlingLogGamma(z));// TFloat.Sqrt(TFloat.Tau / x) * TFloat.Pow(x / TFloat.E, x);
+
+      #endregion
+
+      #region StirlingLogFactorial
+
+      /// <summary>
+      /// <para>Stirling's approximation of LogFactorial. The error of this approximation is less than 1.5e-7 for n ≥ 1, and decreases rapidly as n increases.</para>
+      /// <para><see href="https://en.wikipedia.org/wiki/Stirling%27s_approximation"/></para>
+      /// </summary>
+      /// <typeparam name="TInteger"></typeparam>
+      /// <param name="n"></param>
+      /// <returns></returns>
+      public static TFloat StirlingLogFactorial<TInteger>(TInteger n)
+        where TInteger : System.Numerics.IBinaryInteger<TInteger>
+      {
+        if (n <= TInteger.One)
+          return TFloat.Zero;
+
+        var x = TFloat.CreateChecked(n);
+
+        return x * TFloat.Log(x) - x + TFloat.CreateChecked(0.5) * TFloat.Log(TFloat.Tau * x);
+      }
+
+      #endregion
+
+      #region StirlingLogGamma
+
+      /// <summary>
+      /// <para>Stirling's approximation of LogGamma. The error of this approximation is less than 1.5e-7 for n ≥ 1, and decreases rapidly as n increases.</para>
+      /// <para><see href="https://en.wikipedia.org/wiki/Stirling%27s_approximation"/></para>
+      /// </summary>
+      /// <param name="z"></param>
+      /// <returns></returns>
+      public static TFloat StirlingLogGamma(TFloat z)
+      {
+        var half = TFloat.CreateChecked(0.5);
+
+        // Reflection for small z
+        if (z < half)
+          return TFloat.Log(TFloat.Pi) - TFloat.Log(TFloat.SinPi(z)) - StirlingLogGamma(TFloat.One - z);
+
+        var result = (z - half) * TFloat.Log(z) - z + half * TFloat.Log(TFloat.Tau); // Core Stirling term.
+
+        var z2 = z * z; // Correction terms (Bernoulli numbers)
+        var z3 = z2 * z;
+        var z5 = z3 * z2;
+        var z7 = z5 * z2;
+
+        result += TFloat.One / (TFloat.CreateChecked(12) * z);
+        result -= TFloat.One / (TFloat.CreateChecked(360) * z3);
+        result += TFloat.One / (TFloat.CreateChecked(1260) * z5);
+        result -= TFloat.One / (TFloat.CreateChecked(1680) * z7);
+
+        return result;
       }
 
       #endregion

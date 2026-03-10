@@ -144,7 +144,7 @@ namespace ConsoleApp
       {
         var rng = new System.Random();
 
-        var m_ap = BinaryInteger.GetPrimeNumbersAscending(2).Take(100).ToArray(); // Primes.
+        var m_ap = BinaryInteger.PrimeSequenceAscending(2).Take(100).ToArray(); // Primes.
         var m_rn = System.Linq.Enumerable.Range(0, 100).ToArray(); // Rational.
         var m_en = System.Linq.Enumerable.Range(1, 200).Where(i => (i & 1) == 0).ToArray(); // Even.
         var m_on = System.Linq.Enumerable.Range(1, 200).Where(i => (i & 1) != 0).ToArray(); // Odd.

@@ -47,7 +47,7 @@ namespace Flux
 
       #endregion
 
-      #region IsPrime deterministic
+      #region IsPrimeDeterministic (Miller-Rabin deterministic primality test)
 
       /// <summary>
       /// <para>This implementation uses a Miller-Rabin deterministic algorithm.</para>
@@ -55,8 +55,73 @@ namespace Flux
       /// <param name="n"></param>
       /// <returns></returns>
       [System.CLSCompliant(false)]
-      public static bool IsPrime(ulong n)
+      public static bool IsPrimeDeterministic(ulong n)
         => MillerRabinDeterministicIsPrime(n);
+
+      /// <summary>
+      /// <para>Deterministic Miller-Rabin primality test for 64-bit integers using bases 2,3,5,7,11,13,17.</para>
+      /// </summary>
+      /// <remarks>Guaranteed correct for n &lt; 2^64.</remarks>
+      /// <param name="n"></param>
+      /// <returns></returns>
+      private static bool MillerRabinDeterministicIsPrime(ulong n)
+      {
+        if (n < 64)
+          return (m_primeBitMask & (1UL << (int)n)) != 0; // Initial 64-bit-mask takes care of [0, 63].
+
+        if (n % 2 == 0UL)
+          return false; // Secondly, eliminate all even numbers (the prime number 2 was handled in the previous step).
+
+        foreach (var p in m_smallPrimes) // Very small prime checks.
+        {
+          //if (n == p)
+          //  return true;
+
+          if (n % p == 0UL)
+            return false;
+        }
+
+        // Write 'n - 1' as 'd * 2^s', where d is an odd number and s is the number of times you can divide n-1 by 2 before it becomes odd.
+
+        var d = n - 1;
+        var s = 0;
+        while ((d & 1) == 0)
+        {
+          d >>= 1;
+          s++;
+        }
+
+        foreach (var a in m_primeDeterministicBases)
+        {
+          if (a >= n)
+            break;
+
+          if (!MillerRabinDeterministicPass(a, s, d, n))
+            return false;
+        }
+
+        return true;
+      }
+
+      private static bool MillerRabinDeterministicPass(ulong a, int s, ulong d, ulong n)
+      {
+        System.Numerics.BigInteger nBI = n;
+        System.Numerics.BigInteger aBI = a;
+        System.Numerics.BigInteger x = System.Numerics.BigInteger.ModPow(aBI, d, nBI);
+
+        if (x == 1 || x == n - 1)
+          return true;
+
+        for (var r = 1; r < s; r++)
+        {
+          x = System.Numerics.BigInteger.ModPow(x, 2, nBI);
+
+          if (x == n - 1)
+            return true;
+        }
+
+        return false;
+      }
 
       #endregion
 
@@ -89,75 +154,6 @@ namespace Flux
 
       #endregion
     }
-
-    #region Miller-Rabin deterministic ulong primality check
-
-    /// <summary>
-    /// <para>Deterministic Miller-Rabin primality test for 64-bit integers using bases 2,3,5,7,11,13,17.</para>
-    /// </summary>
-    /// <remarks>Guaranteed correct for n &lt; 2^64.</remarks>
-    /// <param name="n"></param>
-    /// <returns></returns>
-    private static bool MillerRabinDeterministicIsPrime(ulong n)
-    {
-      if (n < 64)
-        return (m_primeBitMask & (1UL << (int)n)) != 0; // Initial 64-bit-mask takes care of [0, 63].
-
-      if (n % 2 == 0UL)
-        return false; // Secondly, eliminate all even numbers (the prime number 2 was handled in the previous step).
-
-      foreach (var p in m_smallPrimes) // Very small prime checks.
-      {
-        //if (n == p)
-        //  return true;
-
-        if (n % p == 0UL)
-          return false;
-      }
-
-      // Write 'n - 1' as 'd * 2^s', where d is an odd number and s is the number of times you can divide n-1 by 2 before it becomes odd.
-
-      var d = n - 1;
-      var s = 0;
-      while ((d & 1) == 0)
-      {
-        d >>= 1;
-        s++;
-      }
-
-      foreach (var a in m_primeDeterministicBases)
-      {
-        if (a >= n)
-          break;
-
-        if (!MillerRabinDeterministicPass(a, s, d, n))
-          return false;
-      }
-
-      return true;
-    }
-
-    private static bool MillerRabinDeterministicPass(ulong a, int s, ulong d, ulong n)
-    {
-      System.Numerics.BigInteger nBI = n;
-      System.Numerics.BigInteger aBI = a;
-      System.Numerics.BigInteger x = System.Numerics.BigInteger.ModPow(aBI, d, nBI);
-
-      if (x == 1 || x == n - 1)
-        return true;
-
-      for (var r = 1; r < s; r++)
-      {
-        x = System.Numerics.BigInteger.ModPow(x, 2, nBI);
-
-        if (x == n - 1)
-          return true;
-      }
-
-      return false;
-    }
-
-    #endregion
   }
 }
 

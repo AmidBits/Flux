@@ -39,7 +39,8 @@ namespace Flux.IO.BitStream
     [System.CLSCompliant(false)]
     public void WriteBits(uint bits, int count)
     {
-      if (count < 0 || count > 32) throw new System.ArgumentOutOfRangeException(nameof(count));
+      System.ArgumentOutOfRangeException.ThrowIfNegative(count);
+      System.ArgumentOutOfRangeException.ThrowIfGreaterThan(count, 32);
 
       if (m_bitCount + count > 64) WriteBytes();
 
@@ -52,7 +53,8 @@ namespace Flux.IO.BitStream
     [System.CLSCompliant(false)]
     public void WriteBits(ulong bits, int count)
     {
-      if (count < 0 || count > 64) throw new System.ArgumentOutOfRangeException(nameof(count));
+      System.ArgumentOutOfRangeException.ThrowIfNegative(count);
+      System.ArgumentOutOfRangeException.ThrowIfGreaterThan(count, 64);
 
       if (count > 32)
       {
