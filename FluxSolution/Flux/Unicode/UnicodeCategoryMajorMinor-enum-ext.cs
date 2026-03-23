@@ -49,13 +49,35 @@ namespace Flux
     extension(UnicodeCategoryMajorMinor)
     {
       /// <summary>
-      /// <para>Parses two characters as representing Unicode category <paramref name="unicodeCategoryMajor"/> and <paramref name="unicodeCategoryMinor"/>.</para>
+      /// <para>Parses a string as a Unicode category <paramref name="unicodeCategoryMajor"/> and <paramref name="unicodeCategoryMinor"/>.</para>
       /// </summary>
-      public static UnicodeCategoryMajorMinor Parse(char unicodeCategoryMajor, char unicodeCategoryMinor)
-      => ((UnicodeCategoryMajorMinor)System.Enum.Parse<UnicodeCategoryMajorMinor>($"{unicodeCategoryMajor}{unicodeCategoryMinor}", true));
+      public static UnicodeCategoryMajorMinor Parse(string unicodeCategoryMajorMinor)
+        => ((UnicodeCategoryMajorMinor)System.Enum.Parse<UnicodeCategoryMajorMinor>(unicodeCategoryMajorMinor));
 
       /// <summary>
-      /// <para>Attempts to parse the beginning of a string as Unicode category <paramref name="unicodeCategoryMajor"/> and <paramref name="unicodeCategoryMinor"/>.</para>
+      /// <para>Parses two characters as a Unicode category <paramref name="unicodeCategoryMajor"/> and <paramref name="unicodeCategoryMinor"/>.</para>
+      /// </summary>
+      public static UnicodeCategoryMajorMinor Parse(char unicodeCategoryMajor, char unicodeCategoryMinor)
+        => Parse($"{unicodeCategoryMajor}{unicodeCategoryMinor}");
+
+      /// <summary>
+      /// <para>Attempts to parse the beginning of a string as a Unicode category <paramref name="unicodeCategoryMajor"/> and <paramref name="unicodeCategoryMinor"/>.</para>
+      /// </summary>
+      public static bool TryParse(string unicodeCategoryMajorMinor, out UnicodeCategoryMajorMinor result)
+      {
+        try
+        {
+          result = Parse(unicodeCategoryMajorMinor);
+          return true;
+        }
+        catch { }
+
+        result = default;
+        return false;
+      }
+
+      /// <summary>
+      /// <para>Attempts to parse two characters as a Unicode category <paramref name="unicodeCategoryMajor"/> and <paramref name="unicodeCategoryMinor"/>.</para>
       /// </summary>
       public static bool TryParse(char unicodeCategoryMajor, char unicodeCategoryMinor, out UnicodeCategoryMajorMinor result)
       {
@@ -78,13 +100,21 @@ namespace Flux
       /// </summary>
       /// <example>var allCharactersByCategoryMajorLabel = Unicode.GetUnicodeCategoryCharacters().GroupBy(kv => kv.Key.ToCategoryMajorLabel()).ToDictionary(g => g.Key, g => g.SelectMany(kv => kv.Value).ToList());</example>
       public UnicodeCategoryMajor ToUnicodeCategoryMajor()
-      => ((System.Globalization.UnicodeCategory)unicodeCategoryMajorMinor).ToUnicodeCategoryMajor();
+      => ((System.Globalization.UnicodeCategory)unicodeCategoryMajorMinor).ToCategoryMajor();
 
       /// <summary>
       /// <para>Translates a <paramref name="unicodeCategoryMajorMinor"/> enum value into a <see cref="System.Globalization.UnicodeCategory"/> enum value.</para>
       /// </summary>
       public System.Globalization.UnicodeCategory ToUnicodeCategory()
         => (System.Globalization.UnicodeCategory)unicodeCategoryMajorMinor;
+
+      /// <summary>
+      /// <para>Creates a new pattern string representing the <see cref="UnicodeCategoryMajorMinor"/> and whether <paramref name="unequal"/>.</para>
+      /// </summary>
+      /// <param name="unequal"></param>
+      /// <returns></returns>
+      public string ToUnicodePropertyPattern(bool unequal)
+        => $"\\{(unequal ? 'P' : 'p')}{{{unicodeCategoryMajorMinor}}}";
     }
   }
 }

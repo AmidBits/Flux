@@ -24,7 +24,7 @@ namespace Flux
       /// <summary>Translates a <see cref="System.Globalization.UnicodeCategory"/> enum value (<paramref name="unicodeCategory"/>) into a <see cref="UnicodeCategoryMajor"/> enum value.</summary>
       /// <example>var allCharactersByCategoryMajorLabel = Unicode.GetUnicodeCategoryCharacters().GroupBy(kv => kv.Key.ToCategoryMajorLabel()).ToDictionary(g => g.Key, g => g.SelectMany(kv => kv.Value).ToList());</example>
 
-      public UnicodeCategoryMajor ToUnicodeCategoryMajor()
+      public UnicodeCategoryMajor ToCategoryMajor()
       {
         var unicodeCategoryName = unicodeCategory.ToString();
 
@@ -32,14 +32,14 @@ namespace Flux
       }
 
       /// <summary>Translates a <see cref="System.Globalization.UnicodeCategory"/> enum value (<paramref name="unicodeCategory"/>) into a <see cref="UnicodeCategoryMajorMinor"/> enum value.</summary>
-      public UnicodeCategoryMajorMinor ToUnicodeCategoryMajorMinor()
+      public UnicodeCategoryMajorMinor ToCategoryMajorMinor()
         => (UnicodeCategoryMajorMinor)unicodeCategory;
 
       /// <summary>Creates a new string in a more readable format, e.g. "DecimalDigitNumber" becomes "decimal digit" (i.e. drop the ending Unicode category major, make lower case and add word spacing).</summary>
-      public string ToUnicodeCategoryMinorFriendlyString()
+      public string ToCategoryMinorFriendlyString()
       {
         var ucsb = new System.Text.StringBuilder(unicodeCategory == System.Globalization.UnicodeCategory.OtherNotAssigned ? unicodeCategory.ToString()[5..] : unicodeCategory.ToString());
-        var ucms = ToUnicodeCategoryMajor(unicodeCategory).ToString();
+        var ucms = ToCategoryMajor(unicodeCategory).ToString();
 
         if (ucsb.ToString().AsSpan().IsCommonSuffix(ucms)) ucsb = ucsb.Remove(ucsb.Length - ucms.Length, ucms.Length); // Either fix the unicode category that ends with its own category major.
         else if (ucsb.ToString().AsSpan().IsCommonPrefix(ucms)) ucsb = ucsb.Remove(0, ucms.Length); // Or fix the unicode category that starts with its own category major.

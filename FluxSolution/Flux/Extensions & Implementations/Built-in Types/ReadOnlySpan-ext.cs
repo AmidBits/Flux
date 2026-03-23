@@ -939,7 +939,7 @@
       public bool IsPangram(System.ReadOnlySpan<T> alphabet, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
       {
         foreach (var letter in alphabet)
-          if (source.IndexOf(letter, equalityComparer) < 0)
+          if (source.IndexOf(letter, equalityComparer) <= -1)
             return false;
 
         return true;
@@ -3328,17 +3328,18 @@
 
       /// <summary>
       /// <para>Checks whether the string has balanced pairs (e.g. parenthesis).</para>
+      /// <para><see href="https://www.regular-expressions.info/balancing.html"/></para>
       /// </summary>
-      public bool IsBalanced(char open, char close)
+      public bool HasBalancedPairs(char open, char close)
         => IsBalancedConstruct(source, $"\\{open}", $"[^\\{open}\\{close}]", $"\\{close}");
 
       /// <summary>
-      /// <para>Checks whether the string is a matching balanced construct.</para>
+      /// <para>Checks whether a <see cref="System.ReadOnlySpan{T}"/> matches a [<paramref name="open"/>][<paramref name="pattern"/>][<paramref name="close"/>] balanced construct. I.e. whether a pattern wrapped in open/close patterns.</para>
       /// <para><see href="https://www.regular-expressions.info/balancing.html"/></para>
       /// </summary>
       /// <example>See below for balanced parenthesis.</example>
-      public bool IsBalancedConstruct(System.ReadOnlySpan<char> open, System.ReadOnlySpan<char> match, System.ReadOnlySpan<char> close)
-        => System.Text.RegularExpressions.Regex.IsMatch(source, CreateBalancedExpression(open, match, close));
+      public bool IsBalancedConstruct(System.ReadOnlySpan<char> open, System.ReadOnlySpan<char> pattern, System.ReadOnlySpan<char> close)
+        => System.Text.RegularExpressions.Regex.CreateBalancedConstruct(open, pattern, close).IsMatch(source);
 
       #endregion
 
@@ -3990,19 +3991,19 @@
         : BinaryInteger.ToOrdinalFieldName(index);
     }
 
-    #region BalancedConstructs helpers
+    //#region BalancedConstructs helpers
 
-    /// <summary>
-    /// <para></para>
-    /// </summary>
-    /// <param name="reOpen"></param>
-    /// <param name="reMatch"></param>
-    /// <param name="reClose"></param>
-    /// <returns></returns>
-    public static string CreateBalancedExpression(System.ReadOnlySpan<char> reOpen, System.ReadOnlySpan<char> reMatch, System.ReadOnlySpan<char> reClose)
-      => $"^{reMatch}*(?>(?>(?'balance'{reOpen}){reMatch}*)+(?>(?'-balance'{reClose}){reMatch}*)+)+(?(balance)(?!))$";
+    ///// <summary>
+    ///// <para></para>
+    ///// </summary>
+    ///// <param name="reOpen"></param>
+    ///// <param name="reMatch"></param>
+    ///// <param name="reClose"></param>
+    ///// <returns></returns>
+    //public static string CreateBalancedExpression(System.ReadOnlySpan<char> reOpen, System.ReadOnlySpan<char> reMatch, System.ReadOnlySpan<char> reClose)
+    //  => $"^{reMatch}*(?>(?>(?'balance'{reOpen}){reMatch}*)+(?>(?'-balance'{reClose}){reMatch}*)+)+(?(balance)(?!))$";
 
-    #endregion
+    //#endregion
 
     #region BoyerMooreHorspool algorithm helpers
 

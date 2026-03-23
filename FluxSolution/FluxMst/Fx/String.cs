@@ -11,8 +11,8 @@ namespace SystemFx
     [TestMethod]
     public void IsBalanced()
     {
-      Assert.IsTrue(s1.AsSpan().IsBalanced('<', '>'));
-      Assert.IsFalse(s2.AsSpan().IsBalanced('<', '>'));
+      Assert.IsTrue(s1.AsSpan().HasBalancedPairs('<', '>'));
+      Assert.IsFalse(s2.AsSpan().HasBalancedPairs('<', '>'));
     }
 
     [TestMethod]

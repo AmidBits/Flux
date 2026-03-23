@@ -9,6 +9,8 @@
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'" />
 
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'" />
+
 	<ItemGroup>
 	  <None Remove="Resources\world-map.svg" />
 	  <None Remove="Resources\WorldMapUserControl.xaml" />

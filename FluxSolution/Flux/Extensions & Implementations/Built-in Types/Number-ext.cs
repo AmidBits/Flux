@@ -315,6 +315,14 @@ namespace Flux
 
       #region Loops/iterations
 
+      public static System.Collections.Generic.IEnumerable<(int Index, TNumber Value, TNumber OpposingValue)> LoopCross(TNumber startValue, TNumber step, int count)
+      {
+        var minValue = ArithmeticSequenceNthTerm(startValue, step, 1);
+        var maxValue = ArithmeticSequenceNthTerm(startValue, step, count);
+
+        return ArithmeticSequence(minValue, step).Take(count).Select((n, i) => (i, n, minValue + maxValue - n));
+      }
+
       /// <summary>
       /// <para>Creates a sequence of numbers that are controlled through three methods: <paramref name="initialization"/>(), <paramref name="condition"/>() and <paramref name="updation"/>().</para>
       /// </summary>
@@ -350,8 +358,7 @@ namespace Flux
       /// <param name="count">The number of numbers in the sequence.</param>
       /// <returns></returns>
       /// <exception cref="System.ArgumentOutOfRangeException"></exception>
-      public static System.Collections.Generic.IEnumerable<TNumber> LoopPivot<TCount>(TNumber meanNumber, CoordinateSystems.ReferenceRelativeOrientationTAf direction, TNumber stepSize, TCount count)
-        where TCount : System.Numerics.IBinaryInteger<TCount>
+      public static System.Collections.Generic.IEnumerable<TNumber> LoopPivot(TNumber meanNumber, CoordinateSystems.ReferenceRelativeOrientationTAf direction, TNumber stepSize, int count)
       {
         System.ArgumentOutOfRangeException.ThrowIfZero(stepSize);
         System.ArgumentOutOfRangeException.ThrowIfNegativeOrZero(count);
@@ -361,9 +368,9 @@ namespace Flux
           switch (direction)
           {
             case CoordinateSystems.ReferenceRelativeOrientationTAf.AwayFrom:
-              if (TCount.IsOddInteger(count)) stepSize = -stepSize;
+              if (int.IsOddInteger(count)) stepSize = -stepSize;
 
-              for (var index = TCount.One; index <= count; index++)
+              for (var index = 1; index <= count; index++)
               {
                 yield return meanNumber;
 
@@ -374,7 +381,7 @@ namespace Flux
             case CoordinateSystems.ReferenceRelativeOrientationTAf.Toward:
               meanNumber += stepSize * ITruncatedDivRem(TNumber.CreateChecked(count), TNumber.One + TNumber.One).Quotient;  // Setup the inital outer edge value for inward iteration.
 
-              for (var index = count - TCount.One; index >= TCount.Zero; index--)
+              for (var index = count - 1; index >= 0; index--)
               {
                 yield return meanNumber;
 

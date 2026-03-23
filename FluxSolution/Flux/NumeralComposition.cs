@@ -334,16 +334,18 @@ namespace Flux
     public enum NumeralScale
     {
       /// <summary>
-      /// <para>Only words up to a million are used.</para>
+      /// <para>Words up to a million.</para>
       /// </summary>
       CommonScale,
 
       /// <summary>
-      /// <para>Usage: French Canada, older British, Western & Central Europe.</para>
+      /// <para>Words beyond a million.</para>
+      /// <para>Usage: French Canada, older British, Western and Central Europe.</para>
       /// </summary>
       LongScale,
 
       /// <summary>
+      /// <para>Words beyond a million.</para>
       /// <para>Usage: US, English Canada, modern British, Australia, and Eastern Europe.</para>
       /// </summary>
       ShortScale,

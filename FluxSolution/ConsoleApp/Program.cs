@@ -270,31 +270,16 @@ namespace ConsoleApp
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
 
+      var llmmre = System.Globalization.UnicodeCategory.LowercaseLetter.ToCategoryMajorMinor().ToUnicodePropertyPattern(false);
+      var llmre = System.Globalization.UnicodeCategory.LowercaseLetter.ToCategoryMajor().ToUnicodePropertyPattern(false);
 
-      var lgd = FloatingPoint.LanczosLogGamma(10d);
-      var lgf = FloatingPoint.LanczosLogGamma(10f);
+      var lvs1 = Number.LoopPivot(17, Flux.CoordinateSystems.ReferenceRelativeOrientationTAf.Toward, 3, 11).ToArray();
+      var lvs2 = Number.LoopPivot(17, Flux.CoordinateSystems.ReferenceRelativeOrientationTAf.AwayFrom, -3, 11).ToArray();
 
-      var gd = FloatingPoint.LanczosGamma(5d);
-      var gf = FloatingPoint.LanczosGamma(5f);
+      var lbw1 = Number.LoopCross(2, 3, 10).ToArray();
+      var lbw2 = Number.LoopCross(32, -3, 10).ToArray();
 
-      var c = double.SpougeCoefficients(12);
-      var spgc = double.SpougeGamma(5.5, c);
-      var spga = double.SpougeGamma(5.5, 12);
-
-      var stg55 = double.StirlingGamma(5.5);
-      var slg55 = double.StirlingLogGamma(5.5);
-      var lg55 = double.LanczosGamma(5.5);
-      //var llg55 = double.LanczosLogGamma(5.5);
-
-      static System.Collections.Generic.IEnumerable<(int Index, int AscendingValue, int DescendingValue)> LoopBothWays(int startValue, int count, int step)
-      {
-        var beginValue = Number.ArithmeticSequenceNthTerm(startValue, step, 1);
-        var boundValue = startValue + Number.ArithmeticSequenceNthTerm(startValue, step, count);
-
-        return Number.ArithmeticSequence(startValue, step).Take(count).Select((n, i) => (i, n, boundValue - n));
-      }
-
-      var lbw = LoopBothWays(2, 11, 3).ToArray();
+      var lbw6 = Number.LoopCross(6, 6, 100).ToArray();
 
       var mean = 11;
       var step = 1;
@@ -329,19 +314,16 @@ namespace ConsoleApp
 
       System.Console.WriteLine($"RAFN = {rafnvalue}, RAFP = {rafpvalue}, AFN = {afnvalue}, AFP = {afpvalue}");
 
-      foreach (var (Index, AscendingValue, DescendingValue) in LoopBothWays(1, cont - 1, step))
+      foreach (var (idx, value, opposingValue) in Number.LoopCross(1, step, cont - 1))
       {
-        afnvalue = int.IsEvenInteger(Index) ? afnvalue - AscendingValue : afnvalue + AscendingValue;
-        afpvalue = int.IsEvenInteger(Index) ? afpvalue + AscendingValue : afpvalue - AscendingValue;
+        afnvalue = int.IsEvenInteger(idx) ? afnvalue - value : afnvalue + value;
+        afpvalue = int.IsEvenInteger(idx) ? afpvalue + value : afpvalue - value;
 
-        rafnvalue = int.IsEvenInteger(Index) ? rafnvalue + DescendingValue : rafnvalue - DescendingValue;
-        rafpvalue = int.IsEvenInteger(Index) ? rafpvalue - DescendingValue : rafpvalue + DescendingValue;
+        rafnvalue = int.IsEvenInteger(idx) ? rafnvalue + opposingValue : rafnvalue - opposingValue;
+        rafpvalue = int.IsEvenInteger(idx) ? rafpvalue - opposingValue : rafpvalue + opposingValue;
 
         System.Console.WriteLine($"RAFN = {rafnvalue}, RAFP = {rafpvalue}, AFN = {afnvalue}, AFP = {afpvalue}");
       }
-
-
-      //      var seq = Number.LoopCustom(() => 16, (e, i) => true, (e, i) => (12 - i) is var ir && int.IsEvenInteger(ir) ? e - ir : e + ir).Skip(1).Take(10).ToArray();
 
 
 

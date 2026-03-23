@@ -243,6 +243,8 @@ namespace Flux.Units
       return new(accumulation);
     }
 
+#if SPECIAL_FUNCTIONS
+
     /// <summary>
     /// <para>When probability of success p and probability of failure q = 1 - p. If you repeat what you’re doing m+n times, the probability of m successes and n failures is given by this function.</para>
     /// </summary>
@@ -261,6 +263,8 @@ namespace Flux.Units
 
       return double.Exp(temp);
     }
+
+#endif
 
     #region Poisson distribution
 

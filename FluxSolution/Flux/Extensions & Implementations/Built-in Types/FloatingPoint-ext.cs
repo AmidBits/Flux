@@ -1,16 +1,16 @@
 ﻿namespace Flux
 {
-  public enum LanczosMode
-  {
-    /// <summary>
-    /// <para>Cephes/Boost-style.</para>
-    /// </summary>
-    Standard,
-    /// <summary>
-    /// <para>Numerical Recipes-style.</para>
-    /// </summary>
-    NumericalRecipes
-  }
+  //public enum LanczosMode
+  //{
+  //  /// <summary>
+  //  /// <para>Cephes/Boost-style.</para>
+  //  /// </summary>
+  //  Standard,
+  //  /// <summary>
+  //  /// <para>Numerical Recipes-style.</para>
+  //  /// </summary>
+  //  NumericalRecipes
+  //}
 
   public static class FloatingPoint
   {
@@ -23,14 +23,29 @@
     extension<TFloat>(TFloat)
       where TFloat : System.Numerics.IFloatingPoint<TFloat>
     {
+      public static TFloat GenericNaN
+      {
+        get
+        {
+          return TFloat.Zero switch
+          {
+            double => TFloat.CreateChecked(double.NaN),
+            float => TFloat.CreateChecked(float.NaN),
+            System.Half => TFloat.CreateChecked(System.Half.NaN),
+            System.Runtime.InteropServices.NFloat => TFloat.CreateChecked(System.Runtime.InteropServices.NFloat.NaN),
+            _ => throw new NotImplementedException($"{typeof(TFloat)}.NaN")
+          };
+        }
+      }
+
       public static TFloat GetBaseEpsilon()
         => TFloat.Zero switch
         {
           decimal => TFloat.CreateChecked(decimal.DefaultBaseEpsilon), // ~28-29 digits precision
           double => TFloat.CreateChecked(double.DefaultBaseEpsilon), // ~15-16 digits precision
           float => TFloat.CreateChecked(float.DefaultBaseEpsilon), // ~7 digits precision
-          System.Runtime.InteropServices.NFloat when System.Runtime.InteropServices.NFloat.Size == 8 => TFloat.CreateChecked(double.DefaultBaseEpsilon), // ~15-16 digits precision
-          System.Runtime.InteropServices.NFloat when System.Runtime.InteropServices.NFloat.Size == 4 => TFloat.CreateChecked(float.DefaultBaseEpsilon), // ~7 digits precision
+          System.Runtime.InteropServices.NFloat when System.Runtime.InteropServices.NFloat.Size == 8 => TFloat.CreateChecked(double.DefaultBaseEpsilon), // Same as double; ~15-16 digits precision
+          System.Runtime.InteropServices.NFloat when System.Runtime.InteropServices.NFloat.Size == 4 => TFloat.CreateChecked(float.DefaultBaseEpsilon), // Same as float; ~7 digits precision
           System.Half => TFloat.CreateChecked(System.Half.DefaultBaseEpsilon), // ~3 digits precision
           _ => throw new NotImplementedException()
         };
@@ -589,6 +604,38 @@
 
       #endregion
 
+      #region Special functions
+
+#if DECIMAL_SPECIAL_FUNCTIONS || DOUBLE_SPECIAL_FUNCTIONS
+      public static TFloat Gamma(TFloat x)
+        => x switch
+        {
+#if DECIMAL_SPECIAL_FUNCTIONS
+          decimal dfp128 => TFloat.CreateChecked(decimal.Gamma(dfp128)),
+#endif
+#if DOUBLE_SPECIAL_FUNCTIONS
+          double fp64 => TFloat.CreateChecked(double.Gamma(fp64)),
+          float fp32 => TFloat.CreateChecked(double.Gamma(fp32)),
+#endif
+          _ => throw new System.NotImplementedException($"Type: {x.GetType()}"),
+        };
+
+      public static TFloat LogGamma(TFloat x)
+        => x switch
+        {
+#if DECIMAL_SPECIAL_FUNCTIONS
+          decimal dfp128 => TFloat.CreateChecked(decimal.LogGamma(dfp128)),
+#endif
+#if DOUBLE_SPECIAL_FUNCTIONS
+          double fp64 => TFloat.CreateChecked(double.LogGamma(fp64)),
+          float fp32 => TFloat.CreateChecked(double.LogGamma(fp32)),
+#endif
+          _ => throw new System.NotImplementedException($"Type: {x.GetType()}"),
+        };
+#endif
+
+      #endregion
+
       #region Truncate..
 
       /// <summary>
@@ -832,6 +879,59 @@
     extension<TFloat>(TFloat)
       where TFloat : System.Numerics.IFloatingPoint<TFloat>, System.Numerics.ITrigonometricFunctions<TFloat>
     {
+      public static TFloat Atan2(TFloat y, TFloat x)
+      {
+        if (TFloat.IsNaN(y) || TFloat.IsNaN(x))
+          return get_GenericNaN<TFloat>();
+
+        TFloat zero = TFloat.Zero;
+        TFloat pi = TFloat.CreateChecked(Math.PI);
+        TFloat halfPi = pi / TFloat.CreateChecked(2);
+        TFloat quarterPi = pi / TFloat.CreateChecked(4);
+        TFloat threeQuarterPi = TFloat.CreateChecked(3) * pi / TFloat.CreateChecked(4);
+
+        if (TFloat.IsZero(y))
+        {
+          if (x > zero) return y; // +0 or -0
+          if (x < zero) return (y >= zero) ? pi : -pi;
+          return y; // x = 0 → return ±0
+        }
+
+        if (TFloat.IsZero(x))
+          return (y > zero) ? halfPi : -halfPi;
+
+        if (TFloat.IsInfinity(x) || TFloat.IsInfinity(y))
+        {
+          var xinf = TFloat.IsInfinity(x);
+          var yinf = TFloat.IsInfinity(y);
+
+          if (xinf && yinf)
+          {
+            if (x > zero)
+              return (y > zero) ? quarterPi : -quarterPi;
+            else
+              return (y > zero) ? threeQuarterPi : -threeQuarterPi;
+          }
+
+          if (xinf)
+          {
+            var a = TFloat.Atan(y / x); // ±0
+
+            return (x > zero) ? a : a + ((y >= zero) ? pi : -pi);
+          }
+
+          if (yinf)
+            return (y > zero) ? halfPi : -halfPi;
+        }
+
+        var atan = TFloat.Atan(y / x); // General case
+
+        if (x > zero)
+          return atan;
+
+        return atan + ((y >= zero) ? pi : -pi);
+      }
+
       #region CylindricalToCartesian
 
       /// <summary>Creates cartesian 3D coordinates from the <see cref="CylindricalCoordinate"/>.</summary>
@@ -953,56 +1053,7 @@
       }
 
       #endregion
-
-      ///// <summary>
-      ///// <para>Creates cartesian-coordinates from the latitude (elevation) and longitude (azimuth) of a spherical-coordinate, but with triaxial ellipsoid as three radii for the X (A), Y (B) and Z (C) axis instead of just a single radius.</para>
-      ///// <remarks>All angles in radians.</remarks>
-      ///// </summary>
-      ///// <param name="radiusA"></param>
-      ///// <param name="radiusB"></param>
-      ///// <param name="radiusC"></param>
-      ///// <param name="latitude">The reduced latitude, parametric latitude, or eccentric anomaly. <c>[-Pi/2, +Pi/2]</c></param>
-      ///// <param name="longitude">The azimuth or longitude. <c>[0, Tau)</c></param>
-      ///// <returns></returns>
-      //public static (double x, double y, double z) SphericalByEquatorToCartesian(double radiusA, double radiusB, double radiusC, double latitude, double longitude)
-      //{
-      //  var (slat, clat) = double.SinCos(latitude);
-      //  var (slon, clon) = double.SinCos(longitude);
-
-      //  return (
-      //    radiusA * clat * clon,
-      //    radiusB * clat * slon,
-      //    radiusC * slat
-      //  );
-      //}
     }
-
-    #region Lanczos coefficients (hardcoded for double and float)
-
-    private static readonly double[] m_coefficientsLanczosDouble = new double[]
-    {
-        0.99999999999980993,
-        676.5203681218851,
-        -1259.1392167224028,
-        771.32342877765313,
-        -176.61502916214059,
-        12.507343278686905,
-        -0.13857109526572012,
-        9.9843695780195716e-6,
-        1.5056327351493116e-7
-    };
-
-    private static readonly float[] m_coefficientsLanczosSingle = new float[]
-    {
-      1.000000000f,
-      76.18009173f,
-      -86.50532033f,
-      24.01409822f,
-      -1.231739516f,
-      0.00120858003f
-    };
-
-    #endregion
 
     extension<TFloat>(TFloat)
       where TFloat : System.Numerics.IFloatingPointIeee754<TFloat>
@@ -1077,282 +1128,6 @@
           (TFloat.Pi / TFloat.CreateChecked(2)) - TFloat.Atan(h / r), // "double.Atan(m_radius / m_height);", does NOT work for Takapau, New Zealand. Have to use elevation math instead of inclination, and investigate.
           azimuth
         );
-      }
-
-      #endregion
-
-      #region LanczosGamma
-
-      /// <summary>
-      /// <para>Lanczos gamma approximation.</para>
-      /// </summary>
-      /// <param name="z"></param>
-      /// <returns></returns>
-      public static TFloat LanczosGamma(TFloat z)
-        => TFloat.Exp(LanczosLogGamma(z));
-
-      /// <summary>
-      /// <para>Lanczos log-gamma approximation.</para>
-      /// </summary>
-      /// <param name="z"></param>
-      /// <returns></returns>
-      /// <exception cref="System.NotSupportedException"></exception>
-      public static TFloat LanczosLogGamma(TFloat z)
-      {
-        if (z is double dz)
-          return TFloat.CreateChecked(LanczosLogGamma(dz, m_coefficientsLanczosDouble, 7, LanczosMode.Standard));
-        else if (z is float fz)
-          return TFloat.CreateChecked(LanczosLogGamma(fz, m_coefficientsLanczosSingle, 5, LanczosMode.NumericalRecipes));
-        else
-          throw new System.NotSupportedException($"LanczosGamma is not supported for type {typeof(TFloat)}.");
-      }
-
-      #endregion
-
-      #region LanczosLogGamma
-
-      /// <summary>
-      /// <para>Lanczos approximation of LogGamma using any <paramref name="g"/> and <paramref name="coefficients"/>.</para>
-      /// </summary>
-      /// <param name="x"></param>
-      /// <param name="g"></param>
-      /// <param name="coefficients"></param>
-      /// <returns></returns>
-      private static TFloat LanczosLogGamma(TFloat x, System.ReadOnlySpan<TFloat> coefficients, int g, LanczosMode mode)
-      {
-        var half = TFloat.CreateChecked(0.5);
-
-        if (x < half) // Reflection formula for x < 0.5
-          return TFloat.Log(TFloat.Pi) - TFloat.Log(TFloat.Abs(TFloat.SinPi(x))) - LanczosLogGamma(TFloat.One - x, coefficients, g, mode); // log(π / sin(πz)) - LogGamma(1 - z)
-
-        x -= TFloat.One; // Shift so the series uses z-1.
-
-        switch (mode)
-        {
-          case LanczosMode.Standard:
-            {
-              // Lanczos sum
-              TFloat sum = coefficients[0];
-              for (var i = 1; i < coefficients.Length; i++)
-              {
-                sum += coefficients[i] / (x + TFloat.CreateChecked(i));
-              }
-
-              var t = x + TFloat.CreateChecked(g) + half;
-
-              return TFloat.Log(TFloat.Sqrt(TFloat.Tau)) + (x + half) * TFloat.Log(t) - t + TFloat.Log(sum);
-            }
-          case LanczosMode.NumericalRecipes:
-            {
-              var y = x;
-
-              var tmp = x + TFloat.CreateChecked(g) + half;
-              tmp -= (x + half) * TFloat.Log(tmp);
-
-              var ser = TFloat.One;
-
-              for (var i = 1; i < coefficients.Length; i++)
-              {
-                y += TFloat.One;
-                ser += coefficients[i] / y;
-              }
-
-              return -tmp + TFloat.Log(TFloat.CreateChecked(TFloat.Sqrt(TFloat.Tau)) * ser);
-            }
-          default:
-            throw new NotImplementedException();
-        }
-      }
-
-      #endregion
-
-      #region SpougeGamma
-
-      /// <summary>
-      /// <para>Spouge's approximation of Gamma using any <paramref name="coefficients"/>.</para>
-      /// </summary>
-      /// <param name="z"></param>
-      /// <param name="coefficients"></param>
-      /// <returns></returns>
-      public static TFloat SpougeGamma(TFloat z, TFloat[] coefficients)
-      {
-        var half = TFloat.CreateChecked(0.5);
-
-        if (z < half) // Reflection for z < 0.5
-          return TFloat.Pi / (TFloat.SinPi(z) * SpougeGamma(TFloat.One - z, coefficients));
-
-        var sum = coefficients[0];
-        for (var k = 1; k < coefficients.Length; k++)
-          sum += coefficients[k] / (z + TFloat.CreateChecked(k - 1));
-
-        var t = z + TFloat.CreateChecked(coefficients.Length - 1);
-
-        return TFloat.Pow(t, z - half) * TFloat.Exp(-t) * sum;
-      }
-
-      /// <summary>
-      /// <para>Spouge's approximation of Gamma. The error of this approximation is less than 2e-10 for a = 12, and decreases rapidly as a increases.</para>
-      /// <para>The parameter <paramref name="a"/> controls the accuracy and convergence speed of the approximation. A larger <paramref name="a"/> generally leads to better accuracy but slower convergence, while a smaller <paramref name="a"/> may converge faster but with less accuracy.</para>
-      /// </summary>
-      /// <param name="z"></param>
-      /// <param name="a">
-      /// <list type="table">
-      /// <item>For <see cref="float"/> <c>a = 6</c> is sufficient.</item>
-      /// <item>For <see cref="double"/> <c>a = 12</c> is the sweet spot, and <c>a = 15</c> gives slightly more accuracy but risks cancellation.</item>
-      /// <item>For <see cref="decimal"/> <c>a = 10–12</c> works. The decimal type has high precision but a tiny exponent range, so Exp may overflow.</item>
-      /// <item>For arbitrary-precision types choose a proportional to the number of digits you want, e.g. for 100 digits, <c>a ≈ 30–40</c> is typical.</item>
-      /// </list>
-      /// </param>
-      /// <returns></returns>
-      public static TFloat SpougeGamma(TFloat z, int a)
-        => SpougeGamma(z, SpougeCoefficients<TFloat>(a));
-
-      #endregion
-
-      #region SpougeLogGamma
-
-      /// <summary>
-      /// <para>Spouge's approximation of LogGamma using any <paramref name="coefficients"/>.</para>
-      /// </summary>
-      /// <param name="z"></param>
-      /// <param name="coefficients"></param>
-      /// <returns></returns>
-      public static TFloat SpougeLogGamma(TFloat z, TFloat[] coefficients)
-      {
-        var half = TFloat.CreateChecked(0.5);
-
-        if (z < half) // Reflection for z < 0.5
-          return TFloat.Log(TFloat.Pi) - TFloat.Log(TFloat.SinPi(z)) - SpougeLogGamma(TFloat.One - z, coefficients);
-
-        var sum = coefficients[0]; // Compute the sum S = c0 + Σ c[k] / (z + k)
-        for (var k = 1; k < coefficients.Length; k++)
-          sum += coefficients[k] / (z + TFloat.CreateChecked(k));
-
-        var t = z + TFloat.CreateChecked(coefficients.Length);
-
-        return (z - half) * TFloat.Log(t) - t + TFloat.Log(sum);
-      }
-
-      /// <summary>
-      /// <para>Spouge's approximation of LogGamma. The error of this approximation is less than 2e-10 for a = 12, and decreases rapidly as a increases.</para>
-      /// </summary>
-      /// <param name="z"></param>
-      /// <param name="a">
-      /// <list type="table">
-      /// <item>For <see cref="float"/> <c>a = 6</c> is sufficient.</item>
-      /// <item>For <see cref="double"/> <c>a = 12</c> is the sweet spot, and <c>a = 15</c> gives slightly more accuracy but risks cancellation.</item>
-      /// <item>For <see cref="decimal"/> <c>a = 10–12</c> works. The decimal type has high precision but a tiny exponent range, so Exp may overflow.</item>
-      /// <item>For arbitrary-precision types choose a proportional to the number of digits you want, e.g. for 100 digits, <c>a ≈ 30–40</c> is typical.</item>
-      /// </list>
-      /// </param>
-      /// <returns></returns>
-      public static TFloat SpougeLogGamma(TFloat z, int a)
-        => SpougeLogGamma(z, SpougeCoefficients<TFloat>(a));
-
-      #endregion
-
-      #region SpougeCoefficients
-
-      /// <summary>
-      /// <para>Spouge's coefficients.</para>
-      /// </summary>
-      /// <param name="a">
-      /// <list type="table">
-      /// <item>For <see cref="float"/> <c>a = 6</c> is sufficient.</item>
-      /// <item>For <see cref="double"/> <c>a = 12</c> is the sweet spot, and <c>a = 15</c> gives slightly more accuracy but risks cancellation.</item>
-      /// <item>For <see cref="decimal"/> <c>a = 10–12</c> works. The decimal type has high precision but a tiny exponent range, so Exp may overflow.</item>
-      /// <item>For arbitrary-precision types choose a proportional to the number of digits you want, e.g. for 100 digits, <c>a ≈ 30–40</c> is typical.</item>
-      /// </list>
-      /// </param>
-      /// <returns></returns>
-      public static TFloat[] SpougeCoefficients(int a)
-      {
-        var c = new TFloat[a];
-
-        c[0] = TFloat.Sqrt(TFloat.Tau);
-
-        for (var k = 1; k < a; k++)
-        {
-          var sign = ((k - 1) % 2 == 0) ? TFloat.One : -TFloat.One;
-
-          var exponent = TFloat.CreateChecked(a - k);
-
-          var numerator = sign * TFloat.Pow(exponent, TFloat.CreateChecked(k) - TFloat.CreateChecked(0.5)) * TFloat.Exp(exponent);
-          var denominator = TFloat.CreateChecked(BinaryInteger.Factorial(k - 1));
-
-          c[k] = numerator / denominator;
-        }
-
-        return c;
-      }
-
-      #endregion
-
-      #region StirlingGamma
-
-      /// <summary>
-      /// <para>Stirling's approximation of Gamma. The error of this approximation is less than 1.5e-7 for n ≥ 1, and decreases rapidly as n increases.</para>
-      /// <para><see href="https://en.wikipedia.org/wiki/Stirling%27s_approximation"/></para>
-      /// <para><see href="https://en.wikipedia.org/wiki/Gamma_function"/></para>
-      /// </summary>
-      /// <param name="z"></param>
-      /// <returns></returns>
-      public static TFloat StirlingGamma(TFloat z)
-        => TFloat.Exp(StirlingLogGamma(z));// TFloat.Sqrt(TFloat.Tau / x) * TFloat.Pow(x / TFloat.E, x);
-
-      #endregion
-
-      #region StirlingLogFactorial
-
-      /// <summary>
-      /// <para>Stirling's approximation of LogFactorial. The error of this approximation is less than 1.5e-7 for n ≥ 1, and decreases rapidly as n increases.</para>
-      /// <para><see href="https://en.wikipedia.org/wiki/Stirling%27s_approximation"/></para>
-      /// </summary>
-      /// <typeparam name="TInteger"></typeparam>
-      /// <param name="n"></param>
-      /// <returns></returns>
-      public static TFloat StirlingLogFactorial<TInteger>(TInteger n)
-        where TInteger : System.Numerics.IBinaryInteger<TInteger>
-      {
-        if (n <= TInteger.One)
-          return TFloat.Zero;
-
-        var x = TFloat.CreateChecked(n);
-
-        return x * TFloat.Log(x) - x + TFloat.CreateChecked(0.5) * TFloat.Log(TFloat.Tau * x);
-      }
-
-      #endregion
-
-      #region StirlingLogGamma
-
-      /// <summary>
-      /// <para>Stirling's approximation of LogGamma. The error of this approximation is less than 1.5e-7 for n ≥ 1, and decreases rapidly as n increases.</para>
-      /// <para><see href="https://en.wikipedia.org/wiki/Stirling%27s_approximation"/></para>
-      /// </summary>
-      /// <param name="z"></param>
-      /// <returns></returns>
-      public static TFloat StirlingLogGamma(TFloat z)
-      {
-        var half = TFloat.CreateChecked(0.5);
-
-        // Reflection for small z
-        if (z < half)
-          return TFloat.Log(TFloat.Pi) - TFloat.Log(TFloat.SinPi(z)) - StirlingLogGamma(TFloat.One - z);
-
-        var result = (z - half) * TFloat.Log(z) - z + half * TFloat.Log(TFloat.Tau); // Core Stirling term.
-
-        var z2 = z * z; // Correction terms (Bernoulli numbers)
-        var z3 = z2 * z;
-        var z5 = z3 * z2;
-        var z7 = z5 * z2;
-
-        result += TFloat.One / (TFloat.CreateChecked(12) * z);
-        result -= TFloat.One / (TFloat.CreateChecked(360) * z3);
-        result += TFloat.One / (TFloat.CreateChecked(1260) * z5);
-        result -= TFloat.One / (TFloat.CreateChecked(1680) * z7);
-
-        return result;
       }
 
       #endregion

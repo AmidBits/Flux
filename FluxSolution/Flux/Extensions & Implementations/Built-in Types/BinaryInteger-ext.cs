@@ -1468,7 +1468,6 @@
         {
           if (checked(m - TInteger.One) is var m1 && m1 >= n)
             yield return m1;
-
           if (checked(m + TInteger.One) is var p1 && p1 >= n)
             yield return p1;
         }
@@ -1492,12 +1491,12 @@
       {
         var six = TInteger.CreateChecked(6);
 
-        var maxValue = BitFoldLeft(TInteger.One);
+        var maxPrimeMultiple = BitFoldLeft(TInteger.One);
 
         if (TypeExtensions.IsISignedNumber(typeof(TInteger)))
-          maxValue >>= 1;
+          maxPrimeMultiple >>>= 1;
 
-        var maxPrimeMultiple = maxValue / six * six;
+        maxPrimeMultiple = maxPrimeMultiple / six * six;
 
         var primeMultiple = n / six * six;
 
@@ -1506,15 +1505,10 @@
 
         for (var pm = primeMultiple; pm >= six; pm -= six)
         {
-          var pc = checked(pm + TInteger.One);
-
-          if (pc <= n)
-            yield return pc;
-
-          pc = checked(pm - TInteger.One);
-
-          if (pc <= n)
-            yield return pc;
+          if (checked(pm + TInteger.One) is var p1 && p1 <= n)
+            yield return p1;
+          if (checked(pm - TInteger.One) is var m1 && m1 <= n)
+            yield return m1;
         }
 
         var three = TInteger.CreateChecked(3);

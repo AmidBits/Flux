@@ -77,5 +77,16 @@ namespace Flux
         return false;
       }
     }
+
+    extension(UnicodeCategoryMajor unicodeCategoryMajor)
+    {
+      /// <summary>
+      /// <para>Creates a new pattern string representing the <see cref="UnicodeCategoryMajor"/> and whether <paramref name="unequal"/>.</para>
+      /// </summary>
+      /// <param name="unequal"></param>
+      /// <returns></returns>
+      public string ToUnicodePropertyPattern(bool unequal)
+        => $"\\{(unequal ? 'P' : 'p')}{{{(char)unicodeCategoryMajor}}}";
+    }
   }
 }

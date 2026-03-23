@@ -388,7 +388,7 @@ namespace Flux
       }
 
       /// <summary>
-      /// <para>Wraps around using the native values of open ends (1 for integer types and bit increment/decrement for floating point).</para>
+      /// <para>Wraps around using the native values of open ends (using relative margin of 1 for integer types and bit-increment/decrement for floating point, when wrapping around).</para>
       /// </summary>
       /// <typeparam name="TNumber"></typeparam>
       /// <param name="value"></param>
