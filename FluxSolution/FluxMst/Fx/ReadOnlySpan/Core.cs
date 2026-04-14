@@ -53,8 +53,9 @@ namespace NetFx.ReadOnlySpan
     public void GetExtremum()
     {
       var span = new System.ReadOnlySpan<int>(new int[] { 45, 60, 90, 10, 20, 30, 50, 100, 70, 80, 40, 10, 20, 30 });
+      //                                                   0   1   2   3   4   5   6    7   8   9  10  11  12  13
 
-      var expectedIndexMin = 11;
+      var expectedIndexMin = 3;
       var expectedIndexMax = 7;
 
       var (actualItemMin, actualIndexMin, actualValueMin, actualItemMax, actualIndexMax, actualValueMax) = span.Extremum(n => n, null);

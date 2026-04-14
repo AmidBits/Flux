@@ -4,7 +4,7 @@
   {
     #region ..LatinStrokes (letters)
 
-    private static readonly System.Collections.Generic.Dictionary<char, char> m_latinStrokes = new()
+    internal static readonly DataStructures.BiDictionary<char, char> m_latinStrokes = new()
     {
       { '\u023A', 'A' }, // Latin Capital Letter A with stroke
       { '\u0243', 'B' }, // Latin Capital Letter B with stroke
@@ -45,114 +45,114 @@
 
     //public const string SubscriptAlphaLower = "ₐ\0\0\0ₑ\0\0ₕᵢⱼₖₗₘₙₒₚ\0ᵣₛₜᵤᵥ\0ₓ\0\0";
     //public const string SubscriptNumeric = "₀₁₂₃₄₅₆₇₈₉";
-    private static readonly System.Collections.Generic.Dictionary<char, char> m_subscriptDictionary = new()
+    internal static readonly DataStructures.BiDictionary<char, char> m_subscriptDictionary = new()
     {
-      { '\u0028', '\u208D' },
-      { '\u0029', '\u208E' },
-      { '\u002B', '\u208A' },
-      { '\u0030', '\u2080' },
-      { '\u0031', '\u2081' },
-      { '\u0032', '\u2082' },
-      { '\u0033', '\u2083' },
-      { '\u0034', '\u2084' },
-      { '\u0035', '\u2085' },
-      { '\u0036', '\u2086' },
-      { '\u0037', '\u2087' },
-      { '\u0038', '\u2088' },
-      { '\u0039', '\u2089' },
-      { '\u003D', '\u208C' },
-      { '\u0061', '\u2090' },
-      { '\u0065', '\u2091' },
-      { '\u0068', '\u2095' },
-      { '\u0069', '\u1D62' },
-      { '\u006A', '\u2C7C' },
-      { '\u006B', '\u2096' },
-      { '\u006C', '\u2097' },
-      { '\u006D', '\u2098' },
-      { '\u006E', '\u2099' },
-      { '\u006F', '\u2092' },
-      { '\u0070', '\u209A' },
-      { '\u0072', '\u1D63' },
-      { '\u0073', '\u209B' },
-      { '\u0074', '\u209C' },
-      { '\u0075', '\u1D64' },
-      { '\u0076', '\u1D65' },
-      { '\u0078', '\u2093' },
+      { '(', '\u208D' },
+      { ')', '\u208E' },
+      { '+', '\u208A' },
+      { '0', '\u2080' },
+      { '1', '\u2081' },
+      { '2', '\u2082' },
+      { '3', '\u2083' },
+      { '4', '\u2084' },
+      { '5', '\u2085' },
+      { '6', '\u2086' },
+      { '7', '\u2087' },
+      { '8', '\u2088' },
+      { '9', '\u2089' },
+      { '=', '\u208C' },
+      { 'a', '\u2090' },
+      { 'e', '\u2091' },
+      { 'h', '\u2095' },
+      { 'i', '\u1D62' },
+      { 'j', '\u2C7C' },
+      { 'k', '\u2096' },
+      { 'l', '\u2097' },
+      { 'm', '\u2098' },
+      { 'n', '\u2099' },
+      { 'o', '\u2092' },
+      { 'p', '\u209A' },
+      { 'r', '\u1D63' },
+      { 's', '\u209B' },
+      { 't', '\u209C' },
+      { 'u', '\u1D64' },
+      { 'v', '\u1D65' },
+      { 'x', '\u2093' },
     };
 
     //public const string SuperscriptAlphaLower = "ᵃᵇᶜᵈᵉᶠᵍʰⁱʲᵏˡᵐⁿᵒᵖ\0ʳˢᵗᵘᵛʷˣʸᶻ";
     //public const string SuperscriptNumeric = "⁰¹²³⁴⁵⁶⁷⁸⁹";
-    private static readonly System.Collections.Generic.Dictionary<char, char> m_superscriptDictionary = new()
+    internal static readonly DataStructures.BiDictionary<char, char> m_superscriptDictionary = new()
     {
-      { '\u0028', '\u207D' },
-      { '\u0029', '\u207E' },
-      { '\u002B', '\u207A' },
-      { '\u0030', '\u2070' },
-      { '\u0031', '\u00B9' },
-      { '\u0032', '\u00B2' },
-      { '\u0033', '\u00B3' },
-      { '\u0034', '\u2074' },
-      { '\u0035', '\u2075' },
-      { '\u0036', '\u2076' },
-      { '\u0037', '\u2077' },
-      { '\u0038', '\u2078' },
-      { '\u0039', '\u2079' },
-      { '\u003D', '\u207C' },
-      { '\u0041', '\u1D2C' },
-      { '\u0042', '\u1D2E' },
-      { '\u0043', '\uA7F2' },
-      { '\u0044', '\u1D30' },
-      { '\u0045', '\u1D31' },
-      { '\u0046', '\uA7F3' },
-      { '\u0047', '\u1D33' },
-      { '\u0048', '\u1D34' },
-      { '\u0049', '\u1D35' },
-      { '\u004A', '\u1D36' },
-      { '\u004B', '\u1D37' },
-      { '\u004C', '\u1D38' },
-      { '\u004D', '\u1D39' },
+      { '(', '\u207D' },
+      { ')', '\u207E' },
+      { '+', '\u207A' },
+      { '0', '\u2070' },
+      { '1', '\u00B9' },
+      { '2', '\u00B2' },
+      { '3', '\u00B3' },
+      { '4', '\u2074' },
+      { '5', '\u2075' },
+      { '6', '\u2076' },
+      { '7', '\u2077' },
+      { '8', '\u2078' },
+      { '9', '\u2079' },
+      { '=', '\u207C' },
+      { 'A', '\u1D2C' },
+      { 'B', '\u1D2E' },
+      { 'C', '\uA7F2' },
+      { 'D', '\u1D30' },
+      { 'E', '\u1D31' },
+      { 'F', '\uA7F3' },
+      { 'G', '\u1D33' },
+      { 'H', '\u1D34' },
+      { 'I', '\u1D35' },
+      { 'J', '\u1D36' },
+      { 'K', '\u1D37' },
+      { 'L', '\u1D38' },
+      { 'M', '\u1D39' },
       //{ '\u004D 0043', '\u1F16A' },
       //{ '\u004D 0044', '\u1F16B' },
       //{ '\u004D 0052', '\u1F16C' },
-      { '\u004E', '\u1D3A' },
-      { '\u004F', '\u1D3C' },
-      { '\u0050', '\u1D3E' },
-      { '\u0051', '\uA7F4' },
-      { '\u0052', '\u1D3F' },
+      { 'N', '\u1D3A' },
+      { 'O', '\u1D3C' },
+      { 'P', '\u1D3E' },
+      { 'Q', '\uA7F4' },
+      { 'R', '\u1D3F' },
       //{ '\u0053 004D', '\u2120' },
-      { '\u0054', '\u1D40' },
+      { 'T', '\u1D40' },
       //{ '\u0054 004D', '\u2122' },
-      { '\u0055', '\u1D41' },
-      { '\u0056', '\u2C7D' },
-      { '\u0057', '\u1D42' },
+      { 'U', '\u1D41' },
+      { 'V', '\u2C7D' },
+      { 'W', '\u1D42' },
       //{ '\u0061', '\u00AA' },
-      { '\u0061', '\u1D43' },
-      { '\u0062', '\u1D47' },
-      { '\u0063', '\u1D9C' },
-      { '\u0064', '\u1D48' },
-      { '\u0065', '\u1D49' },
-      { '\u0066', '\u1DA0' },
-      { '\u0067', '\u1D4D' },
-      { '\u0068', '\u02B0' },
-      { '\u0069', '\u2071' },
-      { '\u006A', '\u02B2' },
-      { '\u006B', '\u1D4F' },
-      { '\u006C', '\u02E1' },
-      { '\u006D', '\u1D50' },
-      { '\u006E', '\u207F' },
+      { 'a', '\u1D43' },
+      { 'b', '\u1D47' },
+      { 'c', '\u1D9C' },
+      { 'd', '\u1D48' },
+      { 'e', '\u1D49' },
+      { 'f', '\u1DA0' },
+      { 'g', '\u1D4D' },
+      { 'h', '\u02B0' },
+      { 'i', '\u2071' },
+      { 'j', '\u02B2' },
+      { 'k', '\u1D4F' },
+      { 'l', '\u02E1' },
+      { 'm', '\u1D50' },
+      { 'n', '\u207F' },
       //{ '\u006F', '\u00BA' },
-      { '\u006F', '\u1D52' },
-      { '\u0070', '\u1D56' },
+      { 'o', '\u1D52' },
+      { 'p', '\u1D56' },
       //{ '\u0071', '\u107A5' },
-      { '\u0072', '\u02B3' },
-      { '\u0073', '\u02E2' },
-      { '\u0074', '\u1D57' },
-      { '\u0075', '\u1D58' },
-      { '\u0076', '\u1D5B' },
-      { '\u0077', '\u02B7' },
-      { '\u0078', '\u02E3' },
-      { '\u0079', '\u02B8' },
-      { '\u007A', '\u1DBB' },
+      { 'r', '\u02B3' },
+      { 's', '\u02E2' },
+      { 't', '\u1D57' },
+      { 'u', '\u1D58' },
+      { 'v', '\u1D5B' },
+      { 'w', '\u02B7' },
+      { 'x', '\u02E3' },
+      { 'y', '\u02B8' },
+      { 'z', '\u1DBB' },
       { '\u00C6', '\u1D2D' },
       //{ '\u00E6', '\u10783' },
       { '\u00F0', '\u1D9E' },
@@ -163,18 +163,6 @@
 
     extension(System.Char)
     {
-      #region AssertUnicodeCodepoint
-
-      public static char AssertUnicodeCodepoint(char character)
-      {
-        if (char.IsSurrogate(character))
-          throw new System.ArgumentOutOfRangeException($"Not a unicode codepoint. The character (\\u{(int)character:X4}) is a surrogate, a partial UTF-16 encoding, and not a full unicode character.");
-
-        return character;
-      }
-
-      #endregion
-
       #region ..BasicLatinLetterY
 
       /// <summary>
@@ -197,7 +185,7 @@
       /// <param name="culture">The culture to use.</param>
       /// <returns></returns>
       public static bool IsConsonant(char character, System.Globalization.CultureInfo cultureInfo)
-        => char.IsLetter(character) && cultureInfo.GetConsonantsAsChars().Contains(character);
+        => char.IsLetter(character) && cultureInfo.GetConsonants().Contains(character);
 
       /// <summary>
       /// <para>Indicates whether a <see cref="char"/> is a consonant in the current culture.</para>
@@ -1760,7 +1748,7 @@
       /// <para>Locates the Unicode range and block name of the <paramref name="character"/>.</para>
       /// </summary>
       public static System.Collections.Generic.KeyValuePair<string, System.Text.Unicode.UnicodeRange> GetUnicodeRange(char character)
-        => System.Text.Unicode.UnicodeRange.GetUnicodeRanges().InfimumSupremum(t2 => t2.Value.FirstCodePoint, System.Text.Rune.AssertValid(character, nameof(character)), false).InfimumItem;
+        => System.Text.Unicode.UnicodeRange.GetUnicodeRanges().InfimumSupremum(new System.Text.Rune(character).Value, t2 => t2.Value.FirstCodePoint, false).InfimumElement;
 
       #endregion
 
@@ -1804,7 +1792,15 @@
       #region ..LatinStroke..
 
       /// <summary>
-      /// <para>Indicates whether a character is a latin diacritical stroke.</para>
+      /// <para>Returns a plain latin letter if the current character is a latin-stroke letter, otherwise the current character is returned as-is.</para>
+      /// </summary>
+      /// <param name="character">The character to evaluate.</param>
+      /// <returns>A plain latin letter or the current character if no replacement exists.</returns>
+      public static char RemoveLatinStroke(char character)
+        => m_latinStrokes.TryGetValue(character, out var replacementCharacter) ? replacementCharacter : character;
+
+      /// <summary>
+      /// <para>Indicates whether a character is a latin-stroke letter.</para>
       /// </summary>
       /// <param name="character">The character to evaluate.</param>
       /// <returns></returns>
@@ -1812,20 +1808,12 @@
         => m_latinStrokes.ContainsKey(character);
 
       /// <summary>
-      /// <para>Replaces a latin stroke letter with a plain letter, i.e. a letter without a diacritic is returned in its place. Characters that are not latin stroke letters are returned as-is.</para>
+      /// <para>Attempts to retrieve a plain latin letter in place of a a latin-stroke letter, otherwise the current character is returned as-is.</para>
       /// </summary>
       /// <param name="character">The character to evaluate.</param>
-      /// <returns></returns>
-      public static char GetLatinStrokeReplacement(char character)
-        => m_latinStrokes.TryGetValue(character, out var replacementCharacter) ? replacementCharacter : character;
-
-      /// <summary>
-      /// <para>Attempts to replace a latin stroke letter with a plain letter and indicates whether a replacement was made.</para>
-      /// </summary>
-      /// <param name="character"></param>
-      /// <param name="replacementCharacter"></param>
-      /// <returns></returns>
-      public static bool TryGetLatinStrokeReplacement(char character, out char replacementCharacter)
+      /// <param name="replacementCharacter">Returns the latin letter replacement, or the current character if no replacement exists.</param>
+      /// <returns>Whether a replacement occured.</returns>
+      public static bool TryRemoveLatinStroke(char character, out char replacementCharacter)
         => m_latinStrokes.TryGetValue(character, out replacementCharacter);
 
       #endregion
@@ -1845,6 +1833,14 @@
       #region ..Subscript
 
       /// <summary>
+      /// <para>Converts a character to its subscript equivalent, if possible, otherwise the input character is returned.</para>
+      /// </summary>
+      /// <param name="character"></param>
+      /// <returns></returns>
+      public static char GetSubscript(char character)
+        => m_subscriptDictionary.TryGetValue(character, out var subscriptCharacter) ? subscriptCharacter : character;
+
+      /// <summary>
       /// <para>Indicates whether a specified character is a subscript character.</para>
       /// </summary>
       /// <param name="character"></param>
@@ -1857,16 +1853,8 @@
       /// </summary>
       /// <param name="character"></param>
       /// <returns></returns>
-      public static bool IsSubscriptEquivalent(char character)
+      public static bool SubscriptExists(char character)
         => m_subscriptDictionary.ContainsKey(character);
-
-      /// <summary>
-      /// <para>Converts a character to its subscript equivalent, if possible, otherwise the input character is returned.</para>
-      /// </summary>
-      /// <param name="character"></param>
-      /// <returns></returns>
-      public static char ConvertToSubscript(char character)
-        => m_subscriptDictionary.TryGetValue(character, out var subscriptCharacter) ? subscriptCharacter : character;
 
       /// <summary>
       /// <para>Attemps to convert a character to subscript, if possible, otherwise the specified character is returned as an out parameter.</para>
@@ -1874,12 +1862,20 @@
       /// <param name="character"></param>
       /// <param name="subscriptCharacter"></param>
       /// <returns>An indication whether a conversion was successful.</returns>
-      public static bool TryConvertToSubscript(char character, out char subscriptCharacter)
+      public static bool TryGetSubscript(char character, out char subscriptCharacter)
         => m_subscriptDictionary.TryGetValue(character, out subscriptCharacter);
 
       #endregion
 
       #region ..Superscript
+
+      /// <summary>
+      /// <para>Converts a character to its superscript equivalent, if possible, otherwise the input character is returned.</para>
+      /// </summary>
+      /// <param name="character"></param>
+      /// <returns></returns>
+      public static char GetSuperscript(char character)
+        => m_superscriptDictionary.TryGetValue(character, out var superscriptCharacter) ? superscriptCharacter : character;
 
       /// <summary>
       /// <para>Indicates whether a character is a superscript character.</para>
@@ -1894,16 +1890,8 @@
       /// </summary>
       /// <param name="character"></param>
       /// <returns></returns>
-      public static bool IsSuperscriptEquivalent(char character)
+      public static bool SuperscriptExists(char character)
         => m_subscriptDictionary.ContainsKey(character);
-
-      /// <summary>
-      /// <para>Converts a character to its superscript equivalent, if possible, otherwise the input character is returned.</para>
-      /// </summary>
-      /// <param name="character"></param>
-      /// <returns></returns>
-      public static char ConvertToSuperscript(char character)
-        => m_superscriptDictionary.TryGetValue(character, out var superscriptCharacter) ? superscriptCharacter : character;
 
       /// <summary>
       /// <para>Attemps to convert a character to superscript, if possible, otherwise the specified character is returned as an out parameter.</para>
@@ -1911,7 +1899,7 @@
       /// <param name="character"></param>
       /// <param name="superscriptCharacter"></param>
       /// <returns>An indication whether a conversion was successful.</returns>
-      public static bool TryConvertToSuperscript(char character, out char superscriptCharacter)
+      public static bool TryGetSuperscript(char character, out char superscriptCharacter)
         => m_superscriptDictionary.TryGetValue(character, out superscriptCharacter);
 
       #endregion
@@ -1919,7 +1907,7 @@
       #region ToCsharpUtf16LiteralString
 
       public static string ToCsharpUtf16LiteralString(System.Char character)
-        => System.Text.Rune.ToCsharpUtf16Literal(new System.Text.Rune(char.AssertUnicodeCodepoint(character)));
+        => System.Text.Rune.ToCsharpUtf16Literal(new System.Text.Rune(character));
 
       #endregion
 
@@ -1933,7 +1921,7 @@
       #region ToCsharpVariableHexLiteral
 
       public static string ToCsharpVariableHexLiteral(System.Char character)
-        => System.Text.Rune.ToCsharpVariableHexLiteral(new System.Text.Rune(char.AssertUnicodeCodepoint(character)));
+        => System.Text.Rune.ToCsharpVariableHexLiteral(new System.Text.Rune(character));
 
       #endregion
 
@@ -1946,7 +1934,7 @@
       /// <param name="rune"></param>
       /// <returns></returns>
       public static string ToDecimalNumericCharacterReference(System.Char character)
-        => System.Text.Rune.ToDecimalNumericCharacterReference(new System.Text.Rune(char.AssertUnicodeCodepoint(character)));
+        => System.Text.Rune.ToDecimalNumericCharacterReference(new System.Text.Rune(character));
 
       #endregion
 
@@ -1959,7 +1947,7 @@
       /// <param name="rune"></param>
       /// <returns></returns>
       public static string ToHexadecimalNumericCharacterReference(System.Char character)
-        => System.Text.Rune.ToHexadecimalNumericCharacterReference(new System.Text.Rune(char.AssertUnicodeCodepoint(character)));
+        => System.Text.Rune.ToHexadecimalNumericCharacterReference(new System.Text.Rune(character));
 
       #endregion
 
@@ -1970,7 +1958,7 @@
       /// </summary>
       /// <returns></returns>
       public static string ToUnicodeUnotation(System.Char character)
-        => System.Text.Rune.ToUnicodeUnotation(new System.Text.Rune(char.AssertUnicodeCodepoint(character)));
+        => System.Text.Rune.ToUnicodeUnotation(new System.Text.Rune(character));
 
       #endregion
 
@@ -1982,7 +1970,7 @@
       /// </summary>
       /// <returns></returns>
       public static string ToUriPercentEncoding(System.Char character)
-        => System.Text.Rune.ToUriPercentEncoding(new System.Text.Rune(char.AssertUnicodeCodepoint(character)));
+        => System.Text.Rune.ToUriPercentEncoding(new System.Text.Rune(character));
 
       #endregion
 
@@ -1995,7 +1983,7 @@
       /// <param name="cultureInfo">The culture to use.</param>
       /// <returns></returns>
       public static bool IsVowel(char character, System.Globalization.CultureInfo cultureInfo)
-        => char.IsLetter(character) && cultureInfo.GetVowelsAsChars().Contains(character);
+        => char.IsLetter(character) && cultureInfo.GetVowels().Contains(character);
 
       /// <summary>
       /// <para>Indicates whether a <see cref="char"/> is a vowel in the current culture.</para>
@@ -2010,6 +1998,9 @@
 
     extension(System.Char character)
     {
+      public System.Text.Rune ToRune()
+        => new(character);
+
       #region ToVerboseString
 
       public string ToVerboseString()

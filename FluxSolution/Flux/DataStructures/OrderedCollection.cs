@@ -1,13 +1,13 @@
 ﻿namespace Flux.DataStructures
 {
   /// <summary>
-  /// <para>This is an ordered set implementing <see cref="IOrderedSet{TValue}"/>.</para>
+  /// <para>This is an ordered set implementing <see cref="IOrderedCollection{TValue}"/>.</para>
   /// <para><seealso href="https://en.wikipedia.org/wiki/List_of_data_structures#Abstract_data_types"/></para>
   /// </summary>
   /// <typeparam name="TValue"></typeparam>
   /// <remarks>An ordered data structure maintains an indexed order, i.e. like a <see cref="System.Collections.Generic.List{TValue}"/> or a <typeparamref name="TValue"/>[].</remarks>
-  public sealed class OrderedSet<TValue>
-    : IOrderedSet<TValue>
+  public sealed class OrderedCollection<TValue>
+    : IOrderedCollection<TValue>
     where TValue : notnull
   {
     private readonly System.Collections.Generic.IEqualityComparer<TValue> m_equalityComparer;
@@ -15,19 +15,19 @@
     private readonly System.Collections.Generic.Dictionary<TValue, int> m_dictionary;
     private readonly System.Collections.Generic.List<TValue> m_values;
 
-    public OrderedSet(System.Collections.Generic.IEqualityComparer<TValue> equalityComparer)
+    public OrderedCollection(System.Collections.Generic.IEqualityComparer<TValue> equalityComparer)
     {
       m_equalityComparer = equalityComparer;
-      m_dictionary = new System.Collections.Generic.Dictionary<TValue, int>(equalityComparer);
-      m_values = new();
+      m_dictionary = new(equalityComparer);
+      m_values = [];
     }
-    public OrderedSet()
+    public OrderedCollection()
       : this(System.Collections.Generic.EqualityComparer<TValue>.Default)
     { }
-    public OrderedSet(System.Collections.Generic.IEnumerable<TValue> collection, System.Collections.Generic.IEqualityComparer<TValue> equalityComparer)
+    public OrderedCollection(System.Collections.Generic.IEnumerable<TValue> collection, System.Collections.Generic.IEqualityComparer<TValue> equalityComparer)
       : this(equalityComparer)
       => AddRange(collection);
-    public OrderedSet(System.Collections.Generic.IEnumerable<TValue> collection)
+    public OrderedCollection(System.Collections.Generic.IEnumerable<TValue> collection)
       : this(collection, System.Collections.Generic.EqualityComparer<TValue>.Default)
     { }
 
@@ -168,7 +168,7 @@
 
     public void SymmetricExceptWith(System.Collections.Generic.IEnumerable<TValue> other)
     {
-      var adding = new OrderedSet<TValue>(m_equalityComparer);
+      var adding = new OrderedCollection<TValue>(m_equalityComparer);
 
       foreach (var o in other)
         if (Contains(o))

@@ -1,13 +1,13 @@
 ﻿namespace Flux.DataStructures
 {
   /// <summary>
-  /// <para>This is an ordered key set, based on the built-in <see cref="System.Collections.ObjectModel.KeyedCollection{TKey, TItem}"/>, and extended by the <see cref="IOrderedSet{T}"/>.</para>
+  /// <para>This is an ordered key set, based on the built-in <see cref="System.Collections.ObjectModel.KeyedCollection{TKey, TItem}"/>, and extended by the <see cref="IOrderedCollection{T}"/>.</para>
   /// <para><seealso href="https://en.wikipedia.org/wiki/List_of_data_structures#Abstract_data_types"/></para>
   /// </summary>
   /// <typeparam name="TValue"></typeparam>
   /// <remarks>An ordered data structure maintains an indexed order, i.e. like a <see cref="System.Collections.Generic.List{TValue}"/> or a <typeparamref name="TValue"/>[].</remarks>
-  public sealed class OrderedKeySet<TValue>
-    : System.Collections.ObjectModel.KeyedCollection<TValue, TValue>, IOrderedSet<TValue>
+  public sealed class OrderedKeyedCollection<TValue>
+    : System.Collections.ObjectModel.KeyedCollection<TValue, TValue>, IOrderedCollection<TValue>
     where TValue : notnull
   {
     protected override TValue GetKeyForItem(TValue item) => item; // This is the minimum implementation needed for the abstract .NET System.Collections.ObjectModel.KeyedCollection<TKey, TItem>.
@@ -100,7 +100,7 @@
 
     public void SymmetricExceptWith(System.Collections.Generic.IEnumerable<TValue> other)
     {
-      var adding = new DataStructures.OrderedSet<TValue>(Comparer);
+      var adding = new DataStructures.OrderedCollection<TValue>(Comparer);
 
       foreach (var o in other)
         if (Contains(o))

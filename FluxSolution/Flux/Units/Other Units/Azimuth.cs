@@ -37,7 +37,7 @@ namespace Flux.Units
     /// <summary>
     /// <para>Gets the <see cref="Units.Angle"/> of the <see cref="Azimuth"/>.</para>
     /// </summary>
-    public Angle Angle { get => new(m_degrees); }
+    public Angle Angle { get => new(m_degrees, AngleUnit.Degree); }
 
     public double Radians => double.DegreesToRadians(m_degrees);
 

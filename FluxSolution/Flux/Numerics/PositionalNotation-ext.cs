@@ -15,11 +15,13 @@ namespace Flux
       where TInteger : System.Numerics.IBinaryInteger<TInteger>
       where TRadix : System.Numerics.IBinaryInteger<TRadix>
     {
+      System.ArgumentOutOfRangeException.ThrowIfLessThanOrEqual(radix, TRadix.One);
+
       positionalNotationIndices = [];
 
       try
       {
-        var rdx = TInteger.CreateChecked(Units.Radix.AssertMember(radix));
+        var rdx = TInteger.CreateChecked(radix);
 
         while (!TInteger.IsZero(value))
         {
@@ -48,11 +50,13 @@ namespace Flux
       where TRadix : System.Numerics.IBinaryInteger<TRadix>
       where TInteger : System.Numerics.IBinaryInteger<TInteger>
     {
+      System.ArgumentOutOfRangeException.ThrowIfLessThanOrEqual(radix, TRadix.One);
+
       value = TInteger.Zero;
 
       try
       {
-        var rdx = TInteger.CreateChecked(Units.Radix.AssertMember(radix));
+        var rdx = TInteger.CreateChecked(radix);
 
         for (var index = 0; index < positionalNotationIndices.Count; index++)
         {

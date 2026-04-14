@@ -11,7 +11,7 @@ namespace Flux.Statistics
     private int m_count;
     private TSelf m_sum = TSelf.Zero;
 
-    private readonly DataStructures.Histogram<TSelf, int> m_histogram = new();
+    private readonly DataStructures.Histogram<TSelf, int> m_histogram = [];
 
     public OnlineMeanMedianMode(System.Collections.Generic.IEnumerable<TSelf> values) => AddRange(values);
 

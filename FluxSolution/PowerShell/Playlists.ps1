@@ -54,6 +54,129 @@ function Build-Playlist([string]$playlist, [string[]]$directories, [string]$filt
     Write-Host "Build-Playlist: $playlistName"
 }
 
+function Create-PlaylistDirectory($playlistPathName)
+{
+    $playlistDirectoryInfo = (New-Object System.IO.FileInfo($playlistPathName)).Directory
+
+    if(!$playlistDirectoryInfo.Exists)
+    {
+        $playlistDirectoryInfo.Create()
+    }
+
+    return $playlistDirectoryInfo;
+}
+
+function Create-PlaylistFile($playlistPathName)
+{
+    $playlistFileInfo = New-Object System.IO.FileInfo($playlistPathName)
+
+    if(!$playlistFileInfo.Exists)
+    {
+        $sw = $playlistFileInfo.CreateText();
+        
+        $sw.WriteLine("#EXTM3U");
+        #$sw.WriteLine("#$($playlistFileInfo.Name)");
+        $sw.WriteLine("#PLAYLIST:$($playlistFileInfo.BaseName)");
+
+        $sw.Close();
+    }
+}
+
+function Create-Playlist($playlistPathName)
+{
+    $playlistDirectoryInfo = Create-PlaylistDirectory($playlistPathName)
+    $playlistFileInfo = Create-PlaylistFile($playlistPathName)
+}
+
+function Get-CommonRoot([System.IO.FileInfo]$a, [System.IO.FileInfo]$b) {
+    $p1 = $a.DirectoryName.Split([System.IO.Path]::DirectorySeparatorChar)
+    $p2 = $b.DirectoryName.Split([System.IO.Path]::DirectorySeparatorChar)
+
+    $common = for ($i = 0; $i -lt [System.Math]::Min($p1.Count, $p2.Count); $i++) {
+        if ($p1[$i] -ne $p2[$i]) { break }
+        $p1[$i]
+    }
+
+    $common -join [System.IO.Path]::DirectorySeparatorChar
+}
+
+function Append-PlaylistEntry($playlistPathName, $entryPathName)
+{
+    $playlistFileInfo = New-Object System.IO.FileInfo($playlistPathName)
+    $entryFileInfo = New-Object System.IO.FileInfo($entryPathName)
+
+    $commonRoot = Get-CommonPath $playlistFileInfo $entryFileInfo
+
+    $entryRelativePathName = '..' + $entryFileInfo.FullName.Remove(0, $commonRoot.Length)
+    $entryRelativePathName = $entryRelativePathName.Replace('\', '/')
+
+    $playlistFileInfo = New-Object System.IO.FileInfo($playlistPathName)
+
+    $sw = $playlistFileInfo.AppendText()
+    $sw.WriteLine($entryRelativePathName)
+    $sw.Close()
+}
+
+function Reset-Playlist($playlistPathName)
+{
+    $playlistDirectoryInfo = Create-PlaylistDirectory($playlistPathName)
+
+    $playlistFileInfo = Create-PlaylistFile($playlistPathName)
+
+    $playlistDirectoryInfo = $playlistFileInfo.Directory
+
+    if(!$playlistDirectoryInfo.Exists)
+    {
+        $playlistDirectoryInfo.Create()
+    }
+
+    if($playlistFileInfo.Exists) {
+        $playlistFileInfo.Delete();
+    }
+
+    if(!$playlistFileInfo.Exists) {
+        $fs = $playlistFileInfo.Create();
+        $fs.Close();
+    }
+
+    [System.ValueTuple]::Create($streamWriter, $playlistFileInfo, $playlistDirectoryInfo)
+}
+
+#Create-Playlist "E:\Media\Audio\Playlister\Test.m3u8"
+#Append-PlaylistEntry "E:\Media\Audio\Playlister\Test.m3u8" "E:/Media/Audio/Playlister/Tracks/Collections/Enigma/MCMXC a.D/07 Back To The Rivers Of Belief - A- Way To Eternity B- Hallelujah C- The Rivers Of Belief.mp3"
+
+#$tuple = Get-PlaylistInfo "E:\Media\Audio\Playlister\Test.m3u8"
+#$tuple
+
+#return;
+
+function Read-Lines($path) { $sr = [System.IO.StreamReader]$path; while($l = $sr.ReadLine()) { $l }; $sr.Close() }
+
+function Read-PlaylistPaths($path) { Read-Lines($path) | Where-Object { $_ -like "..*" } }
+
+function Read-PathsInPlaylists([string[]]$playlists) { $playlists | ForEach-Object { Read-PlaylistPaths([string][System.IO.FileInfo][System.IO.Path]::Combine($base, "Playlists\$($_).m3u8")) } }
+
+function Merge-Playlists([string]$playlist, [string[]]$playlists)
+{
+    $playlistFileInfo = [System.IO.FileInfo][System.IO.Path]::Combine($base, "Playlists\$playlist.m3u8")
+
+    [System.IO.Directory]::GetParent($playlistFileInfo.FullName).Create()
+
+    $playlistName = $playlistFileInfo.BaseName
+
+    $m3u8 = $playlistFileInfo.CreateText();
+
+    $m3u8.WriteLine("#EXTM3U");
+    #$m3u8.WriteLine("#$($playlistFileInfo.Name)");
+    $m3u8.WriteLine("#PLAYLIST:$playlistName");
+
+    Read-PathsInPlaylists($playlists) | Sort-Object -Unique | ForEach-Object { $m3u8.WriteLine($_) }
+
+    $m3u8.Close()
+
+    Write-Host "Merge-PlayLists: $playlistName ($([System.String]::Join(', ', $playlists)))"
+}
+
 function New-Playlist([string]$playlist)
 {
     $playlistFileInfo = [System.IO.FileInfo][System.IO.Path]::Combine($base, "Playlists\$playlist.m3u8")
@@ -186,15 +309,28 @@ Add-ToPlaylist $currentPlaylistName ("Tracks/Collections/Duran Duran/Greatest") 
 Add-ToPlaylist $currentPlaylistName ("Tracks/Collections/Duran Duran/Greatest") "13 Notorious.mp3"
 
 Add-ToPlaylist $currentPlaylistName ("Tracks/Collections/E-Type") "E-Type - This is the Way.mp3"
+Add-ToPlaylist $currentPlaylistName ("Tracks/Collections/E-Type") "E-Type - When Religion Comes to Town.mp3"
 
-Add-ToPlaylist $currentPlaylistName ("Tracks/Collections/Chemical Brothers") "Chemical Brothers - Come With Us.mp3"
-Add-ToPlaylist $currentPlaylistName ("Tracks/Collections/Chemical Brothers") "Chemical Brothers - Come With Us.mp3"
-Add-ToPlaylist $currentPlaylistName ("Tracks/Collections/Chemical Brothers") "Chemical Brothers - Come With Us.mp3"
-Add-ToPlaylist $currentPlaylistName ("Tracks/Collections/Chemical Brothers") "Chemical Brothers - Come With Us.mp3"
-Add-ToPlaylist $currentPlaylistName ("Tracks/Collections/Chemical Brothers") "Chemical Brothers - Come With Us.mp3"
-Add-ToPlaylist $currentPlaylistName ("Tracks/Collections/Chemical Brothers") "Chemical Brothers - Come With Us.mp3"
-Add-ToPlaylist $currentPlaylistName ("Tracks/Collections/Chemical Brothers") "Chemical Brothers - Come With Us.mp3"
-Add-ToPlaylist $currentPlaylistName ("Tracks/Collections/Chemical Brothers") "Chemical Brothers - Come With Us.mp3"
-Add-ToPlaylist $currentPlaylistName ("Tracks/Collections/Chemical Brothers") "Chemical Brothers - Come With Us.mp3"
+Add-ToPlaylist $currentPlaylistName ("Tracks/Collections/Eurythmics/Greatest Hits") "01 Sweet Dreams (Are Made Of This) (12' Version).mp3"
+
+Add-ToPlaylist $currentPlaylistName ("Tracks/Collections/Faithless/Reverence") "06 Insomnia.mp3"
+
+Add-ToPlaylist $currentPlaylistName ("Tracks/Collections/KMFDM/Hau Ruck 2025") "04 New American Century 2025.mp3"
+Add-ToPlaylist $currentPlaylistName ("Tracks/Collections/KMFDM") "KMFDM - Megalomaniac.mp3"
+Add-ToPlaylist $currentPlaylistName ("Tracks/Collections/KMFDM") "KMFDM - Ready To Blow.mp3"
+Add-ToPlaylist $currentPlaylistName ("Tracks/Collections/KMFDM") "KMFDM - Stray Bullet.mp3"
+Add-ToPlaylist $currentPlaylistName ("Tracks/Collections/KMFDM/Krank (Single)") "05 Day of Light (247 Mix).mp3"
+Add-ToPlaylist $currentPlaylistName ("Tracks/Collections/KMFDM/Let Go") "03 Next Move.mp3"
+Add-ToPlaylist $currentPlaylistName ("Tracks/Collections/KMFDM/Let Go") "06 Touch.mp3"
+Add-ToPlaylist $currentPlaylistName ("Tracks/Collections/KMFDM/MDFMK (Single)") "01 Megalomaniac (Bomb).mp3"
+Add-ToPlaylist $currentPlaylistName ("Tracks/Collections/KMFDM/MDFMK (Single)") "05 Anarchy (God and the State Mix).mp3"
+Add-ToPlaylist $currentPlaylistName ("Tracks/Collections/KMFDM/WWIII") "10 Revenge.mp3"
+
+Add-ToPlaylist $currentPlaylistName ("Tracks/Collections/Rob Zombie/Hellbilly Deluxe") "02 Superbeast.mp3"
+Add-ToPlaylist $currentPlaylistName ("Tracks/Collections/Rob Zombie/Hellbilly Deluxe") "09 Meet The Creeper.mp3"
+
+Add-ToPlaylist $currentPlaylistName ("Tracks/MediaTracks/Matrix, The") "Rammstein - Du Hast.mp3"
+Add-ToPlaylist $currentPlaylistName ("Tracks/MediaTracks/Matrix, The") "Rob D - Clubbed to Death (Kurayamino Mix).mp3"
+Add-ToPlaylist $currentPlaylistName ("Tracks/MediaTracks/Matrix, The") "Rob Zombie - Dragula (Hot Rod Herman Remix).mp3"
 
 Add-ToPlaylist $currentPlaylistName ("Tracks/Miscellaneous")

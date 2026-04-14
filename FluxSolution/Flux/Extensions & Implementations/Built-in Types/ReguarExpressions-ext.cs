@@ -32,9 +32,11 @@ namespace Flux
 
         var dictionary = new System.Collections.Generic.SortedDictionary<string, string>();
 
-        for (var index = 0; index < match.Groups.Count; index++)
+        var groups = match.Groups;
+
+        for (var index = groups.Count - 1; index >= 0; index--)
         {
-          var group = match.Groups[index];
+          var group = groups[index];
 
           if (!group.Name.Equals(index.ToString(System.Globalization.CultureInfo.CurrentCulture), System.StringComparison.InvariantCulture))
             dictionary.Add(group.Name, group.Value);

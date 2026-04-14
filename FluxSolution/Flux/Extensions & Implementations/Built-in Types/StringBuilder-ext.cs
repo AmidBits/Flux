@@ -428,12 +428,12 @@ namespace Flux
             var rc1 = source[--index];
 
             if (!char.IsHighSurrogate(rc1))
-              throw new System.InvalidOperationException(@"Missing high surrogate (required before low surrogate).");
+              throw new System.InvalidOperationException(@"Missing high surrogate (orphan low surrogate found).");
 
             yield return new System.Text.Rune(rc1, rc2);
           }
           else if (char.IsHighSurrogate(rc2))
-            throw new System.InvalidOperationException(@"Unexpected high surrogate (only allowed before low surrogate).");
+            throw new System.InvalidOperationException(@"Unexpected high surrogate.");
           else
             yield return new System.Text.Rune(rc2);
         }
@@ -1304,7 +1304,7 @@ namespace Flux
         System.ArgumentNullException.ThrowIfNull(source);
 
         for (var index = source.Length - 1; index >= 0; index--)
-          if (char.TryGetLatinStrokeReplacement(source[index], out var replacement))
+          if (char.TryRemoveLatinStroke(source[index], out var replacement))
             source[index] = replacement;
 
         return source;

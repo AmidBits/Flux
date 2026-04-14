@@ -141,7 +141,7 @@ namespace Flux
       /// <param name="source"></param>
       /// <returns></returns>
       /// <exception cref="System.NotImplementedException"></exception>
-      public string GetConsonantsAsChars()
+      public string GetConsonants()
       {
         source ??= System.Globalization.CultureInfo.CurrentCulture;
 
@@ -153,16 +153,13 @@ namespace Flux
         };
       }
 
-      public System.Collections.Generic.List<System.Text.Rune> GetConsonantsAsRunes()
-        => [.. GetConsonantsAsChars(source).Select(c => new System.Text.Rune(c))];
-
       /// <summary>
       /// <para></para>
       /// </summary>
       /// <param name="source"></param>
       /// <param name="culture">If null, then <see cref="System.Globalization.CultureInfo.CurrentCulture"/></param>
       /// <returns></returns>
-      public string GetVowelsAsChars()
+      public string GetVowels()
       {
         source ??= System.Globalization.CultureInfo.CurrentCulture;
 
@@ -173,9 +170,6 @@ namespace Flux
           _ => throw new System.NotImplementedException(nameof(source))
         };
       }
-
-      public System.Collections.Generic.List<System.Text.Rune> GetVowelsAsRunes()
-        => [.. GetVowelsAsChars(source).Select(c => new System.Text.Rune(c))];
 
       /// <summary>
       /// <para>Load an IPA file based on the specified <see cref="System.Globalization.CultureInfo"/>.</para>

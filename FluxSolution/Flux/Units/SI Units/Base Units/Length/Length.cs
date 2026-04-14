@@ -8,7 +8,10 @@ namespace Flux.Units
   public readonly record struct Length
     : System.IComparable, System.IComparable<Length>, System.IEquatable<Length>, System.IFormattable, ISiUnitValueQuantifiable<double, LengthUnit>
   {
-    public const double OneParsecInMeters = 30856775814913672;
+    /// <summary>
+    /// <para>The length of one parsec (in meters).</para>
+    /// </summary>
+    public const double OneParsec = 30856775814913672;
 
     private readonly double m_value;
 

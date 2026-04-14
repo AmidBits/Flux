@@ -11,7 +11,7 @@ namespace Flux.DataStructures
     where TKey : System.Numerics.INumber<TKey>
     where TFrequency : System.Numerics.IBinaryInteger<TFrequency>
   {
-    private readonly System.Collections.Generic.Dictionary<TKey, TFrequency> m_data = [];
+    private readonly System.Collections.Generic.SortedDictionary<TKey, TFrequency> m_data = [];
 
     private TFrequency m_totalFrequency = TFrequency.Zero;
 

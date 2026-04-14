@@ -4,7 +4,9 @@
   {
     extension(System.String source)
     {
-      /// <summary>Indicates whether the content of the string is possibly of slavo/germanic origin.</summary>
+      /// <summary>
+      /// <para>Indicates whether the content of the string is possibly of slavo/germanic origin.</para>
+      /// </summary>
       public bool ContainsSlavoGermanic()
       {
         System.ArgumentNullException.ThrowIfNullOrEmpty(source);
@@ -67,7 +69,9 @@
 
       #endregion
 
-      /// <summary>Remove diacritical marks.</summary>
+      /// <summary>
+      /// <para>Remove diacritical marks.</para>
+      /// </summary>
       public System.Text.StringBuilder RemoveUnicodeMarks()
       {
         System.ArgumentNullException.ThrowIfNull(source);
@@ -106,7 +110,7 @@
       #region To..
 
       public System.IO.DirectoryInfo ToDirectoryInfo()
-        => new(source.TrimCommonPrefix(['/']).ToString());
+        => new(source.TrimCommonPrefix(PathExtensions.m_pathSeparators).ToString());
 
       public System.Uri ToUri(System.UriKind uriKind = System.UriKind.RelativeOrAbsolute)
         => new(source, uriKind);
@@ -139,10 +143,7 @@
     }
 
     public static System.IO.FileInfo ToFileInfo(this string source)
-    {
-      source = source.AsSpan().TrimCommonPrefix(c => c is '/' or '\\').TrimCommonSuffix(c => c is '/' or '\\').ToString();
-      return new(source);
-    }
+      => new(source.AsSpan().TrimCommonPrefix(PathExtensions.m_pathSeparators).TrimCommonSuffix(PathExtensions.m_pathSeparators).ToString());
   }
 }
 

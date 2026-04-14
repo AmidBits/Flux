@@ -135,15 +135,15 @@ namespace Flux.Mechanics
     /// <param name="gravitationalAcceleration"></param>
     /// <param name="earthRadius"></param>
     /// <returns></returns>
-    public static double PlanetaryTrajectoryHeight(double initialAngle, double initialVelocity, double gravitationalAcceleration = Units.Acceleration.StandardGravity, double earthRadius = PlanetaryScience.ReferenceEllipsoid.EarthMeanRadius)
+    public static double PlanetaryTrajectoryHeight(double initialAngle, double initialVelocity, double gravitationalAcceleration = Units.Acceleration.StandardGravity, double earthRadius = PlanetaryScience.ReferenceEllipsoid.EarthRadiusMean)
     {
       var (sin, cos) = double.SinCos(initialAngle);
 
       var vr = initialVelocity / double.Sqrt(earthRadius * gravitationalAcceleration);
 
-      var vrpow2 = vr * vr;
+      var vrp2 = vr * vr;
 
-      return (initialVelocity * initialVelocity * sin * sin / gravitationalAcceleration) / (1 - vrpow2 + double.Sqrt(1 - (2 - vrpow2) * vrpow2 * cos * cos));
+      return (initialVelocity * initialVelocity * sin * sin / gravitationalAcceleration) / (1 - vrp2 + double.Sqrt(1 - (2 - vrp2) * vrp2 * cos * cos));
     }
 
     /// <summary>
@@ -155,15 +155,15 @@ namespace Flux.Mechanics
     /// <param name="gravitationalAcceleration"></param>
     /// <param name="earthRadius"></param>
     /// <returns></returns>
-    public static double PlanetaryTrajectoryRange(double initialAngle, double initialVelocity, double gravitationalAcceleration = Units.Acceleration.StandardGravity, double earthRadius = PlanetaryScience.ReferenceEllipsoid.EarthMeanRadius)
+    public static double PlanetaryTrajectoryRange(double initialAngle, double initialVelocity, double gravitationalAcceleration = Units.Acceleration.StandardGravity, double earthRadius = PlanetaryScience.ReferenceEllipsoid.EarthRadiusMean)
     {
       var sin = double.Sin(initialAngle);
 
       var vr = initialVelocity / double.Sqrt(earthRadius * gravitationalAcceleration);
 
-      var vrpow2 = vr * vr;
+      var vrp2 = vr * vr;
 
-      return initialVelocity * initialVelocity * double.Sin(2 * initialAngle) / gravitationalAcceleration / double.Sqrt(1 - (2 - vrpow2) * vrpow2 * sin * sin);
+      return initialVelocity * initialVelocity * double.Sin(2 * initialAngle) / gravitationalAcceleration / double.Sqrt(1 - (2 - vrp2) * vrp2 * sin * sin);
     }
 
     /// <summary>
@@ -175,19 +175,19 @@ namespace Flux.Mechanics
     /// <param name="gravitationalAcceleration"></param>
     /// <param name="earthRadius"></param>
     /// <returns></returns>
-    public static double PlanetaryTrajectoryTime(double initialAngle, double initialVelocity, double gravitationalAcceleration = Units.Acceleration.StandardGravity, double earthRadius = PlanetaryScience.ReferenceEllipsoid.EarthMeanRadius)
+    public static double PlanetaryTrajectoryTime(double initialAngle, double initialVelocity, double gravitationalAcceleration = Units.Acceleration.StandardGravity, double earthRadius = PlanetaryScience.ReferenceEllipsoid.EarthRadiusMean)
     {
       var (sin, cos) = double.SinCos(initialAngle);
 
       var vr = initialVelocity / double.Sqrt(earthRadius * gravitationalAcceleration);
 
-      var vrpow2 = vr * vr;
+      var vrp2 = vr * vr;
 
-      var s2vrpow2 = 2 - vrpow2;
+      var s2vrp2 = 2 - vrp2;
 
-      var sqrts2vrpow2vrsin = double.Sqrt(s2vrpow2) * vr * sin;
+      var sqrts2vr2vrsin = double.Sqrt(s2vrp2) * vr * sin;
 
-      return (2 * initialVelocity * sin / gravitationalAcceleration) * (1 / s2vrpow2) * (1 + 1 / sqrts2vrpow2vrsin * double.Asin(sqrts2vrpow2vrsin / double.Sqrt(1 - s2vrpow2 * vrpow2 * cos * cos)));
+      return (2 * initialVelocity * sin / gravitationalAcceleration) * (1 / s2vrp2) * (1 + 1 / sqrts2vr2vrsin * double.Asin(sqrts2vr2vrsin / double.Sqrt(1 - s2vrp2 * vrp2 * cos * cos)));
     }
 
     #endregion // Planetary trajectories

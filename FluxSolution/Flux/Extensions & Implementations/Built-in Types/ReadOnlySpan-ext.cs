@@ -2,23 +2,67 @@
 {
   public static partial class ReadOnlySpanExtensions
   {
-    // All hex and decimal numeric character references &#x{xxxxxxx}; are enumerated.
-    [System.Text.RegularExpressions.GeneratedRegex(@"(?<Prefix>&#x?)(?<Number>[0-9A-Fa-f]{1,8})(?<Suffix>;)", System.Text.RegularExpressions.RegexOptions.Compiled)]
-    public static partial System.Text.RegularExpressions.Regex RegexEnumerateNumericCharacterReference();
+    #region GeneratedRegex's
 
-    // All three of \uxxxx (UTF-16), \UXXXXXXXX (UTF-32) and \x{xxxxxxx} (Variable Hex) C# Unicode literals are enumerated.
-    [System.Text.RegularExpressions.GeneratedRegex(@"((?<Prefix>\\u)(?<Number>[0-9A-Fa-f]{4})|(?<Prefix>\\U)(?<Number>[0-9A-Fa-f]{8})|(?<Prefix>\\x)(?<Number>[0-9A-Fa-f]{1,8}))", System.Text.RegularExpressions.RegexOptions.Compiled)]
-    public static partial System.Text.RegularExpressions.Regex RegexEnumerateCsUnicodeLiteral();
+    /// <summary>
+    /// <para>All decimal &#{n..}; numeric character references are enumerated.</para>
+    /// </summary>
+    /// <returns></returns>
+    [System.Text.RegularExpressions.GeneratedRegex(@"(?<Prefix>&#)(?<Number>[0-9]{1,7})(?<Suffix>;)", System.Text.RegularExpressions.RegexOptions.Compiled)]
+    public static partial System.Text.RegularExpressions.Regex RegexEnumerateMlDecimalNumericCharacterReference();
 
-    // All U+xxxx{xx} (Unicode U-notation) are enumerated.
+    /// <summary>
+    /// <para>All hex &#x{x..}; numeric character references are enumerated.</para>
+    /// </summary>
+    /// <returns></returns>
+    [System.Text.RegularExpressions.GeneratedRegex(@"(?<Prefix>&#x)(?<Number>[0-9A-Fa-f]{1,8})(?<Suffix>;)", System.Text.RegularExpressions.RegexOptions.Compiled)]
+    public static partial System.Text.RegularExpressions.Regex RegexEnumerateMlHexNumericCharacterReference();
+
+    /// <summary>
+    /// <para>All three of \uxxxx (UTF-16) C# Unicode literals are enumerated.</para>
+    /// </summary>
+    /// <returns></returns>
+    [System.Text.RegularExpressions.GeneratedRegex(@"(?<Prefix>\\u)(?<Number>[0-9A-Fa-f]{4})", System.Text.RegularExpressions.RegexOptions.Compiled)]
+    public static partial System.Text.RegularExpressions.Regex RegexEnumerateCsUnicodeLiteralUtf16();
+
+    /// <summary>
+    /// <para>All \UXXXXXXXX (UTF-32) C# Unicode literals are enumerated.</para>
+    /// </summary>
+    /// <returns></returns>
+    [System.Text.RegularExpressions.GeneratedRegex(@"(?<Prefix>\\U)(?<Number>[0-9A-Fa-f]{8})", System.Text.RegularExpressions.RegexOptions.Compiled)]
+    public static partial System.Text.RegularExpressions.Regex RegexEnumerateCsUnicodeLiteralUtf32();
+
+    /// <summary>
+    /// <para>All \x{xxxxxxx} (Variable Hex) C# Unicode literals are enumerated.</para>
+    /// </summary>
+    /// <returns></returns>
+    [System.Text.RegularExpressions.GeneratedRegex(@"(?<Prefix>\\x)(?<Number>[0-9A-Fa-f]{1,8})", System.Text.RegularExpressions.RegexOptions.Compiled)]
+    public static partial System.Text.RegularExpressions.Regex RegexEnumerateCsUnicodeLiteralVariableHex();
+
+    /// <summary>
+    /// <para>All U+xxxx{xx} (Unicode U-notation) are enumerated.</para>
+    /// </summary>
+    /// <returns></returns>
     [System.Text.RegularExpressions.GeneratedRegex(@"(?<Prefix>U\+)(?<Codepoint>[0-9A-Fa-f]{4,6})", System.Text.RegularExpressions.RegexOptions.Compiled)]
     public static partial System.Text.RegularExpressions.Regex RegexEnumerateUnicodeUnotation();
 
-    // All %xx (URI percent encoding) are enumerated.
+    /// <summary>
+    /// <para>All %xx (URI percent encoding) are enumerated.</para>
+    /// </summary>
+    /// <returns></returns>
     [System.Text.RegularExpressions.GeneratedRegexAttribute(@"(?<Prefix>%)(?<Octet>[0-9A-Fa-f]{2})", System.Text.RegularExpressions.RegexOptions.Compiled)]
     public static partial System.Text.RegularExpressions.Regex RegexEnumerateUriPercentEncoding();
 
-    #region GetAlternatingElement helpers
+    /// <summary>
+    /// <para></para>
+    /// </summary>
+    /// <returns></returns>
+    [System.Text.RegularExpressions.GeneratedRegex(@"^(?'letter'\p{L})+\p{L}?(?:\k'letter'(?'-letter'))+(?(letter)(?!))$")]
+    public static partial System.Text.RegularExpressions.Regex RegexIsPalindrome();
+
+    #endregion
+
+    #region GetAlternatingElement state variable
 
     private static int m_alternatingIndex = 0; // This is a field used for the method below.
 
@@ -142,7 +186,7 @@
 
       #endregion
 
-      #region ..CommonPrefix..
+      #region CommonPrefixLength
 
       /// <summary>
       /// <para>Finds the length of any common prefix shared between <paramref name="source"/> and the <paramref name="predicate"/> satisfied.</para>
@@ -171,8 +215,7 @@
       /// <param name="maxTestLength"></param>
       /// <returns></returns>
       /// <exception cref="System.ArgumentOutOfRangeException"></exception>
-      public int CommonPrefixLength(System.Func<T, bool> predicate, int maxTestLength = int.MaxValue)
-        => CommonPrefixLength(source, (e, i) => predicate(e), maxTestLength);
+      public int CommonPrefixLength(System.Func<T, bool> predicate, int maxTestLength = int.MaxValue) => CommonPrefixLength(source, (e, i) => predicate(e), maxTestLength);
 
       /// <summary>
       /// <para>Finds the length of any common prefix shared between a <see cref="System.ReadOnlySpan{T}"/> and <paramref name="target"/>. Uses the specified <paramref name="equalityComparer"/>, or default if null.</para>
@@ -202,8 +245,11 @@
       /// <param name="target"></param>
       /// <param name="equalityComparer">If null, then <see cref="System.Collections.Generic.EqualityComparer{T}.Default"/> is used.</param>
       /// <returns></returns>
-      public int CommonPrefixLength(System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
-        => CommonPrefixLength(source, target, target.Length, equalityComparer);
+      public int CommonPrefixLength(System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null) => CommonPrefixLength(source, target, target.Length, equalityComparer);
+
+      #endregion
+
+      #region CommonPrefixLengthAny
 
       /// <summary>
       /// <para>Finds the length of any common prefix shared between <paramref name="source"/> and a <paramref name="value"/>. Uses the specified <paramref name="equalityComparer"/>, or default if null.</para>
@@ -219,6 +265,10 @@
 
         return CommonPrefixLength(source, (e, i) => any.Contains(e, equalityComparer), maxTestLength);
       }
+
+      #endregion
+
+      #region IsCommonPrefix
 
       /// <summary>
       /// <para>Indicates whether the <paramref name="source"/> starts with <paramref name="length"/> elements that satisfies the <paramref name="predicate"/>.</para>
@@ -248,6 +298,10 @@
       public bool IsCommonPrefix(System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
         => IsCommonPrefix(source, target, target.Length, equalityComparer);
 
+      #endregion
+
+      #region IsCommonPrefixAny
+
       /// <summary>
       /// <para>Indicates whether the <paramref name="source"/> starts with <paramref name="length"/> occurences of the <paramref name="value"/> elements. Uses the specified <paramref name="equalityComparer"/>, or default if null.</para>
       /// </summary>
@@ -257,6 +311,10 @@
       /// <returns></returns>
       public bool IsCommonPrefixAny(System.Collections.Generic.IEnumerable<T> any, int length, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
         => CommonPrefixLengthAny(source, any, length, equalityComparer) == length;
+
+      #endregion
+
+      #region TrimCommonPrefix
 
       /// <summary>
       /// <para>Slice the <paramref name="source"/> with <paramref name="maxTrimLength"/> of matching prefix elements satisfying the <paramref name="predicate"/> removed.</para>
@@ -277,6 +335,10 @@
       public System.ReadOnlySpan<T> TrimCommonPrefix(System.ReadOnlySpan<T> target, int maxTrimLength = int.MaxValue, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
         => source[CommonPrefixLength(source, target, maxTrimLength, equalityComparer)..];
 
+      #endregion
+
+      #region TrimCommonPrefixAny
+
       /// <summary>
       /// <para>Slice the <paramref name="source"/> with <paramref name="maxTrimLength"/> of prefix elements matching <paramref name="value"/> removed.</para>
       /// </summary>
@@ -289,7 +351,7 @@
 
       #endregion
 
-      #region ..CommonSuffix..
+      #region CommonSuffixLength
 
       /// <summary>
       /// <para>Finds the length of any common suffix shared between <paramref name="source"/> and the <paramref name="predicate"/>.</para>
@@ -320,8 +382,7 @@
       /// <param name="maxTestLength"></param>
       /// <returns></returns>
       /// <exception cref="System.ArgumentOutOfRangeException"></exception>
-      public int CommonSuffixLength(System.Func<T, bool> predicate, int maxTestLength = int.MaxValue)
-        => CommonSuffixLength(source, (e, i) => predicate(e), maxTestLength);
+      public int CommonSuffixLength(System.Func<T, bool> predicate, int maxTestLength = int.MaxValue) => CommonSuffixLength(source, (e, i) => predicate(e), maxTestLength);
 
       /// <summary>
       /// <para>Finds the length of any common suffix shared between a <see cref="System.ReadOnlySpan{T}"/> and the specified <paramref name="target"/>. Uses the specified <paramref name="equalityComparer"/>, or default if null.</para>
@@ -356,8 +417,11 @@
       /// <param name="target"></param>
       /// <param name="equalityComparer">If null, then <see cref="System.Collections.Generic.EqualityComparer{T}.Default"/> is used.</param>
       /// <returns></returns>
-      public int CommonSuffixLength(System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
-        => CommonSuffixLength(source, target, target.Length, equalityComparer);
+      public int CommonSuffixLength(System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null) => CommonSuffixLength(source, target, target.Length, equalityComparer);
+
+      #endregion
+
+      #region CommonSuffixLengthAny
 
       /// <summary>
       /// <para>Finds the length of any common suffix shared between <paramref name="source"/> and <paramref name="value"/>. Uses the specified <paramref name="equalityComparer"/>, or default if null.</para>
@@ -375,6 +439,10 @@
 
         return CommonSuffixLength(source, (e, i) => any.Contains(e, equalityComparer), maxTestLength);
       }
+
+      #endregion
+
+      #region IsCommonSuffix
 
       /// <summary>
       /// <para>Indicates whether a <see cref="System.ReadOnlySpan{T}"/> ends with <paramref name="length"/> elements that satisfy the <paramref name="predicate"/>.</para>
@@ -404,6 +472,10 @@
       public bool IsCommonSuffix(System.ReadOnlySpan<T> target, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
         => IsCommonSuffix(source, target, target.Length, equalityComparer);
 
+      #endregion
+
+      #region IsCommonSuffixAny
+
       /// <summary>
       /// <para>Indicates whether a <see cref="System.ReadOnlySpan{T}"/> ends with at least <paramref name="length"/> occurences of the <paramref name="value"/>. Uses the specified <paramref name="equalityComparer"/>, or default if null.</para>
       /// </summary>
@@ -413,6 +485,10 @@
       /// <returns></returns>
       public bool IsCommonSuffixAny(System.Collections.Generic.IEnumerable<T> any, int length, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
         => CommonSuffixLengthAny(source, any, length, equalityComparer) == length;
+
+      #endregion
+
+      #region TrimCommonSuffix
 
       /// <summary>
       /// <para>Slice a <see cref="System.ReadOnlySpan{T}"/> with <paramref name="maxTrimLength"/> of matching suffix elements satisfying the <paramref name="predicate"/> removed.</para>
@@ -433,6 +509,10 @@
       public System.ReadOnlySpan<T> TrimCommonSuffix(System.ReadOnlySpan<T> value, int maxTrimLength = int.MaxValue, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
         => source[..^CommonSuffixLength(source, value, maxTrimLength, equalityComparer)];
 
+      #endregion
+
+      #region TrimCommonSuffixAny
+
       /// <summary>
       /// <para>Slice a <see cref="System.ReadOnlySpan{T}"/> with <paramref name="maxTrimLength"/> of suffix elements matching <paramref name="value"/> removed.</para>
       /// </summary>
@@ -445,7 +525,7 @@
 
       #endregion
 
-      #region Contains..
+      #region ContainsAll
 
       public bool ContainsAll(System.Func<T, int, bool> predicate, out int index)
       {
@@ -457,6 +537,10 @@
       }
 
       public bool ContainsAll(System.Func<T, bool> predicate, out int index) => ContainsAll(source, (e, i) => predicate(e), out index);
+
+      #endregion
+
+      #region ContainsAny
 
       public bool ContainsAny(System.Func<T, int, bool> predicate, out int index)
       {
@@ -557,42 +641,44 @@
       /// <param name="valueSelector"></param>
       /// <param name="comparer">If null, then <see cref="System.Collections.Generic.Comparer{T}.Default"/> is used.</param>
       /// <returns></returns>
-      public (T? MinItem, int MinIndex, TValue? MinValue, T? MaxItem, int MaxIndex, TValue? MaxValue) Extremum<TValue>(System.Func<T, TValue> valueSelector, System.Collections.Generic.IComparer<TValue>? comparer = null)
+      public (T? MinElement, int MinIndex, TValue? MinValue, T? MaxElement, int MaxIndex, TValue? MaxValue) Extremum<TValue>(System.Func<T, TValue> valueSelector, System.Collections.Generic.IComparer<TValue>? comparer = null)
       {
         System.ArgumentNullException.ThrowIfNull(valueSelector);
 
         comparer ??= System.Collections.Generic.Comparer<TValue>.Default;
 
-        var minItem = default(T);
+        var minElement = default(T);
         var minIndex = -1;
         var minValue = default(TValue);
 
-        var maxItem = default(T);
+        var maxElement = default(T);
         var maxIndex = -1;
         var maxValue = default(TValue);
 
-        for (var index = source.Length - 1; index >= 0; index--)
-        {
-          var item = source[index];
+        var index = 0;
 
-          var value = valueSelector(item);
+        foreach (var element in source)
+        {
+          var value = valueSelector(element);
 
           if (minIndex < 0 || comparer.Compare(value, minValue) < 0)
           {
-            minItem = item;
+            minElement = element;
             minIndex = index;
             minValue = value;
           }
 
           if (maxIndex < 0 || comparer.Compare(value, maxValue) > 0)
           {
-            maxItem = item;
+            maxElement = element;
             maxIndex = index;
             maxValue = value;
           }
+
+          index++;
         }
 
-        return (minItem, minIndex, minValue, maxItem, maxIndex, maxValue);
+        return (minElement, minIndex, minValue, maxElement, maxIndex, maxValue);
       }
 
       #endregion
@@ -643,9 +729,12 @@
       /// <exception cref="System.ArgumentOutOfRangeException"></exception>
       public System.Collections.Generic.List<T> RandomElements(double probability, System.Random? rng = null, int maxCount = int.MaxValue)
       {
+        System.ArgumentOutOfRangeException.ThrowIfNegativeOrZero(probability); // Cannot be zero or negative.
+        System.ArgumentOutOfRangeException.ThrowIfGreaterThan(probability, 1); // Cannot be greater than one.
+
         System.ArgumentOutOfRangeException.ThrowIfNegativeOrZero(maxCount);
 
-        Units.Probability.AssertMember(probability, IntervalNotation.HalfOpenLeft); // Cannot be zero, but can be one.
+        //Units.Probability.AssertMember(probability, IntervalNotation.HalfOpenLeft); // Cannot be zero, but can be one.
 
         rng ??= System.Random.Shared;
 
@@ -798,34 +887,6 @@
 
       #region InfimumSupremum
 
-      //public (int InfimumIndex, T InfimumItem, TTarget InfimumValue) Infimum<TTarget>(TTarget referenceValue, System.Func<T, TTarget> valueSelector, bool proper, System.Collections.Generic.IComparer<TTarget>? comparer = null)
-      //{
-      //  System.ArgumentNullException.ThrowIfNull(valueSelector);
-
-      //  comparer ??= System.Collections.Generic.Comparer<TTarget>.Default;
-
-      //  var infimumIndex = -1;
-      //  var infimumItem = default(T);
-      //  var infimumValue = referenceValue;
-
-      //  for (var index = source.Length - 1; index >= 0; index--)
-      //  {
-      //    var item = source[index];
-      //    var value = valueSelector(item);
-
-      //    var cmp = comparer.Compare(value, referenceValue);
-
-      //    if ((!proper ? cmp <= 0 : cmp < 0) && (infimumIndex < 0 || comparer.Compare(value, infimumValue) > 0))
-      //    {
-      //      infimumIndex = index;
-      //      infimumItem = item;
-      //      infimumValue = value;
-      //    }
-      //  }
-
-      //  return (infimumIndex, infimumItem!, infimumValue);
-      //}
-
       /// <summary>
       /// <para>Locate the index, item and value of both the largest element that is less-than(-or-equal) and the smallest element that is greater-than(-or-equal) to the singleton set {<paramref name="referenceValue"/>} (set S) identified by the <paramref name="valueSelector"/> (in set P). Uses the specified comparer (null for default).</para>
       /// <see href="https://en.wikipedia.org/wiki/Infimum_and_supremum"/>
@@ -837,74 +898,49 @@
       /// <param name="proper"></param>
       /// <param name="comparer">If null, then <see cref="System.Collections.Generic.Comparer{T}.Default"/> is used.</param>
       /// <returns></returns>
-      public (T InfimumItem, int InfimumIndex, TTarget InfimumValue, T SupremumItem, int SupremumIndex, TTarget SupremumValue) InfimumSupremum<TTarget>(TTarget referenceValue, System.Func<T, TTarget> valueSelector, bool proper, System.Collections.Generic.IComparer<TTarget>? comparer = null)
+      public (T? InfimumElement, int InfimumIndex, TValue InfimumValue, T? SupremumElement, int SupremumIndex, TValue SupremumValue) InfimumSupremum<TValue>(TValue referenceValue, System.Func<T, TValue> valueSelector, bool proper, System.Collections.Generic.IComparer<TValue>? comparer = null)
       {
         System.ArgumentNullException.ThrowIfNull(valueSelector);
 
-        comparer ??= System.Collections.Generic.Comparer<TTarget>.Default;
+        comparer ??= System.Collections.Generic.Comparer<TValue>.Default;
 
-        T infimumItem = default!;
+        var infimumElement = default(T);
         var infimumIndex = -1;
-        var infimumValue = referenceValue;
+        TValue infimumValue = referenceValue;
 
-        T supremumItem = default!;
+        var supremumElement = default(T);
         var supremumIndex = -1;
-        var supremumValue = referenceValue;
+        TValue supremumValue = referenceValue;
 
-        for (var index = source.Length - 1; index >= 0; index--)
+        var index = 0;
+
+        foreach (var element in source)
         {
-          var item = source[index];
-          var value = valueSelector(item);
+          var value = valueSelector(element);
 
           var cmp = comparer.Compare(value, referenceValue);
 
           if ((!proper ? cmp <= 0 : cmp < 0) && (infimumIndex < 0 || comparer.Compare(value, infimumValue) > 0))
           {
-            infimumItem = item;
+            infimumElement = element;
             infimumIndex = index;
             infimumValue = value;
           }
 
           if ((!proper ? cmp >= 0 : cmp > 0) && (supremumIndex < 0 || comparer.Compare(value, supremumValue) < 0))
           {
-            supremumItem = item;
+            supremumElement = element;
             supremumIndex = index;
             supremumValue = value;
           }
+
+          index++;
         }
 
-        return (infimumItem, infimumIndex, infimumValue, supremumItem, supremumIndex, supremumValue);
+        return (infimumElement, infimumIndex, infimumValue, supremumElement, supremumIndex, supremumValue);
       }
 
-      //public (int SupremumIndex, T SupremumItem, TTarget SupremumValue) Supremum<TTarget>(TTarget referenceValue, System.Func<T, TTarget> valueSelector, bool proper, System.Collections.Generic.IComparer<TTarget>? comparer = null)
-      //{
-      //  System.ArgumentNullException.ThrowIfNull(valueSelector);
-
-      //  comparer ??= System.Collections.Generic.Comparer<TTarget>.Default;
-
-      //  var supremumIndex = -1;
-      //  var supremumItem = default(T);
-      //  var supremumValue = referenceValue;
-
-      //  for (var index = source.Length - 1; index >= 0; index--)
-      //  {
-      //    var item = source[index];
-      //    var value = valueSelector(item);
-
-      //    var cmp = comparer.Compare(value, referenceValue);
-
-      //    if ((!proper ? cmp >= 0 : cmp > 0) && (supremumIndex < 0 || comparer.Compare(value, supremumValue) < 0))
-      //    {
-      //      supremumIndex = index;
-      //      supremumItem = item;
-      //      supremumValue = value;
-      //    }
-      //  }
-
-      //  return (supremumIndex, supremumItem!, supremumValue);
-      //}
-
-      #endregion // GetInfimumAndSupremum
+      #endregion 
 
       #region IsPalindrome
 
@@ -1138,6 +1174,27 @@
           return score; // No initial match, return Jaro distance score unmodified.
 
         return score + 0.1 * prefixCount * (1d - score); // Return the Winkler modified distance score.
+      }
+
+      #endregion
+
+      #region JoinRanges
+
+      public System.Span<T> JoinRanges(System.Collections.Generic.List<Range> segments, int count, T separator)
+      {
+        var join = new System.Collections.Generic.List<T>();
+
+        for (var i = 0; i < count; i++)
+        {
+          if (i > 0)
+            join.Add(separator);
+
+          var slice = source[segments[i]];
+
+          join.AddRange(slice);
+        }
+
+        return join.AsSpan();
       }
 
       #endregion
@@ -2638,7 +2695,48 @@
           for (var ti = 0; ti < target.Length; ti++)
             matrix[si + 1, ti + 1] = equalityComparer.Equals(source[si], target[ti]) ? matrix[si, ti] + 1 : int.Min(matrix[si, ti + 1], matrix[si + 1, ti]) + 1;
 
-        return GetSupersequence(matrix, source, target, source.Length, target.Length, equalityComparer);
+        return GetSupersequence(source, matrix, target, source.Length, target.Length, equalityComparer);
+      }
+
+      /// <summary>
+      /// <para></para>
+      /// </summary>
+      /// <typeparam name="T"></typeparam>
+      /// <param name="matrix"></param>
+      /// <param name="source"></param>
+      /// <param name="target"></param>
+      /// <param name="si"></param>
+      /// <param name="ti"></param>
+      /// <param name="equalityComparer">If null, then <see cref="System.Collections.Generic.EqualityComparer{T}.Default"/> is used.</param>
+      /// <returns></returns>
+      private System.Collections.Generic.List<T> GetSupersequence(int[,] matrix, System.ReadOnlySpan<T> target, int si, int ti, System.Collections.Generic.IEqualityComparer<T> equalityComparer)
+      {
+        if (si == 0) // If the end of the first string is reached, return the second string.
+          return target[..ti].ToArray().ToList();
+        else if (ti == 0) // If the end of the second string is reached, return the first string.
+          return source[..si].ToArray().ToList();
+
+        if (equalityComparer.Equals(source[si - 1], target[ti - 1])) // If the last character of si and ti matches, include it and recur to find SCS of substring.
+        {
+          var list = GetSupersequence(source, matrix, target, si - 1, ti - 1, equalityComparer);
+          list.Add(source[si - 1]);
+          return list;
+        }
+        else
+        {
+          if (matrix[si - 1, ti] <= matrix[si, ti - 1]) // If the top cell has a value less or equal to that in the left cell, then include the current source element and find SCS of substring less the one added.
+          {
+            var list = GetSupersequence(source, matrix, target, si - 1, ti, equalityComparer);
+            list.Add(source[si - 1]);
+            return list;
+          }
+          else // If the left cell has a value greater than that in the top cell, then include the current target element find SCS of substring less the one added.
+          {
+            var list = GetSupersequence(source, matrix, target, si, ti - 1, equalityComparer);
+            list.Add(target[ti - 1]);
+            return list;
+          }
+        }
       }
 
       #endregion
@@ -2652,6 +2750,33 @@
       /// <returns></returns>
       public System.Collections.Generic.List<System.Range> SplitBySubLength(int subLength)
         => BinaryInteger.GenerateSubRangesBySubLength(source.Length, subLength);
+
+      #endregion
+
+      #region SplitRanges
+
+      public System.Collections.Generic.List<Range> SplitRanges(System.Collections.Generic.IEqualityComparer<T>? equalityComparer, params System.ReadOnlySpan<T> separators)
+      {
+        var split = new System.Collections.Generic.List<Range>();
+
+        var start = 0;
+
+        for (var end = 0; end < source.Length; end++)
+        {
+          if (separators.Contains(source[end], equalityComparer))
+          {
+            if (end > start)
+              split.Add(start..end);
+
+            start = end + 1;
+          }
+        }
+
+        if (start < source.Length)
+          split.Add(start..source.Length);
+
+        return split;
+      }
 
       #endregion
 
@@ -2905,6 +3030,24 @@
         }
 
         return -1;
+      }
+
+      /// <summary>
+      /// <para></para>
+      /// </summary>
+      /// <typeparam name="T"></typeparam>
+      /// <param name="source"></param>
+      /// <param name="target"></param>
+      /// <param name="length"></param>
+      /// <param name="equalityComparer">If null, then <see cref="System.Collections.Generic.EqualityComparer{T}.Default"/> is used.</param>
+      /// <returns></returns>
+      private bool BoyerMooreHorspoolIsSame(System.ReadOnlySpan<T> target, int length, System.Collections.Generic.IEqualityComparer<T> equalityComparer)
+      {
+        for (var i = length - 1; i >= 0; i--)
+          if (!equalityComparer.Equals(source[i], target[i]))
+            return false;
+
+        return true;
       }
 
       /// <summary>
@@ -3349,7 +3492,7 @@
       {
         var list = new System.Collections.Generic.List<(System.Range, System.Text.Rune)>();
 
-        var evm = RegexEnumerateCsUnicodeLiteral().EnumerateMatches(source);
+        var evm = new System.Text.RegularExpressions.Regex($"{RegexEnumerateCsUnicodeLiteralUtf16()}|{RegexEnumerateCsUnicodeLiteralUtf32()}|{RegexEnumerateCsUnicodeLiteralVariableHex()}").EnumerateMatches(source);
 
         foreach (var vm in evm)
         {
@@ -3372,7 +3515,7 @@
       {
         var list = new System.Collections.Generic.List<(System.Range, System.Text.Rune)>();
 
-        var evm = RegexEnumerateNumericCharacterReference().EnumerateMatches(source);
+        var evm = new System.Text.RegularExpressions.Regex($"{RegexEnumerateMlDecimalNumericCharacterReference()}|{RegexEnumerateMlHexNumericCharacterReference()}", System.Text.RegularExpressions.RegexOptions.Compiled).EnumerateMatches(source);
 
         foreach (var vm in evm)
         {
@@ -3526,7 +3669,7 @@
       /// <summary>Matches palindromes of any length.</summary>
       /// <see href="https://www.regular-expressions.info/balancing.html"/>
       public bool IsPalindrome()
-        => RegexPalindrome().IsMatch(source);
+        => RegexIsPalindrome().IsMatch(source);
 
       #endregion
 
@@ -3618,6 +3761,97 @@
         return repetitions;
       }
 
+      /// <summary>
+      /// <para></para>
+      /// </summary>
+      /// <param name="repetitions"></param>
+      /// <param name="shift"></param>
+      /// <param name="left"></param>
+      /// <param name="cntr"></param>
+      /// <param name="l"></param>
+      /// <param name="k1"></param>
+      /// <param name="k2"></param>
+      private static void ConvertToRepetitions(System.Collections.Generic.List<System.Range> repetitions, int shift, bool left, int cntr, int l, int k1, int k2)
+      {
+        for (var l1 = int.Max(1, l - k2); l1 <= int.Min(l, k1); l1++)
+        {
+          if (left && l1 == l) break;
+          //var l2 = l - l1;
+          var pos = shift + (left ? cntr - l1 : cntr - l - l1 + 1);
+
+          repetitions.Insert(0, new System.Range(pos, pos + 2 * l));
+        }
+      }
+
+      /// <summary>
+      /// <para></para>
+      /// </summary>
+      /// <param name="z"></param>
+      /// <param name="i"></param>
+      /// <returns></returns>
+      private static int GetZ(int[] z, int i)
+      {
+        if (0 <= i && i < z.Length)
+          return z[i];
+        else
+          return 0;
+      }
+
+      /// <summary>
+      /// <para></para>
+      /// </summary>
+      /// <param name="repetitions"></param>
+      /// <param name="ros"></param>
+      /// <param name="shift"></param>
+      private static void LocateRepetitions(System.Collections.Generic.List<System.Range> repetitions, System.ReadOnlySpan<char> ros, int shift = 0)
+      {
+        if (ros.Length is var n && n <= 1)
+          return;
+
+        var s = ros.ToString();
+
+        var nu = n / 2;
+        var nv = n - nu;
+        var u = s[..nu];
+        var v = s[nu..];
+        var ru = string.Concat(u.Reverse());
+        var rv = string.Concat(v.Reverse());
+
+        LocateRepetitions(repetitions, u, shift);
+        LocateRepetitions(repetitions, v, shift + nu);
+
+        var z1 = ru.AsSpan().Zfunction();
+        var z2 = (v + '#' + u).AsSpan().Zfunction();
+        var z3 = (ru + '#' + rv).AsSpan().Zfunction();
+        var z4 = v.AsSpan().Zfunction();
+
+        //var z1 = Zfunction(ru);
+        //var z2 = Zfunction(v + '#' + u);
+        //var z3 = Zfunction(ru + '#' + rv);
+        //var z4 = Zfunction(v);
+
+        for (var cntr = 0; cntr < n; cntr++)
+        {
+          int l, k1, k2;
+
+          if (cntr < nu)
+          {
+            l = nu - cntr;
+            k1 = GetZ(z1, nu - cntr);
+            k2 = GetZ(z2, nv + 1 + cntr);
+          }
+          else
+          {
+            l = cntr - nu + 1;
+            k1 = GetZ(z3, nu + 1 + nv - 1 - (cntr - nu));
+            k2 = GetZ(z4, (cntr - nu) + 1);
+          }
+
+          if (k1 + k2 >= l)
+            ConvertToRepetitions(repetitions, shift, cntr < nu, cntr, l, k1, k2);
+        }
+      }
+
       #endregion
 
       #region RabinKarp algorithm
@@ -3671,7 +3905,7 @@
       /// </summary>
       /// <param name="regexPattern"></param>
       /// <returns></returns>
-      public System.Collections.Generic.List<Range> GetRegexMatches(string regexPattern)
+      public System.Collections.Generic.List<Range> RegexMatches(string regexPattern)
       {
         var ranges = new System.Collections.Generic.List<Range>();
         foreach (var vm in new System.Text.RegularExpressions.Regex(regexPattern).EnumerateMatches(source))
@@ -3684,7 +3918,7 @@
       /// </summary>
       /// <param name="regexPattern"></param>
       /// <returns></returns>
-      public System.Collections.Generic.List<Range> GetRegexSplits(string regexPattern)
+      public System.Collections.Generic.List<Range> RegexSplits(string regexPattern)
       {
         var ranges = new System.Collections.Generic.List<Range>();
         foreach (var range in new System.Text.RegularExpressions.Regex(regexPattern).EnumerateSplits(source))
@@ -3761,21 +3995,21 @@
       #endregion
     }
 
-    extension<T>(System.ReadOnlySpan<T> source)
-     where T : IComparable<T>
+    extension<TComparable>(System.ReadOnlySpan<TComparable> source)
+     where TComparable : IComparable<TComparable>
     {
       #region ..Ordered.. (IComparable)
 
       public void AssertOrderedAscending()
       {
         if (!IsOrderedAscending(source))
-          throw new System.ArgumentException("The elements must be in ascending order.");
+          throw new System.ArgumentException("The elements are not in ascending order.");
       }
 
       public void AssertOrderedDescending()
       {
         if (!IsOrderedDescending(source))
-          throw new System.ArgumentException("The elements must be in descending order.");
+          throw new System.ArgumentException("The elements are not in descending order.");
       }
 
       public bool IsOrderedAscending()
@@ -3976,219 +4210,30 @@
       #endregion
     }
 
-    /// <summary>
-    /// <para>Returns a column name of the <paramref name="index"/>ed column from the array as if it were an array of column names, substituting if not enough column names are specified.</para>
-    /// </summary>
-    /// <param name="source"></param>
-    /// <param name="index"></param>
-    /// <returns></returns>
-    public static string EnsureColumnName(this System.ReadOnlySpan<string> source, int index)
+    extension(System.ReadOnlySpan<string> source)
     {
-      System.ArgumentOutOfRangeException.ThrowIfNegative(index);
-
-      return index < source.Length && source[index] is var value && !string.IsNullOrWhiteSpace(value)
-        ? source[index]
-        : BinaryInteger.ToOrdinalFieldName(index);
-    }
-
-    //#region BalancedConstructs helpers
-
-    ///// <summary>
-    ///// <para></para>
-    ///// </summary>
-    ///// <param name="reOpen"></param>
-    ///// <param name="reMatch"></param>
-    ///// <param name="reClose"></param>
-    ///// <returns></returns>
-    //public static string CreateBalancedExpression(System.ReadOnlySpan<char> reOpen, System.ReadOnlySpan<char> reMatch, System.ReadOnlySpan<char> reClose)
-    //  => $"^{reMatch}*(?>(?>(?'balance'{reOpen}){reMatch}*)+(?>(?'-balance'{reClose}){reMatch}*)+)+(?(balance)(?!))$";
-
-    //#endregion
-
-    #region BoyerMooreHorspool algorithm helpers
-
-    /// <summary>
-    /// <para></para>
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="source"></param>
-    /// <param name="target"></param>
-    /// <param name="length"></param>
-    /// <param name="equalityComparer">If null, then <see cref="System.Collections.Generic.EqualityComparer{T}.Default"/> is used.</param>
-    /// <returns></returns>
-    private static bool BoyerMooreHorspoolIsSame<T>(System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, int length, System.Collections.Generic.IEqualityComparer<T> equalityComparer)
-      where T : notnull
-    {
-      for (var i = length - 1; i >= 0; i--)
-        if (!equalityComparer.Equals(source[i], target[i]))
-          return false;
-
-      return true;
-    }
-
-    #endregion
-
-    #region IsPalindrome helpers
-
-    /// <summary>
-    /// <para></para>
-    /// </summary>
-    /// <returns></returns>
-    [System.Text.RegularExpressions.GeneratedRegex(@"^(?'letter'\p{L})+\p{L}?(?:\k'letter'(?'-letter'))+(?(letter)(?!))$")]
-    public static partial System.Text.RegularExpressions.Regex RegexPalindrome();
-
-    #endregion
-
-    #region MainLorentz algorithm helpers
-
-    /// <summary>
-    /// <para></para>
-    /// </summary>
-    /// <param name="repetitions"></param>
-    /// <param name="shift"></param>
-    /// <param name="left"></param>
-    /// <param name="cntr"></param>
-    /// <param name="l"></param>
-    /// <param name="k1"></param>
-    /// <param name="k2"></param>
-    private static void ConvertToRepetitions(System.Collections.Generic.List<System.Range> repetitions, int shift, bool left, int cntr, int l, int k1, int k2)
-    {
-      for (var l1 = int.Max(1, l - k2); l1 <= int.Min(l, k1); l1++)
+      /// <summary>
+      /// <para>Returns a column name of the <paramref name="index"/>ed column from the array as if it were an array of column names, substituting if not enough column names are specified.</para>
+      /// </summary>
+      /// <param name="source"></param>
+      /// <param name="index"></param>
+      /// <returns></returns>
+      public string EnsureColumnName(int index)
       {
-        if (left && l1 == l) break;
-        //var l2 = l - l1;
-        var pos = shift + (left ? cntr - l1 : cntr - l - l1 + 1);
+        System.ArgumentOutOfRangeException.ThrowIfNegative(index);
 
-        repetitions.Insert(0, new System.Range(pos, pos + 2 * l));
+        return index < source.Length && source[index] is var value && !string.IsNullOrWhiteSpace(value)
+          ? source[index]
+          : BinaryInteger.ToOrdinalFieldName(index);
       }
+
+      /// <summary>
+      /// <para></para>
+      /// </summary>
+      /// <param name="source"></param>
+      /// <returns></returns>
+      public string ToUrgfString()
+        => string.Join((char)UnicodeInformationSeparator.UnitSeparator, source);
     }
-
-    /// <summary>
-    /// <para></para>
-    /// </summary>
-    /// <param name="z"></param>
-    /// <param name="i"></param>
-    /// <returns></returns>
-    private static int GetZ(int[] z, int i)
-    {
-      if (0 <= i && i < z.Length)
-        return z[i];
-      else
-        return 0;
-    }
-
-    /// <summary>
-    /// <para></para>
-    /// </summary>
-    /// <param name="repetitions"></param>
-    /// <param name="ros"></param>
-    /// <param name="shift"></param>
-    private static void LocateRepetitions(System.Collections.Generic.List<System.Range> repetitions, System.ReadOnlySpan<char> ros, int shift = 0)
-    {
-      if (ros.Length is var n && n <= 1)
-        return;
-
-      var s = ros.ToString();
-
-      var nu = n / 2;
-      var nv = n - nu;
-      var u = s[..nu];
-      var v = s[nu..];
-      var ru = string.Concat(u.Reverse());
-      var rv = string.Concat(v.Reverse());
-
-      LocateRepetitions(repetitions, u, shift);
-      LocateRepetitions(repetitions, v, shift + nu);
-
-      var z1 = ru.AsSpan().Zfunction();
-      var z2 = (v + '#' + u).AsSpan().Zfunction();
-      var z3 = (ru + '#' + rv).AsSpan().Zfunction();
-      var z4 = v.AsSpan().Zfunction();
-
-      //var z1 = Zfunction(ru);
-      //var z2 = Zfunction(v + '#' + u);
-      //var z3 = Zfunction(ru + '#' + rv);
-      //var z4 = Zfunction(v);
-
-      for (var cntr = 0; cntr < n; cntr++)
-      {
-        int l, k1, k2;
-
-        if (cntr < nu)
-        {
-          l = nu - cntr;
-          k1 = GetZ(z1, nu - cntr);
-          k2 = GetZ(z2, nv + 1 + cntr);
-        }
-        else
-        {
-          l = cntr - nu + 1;
-          k1 = GetZ(z3, nu + 1 + nv - 1 - (cntr - nu));
-          k2 = GetZ(z4, (cntr - nu) + 1);
-        }
-
-        if (k1 + k2 >= l)
-          ConvertToRepetitions(repetitions, shift, cntr < nu, cntr, l, k1, k2);
-      }
-    }
-
-    #endregion
-
-    #region ShortestCommonSupersequence helpers
-
-    /// <summary>
-    /// <para></para>
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="matrix"></param>
-    /// <param name="source"></param>
-    /// <param name="target"></param>
-    /// <param name="si"></param>
-    /// <param name="ti"></param>
-    /// <param name="equalityComparer">If null, then <see cref="System.Collections.Generic.EqualityComparer{T}.Default"/> is used.</param>
-    /// <returns></returns>
-    private static System.Collections.Generic.List<T> GetSupersequence<T>(int[,] matrix, System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> target, int si, int ti, System.Collections.Generic.IEqualityComparer<T> equalityComparer)
-    {
-      if (si == 0) // If the end of the first string is reached, return the second string.
-        return target[..ti].ToArray().ToList();
-      else if (ti == 0) // If the end of the second string is reached, return the first string.
-        return source[..si].ToArray().ToList();
-
-      if (equalityComparer.Equals(source[si - 1], target[ti - 1])) // If the last character of si and ti matches, include it and recur to find SCS of substring.
-      {
-        var list = GetSupersequence(matrix, source, target, si - 1, ti - 1, equalityComparer);
-        list.Add(source[si - 1]);
-        return list;
-      }
-      else
-      {
-        if (matrix[si - 1, ti] <= matrix[si, ti - 1]) // If the top cell has a value less or equal to that in the left cell, then include the current source element and find SCS of substring less the one added.
-        {
-          var list = GetSupersequence(matrix, source, target, si - 1, ti, equalityComparer);
-          list.Add(source[si - 1]);
-          return list;
-        }
-        else // If the left cell has a value greater than that in the top cell, then include the current target element find SCS of substring less the one added.
-        {
-          var list = GetSupersequence(matrix, source, target, si, ti - 1, equalityComparer);
-          list.Add(target[ti - 1]);
-          return list;
-        }
-      }
-    }
-
-    #endregion
-
-    #region To.. helpers
-
-    /// <summary>
-    /// <para></para>
-    /// </summary>
-    /// <param name="source"></param>
-    /// <returns></returns>
-    public static string ToUrgfString(this System.ReadOnlySpan<string> source)
-      => string.Join((char)UnicodeInformationSeparator.UnitSeparator, source);
-
-    #endregion
   }
 }

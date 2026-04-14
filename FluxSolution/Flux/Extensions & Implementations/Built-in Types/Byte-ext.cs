@@ -31,6 +31,8 @@ namespace Flux
 
       #endregion
 
+      #region ToUriPercentEncoding
+
       /// <summary>
       /// <para></para>
       /// </summary>
@@ -38,6 +40,8 @@ namespace Flux
       /// <returns></returns>
       public static string ToUriPercentEncoding(byte value)
         => $"%{value:X2}";
+
+      #endregion
     }
   }
 }

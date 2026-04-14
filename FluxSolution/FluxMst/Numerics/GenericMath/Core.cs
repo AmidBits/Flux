@@ -126,11 +126,11 @@ namespace Maths
     [TestMethod]
     public void MaxDigitCount()
     {
-      var actual = Flux.Units.Radix.GetMaxDigitCount(10, 10, false); // Yields 4, because a max value of 1023 can be represented (all bits can be used in an unsigned value).
+      var actual = int.GetMaxDigitCount(10, 10, false); // Yields 4, because a max value of 1023 can be represented (all bits can be used in an unsigned value).
       var expected = 4;
       Assert.AreEqual(expected, actual);
 
-      actual = Flux.Units.Radix.GetMaxDigitCount(10, 10, true); // Yields 3, because a max value of 511 can be represented (excluding the MSB used for negative values of signed types).
+      actual = int.GetMaxDigitCount(10, 10, true); // Yields 3, because a max value of 511 can be represented (excluding the MSB used for negative values of signed types).
       expected = 3;
       Assert.AreEqual(expected, actual);
     }

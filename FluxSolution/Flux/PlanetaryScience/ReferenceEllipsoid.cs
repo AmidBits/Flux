@@ -10,7 +10,51 @@ namespace Flux.PlanetaryScience
   /// </summary>
   public record class ReferenceEllipsoid
   {
-    public const double EarthMeanRadius = 6371008.8;
+    /// <summary>
+    /// <para><see href="https://en.wikipedia.org/wiki/Earth_radius#Arithmetic_mean_radius"/></para>
+    /// </summary>
+    public const double EarthRadiusArithmeticMean = 6371008.7714;
+    /// <summary>
+    /// <para>The mean radius (in meters) of Earth as defined by the 1984 World Geodetic System revision.</para>
+    /// <para><see href="https://en.wikipedia.org/wiki/Earth_radius#Arithmetic_mean_radius"/></para>
+    /// </summary>
+    public const double EarthRadiusMean = 6371008.8;
+    /// <summary>
+    /// <para>The equatorial radius (in meters) of Earth as defined by the 1984 World Geodetic System revision.</para>
+    /// <para><see href="https://en.wikipedia.org/wiki/Earth_radius#Global_radii"/></para>
+    /// </summary>
+    public const double EarthRadiusEquatorial = 6378137.0;
+    /// <summary>
+    /// <para>The polar radius (in meters) of Earth as defined by the 1984 World Geodetic System revision.</para>
+    /// <para><see href="https://en.wikipedia.org/wiki/Earth_radius#Global_radii"/></para>
+    /// </summary>
+    public const double EarthRadiusPolar = 6356752.314245;
+
+    /// <summary>
+    /// <para><see href="https://en.wikipedia.org/wiki/Earth_radius#Authalic_radius"/></para>
+    /// </summary>
+    public const double EarthRadiusAuthalic = 6371007.2;
+
+    /// <summary>
+    /// <para><see href="https://en.wikipedia.org/wiki/Earth_radius#Volumetric_radius"/></para>
+    /// </summary>
+    public const double EarthRadiusVolumetric = 6371000.8;
+
+    /// <summary>
+    /// <para>Earth's sea level on average (in meters).</para>
+    /// <para><see href="https://en.wikipedia.org/wiki/Sea_level"/></para>
+    /// </summary>
+    public const double SeaLevelRadiusMean = 6371001;
+    /// <summary>
+    /// <para>Earth's sea level at the equator (in meters).</para>
+    /// <para><see href="https://en.wikipedia.org/wiki/Sea_level"/></para>
+    /// </summary>
+    public const double SeaLevelRadiusEquator = 6378137;
+    /// <summary>
+    /// <para>Earth's sea level at the poles (in meters).</para>
+    /// <para><see href="https://en.wikipedia.org/wiki/Sea_level"/></para>
+    /// </summary>
+    public const double SeaLevelRadiusPoles = 6356752;
 
     public static ReferenceEllipsoid Etrs89 { get; } = new(298.257222101, 6378137.000, 6356752.314140);
     public static ReferenceEllipsoid Wgs84 { get; } = new(298.257223563, 6378137.0, 6356752.314245);
@@ -41,6 +85,17 @@ namespace Flux.PlanetaryScience
 
     /// <summary>This is the amount of ellipticity (flattening, oblateness) of the Earth.</summary>
     public double Flattening => 1 / m_inverseFlattening;
+
+    public double GetRadiusOfCurvature(double lat)
+    {
+      const double ThreeDivTwo = 3.0 / 2.0;
+
+      var oneMinusEccentricitySquared = 1 - double.Pow(double.Sqrt(1 - (PolarRadius * PolarRadius) / (EquatorialRadius * EquatorialRadius)), 2);
+
+      var sinLat = double.Sin(lat);
+
+      return EquatorialRadius * oneMinusEccentricitySquared / double.Pow(oneMinusEccentricitySquared * sinLat * sinLat, ThreeDivTwo);
+    }
 
     /// <summary>The polar circumference equals Cp=4mp, i.e. four times the quarter meridian.</summary>
     public double PolarCircumference => Units.Length.OfEllipsePerimeter(m_semiMajorAxis, m_semiMinorAxis);

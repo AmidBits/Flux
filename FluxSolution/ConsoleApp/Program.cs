@@ -264,70 +264,60 @@ namespace ConsoleApp
 
     #endregion // Mock DataTables
 
+
+
     private static void TimedMain(string[] _)
     {
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
 
-      var llmmre = System.Globalization.UnicodeCategory.LowercaseLetter.ToCategoryMajorMinor().ToUnicodePropertyPattern(false);
-      var llmre = System.Globalization.UnicodeCategory.LowercaseLetter.ToCategoryMajor().ToUnicodePropertyPattern(false);
 
-      var lvs1 = Number.LoopPivot(17, Flux.CoordinateSystems.ReferenceRelativeOrientationTAf.Toward, 3, 11).ToArray();
-      var lvs2 = Number.LoopPivot(17, Flux.CoordinateSystems.ReferenceRelativeOrientationTAf.AwayFrom, -3, 11).ToArray();
+      var f1 = double.CreateChecked(System.Numerics.BigInteger.Factorial(365));
+      var f2 = double.CreateChecked(System.Numerics.BigInteger.Factorial(365 - 23));
+      var p1 = double.CreateChecked(System.Numerics.BigInteger.Pow(365, 23));
 
-      var lbw1 = Number.LoopCross(2, 3, 10).ToArray();
-      var lbw2 = Number.LoopCross(32, -3, 10).ToArray();
+      var ff = f1 / f2 / p1;
 
-      var lbw6 = Number.LoopCross(6, 6, 100).ToArray();
+      var pa = System.Numerics.BigInteger.ProbabilityOfNoDuplicates(23, 365);
 
-      var mean = 11;
-      var step = 1;
-      var cont = 10;
-
-      var lp = Number.LoopPivot(mean, Flux.CoordinateSystems.ReferenceRelativeOrientationTAf.Toward, step, cont).ToArray();
-
-      var afnvalue = mean;
-      var afpvalue = mean;
-      var rafnvalue = mean + cont / 2 - cont;
-      var rafpvalue = mean + cont / 2;
-
-      for (var i = 0; i < cont; i++)
-      {
-        System.Console.WriteLine($"RAFN = {rafnvalue}, RAFP = {rafpvalue}, AFN = {afnvalue}, AFP = {afpvalue}");
-
-        var af = (int.Abs(step) + i);
-        afpvalue = int.IsEvenInteger(i) ? afpvalue + af : afpvalue - af;
-        afnvalue = int.IsEvenInteger(i) ? afnvalue - af : afnvalue + af;
-
-        var raf = cont - i - int.Abs(step);
-        rafnvalue = int.IsEvenInteger(i) ? rafnvalue + raf : rafnvalue - raf;
-        rafpvalue = int.IsEvenInteger(i) ? rafpvalue - raf : rafpvalue + raf;
-      }
-
-      System.Console.WriteLine();
-
-      afnvalue = mean;
-      afpvalue = mean;
-      rafnvalue = mean + cont / 2 - cont;
-      rafpvalue = mean + cont / 2;
-
-      System.Console.WriteLine($"RAFN = {rafnvalue}, RAFP = {rafpvalue}, AFN = {afnvalue}, AFP = {afpvalue}");
-
-      foreach (var (idx, value, opposingValue) in Number.LoopCross(1, step, cont - 1))
-      {
-        afnvalue = int.IsEvenInteger(idx) ? afnvalue - value : afnvalue + value;
-        afpvalue = int.IsEvenInteger(idx) ? afpvalue + value : afpvalue - value;
-
-        rafnvalue = int.IsEvenInteger(idx) ? rafnvalue + opposingValue : rafnvalue - opposingValue;
-        rafpvalue = int.IsEvenInteger(idx) ? rafpvalue - opposingValue : rafpvalue + opposingValue;
-
-        System.Console.WriteLine($"RAFN = {rafnvalue}, RAFP = {rafpvalue}, AFN = {afnvalue}, AFP = {afpvalue}");
-      }
+      var pb = 1.0 - pa;
 
 
+
+      var num = 6705302039L;
+
+      var subs = num.ToSubscriptString(10);
+      var supers = num.ToSuperscriptString(10);
+
+      var decs = num.ToDecimalString(10);
+      var decssub = decs.ToStringBuilder().ReplaceAll(char.GetSubscript).ToString();
+      var decssuper = decs.ToStringBuilder().ReplaceAll(char.GetSuperscript).ToString();
+
+      var prefix = System.IO.Path.GetCommonPathPrefix(System.IO.Path.DirectorySeparatorChar, new[]
+{
+    @"C:\Users\Robert\Projects\Alpha\file1.txt",
+    @"C:\Users\Robert\Projects\Alpha\Sub\file2.txt"
+});
+
+      var bd = new Flux.DataStructures.BiDictionary<string, int>();
+      var bd1 = (System.Collections.Generic.IDictionary<string, int>)bd;
+
+      bd1.Add("One", 1);
+      bd.Set("One", 3);
+
+      var lsd = Flux.NumeralComposition.LongScaleDictionary;
+      var ssd = Flux.NumeralComposition.ShortScaleDictionary;
+
+      var lsdmk = lsd.MergeKeep(ssd);
+      var lsdmo = lsd.MergeOverwrite(ssd);
+
+      var ssdmk = ssd.MergeKeep(lsd);
+      var ssdmo = ssd.MergeOverwrite(lsd);
 
       return;
+
+
 
       //var json = (10, "Test", new Flux.Units.Time(11)).SerializeToJson();
       //var xml = (10, "Test", new Flux.Units.Time(11)).SerializeToXml();

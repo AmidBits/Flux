@@ -762,30 +762,30 @@ namespace Flux
 
         comparer ??= System.Collections.Generic.Comparer<TValue>.Default;
 
-        var minItem = default(TSource);
+        var minElement = default(TSource);
         var minIndex = -1;
         var minValue = default(TValue);
 
-        var maxItem = default(TSource);
+        var maxElement = default(TSource);
         var maxIndex = -1;
         var maxValue = default(TValue);
 
         var index = 0;
 
-        foreach (var item in source)
+        foreach (var element in source)
         {
-          var value = valueSelector(item);
+          var value = valueSelector(element);
 
           if (minIndex < 0 || comparer.Compare(value, minValue) < 0)
           {
-            minItem = item;
+            minElement = element;
             minIndex = index;
             minValue = value;
           }
 
           if (maxIndex < 0 || comparer.Compare(value, maxValue) > 0)
           {
-            maxItem = item;
+            maxElement = element;
             maxIndex = index;
             maxValue = value;
           }
@@ -793,7 +793,7 @@ namespace Flux
           index++;
         }
 
-        return (minItem, minIndex, minValue, maxItem, maxIndex, maxValue);
+        return (minElement, minIndex, minValue, maxElement, maxIndex, maxValue);
       }
 
       #endregion
@@ -936,47 +936,69 @@ namespace Flux
       /// <param name="comparer">Uses the specified comparer, or default if null.</param>
       /// <returns></returns>
       /// <exception cref="System.ArgumentNullException"/>
-      public (TSource? InfimumItem, int InfimumIndex, TValue? InfimumValue, TSource? SupremumItem, int SupremumIndex, TValue? SupremumValue) InfimumSupremum<TValue>(System.Func<TSource, TValue> valueSelector, TValue referenceValue, bool proper, System.Collections.Generic.IComparer<TValue>? comparer = null)
+      public (TSource? MinElement, int MinIndex, TValue? MinValue, TSource? InfimumElement, int InfimumIndex, TValue? InfimumValue, TSource? SupremumElement, int SupremumIndex, TValue? SupremumValue, TSource? MaxElement, int MaxIndex, TValue? MaxValue) InfimumSupremum<TValue>(TValue referenceValue, System.Func<TSource, TValue> valueSelector, bool proper, System.Collections.Generic.IComparer<TValue>? comparer = null)
       {
         System.ArgumentNullException.ThrowIfNull(source);
         System.ArgumentNullException.ThrowIfNull(valueSelector);
 
         comparer ??= System.Collections.Generic.Comparer<TValue>.Default;
 
-        var infimumItem = default(TSource);
+        var minElement = default(TSource);
+        var minIndex = -1;
+        var minValue = default(TValue);
+
+        var infimumElement = default(TSource);
         var infimumIndex = -1;
         var infimumValue = referenceValue;
 
-        var supremumItem = default(TSource);
+        var supremumElement = default(TSource);
         var supremumIndex = -1;
         var supremumValue = referenceValue;
 
+        var maxElement = default(TSource);
+        var maxIndex = -1;
+        var maxValue = default(TValue);
+
         var index = 0;
 
-        foreach (var item in source)
+        foreach (var element in source)
         {
-          var value = valueSelector(item);
+          var value = valueSelector(element);
+
+          if (minIndex < 0 || comparer.Compare(value, minValue) < 0)
+          {
+            minElement = element;
+            minIndex = index;
+            minValue = value;
+          }
 
           var cmp = comparer.Compare(value, referenceValue);
 
           if ((!proper ? cmp <= 0 : cmp < 0) && (infimumIndex < 0 || comparer.Compare(value, infimumValue) > 0))
           {
+            infimumElement = element;
             infimumIndex = index;
-            infimumItem = item;
             infimumValue = value;
           }
 
           if ((!proper ? cmp >= 0 : cmp > 0) && (supremumIndex < 0 || comparer.Compare(value, supremumValue) < 0))
           {
+            supremumElement = element;
             supremumIndex = index;
-            supremumItem = item;
             supremumValue = value;
+          }
+
+          if (maxIndex < 0 || comparer.Compare(value, maxValue) > 0)
+          {
+            maxElement = element;
+            maxIndex = index;
+            maxValue = value;
           }
 
           index++;
         }
 
-        return (infimumItem, infimumIndex, infimumValue, supremumItem, supremumIndex, supremumValue);
+        return (minElement, minIndex, minValue, infimumElement, infimumIndex, infimumValue, supremumElement, supremumIndex, supremumValue, maxElement, maxIndex, maxValue);
       }
 
       #endregion
@@ -1416,9 +1438,10 @@ namespace Flux
       /// <exception cref="System.ArgumentOutOfRangeException"></exception>
       public System.Collections.Generic.IEnumerable<TSource> RandomElements(double probability, System.Random? rng = null, int maxCount = int.MaxValue)
       {
-        System.ArgumentOutOfRangeException.ThrowIfNegativeOrZero(maxCount);
+        System.ArgumentOutOfRangeException.ThrowIfLessThanOrEqual(probability, 0.0); // Cannot be zero.
+        System.ArgumentOutOfRangeException.ThrowIfGreaterThan(probability, 1.0); // Can be one.
 
-        Units.Probability.AssertMember(probability, IntervalNotation.HalfOpenLeft); // Cannot be zero, but can be one.
+        System.ArgumentOutOfRangeException.ThrowIfNegativeOrZero(maxCount);
 
         rng ??= System.Random.Shared;
 

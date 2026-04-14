@@ -14,17 +14,17 @@ namespace Flux.CoordinateSystems
 
     public static GeographicCoordinate Empty { get; }
 
-    public static GeographicCoordinate GreenwichMeridian { get; } = new(51.477811, Units.AngleUnit.Degree, -0.001475, Units.AngleUnit.Degree);
+    public static GeographicCoordinate GreenwichMeridian { get; } = new(51.477811, Units.AngleUnit.Degree, -0.001475, Units.AngleUnit.Degree, 46, Units.LengthUnit.Meter);
 
     private readonly double m_latitude;
 
     private readonly double m_longitude;
 
-    private readonly double m_altitude;
+    private readonly double m_altitude; // Geocentric altitude, i.e. the distance from the center of Earth, not the height above sea level.
     public GeographicCoordinate(double latitudeRadian, double longitudeRadian, double altitudeMeter)
     {
-      m_latitude = latitudeRadian;
-      m_longitude = longitudeRadian;
+      m_latitude = new Units.Latitude(latitudeRadian, Units.AngleUnit.Radian).Radians;
+      m_longitude = new Units.Longitude(longitudeRadian, Units.AngleUnit.Radian).Radians;
       m_altitude = altitudeMeter;// >= MinAltitudeInMeters && altitudeMeter <= MaxAltitudeInMeters ? altitudeMeter : throw new System.ArgumentOutOfRangeException(nameof(altitudeMeter));
     }
 
@@ -66,7 +66,7 @@ namespace Flux.CoordinateSystems
       altitudeMeter = m_altitude;
     }
 
-    /// <summary>The height (a.k.a. altitude) of the geographic position in meters.</summary>
+    /// <summary>The geocentric altitude of the geographic position in meters.</summary>
     public Units.Length Altitude { get => new(m_altitude); init => m_altitude = value.Value; }
 
     /// <summary>The latitude component of the geographic position. Range from -90.0 (southern hemisphere) to 90.0 degrees (northern hemisphere).</summary>
@@ -134,11 +134,11 @@ namespace Flux.CoordinateSystems
     }
 
     /// <summary>Returns a bounding box for the specified lat/lon (both in radians) and box radius.</summary>
-    public static bool GetBoundingBox(double lat, double lon, double metersBoxRadius, out double latMin, out double lonMin, out double latMax, out double lonMax, PlanetaryScience.ReferenceEllipsoid ellipsoidReference)
+    public static bool GetBoundingBox(double lat, double lon, double metersBoxRadius, out double latMin, out double lonMin, out double latMax, out double lonMax, double equatorialRadius = PlanetaryScience.ReferenceEllipsoid.EarthRadiusEquatorial)
     {
       metersBoxRadius = double.Max(metersBoxRadius, 1);
 
-      var angularDistance = metersBoxRadius / ellipsoidReference.EquatorialRadius;
+      var angularDistance = metersBoxRadius / equatorialRadius;
 
       var longitudeDelta = double.Asin(double.Sin(angularDistance) / double.Cos(lat));
 
@@ -198,16 +198,7 @@ namespace Flux.CoordinateSystems
     /// <para>Central angles are subtended by an arc between those two points, and the arc length is the central angle of a circle of radius one (measured in radians). The central angle is also known as the arc's angular distance.</para>
     /// </remarks>
     public static double GetCentralAngleVincentyFormula(double lat1, double lon1, double lat2, double lon2)
-    {
-      var (sinLat1, cosLat1) = double.SinCos(lat1);
-      var (sinLat2, cosLat2) = double.SinCos(lat2);
-
-      var (sinLonD, cosLonD) = double.SinCos(lon2 - lon1);
-
-      var cosLat2LonD = cosLat2 * cosLonD;
-
-      return double.Atan2(double.Sqrt(double.Pow(cosLat2 * sinLonD, 2) + double.Pow(cosLat1 * sinLat2 - sinLat1 * cosLat2LonD, 2)), sinLat1 * sinLat2 + cosLat1 * cosLat2LonD);
-    }
+      => GetCentralAngleVincentyFormula(lat1, lon1, lat2, lon2, out double _, out double _, out double _, out double _);
 
     /// <summary>
     /// <para>The shortest distance between two points on the surface of a sphere, measured along the surface of the sphere (as opposed to a straight line through the sphere's interior). Multiply by unit radius, e.g. 6371 km or 3959 mi.</para>
@@ -248,8 +239,8 @@ namespace Flux.CoordinateSystems
     {
       trackCentralAngle13 = GetCentralAngleVincentyFormula(lat1, lon1, lat3, lon3);
 
-      var course13 = GetInitialCourse(lat1, lon1, lat3, lon3);
-      var course12 = GetInitialCourse(lat1, lon1, lat2, lon2);
+      var course13 = GetInitialBearing(lat1, lon1, lat3, lon3);
+      var course12 = GetInitialBearing(lat1, lon1, lat2, lon2);
 
       return double.Asin(double.Sin(trackCentralAngle13) * double.Sin(course13 - course12));
     }
@@ -258,11 +249,11 @@ namespace Flux.CoordinateSystems
     /// <remarks>The angular distance is a distance divided by a radius of the same unit, e.g. meters. (1000 m / EarthMeanRadiusInMeters)</remarks>
     /// <param name="lat">The latitude in radians.</param>
     /// <param name="lon">The longitude in radians.</param>
-    /// <param name="brg">Bearing is the direction or course.</param>
+    /// <param name="brg">Bearing is the direction or course in radians.</param>
     /// <param name="angularDistance">The angular distance is a distance divided by a radius of the same unit, e.g. meters. (1000 m / EarthMeanRadiusInMeters)</param>
     /// <param name="latOut">The resulting latitude in radians.</param>
     /// <param name="lonOut">The resulting longitude in radians.</param>
-    public static void GetDestination(double lat, double lon, double brg, double angularDistance, out double latOut, out double lonOut)
+    public static void GetDestinationPoint(double lat, double lon, double brg, double angularDistance, out double latOut, out double lonOut)
     {
       var (sinLat, cosLat) = double.SinCos(lat);
 
@@ -275,15 +266,15 @@ namespace Flux.CoordinateSystems
     }
 
     /// <summary>
-    /// <para>Computes the distance between the two lat/lon coordinates in whatever the unit is specified for Earths radius.</para>
+    /// <para>Computes the distance between the two lat/lon coordinates in whatever the unit is specified for Earths radius. I.e. if the distance in meters is desired then specify: <c><paramref name="earthsRadius"/> = 6371008.8</c></para>
     /// </summary>
     /// <param name="lat1">The source latitude in radians.</param>
     /// <param name="lon1">The source longitude in radians.</param>
     /// <param name="lat2">The target latitude in radians.</param>
     /// <param name="lon2">The target longitude in radians.</param>
-    /// <param name="earthsRadius"></param>
+    /// <param name="earthsRadius">Specify Earth's radius in the unit desired in order to return the distance in that unit, e.g. meters = 6371008.8, kilometers = 6371.0088, for (US) miles: 3958.76133, etc.</param>
     /// <returns></returns>
-    public static double GetDistance(double lat1, double lon1, double lat2, double lon2, double earthsRadius)
+    public static double GetDistanceBetween(double lat1, double lon1, double lat2, double lon2, double earthsRadius = PlanetaryScience.ReferenceEllipsoid.EarthRadiusMean)
       => earthsRadius * GetCentralAngleVincentyFormula(lat1, lon1, lat2, lon2);
 
     /// <summary>Returns the initial bearing (sometimes referred to as forward azimuth) which if followed in a straight line along a great-circle arc will take you from the start point to the end point.</summary>
@@ -292,8 +283,29 @@ namespace Flux.CoordinateSystems
     /// <param name="lat2">The target latitude in radians.</param>
     /// <param name="lon2">The target longitude in radians.</param>
     /// <remarks>In general, your current heading will vary as you follow a great circle path (orthodrome); the final heading will differ from the initial heading by varying degrees according to distance and latitude.</remarks>
-    public static double GetFinalCourse(double lat1, double lon1, double lat2, double lon2)
-      => (GetInitialCourse(lat2, lon2, lat1, lon1) + double.Pi) % double.Tau;
+    public static double GetFinalBearing(double lat1, double lon1, double lat2, double lon2)
+      => (GetInitialBearing(lat2, lon2, lat1, lon1) + double.Pi) % double.Tau;
+
+    /// <summary>This is the halfway point along a great circle path between the two points.</summary>
+    /// <param name="lat1">The first path latitude in radians.</param>
+    /// <param name="lon1">The first path longitude in radians.</param>
+    /// <param name="lat2">The second path latitude in radians.</param>
+    /// <param name="lon2">The second path longitude in radians.</param>
+    /// <param name="latOut">The resulting latitude in radians.</param>
+    /// <param name="lonOut">The resulting longitude in radians.</param>
+    public static void GetHalfwayPoint(double lat1, double lon1, double lat2, double lon2, out double latOut, out double lonOut)
+    {
+      var (sinLonD, cosLonD) = double.SinCos(lon2 - lon1);
+
+      var (sinLat1, cosLat1) = double.SinCos(lat1);
+      var (sinLat2, cosLat2) = double.SinCos(lat2);
+
+      var Bx = cosLat2 * cosLonD;
+      var By = cosLat2 * sinLonD;
+
+      latOut = double.Atan2(sinLat1 + sinLat2, double.Sqrt(double.Pow(cosLat1 + Bx, 2) + By * By));
+      lonOut = lon1 + double.Atan2(By, cosLat1 + Bx);
+    }
 
     /// <summary>Returns the initial bearing (sometimes referred to as forward azimuth) which if followed in a straight line along a great-circle arc will take you from the start point to the end point.</summary>
     /// <param name="lat1">The source latitude in radians.</param>
@@ -301,7 +313,7 @@ namespace Flux.CoordinateSystems
     /// <param name="lat2">The target latitude in radians.</param>
     /// <param name="lon2">The target longitude in radians.</param>
     /// <remarks>In general, your current heading will vary as you follow a great circle path (orthodrome); the final heading will differ from the initial heading by varying degrees according to distance and latitude.</remarks>
-    public static double GetInitialCourse(double lat1, double lon1, double lat2, double lon2)
+    public static double GetInitialBearing(double lat1, double lon1, double lat2, double lon2)
     {
       var (sinLat1, cosLat1) = double.SinCos(lat1);
       var (sinLat2, cosLat2) = double.SinCos(lat2);
@@ -326,8 +338,10 @@ namespace Flux.CoordinateSystems
     {
       var centralAngle = GetCentralAngleVincentyFormula(lat1, lon1, lat2, lon2, out var sinLat1, out var cosLat1, out var sinLat2, out var cosLat2);
 
-      var a = double.Sin((1.0 - mu) * centralAngle) / double.Sin(centralAngle);
-      var b = double.Sin(mu * centralAngle) / double.Sin(centralAngle);
+      var sinCentralAngle = double.Sin(centralAngle);
+
+      var a = double.Sin((1.0 - mu) * centralAngle) / sinCentralAngle;
+      var b = double.Sin(mu * centralAngle) / sinCentralAngle;
 
       var (sinLon1, cosLon1) = double.SinCos(lon1);
       var (sinLon2, cosLon2) = double.SinCos(lon2);
@@ -444,29 +458,17 @@ namespace Flux.CoordinateSystems
     public static double GetMaximumLatitude(double lat, double brg)
       => double.Acos(double.Abs(double.Sin(brg) * double.Cos(lat)));
 
-    /// <summary>This is the halfway point along a great circle path between the two points.</summary>
-    /// <param name="lat1">The first path latitude in radians.</param>
-    /// <param name="lon1">The first path longitude in radians.</param>
-    /// <param name="lat2">The second path latitude in radians.</param>
-    /// <param name="lon2">The second path longitude in radians.</param>
-    /// <param name="latOut">The resulting latitude in radians.</param>
-    /// <param name="lonOut">The resulting longitude in radians.</param>
-    public static void GetMidpoint(double lat1, double lon1, double lat2, double lon2, out double latOut, out double lonOut)
+    public static double GetRadiusOfCurvature(double lat, double equatorialRadius = PlanetaryScience.ReferenceEllipsoid.EarthRadiusEquatorial, double polarRadius = PlanetaryScience.ReferenceEllipsoid.EarthRadiusPolar)
     {
-      var (sinLonD, cosLonD) = double.SinCos(lon2 - lon1);
+      var oneMinusEccentricitySquared = 1 - double.Pow(double.Sqrt(1 - (polarRadius * polarRadius) / (equatorialRadius * equatorialRadius)), 2);
 
-      var (sinLat1, cosLat1) = double.SinCos(lat1);
-      var (sinLat2, cosLat2) = double.SinCos(lat2);
+      var sinLat = double.Sin(lat);
 
-      var Bx = cosLat2 * cosLonD;
-      var By = cosLat2 * sinLonD;
-
-      latOut = double.Atan2(sinLat1 + sinLat2, double.Sqrt(double.Pow(cosLat1 + Bx, 2) + By * By));
-      lonOut = lon1 + double.Atan2(By, cosLat1 + Bx);
+      return equatorialRadius * oneMinusEccentricitySquared / double.Pow(oneMinusEccentricitySquared * sinLat * sinLat, 1.5); // 1.5 = (3 / 2)
     }
 
     /// <summary>Try parsing the specified latitude and longitude into a Geoposition.</summary>
-    public static bool TryParse(string latitudeDms, string longitudeDms, out GeographicCoordinate result, double earthRadius)
+    public static bool TryParse(string latitudeDms, string longitudeDms, out GeographicCoordinate result, double earthRadius = PlanetaryScience.ReferenceEllipsoid.EarthRadiusMean)
     {
       try
       {

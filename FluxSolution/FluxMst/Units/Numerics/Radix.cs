@@ -8,13 +8,13 @@ namespace Units
     [TestMethod]
     public void DigitCount()
     {
-      Assert.AreEqual(7, Flux.Units.Radix.DigitCount(1234567, 10));
+      Assert.AreEqual(7, int.DigitCount(1234567, 10));
     }
 
     [TestMethod]
     public void DigitSum()
     {
-      Assert.AreEqual(28, Flux.Units.Radix.DigitSum(1234567, 10));
+      Assert.AreEqual(28, int.DigitSum(1234567, 10));
     }
 
     //[TestMethod]
@@ -26,52 +26,52 @@ namespace Units
     [TestMethod]
     public void DropLeastSignificantDigits()
     {
-      Assert.AreEqual(1234, Flux.Units.Radix.DropLeastSignificantDigits(1234567, 10, 3));
+      Assert.AreEqual(1234, int.DropLeastSignificantDigits(1234567, 10, 3));
     }
 
     [TestMethod]
     public void DropMostSignificantDigits()
     {
-      Assert.AreEqual(4567, Flux.Units.Radix.DropMostSignificantDigits(1234567, 10, 3));
+      Assert.AreEqual(4567, int.DropMostSignificantDigits(1234567, 10, 3));
     }
 
     [TestMethod]
     public void GetDigits()
     {
       var expected = new int[] { 1, 0, 1, 0, 0, 0, 1, 1, 1, 0, 1, 1, 0, 1, 0, 0, 0, 0, 1, 0 };
-      var actual = Flux.Units.Radix.GetDigits(670530, 2).ToArray();
-      CollectionAssert.AreEqual(expected, actual, (string)(nameof(Flux.Units.Radix.GetDigits) + ".Radix=2"));
+      var actual = int.GetDigits(670530, 2).ToArray();
+      CollectionAssert.AreEqual(expected, actual, (string)(".Radix=2"));
 
       expected = new int[] { 6, 7, 0, 5, 3, 0 };
-      actual = Flux.Units.Radix.GetDigits(670530, 10).ToArray();
-      CollectionAssert.AreEqual(expected, actual, (string)(nameof(Flux.Units.Radix.GetDigits) + ".Radix=10"));
+      actual = int.GetDigits(670530, 10).ToArray();
+      CollectionAssert.AreEqual(expected, actual, (string)(".Radix=10"));
 
       expected = new int[] { 10, 3, 11, 4, 2 };
-      actual = Flux.Units.Radix.GetDigits(670530, 16).ToArray();
-      CollectionAssert.AreEqual(expected, actual, (string)(nameof(Flux.Units.Radix.GetDigits) + ".Radix=16"));
+      actual = int.GetDigits(670530, 16).ToArray();
+      CollectionAssert.AreEqual(expected, actual, (string)(".Radix=16"));
     }
 
     [TestMethod]
     public void GetDigitsReversed()
     {
       var expected = new int[] { 0, 1, 0, 0, 0, 0, 1, 0, 1, 1, 0, 1, 1, 1, 0, 0, 0, 1, 0, 1 };
-      var actual = Flux.Units.Radix.GetDigitsReversed(670530, 2).ToArray();
-      CollectionAssert.AreEqual(expected, actual, (string)(nameof(Flux.Units.Radix.GetDigitsReversed) + ".Radix=2"));
+      var actual = int.GetDigitsReversed(670530, 2).ToArray();
+      CollectionAssert.AreEqual(expected, actual, ".Radix=2");
 
       expected = new int[] { 0, 3, 5, 0, 7, 6 };
-      actual = Flux.Units.Radix.GetDigitsReversed(670530, 10).ToArray();
-      CollectionAssert.AreEqual(expected, actual, (string)(nameof(Flux.Units.Radix.GetDigitsReversed) + ".Radix=10"));
+      actual = int.GetDigitsReversed(670530, 10).ToArray();
+      CollectionAssert.AreEqual(expected, actual, ".Radix=10");
 
       expected = new int[] { 2, 4, 11, 3, 10 };
-      actual = Flux.Units.Radix.GetDigitsReversed(670530, 16).ToArray();
-      CollectionAssert.AreEqual(expected, actual, (string)(nameof(Flux.Units.Radix.GetDigitsReversed) + ".Radix=16"));
+      actual = int.GetDigitsReversed(670530, 16).ToArray();
+      CollectionAssert.AreEqual(expected, actual, ".Radix=16");
     }
 
     [TestMethod]
     public void GetPlaceValues()
     {
       var expected = new int[] { 2, 10, 500 };
-      var actual = Flux.Units.Radix.GetDigitPlaceValues(512, 10);
+      var actual = int.GetDigitPlaceValues(512, 10);
       Assert.AreEqual(expected.Length, actual.Count());
       for (var i = expected.Length - 1; i >= 0; i--)
         Assert.AreEqual(expected[i], actual[i], $"{nameof(GetPlaceValues)} index {i}, expected {expected[i]} != actual {expected[i]}");
@@ -108,13 +108,13 @@ namespace Units
     [TestMethod]
     public void IsJumbled()
     {
-      Assert.IsFalse(Flux.Units.Radix.IsJumbled(512, 10));
+      Assert.IsFalse(int.IsJumbled(512, 10));
     }
 
     [TestMethod]
     public void IsSingleDigit()
     {
-      Assert.IsFalse(Flux.Units.Radix.IsSingleDigit(512, 10));
+      Assert.IsFalse(int.IsSingleDigit(512, 10));
     }
 
     //[TestMethod]
@@ -126,13 +126,13 @@ namespace Units
     [TestMethod]
     public void KeepLeastSignificantDigits()
     {
-      Assert.AreEqual(567, Flux.Units.Radix.KeepLeastSignificantDigits(1234567, 10, 3));
+      Assert.AreEqual(567, int.KeepLeastSignificantDigits(1234567, 10, 3));
     }
 
     [TestMethod]
     public void KeepMostSignificantDigits()
     {
-      Assert.AreEqual(123, Flux.Units.Radix.KeepMostSignificantDigits(1234567, 10, 3));
+      Assert.AreEqual(123, int.KeepMostSignificantDigits(1234567, 10, 3));
     }
 
     //[TestMethod]
@@ -174,14 +174,14 @@ namespace Units
     [TestMethod]
     public void ReverseDigits()
     {
-      Assert.AreEqual(7654321, Flux.Units.Radix.ReverseDigits(1234567, 10));
+      Assert.AreEqual(7654321, int.ReverseDigits(1234567, 10));
     }
 
     [TestMethod]
     public void SelfNumber()
     {
       var expected = new int[] { 1, 3, 5, 7, 9, 20, 31, 42, 53, 64, 75, 86, 97, 108, 110, 121, 132, 143, 154, 165, 176, 187, 198, 209, 211, 222, 233, 244, 255, 266, 277, 288, 299, 310, 312, 323, 334, 345, 356, 367, 378, 389, 400, 411, 413, 424, 435, 446, 457, 468, 479, 490 };
-      var actual = System.Linq.Enumerable.Range(1, 500).Where(i => Flux.Units.Radix.IsSelfNumber(i, 10)).ToArray();
+      var actual = System.Linq.Enumerable.Range(1, 500).Where(i => int.IsSelfNumber(i, 10)).ToArray();
       CollectionAssert.AreEqual(expected, actual);
     }
 

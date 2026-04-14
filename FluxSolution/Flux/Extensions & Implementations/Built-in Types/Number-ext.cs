@@ -186,6 +186,8 @@ namespace Flux
         where TSignificantDigits : System.Numerics.IBinaryInteger<TSignificantDigits>
         where TRadix : System.Numerics.IBinaryInteger<TRadix>
       {
+        System.ArgumentOutOfRangeException.ThrowIfLessThanOrEqual(radix, TRadix.One);
+
         if (value == other) // The value and other are equal.
           return true;
 
@@ -196,7 +198,7 @@ namespace Flux
           return value == other;
 
         var difference = double.CreateChecked(TNumber.Abs(value - other));
-        var comparison = double.Pow(double.CreateChecked(Units.Radix.AssertMember(radix)), double.CreateChecked(significantDigits));
+        var comparison = double.Pow(double.CreateChecked(radix), double.CreateChecked(significantDigits));
 
         return difference <= comparison; // The difference is LTE to the signed significant digits raised-to-the-power-of radix.
       }
@@ -299,6 +301,26 @@ namespace Flux
         => !(value == TNumber.One && value.GetType().IsIBinaryInteger()); // Only an integer 1 (not 1.0) is singular, otherwise a number is considered plural.
 
       #endregion
+
+      public static bool StoreLessThan(ref TNumber value, TNumber other)
+      {
+        var lessThan = other < value;
+
+        if (lessThan)
+          value = other;
+
+        return lessThan;
+      }
+
+      public static bool StoreGreaterThan(ref TNumber value, TNumber other)
+      {
+        var greaterThan = other > value;
+
+        if (greaterThan)
+          value = other;
+
+        return greaterThan;
+      }
 
       #region KroneckerDelta
 
@@ -992,7 +1014,7 @@ namespace Flux
           {
             engineeringNotationPrefix = double.Log10(double.Abs(double.CreateChecked(engineeringNotationValue))) is var log10 && restrictToTriplets
               ? (Units.MetricPrefix)int.CreateChecked(double.Floor(log10 / 3) * 3)
-              : System.Enum.GetValues<Units.MetricPrefix>().InfimumSupremum(mp => (int)mp, int.CreateChecked(double.Floor(log10)), true).InfimumItem;
+              : System.Enum.GetValues<Units.MetricPrefix>().InfimumSupremum(int.CreateChecked(double.Floor(log10)), mp => (int)mp, true).InfimumElement;
 
             engineeringNotationValue *= (decimal)double.Pow(10, -(int)engineeringNotationPrefix);
           }

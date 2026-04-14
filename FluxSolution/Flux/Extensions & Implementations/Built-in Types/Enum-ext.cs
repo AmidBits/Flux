@@ -70,7 +70,7 @@ namespace Flux
       /// <returns></returns>
       public (T InfimumItem, int InfimumIndex, int InfimumValue, T SupremumItem, int SupremumIndex, int SupremumValue) InfimumSupremum()
       {
-        var (InfimumItem, InfimumIndex, InfimumValue, SupremumItem, SupremumIndex, SupremumValue) = System.Enum.GetValues<T>().InfimumSupremum(e => (int)(object)e, (int)(object)source, true);
+        var (InfimumItem, InfimumIndex, InfimumValue, SupremumItem, SupremumIndex, SupremumValue) = System.Enum.GetValues<T>().InfimumSupremum((int)(object)source, e => (int)(object)e, true);
 
         return ((T)(object)InfimumItem, InfimumIndex, InfimumValue, (T)(object)SupremumItem, SupremumIndex, SupremumValue);
       }

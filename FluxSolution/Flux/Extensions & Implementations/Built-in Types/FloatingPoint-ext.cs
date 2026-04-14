@@ -148,6 +148,28 @@
 
       #endregion
 
+      #region GeodeticToGeocentricLatitude
+
+      public static double GeodeticToGeocentricLatitude(double geodeticLatitude, double equatorRadius, double polarRadius)
+      {
+        var flatteningCorrection = (polarRadius * polarRadius) / (equatorRadius * equatorRadius); // b^2 / a^2
+
+        return double.Atan(flatteningCorrection * double.Tan(geodeticLatitude)); // The forward direction "shrinks" the tangent.
+      }
+
+      #endregion
+
+      #region GeocentricToGeodeticLatitude
+
+      public static double GeocentricToGeodeticLatitude(double geocentricLatitude, double equatorRadius, double polarRadius)
+      {
+        var inverseFlatteningCorrection = (equatorRadius * equatorRadius) / (polarRadius * polarRadius); // a^2 / b^2
+
+        return double.Atan(inverseFlatteningCorrection * double.Tan(geocentricLatitude)); // The reverse direction "unshrinks" the tangent.
+      }
+
+      #endregion
+
       #region HarmonicMean.. (type of average)
 
       /// <summary>
@@ -311,6 +333,17 @@
         => (TFloat.One - mu) * y0 + mu * y1;
 
       #endregion
+
+      /// <summary>
+      /// <para>This nonlinear difference equation is intended to capture two effects.<list type="number"><item>Reproduction where the population will increase at a rate proportional to the current population when the population size is small.</item><item>Starvation (density-dependent mortality) where the growth rate will decrease at a rate proportional to the value obtained by taking the theoretical "carrying capacity" of the environment less the current population.</item></list></para>
+      /// <para><see href="https://en.wikipedia.org/wiki/Logistic_map"/></para>
+      /// <seealso cref="Statistics.PopulationModelRicker(double, double, double)"/>
+      /// </summary>
+      /// <param name="Xn">The ratio of existing population to maximum possible population (Xn).</param>
+      /// <param name="r">A value in the range [0, 4] (r).</param>
+      /// <returns>The ratio of population to max possible population in the next generation (Xn + 1)</returns>
+      public static TFloat LogisticMap(TFloat Xn, TFloat r)
+        => r * Xn * (TFloat.One - Xn);
 
       #region Native..
 
@@ -506,6 +539,15 @@
 
       #endregion
 
+      /// <summary>
+      /// <para>Computes the odds (p / (1 - p)) of a probability p.</para>
+      /// <para><see href="https://en.wikipedia.org/wiki/Logit"/></para>
+      /// </summary>
+      /// <param name="probability">The probability in the range [0, 1].</param>
+      /// <returns>The odds of the specified probability in the range [-infinity, +infinity].</returns>
+      public static Units.Ratio ProbabilityToOdds(TFloat probability)
+        => new(double.CreateChecked(probability), double.CreateChecked(TFloat.One - probability));
+
       #region RoundMidpoint..
 
       /// <summary>
@@ -657,11 +699,43 @@
     }
 
     extension<TFloat>(TFloat)
+      where TFloat : System.Numerics.IFloatingPoint<TFloat>, System.Numerics.IExponentialFunctions<TFloat>
+    {
+      #region Expit function
+
+      /// <summary>The expit, which is the inverse of the natural logit, yields the logistic function of any number x (i.e. this is the same as the logistic function with default arguments).</summary>
+      /// <param name="x">The value in the domain of real numbers from [-infinity, +infinity].</param>
+      public static TFloat Expit(TFloat x)
+      => TFloat.One / (TFloat.Exp(-x) + TFloat.One);
+
+      #endregion
+
+      #region Logistic function
+
+      /// <summary>
+      /// <para>A logistic function or logistic curve is a common "S" shape (sigmoid curve).</para>
+      /// <para><see href="https://en.wikipedia.org/wiki/Logistic_function"/></para>
+      /// <para><seealso href="https://en.wikipedia.org/wiki/Sigmoid_function"/></para>
+      /// </summary>
+      /// <remarks>The standard logistic function is the logistic function with parameters (k = 1, x0 = 0, L = 1), a.k.a. sigmoid function.</remarks>
+      /// <typeparam name="TSelf"></typeparam>
+      /// <param name="x">The value in the domain of real numbers from [-infinity, +infinity] (x).</param>
+      /// <param name="k">The logistic growth rate or steepness of the curve (k). Default of (1).</param>
+      /// <param name="x0">The x-value of the sigmoid's midpoint (x0). Default of (0)</param>
+      /// <param name="L">The curve's maximum value (L).</param>
+      /// <returns></returns>
+      public static TFloat Logistic(TFloat x, TFloat k, TFloat x0, TFloat L)
+        => L / (TFloat.Exp(-(k * (x - x0))) + TFloat.One);
+
+      #endregion
+    }
+
+    extension<TFloat>(TFloat)
       where TFloat : System.Numerics.IFloatingPoint<TFloat>, System.Numerics.IFloatingPointConstants<TFloat>
     {
       #region GeographicToSpherical
 
-      /// <summary>Creates a new <see cref="SphericalCoordinate"/> from the <see cref="GeographicCoordinate"/>.</summary>
+      /// <summary>Converts a geographic-coordinate into a spherical-coordinate.</summary>
       public static (TFloat radius, TFloat inclination, TFloat azimuth) GeographicToSpherical(TFloat latitude, TFloat longitude, TFloat altitude)
       // Translates the geographic coordinate to spherical coordinate transparently. I cannot recall the reason for the System.Math.PI involvement (see remarks).
       {
@@ -709,6 +783,19 @@
 
       #endregion
 
+      #region Logit function
+
+      /// <summary>
+      /// <para>The logit function, which is the inverse of expit (or the logistic function), is the logarithm of the odds (p / (1 - p)) where p is the probability. Creates a map of probability values from [0, 1] to [-infinity, +infinity].</para>
+      /// <para><see href="https://en.wikipedia.org/wiki/Logit"/></para>
+      /// </summary>
+      /// <param name="probability">The probability in the range [0, 1].</param>
+      /// <returns>The odds of the specified probability in the range [-infinity, +infinity].</returns>
+      public static TFloat Logit(TFloat probability)
+        => TFloat.Log(TFloat.CreateChecked(ProbabilityToOdds(probability).Value));
+
+      #endregion
+
       #region RescaleLogarithmicToLinear
 
       /// <summary>
@@ -726,48 +813,6 @@
       /// <returns></returns>
       public static TFloat RescaleLogarithmicToLinear(TFloat y, TFloat y0, TFloat y1, TFloat x0, TFloat x1, TFloat radix)
         => Number.Rescale(TFloat.Log(y, radix), TFloat.Log(y0, radix), TFloat.Log(y1, radix), x0, x1); // Extract the numbers and use the standard Rescale() function for the math.
-
-      #endregion
-    }
-
-    extension<TFloat>(TFloat)
-      where TFloat : System.Numerics.IFloatingPoint<TFloat>, System.Numerics.ILogarithmicFunctions<TFloat>, System.Numerics.IExponentialFunctions<TFloat>
-    {
-      #region GeometricMean
-
-      /// <summary>
-      /// <para>The geometric mean is a mean or average which indicates a central tendency of a finite collection of positive real numbers by using the product of their values (as opposed to the arithmetic mean, which uses their sum).</para>
-      /// <para><see href="https://en.wikipedia.org/wiki/Geometric_mean"/></para>
-      /// </summary>
-      /// <remarks>This implementation uses <see cref="TFloat.Exp(TFloat)"/> and <see cref="TFloat.Log(TFloat)"/> to avoid arithmetic overflow or underflow.</remarks>
-      /// <param name="terms"></param>
-      /// <returns></returns>
-      public static TFloat GeometricMean(params System.Collections.Generic.IEnumerable<TFloat> terms)
-        => TFloat.Exp(terms.Select(TFloat.Log).Sum(out var count) / TFloat.CreateChecked(count));
-
-      #endregion
-    }
-
-    extension<TFloat>(TFloat)
-      where TFloat : System.Numerics.IFloatingPoint<TFloat>, System.Numerics.ILogarithmicFunctions<TFloat>, System.Numerics.IPowerFunctions<TFloat>
-    {
-      #region RescaleLinearToLogarithmic
-
-      /// <summary>
-      /// <para>Rescale linear (X) to logarithmic (Y).</para>
-      /// <example>
-      /// <code>var y = (7.5).RescaleLinearToLogarithmic(0.1, 10, 0.1, 10, 2);</code>
-      /// <code>y = 3.1257158496882371</code>
-      /// </example>
-      /// </summary>
-      /// <param name="x0"></param>
-      /// <param name="x1"></param>
-      /// <param name="y0"></param>
-      /// <param name="y1"></param>
-      /// <param name="radix"></param>
-      /// <returns></returns>
-      public static TFloat RescaleLinearToLogarithmic(TFloat x, TFloat x0, TFloat x1, TFloat y0, TFloat y1, TFloat radix)
-      => TFloat.Pow(radix, Number.Rescale(x, x0, x1, TFloat.Log(y0, radix), TFloat.Log(y1, radix))); // Extract the numbers and use the standard Rescale() function for the math.
 
       #endregion
     }
@@ -829,8 +874,9 @@
       where TRadix : System.Numerics.IBinaryInteger<TRadix>
       {
         System.ArgumentOutOfRangeException.ThrowIfNegative(significantDigits);
+        System.ArgumentOutOfRangeException.ThrowIfLessThanOrEqual(radix, TRadix.One);
 
-        var scalar = TFloat.Pow(TFloat.CreateChecked(Units.Radix.AssertMember(radix)), TFloat.CreateChecked(significantDigits));
+        var scalar = TFloat.Pow(TFloat.CreateChecked(radix), TFloat.CreateChecked(significantDigits));
 
         return RoundMidpoint(x * scalar, mode) / scalar;
       }
@@ -853,8 +899,9 @@
         where TRadix : System.Numerics.IBinaryInteger<TRadix>
       {
         System.ArgumentOutOfRangeException.ThrowIfNegative(significantDigits);
+        System.ArgumentOutOfRangeException.ThrowIfLessThanOrEqual(radix, TRadix.One);
 
-        var scalar = TFloat.Pow(TFloat.CreateChecked(Units.Radix.AssertMember(radix)), TFloat.CreateChecked(significantDigits + 1));
+        var scalar = TFloat.Pow(TFloat.CreateChecked(radix), TFloat.CreateChecked(significantDigits + 1));
 
         return RoundByPrecision(TFloat.Truncate(x * scalar) / scalar, mode, significantDigits, radix);
       }
@@ -863,7 +910,7 @@
     }
 
     extension<TFloat>(TFloat)
-      where TFloat : System.Numerics.IRootFunctions<TFloat>
+      where TFloat : System.Numerics.IFloatingPoint<TFloat>, System.Numerics.IRootFunctions<TFloat>
     {
       #region HelmertsExpansionParameterK1
 
@@ -1051,6 +1098,48 @@
           radiusC * ci
         );
       }
+
+      #endregion
+    }
+
+    extension<TFloat>(TFloat)
+      where TFloat : System.Numerics.IFloatingPoint<TFloat>, System.Numerics.IExponentialFunctions<TFloat>, System.Numerics.ILogarithmicFunctions<TFloat>
+    {
+      #region GeometricMean
+
+      /// <summary>
+      /// <para>The geometric mean is a mean or average which indicates a central tendency of a finite collection of positive real numbers by using the product of their values (as opposed to the arithmetic mean, which uses their sum).</para>
+      /// <para><see href="https://en.wikipedia.org/wiki/Geometric_mean"/></para>
+      /// </summary>
+      /// <remarks>This implementation uses <see cref="TFloat.Exp(TFloat)"/> and <see cref="TFloat.Log(TFloat)"/> to avoid arithmetic overflow or underflow.</remarks>
+      /// <param name="terms"></param>
+      /// <returns></returns>
+      public static TFloat GeometricMean(params System.Collections.Generic.IEnumerable<TFloat> terms)
+        => TFloat.Exp(terms.Select(TFloat.Log).Sum(out var count) / TFloat.CreateChecked(count));
+
+      #endregion
+    }
+
+    extension<TFloat>(TFloat)
+      where TFloat : System.Numerics.IFloatingPoint<TFloat>, System.Numerics.ILogarithmicFunctions<TFloat>, System.Numerics.IPowerFunctions<TFloat>
+    {
+      #region RescaleLinearToLogarithmic
+
+      /// <summary>
+      /// <para>Rescale linear (X) to logarithmic (Y).</para>
+      /// <example>
+      /// <code>var y = (7.5).RescaleLinearToLogarithmic(0.1, 10, 0.1, 10, 2);</code>
+      /// <code>y = 3.1257158496882371</code>
+      /// </example>
+      /// </summary>
+      /// <param name="x0"></param>
+      /// <param name="x1"></param>
+      /// <param name="y0"></param>
+      /// <param name="y1"></param>
+      /// <param name="radix"></param>
+      /// <returns></returns>
+      public static TFloat RescaleLinearToLogarithmic(TFloat x, TFloat x0, TFloat x1, TFloat y0, TFloat y1, TFloat radix)
+      => TFloat.Pow(radix, Number.Rescale(x, x0, x1, TFloat.Log(y0, radix), TFloat.Log(y1, radix))); // Extract the numbers and use the standard Rescale() function for the math.
 
       #endregion
     }

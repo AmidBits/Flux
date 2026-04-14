@@ -2,7 +2,6 @@ using System;
 using System.Linq;
 
 using Flux;
-using Flux.Globalization.En;
 using Flux.Units;
 
 namespace ConsoleApp
@@ -790,9 +789,9 @@ namespace ConsoleApp
 
         var rulesCompiled = rules.CompileRules<User>();
 
-        System.Console.WriteLine($"{user1}{System.Environment.NewLine}{rulesCompiled.EvaluateRules(user1).ToConsoleString(k => k.ToString(), v => v.ToString())}");
-        System.Console.WriteLine($"{user2}{System.Environment.NewLine}{rulesCompiled.EvaluateRules(user2).ToConsoleString(k => k.ToString(), v => v.ToString())}");
-        System.Console.WriteLine($"{user3}{System.Environment.NewLine}{rulesCompiled.EvaluateRules(user3).ToConsoleString(k => k.ToString(), v => v.ToString())}");
+        System.Console.WriteLine($"{user1}{System.Environment.NewLine}{rulesCompiled.EvaluateRules(user1).ToConsoleString()}");
+        System.Console.WriteLine($"{user2}{System.Environment.NewLine}{rulesCompiled.EvaluateRules(user2).ToConsoleString()}");
+        System.Console.WriteLine($"{user3}{System.Environment.NewLine}{rulesCompiled.EvaluateRules(user3).ToConsoleString()}");
       }
     }
 

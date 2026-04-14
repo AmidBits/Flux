@@ -2,138 +2,39 @@ namespace Flux
 {
   public static partial class DictionaryExtensions
   {
-    public static bool ContainsKeyValuePair<TKey, TValue>(this System.Collections.Generic.Dictionary<TKey, TValue> source, TKey key, TValue value, System.Collections.Generic.IEqualityComparer<TValue>? equalityComparer = null)
-      where TKey : notnull
+    extension<TKey, TValue>(System.Collections.Generic.IDictionary<TKey, TValue> source)
     {
-      equalityComparer ??= System.Collections.Generic.EqualityComparer<TValue>.Default;
-
-      return source.TryGetValue(key, out var foundValue) && equalityComparer.Equals(foundValue, value);
-    }
-
-
-
-    public static object[][] ToJaggedArray(this System.Collections.Generic.IEnumerable<System.Collections.DictionaryEntry> source, bool expandValueCollectionsToArrays = false)
-    {
-      var dim0 = new System.Collections.Generic.List<object[]>();
-
-      var dim1 = new System.Collections.Generic.List<object>();
-
-      foreach (var de in source)
+      /// <summary>
+      /// <para>Determines whether the dictionary contains the specified key and its associated value, using an optional equality comparer for value comparison.</para>
+      /// </summary>
+      /// <param name="key">The key to locate in the dictionary.</param>
+      /// <param name="value">The value to compare with the value associated with the specified key.</param>
+      /// <param name="equalityComparer">An optional equality comparer to use for comparing values. If null, the default equality comparer for the value type is used.</param>
+      /// <returns>True if the dictionary contains an entry with the specified key and value; otherwise, false.</returns>
+      public bool ContainsKeyAndValue(TKey key, TValue value, System.Collections.Generic.IEqualityComparer<TValue>? equalityComparer = null)
       {
-        dim1.Clear();
+        equalityComparer ??= System.Collections.Generic.EqualityComparer<TValue>.Default;
 
-        dim1.Add(de.Key);
-
-        if (expandValueCollectionsToArrays && de.Value is System.Collections.IDictionary dv)
-          dim1.Add(dv);
-        else if (expandValueCollectionsToArrays && de.Value is System.Collections.IEnumerable ev)
-          dim1.AddRange();
-        else
-          dim1.Add(de.Value!);
-
-        dim0.Add(dim1.ToArray());
+        return source.TryGetValue(key, out var foundValue) && equalityComparer.Equals(foundValue, value);
       }
-
-      return dim0.ToArray();
-    }
-
-    public static object[] ConvertToArray(this System.Collections.DictionaryEntry source, bool expandValueToArray = false)
-    {
-      var list = new System.Collections.Generic.List<object> { source.Key };
-
-      if (expandValueToArray && source.Value is System.Collections.IDictionary dv)
-        list.Add(ToJaggedArray(dv.Cast<System.Collections.DictionaryEntry>(), expandValueToArray));
-      else if (expandValueToArray && source.Value is System.Collections.IEnumerable ev)
-        list.AddRange(ev);
-      else
-        list.Add(source.Value!);
-
-      return list.ToArray();
-    }
-
-    extension(System.Collections.Generic.IEnumerable<System.Collections.DictionaryEntry> source)
-    {
-      public System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, TValue>> EnumerateKeyValuePair<TKey, TValue>(System.Globalization.CultureInfo? culture = null)
-        where TKey : notnull
-      {
-        culture ??= System.Globalization.CultureInfo.CurrentCulture;
-
-        foreach (var de in source)
-          yield return new KeyValuePair<TKey, TValue>((TKey)object.TypeConverter(de.Key, culture, [typeof(TKey)]), (TValue)object.TypeConverter(de.Value!, culture, [typeof(TValue)]));
-      }
-
-      public object[][] ToJaggedArray()
-        => source.Select(kvp => new object[] { kvp.Key, kvp.Value! }).ToArray();
-
-      //public string ToConsoleString(System.Func<object, string> keySelector, System.Func<object, string> valueSelector, ConsoleFormatOptions? options = null)
-      //  => ToJaggedArray(source).JaggedToConsoleString(options ?? ConsoleFormatOptions.Default with { HorizontalSeparator = "=" });
-    }
-
-    extension(System.Collections.IDictionary source)
-    {
-      public System.Collections.Generic.IEnumerable<System.Collections.DictionaryEntry> EnumerateDictionaryEntry()
-        => source.Cast<System.Collections.DictionaryEntry>();
-
-      public object[][] ToJaggedArray(bool pivot)
-      {
-        if (pivot)
-        {
-          var array0 = new object[source.Count];
-          var array1 = new object[source.Count];
-
-          var e = source.GetEnumerator();
-
-          for (var i = 0; i < source.Count && e.MoveNext(); i++)
-            (array0[i], array1[i]) = (e.Key, e.Value!);
-
-          return [array0, array1];
-        }
-        else
-        {
-          var array = new object[source.Count][];
-
-          var e = source.GetEnumerator();
-
-          for (var i = 0; i < source.Count && e.MoveNext(); i++)
-            array[i] = [e.Key, e.Value!];
-
-          return array;
-        }
-      }
-
-      public object[,] ToRank2Array()
-      {
-        var array = new object[source.Count, 2];
-
-        var e = source.GetEnumerator();
-
-        for (var i = 0; i < source.Count && e.MoveNext(); i++)
-          (array[i, 0], array[i, 1]) = (e.Key, e.Value!);
-
-        return array;
-      }
-    }
-
-    extension<TKey, TValue>(System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, TValue>> source)
-      where TKey : notnull
-    {
-      public System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TValue, TKey>> FlipPairs()
-        => source.GroupBy(kvp => kvp.Value).SelectMany(g => g.Select(gi => System.Collections.Generic.KeyValuePair.Create(gi.Value, gi.Key)));
-
-      public object[][] ToJaggedArray()
-        => source.Select(kvp => new object[] { kvp.Key, kvp.Value! }).ToArray();
-
-      /// <summary>Converts a sequence of <see cref="System.Collections.Generic.KeyValuePair{TKey, TValue}"/> into a single composite string.</summary>
-      public string ToConsoleString(System.Func<TKey, string> keySelector, System.Func<TValue, string> valueSelector, ConsoleFormatOptions? options = null)
-        => System.Array.JaggedArrayToConsoleString(ToJaggedArray(source), options ?? ConsoleFormatOptions.Default with { HorizontalSeparator = "=" });
     }
 
     extension<TKey, TValue>(System.Collections.Generic.IDictionary<TKey, TValue> source)
       where TKey : notnull
     {
       /// <summary>
-      /// <para>Merge-overwrite <paramref name="source"/> with elements from the <paramref name="other"/> <see cref="System.Collections.Generic.IDictionary{TKey, TValue}"/> or enumerable of <see cref="System.Collections.Generic.KeyValuePair{TKey, TValue}"/>.</para>
-      /// <para>Essentially a merge of the elements in <paramref name="other"/> into <paramref name="source"/>. If keys are equal, <paramref name="other"/> values will overwrite the values in <paramref name="source"/>.</para>
+      /// <para>Modifies the current <see cref="System.Collections.Generic.IDictionary{TKey, TValue}"/> so that it contains the keys from both dictionaries. If values of equal keys are present between the two dictionaries, the current are kept.</para>
+      /// </summary>
+      /// <param name="other"></param>
+      public void MergeKeepWith(System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, TValue>> other)
+      {
+        foreach (var (key, value) in other)
+          if (!source.ContainsKey(key))
+            source[key] = value;
+      }
+
+      /// <summary>
+      /// <para>Modifies the current <see cref="System.Collections.Generic.IDictionary{TKey, TValue}"/> so that it contains the keys from both dictionaries. If values of equal keys are present between the two dictionaries, the other overwrites those in the current.</para>
       /// </summary>
       /// <typeparam name="TKey"></typeparam>
       /// <typeparam name="TValue"></typeparam>
@@ -145,47 +46,157 @@ namespace Flux
           source[key] = value;
       }
 
-      public object[][] ToJaggedArray(bool pivot)
+      /// <summary>
+      /// <para>Creates a new 2-dimensional array from the <see cref="System.Collections.Generic.IDictionary{TKey, TValue}"/>.</para>
+      /// </summary>
+      /// <param name="pivot">Whether the 2-dimensional array should pivot the dictionary keys and values.</param>
+      /// <returns></returns>
+      public object?[,] ToRank2Array(bool pivot)
       {
-        if (pivot)
+        var array = pivot ? new object?[2, source.Count] : new object?[source.Count, 2];
+
+        var index = 0;
+
+        foreach (var (k, v) in source)
         {
-          var array = new object[2][];
+          if (pivot)
+            (array[0, index], array[1, index]) = (k, v);
+          else
+            (array[index, 0], array[index, 1]) = (k, v);
 
-          array[0] = [source.Keys];
-          array[1] = [source.Values];
-
-          return array;
+          index++;
         }
-        else
-        {
-          var array = new object[source.Count][];
 
-          using var e = source.GetEnumerator();
-
-          for (var i = 0; i < source.Count && e.MoveNext(); i++)
-            array[i] = [e.Current.Key, e.Current.Value!];
-
-          return array;
-        }
+        return array;
       }
+    }
 
-      public object[,] ToRank2Array()
+    extension(System.Collections.IDictionary source)
+    {
+      /// <summary>
+      /// <para>Determines whether the collection contains the specified key and its associated value.</para>
+      /// </summary>
+      /// <param name="key">The key to locate in the collection. Cannot be null.</param>
+      /// <param name="value">The value to compare with the value associated with the specified key.</param>
+      /// <returns>true if the collection contains an entry with the specified key and value; otherwise, false.</returns>
+      public bool ContainsKeyAndValue(object key, object value)
+        => source.Contains(key) && source[key] == value;
+
+      /// <summary>
+      /// <para>Projects the elements of the source collection into a sequence of key/value pairs using the specified key and value selector functions.</para>
+      /// </summary>
+      /// <typeparam name="TKey">The type of the keys returned by the key selector function.</typeparam>
+      /// <typeparam name="TValue">The type of the values returned by the value selector function.</typeparam>
+      /// <param name="keySelector">A function to extract the key from each element in the source collection.</param>
+      /// <param name="valueSelector">A function to extract the value from each element in the source collection.</param>
+      /// <returns>An enumerable collection of key/value pairs where each pair is created by applying the key and value selector functions to each element of the source collection.</returns>
+      public System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, TValue>> ToKeyValuePairs<TKey, TValue>(System.Func<object, TKey> keySelector, System.Func<object, TValue> valueSelector)
       {
-        var array = new object[source.Count, 2];
+        System.ArgumentNullException.ThrowIfNull(keySelector);
+        System.ArgumentNullException.ThrowIfNull(valueSelector);
 
-        using var e = source.GetEnumerator();
+        return source.Cast<System.Collections.DictionaryEntry>().Select(de => new System.Collections.Generic.KeyValuePair<TKey, TValue>(keySelector(de), valueSelector(de)));
+      }
+    }
 
-        for (var i = 0; i < source.Count && e.MoveNext(); i++)
-          (array[i, 0], array[i, 1]) = (e.Current.Key, e.Current.Value!);
+    extension<TKey, TValue>(System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, TValue>> source)
+    {
+      /// <summary>
+      /// <para>Converts a sequence of <see cref="System.Collections.Generic.KeyValuePair{TKey, TValue}"/> into a single composite string.</para>
+      /// </summary>
+      /// <param name="options"></param>
+      /// <param name="pivot"></param>
+      /// <returns></returns>
+      public string ToConsoleString(ConsoleFormatOptions? options = null, bool pivot = false)
+        => System.Array.JaggedArrayToConsoleString(ToJaggedArray(source, pivot), options ?? ConsoleFormatOptions.Default with { HorizontalSeparator = "=" });
+
+      /// <summary>
+      /// <para>Creates a new jagged array from the <see cref="System.Collections.Generic.IDictionary{TKey, TValue}"/>.</para>
+      /// </summary>
+      /// <param name="pivot">Whether the jagged array should pivot the dictionary keys and values.</param>
+      /// <returns></returns>
+      public object?[][] ToJaggedArray(bool pivot)
+      {
+        object?[][] array = pivot ? new object?[2][] : [];
+
+        foreach (var (k, v) in source)
+        {
+          if (pivot)
+          {
+            var a0 = System.Buffers.ArrayPool<object?>.Shared.Rent((array[0]?.Length ?? 0) + 1);
+            var a1 = System.Buffers.ArrayPool<object?>.Shared.Rent((array[1]?.Length ?? 0) + 1);
+
+            if (a0.Length > 1)
+            {
+              System.Array.Copy(array[0], a0, array[0].Length);
+              System.Buffers.ArrayPool<object?>.Shared.Return(array[0]);
+            }
+            if (a1.Length > 0)
+            {
+              System.Array.Copy(array[1], a1, array[1].Length);
+              System.Buffers.ArrayPool<object?>.Shared.Return(array[1]);
+            }
+
+            a0[^1] = k;
+            a1[^1] = v;
+
+            (array[0], array[1]) = (a0, a1);
+          }
+          else // A dictionary straight to jagged array without pivoting can be built by simply appending the key-value pairs as arrays to the jagged array.
+          {
+            System.Array.Resize(ref array, array.Length + 1);
+
+            array[^1] = [k, v];
+          }
+        }
 
         return array;
       }
 
-      public System.Collections.Generic.IEnumerable<TKey> TryGetKeys(TValue value, System.Collections.Generic.IEqualityComparer<TValue>? equalityComparer = null)
+      /// <summary>
+      /// <para>Tries to get the keys associated with the specified value. Returns true if at least one key is found, false otherwise.</para>
+      /// </summary>
+      /// <param name="value"></param>
+      /// <param name="keys"></param>
+      /// <param name="equalityComparer"></param>
+      /// <returns></returns>
+      public bool TryGetKeys(TValue value, out System.Collections.Generic.List<TKey> keys, System.Collections.Generic.IEqualityComparer<TValue>? equalityComparer = null)
       {
         equalityComparer ??= System.Collections.Generic.EqualityComparer<TValue>.Default;
 
-        return source.Where(kvp => equalityComparer.Equals(kvp.Value, value)).Select(kvp => kvp.Key);
+        keys = [];
+
+        foreach (var (k, v) in source)
+          if (equalityComparer.Equals(v, value))
+            keys.Add(k);
+
+        return keys.Count > 0;
+      }
+    }
+
+    extension<TKey, TValue>(System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, TValue>> source)
+      where TKey : notnull
+    {
+      /// <summary>
+      /// <para>Creates a new <see cref="System.Collections.Generic.IDictionary{TKey, TValue}"/> so that it contains the keys from both dictionaries. If values of equal keys are present between the two dictionaries, the current are used.</para>
+      /// </summary>
+      /// <param name="other"></param>
+      public System.Collections.Generic.IDictionary<TKey, TValue> MergeKeep(System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, TValue>> other)
+      {
+        var dictionary = source.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+        dictionary.MergeKeepWith(other);
+        return dictionary;
+      }
+
+      /// <summary>
+      /// <para>Creates a new <see cref="System.Collections.Generic.IDictionary{TKey, TValue}"/> so that it contains the keys from both dictionaries. If values of equal keys are present between the two dictionaries, the other are used.</para>
+      /// </summary>
+      /// <param name="other"></param>
+      public System.Collections.Generic.IDictionary<TKey, TValue> MergeOverwrite(System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, TValue>> other)
+      {
+        var dictionary = source.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+        dictionary.MergeOverwriteWith(other);
+        return dictionary;
       }
     }
 
@@ -238,6 +249,6 @@ namespace Flux
       return unswitchable;
     }
 
-    #endregion // Swich functionality
+    #endregion
   }
 }
