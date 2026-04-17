@@ -17,14 +17,9 @@
     public static RangeComparer Ascending { get; } = new(SortOrder.Ascending);
     public static RangeComparer Descending { get; } = new(SortOrder.Descending);
 
-    private readonly SortOrder m_sortOrder;
+    private RangeComparer(SortOrder sortOrder) => SortOrder = sortOrder;
 
-    private RangeComparer(SortOrder sortOrder)
-      => m_sortOrder = sortOrder;
-
-    public SortOrder SortOrder => m_sortOrder;
-
-    #region Implemented interfaces
+    public SortOrder SortOrder { get; }
 
     public int Compare(System.Range x, System.Range y)
     {
@@ -35,50 +30,32 @@
         : x.End.Value < y.End.Value ? -1
         : 0;
 
-      return m_sortOrder switch
+      return SortOrder switch
       {
         SortOrder.Ascending => cmp,
         SortOrder.Descending => -cmp,
-        _ => throw new NotImplementedException(),
+        _ => throw new System.NotImplementedException(),
       };
     }
 
-    #endregion
-
-    public override string ToString()
-      => $"{GetType().Name} {{ {m_sortOrder} }}";
+    public override string ToString() => $"{GetType().Name} {{ {SortOrder} }}";
   }
 
   #endregion
 
   #region ReverseComparer
 
-  public sealed class ReverseComparer<T>
+  public sealed class ReverseComparer<T>(System.Collections.Generic.IComparer<T> comparer)
     : System.Collections.Generic.IComparer<T>
   {
-    private readonly System.Collections.Generic.IComparer<T> m_comparer;
+    public static System.Collections.Generic.IComparer<T> Default => new ReverseComparer<T>(System.Collections.Generic.Comparer<T>.Default);
 
-    public ReverseComparer(System.Collections.Generic.IComparer<T> comparer)
-      => m_comparer = comparer;
+    public System.Collections.Generic.IComparer<T> Comparer { get; } = comparer;
 
-    private ReverseComparer()
-      : this(System.Collections.Generic.Comparer<T>.Default)
-    { }
+    public int Compare(T? x, T? y) => -Comparer.Compare(x, y);
 
-    public System.Collections.Generic.IComparer<T> Comparer
-      => m_comparer;
-
-    #region Implemented interfaces
-
-    public int Compare(T? x, T? y)
-      => -m_comparer.Compare(x, y);
-
-    #endregion
-
-    public override string ToString()
-      => $"{GetType().Name} {{ {m_comparer} }}";
+    public override string ToString() => $"{GetType().Name} {{ {Comparer} }}";
   }
-
 
   #endregion
 }

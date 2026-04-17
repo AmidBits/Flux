@@ -50,7 +50,7 @@
           _ => throw new NotImplementedException()
         };
 
-      #region CompareToFraction..
+      #region CompareToFractionMidpoint
 
       /// <summary>
       /// <para>Compare the fraction part of <paramref name="value"/> to it's midpoint (i.e. its .5).</para>
@@ -64,6 +64,10 @@
       /// </returns>
       public static int CompareToFractionMidpoint(TFloat x)
         => Number.Sign((x - TFloat.Floor(x)).CompareTo(TFloat.CreateChecked(0.5)));
+
+      #endregion
+
+      #region CompareToFractionPercent
 
       /// <summary>
       /// <para>Compares the fraction part of <paramref name="x"/> to the specified <paramref name="percent"/> and returns the sign of the result (i.e. -1 means less-than, 0 means equal-to, and 1 means greater-than).</para>
@@ -81,7 +85,7 @@
 
       #endregion
 
-      #region Envelop..
+      #region Envelop
 
       /// <summary>
       /// <para>Envelops a value.</para>
@@ -119,10 +123,10 @@
 
       #endregion
 
-      #region FallingFactorial (generalized)
+      #region Factorial functions (generalized)
 
       /// <summary>
-      /// <para>Generalized factorial power: <code>x^(n)_falling(h) = x * (x - h) * (x - 2h) * ... * (x - (n-1)h)</code></para>
+      /// <para>Generalized rising factorial: x^(n)_rising(h) = x * (x + h) * (x + 2h) * ... * (x + (n-1)h)</para>
       /// </summary>
       /// <typeparam name="TInteger"></typeparam>
       /// <param name="x">The base, or starting value of the sequence of factors. Plays the same role as in ordinary factorial‑like expressions.</param>
@@ -132,15 +136,13 @@
       public static TFloat FactorialPower<TInteger>(TFloat x, TInteger n, TFloat h)
         where TInteger : System.Numerics.IBinaryInteger<TInteger>
       {
-        System.ArgumentOutOfRangeException.ThrowIfNegative(n);
-
         TFloat result = TFloat.One;
 
         while (n-- > TInteger.Zero)
         {
           result *= x;
 
-          x -= h; // Decrement x by step h.
+          x += h; // increment x by step h
         }
 
         return result;
@@ -237,10 +239,10 @@
 
       #endregion
 
-      #region Interpolate.. (cubic, cubicpb, hermite, linear)
+      #region Interpolate.. functions
 
       /// <summary>
-      /// <para></para>
+      /// <para>Cubic interpolation.</para>
       /// <para><see href="http://paulbourke.net/miscellaneous/interpolation/"/></para>
       /// </summary>
       /// <typeparam name="TFloat"></typeparam>
@@ -263,7 +265,7 @@
       }
 
       /// <summary>
-      /// <para></para>
+      /// <para>Cubic interpolation a'la Paul Burke.</para>
       /// <para><see href="http://paulbourke.net/miscellaneous/interpolation/"/></para>
       /// </summary>
       /// <typeparam name="TFloat"></typeparam>
@@ -290,7 +292,7 @@
       }
 
       /// <summary>
-      /// <para></para>
+      /// <para>Hermite interpolation.</para>
       /// <para><see href="http://paulbourke.net/miscellaneous/interpolation/"/></para>
       /// </summary>
       /// <typeparam name="TFloat"></typeparam>
@@ -329,10 +331,16 @@
       /// <para>Linear interpolation (a.k.a. lerp) is the simplest method of getting values at positions in between the data points. The points are simply joined by straight line segments. Each segment (bounded by two data points) can be interpolated independently. The parameter mu defines where to estimate the value on the interpolated line, it is 0 at the first point and 1 and the second point. For interpolated values between the two points mu ranges between 0 and 1. Values of mu outside the range result in extrapolation.</para>
       /// <para><see href="http://paulbourke.net/miscellaneous/interpolation/"/></para>
       /// </summary>
+      /// <param name="y0"></param>
+      /// <param name="y1"></param>
+      /// <param name="mu"></param>
+      /// <returns></returns>
       public static TFloat InterpolateLinear(TFloat y0, TFloat y1, TFloat mu)
         => (TFloat.One - mu) * y0 + mu * y1;
 
       #endregion
+
+      #region LogisticMap
 
       /// <summary>
       /// <para>This nonlinear difference equation is intended to capture two effects.<list type="number"><item>Reproduction where the population will increase at a rate proportional to the current population when the population size is small.</item><item>Starvation (density-dependent mortality) where the growth rate will decrease at a rate proportional to the value obtained by taking the theoretical "carrying capacity" of the environment less the current population.</item></list></para>
@@ -344,6 +352,8 @@
       /// <returns>The ratio of population to max possible population in the next generation (Xn + 1)</returns>
       public static TFloat LogisticMap(TFloat Xn, TFloat r)
         => r * Xn * (TFloat.One - Xn);
+
+      #endregion
 
       #region Native..
 
@@ -384,7 +394,7 @@
 
       #endregion
 
-      #region ..NearInteger
+      #region NearInteger functions
 
       /// <summary>
       /// <para>Indicates whether a <paramref name="value"/> is near an integer and if so outputs the <paramref name="integer"/> as a parameter.</para>
@@ -438,7 +448,7 @@
 
       #endregion
 
-      #region ..NearNumber
+      #region NearNumber functions
 
       /// <summary>
       /// <para>Perform both an absolute and a relative equality test for more robust comparisons. Returns true if any test is considered equal, otherwise false.</para>
@@ -500,35 +510,6 @@
 
       #endregion
 
-      #region FallingFactorial (generalized)
-
-      /// <summary>
-      /// <para>Generalized rising factorial: x^(n)_rising(h) = x * (x + h) * (x + 2h) * ... * (x + (n-1)h)</para>
-      /// </summary>
-      /// <typeparam name="TInteger"></typeparam>
-      /// <param name="x">The base, or starting value of the sequence of factors. Plays the same role as in ordinary factorial‑like expressions.</param>
-      /// <param name="n">The order, or number of factors in the product. Must be non-negative. If 0, the defined result is 1.</param>
-      /// <param name="h">Step size, or increment between factors. Determines how far apart the terms are spaced.</param>
-      /// <returns></returns>
-      public static TFloat RisingFactorial<TInteger>(TFloat x, TInteger n, TFloat h)
-        where TInteger : System.Numerics.IBinaryInteger<TInteger>
-      {
-        System.ArgumentOutOfRangeException.ThrowIfNegative(n);
-
-        TFloat result = TFloat.One;
-
-        while (n-- > TInteger.Zero)
-        {
-          result *= x;
-
-          x += h; // increment x by step h
-        }
-
-        return result;
-      }
-
-      #endregion
-
       #region Percent..ToPercent..
 
       public static TFloat PercentAddedToPercentRemove(TFloat percentAdded)
@@ -539,6 +520,8 @@
 
       #endregion
 
+      #region ProbabilityToOdds
+
       /// <summary>
       /// <para>Computes the odds (p / (1 - p)) of a probability p.</para>
       /// <para><see href="https://en.wikipedia.org/wiki/Logit"/></para>
@@ -548,7 +531,9 @@
       public static Units.Ratio ProbabilityToOdds(TFloat probability)
         => new(double.CreateChecked(probability), double.CreateChecked(TFloat.One - probability));
 
-      #region RoundMidpoint..
+      #endregion
+
+      #region RoundMidpoint functions
 
       /// <summary>
       /// <para>Rounds a value to the nearest integer, resolving halfway cases using the specified <see cref="MidpointRoundingEx"/> <paramref name="mode"/>.</para>
@@ -678,7 +663,7 @@
 
       #endregion
 
-      #region Truncate..
+      #region Truncate
 
       /// <summary>
       /// <para>Truncates a value at the specified number of <paramref name="significantDigits"/> (decimal places).</para>
@@ -701,7 +686,7 @@
     extension<TFloat>(TFloat)
       where TFloat : System.Numerics.IFloatingPoint<TFloat>, System.Numerics.IExponentialFunctions<TFloat>
     {
-      #region Expit function
+      #region Expit
 
       /// <summary>The expit, which is the inverse of the natural logit, yields the logistic function of any number x (i.e. this is the same as the logistic function with default arguments).</summary>
       /// <param name="x">The value in the domain of real numbers from [-infinity, +infinity].</param>
@@ -710,7 +695,7 @@
 
       #endregion
 
-      #region Logistic function
+      #region Logistic
 
       /// <summary>
       /// <para>A logistic function or logistic curve is a common "S" shape (sigmoid curve).</para>
@@ -783,7 +768,7 @@
 
       #endregion
 
-      #region Logit function
+      #region Logit
 
       /// <summary>
       /// <para>The logit function, which is the inverse of expit (or the logistic function), is the logarithm of the odds (p / (1 - p)) where p is the probability. Creates a map of probability values from [0, 1] to [-infinity, +infinity].</para>
@@ -855,7 +840,7 @@
 
       #endregion
 
-      #region RoundBy..
+      #region RoundByPrecision
 
       /// <summary>
       /// <para>Rounds the <paramref name="value"/> to the nearest <paramref name="significantDigits"/> in base <paramref name="radix"/>. The <paramref name="mode"/> specifies the halfway rounding strategy to use.</para>
@@ -880,6 +865,10 @@
 
         return RoundMidpoint(x * scalar, mode) / scalar;
       }
+
+      #endregion
+
+      #region RoundByTruncatedPrecision
 
       /// <summary>
       /// <para>Rounds <paramref name="x"/> by truncating to the specified number of <paramref name="significantDigits"/> in base <paramref name="radix"/> and then round using the <paramref name="mode"/>. The reason for doing this is because unless a value is EXACTLY between two numbers, to the decimal, it will be rounded based on the next least significant decimal digit and so on.</para>
@@ -924,60 +913,49 @@
     }
 
     extension<TFloat>(TFloat)
-      where TFloat : System.Numerics.IFloatingPoint<TFloat>, System.Numerics.ITrigonometricFunctions<TFloat>
+      where TFloat : System.Numerics.IFloatingPoint<TFloat>, System.Numerics.IFloatingPointConstants<TFloat>, System.Numerics.ITrigonometricFunctions<TFloat>
     {
-      public static TFloat Atan2(TFloat y, TFloat x)
+      #region Atan2.. functions
+
+      /// <summary>
+      /// <para>This is a signed Atan2 which means the output is in the interval [-PI, +PI] (i.e. the radian equivalent of -180 to 180 degrees).</para>
+      /// </summary>
+      /// <param name="y"></param>
+      /// <param name="x"></param>
+      /// <returns></returns>
+      public static TFloat Atan2Signed(TFloat y, TFloat x)
       {
-        if (TFloat.IsNaN(y) || TFloat.IsNaN(x))
-          return get_GenericNaN<TFloat>();
+        if (TFloat.IsNaN(x) || TFloat.IsNaN(y))
+          return TFloat.CreateChecked(double.NaN);
 
-        TFloat zero = TFloat.Zero;
-        TFloat pi = TFloat.CreateChecked(Math.PI);
-        TFloat halfPi = pi / TFloat.CreateChecked(2);
-        TFloat quarterPi = pi / TFloat.CreateChecked(4);
-        TFloat threeQuarterPi = TFloat.CreateChecked(3) * pi / TFloat.CreateChecked(4);
+        var zero = TFloat.Zero;
 
-        if (TFloat.IsZero(y))
+        if (x == zero) // Handle x == 0 separately (vertical axis)
         {
-          if (x > zero) return y; // +0 or -0
-          if (x < zero) return (y >= zero) ? pi : -pi;
-          return y; // x = 0 → return ±0
+          if (y == zero)
+            return zero;
+
+          var halfPi = TFloat.Pi / TFloat.CreateChecked(2);
+
+          return y > zero ? halfPi : -halfPi;
         }
 
-        if (TFloat.IsZero(x))
-          return (y > zero) ? halfPi : -halfPi;
+        var angle = TFloat.Atan(y / x); // Compute the base angle.
 
-        if (TFloat.IsInfinity(x) || TFloat.IsInfinity(y))
-        {
-          var xinf = TFloat.IsInfinity(x);
-          var yinf = TFloat.IsInfinity(y);
-
-          if (xinf && yinf)
-          {
-            if (x > zero)
-              return (y > zero) ? quarterPi : -quarterPi;
-            else
-              return (y > zero) ? threeQuarterPi : -threeQuarterPi;
-          }
-
-          if (xinf)
-          {
-            var a = TFloat.Atan(y / x); // ±0
-
-            return (x > zero) ? a : a + ((y >= zero) ? pi : -pi);
-          }
-
-          if (yinf)
-            return (y > zero) ? halfPi : -halfPi;
-        }
-
-        var atan = TFloat.Atan(y / x); // General case
-
-        if (x > zero)
-          return atan;
-
-        return atan + ((y >= zero) ? pi : -pi);
+        return x > zero ? angle // Quadrants I and IV → angle is already correct.
+          : y >= zero ? angle + TFloat.Pi : angle - TFloat.Pi; // Quadrant II and III → Correction needed: add 180 degrees if in the second quadrant (x < 0, y >= 0) or subtract 180 degrees if in the third quadrant (x < 0, y < 0).
       }
+
+      /// <summary>
+      /// <para>This is an unsigned Atan2 which means the output is in the interval [0, 2*PI] (i.e. the radian equivalent of 0 to 360 degrees).</para>
+      /// </summary>
+      /// <param name="y"></param>
+      /// <param name="x"></param>
+      /// <returns></returns>
+      public static TFloat Atan2Unsigned(TFloat y, TFloat x)
+        => Atan2Signed(y, x) is var a && a < TFloat.Zero ? a + TFloat.Tau : a;
+
+      #endregion
 
       #region CylindricalToCartesian
 
@@ -996,15 +974,15 @@
 
       #endregion
 
-      #region Interpolate.. (cosine)
+      #region InterpolateCosine
 
       /// <summary>
       /// <para>Cosine interpolation is a smoother and perhaps simplest function. A suitable orientated piece of a cosine function serves to provide a smooth transition between adjacent segments.</para>
       /// <para><see href="http://paulbourke.net/miscellaneous/interpolation/"/></para>
       /// </summary>
       /// <typeparam name="TFloat"></typeparam>
-      /// <param name="y1">Source point.</param>
-      /// <param name="y2">Target point.</param>
+      /// <param name="y0">Source point.</param>
+      /// <param name="y1">Target point.</param>
       /// <param name="mu">The parameter mu defines where to estimate the value on the interpolated line, it is 0 at the first point and 1 and the second point. For interpolated values between the two points, the mu range is [0, 1]. Values of mu outside the range result in extrapolation.</param>
       /// <returns></returns>
       public static TFloat InterpolateCosine(TFloat y0, TFloat y1, TFloat mu)

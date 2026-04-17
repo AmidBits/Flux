@@ -27,11 +27,11 @@ namespace Flux
     /// </summary>
     Symbol = 'S',
     /// <summary>
-    /// <para>Unicode major category of "Separator" = 'Z', likely because 'S' is occupied for "Symbol".</para>
+    /// <para>Unicode major category of "Separator" = 'Z', probably since 'S' is occupied for "Symbol".</para>
     /// </summary>
     Separator = 'Z',
     /// <summary>
-    /// <para>Unicode major category of "Other" = 'C', likely for "Control".</para>
+    /// <para>Unicode major category of "Other" = 'C', likely for "Control" (after the old control characters in ASCII).</para>
     /// </summary>
     Other = 'C',
   }

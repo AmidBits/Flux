@@ -854,7 +854,7 @@ namespace Flux
 
       #endregion
 
-      #region Spread
+      #region Spread.. functions
 
       /// <summary>
       /// <para>Spreads an in-interval value around the outside edges of the closed interval [<paramref name="minValue"/>, <paramref name="maxValue"/>].</para>

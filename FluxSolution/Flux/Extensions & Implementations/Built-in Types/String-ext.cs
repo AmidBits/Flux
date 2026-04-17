@@ -72,7 +72,7 @@
       /// <summary>
       /// <para>Remove diacritical marks.</para>
       /// </summary>
-      public System.Text.StringBuilder RemoveUnicodeMarks()
+      public System.Text.StringBuilder RemoveUnicodeMarks(bool alsoReplaceLatinStrokes = false)
       {
         System.ArgumentNullException.ThrowIfNull(source);
 
@@ -81,6 +81,9 @@
         foreach (var c in source.Normalize(System.Text.NormalizationForm.FormKD))
           if (System.Globalization.CharUnicodeInfo.GetUnicodeCategory(c) is not System.Globalization.UnicodeCategory.NonSpacingMark and not System.Globalization.UnicodeCategory.SpacingCombiningMark and not System.Globalization.UnicodeCategory.EnclosingMark)
             sb.Append(c);
+
+        if (alsoReplaceLatinStrokes)
+          sb.ReplaceUnicodeLatinStrokes();
 
         return sb;
       }
@@ -110,7 +113,7 @@
       #region To..
 
       public System.IO.DirectoryInfo ToDirectoryInfo()
-        => new(source.TrimCommonPrefix(PathExtensions.m_pathSeparators).ToString());
+        => new(source.TrimCommonPrefix(System.IO.Path.DirectorySeparatorCharacters).ToString());
 
       public System.Uri ToUri(System.UriKind uriKind = System.UriKind.RelativeOrAbsolute)
         => new(source, uriKind);
@@ -143,7 +146,7 @@
     }
 
     public static System.IO.FileInfo ToFileInfo(this string source)
-      => new(source.AsSpan().TrimCommonPrefix(PathExtensions.m_pathSeparators).TrimCommonSuffix(PathExtensions.m_pathSeparators).ToString());
+      => new(source.AsSpan().TrimCommonPrefix(System.IO.Path.DirectorySeparatorCharacters).TrimCommonSuffix(System.IO.Path.DirectorySeparatorCharacters).ToString());
   }
 }
 

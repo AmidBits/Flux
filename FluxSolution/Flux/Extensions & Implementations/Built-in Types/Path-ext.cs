@@ -2,64 +2,121 @@ namespace Flux
 {
   public static partial class PathExtensions
   {
-    internal static readonly char[] m_pathSeparators = ['/', '\\'];
-
     extension(System.IO.Path)
     {
-      public static System.Span<char> GetCommonPathPrefix(char separator, System.ReadOnlySpan<string> paths)
+      /// <summary>
+      /// <para>The most common used directory separator characters '/' and '\'.</para>
+      /// </summary>
+      public static char[] DirectorySeparatorCharacters => ['/', '\\'];
+
+      /// <summary>
+      /// <para>Finds all directory separators used, if any, in order of most frequent, and if tied, in order of appearance.</para>
+      /// </summary>
+      /// <param name="path"></param>
+      /// <returns></returns>
+      public static System.Collections.Generic.List<char> FindDirectorySeparatorChars(string path)
       {
-        var items = new System.Collections.Generic.List<System.Collections.Generic.List<Range>>();
+        var countFrequent = new Dictionary<char, int>();
+        var firstAppeared = new Dictionary<char, int>();
 
-        var minimumSegments = int.MaxValue;
-
-        foreach (var p in paths)
+        for (var i = 0; i < path.Length; i++)
         {
-          if (string.IsNullOrWhiteSpace(p))
-            continue;
+          var c = path[i];
 
-          var s = p.TrimEnd(m_pathSeparators);
-
-          var splitRanges = s.AsSpan().SplitRanges(null, m_pathSeparators);
-
-          if (splitRanges.Count < minimumSegments)
-            minimumSegments = splitRanges.Count;
-
-          items.Add(splitRanges);
+          if (System.IO.Path.DirectorySeparatorCharacters.Contains(c))
+          {
+            if (!countFrequent.TryGetValue(c, out int v))
+            {
+              countFrequent[c] = 1;
+              firstAppeared[c] = i;
+            }
+            else
+              countFrequent[c] = ++v;
+          }
         }
 
-        if (items.Count == 0)
-          return [];
+        return countFrequent
+          .OrderByDescending(kvp => kvp.Value) // Highest frequency first.
+          .ThenBy(kvp => firstAppeared[kvp.Key]) // Tie-break by first appearance.
+          .Select(kvp => kvp.Key)
+          .DefaultIfEmpty(System.IO.Path.DirectorySeparatorChar)
+          .ToList();
+      }
 
-        var commonCount = 0;
+      /// <summary>
+      /// <para>Gets the common path from the provided paths using the specified string comparison.</para>
+      /// </summary>
+      /// <param name="stringComparison"></param>
+      /// <param name="paths"></param>
+      /// <returns></returns>
+      public static System.Collections.Generic.List<string> GetCommonPathPrefix(System.StringComparison stringComparison, params string[] paths)
+      {
+        var pathRanges = paths.Select(path => path.AsSpan().SplitRanges(null, '/', '\\')).ToList();
 
-        for (var seg = 0; seg < minimumSegments; seg++)
+        var minimumSegments = pathRanges.Min(l => l.Count);
+
+        var commonCount = -1;
+
+        var allEqual = true;
+
+        for (var i = 0; i < minimumSegments; i++) // Enumerate segments.
         {
-          var first = paths[0].AsSpan(items[0][seg]);
+          var a = paths[0][pathRanges[0][i]];
 
-          var allMatch = true;
-
-          for (var i = 1; i < items.Count; i++)
+          for (var k = paths.Length - 1; k >= 1; k--) // Enumerate paths.
           {
-            var other = paths[i].AsSpan(items[i][seg]);
+            var b = paths[k][pathRanges[k][i]];
 
-            if (!first.Equals(other, StringComparison.OrdinalIgnoreCase))
-            {
-              allMatch = false;
+            allEqual = a.Equals(b, stringComparison);
+
+            if (!allEqual)
               break;
-            }
           }
 
-          if (!allMatch)
+          if (!allEqual)
             break;
 
-          commonCount++;
+          commonCount = i + 1;
         }
 
-        if (commonCount == 0)
-          return [];
+        var list = new System.Collections.Generic.List<string>();
 
-        return paths[0].AsSpan().JoinRanges(items[0], commonCount, separator);
+        var sb = new System.Text.StringBuilder();
+
+        for (var i = 0; i < paths.Length; i++)
+        {
+          var path = paths[i];
+          var ranges = pathRanges[i];
+
+          var directorySeparatorChar = FindDirectorySeparatorChars(path).FirstOrValue(System.IO.Path.DirectorySeparatorChar).Item;
+
+          sb.Clear();
+          sb.Append(path.AsSpan().JoinRanges(ranges, commonCount, directorySeparatorChar));
+
+          if (commonCount < ranges.Count)
+            sb.Append(directorySeparatorChar);
+
+          var indexMap = path.AsSpan().CreateIndexMap(c => c);
+
+          foreach (var slash in System.IO.Path.DirectorySeparatorCharacters)
+            if (indexMap.TryGetValue(slash, out var slashList))
+              foreach (var index in slashList)
+                if (index < sb.Length)
+                  sb[index] = slash;
+
+          list.Add(sb.ToString());
+        }
+
+        return list;
       }
+
+      /// <summary>
+      /// <para>Replaces '/' and '\' with the <see cref="System.IO.Path.DirectorySeparatorChar"/>, or if <paramref name="useAltDirectorySeparatorChar"/> then <see cref="System.IO.Path.AltDirectorySeparatorChar"/>.</para>
+      /// </summary>
+      /// <param name="path"></param>
+      /// <param name="directorySeparatorChar"></param>
+      public static void SetDirectorySeparatorChar(System.Span<char> path, bool useAltDirectorySeparatorChar = false)
+        => path.Replace((e, i) => System.IO.Path.DirectorySeparatorCharacters.Contains(e) ? (useAltDirectorySeparatorChar ? System.IO.Path.AltDirectorySeparatorChar : System.IO.Path.DirectorySeparatorChar) : e);
     }
   }
 }

@@ -272,50 +272,12 @@ namespace ConsoleApp
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
 
-
-      var f1 = double.CreateChecked(System.Numerics.BigInteger.Factorial(365));
-      var f2 = double.CreateChecked(System.Numerics.BigInteger.Factorial(365 - 23));
-      var p1 = double.CreateChecked(System.Numerics.BigInteger.Pow(365, 23));
-
-      var ff = f1 / f2 / p1;
-
-      var pa = System.Numerics.BigInteger.ProbabilityOfNoDuplicates(23, 365);
-
-      var pb = 1.0 - pa;
-
-
-
-      var num = 6705302039L;
-
-      var subs = num.ToSubscriptString(10);
-      var supers = num.ToSuperscriptString(10);
-
-      var decs = num.ToDecimalString(10);
-      var decssub = decs.ToStringBuilder().ReplaceAll(char.GetSubscript).ToString();
-      var decssuper = decs.ToStringBuilder().ReplaceAll(char.GetSuperscript).ToString();
-
-      var prefix = System.IO.Path.GetCommonPathPrefix(System.IO.Path.DirectorySeparatorChar, new[]
-{
-    @"C:\Users\Robert\Projects\Alpha\file1.txt",
-    @"C:\Users\Robert\Projects\Alpha\Sub\file2.txt"
-});
-
-      var bd = new Flux.DataStructures.BiDictionary<string, int>();
-      var bd1 = (System.Collections.Generic.IDictionary<string, int>)bd;
-
-      bd1.Add("One", 1);
-      bd.Set("One", 3);
-
-      var lsd = Flux.NumeralComposition.LongScaleDictionary;
-      var ssd = Flux.NumeralComposition.ShortScaleDictionary;
-
-      var lsdmk = lsd.MergeKeep(ssd);
-      var lsdmo = lsd.MergeOverwrite(ssd);
-
-      var ssdmk = ssd.MergeKeep(lsd);
-      var ssdmo = ssd.MergeOverwrite(lsd);
+      var rising = double.FactorialPower(5, 3, +1);   // 5·6·7 = 210
+      var falling = double.FactorialPower(5, 3, -1);  // 5·4·3 = 60
+      var step2 = double.FactorialPower(3, 4, 2);     // 3·5·7·9 = 945
 
       return;
+
 
 
 
@@ -341,8 +303,6 @@ namespace ConsoleApp
       //var sdc = compressor.Decompress(sd, System.Text.Encoding.UTF8);
 
 
-
-      return;
 
 
 
