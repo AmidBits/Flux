@@ -1661,7 +1661,7 @@ namespace Flux
       /// <param name="rune">The rune to evaluate.</param>
       /// <returns></returns>
       public static System.Text.Rune RemoveLatinStroke(System.Text.Rune rune)
-        => new(CharExtensions.RemoveLatinStroke((char)rune.Value));
+        => char.TryRemoveLatinStroke((char)rune.Value, out var c) ? new(c) : rune;
 
       /// <summary>
       /// <para>Indicates whether a rune is a latin diacritical stroke.</para>
@@ -1885,8 +1885,8 @@ namespace Flux
         if (rune.Value is var utf32 && utf32 <= 0x7F)
           return byte.ToUriPercentEncoding((byte)utf32);
 
-        System.Span<byte> bytes = stackalloc byte[System.Text.Rune.Utf8EncodedSequenceMaxLength];
-        System.Span<char> chars = stackalloc char[System.Text.Rune.Utf8EncodedSequenceMaxLength * System.Text.Rune.UriPercentEncodedOctetLength];
+        var bytes = (stackalloc byte[System.Text.Rune.Utf8EncodedSequenceMaxLength]);
+        var chars = (stackalloc char[System.Text.Rune.Utf8EncodedSequenceMaxLength * System.Text.Rune.UriPercentEncodedOctetLength]);
 
         var length = rune.EncodeToUtf8(bytes);
 

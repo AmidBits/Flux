@@ -14,10 +14,10 @@ namespace Flux
       /// <param name="sumOfTerms"></param>
       /// <param name="terms"></param>
       /// <returns></returns>
-      public static TFloat ArithmeticMean<TFloat>(out TFloat sumOfTerms, params System.Collections.Generic.IEnumerable<TNumber> terms)
+      public static TFloat ArithmeticMean<TFloat>(out int countOfTerms, out TFloat sumOfTerms, params System.Collections.Generic.IEnumerable<TNumber> terms)
         where TFloat : System.Numerics.IFloatingPoint<TFloat>
       {
-        sumOfTerms = TFloat.CreateChecked(terms.Sum(out var countOfTerms));
+        sumOfTerms = TFloat.CreateChecked(terms.Sum(out countOfTerms));
 
         return sumOfTerms / TFloat.CreateChecked(countOfTerms);
       }
@@ -234,10 +234,10 @@ namespace Flux
       /// <param name="terms"></param>
       /// <returns></returns>
 
-      public static TFloat GeometricMean<TFloat>(out TFloat productOfTerms, params System.Collections.Generic.IEnumerable<TNumber> terms)
+      public static TFloat GeometricMean<TFloat>(out int countOfTerms, out TFloat productOfTerms, params System.Collections.Generic.IEnumerable<TNumber> terms)
         where TFloat : System.Numerics.IFloatingPoint<TFloat>, System.Numerics.IRootFunctions<TFloat>
       {
-        productOfTerms = TFloat.CreateChecked(terms.Product(out var countOfTerms));
+        productOfTerms = TFloat.CreateChecked(terms.Product(out countOfTerms));
 
         return checked(TFloat.RootN(productOfTerms, countOfTerms));
       }
@@ -298,7 +298,7 @@ namespace Flux
       /// <remarks>This function consider all numbers (e.g. 1.0, 2, etc.), except <c>integer</c> types equal to 1, to be plural.</remarks>
       /// <returns></returns>
       public static bool IsConsideredPlural(TNumber value)
-        => !(value == TNumber.One && value.GetType().IsIBinaryInteger()); // Only an integer 1 (not 1.0) is singular, otherwise a number is considered plural.
+        => !(value == TNumber.One && value.GetType().ImplementsIBinaryInteger()); // Only an integer 1 (not 1.0) is singular, otherwise a number is considered plural.
 
       #endregion
 
@@ -493,7 +493,7 @@ namespace Flux
       /// <returns></returns>
       /// <exception cref="System.NotImplementedException"></exception>
       public static TNumber NativeDecrement(TNumber value)
-        => value.GetType().IsIBinaryInteger()
+        => value.GetType().ImplementsIBinaryInteger()
         ? checked(value - TNumber.One) // Binary integers are fundamentally the same, so simply subtract one.
         : value switch // Floating point types have structures depending on specific operations to decrement.
         {
@@ -512,7 +512,7 @@ namespace Flux
       /// <returns></returns>
       /// <exception cref="System.NotImplementedException"></exception>
       public static TNumber NativeIncrement(TNumber value)
-        => value.GetType().IsIBinaryInteger()
+        => value.GetType().ImplementsIBinaryInteger()
         ? checked(value + TNumber.One) // Binary integers are fundamentally the same, so simply add one.
         : value switch // Floating point types have structures depending on specific operations to increment.
         {
@@ -906,21 +906,179 @@ namespace Flux
 
       #endregion
 
-      #region TruncMod
+      #region Integer DivRem functions
+
+      #region ICeilingDivRem
 
       /// <summary>
-      /// <para>Computes the integer (i.e. the truncated or floor) quotient and remainder of (<paramref name="dividend"/> / <paramref name="divisor"/>).</para>
+      /// <para>Ceiling division, where the remainder has the opposite sign of that of the divisor.</para>
+      /// <para><see href="https://en.wikipedia.org/wiki/Modulo"/></para>
+      /// <para><see href="https://stackoverflow.com/a/20638659/3178666"/></para>
       /// </summary>
-      /// <typeparam name="TNumber"></typeparam>
-      /// <param name="dividend"></param>
-      /// <param name="divisor"></param>
-      /// <returns>Returns the integer (i.e. the truncated or floor) quotient and remainder.</returns>
-      public static (TNumber Quotient, TNumber Remainder) ITruncatedDivRem(TNumber dividend, TNumber divisor)
+      /// <param name="a"></param>
+      /// <param name="n"></param>
+      /// <returns>
+      /// <para><c>q = ceiling(a / n)</c></para>
+      /// <para><c>r = a - n * q</c></para>
+      /// </returns>
+      public static (TNumber Quotient, TNumber Remainder) ICeilingDivRem(TNumber a, TNumber b)
       {
-        var remainder = dividend % divisor;
+        if (TNumber.IsZero(b)) throw new System.DivideByZeroException();
 
-        return ((dividend - remainder) / divisor, remainder);
+        var q0 = a / b; // q0 = truncated division
+
+        var t = q0 - (q0 % TNumber.One); // trunc(q0) = q0 - (q0 % 1)
+
+        var bump = TNumber.CreateChecked(Convert.ToInt32(q0 > t)); // bump = (q0 > t) ? 1 : 0
+
+        var q = t + bump;
+        var r = a - q * b;
+
+        return (q, r);
       }
+
+      #endregion
+
+      #region IEuclideanDivRem
+
+      /// <summary>
+      /// <para>Performs Euclidean division on two numbers and returns the quotient and non-negative remainder.</para>
+      /// </summary>
+      /// <remarks>The remainder is always greater than or equal to zero and less than the absolute value of the divisor, regardless of the signs of the input values. This method follows the Euclidean definition of division, which differs from standard integer division when negative numbers are involved.</remarks>
+      /// <param name="dividend">The number to be divided.</param>
+      /// <param name="divisor">The number by which to divide the dividend. Cannot be zero.</param>
+      /// <returns>A tuple containing the quotient and the non-negative remainder resulting from the Euclidean division of the dividend by the divisor.</returns>
+      public static (TNumber Quotient, TNumber Remainder) IEuclideanDivRem(TNumber a, TNumber b)
+      {
+        if (TNumber.IsZero(b)) throw new System.DivideByZeroException();
+
+        var r = a % b;
+
+        if (TNumber.IsNegative(r))
+          r += b;
+
+        var q = (a - r) / b;
+
+        return (q, r);
+      }
+
+      #endregion
+
+      #region IFlooredDivRem
+
+      /// <summary>
+      /// <para>Floored division, where the remainder has the same sign as the divisor.</para>
+      /// <para><see href="https://en.wikipedia.org/wiki/Modulo"/></para>
+      /// <para><see href="https://stackoverflow.com/a/20638659/3178666"/></para>
+      /// </summary>
+      /// <param name="a"></param>
+      /// <param name="n"></param>
+      /// <returns>
+      /// <para><c>q = floor(a / n)</c></para>
+      /// <para><c>r = a - n * q</c></para>
+      /// </returns>
+      public static (TNumber Quotient, TNumber Remainder) IFlooredDivRem(TNumber a, TNumber b)
+      {
+        if (TNumber.IsZero(b)) throw new System.DivideByZeroException();
+
+        var q0 = a / b; // q0 = truncated division
+
+        var t = q0 - (q0 % TNumber.One); // trunc(q0) = q0 - (q0 % 1)
+
+        var bump = TNumber.CreateChecked(Convert.ToInt32(t > q0)); // bump = (t > q0) ? 1 : 0
+
+        var q = t - bump;
+        var r = a - q * b;
+
+        return (q, r);
+      }
+
+      #endregion
+
+      #region IRoundedDivRem
+
+      /// <summary>
+      /// <para>RoundedDivRem (nearest-integer division with ties to even).</para>
+      /// <list type="bullet">
+      /// <item>Round to nearest.</item>
+      /// <item>Ties go to the even integer.</item>
+      /// <item>Remainder is whatever makes the identity hold.</item>
+      /// </list>
+      /// </summary>
+      /// <param name="a"></param>
+      /// <param name="b"></param>
+      /// <returns></returns>
+      public static (TNumber Quotient, TNumber Remainder) IRoundedDivRem(TNumber a, TNumber b)
+      {
+        if (TNumber.IsZero(b)) throw new System.DivideByZeroException();
+
+        var q0 = a / b;
+
+        var t = q0 - (q0 % TNumber.One); // trunc(q0) = q0 - (q0 % 1)
+
+        var frac = q0 - t; // fractional part
+        var half = TNumber.CreateChecked(0.5);
+
+        var bump = TNumber.CreateChecked(Convert.ToInt32(frac >= half)); // bump = (frac >= 0.5) ? 1 : 0
+
+        var q = t + bump;
+        var r = a - q * b;
+
+        return (q, r);
+      }
+
+      #endregion
+
+      #region ISymmetricDivRem
+
+      /// <summary>
+      /// <para>Symmetric division (nearest-integer division with ties toward zero) chooses the quotient so that the remainder is as close to zero as possible.</para>
+      /// <list type="bullet">
+      /// <item>The remainder is always in the interval: <c><![CDATA[-|b|/2, |b|/2]]></c></item>
+      /// <item>The quotient is the nearest integer to <c>a / b</c>.</item>
+      /// <item>If the remainder is exactly halfway, it is rounded toward zero.</item>
+      /// </list>
+      /// </summary>
+      /// <param name="a"></param>
+      /// <param name="b"></param>
+      /// <returns></returns>
+      public static (TNumber Quotient, TNumber Remainder) ISymmetricDivRem(TNumber a, TNumber b)
+      {
+        var q0 = a / b;
+        var r0 = a - q0 * b;
+
+        var half = TNumber.Abs(b) / TNumber.CreateChecked(2); // Half divisor magnitude
+
+        var bumpUp = (r0 > half) ? TNumber.One : TNumber.Zero;
+        var bumpDown = (r0 < -half) ? TNumber.One : TNumber.Zero;
+
+        var q = q0 + bumpUp - bumpDown;
+        var r = a - q * b;
+
+        return (q, r);
+      }
+
+      #endregion
+
+      #region ITruncatedDivRem
+
+      /// <summary>
+      /// <para>Computes the integer (truncated toward zero) quotient and remainder of (<paramref name="a"/> / <paramref name="b"/>).</para>
+      /// <para>The integer "truncated" divrem</para>
+      /// </summary>
+      /// <param name="a"></param>
+      /// <param name="b"></param>
+      /// <returns>Returns the integer (truncated toward zero) quotient and remainder.</returns>
+      public static (TNumber Quotient, TNumber Remainder) ITruncatedDivRem(TNumber a, TNumber b) // The old TruncMod
+      {
+        if (TNumber.IsZero(b)) throw new System.DivideByZeroException();
+
+        var r = a % b;
+
+        return ((a - r) / b, r);
+      }
+
+      #endregion
 
       #endregion
 
@@ -985,7 +1143,7 @@ namespace Flux
     }
 
     extension<TNumber>(TNumber value)
-    where TNumber : System.Numerics.INumber<TNumber>
+      where TNumber : System.Numerics.INumber<TNumber>
     {
       #region ToEngineeringNotationString
 

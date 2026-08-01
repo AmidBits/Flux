@@ -2,7 +2,70 @@
 {
   public static class BinaryInteger
   {
-    private readonly static long[] m_staticFactorials = [1, 1, 2, 6, 24, 120, 720, 5040, 40320, 362880, 3628800, 39916800, 479001600, 6227020800, 87178291200, 1307674368000, 20922789888000, 355687428096000, 6402373705728000, 121645100408832000, 2432902008176640000];
+    #region m_factorialTable (static factorial table)
+
+    private static readonly long[] m_factorialTable =
+    {
+      1L,                          // 0!
+      1L,                          // 1!
+      2L,                          // 2!
+      6L,                          // 3!
+      24L,                         // 4!
+      120L,                        // 5!
+      720L,                        // 6!
+      5040L,                       // 7!
+      40320L,                      // 8!
+      362880L,                     // 9!
+      3628800L,                    // 10!
+      39916800L,                   // 11!
+      479001600L,                  // 12!
+      6227020800L,                 // 13!
+      87178291200L,                // 14!
+      1307674368000L,              // 15!
+      20922789888000L,             // 16!
+      355687428096000L,            // 17!
+      6402373705728000L,           // 18!
+      121645100408832000L,         // 19!
+      2432902008176640000L         // 20!
+    };
+
+    #endregion
+
+    #region m_doubleFactorialTable (static double factorial table)
+
+    private static readonly long[] m_doubleFactorialTable =
+    {
+      1L,                                   // 0!!
+      1L,                                   // 1!!
+      2L,                                   // 2!!
+      3L,                                   // 3!!
+      8L,                                   // 4!!
+      15L,                                  // 5!!
+      48L,                                  // 6!!
+      105L,                                 // 7!!
+      384L,                                 // 8!!
+      945L,                                 // 9!!
+      3840L,                                // 10!!
+      10395L,                               // 11!!
+      46080L,                               // 12!!
+      135135L,                              // 13!!
+      645120L,                              // 14!!
+      2027025L,                             // 15!!
+      10321920L,                            // 16!!
+      34459425L,                            // 17!!
+      185794560L,                           // 18!!
+      654729075L,                           // 19!!
+      3715891200L,                          // 20!!
+      155195155200L,                        // 21!!
+      817496064640L,                        // 22!!
+      18803915073920L,                      // 23!!
+      19619905551360L,                      // 24!!
+      11281445692032000L,                   // 25!!
+      293317587993000000L,                  // 26!!
+      7919574875811000000L,                 // 27!!
+    };
+
+    #endregion
 
     extension<TInteger>(TInteger)
       where TInteger : System.Numerics.IBinaryInteger<TInteger>
@@ -63,6 +126,8 @@
 
       #endregion
 
+      #region BitOperations
+
       #region BitFold functions
 
       #region BitFoldLeft
@@ -75,7 +140,7 @@
       public static TInteger BitFoldLeft(TInteger value)
         => TInteger.IsZero(value)
         ? value
-        : (value is System.Numerics.BigInteger ? CreateBitMaskRight(TInteger.CreateChecked(GetBitCount<TInteger>())) : ~TInteger.Zero) << int.CreateChecked(TInteger.TrailingZeroCount(value));
+        : (value is System.Numerics.BigInteger ? CreateBitMaskRight(TInteger.CreateChecked(GetBitCount(value))) : ~TInteger.Zero) << int.CreateChecked(TInteger.TrailingZeroCount(value));
       //var tzc = value.GetTrailingZeroCount();
       //return BitFoldRight(value << value.GetLeadingZeroCount()) >> tzc << tzc;
 
@@ -147,6 +212,108 @@
 
       #endregion
 
+      #region ContainsAll1Bits
+
+      /// <summary>
+      /// <para>Checks whether a <paramref name="value"/> contains all 1-bits of a <paramref name="bitMask"/>.</para>
+      /// </summary>
+      public static bool ContainsAll1Bits<TBitMask>(TInteger value, TBitMask bitMask)
+        where TBitMask : System.Numerics.IBinaryInteger<TBitMask>
+        => TInteger.IsZero(~value & TInteger.CreateChecked(bitMask));
+
+      #endregion
+
+      #region ContainsAny1Bits
+
+      /// <summary>
+      /// <para>Checks whether a <paramref name="value"/> contains any 1-bits of a <paramref name="bitMask"/>.</para>
+      /// </summary>
+      public static bool ContainsAny1Bits<TBitMask>(TInteger value, TBitMask bitMask)
+        where TBitMask : System.Numerics.IBinaryInteger<TBitMask>
+        => !TInteger.IsZero(value & TInteger.CreateChecked(bitMask));
+
+      #endregion
+
+      #region CreateBitMask functions
+
+      #region CreateBitMaskLeft
+
+      /// <summary>
+      /// <para>Create a bit-mask with <paramref name="count"/> most-significant-bits (a.k.a. high-order or left-most bits) set to 1.</para>
+      /// </summary>
+      /// <typeparam name="TInteger"></typeparam>
+      /// <param name="count">Can be up to the number of storage bits (bit-count) available in <typeparamref name="TInteger"/>.</param>
+      /// <returns></returns>
+      /// <remarks><c>PLEASE NOTE THAT THE FIRST ARGUMENT (<paramref name="count"/> for extension method) IS THE NUMBER OF BITS (to account for).</c></remarks>
+      public static TInteger CreateBitMaskLeft(TInteger count)
+        => TInteger.IsZero(count)
+        ? count
+        : CreateBitMaskRight(count) << (GetBitCount(TInteger.Zero) - int.CreateChecked(count));
+
+      /// <summary>
+      /// <para>Create a bit-mask with <paramref name="bitLength"/> number of most-significant-bits (a.k.a. high-order or left-most bits) from <paramref name="bitMask"/> of <paramref name="bitMaskLength"/> filled repeatedly from least-to-most-significant-bits over the integer.</para>
+      /// </summary>
+      /// <remarks><c>PLEASE NOTE THAT THE FIRST ARGUMENT (<paramref name="bitMask"/> for extension method) IS THE BIT-MASK (to account for).</c></remarks>
+      public static TInteger CreateBitMaskLeft(TInteger bitMask, int bitMaskLength, int bitLength)
+      {
+        bitMask &= TInteger.CreateChecked((1 << bitMaskLength) - 1); // Ensure only count number of bits in bit-mask in least-significant-bits.
+
+        var (q, r) = int.DivRem(bitLength, bitMaskLength);
+
+        var result = bitMask;
+
+        for (var i = q - 1; i > 0; i--) // Loop bit-count divided by count (minus one) times, hence we skip equal-to zero in the condition.
+          result = bitMask | (result << bitMaskLength); // Shift the mask count bits and | (OR) in count most-significant-bits from bit-mask.
+
+        if (r > 0)
+          result = (result << r) | (bitMask >>> (bitMaskLength - r));
+
+        return result;
+      }
+
+      #endregion
+
+      #region CreateBitMaskRight
+
+      /// <summary>
+      /// <para>Create a bit-mask with <paramref name="count"/> least-significant-bits (a.k.a. low-order or right-most bits) set to 1.</para>
+      /// </summary>
+      /// <typeparam name="TInteger"></typeparam>
+      /// <param name="count">Can be up to the number of storage bits (bit-count) available in <typeparamref name="TInteger"/>.</param>
+      /// <returns></returns>
+      /// <remarks><c>PLEASE NOTE THAT THE FIRST ARGUMENT (<paramref name="count"/> for extension method) IS THE NUMBER OF BITS (to account for).</c></remarks>
+      public static TInteger CreateBitMaskRight(TInteger count)
+        => TInteger.IsZero(count)
+        ? count
+        : (((TInteger.One << (int.CreateChecked(count) - 1)) - TInteger.One) << 1) | TInteger.One;
+
+      /// <summary>
+      /// <para>Create a bit-mask with <paramref name="bitLength"/> number of least-significant-bits (a.k.a. low-order or right-most bits) from <paramref name="bitMask"/> of <paramref name="bitMaskLength"/> filled repeatedly from most-to-least-significant-bits over the <typeparamref name="TBitMask"/>.</para>
+      /// </summary>
+      /// <remarks><c>PLEASE NOTE THAT THE FIRST ARGUMENT (<paramref name="bitMask"/> for extension method) IS THE BIT-MASK (to account for).</c></remarks>
+      public static TInteger CreateBitMaskRight(TInteger bitMask, int bitMaskLength, int bitLength)
+      {
+        bitMask &= TInteger.CreateChecked((1 << bitMaskLength) - 1); // Ensure only count number of bits in bit-mask in least-significant-bits.
+
+        var (q, r) = int.DivRem(bitLength, bitMaskLength);
+
+        var result = bitMask;
+
+        for (var i = q - 1; i > 0; i--) // Loop bit-count divided by count (minus one) times, hence we skip equal-to zero in the condition.
+          result = bitMask | (result << bitMaskLength); // Shift the mask count bits and | (OR) in count most-significant-bits from bit-mask.
+
+        if (r > 0)
+          result |= (bitMask & TInteger.CreateChecked((1 << r) - 1)) << (bitLength - r);
+
+        return result;
+      }
+
+      #endregion
+
+      #endregion
+
+      #endregion
+
       #region CartesianToLinearIndex (2D & 3D)
 
       /// <summary>
@@ -200,43 +367,22 @@
 
       #endregion
 
-      #region ContainsAll1Bits
-
-      /// <summary>
-      /// <para>Checks whether a <paramref name="value"/> contains all 1-bits of a <paramref name="bitMask"/>.</para>
-      /// </summary>
-      public static bool ContainsAll1Bits<TBitMask>(TInteger value, TBitMask bitMask)
-        where TBitMask : System.Numerics.IBinaryInteger<TBitMask>
-        => TInteger.IsZero(~value & TInteger.CreateChecked(bitMask));
-
-      #endregion
-
-      #region ContainsAny1Bits
-
-      /// <summary>
-      /// <para>Checks whether a <paramref name="value"/> contains any 1-bits of a <paramref name="bitMask"/>.</para>
-      /// </summary>
-      public static bool ContainsAny1Bits<TBitMask>(TInteger value, TBitMask bitMask)
-        where TBitMask : System.Numerics.IBinaryInteger<TBitMask>
-        => !TInteger.IsZero(value & TInteger.CreateChecked(bitMask));
-
-      #endregion
-
       #region Combinatorics Count Combination & Permutation functions
 
       #region CountCombinationsWithRepetition
 
       /// <summary>
-      /// <para>Combinations with repetition, a.k.a. combinations with replacement, are a way to select items from a set where the order does not matter (combination), and items can be chosen more than once (with repeats).</para>
-      /// <para>Computes combinations with repeats: "<c>n multichoose r</c>" = <c>C(n + r - 1, r)</c> = <c>(n + r - 1)! / (r! * (n - 1)!)</c></para>
-      /// <para>A combination is a way of selecting items from a set when the order of selection does not matter. If you rearrange the same chosen items, it still counts as the same combination.</para>
-      /// <para><i><b>With</b> repetition</i> means that each item can be selected more than once.</para>
+      /// <para>Combinations with repetition are a way to select items from a set where the order does not matter (combination), and items can be chosen more than once (with repeats).</para>
+      /// <para>Computes the number of combinations with repeats:</para>
+      /// <para><c>"n multichoose r"</c> = <c>Cr(n + r - 1, r)</c> = <c>(n + r - 1)! / (r! * (n - 1)!)</c></para>
+      /// <para>A <i>combination</i> is a way of choosing items from a set when the order of choice does not matter. If you rearrange the same chosen items, it still counts as the same combination.</para>
+      /// <para><i><b>With</b> repetition</i> means that each item can be chosen more than once.</para>
       /// </summary>
-      /// <param name="n">Number of distinct item types.</param>
-      /// <param name="k">Number of items to choose.</param>
+      /// <param name="total">Number of distinct item types.</param>
+      /// <param name="choose">Number of items to choose.</param>
       /// <returns></returns>
-      public static TInteger CountCombinationsWithRepetition(TInteger n, TInteger k)
-        => BinomialCoefficient(n + k - TInteger.One, k);
+      public static TInteger CountCombinationsWithRepetition(TInteger total, TInteger choose)
+        => BinomialCoefficient(total + choose - TInteger.One, choose);
 
       #endregion
 
@@ -244,15 +390,16 @@
 
       /// <summary>
       /// <para>Combinations without repetition refer to the selection of items from a larger set, where the order of selection does not matter (combination), and each item can only be chosen once (no repeats).</para>
-      /// <para>Computes combinations without repeats: "<c>n choose r</c>" = <c>C(n, k)</c> = <c>n! / (k! * (n - k)!)</c></para>
-      /// <para>A combination is a way of selecting items from a set when the order of selection does not matter. If you rearrange the same chosen items, it still counts as the same combination.</para>
-      /// <para><i><b>Without</b> repetition</i> means that once an item is selected, it cannot be selected again.</para>
+      /// <para>Computes combinations without repeats:</para>
+      /// <para><c>"n choose r"</c> = <c>C(n, k)</c> = <c>n! / (k! * (n - k)!)</c></para>
+      /// <para>A <i>combination</i> is a way of choosing items from a set when the order of choice does not matter. If you rearrange the same chosen items, it still counts as the same combination.</para>
+      /// <para><i><b>Without</b> repetition</i> means that once an item is chosen, it cannot be selected again.</para>
       /// </summary>
-      /// <param name="n">Number of distinct item types.</param>
-      /// <param name="k">Number of items to choose.</param>
+      /// <param name="total">Number of distinct item types.</param>
+      /// <param name="choose">Number of items to choose.</param>
       /// <returns></returns>
-      public static TInteger CountCombinationsWithoutRepetition(TInteger n, TInteger k)
-        => BinomialCoefficient(n, k);
+      public static TInteger CountCombinationsWithoutRepetition(TInteger total, TInteger choose)
+        => BinomialCoefficient(total, choose);
 
       #endregion
 
@@ -260,15 +407,16 @@
 
       /// <summary>
       /// <para>Permutations with repetition involve arranging a set of objects where some objects are identical. This concept is useful in various practical scenarios, such as arranging students of different grades or cars of certain colors without distinguishing between identical items.</para>
-      /// <para>Computes permutations with repeats: "<c>each of the k positions has n choices</c>" = <c>P(n, k)</c> = <c>n^k</c></para>
-      /// <para>A permutation is an arrangement of items where the order matters. If you change the order, you create a different permutation.</para>
-      /// <para><i><b>With</b> repetition</i> means that each item can be selected more than once.</para>
+      /// <para>Computes permutations with repeats:</para>
+      /// <para>"<c>each of the k positions has n choices</c>" = <c>P(n, k)</c> = <c>n^k</c></para>
+      /// <para>A <i>permutation</i> is an arrangement of items where the order matters. If you change the order, you create a different permutation.</para>
+      /// <para><i><b>With</b> repetition</i> means that each item can be chosen more than once.</para>
       /// </summary>
-      /// <param name="n">Number of distinct item types.</param>
-      /// <param name="k">Number of items to choose.</param>
+      /// <param name="total">Number of distinct item types.</param>
+      /// <param name="choose">Number of items to choose.</param>
       /// <returns></returns>
-      public static TInteger CountPermutationsWithRepetition(TInteger n, TInteger k)
-        => TInteger.CreateChecked(System.Numerics.BigInteger.Pow(System.Numerics.BigInteger.CreateChecked(n), int.CreateChecked(k)));
+      public static TInteger CountPermutationsWithRepetition(TInteger total, TInteger choose)
+        => TInteger.CreateChecked(System.Numerics.BigInteger.Pow(System.Numerics.BigInteger.CreateChecked(total), int.CreateChecked(choose)));
 
       #endregion
 
@@ -276,98 +424,16 @@
 
       /// <summary>
       /// <para>Permutations without repetition refer to different groups of elements that can be done, so that two groups differ from each other only in the order the elements are placed. This situation frequently occurs when you’re working with unique physical objects that can occur only once in a permutation.</para>
-      /// <para>Computes permutations without repeats: "<c>k items chosen from n distinct items</c>" = <c>P(n, k)</c> = <c>n! / (n - k)!</c></para>
-      /// <para>A permutation is an arrangement of items where the order matters. If you change the order, you create a different permutation.</para>
-      /// <para><i><b>Without</b> repetition</i> means that once an item is selected, it cannot be selected again.</para>
+      /// <para>Computes permutations without repeats:</para>
+      /// <para>"<c>k items chosen from n distinct items</c>" = <c>P(n, k)</c> = <c>n! / (n - k)!</c></para>
+      /// <para>A <i>permutation</i> is an arrangement of items where the order matters. If you change the order, you create a different permutation.</para>
+      /// <para><i><b>Without</b> repetition</i> means that once an item is chosen, it cannot be chosen again.</para>
       /// </summary>
-      /// <param name="n">Number of distinct item types.</param>
-      /// <param name="k">Number of items to choose.</param>
+      /// <param name="total">Number of distinct item types.</param>
+      /// <param name="choose">Number of items to choose.</param>
       /// <returns></returns>
-      public static TInteger CountPermutationsWithoutRepetition(TInteger n, TInteger k)
-        => FallingFactorial(n, k);
-
-      #endregion
-
-      #endregion
-
-      #region CreateBitMask functions
-
-      #region CreateBitMaskLeft
-
-      /// <summary>
-      /// <para>Create a bit-mask with <paramref name="count"/> most-significant-bits (a.k.a. high-order or left-most bits) set to 1.</para>
-      /// </summary>
-      /// <typeparam name="TInteger"></typeparam>
-      /// <param name="count">Can be up to the number of storage bits (bit-count) available in <typeparamref name="TInteger"/>.</param>
-      /// <returns></returns>
-      /// <remarks><c>PLEASE NOTE THAT THE FIRST ARGUMENT (<paramref name="count"/> for extension method) IS THE NUMBER OF BITS (to account for).</c></remarks>
-      public static TInteger CreateBitMaskLeft(TInteger count)
-      {
-        var bitMaskRight = CreateBitMaskRight(count);
-
-        return bitMaskRight << (GetBitCount<TInteger>() - int.CreateChecked(count));
-      }
-
-      /// <summary>
-      /// <para>Create a bit-mask with <paramref name="bitLength"/> number of most-significant-bits (a.k.a. high-order or left-most bits) from <paramref name="bitMask"/> of <paramref name="bitMaskLength"/> filled repeatedly from least-to-most-significant-bits over the integer.</para>
-      /// </summary>
-      /// <remarks><c>PLEASE NOTE THAT THE FIRST ARGUMENT (<paramref name="bitMask"/> for extension method) IS THE BIT-MASK (to account for).</c></remarks>
-      public static TInteger CreateBitMaskLeft(TInteger bitMask, int bitMaskLength, int bitLength)
-      {
-        bitMask &= TInteger.CreateChecked((1 << bitMaskLength) - 1); // Ensure only count number of bits in bit-mask in least-significant-bits.
-
-        var (q, r) = int.DivRem(bitLength, bitMaskLength);
-
-        var result = bitMask;
-
-        for (var i = q - 1; i > 0; i--) // Loop bit-count divided by count (minus one) times, hence we skip equal-to zero in the condition.
-          result = bitMask | (result << bitMaskLength); // Shift the mask count bits and | (OR) in count most-significant-bits from bit-mask.
-
-        if (r > 0)
-          result = (result << r) | (bitMask >>> (bitMaskLength - r));
-
-        return result;
-      }
-
-      #endregion
-
-      #region CreateBitMaskRight
-
-      /// <summary>
-      /// <para>Create a bit-mask with <paramref name="count"/> least-significant-bits (a.k.a. low-order or right-most bits) set to 1.</para>
-      /// </summary>
-      /// <typeparam name="TInteger"></typeparam>
-      /// <param name="count">Can be up to the number of storage bits (bit-count) available in <typeparamref name="TInteger"/>.</param>
-      /// <returns></returns>
-      /// <remarks><c>PLEASE NOTE THAT THE FIRST ARGUMENT (<paramref name="count"/> for extension method) IS THE NUMBER OF BITS (to account for).</c></remarks>
-      public static TInteger CreateBitMaskRight(TInteger count)
-      {
-        if (TInteger.IsZero(count))
-          return count;
-
-        return (((TInteger.One << (int.CreateChecked(count) - 1)) - TInteger.One) << 1) | TInteger.One;
-      }
-
-      /// <summary>
-      /// <para>Create a bit-mask with <paramref name="bitLength"/> number of least-significant-bits (a.k.a. low-order or right-most bits) from <paramref name="bitMask"/> of <paramref name="bitMaskLength"/> filled repeatedly from most-to-least-significant-bits over the <typeparamref name="TBitMask"/>.</para>
-      /// </summary>
-      /// <remarks><c>PLEASE NOTE THAT THE FIRST ARGUMENT (<paramref name="bitMask"/> for extension method) IS THE BIT-MASK (to account for).</c></remarks>
-      public static TInteger CreateBitMaskRight(TInteger bitMask, int bitMaskLength, int bitLength)
-      {
-        bitMask &= TInteger.CreateChecked((1 << bitMaskLength) - 1); // Ensure only count number of bits in bit-mask in least-significant-bits.
-
-        var (q, r) = int.DivRem(bitLength, bitMaskLength);
-
-        var result = bitMask;
-
-        for (var i = q - 1; i > 0; i--) // Loop bit-count divided by count (minus one) times, hence we skip equal-to zero in the condition.
-          result = bitMask | (result << bitMaskLength); // Shift the mask count bits and | (OR) in count most-significant-bits from bit-mask.
-
-        if (r > 0)
-          result |= (bitMask & TInteger.CreateChecked((1 << r) - 1)) << (bitLength - r);
-
-        return result;
-      }
+      public static TInteger CountPermutationsWithoutRepetition(TInteger total, TInteger choose)
+        => FallingFactorial(total, choose);
 
       #endregion
 
@@ -390,6 +456,8 @@
 
       #endregion
 
+      #region Digit-based functions
+
       #region DigitCount
 
       /// <summary>
@@ -400,7 +468,7 @@
         where TRadix : System.Numerics.IBinaryInteger<TRadix>
         => IsSingleDigit(value, radix)
         ? TInteger.One
-        : ILog(value, radix).IntegralLogAwayFromZero;
+        : IntegerLog(value, radix).IntegralLogAwayFromZero;
       //{
       //  var rdx = TInteger.CreateChecked(Units.Radix.AssertMember(radix));
 
@@ -416,7 +484,74 @@
       //  return count;
       //}
 
+      public static TInteger DigitCount2(TInteger n, TInteger b)
+      {
+        n = TInteger.Abs(n);
+
+        TInteger count = TInteger.One;
+
+        while (n >= b)
+        {
+          n /= b;
+          count++;
+        }
+
+        return count;
+      }
+
       #endregion
+
+      #region DigitPlaceValues
+
+      /// <summary>
+      /// <para>Creates a new list with the digit place value components of <paramref name="value"/> using base <paramref name="radix"/>. E.g. 1234 return [4 (for 4 * ones), 30 (for 3 * tens), 200 (for 2 * hundreds), 1000 (for 1 * thousands)].</para>
+      /// </summary>
+      /// <typeparam name="TInteger"></typeparam>
+      /// <typeparam name="TRadix"></typeparam>
+      /// <param name="value"></param>
+      /// <param name="radix"></param>
+      /// <returns></returns>
+      public static List<TInteger> DigitPlaceValues(TInteger n, TInteger b)
+      {
+        var result = new List<TInteger>();
+
+        var place = TInteger.One;
+        while (n > TInteger.Zero)
+        {
+          var digit = n % b;
+          result.Add(digit * place);
+
+          n /= b;
+          place *= b;
+        }
+
+        return result;
+      }
+
+      #endregion
+
+      public static TInteger DigitProduct(TInteger n, TInteger radix)
+      {
+        n = TInteger.Abs(n);
+
+        if (n < radix)
+          return n;
+
+        var product = TInteger.One;
+
+        while (n > TInteger.Zero)
+        {
+          var digit = n % radix;
+
+          if (TInteger.IsZero(digit))
+            return digit;
+
+          product *= digit;
+          n /= radix;
+        }
+
+        return product;
+      }
 
       #region DigitSum
 
@@ -442,6 +577,242 @@
 
         return sum;
       }
+
+      #endregion
+
+      #region DropLeastSignificantDigits
+
+      /// <summary>
+      /// <para>Drop <paramref name="count"/> trailing (least significant) digits from <paramref name="value"/> using base <paramref name="radix"/>.</para>
+      /// </summary>
+      public static TInteger DropLeastSignificantDigits<TRadix>(TInteger value, TRadix radix, TInteger count)
+        where TRadix : System.Numerics.IBinaryInteger<TRadix>
+      {
+        System.ArgumentOutOfRangeException.ThrowIfLessThanOrEqual(radix, TRadix.One);
+
+        return value / TInteger.CreateChecked(Pow(radix, count));
+      }
+
+      #endregion
+
+      #region DropMostSignificantDigits
+
+      /// <summary>
+      /// <para>Drop <paramref name="count"/> leading (most significant) digits of <paramref name="value"/> using base <paramref name="radix"/>.</para>
+      /// </summary>
+      public static TInteger DropMostSignificantDigits<TRadix>(TInteger value, TRadix radix, TInteger count)
+        where TRadix : System.Numerics.IBinaryInteger<TRadix>
+        => value % TInteger.CreateChecked(Pow(radix, DigitCount(value, radix) - count)); // DigitCount() already checks lower radix bound.
+
+      #endregion
+
+      #region GetDigits
+
+      /// <summary>
+      /// <para>Creates a new list of digits representing the <paramref name="value"/> in base <paramref name="radix"/>.</para>
+      /// </summary>
+      /// <typeparam name="TInteger"></typeparam>
+      /// <typeparam name="TRadix"></typeparam>
+      /// <param name="value"></param>
+      /// <param name="radix"></param>
+      /// <returns></returns>
+      public static System.Collections.Generic.List<TInteger> GetDigits<TRadix>(TInteger value, TRadix radix)
+        where TRadix : System.Numerics.IBinaryInteger<TRadix>
+      {
+        var list = GetDigitsReversed(value, radix); // GetDigitsReversed() already check the lower radix bound.
+        list.Reverse();
+        return list;
+      }
+
+      #endregion
+
+      #region GetDigitsReversed
+
+      /// <summary>
+      /// <para>Creates a new list of digits, in reverse order, representing the <paramref name="value"/> in base <paramref name="radix"/>.</para>
+      /// </summary>
+      public static System.Collections.Generic.List<TInteger> GetDigitsReversed<TRadix>(TInteger value, TRadix radix)
+        where TRadix : System.Numerics.IBinaryInteger<TRadix>
+      {
+        System.ArgumentOutOfRangeException.ThrowIfLessThanOrEqual(radix, TRadix.One);
+
+        var rdx = TInteger.CreateChecked(radix);
+
+        if (TInteger.IsNegative(value))
+          value = TInteger.Abs(value);
+
+        var list = new System.Collections.Generic.List<TInteger>();
+
+        if (TInteger.IsZero(value))
+          list.Add(TInteger.Zero);
+        else
+          while (!TInteger.IsZero(value))
+          {
+            list.Add(value % rdx);
+
+            value /= rdx;
+          }
+
+        return list;
+      }
+
+      #endregion
+
+      #region KeepLeastSignificantDigits
+
+      /// <summary>
+      /// <para>Retreive <paramref name="count"/> least significant digits of <paramref name="value"/> using base <paramref name="radix"/>.</para>
+      /// </summary>
+      public static TInteger KeepLeastSignificantDigits<TRadix>(TInteger value, TRadix radix, TInteger count)
+        where TRadix : System.Numerics.IBinaryInteger<TRadix>
+      {
+        System.ArgumentOutOfRangeException.ThrowIfLessThanOrEqual(radix, TRadix.One);
+
+        return value % TInteger.CreateChecked(Pow(radix, count));
+      }
+
+      #endregion
+
+      #region KeepMostSignificantDigits
+
+      /// <summary>
+      /// <para>Drop the leading digit of <paramref name="value"/> using base <paramref name="radix"/>.</para>
+      /// </summary>
+      public static TInteger KeepMostSignificantDigits<TRadix>(TInteger value, TRadix radix, TInteger count)
+        where TRadix : System.Numerics.IBinaryInteger<TRadix>
+        => value / TInteger.CreateChecked(Pow(radix, DigitCount(value, radix) - count));
+
+      #endregion
+
+      #region ReverseDigits
+
+      /// <summary>
+      /// <para>Reverse the digits a <paramref name="value"/> in base <paramref name="radix"/>, obtaining a new number.</para>
+      /// </summary>
+      public static TInteger ReverseDigits<TRadix>(TInteger value, TRadix radix)
+        where TRadix : System.Numerics.IBinaryInteger<TRadix>
+      {
+        System.ArgumentOutOfRangeException.ThrowIfLessThanOrEqual(radix, TRadix.One);
+
+        var rdx = TInteger.CreateChecked(radix);
+
+        var reversed = TInteger.Zero;
+
+        while (!TInteger.IsZero(value))
+        {
+          reversed = (reversed * rdx) + (value % rdx);
+
+          value /= rdx;
+        }
+
+        return reversed;
+      }
+
+      #endregion
+
+      #region RotateDigits
+
+      public static TInteger RotateDigits(TInteger n, TInteger k, TInteger radix, bool left = true)
+      {
+        if (n < radix) // If n is a single digit in the given radix, rotation has no effect.
+          return n;
+
+        var digitCount = TInteger.Zero;
+        var t = n;
+        while (t > TInteger.Zero)
+        {
+          t /= radix;
+          digitCount++;
+        }
+
+        k %= digitCount;
+
+        if (TInteger.IsZero(k))
+          return n;
+
+        if (!left)
+          k = digitCount - k; // Reverse rotation.
+
+        var powK = TInteger.One; // Compute b^k and b^(digits-k)
+        for (var i = TInteger.Zero; i < k; i++)
+          powK *= radix;
+
+        var powRest = TInteger.One;
+        for (var i = TInteger.Zero; i < digitCount - k; i++)
+          powRest *= radix;
+
+        var hiSplit = n / powRest; // first k digits
+        var loSplit = n % powRest; // remaining digits
+
+        return loSplit * powK + hiSplit; // Recombine.
+      }
+
+      #endregion
+
+      #region SumLeastSignificantDigits
+
+      /// <summary>
+      /// <para>Sum <paramref name="count"/> least significant digits of <paramref name="value"/> in the given <paramref name="radix"/>.</para>
+      /// </summary>
+      /// <typeparam name="TRadix"></typeparam>
+      /// <param name="value"></param>
+      /// <param name="radix"></param>
+      /// <param name="count"></param>
+      /// <returns></returns>
+      public static TInteger SumLeastSignificantDigits<TRadix>(TInteger value, TRadix radix, TInteger count)
+        where TRadix : System.Numerics.IBinaryInteger<TRadix>
+      {
+        System.ArgumentOutOfRangeException.ThrowIfLessThanOrEqual(radix, TRadix.One);
+        var rdx = TInteger.CreateChecked(radix);
+
+        value = TInteger.Abs(value);
+
+        var sum = TInteger.Zero;
+
+        for (var i = TInteger.Zero; i < count && value > TInteger.Zero; i++)
+        {
+          sum += value % rdx;
+
+          value /= rdx;
+        }
+
+        return sum;
+      }
+
+      #endregion
+
+      #region SumMostSignificantDigits
+
+      /// <summary>
+      /// <para>Sum <paramref name="count"/> most significant digits of <paramref name="value"/> in the given <paramref name="radix"/>.</para>
+      /// </summary>
+      /// <typeparam name="TRadix"></typeparam>
+      /// <param name="value"></param>
+      /// <param name="radix"></param>
+      /// <param name="count"></param>
+      /// <returns></returns>
+      public static TInteger SumMostSignificantDigits<TRadix>(TInteger value, TRadix radix, TInteger count)
+        where TRadix : System.Numerics.IBinaryInteger<TRadix>
+      {
+        System.ArgumentOutOfRangeException.ThrowIfLessThanOrEqual(radix, TRadix.One);
+        var rdx = TInteger.CreateChecked(radix);
+
+        value = TInteger.Abs(value);
+        var digits = DigitCount(value, radix);
+        value /= Pow(rdx, digits - TInteger.Min(count, digits));
+
+        var sum = TInteger.Zero;
+
+        while (value > TInteger.Zero)
+        {
+          sum += value % rdx;
+
+          value /= rdx;
+        }
+
+        return sum;
+      }
+      #endregion
 
       #endregion
 
@@ -490,6 +861,12 @@
       /// <para><see href="https://en.wikipedia.org/wiki/Modulo"/></para>
       /// <para><see href="https://stackoverflow.com/a/20638659/3178666"/></para>
       /// </summary>
+      /// <remarks>
+      /// <para>The quotient (q) direction toward-positive-infinity:</para>
+      /// <para><c>q = ceiling(a/n)</c></para>
+      /// <para>The remainder (r) always have the opposite sign of n:</para>
+      /// <para><c>r = a − n * q</c></para>
+      /// </remarks>
       /// <param name="a"></param>
       /// <param name="n"></param>
       /// <returns>
@@ -500,9 +877,17 @@
       {
         if (TInteger.IsZero(n)) throw new System.DivideByZeroException();
 
-        var q = (TInteger.IsNegative(a) == TInteger.IsNegative(n) ? (a + (n - TInteger.CopySign(TInteger.One, n))) : a) / n;
+        var q = a / n;   // truncating quotient
+        var r = a % n;   // remainder with C# sign rules
 
-        return (q, a - n * q);
+        // If remainder is nonzero and the division truncated downward, adjust to ceiling division.
+        if (!TInteger.IsZero(r) && TInteger.IsNegative(r) == TInteger.IsNegative(n))
+        {
+          q += TInteger.One;
+          r -= n;
+        }
+
+        return (q, r);
       }
 
       #endregion
@@ -510,7 +895,7 @@
       #region ClosestDivRem
 
       /// <summary>
-      /// <para>Closest division.</para>
+      /// <para>Closest division (nearest, midpoint‑even).</para>
       /// </summary>
       /// <param name="a"></param>
       /// <param name="n"></param>
@@ -519,11 +904,35 @@
       {
         if (TInteger.IsZero(n)) throw new System.DivideByZeroException();
 
-        var ndiv2 = n / TInteger.CreateChecked(2);
+        var q0 = a / n;
+        var r0 = a - q0 * n;
 
-        var q = (TInteger.IsNegative(a) == TInteger.IsNegative(n) ? (a + ndiv2) : (a - ndiv2)) / n;
+        if (TInteger.IsZero(r0))
+          return (q0, r0);
 
-        return (q, a - n * q);
+        var absR = TInteger.Abs(r0);
+        var absN = TInteger.Abs(n);
+
+        var twiceR = absR + absR;
+
+        // Compare 2|r| with |n|
+        if (twiceR < absN)
+          return (q0, r0);
+
+        var step = TInteger.CreateChecked(TInteger.Sign(r0) * TInteger.Sign(n));
+
+        if (twiceR > absN)
+        {
+          var q = q0 + step;
+          return (q, a - q * n);
+        }
+
+        // Tie → round to even
+        if (TInteger.IsEvenInteger(q0))
+          return (q0, r0);
+
+        var qEven = q0 + step;
+        return (qEven, a - qEven * n);
       }
 
       #endregion
@@ -531,8 +940,17 @@
       #region EnvelopedDivRem
 
       /// <summary>
-      /// <para>Enveloped (opposite of truncated, in that it envelops the entire fractional side to the next whole integer) division, where the quotient is ceiling for positive and floor for negative.</para>
+      /// <para>Enveloped (opposite of truncated, in that it envelops the entire fractional side to the next whole integer, away from zero) division, where the quotient is ceiling for positive and floor for negative.</para>
       /// </summary>
+      /// <remarks>
+      /// <para>The quotient (q) round-away-from-0:</para>
+      /// <list type="bullet">
+      /// <item>If <c><![CDATA[a/n > 0]]></c>, q = ceiling</item>
+      /// <item>If <c><![CDATA[a/n < 0]]></c>, q = floor</item>
+      /// </list>
+      /// <para>The remainder (r) always have the opposite sign of q:</para>
+      /// <para><c>r = a − n * q</c></para>
+      /// </remarks>
       /// <param name="a"></param>
       /// <param name="n"></param>
       /// <returns>
@@ -543,15 +961,15 @@
       {
         if (TInteger.IsZero(n)) throw new System.DivideByZeroException();
 
-        var onecs = TInteger.CopySign(TInteger.One, n);
+        var q0 = a / n; // Truncate toward zero.
+        var r0 = a - q0 * n; // Remainder, same sign as a.
 
-        var q = (
-          TInteger.IsNegative(a) == TInteger.IsNegative(n) // XOR on signs:
-          ? (a + (n - onecs)) // Both terms equal makes a positive; perform a ceiling-div-rem.
-          : (a - (n - onecs)) // Terms are unequal makes a negative; perform a floored-div-rem.
-        ) / n;
+        if (TInteger.IsZero(r0))
+          return (q0, r0);
 
-        return (q, a - n * q);
+        var step = TInteger.CreateChecked(TInteger.Sign(a) * TInteger.Sign(n)); // sign(a/n) = sign(a) * sign(n)
+
+        return (q0 + step, r0 - n * step);
       }
 
       #endregion
@@ -574,9 +992,16 @@
       {
         if (TInteger.IsZero(n)) throw new System.DivideByZeroException();
 
-        var q = TInteger.CreateChecked(Number.Sign(n)) * ((TInteger.IsNegative(a) == TInteger.IsNegative(n) ? a : (a - (n - TInteger.CopySign(TInteger.One, n)))) / n);
+        var q = a / n;
+        var r = a - q * n;
 
-        return (q, a - TInteger.Abs(n) * q);
+        if (TInteger.IsNegative(r))
+        {
+          r += TInteger.Abs(n);
+          q -= TInteger.CreateChecked(TInteger.Sign(n));
+        }
+
+        return (q, r);
       }
 
       #endregion
@@ -588,6 +1013,12 @@
       /// <para><see href="https://en.wikipedia.org/wiki/Modulo"/></para>
       /// <para><see href="https://stackoverflow.com/a/20638659/3178666"/></para>
       /// </summary>
+      /// <remarks>
+      /// <para>The quotient (q) direction toward-negative-infinity:</para>
+      /// <para><c>q = floor(a/n)</c></para>
+      /// <para>The remainder (r) always have the same sign of n:</para>
+      /// <para><c>r = a − n * q</c></para>
+      /// </remarks>
       /// <param name="a"></param>
       /// <param name="n"></param>
       /// <returns>
@@ -598,9 +1029,21 @@
       {
         if (TInteger.IsZero(n)) throw new System.DivideByZeroException();
 
-        var q = (TInteger.IsNegative(a) != TInteger.IsNegative(n) ? (a - (n - TInteger.CopySign(TInteger.One, n))) : a) / n;
+        var q = a / n; // truncating quotient
+        var r = a % n; // remainder with C# sign rules
 
-        return (q, a - n * q);
+        if (!TInteger.IsZero(r) && ((n > TInteger.Zero && TInteger.IsNegative(r)) || (TInteger.IsNegative(n) && r > TInteger.Zero))) // If signs differ and remainder is nonzero, adjust to floor division.
+        {
+          q -= TInteger.One;
+          r += n;
+        }
+
+        return (q, r);
+        //if (TInteger.IsZero(n)) throw new System.DivideByZeroException();
+
+        //var q = (TInteger.IsNegative(a) != TInteger.IsNegative(n) ? (a - (n - TInteger.CopySign(TInteger.One, n))) : a) / n;
+
+        //return (q, a - n * q);
       }
 
       #endregion
@@ -608,22 +1051,54 @@
       #region RoundedDivRem
 
       /// <summary>
-      /// <para>Rounded division, where the sign of the remainder depends on the rounding strategy, which is <see cref="MidpointRounding.ToEven"/>.</para>
+      /// <para>Rounded division (nearest, ties away from zero).</para>
       /// </summary>
       /// <param name="a"></param>
       /// <param name="n"></param>
       /// <returns>
-      /// <para><c>q = round(a / n)</c> // rounding half to even</para>
+      /// <para><c>q = round(a / n, away-from-zero)</c> // rounding, ties away from zero</para>
       /// <para><c>r = a - n * q</c></para>
       /// </returns>
-      public static (TInteger Quotient, TInteger Remainder) RoundedDivRem(TInteger a, TInteger n)
+      public static (TInteger Quotient, TInteger Remainder) RoundedDivRem(TInteger a, TInteger n, MidpointRounding mode = System.MidpointRounding.AwayFromZero)
+        => mode switch
+        {
+          MidpointRounding.ToEven => ClosestDivRem(a, n),
+          MidpointRounding.AwayFromZero => EnvelopedDivRem(a, n),
+          MidpointRounding.ToZero => SymmetricDivRem(a, n),
+          MidpointRounding.ToNegativeInfinity => FlooredDivRem(a, n),
+          MidpointRounding.ToPositiveInfinity => CeilingDivRem(a, n),
+          _ => throw new System.ArgumentOutOfRangeException(nameof(mode)),
+        };
+
+      #endregion
+
+      #region SymmetricDivRem
+
+      /// <summary>
+      /// <para>Symmetric division (nearest-integer division with ties toward zero) chooses the quotient so that the remainder is as close to zero as possible.</para>
+      /// <list type="bullet">
+      /// <item>The remainder is always in the interval: <c><![CDATA[-|b|/2, |b|/2]]></c></item>
+      /// <item>The quotient is the nearest integer to <c>a / b</c>.</item>
+      /// <item>If the remainder is exactly halfway, it is rounded toward zero.</item>
+      /// </list>
+      /// </summary>
+      /// <param name="a"></param>
+      /// <param name="b"></param>
+      /// <returns></returns>
+      public static (TInteger Quotient, TInteger Remainder) SymmetricDivRem(TInteger a, TInteger b)
       {
-        var q = FlooredDivRem(a, n).Quotient;
+        var q0 = a / b;
+        var r0 = a - q0 * b;
 
-        if (!TInteger.IsEvenInteger(q))
-          q = CeilingDivRem(a, n).Quotient;
+        var half = TInteger.Abs(b) / TInteger.CreateChecked(2); // Half divisor magnitude
 
-        return (q, a - n * q);
+        var bumpUp = TInteger.CreateChecked((r0 > half) ? 1 : 0); // Branch‑free mask.
+        var bumpDown = TInteger.CreateChecked((r0 < -half) ? 1 : 0); // Branch‑free mask.
+
+        var q = q0 + bumpUp - bumpDown;
+        var r = a - q * b;
+
+        return (q, r);
       }
 
       #endregion
@@ -782,32 +1257,6 @@
 
       #endregion
 
-      #region DropLeastSignificantDigits
-
-      /// <summary>
-      /// <para>Drop <paramref name="count"/> trailing (least significant) digits from <paramref name="value"/> using base <paramref name="radix"/>.</para>
-      /// </summary>
-      public static TInteger DropLeastSignificantDigits<TRadix>(TInteger value, TRadix radix, TInteger count)
-        where TRadix : System.Numerics.IBinaryInteger<TRadix>
-      {
-        System.ArgumentOutOfRangeException.ThrowIfLessThanOrEqual(radix, TRadix.One);
-
-        return value / TInteger.CreateChecked(Pow(radix, count));
-      }
-
-      #endregion
-
-      #region DropMostSignificantDigits
-
-      /// <summary>
-      /// <para>Drop <paramref name="count"/> leading (most significant) digits of <paramref name="value"/> using base <paramref name="radix"/>.</para>
-      /// </summary>
-      public static TInteger DropMostSignificantDigits<TRadix>(TInteger value, TRadix radix, TInteger count)
-        where TRadix : System.Numerics.IBinaryInteger<TRadix>
-        => value % TInteger.CreateChecked(Pow(radix, DigitCount(value, radix) - count)); // DigitCount() already checks lower radix bound.
-
-      #endregion
-
       #region EulerTotient
 
       /// <summary>
@@ -852,15 +1301,35 @@
       {
         System.ArgumentOutOfRangeException.ThrowIfNegative(n);
 
+        if (TryGetStaticDoubleFactorial(n, out var sdf))
+          return TInteger.CreateChecked(sdf);
+
         var result = TInteger.One;
+        var two = TInteger.CreateChecked(2);
 
         checked
         {
-          for (var two = result + result; n > TInteger.Zero; n -= two)
-            result *= n;
+          for (var i = n; i > TInteger.One; i -= two)
+            result *= i;
         }
 
         return result;
+      }
+
+      private static bool TryGetStaticDoubleFactorial(TInteger n, out long value)
+      {
+        System.ArgumentOutOfRangeException.ThrowIfNegative(n);
+
+        var i = uint.CreateChecked(n);
+
+        if (i < m_doubleFactorialTable.Length)
+        {
+          value = m_doubleFactorialTable[i];
+          return true;
+        }
+
+        value = 0;
+        return false;
       }
 
       #endregion
@@ -876,8 +1345,8 @@
       /// <returns></returns>
       public static TInteger Factorial(TInteger n)
       {
-        if (StaticFactorial(n) is var sf && !TInteger.IsZero(sf))
-          return sf;
+        if (TryGetStaticFactorial(n, out var sf))
+          return TInteger.CreateChecked(sf);
 
         if (n < TInteger.CreateChecked(47))
           return NaiveFactorial(n);
@@ -966,14 +1435,20 @@
         }
       }
 
-      private static TInteger StaticFactorial(TInteger n)
+      private static bool TryGetStaticFactorial(TInteger n, out long factorial)
       {
         System.ArgumentOutOfRangeException.ThrowIfNegative(n);
 
-        if (n < TInteger.CreateChecked(m_staticFactorials.Length))
-          return TInteger.CreateChecked(m_staticFactorials[int.CreateChecked(n)]);
+        var i = uint.CreateChecked(n);
 
-        return TInteger.Zero;
+        if (i < m_factorialTable.Length)
+        {
+          factorial = m_factorialTable[i];
+          return true;
+        }
+
+        factorial = 0;
+        return false;
       }
 
       #endregion
@@ -998,17 +1473,26 @@
       {
         System.ArgumentOutOfRangeException.ThrowIfNegative(n);
 
-        //System.ArgumentOutOfRangeException.ThrowIfNegative(x); // Combinatorics only.
+        if (n > TInteger.CreateChecked(uint.MaxValue)) throw new System.ArgumentOutOfRangeException(nameof(n), "n is too large to iterate."); // n must fit in uint for a practical loop.
 
-        //if (n > x)
-        //  return TInteger.Zero; // Combinatorics: No arrangements possible. This check does not apply for rising factorial.
+        var count = uint.CreateChecked(n);
 
-        TInteger result = TInteger.One;
+        if (count == 0)
+          return TInteger.One;
+        if (count == 1)
+          return x;
+
+        var one = TInteger.One;
+        var result = one;
 
         checked
         {
-          while (--n >= TInteger.Zero) // Compute the falling factorial, decreasing x for each term.
-            result *= x--;
+          var term = x;
+          for (var i = 0u; i < count; i++)
+          {
+            result *= term;
+            term -= one;
+          }
         }
 
         return result;
@@ -1057,12 +1541,26 @@
       {
         System.ArgumentOutOfRangeException.ThrowIfNegative(n);
 
-        var result = TInteger.One;
+        if (n > TInteger.CreateChecked(uint.MaxValue)) throw new System.ArgumentOutOfRangeException(nameof(n), "n is too large to iterate."); // n must fit in uint for a practical loop.
+
+        var count = uint.CreateChecked(n);
+
+        if (count == 0)
+          return TInteger.One;
+        if (count == 1)
+          return x;
+
+        var one = TInteger.One;
+        var result = one;
 
         checked
         {
-          while (--n >= TInteger.Zero) // Calculate the product x * (x+1) * (x+2) * ... * (x+n-1).
-            result *= x++;
+          var term = x;
+          for (var i = 0u; i < count; i++)
+          {
+            result *= term;
+            term += one;
+          }
         }
 
         return result;
@@ -1081,12 +1579,12 @@
       /// <remarks>
       /// <para>Some data types, e.g. <see cref="System.Numerics.BigInteger"/>, use dynamic storage strategies.</para>
       /// </remarks>
-      public static int GetBitCount()
-        => TInteger.Zero.GetByteCount() * 8;
+      public static int GetBitCount(TInteger value)
+        => value.GetByteCount() * 8;
 
       #endregion
 
-      #region GetBitCount
+      #region GetByteCount
 
       /// <summary>
       /// <para>Using the built-in <see cref="System.Numerics.IBinaryInteger{TInteger}.GetByteCount()"/>.</para>
@@ -1094,8 +1592,8 @@
       /// <remarks>
       /// <para>Note that some datatypes, e.g. <see cref="System.Numerics.BigInteger"/>, use dynamic storage strategies.</para>
       /// </remarks>
-      public static int GetByteCount()
-        => TInteger.Zero.GetByteCount();
+      public static int GetByteCount(TInteger value)
+        => value.GetByteCount();
 
       ///// <summary>
       ///// <para>Using the built-in <see cref="System.Numerics.IBinaryInteger{TInteger}.PopCount(TInteger)"/>.</para>
@@ -1123,89 +1621,6 @@
       }
 
 #endif
-
-      #endregion
-
-      #region GetDigitPlaceValues
-
-      /// <summary>
-      /// <para>Creates a new list with the digit place value components of <paramref name="value"/> using base <paramref name="radix"/>. E.g. 1234 return [4 (for 4 * ones), 30 (for 3 * tens), 200 (for 2 * hundreds), 1000 (for 1 * thousands)].</para>
-      /// </summary>
-      /// <typeparam name="TInteger"></typeparam>
-      /// <typeparam name="TRadix"></typeparam>
-      /// <param name="value"></param>
-      /// <param name="radix"></param>
-      /// <returns></returns>
-      public static System.Collections.Generic.List<TInteger> GetDigitPlaceValues<TRadix>(TInteger value, TRadix radix)
-        where TRadix : System.Numerics.IBinaryInteger<TRadix>
-      {
-        var list = GetDigitsReversed(value, radix); // GetDigitsReversed() already check the lower radix bound.
-
-        var rdx = TInteger.CreateChecked(radix);
-
-        var power = TInteger.One;
-
-        for (var index = 0; index < list.Count; index++)
-        {
-          list[index] *= power;
-
-          power *= rdx;
-        }
-
-        return list;
-      }
-
-      #endregion
-
-      #region GetDigits
-
-      /// <summary>
-      /// <para>Creates a new list of digits representing the <paramref name="value"/> in base <paramref name="radix"/>.</para>
-      /// </summary>
-      /// <typeparam name="TInteger"></typeparam>
-      /// <typeparam name="TRadix"></typeparam>
-      /// <param name="value"></param>
-      /// <param name="radix"></param>
-      /// <returns></returns>
-      public static System.Collections.Generic.List<TInteger> GetDigits<TRadix>(TInteger value, TRadix radix)
-        where TRadix : System.Numerics.IBinaryInteger<TRadix>
-      {
-        var list = GetDigitsReversed(value, radix); // GetDigitsReversed() already check the lower radix bound.
-        list.Reverse();
-        return list;
-      }
-
-      #endregion
-
-      #region GetDigitsReversed
-
-      /// <summary>
-      /// <para>Creates a new list of digits, in reverse order, representing the <paramref name="value"/> in base <paramref name="radix"/>.</para>
-      /// </summary>
-      public static System.Collections.Generic.List<TInteger> GetDigitsReversed<TRadix>(TInteger value, TRadix radix)
-        where TRadix : System.Numerics.IBinaryInteger<TRadix>
-      {
-        System.ArgumentOutOfRangeException.ThrowIfLessThanOrEqual(radix, TRadix.One);
-
-        var rdx = TInteger.CreateChecked(radix);
-
-        if (TInteger.IsNegative(value))
-          value = TInteger.Abs(value);
-
-        var list = new System.Collections.Generic.List<TInteger>();
-
-        if (TInteger.IsZero(value))
-          list.Add(TInteger.Zero);
-        else
-          while (!TInteger.IsZero(value))
-          {
-            list.Add(value % rdx);
-
-            value /= rdx;
-          }
-
-        return list;
-      }
 
       #endregion
 
@@ -1599,9 +2014,9 @@
 
           var fivens = TInteger.CreateChecked(5) * n * n;
           var fp4 = fivens + four;
-          var fp4sr = ISqrt(fp4);
+          var fp4sr = IntegerSquareRoot(fp4);
           var fm4 = fivens - four;
-          var fm4sr = ISqrt(fm4);
+          var fm4sr = IntegerSquareRoot(fm4);
 
           return fp4sr * fp4sr == fp4 || fm4sr * fm4sr == fm4;
         }
@@ -1824,7 +2239,7 @@
 
         var maxPrimeMultiple = BitFoldLeft(TInteger.One);
 
-        if (TypeExtensions.IsISignedNumber(typeof(TInteger)))
+        if (TypeExtensions.ImplementsISignedNumber(typeof(TInteger)))
           maxPrimeMultiple >>>= 1;
 
         maxPrimeMultiple = maxPrimeMultiple / six * six;
@@ -1871,10 +2286,23 @@
       /// <returns></returns>
       public static bool IsPrimeCandidate(TInteger n)
       {
-        if (n < TInteger.CreateChecked(2)) return false; // Less than 2 is no prime.
-        if (n <= TInteger.CreateChecked(3)) return true; // Less than or equal to 3, is either 2 or 3, so a prime.
+        TInteger three = TInteger.CreateChecked(3);
 
-        return n % TInteger.CreateChecked(6) is var m && (m == TInteger.One || m == TInteger.CreateChecked(5)); // All other +-1 of any multiple of 6 is a prime candidate.
+        if (n <= TInteger.One) return false; // 0,1 (and negative numbers, if the type is signed)
+        if (n <= three) return true;         // 2,3
+
+        if ((n & TInteger.One) == TInteger.Zero) return false; // even numbers
+        if (TInteger.IsZero(n % three)) return false;
+
+        // If already checked % 2 and % 3, then % 6 adds no new eliminations, because:
+        // If n % 6 == 0, it’s divisible by 2 or 3
+        // If n % 6 == 2, divisible by 2
+        // If n % 6 == 3, divisible by 3
+        // If n % 6 == 4, divisible by 2
+        // Leaving only 1 and 5 as possible remainders for primes greater than 3, which correspond to the 6k ± 1 form.
+        // So a % 6 test is logically redundant once you’ve checked % 2 and % 3.
+
+        return true; // candidate for 6k ± 1
       }
       //=> n >= TInteger.CreateChecked(2) && (n <= TInteger.CreateChecked(3) || ());
 
@@ -1884,7 +2312,12 @@
 
       /// <summary>
       /// <para>Indicates whether a number is a prime.</para>
-      /// <para>This implementation uses a Miller-Rabin deterministic algorithm for numbers less than 64-bit, and a Miller-Rabin probabilistic algorithm for larger numbers.</para>
+      /// <para>This implementation uses a strategy of different algorithms based on the size of the number.</para>
+      /// <list type="number">
+      /// <item>A straightforward 6k ± 1 deterministic algorithm for 32-bit numbers.</item>
+      /// <item>A Miller-Rabin deterministic algorithm for 64-bit numbers.</item>
+      /// <item>A Miller-Rabin probabilistic algorithm for larger numbers.</item>
+      /// </list>
       /// <para><see href="https://en.wikipedia.org/wiki/Primality_test"/></para>
       /// <para><seealso href="https://en.wikipedia.org/wiki/Prime_number"/></para>
       /// </summary>
@@ -1892,12 +2325,16 @@
       /// <returns></returns>
       public static bool IsPrimeNumber(TInteger n)
       {
+        if (TInteger.IsNegative(n))
+          return false; // Negative numbers are not prime.
+
         var bi = System.Numerics.BigInteger.CreateChecked(n);
 
-        // If less-or-equal-to an unsigned 64-bit value, use Miller-Rabin 64-bit deterministic algorithm.
+        if (bi <= uint.MaxValue) // If less-or-equal-to an unsigned 32-bit value, use straight 6k ± 1 prime test algorithm.
+          return uint.IsPrime(uint.CreateChecked(n));
 
-        if (bi <= ulong.MaxValue)
-          return ulong.IsPrimeDeterministic(ulong.CreateChecked(n));
+        if (bi <= ulong.MaxValue) // If less-or-equal-to an unsigned 64-bit value, use Miller-Rabin 64-bit deterministic algorithm.
+          return ulong.IsPrime(ulong.CreateChecked(n));
 
         // Otherwise use Miller-Rabin probabilistic algorithm.
 
@@ -1906,7 +2343,7 @@
 
         var log = System.Numerics.BigInteger.Log(bi.GetBitLength(), 1.15);
 
-        return System.Numerics.BigInteger.IsPrimeProbabilistic(bi, int.CreateChecked(log)); // Pass the log value as k parameter.
+        return System.Numerics.BigInteger.IsPrime(bi, int.CreateChecked(log)); // Pass the log value as k parameter.
       }
 
       #endregion
@@ -2188,15 +2625,26 @@
 
       #endregion
 
-      #region ..ICbrt functions
+      #region IntegerCubeRoot functions
 
       /// <summary>
       /// <para>Computes the integer (floor) cube-root of a value.</para>
       /// </summary>
       /// <param name="value"></param>
       /// <returns>The square-root of the value.</returns>
-      public static TInteger ICbrt(TInteger value)
-        => IRootN(value, 3);
+      public static TInteger IntegerCubeRoot(TInteger value)
+      {
+        if (TInteger.IsZero(value))
+          return value;
+
+        var abs = TInteger.Abs(value);
+        var sign = TInteger.CopySign(TInteger.One, value);
+
+        if (TryConvertTo(abs, out ulong ulv))
+          return TInteger.CreateChecked(ulong.ICbrt(ulv)) * sign;
+
+        return TInteger.CreateChecked(System.Numerics.BigInteger.ICbrt(System.Numerics.BigInteger.CreateChecked(abs))) * sign;
+      }
 
       /// <summary>
       /// <para>Indicates whether <paramref name="value"/> is the integer (not necessarily perfect) square of <paramref name="root"/>.</para>
@@ -2205,7 +2653,7 @@
       /// <param name="value">The square value to find the square-<paramref name="root"/> of.</param>
       /// <param name="root">The resulting square-root of <paramref name="value"/>.</param>
       /// <returns>Whether the <paramref name="value"/> is the integer (not necessarily perfect) square of <paramref name="root"/>.</returns>
-      public static bool IsICbrt(TInteger value, TInteger root)
+      public static bool IsIntegerCubeRoot(TInteger value, TInteger root)
         => value >= (root * root * root) // If GTE to cube of root.
         && value < (root + TInteger.One) * (root + TInteger.One) * (root + TInteger.One); // And if LT to cube of (root + 1).
 
@@ -2217,12 +2665,12 @@
       /// <param name="root">The resulting square-root of <paramref name="square"/>.</param>
       /// <returns>Whether the <paramref name="square"/> is a perfect square of <paramref name="root"/>.</returns>
       /// <remarks>Not using "y == (x * x)" because risk of overflow.</remarks>
-      public static bool IsPerfectICbrt(TInteger value, TInteger root)
+      public static bool IsPerfectIntegerCubeRoot(TInteger value, TInteger root)
         => value == (root * root * root);
 
       #endregion
 
-      #region ILog.. functions
+      #region IntegerLog
 
       /// <summary>
       /// <para>Returns the integer (toward-zero, away-from-zero) logarithm of specified a <paramref name="value"/> in a specified <paramref name="radix"/>.</para>
@@ -2231,41 +2679,34 @@
       /// <param name="value"></param>
       /// <param name="radix"></param>
       /// <returns></returns>
-      public static (TInteger IntegralLogTowardZero, TInteger IntegralLogAwayFromZero) ILog<TRadix>(TInteger value, TRadix radix)
+      public static (TInteger IntegralLogTowardZero, TInteger IntegralLogAwayFromZero, bool IsExactLog) IntegerLog<TRadix>(TInteger value, TRadix radix)
         where TRadix : System.Numerics.IBinaryInteger<TRadix>
       {
         System.ArgumentOutOfRangeException.ThrowIfLessThanOrEqual(radix, TRadix.One);
 
         if (TInteger.IsZero(value))
-          return (value, value);
+          return (value, value, false);
 
-        var abs = TInteger.Abs(value);
+        var absV = TInteger.Abs(value);
+        var sign = TInteger.CopySign(TInteger.One, value);
 
-        var logR = System.Numerics.BigInteger.Log(System.Numerics.BigInteger.CreateChecked(abs), double.CreateChecked(radix));
+        if (TryConvertTo(absV, out ulong ulv) && TryConvertTo(radix, out ulong ulr))
+        {
+          var (LogF, LogC, IsExactLog) = ulong.ILog(ulv, ulr);
 
-        var ilogR = TInteger.CreateChecked(FloatingPoint.IsNearInteger(logR, out var integer) ? integer : double.Floor(logR));
+          return (TInteger.CreateChecked(LogF) * sign, TInteger.CreateChecked(LogC) * sign, IsExactLog);
+        }
+        else // Fall-back on BigInteger ILog, which is more expensive but can handle any size of integer.
+        {
+          var (LogF, LogC, IsExactLog) = System.Numerics.BigInteger.ILog(System.Numerics.BigInteger.CreateChecked(absV), System.Numerics.BigInteger.CreateChecked(radix));
 
-        return (TInteger.CopySign(ilogR, value), TInteger.CopySign(IsPowOf(abs, radix) ? ilogR : ilogR + TInteger.One, value));
+          return (TInteger.CreateChecked(LogF) * sign, TInteger.CreateChecked(LogC) * sign, IsExactLog);
+        }
       }
 
-      /// <summary>
-      /// <para>Returns the integer (floor) logarithm of specified a <paramref name="value"/> in a base/radix 10.</para>
-      /// </summary>
-      /// <typeparam name="TRadix"></typeparam>
-      /// <param name="value"></param>
-      /// <returns></returns>
-      public static TInteger ILog10<TRadix>(TInteger value)
-        where TRadix : System.Numerics.IBinaryInteger<TRadix>
-      {
-        if (TInteger.IsZero(value))
-          return value;
+      #endregion
 
-        var log10 = System.Numerics.BigInteger.Log10(System.Numerics.BigInteger.CreateChecked(TInteger.Abs(value)));
-
-        var ilog10 = FloatingPoint.IsNearInteger(log10, out var integer) ? integer : double.Floor(log10);
-
-        return TInteger.CopySign(TInteger.CreateChecked(ilog10), value);
-      }
+      #region IntegerLogE
 
       /// <summary>
       /// <para>Returns the integer (floor) natural logarithm of specified a <paramref name="value"/> in a base/radix E.</para>
@@ -2273,22 +2714,32 @@
       /// <typeparam name="TRadix"></typeparam>
       /// <param name="value"></param>
       /// <returns></returns>
-      public static TInteger ILogE<TRadix>(TInteger value)
+      public static (TInteger IntegralLogTowardZero, TInteger IntegralLogAwayFromZero) IntegerLogE<TRadix>(TInteger value)
         where TRadix : System.Numerics.IBinaryInteger<TRadix>
       {
         if (TInteger.IsZero(value))
-          return value;
+          return (value, value);
 
-        var logE = System.Numerics.BigInteger.Log(System.Numerics.BigInteger.CreateChecked(TInteger.Abs(value)));
+        var absV = TInteger.Abs(value);
+        var sign = TInteger.CopySign(TInteger.One, value);
 
-        var ilogE = FloatingPoint.IsNearInteger(logE, out var integer) ? integer : double.Floor(logE);
+        if (TryConvertTo(absV, out ulong ulv))
+        {
+          var (ilogf, ilogc) = ulong.ILogE(ulv);
 
-        return TInteger.CopySign(TInteger.CreateChecked(ilogE), value);
+          return (TInteger.CreateChecked(ilogf) * sign, TInteger.CreateChecked(ilogc) * sign);
+        }
+        else // Fall-back on BigInteger ILog, which is more expensive but can handle any size of integer.
+        {
+          var (ilogf, ilogc) = System.Numerics.BigInteger.ILogE(System.Numerics.BigInteger.CreateChecked(absV));
+
+          return (TInteger.CreateChecked(ilogf) * sign, TInteger.CreateChecked(ilogc) * sign);
+        }
       }
 
       #endregion
 
-      #region ..IRoot functions
+      #region IntegerRootN functions
 
       /// <summary>
       /// <para>Computes the integer nth-root of a value.</para>
@@ -2297,30 +2748,120 @@
       /// <param name="value"></param>
       /// <param name="exponent"></param>
       /// <returns></returns>
-      public static TInteger IRootN<TNth>(TInteger value, TNth nth)
-        where TNth : System.Numerics.IBinaryInteger<TNth>
-        => TInteger.CreateChecked(System.Numerics.BigInteger.NewtonRaphsonRootN(System.Numerics.BigInteger.CreateChecked(value), int.CreateChecked(nth)));
+      public static TInteger IntegerRootN(TInteger value, TInteger degree)
+      {
+        System.ArgumentOutOfRangeException.ThrowIfNegative(value);
+        System.ArgumentOutOfRangeException.ThrowIfNegativeOrZero(degree);
 
-      public static bool IsIRootN<TNth>(TInteger value, TNth n, TInteger root)
+        if (value <= TInteger.One || degree <= TInteger.One)
+          return value;
+
+        // ---------------------------------------------------------
+        // REAL PERFECT‑POWER FAST PATH (complete, fast, exact)
+        // ---------------------------------------------------------
+        {
+          // For every possible exponent e dividing 'degree'
+          // check whether value is an exact e-th power.
+          //
+          // This is the mathematically correct perfect-power test:
+          // If value = k^degree, then for every divisor e of degree,
+          // value is also a perfect e-th power.
+          //
+          // So we test all divisors of 'degree'.
+
+          var d = degree;
+          var one = TInteger.One;
+
+          for (TInteger e = one; e * e <= d; e++) // Enumerate all divisors of degree.
+          {
+            if ((d % e) == TInteger.Zero)
+            {
+              if (IsExactPower(value, e, out var rootE)) // divisor e.
+                return rootE;
+
+              var f = d / e; // divisor degree/e
+              if (f != e && IsExactPower(value, f, out var rootF))
+                return rootF;
+            }
+          }
+        }
+
+        var x = TInteger.One << int.CreateChecked(TInteger.Log2(value) / degree);
+
+        while (true)
+        {
+          var prev = x;
+
+          var t = Pow(x, degree - TInteger.One, value); // Overflow‑safe power with early exit.
+
+          if (t == TInteger.Zero)
+            throw new ArithmeticException();
+
+          x = ((degree - TInteger.One) * x + value / t) / degree;
+
+          if (x == prev) // Final correction (Newton may be off by ±1).
+          {
+            while (Pow(x + TInteger.One, degree, value) <= value)
+              x++;
+
+            while (Pow(x, degree, value) > value)
+              x--;
+
+            return x;
+          }
+        }
+      }
+
+      private static bool IsExactPower(TInteger value, TInteger exponent, out TInteger root)
+      {
+        if (exponent == TInteger.One) // Quick reject.
+        {
+          root = value;
+          return true;
+        }
+
+        root = TInteger.One << int.CreateChecked(TInteger.Log2(value) / exponent); // Initial guess.
+
+
+        var t = Pow(root, exponent - TInteger.One, value); // One Newton refinement (not recursive).
+        if (!TInteger.IsZero(t))
+          root = ((exponent - TInteger.One) * root + value / t) / exponent;
+
+        // Verify exactness
+        return Pow(root, exponent, value) == value;
+      }
+
+      public static bool IsIntegerRootN<TNth>(TInteger value, TNth n, TInteger root)
         where TNth : System.Numerics.IBinaryInteger<TNth>
         => value >= Pow(root, n) // If GTE to nth of root.
         && value < Pow(root + TInteger.One, n); // And if LT to nth of (root + 1).
 
-      public static bool IsPerfectIRootN<TNth>(TInteger value, TNth n, TInteger root)
+      public static bool IsPerfectIntegerRootN<TNth>(TInteger value, TNth n, TInteger root)
         where TNth : System.Numerics.IBinaryInteger<TNth>
         => value == Pow(root, n);
 
       #endregion
 
-      #region ..ISqrt functions
+      #region IntegerSquareRoot functions
 
       /// <summary>
       /// <para>Computes the integer square-root of a value.</para>
       /// </summary>
       /// <param name="value"></param>
       /// <returns></returns>
-      public static TInteger ISqrt(TInteger value)
-        => IRootN(value, 2);
+      public static TInteger IntegerSquareRoot(TInteger value)
+      {
+        if (TInteger.IsZero(value))
+          return value;
+
+        var abs = TInteger.Abs(value);
+        var sign = TInteger.CopySign(TInteger.One, value);
+
+        if (TryConvertTo(abs, out ulong ulv))
+          return TInteger.CreateChecked(ulong.ISqrt(ulv)) * sign;
+
+        return TInteger.CreateChecked(System.Numerics.BigInteger.ISqrt(System.Numerics.BigInteger.CreateChecked(abs))) * sign;
+      }
 
       /// <summary>
       /// <para>Indicates whether <paramref name="value"/> is the integer (not necessarily perfect) square of <paramref name="root"/>.</para>
@@ -2329,7 +2870,7 @@
       /// <param name="value">The square value to find the square-<paramref name="root"/> of.</param>
       /// <param name="root">The resulting square-root of <paramref name="value"/>.</param>
       /// <returns>Whether the <paramref name="value"/> is the integer (not necessarily perfect) square of <paramref name="root"/>.</returns>
-      public static bool IsISqrt(TInteger value, TInteger root)
+      public static bool IsIntegerSquareRoot(TInteger value, TInteger root)
         => value >= (root * root) // If GTE to square of root.
         && value < (root + TInteger.One) * (root + TInteger.One); // And if LT to square of (root + 1).
 
@@ -2341,10 +2882,54 @@
       /// <param name="root">The resulting square-root of <paramref name="square"/>.</param>
       /// <returns>Whether the <paramref name="square"/> is a perfect square of <paramref name="root"/>.</returns>
       /// <remarks>Not using "y == (x * x)" because risk of overflow.</remarks>
-      public static bool IsPerfectISqrt(TInteger value, TInteger root)
+      public static bool IsPerfectIntegerSquareRoot(TInteger value, TInteger root)
         => value == (root * root);
 
       #endregion
+
+      public static TInteger ISqrt(TInteger value)
+      {
+        System.ArgumentOutOfRangeException.ThrowIfNegative(value);
+
+        if (TInteger.IsZero(value))
+          return value;
+
+        var log2 = int.CreateChecked(TInteger.Log2(value));
+
+        if (log2 < 128) // First check if the 128‑bit restoring fast path is applicable.
+        {
+          var n = value;
+          var r = TInteger.Zero;
+          var bit = TInteger.One << (int.CreateChecked(TInteger.Log2(value)) & ~1);
+
+          bit >>= int.CreateChecked((-(bit > n ? TInteger.One : TInteger.Zero)) & TInteger.CreateChecked(2)); // Align bit without branch
+
+          while (bit != TInteger.Zero)
+          {
+            var t = r + bit;
+            var ge = -(n >= t ? TInteger.One : TInteger.Zero);
+            n -= t & ge;
+            r = (r >> 1) + (bit & ge);
+            bit >>= 2;
+          }
+
+          return TInteger.CreateChecked(r);
+        }
+        else // For larger values, fall back to the integer Newton iteration.
+        {
+          var x = TInteger.One << (value.GetBitLength() / 2); // Initial approximation: 2^(bitLength/2)
+
+          while (true)
+          {
+            var y = (x + value / x) >> 1;
+
+            if (x - y is var diff && diff <= TInteger.One && diff >= TInteger.Zero)
+              return y;
+
+            x = y;
+          }
+        }
+      }
 
       #region IsBalanced
 
@@ -2468,32 +3053,6 @@
 
         return survivingPosition + TInteger.One;
       }
-
-      #endregion
-
-      #region KeepLeastSignificantDigits
-
-      /// <summary>
-      /// <para>Retreive <paramref name="count"/> least significant digits of <paramref name="value"/> using base <paramref name="radix"/>.</para>
-      /// </summary>
-      public static TInteger KeepLeastSignificantDigits<TRadix>(TInteger value, TRadix radix, TInteger count)
-        where TRadix : System.Numerics.IBinaryInteger<TRadix>
-      {
-        System.ArgumentOutOfRangeException.ThrowIfLessThanOrEqual(radix, TRadix.One);
-
-        return value % TInteger.CreateChecked(Pow(radix, count));
-      }
-
-      #endregion
-
-      #region KeepMostSignificantDigits
-
-      /// <summary>
-      /// <para>Drop the leading digit of <paramref name="value"/> using base <paramref name="radix"/>.</para>
-      /// </summary>
-      public static TInteger KeepMostSignificantDigits<TRadix>(TInteger value, TRadix radix, TInteger count)
-        where TRadix : System.Numerics.IBinaryInteger<TRadix>
-        => value / TInteger.CreateChecked(Pow(radix, DigitCount(value, radix) - count));
 
       #endregion
 
@@ -2788,12 +3347,41 @@
       public static bool IsPowOf<TRadix>(TInteger value, TRadix radix)
         where TRadix : System.Numerics.IBinaryInteger<TRadix>
       {
+        if (value <= TInteger.Zero)
+          return false;
+
         System.ArgumentOutOfRangeException.ThrowIfLessThanOrEqual(radix, TRadix.One);
 
-        var log = System.Numerics.BigInteger.Log(System.Numerics.BigInteger.CreateChecked(value), double.CreateChecked(radix));
+        if (radix == TRadix.One + TRadix.One) // Fast path for radix = 2 (bit trick).
+          return (value & (value - TInteger.One)) == TInteger.Zero;
 
-        return FloatingPoint.IsNearInteger(log, out var ilog) && Pow(TInteger.CreateChecked(radix), TInteger.CreateChecked(ilog)) == value;
+        var v = value;
+        var r = TInteger.CreateChecked(radix);
+
+        while (true) // General case: repeatedly divide by radix until it no longer divides, which is O(log n) but extremely fast in practice.
+        {
+          var q = v / r;
+          var p = q * r;
+
+          if (p != v) // If not divisible, it's not a power.
+            return false;
+
+          if (q == TInteger.One) // If quotient is 1, we reached radix^k.
+            return true;
+
+          v = q;
+        }
       }
+      //{
+      //  if (value <= TInteger.Zero)
+      //    return false;
+
+      //  System.ArgumentOutOfRangeException.ThrowIfLessThanOrEqual(radix, TRadix.One);
+
+      //  var log = System.Numerics.BigInteger.Log(System.Numerics.BigInteger.CreateChecked(value), double.CreateChecked(radix));
+
+      //  return FloatingPoint.IsNearInteger(log, out var ilog) && Pow(TInteger.CreateChecked(radix), TInteger.CreateChecked(ilog)) == value;
+      //}
 
       /// <summary>
       /// <para>Computes <paramref name="value"/> raised to the power of <paramref name="exponent"/>.</para>
@@ -2807,6 +3395,52 @@
       public static TInteger Pow<TExponent>(TInteger value, TExponent exponent)
         where TExponent : System.Numerics.IBinaryInteger<TExponent>
         => TInteger.CreateChecked(System.Numerics.BigInteger.Pow(System.Numerics.BigInteger.CreateChecked(value), int.CreateChecked(exponent)));
+
+      #endregion
+
+      #region Pow - Overflow‑safe exponentiation.
+
+      /// <summary>
+      /// <para>Overflow‑safe exponentiation: x^k, stops early if exceeding limit.</para>
+      /// </summary>
+      /// <param name="value"></param>
+      /// <param name="exponent"></param>
+      /// <param name="limit"></param>
+      /// <returns></returns>
+      public static TInteger Pow(TInteger value, TInteger exponent, TInteger limit)
+      {
+        if (TInteger.IsZero(value))
+          return TInteger.IsZero(exponent) ? TInteger.One : TInteger.Zero;
+
+        var result = TInteger.One;
+        var overflow = limit + TInteger.One;
+
+        while (exponent > TInteger.Zero)
+        {
+          if (!TInteger.IsZero(exponent & TInteger.One))
+          {
+            if (result > limit / value) // Check: result * value > limit ?
+              return overflow;
+
+            result *= value;
+
+            if (result > limit)
+              return overflow;
+          }
+
+          exponent >>= 1;
+
+          if (value > limit / value) // Check: value * value > limit ?
+            return overflow;
+
+          value *= value;
+
+          if (value > limit)
+            return overflow;
+        }
+
+        return result;
+      }
 
       #endregion
 
@@ -3068,8 +3702,6 @@
 
       #endregion
 
-      #region Reverse.. functions
-
       #region ReverseBits
 
       /// <summary>
@@ -3080,14 +3712,14 @@
       {
         var count = value.GetByteCount();
 
-        System.Span<byte> bytes = stackalloc byte[count]; // Retrieve the byte size of the number, which will be the basis for the bit reversal.
+        var bytes = (stackalloc byte[count]); // Retrieve the byte size of the number, which will be the basis for the bit reversal.
 
         value.WriteLittleEndian(bytes); // Write as LittleEndian (increasing numeric significance in increasing memory addresses).
 
         for (var i = bytes.Length - 1; i >= 0; i--)  // After this loop, all bits are reversed.
           byte.ReverseBitsInPlace(ref bytes[i]); // Mirror (reverse) bits in each byte.
 
-        return TInteger.ReadBigEndian(bytes, value.GetType().IsIUnsignedNumber()); // Read as BigEndian (decreasing numeric significance in increasing memory addresses).
+        return TInteger.ReadBigEndian(bytes, value.GetType().ImplementsIUnsignedNumber()); // Read as BigEndian (decreasing numeric significance in increasing memory addresses).
       }
 
       #endregion
@@ -3102,42 +3734,14 @@
       {
         var count = value.GetByteCount();
 
-        System.Span<byte> bytes = stackalloc byte[count]; // Retrieve the byte size of the number, which will be the basis for the bit reversal.
+        var bytes = (stackalloc byte[count]); // Retrieve the byte size of the number, which will be the basis for the bit reversal.
 
         // We can use either direction here, write-LE/read-BE or write-BE/read-LE, doesn't really matter, since the end result is the same.
 
         value.WriteLittleEndian(bytes); // Write as LittleEndian (increasing numeric significance in increasing memory addresses).
 
-        return TInteger.ReadBigEndian(bytes, value.GetType().IsIUnsignedNumber()); // Read as BigEndian (decreasing numeric significance in increasing memory addresses).
+        return TInteger.ReadBigEndian(bytes, value.GetType().ImplementsIUnsignedNumber()); // Read as BigEndian (decreasing numeric significance in increasing memory addresses).
       }
-
-      #endregion
-
-      #region ReverseDigits
-
-      /// <summary>
-      /// <para>Reverse the digits a <paramref name="value"/> in base <paramref name="radix"/>, obtaining a new number.</para>
-      /// </summary>
-      public static TInteger ReverseDigits<TRadix>(TInteger value, TRadix radix)
-        where TRadix : System.Numerics.IBinaryInteger<TRadix>
-      {
-        System.ArgumentOutOfRangeException.ThrowIfLessThanOrEqual(radix, TRadix.One);
-
-        var rdx = TInteger.CreateChecked(radix);
-
-        var reversed = TInteger.Zero;
-
-        while (!TInteger.IsZero(value))
-        {
-          reversed = (reversed * rdx) + (value % rdx);
-
-          value /= rdx;
-        }
-
-        return reversed;
-      }
-
-      #endregion
 
       #endregion
 
@@ -3219,13 +3823,13 @@
       {
         rng ??= System.Random.Shared;
 
-        System.Span<byte> bytes = stackalloc byte[value.GetByteCount()];
+        var bytes = (stackalloc byte[value.GetByteCount()]);
 
         value.WriteLittleEndian(bytes);
 
         rng.Shuffle(bytes);
 
-        return TInteger.ReadLittleEndian(bytes, value.GetType().IsIUnsignedNumber());
+        return TInteger.ReadLittleEndian(bytes, value.GetType().ImplementsIUnsignedNumber());
       }
 
       #endregion
@@ -3244,7 +3848,7 @@
         var limit = long.CreateChecked(n);
 
         System.ArgumentOutOfRangeException.ThrowIfNegativeOrZero(limit);
-        System.ArgumentOutOfRangeException.ThrowIfGreaterThan(limit, 64L * System.Array.MaxIndexArrayOfMultiByteStructures);
+        System.ArgumentOutOfRangeException.ThrowIfGreaterThan(limit, 64L * System.Array.MaxArrayIndexOfMultiByteStructures);
 
         var ba = new Flux.DataStructures.BitArray64(limit + 1, unchecked((long)0xAAAAAAAAAAAAAAAAUL)); // Bits represents the number line, so we start with all odd numbers being set to 1 and all even numbers set to 0.
 
@@ -3322,7 +3926,7 @@
       /// </summary>
       /// <remarks>Note that for dynamic types, e.g. <see cref="System.Numerics.BigInteger"/>, the number of bits depends on the storage size used for the <paramref name="value"/>.</remarks>
       public static TInteger MostSignificant1Bit(TInteger value)
-        => TInteger.IsZero(value) ? value : TInteger.One << (value.GetBitLength() - 1);
+        => TInteger.IsZero(value) ? value : TInteger.One << int.CreateChecked(TInteger.Log2(value)); // TInteger.One << (value.GetBitLength() - 1);
 
 #if INCLUDE_SCRATCH
 
@@ -3420,75 +4024,6 @@
 
       #endregion
 
-      #region Sum..SignificantDigits functions
-
-      #region SumLeastSignificantDigits
-
-      /// <summary>
-      /// <para>Sum <paramref name="count"/> least significant digits of <paramref name="value"/> in the given <paramref name="radix"/>.</para>
-      /// </summary>
-      /// <typeparam name="TRadix"></typeparam>
-      /// <param name="value"></param>
-      /// <param name="radix"></param>
-      /// <param name="count"></param>
-      /// <returns></returns>
-      public static TInteger SumLeastSignificantDigits<TRadix>(TInteger value, TRadix radix, TInteger count)
-        where TRadix : System.Numerics.IBinaryInteger<TRadix>
-      {
-        System.ArgumentOutOfRangeException.ThrowIfLessThanOrEqual(radix, TRadix.One);
-        var rdx = TInteger.CreateChecked(radix);
-
-        value = TInteger.Abs(value);
-
-        var sum = TInteger.Zero;
-
-        for (var i = TInteger.Zero; i < count && value > TInteger.Zero; i++)
-        {
-          sum += value % rdx;
-
-          value /= rdx;
-        }
-
-        return sum;
-      }
-
-      #endregion
-
-      #region SumMostSignificantDigits
-
-      /// <summary>
-      /// <para>Sum <paramref name="count"/> most significant digits of <paramref name="value"/> in the given <paramref name="radix"/>.</para>
-      /// </summary>
-      /// <typeparam name="TRadix"></typeparam>
-      /// <param name="value"></param>
-      /// <param name="radix"></param>
-      /// <param name="count"></param>
-      /// <returns></returns>
-      public static TInteger SumMostSignificantDigits<TRadix>(TInteger value, TRadix radix, TInteger count)
-        where TRadix : System.Numerics.IBinaryInteger<TRadix>
-      {
-        System.ArgumentOutOfRangeException.ThrowIfLessThanOrEqual(radix, TRadix.One);
-        var rdx = TInteger.CreateChecked(radix);
-
-        value = TInteger.Abs(value);
-        var digits = DigitCount(value, radix);
-        value /= Pow(rdx, digits - TInteger.Min(count, digits));
-
-        var sum = TInteger.Zero;
-
-        while (value > TInteger.Zero)
-        {
-          sum += value % rdx;
-
-          value /= rdx;
-        }
-
-        return sum;
-      }
-      #endregion
-
-      #endregion
-
       #region ToFractionalPart
 
       /// <summary>
@@ -3548,6 +4083,16 @@
       }
 
       #endregion
+
+      public static bool TryConvertTo<TTarget>(TInteger source, out TTarget target)
+        where TTarget : System.Numerics.IBinaryInteger<TTarget>
+      {
+        target = TTarget.CreateTruncating(source); // Convert TInteger → TTarget (truncating, never throws)
+
+        var roundTrip = TInteger.CreateTruncating(target); // Convert back TTarget → TInteger (truncating, never throws)
+
+        return roundTrip == source; // If round-trip preserved the value, it fits exactly.
+      }
 
       //#region Twelvefold way
 
@@ -3650,6 +4195,9 @@
       //#endregion
     }
 
+
+
+
     extension<TInteger>(TInteger value)
       where TInteger : System.Numerics.IBinaryInteger<TInteger>
     {
@@ -3663,7 +4211,7 @@
       /// </remarks>
       public int GetBitLength()
         => TInteger.IsNegative(value)
-        ? GetBitCount<TInteger>() // When value is negative, return the bit-count (i.e. based on the storage strategy).
+        ? GetBitCount(value) // When value is negative, return the bit-count (i.e. based on the storage strategy).
         : value.GetShortestBitLength(); // Otherwise, return the .NET shortest-bit-length.
 
 #if INCLUDE_SCRATCH
@@ -3694,7 +4242,7 @@
       /// <exception cref="System.ArgumentOutOfRangeException"></exception>
       public string ToBinaryString(int minLength = 1, string? alphabet = null)
       {
-        if (minLength <= 0) minLength = GetBitCount<TInteger>();
+        if (minLength <= 0) minLength = GetBitCount(value);
 
         alphabet ??= System.Text.Encoding.Base62;
 
@@ -3702,7 +4250,7 @@
 
         var indices = new System.Collections.Generic.List<int>();
 
-        for (var bitIndex = int.Min(int.Max(value.GetBitLength(), minLength), GetBitCount<TInteger>()) - 1; bitIndex >= 0; bitIndex--)
+        for (var bitIndex = int.Min(int.Max(value.GetBitLength(), minLength), GetBitCount(value)) - 1; bitIndex >= 0; bitIndex--)
         {
           var bitValue = int.CreateChecked((value >>> bitIndex) & TInteger.One);
 
@@ -3725,7 +4273,7 @@
       /// <exception cref="System.ArgumentOutOfRangeException"></exception>
       public string ToDecimalString(int minLength = 1, string? alphabet = null, char negativeSymbol = '\u002D')
       {
-        if (minLength <= 0) minLength = GetMaxDigitCount(GetBitCount<TInteger>(), 10, value.GetType().IsISignedNumber());
+        if (minLength <= 0) minLength = GetMaxDigitCount(GetBitCount(value), 10, value.GetType().ImplementsISignedNumber());
 
         alphabet ??= System.Text.Encoding.Base62;
 
@@ -3755,7 +4303,7 @@
       /// <exception cref="System.ArgumentOutOfRangeException"></exception>
       public string ToHexadecimalString(int minLength = 1, string? alphabet = null)
       {
-        if (minLength <= 0) minLength = GetMaxDigitCount(GetBitCount<TInteger>(), 16, value.GetType().IsISignedNumber());
+        if (minLength <= 0) minLength = GetMaxDigitCount(GetBitCount(value), 16, value.GetType().ImplementsISignedNumber());
 
         alphabet ??= System.Text.Encoding.Base62;
 
@@ -3785,7 +4333,7 @@
       /// <exception cref="System.ArgumentOutOfRangeException"></exception>
       public string ToOctalString(int minLength = 1, string? alphabet = null)
       {
-        if (minLength <= 0) minLength = GetMaxDigitCount(GetBitCount<TInteger>(), 8, value.GetType().IsISignedNumber());
+        if (minLength <= 0) minLength = GetMaxDigitCount(GetBitCount(value), 8, value.GetType().ImplementsISignedNumber());
 
         alphabet ??= System.Text.Encoding.Base62;
 
@@ -3836,7 +4384,7 @@
           return value.ToHexadecimalString(minLength, alphabet);
         else
         {
-          if (minLength <= 0) minLength = GetMaxDigitCount(GetBitCount<TInteger>(), rdx, value.GetType().IsISignedNumber());
+          if (minLength <= 0) minLength = GetMaxDigitCount(GetBitCount(value), rdx, value.GetType().ImplementsISignedNumber());
 
           alphabet ??= System.Text.Encoding.Base62;
 

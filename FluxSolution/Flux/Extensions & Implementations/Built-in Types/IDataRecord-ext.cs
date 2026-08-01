@@ -135,7 +135,7 @@ namespace Flux
       /// <returns></returns>
       public System.Collections.Generic.IDictionary<string, object> ToDictionary()
       {
-        var od = new Flux.DataStructures.OrderedDictionary<string, object>();
+        var od = new System.Collections.Generic.OrderedDictionary<string, object>();
 
         for (var i = 0; i < source.FieldCount; i++)
           od.Add(source.GetNameEx(i), source.GetValue(i));

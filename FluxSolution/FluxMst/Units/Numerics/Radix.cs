@@ -71,7 +71,7 @@ namespace Units
     public void GetPlaceValues()
     {
       var expected = new int[] { 2, 10, 500 };
-      var actual = int.GetDigitPlaceValues(512, 10);
+      var actual = int.DigitPlaceValues(512, 10);
       Assert.AreEqual(expected.Length, actual.Count());
       for (var i = expected.Length - 1; i >= 0; i--)
         Assert.AreEqual(expected[i], actual[i], $"{nameof(GetPlaceValues)} index {i}, expected {expected[i]} != actual {expected[i]}");
@@ -89,13 +89,13 @@ namespace Units
     [TestMethod]
     public void IntegerLogCeiling()
     {
-      Assert.AreEqual(3, BinaryInteger.ILog(512 - 1, 10).IntegralLogAwayFromZero);
+      Assert.AreEqual(3, BinaryInteger.IntegerLog(512 - 1, 10).IntegralLogAwayFromZero);
     }
 
     [TestMethod]
     public void IntegerLogFloor()
     {
-      Assert.AreEqual(2, BinaryInteger.ILog(512, 10).IntegralLogTowardZero);
+      Assert.AreEqual(2, BinaryInteger.IntegerLog(512, 10).IntegralLogTowardZero);
     }
 
     [TestMethod]

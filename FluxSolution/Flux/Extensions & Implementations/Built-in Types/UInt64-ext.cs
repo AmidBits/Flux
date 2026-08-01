@@ -2,17 +2,18 @@ namespace Flux
 {
   public static partial class UInt64Extensions
   {
+    /// <summary>
+    /// <para>The largest prime number that fits in an <see cref="System.UInt64"/>.</para>
+    /// </summary>
+    [System.CLSCompliant(false)]
+    public const ulong MaxPrimeNumber = 18446744073709551557ul;
+
     private const ulong m_primeBitMask = 0b0010_1000_0010_0000_1000_1010_0010_0000_1010_0000_1000_1010_0010_1000_1010_1100UL;
     private static readonly ulong[] m_smallPrimes = { 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37 };
     private static readonly ulong[] m_primeDeterministicBases = { 2, 3, 5, 7, 11, 13, 17 };
 
     extension(System.UInt64)
     {
-      /// <summary>
-      /// <para>The largest prime number that fits in the type.</para>
-      /// </summary>
-      [System.CLSCompliant(false)] public static ulong MaxPrimeNumber => 18446744073709551557ul;
-
       #region BitSwaps
 
       /// <summary>
@@ -47,15 +48,226 @@ namespace Flux
 
       #endregion
 
-      #region IsPrimeDeterministic (Miller-Rabin deterministic primality test)
+      #region ICbrt - Integer cube root.
 
       /// <summary>
-      /// <para>This implementation uses a Miller-Rabin deterministic algorithm.</para>
+      /// <para>Computes the integer cube root of a 64-bit unsigned integer.</para>
+      /// </summary>
+      /// <param name="b"></param>
+      /// <returns></returns>
+      [System.CLSCompliant(false)]
+      public static ulong ICbrt(ulong n)
+      {
+        if (n < 8)
+          return n == 0 ? 0u : 1u;
+
+        var x = 1UL << (System.Numerics.BitOperations.Log2(n) / 3); // Initial guess.
+
+        while (true)
+        {
+          var xp = x;
+
+          if (x != 0 && x > n / x) // Overflow‑safe x².
+            return xp;
+
+          var x2 = x * x;
+
+          if (x2 != 0 && x > n / x2) // Overflow‑safe x³.
+            return xp;
+
+          var x3 = x2 * x;
+
+          if (x3 == n)
+            return x;
+
+          if (x3 > n) // Adjust x by ±1.
+            x--;
+          else
+            x++;
+
+          if (x == xp) // Convergence check.
+            return x;
+        }
+      }
+
+      #endregion
+
+      #region ILog - Integer logarithm.
+
+      /// <summary>
+      /// <para>Computes the integer logarithm of a 64-bit unsigned integer with a specified base.</para>
+      /// </summary>
+      /// <param name="n"></param>
+      /// <param name="b"></param>
+      /// <returns></returns>
+      [System.CLSCompliant(false)]
+      public static (ulong ILogF, ulong ILogC, bool IsExactLog) ILog(ulong n, ulong b)
+      {
+        System.ArgumentOutOfRangeException.ThrowIfLessThan(b, 2ul);
+
+        if (n == 0)
+          return (0, 0, true);
+
+        if (n < b)
+          return (0, 1, false);
+
+        if (n == b)
+          return (1, 1, true);
+
+        var log2n = System.Numerics.BitOperations.Log2(n);
+        var log2b = System.Numerics.BitOperations.Log2(b);
+
+        var ilogf = (ulong)(log2n / log2b);
+
+        var pow = System.UInt128.One;
+        System.UInt128 factor = b;
+        var remexp = ilogf;
+
+        while (remexp != 0)
+        {
+          if ((remexp & 1) != 0)
+            pow *= factor;
+
+          factor *= factor;
+          remexp >>= 1;
+        }
+
+        while (pow > n)
+        {
+          pow /= b;
+          ilogf--;
+        }
+
+        while (pow * b <= n)
+        {
+          pow *= b;
+          ilogf++;
+        }
+
+        var exact = pow == n;
+        var ilogc = exact ? ilogf : ilogf + 1;
+
+        return (ilogf, ilogc, exact);
+      }
+
+      #endregion
+
+      #region ILogE - Integer natural logarithm.
+
+      /// <summary>
+      /// <para>Computes the integer natural logarithm of a 64-bit unsigned integer.</para>
       /// </summary>
       /// <param name="n"></param>
       /// <returns></returns>
       [System.CLSCompliant(false)]
-      public static bool IsPrimeDeterministic(ulong n)
+      public static (ulong ILogF, ulong ILogC) ILogE(ulong n)
+      {
+        System.ArgumentOutOfRangeException.ThrowIfNegativeOrZero(n);
+
+        if (n <= 1)
+          return (0, 0);
+
+        var log2 = System.Numerics.BitOperations.Log2(n); // log2(n) = 63 - clz(n)
+
+        var ln_n_est = log2 * 0.69314718055994530941723212145818; // ln(n) ≈ log2(n) * ln(2)
+
+        var k = (ulong)ln_n_est; // Log-floor estimate.
+
+        if (ln_n_est < k) // Correction for floating-point underestimation.
+          k--;
+
+        return (k, k + 1);
+      }
+
+      #endregion
+
+      #region IRootN - Integer nth root.
+
+      /// <summary>
+      /// <para>Compute the nth root of a 64-bit unsigned integer. This implementation uses Newton's method.</para>
+      /// </summary>
+      /// <param name="value"></param>
+      /// <param name="degree"></param>
+      /// <returns></returns>
+      [System.CLSCompliant(false)]
+      public static ulong IRootN(ulong value, int degree)
+      {
+        if (degree <= 1)
+          return value;
+
+        if (value == 0)
+          return 0;
+
+        if (degree == 2) // Fast path for square root.
+          return (ulong)double.Sqrt(value);
+
+        if (degree == 3) // Fast path for cube root (integer‑safe).
+          return ICbrt(value);
+
+        var x = 1UL << (System.Numerics.BitOperations.Log2(value) / degree);
+
+        while (true) // Newton iteration.
+        {
+          var xp = x;
+
+          var pow = Pow(x, degree - 1, value);
+          var div = (pow == ulong.MaxValue) ? 0 : value / pow;
+
+          x = ((ulong)(degree - 1) * x + div) / (ulong)degree;
+
+          if (x >= xp)
+            return xp;
+        }
+      }
+
+      #endregion
+
+      #region ISqrt - Integer square root.
+
+      /// <summary>
+      /// <para>Computes the integer square root of a 64-bit unsigned integer.</para>
+      /// </summary>
+      /// <param name="n"></param>
+      /// <returns></returns>
+      [System.CLSCompliant(false)]
+      public static ulong ISqrt(ulong n)
+      {
+        if (n <= 1)
+          return n;
+
+        var r = 0ul;
+        var bit = 1ul << (System.Numerics.BitOperations.Log2(n) & ~1); // The highest power of four <= 2^64
+
+        while (bit > n) // Align bit with highest non-zero pair of bits
+          bit >>= 2;
+
+        while (bit != 0)
+        {
+          if (n >= r + bit)
+          {
+            n -= r + bit;
+            r = (r >> 1) + bit;
+          }
+          else
+            r >>= 1;
+
+          bit >>= 2;
+        }
+
+        return r;
+      }
+
+      #endregion
+
+      #region IsPrime - Miller-Rabin deterministic primality test.
+
+      /// <summary>
+      /// <para>Deterministic Miller-Rabin prime number test.</para>
+      /// </summary>
+      /// <param name="n"></param>
+      /// <returns></returns>
+      [System.CLSCompliant(false)]
+      public static bool IsPrime(ulong n)
         => MillerRabinDeterministicIsPrime(n);
 
       /// <summary>
@@ -121,6 +333,51 @@ namespace Flux
         }
 
         return false;
+      }
+
+      #endregion
+
+      #region Pow - Overflow‑safe exponentiation.
+
+      /// <summary>
+      /// <para>Overflow‑safe exponentiation: x^k, stops early if exceeding limit.</para>
+      /// </summary>
+      /// <param name="value"></param>
+      /// <param name="exponent"></param>
+      /// <param name="limit"></param>
+      /// <returns></returns>
+      private static ulong Pow(ulong value, int exponent, ulong limit)
+      {
+        var result = 1ul;
+
+        while (exponent > 0)
+        {
+          if ((exponent & 1) != 0)
+          {
+            if (value != 0 && result > limit / value) // Check: result * value > limit ?
+              return ulong.MaxValue;
+
+            result *= value;
+
+            if (result > limit)
+              return ulong.MaxValue;
+          }
+
+          exponent >>= 1;
+
+          if (exponent == 0)
+            break;
+
+          if (value != 0 && value > limit / value) // Square the base, with overflow check.
+            value = ulong.MaxValue;
+          else
+            value *= value;
+
+          if (value > limit)
+            value = ulong.MaxValue;
+        }
+
+        return result;
       }
 
       #endregion

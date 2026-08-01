@@ -40,8 +40,8 @@
       /// <para>The default epsilon scalar (1e-6f) used for near-integer functions.</para>
       /// </summary>
       public static System.Runtime.InteropServices.NFloat DefaultBaseEpsilon
-        => System.Runtime.InteropServices.NFloat.Size == 8 ? System.Runtime.InteropServices.NFloat.CreateChecked(double.DefaultBaseEpsilon)
-        : System.Runtime.InteropServices.NFloat.Size == 4 ? System.Runtime.InteropServices.NFloat.CreateChecked(float.DefaultBaseEpsilon)
+        => System.Runtime.InteropServices.NFloat.Size == 8 ? System.Runtime.InteropServices.NFloat.CreateChecked(double.NearEqualityEpsilon)
+        : System.Runtime.InteropServices.NFloat.Size == 4 ? System.Runtime.InteropServices.NFloat.CreateChecked(float.NearEqualityEpsilon)
         : throw new System.NotImplementedException();
 
       #region Native..

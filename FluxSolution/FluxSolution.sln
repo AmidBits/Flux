@@ -17,8 +17,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluxMst", "FluxMst\FluxMst.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MauiApp1", "MauiApp1\MauiApp1.csproj", "{449ACB0B-AEC2-4556-BCAB-8EA482842E40}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Flux.DataStructures", "Flux.DataStructures\Flux.DataStructures.csproj", "{10D1897F-3A6E-4B73-9E64-BE2DB07E6926}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -53,10 +51,6 @@ Global
 		{449ACB0B-AEC2-4556-BCAB-8EA482842E40}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{449ACB0B-AEC2-4556-BCAB-8EA482842E40}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{449ACB0B-AEC2-4556-BCAB-8EA482842E40}.Release|Any CPU.Build.0 = Release|Any CPU
-		{10D1897F-3A6E-4B73-9E64-BE2DB07E6926}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{10D1897F-3A6E-4B73-9E64-BE2DB07E6926}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{10D1897F-3A6E-4B73-9E64-BE2DB07E6926}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{10D1897F-3A6E-4B73-9E64-BE2DB07E6926}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -27,6 +27,7 @@ namespace Flux.Numerics
     , System.Numerics.IDecrementOperators<BigRational>
     , System.Numerics.IDivisionOperators<BigRational, BigRational, BigRational>, System.Numerics.IDivisionOperators<BigRational, System.Numerics.BigInteger, BigRational>
     , System.Numerics.IEqualityOperators<BigRational, BigRational, bool>
+    //, System.Numerics.IFloatingPoint<BigRational>
     , System.Numerics.IFloatingPointConstants<BigRational>
     , System.Numerics.IIncrementOperators<BigRational>
     //, System.Numerics.ILogarithmicFunctions<BigRational>
@@ -308,9 +309,9 @@ namespace Flux.Numerics
     public static BigRational CreateChecked<TOther>(TOther o)
       where TOther : System.Numerics.INumberBase<TOther>
     {
-      if (o.GetType().IsAssignableToGenericType(typeof(System.Numerics.IBinaryInteger<>)))
+      if (o.GetType().IsAssignableToGenericAware(typeof(System.Numerics.IBinaryInteger<>)))
         return new(System.Numerics.BigInteger.CreateChecked(o));
-      else if (o.GetType().IsAssignableToGenericType(typeof(System.Numerics.IFloatingPoint<>)))
+      else if (o.GetType().IsAssignableToGenericAware(typeof(System.Numerics.IFloatingPoint<>)))
         return ApproximateRational(double.CreateChecked(o));
       else if (o is BigRational br)
         return br;
@@ -321,9 +322,9 @@ namespace Flux.Numerics
     public static BigRational CreateSaturating<TOther>(TOther o)
       where TOther : System.Numerics.INumberBase<TOther>
     {
-      if (o.GetType().IsAssignableToGenericType(typeof(System.Numerics.IBinaryInteger<>)))
+      if (o.GetType().IsAssignableToGenericAware(typeof(System.Numerics.IBinaryInteger<>)))
         return new(System.Numerics.BigInteger.CreateSaturating(o));
-      else if (o.GetType().IsAssignableToGenericType(typeof(System.Numerics.IFloatingPoint<>)))
+      else if (o.GetType().IsAssignableToGenericAware(typeof(System.Numerics.IFloatingPoint<>)))
         return ApproximateRational(double.CreateSaturating(o));
       else if (o is BigRational br)
         return br;
@@ -334,9 +335,9 @@ namespace Flux.Numerics
     public static BigRational CreateTruncating<TOther>(TOther o)
       where TOther : System.Numerics.INumberBase<TOther>
     {
-      if (o.GetType().IsAssignableToGenericType(typeof(System.Numerics.IBinaryInteger<>)))
+      if (o.GetType().IsAssignableToGenericAware(typeof(System.Numerics.IBinaryInteger<>)))
         return new(System.Numerics.BigInteger.CreateTruncating(o));
-      else if (o.GetType().IsAssignableToGenericType(typeof(System.Numerics.IFloatingPoint<>)))
+      else if (o.GetType().IsAssignableToGenericAware(typeof(System.Numerics.IFloatingPoint<>)))
         return ApproximateRational(double.CreateTruncating(o));
       else if (o is BigRational br)
         return br;

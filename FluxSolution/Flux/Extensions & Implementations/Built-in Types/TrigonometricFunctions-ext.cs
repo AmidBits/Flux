@@ -141,10 +141,10 @@
       public static TFloat Acvcos(TFloat y)
         => TFloat.Asin(y - TFloat.One);
 
-      /// <summary>Returns the inverse of haversed sine of the specified angle.</summary>
-      /// <see href="https://en.wikipedia.org/wiki/Versine#Inverse_functions"/>
-      public static TFloat Ahvsin(TFloat y)
-        => TFloat.Acos(TFloat.One - TFloat.CreateChecked(2) * y); // An extra subtraction saves a call to the Sqrt function: 2 * double.Asin(double.Sqrt(y));
+      ///// <summary>Returns the inverse of haversed sine of the specified angle.</summary>
+      ///// <see href="https://en.wikipedia.org/wiki/Versine#Inverse_functions"/>
+      //public static TFloat Ahvsin(TFloat y)
+      //  => 2 * Atan2(TFloat.Sqrt(y), TFloat.Sqrt(1 - y));//TFloat.Acos(TFloat.One - TFloat.CreateChecked(2) * y); // An extra subtraction saves a call to the Sqrt function: 2 * double.Asin(double.Sqrt(y));
 
       /// <summary>Returns the inverse of haversed cosine of the specified angle.</summary>
       /// <see href="https://en.wikipedia.org/wiki/Versine#Inverse_functions"/>

@@ -2,14 +2,14 @@ namespace Flux
 {
   public static partial class UInt16Extensions
   {
+    /// <summary>
+    /// <para>The largest prime number that fits in an <see cref="System.UInt16"/>.</para>
+    /// </summary>
+    [System.CLSCompliant(false)]
+    public const ushort MaxPrimeNumber = 65521;
+
     extension(System.UInt16)
     {
-      /// <summary>
-      /// <para>The largest prime number that fits in the type.</para>
-      /// </summary>
-      [System.CLSCompliant(false)]
-      public static ushort MaxPrimeNumber => 65521;
-
       #region ReverseBits..
 
       /// <summary>

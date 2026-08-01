@@ -50,13 +50,13 @@ namespace Numerics
     [TestMethod]
     public void EuclideanDivision()
     {
-      var expected = (-4, 0);
+      var expected = (4, 0);
       var actual = int.EuclideanDivRem(-12, -3);
       Assert.AreEqual(expected, actual);
-      expected = (-3, -2);
+      expected = (4, 1);
       actual = int.EuclideanDivRem(-11, -3);
       Assert.AreEqual(expected, actual);
-      expected = (-3, -1);
+      expected = (4, 2);
       actual = int.EuclideanDivRem(-10, -3);
       Assert.AreEqual(expected, actual);
     }

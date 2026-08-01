@@ -127,9 +127,9 @@ namespace Flux.CoordinateSystems
       var rORh = rng.NextBoolean(); // Determines whether radius or height is fixed.
 
       return new(
-        rORh ? radius : rng.NextNumber(radius), // Either fixed (on curved surface), or random.
-        rng.NextNumber(double.Tau),
-        rORh ? rng.NextNumber(height) : (rng.NextBoolean() ? height : 0) // Either random, or fixed (at one of the poles).
+        rORh ? radius : rng.NextDouble(radius), // Either fixed (on curved surface), or random.
+        rng.NextDouble(double.Tau),
+        rORh ? rng.NextDouble(height) : (rng.NextBoolean() ? height : 0) // Either random, or fixed (at one of the poles).
       );
     }
 

@@ -81,7 +81,7 @@
 
       #endregion
 
-      #region Booths algorithm (minimal rotation)
+      #region BoothsMinimalRotation (Booths algorithm)
 
       /// <summary>
       /// <para>Find the rotation of the <paramref name="source"/> possessing the lowest lexicographical order of all such rotation. Uses the specified <paramref name="comparer"/>, or default if null.</para>
@@ -394,7 +394,7 @@
       /// <param name="maxTestLength"></param>
       /// <param name="equalityComparer">If null, then <see cref="System.Collections.Generic.EqualityComparer{T}.Default"/> is used.</param>
       /// <returns></returns>
-      public int CommonSuffixLength(System.ReadOnlySpan<T> target, int maxTestLength, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
+      public int CommonSuffixLength(System.ReadOnlySpan<T> target, int maxTestLength = int.MaxValue, System.Collections.Generic.IEqualityComparer<T>? equalityComparer = null)
       {
         System.ArgumentOutOfRangeException.ThrowIfNegative(maxTestLength);
 
@@ -596,7 +596,7 @@
       {
         System.ArgumentNullException.ThrowIfNull(keySelector);
 
-        var map = new System.Collections.Generic.Dictionary<TKey, System.Collections.Generic.List<int>>(equalityComparer ?? System.Collections.Generic.EqualityComparer<TKey>.Default);
+        var map = new System.Collections.Generic.OrderedDictionary<TKey, System.Collections.Generic.List<int>>(equalityComparer ?? System.Collections.Generic.EqualityComparer<TKey>.Default);
 
         for (var index = 0; index < source.Length; index++)
         {
@@ -1180,16 +1180,16 @@
 
       #region JoinRanges
 
-      public System.Span<T> JoinRanges(System.Collections.Generic.List<Range> segments, int count, T separator)
+      public System.Span<T> JoinRanges(System.Collections.Generic.IEnumerable<Range> segments, int count, T separator)
       {
         var join = new System.Collections.Generic.List<T>();
 
-        for (var i = 0; i < count; i++)
+        foreach (var segment in segments)
         {
-          if (i > 0)
+          if (join.Count > 0)
             join.Add(separator);
 
-          var slice = source[segments[i]];
+          var slice = source[segment];
 
           join.AddRange(slice);
         }
@@ -3414,7 +3414,7 @@
         System.ArgumentOutOfRangeException.ThrowIfNegative(index);
         System.ArgumentOutOfRangeException.ThrowIfGreaterThan(index, source.Length * 8); // Cannot start beyond the source bits.
         System.ArgumentOutOfRangeException.ThrowIfNegativeOrZero(count); // Must read something.
-        System.ArgumentOutOfRangeException.ThrowIfGreaterThan(count, BinaryInteger.GetBitCount<TInteger>()); // Cannot write beyond target (buffer) bits.
+        System.ArgumentOutOfRangeException.ThrowIfGreaterThan(count, BinaryInteger.GetBitCount(TInteger.Zero)); // Cannot write beyond target (buffer) bits.
         System.ArgumentOutOfRangeException.ThrowIfGreaterThan(index + count, source.Length * 8); // Cannot read beyond the source bits.
 
         var (byteIndex, bitOffset) = int.DivRem(index, 8);

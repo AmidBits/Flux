@@ -1,17 +1,5 @@
 ﻿namespace Flux
 {
-  //public enum LanczosMode
-  //{
-  //  /// <summary>
-  //  /// <para>Cephes/Boost-style.</para>
-  //  /// </summary>
-  //  Standard,
-  //  /// <summary>
-  //  /// <para>Numerical Recipes-style.</para>
-  //  /// </summary>
-  //  NumericalRecipes
-  //}
-
   public static class FloatingPoint
   {
     #region RoundMidpointToAlternating (state variable)
@@ -38,15 +26,15 @@
         }
       }
 
-      public static TFloat GetBaseEpsilon()
+      public static TFloat GetNearEqualityEpsilon()
         => TFloat.Zero switch
         {
-          decimal => TFloat.CreateChecked(decimal.DefaultBaseEpsilon), // ~28-29 digits precision
-          double => TFloat.CreateChecked(double.DefaultBaseEpsilon), // ~15-16 digits precision
-          float => TFloat.CreateChecked(float.DefaultBaseEpsilon), // ~7 digits precision
-          System.Runtime.InteropServices.NFloat when System.Runtime.InteropServices.NFloat.Size == 8 => TFloat.CreateChecked(double.DefaultBaseEpsilon), // Same as double; ~15-16 digits precision
-          System.Runtime.InteropServices.NFloat when System.Runtime.InteropServices.NFloat.Size == 4 => TFloat.CreateChecked(float.DefaultBaseEpsilon), // Same as float; ~7 digits precision
-          System.Half => TFloat.CreateChecked(System.Half.DefaultBaseEpsilon), // ~3 digits precision
+          decimal => TFloat.CreateChecked(decimal.NearEqualityEpsilon), // ~28-29 digits precision
+          double => TFloat.CreateChecked(double.NearEqualityEpsilon), // ~15-16 digits precision
+          float => TFloat.CreateChecked(float.NearEqualityEpsilon), // ~7 digits precision
+          System.Runtime.InteropServices.NFloat when System.Runtime.InteropServices.NFloat.Size == 8 => TFloat.CreateChecked(double.NearEqualityEpsilon), // Same as double; ~15-16 digits precision
+          System.Runtime.InteropServices.NFloat when System.Runtime.InteropServices.NFloat.Size == 4 => TFloat.CreateChecked(float.NearEqualityEpsilon), // Same as float; ~7 digits precision
+          System.Half => TFloat.CreateChecked(System.Half.NearEqualityEpsilon), // ~3 digits precision
           _ => throw new NotImplementedException()
         };
 
@@ -82,6 +70,70 @@
       /// </returns>
       public static int CompareToFractionPercent(TFloat x, TFloat percent)
         => Number.Sign((x - TFloat.Floor(x)).CompareTo(percent));
+
+      #endregion
+
+      #region Integer-style-DivRem functions
+
+      public static (TFloat Quotient, TFloat Remainder) ICeilingDivRem(TFloat a, TFloat n)
+      {
+        var q = TFloat.Ceiling(a / n); // Truncate toward zero, matching integer division.
+
+        var r = a - q * n; // Compute remainder using integer-style formula.
+
+        return (q, r);
+      }
+
+      public static (TFloat Quotient, TFloat Remainder) IEnvelopedDivRem(TFloat a, TFloat n)
+      {
+        var q = Envelop(a / n); // Truncate toward zero, matching integer division.
+
+        var r = a - q * n; // Compute remainder using integer-style formula.
+
+        return (q, r);
+      }
+
+      public static (TFloat Quotient, TFloat Remainder) IEuclideanDivRem(TFloat a, TFloat n)
+      {
+        var q = TFloat.Floor(a / n); // Floor division gives the Euclidean quotient
+
+        var r = a - q * n; // Compute remainder.
+
+        if (TFloat.IsNegative(r)) // Ensure remainder is always positive.
+        {
+          r += TFloat.Abs(n);
+          q -= TFloat.One;
+        }
+
+        return (q, r);
+      }
+
+      public static (TFloat Quotient, TFloat Remainder) IFlooredDivRem(TFloat a, TFloat n)
+      {
+        var q = TFloat.Floor(a / n); // Truncate toward zero, matching integer division.
+
+        var r = a - q * n; // Compute remainder using integer-style formula.
+
+        return (q, r);
+      }
+
+      public static (TFloat Quotient, TFloat Remainder) IRoundedDivRem(TFloat a, TFloat n, MidpointRounding mode)
+      {
+        var q = TFloat.Round(a / n, mode); // Rounded division, matching integer division.
+
+        var r = a - q * n; // Compute remainder using integer-style formula.
+
+        return (q, r);
+      }
+
+      public static (TFloat Quotient, TFloat Remainder) ITruncatedDivRem(TFloat a, TFloat n)
+      {
+        var q = TFloat.Truncate(a / n); // Truncate toward zero, matching integer division.
+
+        var r = a - q * n; // Compute remainder using integer-style formula.
+
+        return (q, r);
+      }
 
       #endregion
 
@@ -180,11 +232,11 @@
       /// </summary>
       /// <param name="terms"></param>
       /// <returns></returns>
-      public static TFloat HarmonicMean(params System.Collections.Generic.IEnumerable<TFloat> terms)
+      public static TFloat HarmonicMean(out int countOfTerms, out TFloat sumOfHarmonicTerms, params System.Collections.Generic.IEnumerable<TFloat> terms)
       {
-        var sum = terms.Select(n => TFloat.One / n).Sum(out var count);
+        sumOfHarmonicTerms = terms.Select(n => TFloat.One / n).Sum(out countOfTerms);
 
-        return TFloat.CreateChecked(count) / sum;
+        return TFloat.CreateChecked(countOfTerms) / sumOfHarmonicTerms;
       }
 
       /// <summary>
@@ -220,7 +272,7 @@
       /// <para><see href="https://en.wikipedia.org/wiki/Harmonic_progression_(mathematics)"/></para>
       /// </summary>
       /// <param name="a1">The first term.</param>
-      /// <param name="commonDifference">The common difference of the arithmetic sequence.</param>
+      /// <param name="commonDifference">The common difference of the harmmonic sequence.</param>
       /// <returns></returns>
       public static System.Collections.Generic.IEnumerable<TFloat> HarmonicSequence(TFloat a1, TFloat commonDifference)
         => Number.ArithmeticSequence(a1, commonDifference).Select(an => TFloat.One / an);
@@ -230,7 +282,7 @@
       /// </summary>
       /// <typeparam name="TInteger"></typeparam>
       /// <param name="a1">The first term.</param>
-      /// <param name="commonDifference">The common difference of the arithmetic sequence.</param>
+      /// <param name="commonDifference">The common difference of the harmmonic sequence.</param>
       /// <param name="n">The term to retrieve.</param>
       /// <returns></returns>
       public static TFloat HarmonicSequenceNthTerm<TInteger>(TFloat a1, TFloat commonDifference, TInteger n)
@@ -399,7 +451,7 @@
       /// <summary>
       /// <para>Indicates whether a <paramref name="value"/> is near an integer and if so outputs the <paramref name="integer"/> as a parameter.</para>
       /// <para>The algorithm applies the specified <paramref name="baseEpsilon"/> for custom tolerance.</para>
-      /// <para><see cref="GetBaseEpsilon{TFloat}"/> is the default tolerance and essentially corresponds to calculation errors.</para>
+      /// <para><see cref="GetNearEqualityEpsilon{TFloat}"/> is the default tolerance and essentially corresponds to calculation errors.</para>
       /// </summary>
       /// <param name="value"></param>
       /// <param name="integer"></param>
@@ -416,19 +468,19 @@
 
       /// <summary>
       /// <para>Indicates whether a <paramref name="value"/> is near an integer and if so outputs the <paramref name="integer"/> as a parameter.</para>
-      /// <para>The algorithm queries <see cref="GetBaseEpsilon{TFloat}"/> for a default tolerance level.</para>
-      /// <para><see cref="GetBaseEpsilon{TFloat}"/> is the default tolerance and essentially corresponds to calculation errors.</para>
+      /// <para>The algorithm queries <see cref="GetNearEqualityEpsilon{TFloat}"/> for a default tolerance level.</para>
+      /// <para><see cref="GetNearEqualityEpsilon{TFloat}"/> is the default tolerance and essentially corresponds to calculation errors.</para>
       /// </summary>
       /// <param name="value"></param>
       /// <param name="integer"></param>
       /// <returns></returns>
       public static bool IsNearInteger(TFloat value, out TFloat integer)
-        => IsNearInteger(value, out integer, GetBaseEpsilon<TFloat>());
+        => IsNearInteger(value, out integer, GetNearEqualityEpsilon<TFloat>());
 
       /// <summary>
       /// <para>If a value is near an integer, round to that integer, otherwise return the value.</para>
       /// <para>The algorithm applies the specified <paramref name="baseEpsilon"/> for custom tolerance.</para>
-      /// <para><see cref="GetBaseEpsilon{TFloat}"/> is the default tolerance and essentially corresponds to calculation errors.</para>
+      /// <para><see cref="GetNearEqualityEpsilon{TFloat}"/> is the default tolerance and essentially corresponds to calculation errors.</para>
       /// </summary>
       /// <param name="value"></param>
       /// <param name="baseEpsilon"></param>
@@ -438,13 +490,13 @@
 
       /// <summary>
       /// <para>If a value is near an integer, round to that integer, otherwise return the value.</para>
-      /// <para>The algorithm queries <see cref="GetBaseEpsilon{TFloat}"/> for a default tolerance level.</para>
-      /// <para><see cref="GetBaseEpsilon{TFloat}"/> is the default tolerance and essentially corresponds to calculation errors.</para>
+      /// <para>The algorithm queries <see cref="GetNearEqualityEpsilon{TFloat}"/> for a default tolerance level.</para>
+      /// <para><see cref="GetNearEqualityEpsilon{TFloat}"/> is the default tolerance and essentially corresponds to calculation errors.</para>
       /// </summary>
       /// <param name="value"></param>
       /// <returns></returns>
       public static TFloat RoundNearInteger(TFloat value)
-        => IsNearInteger(value, out var integer, GetBaseEpsilon<TFloat>()) ? integer : value;
+        => IsNearInteger(value, out var integer, GetNearEqualityEpsilon<TFloat>()) ? integer : value;
 
       #endregion
 
@@ -453,7 +505,7 @@
       /// <summary>
       /// <para>Perform both an absolute and a relative equality test for more robust comparisons. Returns true if any test is considered equal, otherwise false.</para>
       /// <para>The algorithm applies the specified <paramref name="baseEpsilon"/> for custom tolerance.</para>
-      /// <para><see cref="GetBaseEpsilon{TFloat}"/> is the default tolerance and essentially corresponds to calculation errors.</para>
+      /// <para><see cref="GetNearEqualityEpsilon{TFloat}"/> is the default tolerance and essentially corresponds to calculation errors.</para>
       /// </summary>
       /// <param name="value"></param>
       /// <param name="number"></param>
@@ -478,19 +530,19 @@
 
       /// <summary>
       /// <para>Perform both an absolute and a relative equality test for more robust comparisons. Returns true if any test is considered equal, otherwise false.</para>
-      /// <para>The algorithm queries <see cref="GetBaseEpsilon{TFloat}"/> for tolerance.</para>
-      /// <para><see cref="GetBaseEpsilon{TFloat}"/> is the default tolerance and essentially corresponds to calculation errors.</para>
+      /// <para>The algorithm queries <see cref="GetNearEqualityEpsilon{TFloat}"/> for tolerance.</para>
+      /// <para><see cref="GetNearEqualityEpsilon{TFloat}"/> is the default tolerance and essentially corresponds to calculation errors.</para>
       /// </summary>
       /// <param name="value"></param>
       /// <param name="number"></param>
       /// <returns></returns>
       public static bool IsNearNumber(TFloat value, TFloat number)
-        => IsNearNumber(value, number, GetBaseEpsilon<TFloat>());
+        => IsNearNumber(value, number, GetNearEqualityEpsilon<TFloat>());
 
       /// <summary>
       /// <para>If a value is near a number, round to that number, otherwise return the value.</para>
       /// <para>The algorithm applies the specified <paramref name="baseEpsilon"/> for custom tolerance.</para>
-      /// <para><see cref="GetBaseEpsilon{TFloat}"/> is the default tolerance and essentially corresponds to calculation errors.</para>
+      /// <para><see cref="GetNearEqualityEpsilon{TFloat}"/> is the default tolerance and essentially corresponds to calculation errors.</para>
       /// </summary>
       /// <param name="value"></param>
       /// <param name="baseEpsilon"></param>
@@ -500,13 +552,13 @@
 
       /// <summary>
       /// <para>If a value is near a number, round to that number, otherwise return the value.</para>
-      /// <para>The algorithm queries <see cref="GetBaseEpsilon{TFloat}"/> for a default tolerance level.</para>
-      /// <para><see cref="GetBaseEpsilon{TFloat}"/> is the default tolerance and essentially corresponds to calculation errors.</para>
+      /// <para>The algorithm queries <see cref="GetNearEqualityEpsilon{TFloat}"/> for a default tolerance level.</para>
+      /// <para><see cref="GetNearEqualityEpsilon{TFloat}"/> is the default tolerance and essentially corresponds to calculation errors.</para>
       /// </summary>
       /// <param name="value"></param>
       /// <returns></returns>
       public static TFloat RoundNearNumber(TFloat value, TFloat number)
-        => IsNearNumber(value, number, GetBaseEpsilon<TFloat>()) ? number : value;
+        => IsNearNumber(value, number, GetNearEqualityEpsilon<TFloat>()) ? number : value;
 
       #endregion
 

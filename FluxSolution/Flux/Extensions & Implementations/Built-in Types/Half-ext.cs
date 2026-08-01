@@ -29,7 +29,17 @@
       /// <summary>
       /// <para>The default epsilon scalar (1e-6f) used for near-integer functions.</para>
       /// </summary>
-      public static System.Half DefaultBaseEpsilon => System.Half.CreateChecked(1e-3);
+      public static System.Half NearEqualityEpsilon => System.Half.CreateChecked(1e-3);
+
+      /// <summary>
+      /// <para>The number of bits in the significand of a <see cref="System.Single"/>.</para>
+      /// </summary>
+      public static int SignificandBits => 11;
+
+      /// <summary>
+      /// <para>The scale factor for the significand of a <see cref="System.Single"/>.</para>
+      /// </summary>
+      public static System.Half SignificandScale => System.Half.CreateChecked(1f / (1u << 11));
 
       #region Native..
 

@@ -1,4 +1,5 @@
-﻿namespace Flux
+﻿//#define DOUBLE_SPECIAL_FUNCTIONS
+namespace Flux
 {
   public static partial class DoubleExtensions
   {
@@ -29,7 +30,17 @@
       /// <summary>
       /// <para>The default base epsilon (1e-12d) used for near-equality functions.</para>
       /// </summary>
-      public static double DefaultBaseEpsilon => 1e-12d;
+      public static double NearEqualityEpsilon => 1e-12d;
+
+      /// <summary>
+      /// <para>The number of bits in the significand of a <see cref="System.Double"/>.</para>
+      /// </summary>
+      public static int SignificandBits => 53;
+
+      /// <summary>
+      /// <para>The scale factor for the significand of a <see cref="System.Double"/>.</para>
+      /// </summary>
+      public static double SignificandScale => 1d / (1L << 53);
 
       #region GetComponents
 

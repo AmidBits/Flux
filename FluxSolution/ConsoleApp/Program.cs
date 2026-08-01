@@ -264,7 +264,53 @@ namespace ConsoleApp
 
     #endregion // Mock DataTables
 
+    public static void ComputeDivRem(int a, int b)
+    {
+      a = int.Abs(a);
+      b = int.Abs(b);
 
+      var array = new object[][]{
+        ["", $"{a} / {b}", $"{-a} / {b}", $"{a} / {-b}", $"{-a} / {-b}"],
+        [" Ceiling", int.CeilingDivRem(a, b), int.CeilingDivRem(-a, b), int.CeilingDivRem(a, -b), int.CeilingDivRem(-a, -b)],
+        //[" Closest", int.ClosestDivRem(a, b), int.ClosestDivRem(-a, b), int.ClosestDivRem(a, -b), int.ClosestDivRem(-a, -b)],
+        //[" Envelop", int.EnvelopedDivRem(a, b), int.EnvelopedDivRem(-a, b), int.EnvelopedDivRem(a, -b), int.EnvelopedDivRem(-a, -b)],
+        [" Euclids", int.EuclideanDivRem(a, b), int.EuclideanDivRem(-a, b), int.EuclideanDivRem(a, -b), int.EuclideanDivRem(-a, -b)],
+        [" Floored", int.FlooredDivRem(a, b), int.FlooredDivRem(-a, b), int.FlooredDivRem(a, -b), int.FlooredDivRem(-a, -b)],
+        ["TruncMod", int.ITruncatedDivRem(a, b), int.ITruncatedDivRem(-a, b), int.ITruncatedDivRem(a, -b), int.ITruncatedDivRem(-a, -b)],
+        [" Rounded", int.RoundedDivRem(a, b), int.RoundedDivRem(-a, b), int.RoundedDivRem(a, -b), int.RoundedDivRem(-a, -b)],
+      };
+
+      System.Console.WriteLine(System.Array.JaggedArrayToConsoleString(array, new ConsoleFormatOptions() { HorizontalAlignment = AlignmentHorizontal.Right }));
+
+      System.Console.WriteLine();
+
+      array = new object[][]{
+        ["", $"{a} / {b}", $"{-a} / {b}", $"{a} / {-b}", $"{-a} / {-b}"],
+        [" Ceiling", int.ICeilingDivRem(a, b), int.ICeilingDivRem(-a, b), int.ICeilingDivRem(a, -b), int.CeilingDivRem(-a, -b)],
+        [" Euclids", int.IEuclideanDivRem(a, b), int.IEuclideanDivRem(-a, b), int.IEuclideanDivRem(a, -b), int.IEuclideanDivRem(-a, -b)],
+        [" Floored", int.IFlooredDivRem(a, b), int.IFlooredDivRem(-a, b), int.IFlooredDivRem(a, -b), int.IFlooredDivRem(-a, -b)],
+        [" Rounded", int.IRoundedDivRem(a, b), int.IRoundedDivRem(-a, b), int.IRoundedDivRem(a, -b), int.IRoundedDivRem(-a, -b)],
+        ["Symetric", int.ISymmetricDivRem(a, b), int.ISymmetricDivRem(-a, b), int.ISymmetricDivRem(a, -b), int.ISymmetricDivRem(-a, -b)],
+        ["Truncate", int.ITruncatedDivRem(a, b), int.ITruncatedDivRem(-a, b), int.ITruncatedDivRem(a, -b), int.ITruncatedDivRem(-a, -b)],
+      };
+
+      System.Console.WriteLine(System.Array.JaggedArrayToConsoleString(array, new ConsoleFormatOptions() { HorizontalAlignment = AlignmentHorizontal.Right }));
+    }
+
+    private static System.Numerics.BigInteger RandomBigInteger(int bits)
+    {
+      int bytes = (bits + 7) / 8;
+      byte[] buffer = new byte[bytes];
+
+      System.Security.Cryptography.RandomNumberGenerator.Fill(buffer);
+
+      // Ensure positive and roughly correct bit length
+      int topBit = (bits - 1) % 8;
+      buffer[^1] &= (byte)((1 << (topBit + 1)) - 1);
+      buffer[^1] |= (byte)(1 << topBit);
+
+      return new System.Numerics.BigInteger(buffer, isUnsigned: true, isBigEndian: false);
+    }
 
     private static void TimedMain(string[] _)
     {
@@ -272,9 +318,83 @@ namespace ConsoleApp
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
 
-      var rising = double.FactorialPower(5, 3, +1);   // 5·6·7 = 210
-      var falling = double.FactorialPower(5, 3, -1);  // 5·4·3 = 60
-      var step2 = double.FactorialPower(3, 4, 2);     // 3·5·7·9 = 945
+      var d1 = 11 / 3;
+      var r1 = 11 % 3;
+
+      var d2 = 11d / 3;
+      var r2 = 11d % 3;
+
+      var (d3, r3) = FloatingPoint.ITruncatedDivRem(11d, 3d);
+
+      var ipo1 = int.IsPowOf(12, 3);
+      var ipo2 = int.IsPowOf(14, 3);
+      var ipo3 = int.IsPowOf(27, 3);
+
+      var dp1 = int.DigitProduct(1234, 10);   // 1 * 2 * 3 * 4 = 24
+      var dp2 = int.DigitProduct(505, 10);    // 5 * 0 * 5 = 0
+      var dp3 = int.DigitProduct(999, 10);    // 9 * 9 * 9 = 729
+      var dp4 = int.DigitProduct(0xABC, 16); // hex digits: A * B * C = 10 * 11 * 12 = 1320
+
+      foreach (var mi in typeof(Flux.Number).GetMethods().Where(mi => mi.Name.EndsWith("DivRem")))
+      {
+        var closed = mi.MakeGenericMethod(typeof(int));
+        var result = closed.Invoke(null, [-11, -4]);
+
+        System.Console.WriteLine(result);
+      }
+
+      ulong originalNumber = UInt64.MaxValue;
+      byte[] bytes = BitConverter.GetBytes(originalNumber);
+      byte[] temp = new byte[bytes.Length + 1];
+      if (originalNumber > 0 && (bytes[bytes.Length - 1] & 0x80) > 0)
+      {
+        //byte[] temp = new byte[bytes.Length];
+        Array.Copy(bytes, temp, bytes.Length);
+        bytes = new byte[temp.Length + 1];
+        Array.Copy(temp, bytes, temp.Length);
+      }
+      System.Numerics.BigInteger n1 = bytes.AsReadOnlySpan().ReadBits<System.Numerics.BigInteger>(0, 64);
+      System.Numerics.BigInteger n2 = new System.Numerics.BigInteger(temp);
+
+      System.Numerics.BigInteger newNumber = new System.Numerics.BigInteger(bytes);
+      System.Numerics.BigInteger newNumber2 = new System.Numerics.BigInteger(temp);
+      System.Console.WriteLine("Converted the UInt64 value {0:N0} to {1:N0}.",
+                        originalNumber, newNumber);
+
+      var bi27 = RandomBigInteger(24);
+
+      var bi = System.Numerics.BigInteger.Parse("123456789123456789123456789123456789123456789123456789");
+
+      var nrrn = System.Numerics.BigInteger.IRootN(bi, 2);
+      return;
+
+      var sonoita = new Flux.CoordinateSystems.GeographicCoordinate(31.679444, Flux.Units.AngleUnit.Degree, -110.655278, Flux.Units.AngleUnit.Degree, 1489);
+      var slat = sonoita.Latitude.Radians;
+      var slon = sonoita.Longitude.Radians;
+
+      var elgin = new Flux.CoordinateSystems.GeographicCoordinate(31.629167, Flux.Units.AngleUnit.Degree, -110.571944, Flux.Units.AngleUnit.Degree, 1441);
+      var elat = elgin.Latitude.Radians;
+      var elon = elgin.Longitude.Radians;
+
+      var initialBearing = Flux.CoordinateSystems.GeographicCoordinate.GetInitialBearing(slat, slon, elat, elon);
+      var distanceBetween = new Flux.Units.Length(Flux.CoordinateSystems.GeographicCoordinate.GetDistanceHaversineFormula(slat, slon, elat, elon));
+      var distanceBetween2 = new Flux.Units.Length(Flux.CoordinateSystems.GeographicCoordinate.GetDistanceVincentyAlgorithm(slat, slon, elat, elon));
+
+      var bearing = new Flux.Units.Azimuth(initialBearing, Flux.Units.AngleUnit.Radian);
+
+      var lax = new Flux.CoordinateSystems.GeographicCoordinate(33.942791, Flux.Units.AngleUnit.Degree, -118.410042, Flux.Units.AngleUnit.Degree, 39);
+      var jfk = new Flux.CoordinateSystems.GeographicCoordinate(40.641766, Flux.Units.AngleUnit.Degree, -73.780968, Flux.Units.AngleUnit.Degree, 4);
+
+      var llat = lax.Latitude.Radians;
+      var llon = lax.Longitude.Radians;
+
+      var jlat = jfk.Latitude.Radians;
+      var jlon = jfk.Longitude.Radians;
+
+      var laxjfk = new Flux.Units.Length(Flux.CoordinateSystems.GeographicCoordinate.GetDistanceHaversineFormula(llat, llon, jlat, jlon));
+      var laxjfk2 = new Flux.Units.Length(Flux.CoordinateSystems.GeographicCoordinate.GetDistanceVincentyAlgorithm(llat, llon, jlat, jlon));
+
+
 
       return;
 

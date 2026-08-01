@@ -29,7 +29,17 @@
       /// <summary>
       /// <para>The default epsilon scalar (1e-6f) used for near-integer functions.</para>
       /// </summary>
-      public static float DefaultBaseEpsilon => 1e-6f;
+      public static float NearEqualityEpsilon => 1e-6f;
+
+      /// <summary>
+      /// <para>The number of bits in the significand of a <see cref="System.Single"/>.</para>
+      /// </summary>
+      public static int SignificandBits => 24;
+
+      /// <summary>
+      /// <para>The scale factor for the significand of a <see cref="System.Single"/>.</para>
+      /// </summary>
+      public static float SignificandScale => 1f / (1u << 24);
 
       #region GetComponents
 

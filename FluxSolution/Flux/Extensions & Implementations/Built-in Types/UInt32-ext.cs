@@ -2,14 +2,14 @@ namespace Flux
 {
   public static partial class UInt32Extensions
   {
+    /// <summary>
+    /// <para>The largest prime number that fits in an <see cref="System.UInt32"/>.</para>
+    /// </summary>
+    [System.CLSCompliant(false)]
+    public const uint MaxPrimeNumber = 4294967291u;
+
     extension(System.UInt32)
     {
-      /// <summary>
-      /// <para>The largest prime number that fits in the type.</para>
-      /// </summary>
-      [System.CLSCompliant(false)]
-      public static uint MaxPrimeNumber => 4294967291u;
-
       #region ReverseBits..
 
       /// <summary>
@@ -43,6 +43,36 @@ namespace Flux
         // value = ((value & 0xF0F0F0F0u) >> 0x04) | ((value & 0x0F0F0F0Fu) << 0x04);
         // value = ((value & 0xFF00FF00u) >> 0x08) | ((value & 0x00FF00FFu) << 0x08);
         // value = ((value & 0xFFFF0000u) >> 0x10) | ((value & 0x0000FFFFu) << 0x10);
+      }
+
+      #endregion
+
+      #region IsPrime - Deterministic straightforward deterministic 6k ± 1 test.
+
+      /// <summary>
+      /// <para>Deterministic 6k ± 1 prime number test. This is the most efficient algorithm for testing primality of numbers within the range of an unsigned 32-bit integer.</para>
+      /// </summary>
+      /// <param name="n"></param>
+      /// <returns></returns>
+      [System.CLSCompliant(false)]
+      public static bool IsPrime(uint n)
+      {
+        if (n <= 3) return n > 1;
+        if ((n & 1) == 0 || n % 3 == 0) return false;
+
+        var i = 5u;
+        var w = 2u;
+
+        while (i * i <= n)
+        {
+          if (n % i == 0)
+            return false;
+
+          i += w;
+          w = 6u - w; // 2,4,2,4...
+        }
+
+        return true;
       }
 
       #endregion

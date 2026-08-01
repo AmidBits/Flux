@@ -4,42 +4,30 @@ namespace Flux
   {
     extension(System.Numerics.BigInteger)
     {
-      #region BinarySearchRootN
-
-      public static System.Numerics.BigInteger BinarySearchRootN(System.Numerics.BigInteger value, int n)
+      public static int DigitCount(System.Numerics.BigInteger number, int radix)
       {
-        System.ArgumentOutOfRangeException.ThrowIfNegative(value);
-        System.ArgumentOutOfRangeException.ThrowIfNegativeOrZero(n);
+        System.ArgumentOutOfRangeException.ThrowIfLessThan(radix, 2);
 
-        if (value == 0 || value == 1 || n == 1)
-          return value;
+        if (number.Sign == 0)
+          return 1;
 
-        var low = System.Numerics.BigInteger.One;
-        var high = value;
-        var result = System.Numerics.BigInteger.One;
+        if (number.Sign < 0)
+          number = System.Numerics.BigInteger.Abs(number);
 
-        while (low <= high)
-        {
-          var mid = (low + high) / 2;
-          var midPow = System.Numerics.BigInteger.Pow(mid, n);
+        // 1. Estimate digits using bit-length.
+        var bitLength = number.GetBitLength();
+        var log2b = System.Math.Log(radix, 2);
+        var approx = bitLength / log2b; // log_b(n) = log2(n) / log2(b)
 
-          if (midPow == value)
-            return mid;
-          else if (midPow < value)
-          {
-            result = mid;
-            low = mid + 1;
-          }
-          else
-          {
-            high = mid - 1;
-          }
-        }
+        var digits = (int)approx + 1;
 
-        return result;
+        // 2. Correct possible off-by-one.
+        var pow = System.Numerics.BigInteger.Pow(radix, digits - 1);
+        if (pow > number)
+          digits--;
+
+        return digits;
       }
-
-      #endregion
 
       #region FitSmallestIntegerType
 
@@ -60,7 +48,201 @@ namespace Flux
 
       #endregion
 
-      #region IsPrimeProbabilistic (Miller-Rabin probabilistic primality test)
+      #region ICbrt - Integer cube root using Newton method.
+
+      /// <summary>
+      /// <para>Newton-Raphson iteration with a bit‑length–based initial guess.</para>
+      /// </summary>
+      /// <param name="n"></param>
+      /// <returns></returns>
+      /// <exception cref="ArgumentException"></exception>
+      public static System.Numerics.BigInteger ICbrt(System.Numerics.BigInteger n)
+      {
+        System.ArgumentOutOfRangeException.ThrowIfNegative(n);
+
+        if (n < 2)
+          return n;
+
+        var x = System.Numerics.BigInteger.One << (int)(n.GetBitLength() / 3); // Initial guess.
+
+        while (true)
+        {
+          var y = (2 * x + n / (x * x)) / 3;
+
+          if (y >= x)
+            return x;
+
+          x = y;
+        }
+      }
+
+      #endregion
+
+      #region ILog - Integer logarithm.
+
+      public static (System.Numerics.BigInteger ILogF, System.Numerics.BigInteger ILogC, bool IsExactLog) ILog(System.Numerics.BigInteger n, System.Numerics.BigInteger b)
+      {
+        System.ArgumentOutOfRangeException.ThrowIfNegativeOrZero(n);
+        System.ArgumentOutOfRangeException.ThrowIfLessThan(b, 2);
+
+        if (n < b)
+          return (System.Numerics.BigInteger.Zero, System.Numerics.BigInteger.One, false);
+
+        if (n == b)
+          return (System.Numerics.BigInteger.One, System.Numerics.BigInteger.One, true);
+
+        var log2n = n.GetBitLength() - 1; // Exact bit-length (floor log2)
+        var log2b = b.GetBitLength() - 1;
+
+        var ilogf = System.Numerics.BigInteger.Clamp(log2n / log2b, 0, int.MaxValue); // Initial exponent estimate of floor(log_b(n)), clamped to valid (int) exponent range.
+
+        var pow = (ilogf <= 63) ? PowSmall(b, (int)ilogf) : System.Numerics.BigInteger.Pow(b, ilogf); // If the exponent (ilogf) is small, manual exponentiation-by-squaring is faster, otherwise BigInteger.Pow is faster.
+
+        while (pow > n) // Correction: adjust downward.
+        {
+          pow /= b;
+          ilogf--;
+        }
+
+        while (pow * b <= n) // Correction: adjust upward.
+        {
+          pow *= b;
+          ilogf++;
+        }
+
+        var exact = pow == n;
+        var ilogc = exact ? ilogf : ilogf + 1;
+
+        return (ilogf, ilogc, exact);
+      }
+
+      public static System.Numerics.BigInteger PowSmall(System.Numerics.BigInteger b, int exp)
+      {
+        if (exp < 0)
+          return System.Numerics.BigInteger.One;
+
+        if (exp > 63) // If exponent is large, delegate to BigInteger.Pow()
+          return System.Numerics.BigInteger.Pow(b, exp);
+
+        var result = System.Numerics.BigInteger.One;
+
+        for (var factor = b; exp > 0; factor *= factor)
+        {
+          if ((exp & 1) != 0)
+            result *= factor;
+
+          exp >>= 1;
+        }
+
+        return result;
+      }
+
+      #endregion
+
+      #region ILogE - Integer natural logarithm.
+
+      public static (System.Numerics.BigInteger ILogF, System.Numerics.BigInteger ILogC) ILogE(System.Numerics.BigInteger n)
+      {
+        if (n <= 1)
+          return (System.Numerics.BigInteger.Zero, System.Numerics.BigInteger.Zero);
+
+        // log2(n) = bitLength - 1
+        var log2 = n.GetBitLength() - 1;
+
+        // Correction: check if e^(k+1) <= n
+        // Use: n >= exp(k+1)  <=>  log(n) >= k+1
+        // But log(n) = log2(n) * ln(2)
+        double ln_n_est = log2 * 0.6931471805599453;
+
+        // k ≈ log2(n) * ln(2)
+        // ln(2) ≈ 0.6931471805599453
+        int k = (int)ln_n_est;
+
+        if (ln_n_est >= k + 1)
+          k++;
+
+        var ilogf = System.Numerics.BigInteger.CreateChecked(k);
+        var ilogc = ilogf + 1;
+
+        return (ilogf, ilogc);
+      }
+
+      #endregion
+
+      #region IRootN - Newton-Raphson with quadratic convergence.
+
+      /// <summary>
+      /// <para>Newton–Raphson iteration for integer nth root with quadratic convergence and a logarithmic initial guess.</para>
+      /// </summary>
+      /// <param name="value"></param>
+      /// <param name="n"></param>
+      /// <returns></returns>
+      /// <exception cref="System.ArithmeticException"></exception>
+      public static System.Numerics.BigInteger IRootN(System.Numerics.BigInteger value, int n)
+      {
+        System.ArgumentOutOfRangeException.ThrowIfNegative(value);
+        System.ArgumentOutOfRangeException.ThrowIfNegativeOrZero(n);
+
+        if (value == 0 || value == 1 || n == 1)
+          return value;
+
+        var x = System.Numerics.BigInteger.One << (int)(value.GetBitLength() / n); // Initial guess: 2^(bitLength/n)
+
+        while (true)
+        {
+          var px = x;
+
+          var t = System.Numerics.BigInteger.Pow(x, n - 1);
+
+          if (t.IsZero) throw new System.ArithmeticException(); // Avoid division by zero (shouldn't happen for valid inputs).
+
+          x = ((n - 1) * x + value / t) / n; // Newton iteration.
+
+          if (x >= px) // Convergence check.
+          { // Final correction to ensure x^n <= value < (x+1)^n
+            while (System.Numerics.BigInteger.Pow(x + 1, n) <= value)
+              x++;
+
+            while (System.Numerics.BigInteger.Pow(x, n) > value)
+              x--;
+
+            return x;
+          }
+        }
+      }
+
+      #endregion
+
+      #region ISqrt - Integer square root using Newton's method.
+
+      /// <summary>
+      /// <para>Integer square root using Newton's method.</para>
+      /// </summary>
+      /// <param name="n"></param>
+      /// <returns></returns>
+      public static System.Numerics.BigInteger ISqrt(System.Numerics.BigInteger n)
+      {
+        System.ArgumentOutOfRangeException.ThrowIfNegative(n);
+
+        if (n <= 1)
+          return n;
+
+        var x = System.Numerics.BigInteger.One << (int)(n.GetBitLength() / 2); // Initial approximation: 2^(bitLength/2)
+
+        while (true)
+        {
+          var y = (x + n / x) >> 1;
+
+          if (y >= x)
+            return x;
+
+          x = y;
+        }
+      }
+
+      #endregion
+
+      #region IsPrime - Miller-Rabin probabilistic primality test.
 
       /// <summary>
       /// <para>This implementation uses a Miller-Rabin probabilistic algorithm.</para>
@@ -68,7 +250,7 @@ namespace Flux
       /// <param name="n"></param>
       /// <param name="k">Log(bit-length, 1.17) yields an approximately 15 iterations @ 10 bits, 30 @ 100, 44 @ 1000, 59 @ 10000, and can be lowered for a higher iteration (k) count. The lower the base, the higher the count.</param>
       /// <returns></returns>
-      public static bool IsPrimeProbabilistic(System.Numerics.BigInteger n, int k)
+      public static bool IsPrime(System.Numerics.BigInteger n, int k)
         => MillerRabinProbabilisticIsPrime(n, k);
 
       /// <summary>
@@ -95,7 +277,7 @@ namespace Flux
 
           System.Numerics.BigInteger a; // Random base in [2, n-2]
 
-          lock (lockObj) { a = System.Random.Shared.NextNumber(2, n - 2); }
+          lock (lockObj) { a = System.Random.Shared.NextInteger(2, n - 2); }
 
           if (!MillerRabinProbabilisticTest(d, n, a))
           {
@@ -131,44 +313,6 @@ namespace Flux
         }
 
         return false;
-      }
-
-      #endregion
-
-      #region NewtonRaphsonRootN
-
-      public static System.Numerics.BigInteger NewtonRaphsonRootN(System.Numerics.BigInteger value, int n)
-      {
-        System.ArgumentOutOfRangeException.ThrowIfNegative(value);
-        System.ArgumentOutOfRangeException.ThrowIfNegativeOrZero(n);
-
-        if (value == 0 || value == 1 || n == 1)
-          return value;
-
-        var guess = System.Numerics.BigInteger.One << (int)(System.Numerics.BigInteger.Log(value) / n); // Initial guess: 2^(log2(x)/n)
-
-        while (true)
-        {
-          var previousGuess = guess;
-
-          var t = System.Numerics.BigInteger.Pow(guess, n - 1);
-
-          if (t == 0)
-            throw new System.ArithmeticException(); // Avoid division by zero (shouldn't happen for valid inputs).
-
-          guess = ((n - 1) * guess + value / t) / n; // Newton iteration.
-
-          if (System.Numerics.BigInteger.Abs(guess - previousGuess) <= 1) // Adjust to ensure r^n <= x
-          {
-            while (System.Numerics.BigInteger.Pow(guess + 1, n) <= value)
-              guess++;
-
-            while (System.Numerics.BigInteger.Pow(guess, n) > value)
-              guess--;
-
-            return guess;
-          }
-        }
       }
 
       #endregion

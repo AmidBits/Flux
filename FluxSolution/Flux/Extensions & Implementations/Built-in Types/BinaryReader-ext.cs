@@ -8,7 +8,7 @@
       {
         System.ArgumentNullException.ThrowIfNull(source);
 
-        System.Span<byte> bytes = stackalloc byte[numberOfBytes];
+        var bytes = (stackalloc byte[numberOfBytes]);
         source.Read(bytes);
         if (reverseBytes)
           bytes.Reverse();

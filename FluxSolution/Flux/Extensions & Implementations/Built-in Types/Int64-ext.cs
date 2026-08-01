@@ -2,13 +2,13 @@ namespace Flux
 {
   public static partial class Int64Extensions
   {
+    /// <summary>
+    /// <para>The largest prime number that fits in an <see cref="System.Int64"/>.</para>
+    /// </summary>
+    public const long MaxPrimeNumber = 9223372036854775783;
+
     extension(System.Int64)
     {
-      /// <summary>
-      /// <para>The largest prime number that fits in the type.</para>
-      /// </summary>
-      public static long MaxPrimeNumber => 9223372036854775783;
-
       #region ReverseBits..
 
       /// <summary>

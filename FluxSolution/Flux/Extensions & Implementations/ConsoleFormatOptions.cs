@@ -27,13 +27,30 @@ namespace Flux
     /// <param name="maxWidths"></param>
     /// <param name="maxUnits"></param>
     /// <returns></returns>
-    public string CreateHorizontalFormat(int[] maxWidths, int? maxUnits = null)
+    public string CreateHorizontalFormat(System.ReadOnlySpan<int> maxWidths, int? maxUnits = null)
     {
-      var usedMaxWidths = maxUnits.HasValue ? maxWidths.Take(maxUnits.Value) : maxWidths;
+      var usedMaxWidths = maxUnits ?? maxWidths.Length;
 
-      var maxWidth = maxWidths.Max(); // We do max on ALL max-widths (not just the maxUnits/maxCounts), so that UniformWidth is universal across all lines.
+      var sb = new System.Text.StringBuilder();
 
-      return string.Join(HorizontalSeparator?.ToString() ?? string.Empty, usedMaxWidths.Select((width, index) => '{' + index.ToString() + ',' + '-' + (UniformWidth ? maxWidth : width).ToString() + '}'));
+      var maxWidth = maxWidths[usedMaxWidths..].Extremum(i => i).MaxValue;
+
+      for (var i = 0; i < usedMaxWidths; i++)
+      {
+        if (i > 0)
+          sb.Append(HorizontalSeparator?.ToString() ?? string.Empty);
+
+        var width = maxWidths[i];
+
+        sb.Append('{');
+        sb.Append(i);
+        sb.Append(',');
+        sb.Append('-');
+        sb.Append(UniformWidth ? maxWidth : width);
+        sb.Append('}');
+      }
+
+      return sb.ToString();
     }
 
     /// <summary>
@@ -44,7 +61,7 @@ namespace Flux
     /// <param name="values"></param>
     /// <param name="maxWidths"></param>
     /// <returns></returns>
-    public string CreateHorizontalString<T>(T[] values, int[] maxWidths)
+    public string CreateHorizontalString<T>(System.ReadOnlySpan<T> values, int[] maxWidths)
     {
       var horizontalFormat = CreateHorizontalFormat(maxWidths, values.Length);
 
@@ -59,7 +76,7 @@ namespace Flux
     /// <param name="maxWidths"></param>
     /// <param name="horizontalFormat"></param>
     /// <returns></returns>
-    public string CreateHorizontalString<T>(T[] values, int[] maxWidths, string horizontalFormat)
+    public string CreateHorizontalString<T>(System.ReadOnlySpan<T> values, int[] maxWidths, string horizontalFormat)
     {
       var horizontalValues = CreateHorizontalValues(values, maxWidths);
 
@@ -74,7 +91,7 @@ namespace Flux
     /// <param name="values"></param>
     /// <param name="maxWidths"></param>
     /// <returns></returns>
-    public System.Collections.Generic.List<string> CreateHorizontalValues<T>(T[] values, int[] maxWidths)
+    public System.Collections.Generic.List<string> CreateHorizontalValues<T>(System.ReadOnlySpan<T> values, int[] maxWidths)
     {
       var list = new System.Collections.Generic.List<string>();
 
@@ -113,15 +130,27 @@ namespace Flux
     /// <para>Creates a new string for vertical output. Vertical in this sense, means the string between each horizontal string.</para>
     /// </summary>
     /// <param name="maxWidths"></param>
+    /// <param name="maxWidth">Optional maximum width for the vertical string. If not provided, the maximum width will be calculated from the <paramref name="maxWidths"/> array.</param>
     /// <returns></returns>
-    public string? CreateVerticalString(int[] maxWidths)
+    public string? CreateVerticalString(System.ReadOnlySpan<int> maxWidths, int? maxWidth = null)
     {
       if (VerticalSeparator is null)
         return null;
 
-      var maxWidth = maxWidths.Max();
+      var sb = new System.Text.StringBuilder();
 
-      return string.Join(HorizontalSeparator, maxWidths.Select(width => VerticalSeparator.ToStringBuilder().PadRight(UniformWidth ? maxWidth : width, VerticalSeparator).ToString()));
+      if (!maxWidth.HasValue)
+        maxWidth = maxWidths.Extremum(i => i).MaxValue;
+
+      for (var i = 0; i < maxWidths.Length; i++)
+      {
+        if (i > 0)
+          sb.Append(HorizontalSeparator);
+
+        sb.Append(VerticalSeparator.ToStringBuilder().PadRight(UniformWidth ? maxWidth.Value : maxWidths[i], VerticalSeparator));
+      }
+
+      return sb.ToString();
     }
   }
 }

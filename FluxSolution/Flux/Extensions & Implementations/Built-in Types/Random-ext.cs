@@ -15,12 +15,60 @@ namespace Flux
       /// </summary>
       public byte[] GetNextBytes(int count)
       {
-        System.ArgumentNullException.ThrowIfNull(source);
-
         var buffer = new byte[count];
         source.NextBytes(buffer);
         return buffer;
       }
+
+      #endregion
+
+      #region NextNBitBigInteger
+
+      /// <summary>
+      /// <para>NextBigInteger only exists with a parameter of <paramref name="bitCount"/>, i.e. kind of like maxValue for fixed-size integers, but by specifying the number of bits instead. Using maxValue or minValue/maxValue with BigInteger is still possible with NextInteger.</para>
+      /// </summary>
+      /// <param name="bitCount"></param>
+      /// <returns></returns>
+      public System.Numerics.BigInteger NextNBitBigInteger(int bitCount)
+      {
+        System.ArgumentOutOfRangeException.ThrowIfNegativeOrZero(bitCount);
+
+        var byteCount = (bitCount + 7) >> 3;
+
+        var bytes = (stackalloc byte[byteCount]);
+
+        source.NextBytes(bytes);
+
+        var excessBits = (byteCount << 3) - bitCount;
+
+        bytes[0] &= (byte)(0xFF >> excessBits);
+
+        return new(bytes, true, true);
+      }
+
+      //public System.Numerics.BigInteger NextBigInteger(System.Numerics.BigInteger maxValue)
+      //{
+      //  System.ArgumentOutOfRangeException.ThrowIfNegativeOrZero(maxValue);
+
+      //  var bitCount = (int)System.Numerics.BigInteger.Log2(maxValue - 1) + 1; // How many bits are needed to represent (maxValue - 1).
+
+      //  System.Numerics.BigInteger value;
+
+      //  do
+      //  {
+      //    value = NextNBitBigInteger(source, bitCount); // uniform in [0, 2^bitCount)
+      //  }
+      //  while (value >= maxValue);
+
+      //  return value;
+      //}
+
+      //public System.Numerics.BigInteger NextBigInteger(System.Numerics.BigInteger minValue, System.Numerics.BigInteger maxValue)
+      //{
+      //  System.ArgumentOutOfRangeException.ThrowIfLessThanOrEqual(maxValue, minValue);
+
+      //  return minValue + NextBigInteger(source, maxValue - minValue);
+      //}
 
       #endregion
 
@@ -31,13 +79,9 @@ namespace Flux
       /// </summary>
       /// <returns></returns>
       public bool NextBoolean()
-      {
-        System.ArgumentNullException.ThrowIfNull(source);
+        => source.Next(2) == 0;
 
-        return source.Next(2) == 0;
-      }
-
-      #endregion // NextBoolean
+      #endregion
 
       #region NextCauchy
 
@@ -52,7 +96,6 @@ namespace Flux
       /// <exception cref="System.ArgumentOutOfRangeException"></exception>
       public double NextCauchy(double mu = 0, double scale = 1)
       {
-        System.ArgumentNullException.ThrowIfNull(source);
         System.ArgumentOutOfRangeException.ThrowIfNegativeOrZero(scale);
 
         return mu + scale * double.TanPi(NextUniform(source) - 0.5);
@@ -86,65 +129,79 @@ namespace Flux
 
       #endregion // NextDateTime
 
-      #region NextNumber
+      #region NextDecimal
 
-      /// <summary>
-      /// <para>Returns a non-negative random <typeparamref name="TInteger"/> that is at most <paramref name="bitCount"/> number of bits.</para>
-      /// </summary>
-      /// <typeparam name="TInteger"></typeparam>
-      /// <param name="bitCount">The maximum number of bits of the random number to be generated. Must be greater than 0.</param>
-      /// <returns></returns>
-      public TInteger NextNumberEx<TInteger>(TInteger bitCount)
+      public decimal NextDecimal(decimal maxValue)
+      {
+        System.ArgumentOutOfRangeException.ThrowIfNegative(maxValue);
+
+        var int96 = NextNBitBigInteger(source, 96); // Generate a uniform integer in [0, 2^96)
+
+        var scale = (decimal)System.Numerics.BigInteger.Pow(2, 96); // Convert 2^96 to decimal (fits exactly)
+
+        return (decimal)int96 / scale * maxValue; // Scale into [0, maxValue)
+      }
+
+      public decimal NextDecimal(decimal minValue, decimal maxValue)
+      {
+        System.ArgumentOutOfRangeException.ThrowIfLessThan(maxValue, minValue);
+
+        return minValue + NextDecimal(source, maxValue - minValue);
+      }
+
+      #endregion
+
+      #region NextDouble
+
+      public double NextDouble(double maxValue)
+      {
+        System.ArgumentOutOfRangeException.ThrowIfNegative(maxValue);
+
+        return source.NextDouble() * maxValue;
+      }
+
+      public double NextDouble(double minValue, double maxValue)
+      {
+        System.ArgumentOutOfRangeException.ThrowIfLessThan(maxValue, minValue);
+
+        return minValue + source.NextDouble() * (maxValue - minValue);
+      }
+
+      #endregion
+
+      #region NextInteger
+
+      public TInteger NextInteger<TInteger>()
+        where TInteger : System.Numerics.IBinaryInteger<TInteger>, System.Numerics.IMinMaxValue<TInteger>
+        => NextInteger(source, TInteger.MaxValue);
+
+      public TInteger NextInteger<TInteger>(TInteger maxValue)
         where TInteger : System.Numerics.IBinaryInteger<TInteger>
       {
-        System.ArgumentOutOfRangeException.ThrowIfNegativeOrZero(bitCount);
+        System.ArgumentOutOfRangeException.ThrowIfNegativeOrZero(maxValue);
 
-        return NextNumber(source, BinaryInteger.CreateBitMaskRight(bitCount) + TInteger.One);
+        var bitCount = int.CreateChecked(TInteger.Log2(maxValue - TInteger.One) + TInteger.One); // Compute bit width needed.
+
+        TInteger value;
+
+        do
+        {
+          value = TInteger.CreateTruncating(NextNBitBigInteger(source, bitCount));
+        }
+        while (value >= maxValue);
+
+        return value;
       }
 
-      /// <summary>
-      /// <para>Returns a non-negative random <typeparamref name="TNumber"/> that is within its <see cref="System.Numerics.IMinMaxValue{TSelf}"/> range.</para>
-      /// </summary>
-      /// <typeparam name="TNumber"></typeparam>
-      /// <returns>A value between <typeparamref name="TNumber"/>.MinValue (inclusive) and <typeparamref name="TNumber"/>.MaxValue (exclusive).</returns>
-      public TNumber NextNumber<TNumber>()
-        where TNumber : System.Numerics.INumber<TNumber>, System.Numerics.IMinMaxValue<TNumber>
-        => NextNumber(source, TNumber.MaxValue);
-
-      /// <summary>
-      /// <para>Returns a non-negative random <typeparamref name="TNumber"/> that is less than the specified <paramref name="maxValue"/>.</para>
-      /// </summary>
-      /// <typeparam name="TNumber"></typeparam>
-      /// <param name="maxValue">The exclusive upper bound of the random number to be generated. Must be greater than or equal to 0.</param>
-      /// <returns></returns>
-      public TNumber NextNumber<TNumber>(TNumber maxValue)
-        where TNumber : System.Numerics.INumber<TNumber>
+      public TInteger NextInteger<TInteger>(TInteger minValue, TInteger maxValue)
+        where TInteger : System.Numerics.IBinaryInteger<TInteger>
       {
-        System.ArgumentNullException.ThrowIfNull(source);
-        System.ArgumentOutOfRangeException.ThrowIfNegative(maxValue); // Allows for maxValue to equal 0.
+        System.ArgumentOutOfRangeException.ThrowIfLessThanOrEqual(maxValue, minValue);
 
-        while (true)
-          if (TNumber.CreateChecked(source.NextDouble() * double.CreateChecked(maxValue)) is var value && value >= TNumber.Zero && value < maxValue)
-            return value;
+        return minValue + NextInteger(source, maxValue - minValue);
       }
 
-      /// <summary>
-      /// <para>Returns a random <typeparamref name="TNumber"/> that is within the specified range.</para>
-      /// </summary>
-      /// <typeparam name="TNumber"></typeparam>
-      /// <param name="minValue">The inclusive lower bound of the random number returned.</param>
-      /// <param name="maxValue">The exclusive upper bound of the random number to be generated. Must be greater than or equal to <paramref name="minValue"/>.</param>
-      /// <returns>A random <typeparamref name="TNumber"/> in the interval [<paramref name="minValue"/>, <paramref name="maxValue"/>).</returns>
-      public TNumber NextNumber<TNumber>(TNumber minValue, TNumber maxValue)
-        where TNumber : System.Numerics.INumber<TNumber>
-      {
-        System.ArgumentNullException.ThrowIfNull(source);
-        System.ArgumentOutOfRangeException.ThrowIfLessThan(maxValue, minValue); // Allows for both being equal and passing 0 to NextNumber() above.
-
-        return minValue + source.NextNumber(maxValue - minValue);
-      }
-
-      #endregion // NextNumber
+      #endregion
 
       #region NextExponential
 
@@ -153,11 +210,7 @@ namespace Flux
       /// </summary>
       /// <returns></returns>
       public double NextExponential()
-      {
-        System.ArgumentNullException.ThrowIfNull(source);
-
-        return -double.Log(NextUniform(source));
-      }
+        => -double.Log(NextUniform(source));
 
       /// <summary>
       /// <para>Get exponential random sample with specified <paramref name="mu"/> (mean).</para>
@@ -168,13 +221,12 @@ namespace Flux
       /// <exception cref="System.ArgumentOutOfRangeException"></exception>
       public double NextExponential(double mu, double sigma)
       {
-        System.ArgumentNullException.ThrowIfNull(source);
         System.ArgumentOutOfRangeException.ThrowIfNegativeOrZero(sigma);
 
         return mu + sigma * NextExponential(source);
       }
 
-      #endregion // NextExponential
+      #endregion 
 
       #region NextBoxMullerTransform
 
@@ -188,14 +240,16 @@ namespace Flux
       /// <exception cref="System.ArgumentNullException"></exception>
       public (double Z0, double Z1) NextBoxMullerTransform(double mu = 0, double sigma = 1)
       {
-        System.ArgumentNullException.ThrowIfNull(source);
-        System.ArgumentOutOfRangeException.ThrowIfNegative(sigma);
+        System.ArgumentOutOfRangeException.ThrowIfNegativeOrZero(sigma);
 
-        var mag = sigma * double.Sqrt(-2.0 * double.Log(NextNormal(source)));
+        var u1 = NextUniform(source); // (0,1)
+        var u2 = NextUniform(source); // (0,1)
 
-        var (sin, cos) = double.SinCos(double.Tau * source.NextDouble());
+        var mag = sigma * double.Sqrt(-2.0 * double.Log(u1));
 
-        return (mag * cos + mu, mag * sin + mu);
+        var (sin, cos) = double.SinCos(double.Tau * u2);
+
+        return (mu + mag * cos, mu + mag * sin);
       }
 
       #endregion
@@ -212,22 +266,22 @@ namespace Flux
       /// <exception cref="System.ArgumentNullException"></exception>
       public (double Z0, double Z1) NextMarsagliaPolarMethod(double mean = 0, double stdDev = 1)
       {
-        System.ArgumentNullException.ThrowIfNull(source);
-        System.ArgumentOutOfRangeException.ThrowIfNegative(stdDev);
+        System.ArgumentOutOfRangeException.ThrowIfNegativeOrZero(stdDev);
 
         double u, v, s;
 
         do
         {
-          u = source.NextDouble() * 2.0 - 1.0;
-          v = source.NextDouble() * 2.0 - 1.0;
+          u = 2.0 * NextUniform(source) - 1.0;
+          v = 2.0 * NextUniform(source) - 1.0;
+
           s = u * u + v * v;
         }
         while (s >= 1.0 || s == 0.0);
 
-        s = stdDev * double.Sqrt(-2.0 * double.Log(s) / s);
+        var m = double.Sqrt(-2.0 * double.Log(s) / s) * stdDev;
 
-        return (mean + s * u, mean + s * v);
+        return (mean + m * u, mean + m * v);
       }
 
       #endregion
@@ -240,9 +294,7 @@ namespace Flux
       /// <returns></returns>
       public System.Guid NextGuid()
       {
-        System.ArgumentNullException.ThrowIfNull(source);
-
-        System.Span<byte> span = stackalloc byte[16];
+        var span = (stackalloc byte[16]);
         source.NextBytes(span);
         return new System.Guid(span);
       }
@@ -259,7 +311,15 @@ namespace Flux
       /// <param name="scale">The standard deviation.</param>
       /// <returns></returns>
       public double NextLaplace(double mean, double scale)
-        => NextUniform(source) is var u && u < 0.5 ? mean + scale * double.Log(2 * u) : mean - scale * double.Log(2 * (1 - u));
+      {
+        System.ArgumentOutOfRangeException.ThrowIfNegativeOrZero(scale);
+
+        var u = NextUniform(source); // uniform in (0,1)
+        var v = u - 0.5; // centered uniform
+        var s = double.Sign(v); // ±1
+
+        return mean - scale * s * double.Log(1 - 2 * double.Abs(v));
+      }
 
       #endregion
 
@@ -272,7 +332,11 @@ namespace Flux
       /// <param name="sigma">The standard deviation.</param>
       /// <returns></returns>
       public double NextLogNormal(double mu = 0, double sigma = 1)
-        => double.Exp(NextNormal(source, mu, sigma));
+      {
+        System.ArgumentOutOfRangeException.ThrowIfNegativeOrZero(sigma);
+
+        return double.Exp(NextNormal(source, mu, sigma));
+      }
 
       #endregion
 
@@ -286,13 +350,14 @@ namespace Flux
       /// <returns></returns>
       public double NextNormal(double mu = 0, double sigma = 1)
       {
-        System.ArgumentNullException.ThrowIfNull(source);
-        System.ArgumentOutOfRangeException.ThrowIfNegative(sigma);
+        System.ArgumentOutOfRangeException.ThrowIfNegativeOrZero(sigma);
 
         return mu + sigma * double.Sqrt(-2 * double.Log(NextUniform(source))) * double.Sin(double.Tau * NextUniform(source));
       }
 
       #endregion
+
+      #region NextNormalApproximation
 
       /// <summary>
       /// <para>Cannot for the life of me remember where I found this... so use with caution.</para>
@@ -303,17 +368,21 @@ namespace Flux
         var u0 = source.NextInt64();
         var u1 = source.NextInt64();
 
-        var bd = long.PopCount(u0 & 0xffffffff) - long.PopCount(u0 >> 32);
+        var pcd = long.PopCount(u0 & 0xffffffff) - long.PopCount((u0 >>> 32) & 0xffffffff); // Popcount difference of low/high halves → approx N(0, 16)
 
-        var a = u1 & 0xffffffff;
-        var b = u1 >> 32;
+        // Uniform difference of two 32-bit halves → approx N(0, 2^65/12)
 
-        var td = a - b;
+        var a = (uint)u1;
+        var b = (uint)(u1 >>> 32);
 
-        double r = (bd << 30) + td;
+        var ud = (long)a - (long)b;
 
-        return r * 2.14731e-10;
+        var r = (pcd << 30) + ud; // Combine the two components.
+
+        return r * 2.1570e-10; // Correct variance-normalizing constant.
       }
+
+      #endregion
 
       #region NextTimeSpan
 
@@ -367,17 +436,9 @@ namespace Flux
       /// <returns></returns>
       public double NextUniform()
       {
-        System.ArgumentNullException.ThrowIfNull(source);
+        var bits = (ulong)source.NextInt64() >> 11; // keep top 53 bits
 
-        double uniform;
-
-        do
-        {
-          uniform = source.NextDouble();
-        }
-        while (uniform <= 0 && uniform >= 1);
-
-        return uniform;
+        return (bits + 0.5) * double.SignificandScale;
       }
 
       #endregion
@@ -393,7 +454,6 @@ namespace Flux
       /// <exception cref="System.ArgumentOutOfRangeException"></exception>
       public double NextWeibull(double shape, double scale)
       {
-        System.ArgumentNullException.ThrowIfNull(source);
         System.ArgumentOutOfRangeException.ThrowIfNegativeOrZero(shape);
         System.ArgumentOutOfRangeException.ThrowIfNegativeOrZero(scale);
 

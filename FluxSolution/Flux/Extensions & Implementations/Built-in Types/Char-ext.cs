@@ -253,6 +253,19 @@
 
       #endregion
 
+      #region EqualsCaseInsensitive
+
+      /// <summary>
+      /// <para>Indicates whether two characters are equal, using case insensitivity, i.e. ignoring case.</para>
+      /// </summary>
+      /// <param name="a"></param>
+      /// <param name="b"></param>
+      /// <returns></returns>
+      public static bool EqualsCaseInsensitive(char a, char b)
+        => char.ToLowerInvariant(a) == char.ToLowerInvariant(b);
+
+      #endregion
+
       #region FoldToAscii
 
       /// <summary>

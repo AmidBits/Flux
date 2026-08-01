@@ -41,7 +41,7 @@ namespace Flux.DataStructures
     int RemoveRange(System.Collections.Generic.IEnumerable<TValue> collection);
 
     /// <summary>
-    /// <para>Gets the index associated with the specified value in the <see cref="IOrderedCollection{T}"/>.</para>
+    /// <para>Attempts to get the index associated with the specified value in the <see cref="IOrderedCollection{T}"/>.</para>
     /// </summary>
     bool TryGetIndex(TValue value, out int index);
   }

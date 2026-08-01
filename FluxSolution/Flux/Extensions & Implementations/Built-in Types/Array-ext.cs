@@ -9,14 +9,114 @@ namespace Flux
       /// <para>The array size is limited to a total of 4 billion elements, and to a maximum index of 0X7FEFFFFF in any given dimension (0X7FFFFFC7 for byte arrays and arrays of single-byte structures).</para>
       /// <para><see href="https://learn.microsoft.com/en-us/dotnet/api/system.array#remarks"/></para>
       /// </summary>
-      public static int MaxIndexArrayOfMultiByteStructures => 0x7FEFFFFF;
+      public static int MaxArrayIndexOfMultiByteStructures => 0x7FEFFFFF;
 
       /// <summary>
       /// <para>For byte arrays and arrays of single byte structures.</para>
       /// <para>The array size is limited to a total of 4 billion elements, and to a maximum index of 0X7FEFFFFF in any given dimension (0X7FFFFFC7 for byte arrays and arrays of single-byte structures).</para>
       /// <para><see href="https://learn.microsoft.com/en-us/dotnet/api/system.array#remarks"/></para>
       /// </summary>
-      public static int MaxIndexArrayOfSingleByteStructures => 0x7FFFFFC7;
+      public static int MaxArrayIndexOfSingleByteStructures => 0x7FFFFFC7;
+
+      #region ..DimensionalSymmetry (Assert.., Has.., TryHas..)
+
+      /// <summary>
+      /// <para>Asserts that the <paramref name="array"/> array has symmetrical dimensions, i.e. all dimensions are the same length.</para>
+      /// </summary>
+      /// <param name="array">The array.</param>
+      /// <param name="symmetricalLength"></param>
+      /// <param name="paramName"></param>
+      /// <returns></returns>
+      /// <exception cref="System.ArgumentException"></exception>
+      public static System.Array AssertDimensionalSymmetry(System.Array array, out int symmetricalLength, string? paramName = null)
+      {
+        if (!HasDimensionalSymmetry(array, out symmetricalLength))
+          throw new System.ArgumentOutOfRangeException(nameof(array));
+
+        return array;
+      }
+
+      /// <summary>
+      /// <para>Determines whether the <paramref name="array"/> array has symmetrical dimensions, i.e. all dimensions are the same length.</para>
+      /// </summary>
+      /// <param name="array">The array.</param>
+      /// <param name="symmetricalLength"></param>
+      /// <returns></returns>
+      public static bool HasDimensionalSymmetry(System.Array array, out int symmetricalLength)
+      {
+        System.ArgumentNullException.ThrowIfNull(array);
+
+        symmetricalLength = array.GetLength(0); // Load the first dimensional length.
+
+        if (array.GetType().GetArrayType() == ArrayType.JaggedArray)
+        {
+          for (var index = symmetricalLength - 1; index > 0; index--)
+            if (array.GetValue(index) is System.Array a && (a is null || a.GetLength(0) != symmetricalLength))
+              return false;
+        }
+        else
+        {
+          for (var index = array.Rank - 1; index > 0; index--)
+            if (array.GetLength(index) != symmetricalLength)
+              return false;
+        }
+
+        return true;
+      }
+
+      /// <summary>
+      /// <para>Measures all dimensions, if all equal in length sets the out argument and returns whether they are equal.</para>
+      /// </summary>
+      /// <remarks>Since an array is arbitrary in terms of e.g. rows and columns, we just adopt a this view, so we'll consider dimension 0 as the row dimension and dimension 1 as the column dimension.</remarks>
+      /// <param name="array"></param>
+      /// <param name="symmetricalLength"></param>
+      /// <returns></returns>
+      public static bool TryHasDimensionalSymmetry(System.Array array, out int symmetricalLength)
+      {
+        try
+        {
+          if (HasDimensionalSymmetry(array, out symmetricalLength))
+            return true;
+        }
+        catch { }
+
+        symmetricalLength = -1;
+        return false;
+      }
+
+      #endregion
+
+      #region ..Rank (Assert.., Is..)
+
+      /// <summary>
+      /// <para>Asserts that the <paramref name="array"/> rank is equal to <paramref name="rank"/> and throws an exception if not.</para>
+      /// </summary>
+      /// <param name="array"></param>
+      /// <param name="rank"></param>
+      /// <returns></returns>
+      /// <exception cref="System.ArgumentNullException"></exception>
+      /// <exception cref="System.ArgumentOutOfRangeException"></exception>
+      public static System.Array AssertRank(System.Array array, int rank)
+      {
+        System.ArgumentNullException.ThrowIfNull(array);
+        System.ArgumentOutOfRangeException.ThrowIfNotEqual(rank, array.Rank);
+
+        return array;
+      }
+
+      /// <summary>
+      /// <para>Indicates whether <paramref name="array"/> is not null and <paramref name="array"/>.Rank is equal to <paramref name="rank"/>.</para>
+      /// </summary>
+      /// <param name="array"></param>
+      /// <param name="rank"></param>
+      /// <returns></returns>
+      /// <exception cref="System.ArgumentOutOfRangeException"></exception>
+      public static bool IsRank(System.Array array, int rank)
+        => array is not null && rank >= 1 && array.Rank == rank;
+
+      #endregion
+
+      #region ConcatToCopy
 
       /// <summary>
       /// <para>Concatenates the source and the <paramref name="other"/> array in a <paramref name="dimension"/>-major-order.</para>
@@ -60,6 +160,10 @@ namespace Flux
         return concat;
       }
 
+      #endregion
+
+      #region Copy
+
       /// <summary>
       /// <para></para>
       /// </summary>
@@ -81,122 +185,6 @@ namespace Flux
         for (var i = length - 1; i >= 0; i--)
           target[targetIndex++] = copySelector(source[sourceIndex++]);
       }
-
-      /// <summary>
-      /// <para>Allocates a new array, based on the size of <paramref name="source"/>. No data is involved. Dimension-1 (i.e. rows) are added/removed with <paramref name="addOrRemoveRows"/> and dimension-1 (i.e. columns) are added/removed with <paramref name="addOrRemoveColumns"/>.</para>
-      /// <para>A negative value will remove and a positive value will add, as many column as the number represents.</para>
-      /// </summary>
-      /// <typeparam name="T"></typeparam>
-      /// <param name="source"></param>
-      /// <param name="addOrRemoveRows">A negative value removes and a positive value adds, as many rows (dimension-0) as the number represents.</param>
-      /// <param name="addOrRemoveColumns">A negative value removes and a positive value adds, as many columns (dimension-1) as the number represents.</param>
-      /// <returns></returns>
-      public static T[,] CreateNew<T>(T[,] source, int addOrRemoveRows, int addOrRemoveColumns)
-      {
-        System.Array.AssertRank(source, 2);
-
-        return new T[source.GetLength(0) + addOrRemoveRows, source.GetLength(1) + addOrRemoveColumns];
-      }
-
-      #region ..DimensionalSymmetry (Assert.., Has.., TryHas..)
-
-      /// <summary>
-      /// <para>Asserts that the <paramref name="source"/> array has symmetrical dimensions, i.e. all dimensions are the same length.</para>
-      /// </summary>
-      /// <param name="source">The array.</param>
-      /// <param name="symmetricalLength"></param>
-      /// <param name="paramName"></param>
-      /// <returns></returns>
-      /// <exception cref="System.ArgumentException"></exception>
-      public static System.Array AssertDimensionalSymmetry(System.Array source, out int symmetricalLength, string? paramName = null)
-      {
-        if (!HasDimensionalSymmetry(source, out symmetricalLength))
-          throw new System.ArgumentOutOfRangeException(nameof(source));
-
-        return source;
-      }
-
-      /// <summary>
-      /// <para>Determines whether the <paramref name="source"/> array has symmetrical dimensions, i.e. all dimensions are the same length.</para>
-      /// </summary>
-      /// <param name="source">The array.</param>
-      /// <param name="symmetricalLength"></param>
-      /// <returns></returns>
-      public static bool HasDimensionalSymmetry(System.Array source, out int symmetricalLength)
-      {
-        System.ArgumentNullException.ThrowIfNull(source);
-
-        symmetricalLength = source.GetLength(0); // Load the first dimensional length.
-
-        if (source.ArrayType == ArrayType.JaggedArray)
-        {
-          for (var index = symmetricalLength - 1; index > 0; index--)
-            if (source.GetValue(index) is System.Array array && (array is null || array.GetLength(0) != symmetricalLength))
-              return false;
-        }
-        else
-        {
-          for (var index = source.Rank - 1; index > 0; index--)
-            if (source.GetLength(index) != symmetricalLength)
-              return false;
-        }
-
-        return true;
-      }
-
-      /// <summary>
-      /// <para>Measures all dimensions, if all equal in length sets the out argument and returns whether they are equal.</para>
-      /// </summary>
-      /// <remarks>Since an array is arbitrary in terms of e.g. rows and columns, we just adopt a this view, so we'll consider dimension 0 as the row dimension and dimension 1 as the column dimension.</remarks>
-      /// <param name="source"></param>
-      /// <param name="symmetricalLength"></param>
-      /// <returns></returns>
-      public static bool TryHasDimensionalSymmetry(System.Array source, out int symmetricalLength)
-      {
-        try
-        {
-          if (HasDimensionalSymmetry(source, out symmetricalLength))
-            return true;
-        }
-        catch { }
-
-        symmetricalLength = -1;
-        return false;
-      }
-
-      #endregion
-
-      #region ..Rank (Assert.., Is..)
-
-      /// <summary>
-      /// <para>Asserts that the <paramref name="source"/> rank is equal to <paramref name="rank"/> and throws an exception if not.</para>
-      /// </summary>
-      /// <param name="source"></param>
-      /// <param name="rank"></param>
-      /// <returns></returns>
-      /// <exception cref="System.ArgumentNullException"></exception>
-      /// <exception cref="System.ArgumentOutOfRangeException"></exception>
-      public static System.Array AssertRank(System.Array source, int rank)
-      {
-        System.ArgumentNullException.ThrowIfNull(source);
-        System.ArgumentOutOfRangeException.ThrowIfNotEqual(rank, source.Rank);
-
-        return source;
-      }
-
-      /// <summary>
-      /// <para>Indicates whether <paramref name="source"/> is not null and <paramref name="source"/>.Rank is equal to <paramref name="rank"/>.</para>
-      /// </summary>
-      /// <param name="source"></param>
-      /// <param name="rank"></param>
-      /// <returns></returns>
-      /// <exception cref="System.ArgumentOutOfRangeException"></exception>
-      public static bool IsRank(System.Array source, int rank)
-        => source is not null && rank >= 1 && source.Rank == rank;
-
-      #endregion
-
-      #region Copy
 
       /// <summary>
       /// <para>Copies <paramref name="length0"/> rows (dimension-0 elements) by <paramref name="length1"/> columns (dimension-1 elements), i.e. a block, from <paramref name="source"/> starting at [<paramref name="sourceIndex0"/>, <paramref name="sourceIndex1"/>] into <paramref name="target"/> starting at [<paramref name="targetIndex0"/>, <paramref name="targetIndex1"/>].</para>
@@ -240,27 +228,71 @@ namespace Flux
 
       #endregion
 
-      #region Fill
+      #region CreateNew
 
       /// <summary>
-      /// <para>Fill <paramref name="length"/> elements in <paramref name="source"/> from <paramref name="pattern"/> (repeatingly if necessary) at <paramref name="index"/>.</para>
+      /// <para>Allocates a new array, based on the size of <paramref name="source"/>. No data is involved. Dimension-1 (i.e. rows) are added/removed with <paramref name="addOrRemoveRows"/> and dimension-1 (i.e. columns) are added/removed with <paramref name="addOrRemoveColumns"/>.</para>
+      /// <para>A negative value will remove and a positive value will add, as many column as the number represents.</para>
       /// </summary>
       /// <typeparam name="T"></typeparam>
       /// <param name="source"></param>
+      /// <param name="addOrRemoveRows">A negative value removes and a positive value adds, as many rows (dimension-0) as the number represents.</param>
+      /// <param name="addOrRemoveColumns">A negative value removes and a positive value adds, as many columns (dimension-1) as the number represents.</param>
+      /// <returns></returns>
+      public static T[,] CreateNew<T>(T[,] source, int addOrRemoveRows, int addOrRemoveColumns)
+      {
+        System.Array.AssertRank(source, 2);
+
+        return new T[source.GetLength(0) + addOrRemoveRows, source.GetLength(1) + addOrRemoveColumns];
+      }
+
+      #endregion
+
+      #region Fill
+
+      /// <summary>
+      /// <para>Fill <paramref name="length"/> elements in <paramref name="array"/> from <paramref name="pattern"/> (repeatingly if necessary) at <paramref name="index"/>.</para>
+      /// </summary>
+      /// <typeparam name="T"></typeparam>
+      /// <param name="array"></param>
       /// <param name="index"></param>
       /// <param name="length"></param>
       /// <param name="pattern"></param>
       /// <returns></returns>
-      public static T[] Fill<T>(T[] source, int index, int length, params System.ReadOnlySpan<T> pattern)
+      public static T[] Fill<T>(T[] array, int index, int length, params System.ReadOnlySpan<T> pattern)
       {
-        System.ArgumentNullException.ThrowIfNull(source);
+        System.Range.AssertInRange(index, length, array.Length);
 
-        System.Range.AssertInRange(index, length, source.Length);
+        var patternIndex = 0;
+        var patternLength = pattern.Length;
 
-        for (var i = 0; i < length; i++)
-          source[index++] = pattern[i % pattern.Length];
+        while (length >= patternLength)
+        {
+          pattern.CopyTo(array.AsSpan(index + (patternIndex++ * patternLength), patternLength));
 
-        return source;
+          length -= patternLength;
+        }
+
+        if (length > 0)
+          pattern[..length].CopyTo(array.AsSpan(index + (patternIndex++ * patternLength), length));
+
+
+        return array;
+      }
+
+      /// <summary>
+      /// <para>Fill <paramref name="length"/> elements in <paramref name="array"/> from <paramref name="pattern"/> (repeatingly if necessary) at <paramref name="index"/>.</para>
+      /// </summary>
+      /// <typeparam name="T"></typeparam>
+      /// <param name="array"></param>
+      /// <param name="range"></param>
+      /// <param name="pattern"></param>
+      /// <returns></returns>
+      public static T[] Fill<T>(T[] array, System.Range range, params System.ReadOnlySpan<T> pattern)
+      {
+        var (offset, length) = range.GetOffsetAndLength(array.Length);
+
+        return Fill(array, offset, length, pattern);
       }
 
       /// <summary>
@@ -439,103 +471,66 @@ namespace Flux
       /// <para>Modifies a single dimensional array by inserting <paramref name="length"/> of <typeparamref name="T"/> at <paramref name="index"/>.</para>
       /// </summary>
       /// <typeparam name="T"></typeparam>
-      /// <param name="source"></param>
+      /// <param name="array"></param>
       /// <param name="index"></param>
       /// <param name="length"></param>
       /// <exception cref="System.ArgumentOutOfRangeException"></exception>
-      public static void InsertInPlace<T>(ref T[] source, int index, int length)
+      public static void InsertInPlace<T>(ref T[] array, int index, int length)
       {
-        System.ArgumentNullException.ThrowIfNull(source);
+        System.Index.AssertInRange(index, array.Length + 1);
 
-        System.Index.AssertInRange(index, source.Length);
-
-        System.Array.Resize(ref source, source.Length + length);
-
-        if (source.Length - index - length is var overlapLength && overlapLength > 0) // Move needed?
+        if (length > 0)
         {
-          System.Array.Copy(source, index, source, index + length, overlapLength); // Copy overlapping elements to the right of insert segment.
-          System.Array.Clear(source, index, length); // Clear all overlapped slots.
+          var originalLength = array.Length;
+
+          System.Array.Resize(ref array, originalLength + length); // Extend array to accommodate insert range.
+
+          if (originalLength - index is var rightLength && rightLength > 0) // Handle right side of insert range.
+          {
+            System.Array.Copy(array, index, array, index + length, rightLength); // Copy right side of insert range.
+            System.Array.Clear(array, index, length); // Clear insert range.
+          }
         }
       }
 
       /// <summary>
-      /// <para>Modifies a single dimensional array by inserting the elements of <paramref name="pattern"/> at <paramref name="index"/>.</para>
+      /// <para>Create a new array with all elements from <paramref name="array"/> and <paramref name="length"/> elements inserted at <paramref name="index"/>.</para>
       /// </summary>
-      /// <typeparam name="T"></typeparam>
-      /// <param name="source"></param>
-      /// <param name="index"></param>
-      /// <param name="pattern"></param>
-      public static void InsertInPlace<T>(ref T[] source, int index, int length, params T[] pattern)
+      public static T[] InsertToCopy<T>(T[] array, int index, int length)
       {
-        InsertInPlace(ref source, index, length);
+        System.Index.AssertInRange(index, array.Length + 1);
 
-        var patternIndex = 0;
+        var target = new T[array.Length + length];
 
-        while (--length >= 0)
-          source[index++] = pattern[patternIndex++ % pattern.Length];
-      }
+        if (index > 0) // Handle left side of insert range.
+          System.Array.Copy(array, 0, target, 0, index);
 
-      /// <summary>
-      /// <para>Create a new array with all elements from <paramref name="source"/> and <paramref name="length"/> elements inserted at <paramref name="index"/>.</para>
-      /// </summary>
-      public static T[] InsertToCopy<T>(T[] source, int index, int length)
-      {
-        System.ArgumentNullException.ThrowIfNull(source);
-
-        System.Index.AssertInRange(index, source.Length);
-
-        var target = new T[source.Length + length];
-
-        if (index > 0) // Any left side (of the requested insert range) elements to move?
-          System.Array.Copy(source, 0, target, 0, index); // Copy left side elements into the copy.
-
-        if (target.Length - index - length is var overlapLength && overlapLength > 0) // Any right side (of the requested insert range) elements to move?
-          System.Array.Copy(source, index, target, index + length, overlapLength); // Copy "overlapping" elements to the right of insert segment into the copy.
+        if (target.Length - index - length is var rightLength && rightLength > 0) // Handle right side of insert range.
+          System.Array.Copy(array, index, target, index + length, rightLength);
 
         return target;
       }
 
       /// <summary>
-      /// <para>Create a new array with all elements from <paramref name="source"/> and <paramref name="length"/> instances of <paramref name="pattern"/> inserted at <paramref name="index"/>.</para>
-      /// </summary>
-      /// <typeparam name="T"></typeparam>
-      /// <param name="source"></param>
-      /// <param name="index"></param>
-      /// <param name="length"></param>
-      /// <param name="pattern"></param>
-      /// <returns></returns>
-      public static T[] InsertToCopy<T>(T[] source, int index, int length, params T[] pattern)
-      {
-        var target = InsertToCopy(source, index, length);
-
-        var patternIndex = 0;
-
-        while (--length >= 0)
-          target[index++] = pattern[patternIndex++ % pattern.Length];
-
-        return target;
-      }
-
-      /// <summary>
-      /// <para>Creates a new array with all elements from <paramref name="source"/> and additionally inserting <paramref name="length"/> new contiguous strands (of rows or colums) in the specified <paramref name="dimension"/> at the <paramref name="index"/>. All values from the <paramref name="source"/> are copied.</para>
+      /// <para>Creates a new array with all elements from <paramref name="array"/> and additionally inserting <paramref name="length"/> new contiguous strands (of rows or colums) in the specified <paramref name="dimension"/> at the <paramref name="index"/>. All values from the <paramref name="array"/> are copied.</para>
       /// </summary>
       /// <remarks>Since an array is arbitrary in terms of e.g. rows and columns, we just adopt a this view, so we'll consider dimension 0 as the row dimension and dimension 1 as the column dimension.</remarks>
       /// <typeparam name="T"></typeparam>
       /// <param name="dimension"></param>
-      /// <param name="source"></param>
+      /// <param name="array"></param>
       /// <param name="index"></param>
       /// <param name="length"></param>
       /// <returns></returns>
       /// <exception cref="System.ArgumentOutOfRangeException"></exception>
       /// <exception cref="System.NotImplementedException"></exception>
-      public static T[,] InsertToCopy<T>(ArrayAxis dimension, T[,] source, int index, int length)
+      public static T[,] InsertToCopy<T>(ArrayAxis dimension, T[,] array, int index, int length)
       {
-        System.Array.AssertRank(source, 2);
+        System.Array.AssertRank(array, 2);
 
-        System.ArgumentOutOfRangeException.ThrowIfNegative(index);
+        System.Index.AssertInRange(index, array.GetLength((int)dimension) + 1); // Can insert at end, hence +1.
 
-        var rows = source.GetLength(0);
-        var cols = source.GetLength(1);
+        var rows = array.GetLength(0);
+        var cols = array.GetLength(1);
 
         T[,] target;
 
@@ -545,13 +540,13 @@ namespace Flux
             target = new T[rows + length, cols];
             for (var r = 0; r < rows; r++)
               for (var c = 0; c < cols; c++)
-                target[r + (r >= index ? length : 0), c] = source[r, c];
+                target[r + (r >= index ? length : 0), c] = array[r, c];
             break;
           case ArrayAxis.Column:
             target = new T[rows, cols + length];
             for (var r = 0; r < rows; r++)
               for (var c = 0; c < cols; c++)
-                target[r, c + (c >= index ? length : 0)] = source[r, c];
+                target[r, c + (c >= index ? length : 0)] = array[r, c];
             break;
           default:
             throw new System.NotImplementedException();
@@ -614,38 +609,54 @@ namespace Flux
       }
 
       /// <summary>
-      /// <para>Modify <paramref name="source"/> by removing <paramref name="length"/> elements starting at <paramref name="index"/>.</para>
+      /// <para>Modify <paramref name="array"/> by removing <paramref name="length"/> elements starting at <paramref name="index"/>.</para>
       /// </summary>
-      public static void RemoveInPlace<T>(ref T[] source, int index, int length)
+      public static void RemoveInPlace<T>(ref T[] array, int index, int length)
       {
-        System.ArgumentNullException.ThrowIfNull(source);
+        var endIndex = System.Range.AssertInRange(index, length, array.Length);
 
-        var endIndex = System.Range.AssertInRange(index, length, source.Length);
+        if (endIndex < array.Length) // Handle right side of removal range.
+          System.Array.Copy(array, endIndex, array, index, array.Length - endIndex);
 
-        if (endIndex < source.Length) // Copy right-side, if needed.
-          System.Array.Copy(source, endIndex, source, index, source.Length - endIndex);
-
-        System.Array.Resize(ref source, source.Length - length);
+        System.Array.Resize(ref array, array.Length - length);
       }
 
       /// <summary>
-      /// <para>Create a new array with <paramref name="length"/> elements removed from the <paramref name="source"/> starting at <paramref name="index"/>.</para>
+      /// <para>Modify an <paramref name="array"/> by removing a <paramref name="range"/> of elements.</para>
       /// </summary>
-      public static T[] RemoveToCopy<T>(T[] source, int index, int length)
+      public static void RemoveInPlace<T>(ref T[] array, System.Range range)
       {
-        System.ArgumentNullException.ThrowIfNull(source);
+        var (offset, length) = range.GetOffsetAndLength(array.Length);
 
-        var endIndex = System.Range.AssertInRange(index, length, source.Length);
+        RemoveInPlace(ref array, offset, length);
+      }
 
-        var target = new T[source.Length - length];
+      /// <summary>
+      /// <para>Create a new array with <paramref name="length"/> elements removed from the <paramref name="array"/> starting at <paramref name="index"/>.</para>
+      /// </summary>
+      public static T[] RemoveToCopy<T>(T[] array, int index, int length)
+      {
+        var target = new T[array.Length - length];
 
-        if (index > 0) // Copy left-side, if needed.
-          System.Array.Copy(source, 0, target, 0, index);
+        var endIndex = System.Range.AssertInRange(index, length, array.Length);
 
-        if (endIndex < source.Length) // Copy right-side, if needed.
-          System.Array.Copy(source, endIndex, target, index, source.Length - endIndex);
+        if (index > 0) // Handle left side of removal index.
+          System.Array.Copy(array, 0, target, 0, index);
+
+        if (endIndex < array.Length) // Handle right side of removal range.
+          System.Array.Copy(array, endIndex, target, index, array.Length - endIndex);
 
         return target;
+      }
+
+      /// <summary>
+      /// <para>Create a new array with a <paramref name="range"/> of elements removed from the <paramref name="array"/>.</para>
+      /// </summary>
+      public static T[] RemoveToCopy<T>(T[] array, System.Range range)
+      {
+        var (offset, length) = range.GetOffsetAndLength(array.Length);
+
+        return RemoveToCopy(array, offset, length);
       }
 
       public static T[,] RemoveToCopy<T>(ArrayAxis dimension, T[,] source, params int[] indices)
@@ -791,12 +802,16 @@ namespace Flux
 
       #endregion
 
+      #region Swap
+
       /// <summary>
       /// <para>Swap two values, [<paramref name="a0"/>, <paramref name="a1"/>] and [<paramref name="b0"/>, <paramref name="b1"/>], in <paramref name="source"/>.</para>
       /// </summary>
       /// <remarks>Since an array is arbitrary in terms of e.g. rows and columns, we just adopt a this view, so we'll consider dimension 0 as the row dimension and dimension 1 as the column dimension.</remarks>
       public static void Swap<T>(T[,] source, int a0, int a1, int b0, int b1)
         => (source[b0, b1], source[a0, a1]) = (source[a0, a1], source[b0, b1]);
+
+      #endregion
 
       #region To..
 
@@ -1138,27 +1153,29 @@ namespace Flux
 
     extension(System.Array source)
     {
-      /// <summary>
-      /// <para>Identifies the type of array.</para>
-      /// </summary>
-      /// <returns></returns>
-      public ArrayType ArrayType
-      {
-        get
-        {
-          if (source.GetType() is var type && type.IsArray)
-          {
-            if (source.Rank == 1)
-              return (type.GetElementType()?.IsArray ?? false) ? ArrayType.JaggedArray : ArrayType.OneDimensionalArray;
-            else if (source.Rank == 2)
-              return ArrayType.TwoDimensionalArray;
-            else if (source.Rank > 2)
-              return ArrayType.MultiDimensionalArray;
-          }
+      public ArrayType ArrayType => source.GetType().TryGetArrayType(out var arrayType) ? arrayType : ArrayType.NotAnArray;
 
-          return ArrayType.NotAnArray;
-        }
-      }
+      ///// <summary>
+      ///// <para>Identifies the type of array.</para>
+      ///// </summary>
+      ///// <returns></returns>
+      //public ArrayType ArrayType
+      //{
+      //  get
+      //  {
+      //    if (source.GetType() is var type && type.IsArray)
+      //    {
+      //      if (source.Rank == 1)
+      //        return (type.GetElementType()?.IsArray ?? false) ? ArrayType.JaggedArray : ArrayType.OneDimensionalArray;
+      //      else if (source.Rank == 2)
+      //        return ArrayType.TwoDimensionalArray;
+      //      else if (source.Rank > 2)
+      //        return ArrayType.MultiDimensionalArray;
+      //    }
+
+      //    return ArrayType.NotAnArray;
+      //  }
+      //}
 
       ///// <summary>
       ///// <para>Returns a one/two-dimensional or jagged array as a new <see cref="SpanMaker{T}"/>, that can be printed in the console.</para>

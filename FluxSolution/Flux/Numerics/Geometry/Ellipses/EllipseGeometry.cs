@@ -122,34 +122,6 @@ namespace Flux.Numerics.Geometry.Ellipses
         double.Sin(rotationAngle) * b
       );
 
-    /// <summary>
-    /// <para>I actually don't remember what this is for... ha ha ha!</para>
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="source"></param>
-    /// <param name="result"></param>
-    /// <returns></returns>
-    public static bool TryConvertToPrimitiveNumber<T>(T source, out object result)
-    {
-      try
-      {
-        if ((source?.GetType().IsIBinaryInteger(true) ?? false) && Convert.ToInt64(source) is long i64)
-        {
-          result = i64;
-          return true;
-        }
-        else if ((source?.GetType().IsIBinaryInteger(true) ?? false) && Convert.ToDouble(source) is double d64)
-        {
-          result = d64;
-          return true;
-        }
-      }
-      catch { }
-
-      result = default!;
-      return false;
-    }
-
     #endregion // Conversion methods
 
     /// <summary>
@@ -175,7 +147,7 @@ namespace Flux.Numerics.Geometry.Ellipses
         var angle = arcOffset + index * arc;
 
         if (maxRandomness > 0)
-          angle += rng.NextNumber(0, arc * maxRandomness);
+          angle += rng.NextDouble(0, arc * maxRandomness);
 
         var (x, y) = double.PolarToCartesian(1, angle, true);
 
@@ -206,7 +178,7 @@ namespace Flux.Numerics.Geometry.Ellipses
         var angle = arcOffset + index * arc;
 
         if (maxRandomness > 0)
-          angle += rng.NextNumber(0, arc * maxRandomness);
+          angle += rng.NextDouble(0, arc * maxRandomness);
 
         var (x, y) = double.PolarToCartesian(1, angle, false);
 

@@ -2,7 +2,7 @@
 {
   public class Grid<TValue> where TValue : notnull
   {
-    private readonly Flux.DataStructures.OrderedDictionary<(int row, int column), TValue> m_data = new();
+    private readonly System.Collections.Generic.OrderedDictionary<(int row, int column), TValue> m_data = new();
 
     private readonly int m_rows;
     private readonly int m_columns;
@@ -84,9 +84,9 @@
       else throw new System.ArgumentOutOfRangeException($"{sourceIndex} or {targetIndex}");
     }
 
-    public bool TryGetIndex(TValue value, out int index) => m_data.TryGetIndex(value, out index);
+    public bool TryGetIndex(TValue value, out int index) => m_data.TryGetIndexAndKey(value, out index, out var _);
 
-    public bool TryGetKey(TValue value, out (int row, int column) key) => m_data.TryGetKey(value, out key);
+    public bool TryGetKey(TValue value, out (int row, int column) key) => m_data.TryGetIndexAndKey(value, out var _, out key);
 
     public bool TryGetValue(int row, int column, out TValue value) => m_data.TryGetValue(KeyFrom(row, column), out value!);
     public bool TryGetValue(int uniqueIndex, out TValue value) => m_data.TryGetValue(KeyFrom(uniqueIndex), out value!);

@@ -1,4 +1,5 @@
-﻿namespace Flux
+﻿//#define DECIMAL_SPECIAL_FUNCTIONS
+namespace Flux
 {
   public static partial class DecimalExtensions
   {
@@ -46,7 +47,7 @@
       /// <summary>
       /// <para>The default epsilon scalar (1e-27m) used for near-integer functions.</para>
       /// </summary>
-      public static decimal DefaultBaseEpsilon => 1e-27m;
+      public static decimal NearEqualityEpsilon => 1e-27m;
 
       #region GetComponents
 

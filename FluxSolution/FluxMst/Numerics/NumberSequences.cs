@@ -367,7 +367,7 @@ namespace Maths
     [TestMethod]
     public void SieveOfEratosthenes1()
     {
-      var data = new Flux.DataStructures.OrderedDictionary<int, int>()
+      var data = new System.Collections.Generic.OrderedDictionary<int, int>()
       {
         { 10, 4 },
         { 100, 25 },
@@ -383,11 +383,11 @@ namespace Maths
 
       for (int index = 0; index < data.Count; index++)
       {
-        data.TryGetIndexKeyValue(index, out var expected);
+        data.TryGetKeyAndValue(index, out var key, out var value);
 
-        var actual = BinaryInteger.SieveOfEratosthenes(expected.Key);
+        var actual = BinaryInteger.SieveOfEratosthenes(key);
 
-        Assert.AreEqual(expected.Value, actual.PopCount());
+        Assert.AreEqual(value, actual.PopCount());
       }
     }
 
