@@ -64,13 +64,13 @@ namespace Maths
     [TestMethod]
     public void IntegerRootN()
     {
-      Assert.AreEqual(3, BinaryInteger.IntegerRootN(27, 3));
+      Assert.AreEqual(3, BinaryInteger.RootN(27, 3));
     }
 
     [TestMethod]
     public void IntegerSqrt()
     {
-      Assert.AreEqual(4, BinaryInteger.IntegerSquareRoot(21));
+      Assert.AreEqual(4, BinaryInteger.SquareRoot(21));
     }
 
     [TestMethod]
@@ -104,9 +104,9 @@ namespace Maths
     {
       var v = 15;
 
-      var iq = BinaryInteger.IntegerSquareRoot(v);
+      var iq = BinaryInteger.SquareRoot(v);
 
-      var isiq = BinaryInteger.IsIntegerSquareRoot(v, iq);
+      var isiq = BinaryInteger.IsSquareRoot(v, iq);
 
       Assert.IsTrue(isiq);
     }
@@ -116,9 +116,9 @@ namespace Maths
     {
       var v = 15;
 
-      var iq = BinaryInteger.IntegerSquareRoot(v);
+      var iq = BinaryInteger.SquareRoot(v);
 
-      var ispiq = BinaryInteger.IsPerfectIntegerSquareRoot(v, iq);
+      var ispiq = BinaryInteger.IsPerfectSquareRoot(v, iq);
 
       Assert.IsFalse(ispiq);
     }
@@ -138,8 +138,8 @@ namespace Maths
     [TestMethod]
     public void ModInv()
     {
-      Assert.AreEqual(2, BinaryInteger.ModInv(4, 7));
-      Assert.AreEqual(7, BinaryInteger.ModInv(8, 11));
+      Assert.AreEqual(2, BinaryInteger.ModInverse(4, 7));
+      Assert.AreEqual(7, BinaryInteger.ModInverse(8, 11));
     }
 
     [TestMethod]
@@ -148,10 +148,10 @@ namespace Maths
       var n = 512d;
       var m = 20;
 
-      var (multipleTowardsZero, nNearestMultiple, multipleAwayFromZero) = Number.MultipleOf(n, m, false, MidpointRoundingEx.AwayFromZero);
+      var (multipleTowardsZero, nNearestMultiple, multipleAwayFromZero) = Number.MultipleOf(n, m, false, NearestRoundingRule.AwayFromZero);
       //n.MultipleOfNearest(m, false, HalfRounding.AwayFromZero, out var multipleTowardsZero, out var multipleAwayFromZero);
 
-      var nearestMultiple = Number.RoundToNearest(n, MidpointRoundingEx.TowardZero, false, [multipleTowardsZero, multipleAwayFromZero]);
+      var nearestMultiple = Number.RoundToNearest(n, NearestRoundingRule.TowardZero, false, [multipleTowardsZero, multipleAwayFromZero]);
 
       Assert.AreEqual(520, nearestMultiple);
 

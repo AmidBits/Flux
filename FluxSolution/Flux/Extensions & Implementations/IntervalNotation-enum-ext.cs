@@ -125,6 +125,23 @@ namespace Flux
         return Number.FoldAcross(value, minValue, maxValue);
       }
 
+      public (TNumber Minimum, TNumber Maximum) GetExtentUlp<TNumber>(TNumber minValue, TNumber maxValue)
+        where TNumber : System.Numerics.INumber<TNumber>
+      {
+        if (source != IntervalNotation.Closed)
+        {
+          if (source is IntervalNotation.Open or IntervalNotation.HalfOpenLeft)
+            minValue = Number.UlpIncrement(minValue);
+
+          if (source is IntervalNotation.Open or IntervalNotation.HalfOpenRight)
+            maxValue = Number.UlpDecrement(maxValue);
+
+          AssertValid(IntervalNotation.Closed, minValue, maxValue, "ULP-magnitude");
+        }
+
+        return (minValue, maxValue);
+      }
+
       /// <summary>
       /// <para>Gets a new min/max interval relative type (<typeparamref name="TNumber"/>) using the specified <see cref="IntervalNotation"/>, <paramref name="minValue"/>, <paramref name="maxValue"/> and <paramref name="magnitude"/>.</para>
       /// <para>If <typeparamref name="TNumber"/> is an integer, magnitude = 1 and notation = <see cref="IntervalNotation.Open"/>, the new values are (<paramref name="minValue"/> + 1) and (<paramref name="maxValue"/> - 1).</para>
@@ -147,10 +164,10 @@ namespace Flux
           while (--magnitude >= 0)
           {
             if (source is IntervalNotation.Open or IntervalNotation.HalfOpenLeft)
-              minValue = Number.NativeIncrement(minValue);
+              minValue = Number.UlpIncrement(minValue);
 
             if (source is IntervalNotation.Open or IntervalNotation.HalfOpenRight)
-              maxValue = Number.NativeDecrement(maxValue);
+              maxValue = Number.UlpDecrement(maxValue);
           }
 
           AssertValid(IntervalNotation.Closed, minValue, maxValue, "relative-magnitude");
@@ -188,6 +205,23 @@ namespace Flux
 
         return (minValue, maxValue);
       }
+
+      //public (TNumber minValue, TNumber maxValue) GetExtentUlp<TNumber>(TNumber minValue, TNumber maxValue)
+      //  where TNumber : System.Numerics.INumber<TNumber>
+      //{
+      //  if (source != IntervalNotation.Closed)
+      //  {
+      //    if (source is IntervalNotation.Open or IntervalNotation.HalfOpenLeft)
+      //      minValue = Number.UlpIncrement(minValue);
+
+      //    if (source is IntervalNotation.Open or IntervalNotation.HalfOpenRight)
+      //      maxValue = Number.UlpDecrement(maxValue);
+
+      //    AssertValid(IntervalNotation.Closed, minValue, maxValue, "ULP");
+      //  }
+
+      //  return (minValue, maxValue);
+      //}
 
       /// <summary>
       /// <para>Calculates the offset and length of an interval (<paramref name="minValue"/>, <paramref name="maxValue"/>) in a specified <see cref="IntervalNotation"/>.</para>
@@ -382,9 +416,31 @@ namespace Flux
       public TNumber WrapAround<TNumber>(TNumber value, TNumber minValue, TNumber maxValue)
         where TNumber : System.Numerics.INumber<TNumber>
       {
-        (minValue, maxValue) = source.GetExtentAbsolute(minValue, maxValue, TNumber.One);
+        var ulp = Number.GetUlp(value);
+        ulp = TNumber.One;
+        (minValue, maxValue) = source.GetExtentAbsolute(minValue, maxValue, ulp);
 
-        return Number.WrapAround(value, minValue, maxValue);
+        var range = (maxValue - minValue) + ulp;
+
+        if (value > maxValue)
+        {
+          var over = value - maxValue;
+          var spill = over % range;
+
+          return minValue + spill;
+        }
+        else if (value < minValue)
+        {
+          var under = minValue - value;
+          var spill = under % range;
+
+          return maxValue - spill;
+        }
+        else
+          return value;
+
+
+        //return Number.WrapAround(value, minValue, maxValue);
       }
 
       /// <summary>
@@ -400,16 +456,35 @@ namespace Flux
       {
         (minValue, maxValue) = source.GetExtentRelative(minValue, maxValue, 1);
 
-        return Number.WrapAround(value, minValue, maxValue);
+        var range = maxValue - minValue;
+
+        if (value > maxValue)
+        {
+          var over = value - maxValue;
+          var spill = over % range;
+
+          return minValue + spill;
+        }
+        else if (value < minValue)
+        {
+          var under = minValue - value;
+          var spill = under % range;
+
+          return maxValue - spill;
+        }
+        else
+          return value;
+
+        //return Number.WrapAround(value, minValue, maxValue);
       }
 
-      //public TNumber Wrap<TNumber>(TNumber value, TNumber minValue, TNumber maxValue)
-      //  where TNumber : System.Numerics.INumber<TNumber>
-      //{
-      //  (minValue, maxValue) = source.GetExtentAbsolute(minValue, maxValue, 0);
+      public TNumber UlpWrap<TNumber>(TNumber value, TNumber minValue, TNumber maxValue)
+        where TNumber : System.Numerics.INumber<TNumber>
+      {
+        (minValue, maxValue) = source.GetExtentUlp(minValue, maxValue);
 
-      //  return NumberFunctions.WrapAround(value, minValue, maxValue);
-      //}
+        return Number.WrapAround(value, minValue, maxValue);
+      }
     }
   }
 }

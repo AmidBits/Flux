@@ -12,8 +12,13 @@ namespace Flux.Dsp
       ? (phaseMu % 1) + 1 // Align phased correctly on positive side.
       : phaseMu % 1;
 
+    public static double AbsolutePhasePi(double phasePi)
+      => phasePi < 0
+      ? (phasePi % double.Pi) + double.Pi
+      : phasePi % double.Pi;
+
     /// <summary>Returns the absolute phase (negative phase align correctly on positive side) normalized to 2*PI [0, 2*PI).</summary>
-    public static double AbsolutePhasePi2(double phasePi2)
+    public static double AbsolutePhaseTau(double phasePi2)
       => phasePi2 < 0
       ? (phasePi2 % double.Tau) + double.Tau // Align phased correctly on positive side.
       : phasePi2 % double.Tau;
@@ -22,5 +27,8 @@ namespace Flux.Dsp
     /// <see href="https://en.wikipedia.org/wiki/Root_mean_square"/>
     public static Waves.IWaveMono<double> ComputeRms(System.Collections.Generic.IEnumerable<Waves.IWaveMono<double>> buffer)
       => new Waves.WaveMono<double>(double.Sqrt(buffer.Average(mono => mono.Wave * mono.Wave)));
+
+    public static double BpmToSampleCount(double bpm, double noteDivision, double sampleRate)
+      => 60000 / bpm * noteDivision * (sampleRate / 1000);
   }
 }

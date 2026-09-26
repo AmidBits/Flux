@@ -4,6 +4,8 @@ namespace Flux
   {
     extension(System.Numerics.BigInteger)
     {
+      #region DigitCount
+
       public static int DigitCount(System.Numerics.BigInteger number, int radix)
       {
         System.ArgumentOutOfRangeException.ThrowIfLessThan(radix, 2);
@@ -14,20 +16,25 @@ namespace Flux
         if (number.Sign < 0)
           number = System.Numerics.BigInteger.Abs(number);
 
-        // 1. Estimate digits using bit-length.
-        var bitLength = number.GetBitLength();
-        var log2b = System.Math.Log(radix, 2);
-        var approx = bitLength / log2b; // log_b(n) = log2(n) / log2(b)
+        // 1. Estimate digits using bit-length. (Full fractional bit‑length.)
 
-        var digits = (int)approx + 1;
+        var bl = number.GetBitLength();
+        var top = (bl <= 64) ? (ulong)number : (ulong)(number >> (int)(bl - 64));
+
+        var mantissa = top / (double)(1UL << 63);
+        var log2n = (bl - 1) + System.Math.Log(mantissa, 2);
+
+        var logb = log2n / System.Math.Log(radix, 2);
+        var digits = (int)logb + 1;
 
         // 2. Correct possible off-by-one.
-        var pow = System.Numerics.BigInteger.Pow(radix, digits - 1);
-        if (pow > number)
+        if (System.Numerics.BigInteger.Pow(radix, digits - 1) is var pow && pow > number)
           digits--;
 
         return digits;
       }
+
+      #endregion
 
       #region FitSmallestIntegerType
 
@@ -48,7 +55,7 @@ namespace Flux
 
       #endregion
 
-      #region ICbrt - Integer cube root using Newton method.
+      #region Cbrt - Cube root using Newton method.
 
       /// <summary>
       /// <para>Newton-Raphson iteration with a bit‑length–based initial guess.</para>
@@ -56,14 +63,14 @@ namespace Flux
       /// <param name="n"></param>
       /// <returns></returns>
       /// <exception cref="ArgumentException"></exception>
-      public static System.Numerics.BigInteger ICbrt(System.Numerics.BigInteger n)
+      public static System.Numerics.BigInteger Cbrt(System.Numerics.BigInteger n)
       {
         System.ArgumentOutOfRangeException.ThrowIfNegative(n);
 
         if (n < 2)
           return n;
 
-        var x = System.Numerics.BigInteger.One << (int)(n.GetBitLength() / 3); // Initial guess.
+        var x = System.Numerics.BigInteger.One << (int)((n.GetBitLength() + 2) / 3); // Initial guess.
 
         while (true)
         {
@@ -78,9 +85,9 @@ namespace Flux
 
       #endregion
 
-      #region ILog - Integer logarithm.
+      #region Log - Integer logarithm.
 
-      public static (System.Numerics.BigInteger ILogF, System.Numerics.BigInteger ILogC, bool IsExactLog) ILog(System.Numerics.BigInteger n, System.Numerics.BigInteger b)
+      public static (System.Numerics.BigInteger LogFloor, System.Numerics.BigInteger LogCeiling, bool IsExactLog) Log(System.Numerics.BigInteger n, System.Numerics.BigInteger b)
       {
         System.ArgumentOutOfRangeException.ThrowIfNegativeOrZero(n);
         System.ArgumentOutOfRangeException.ThrowIfLessThan(b, 2);
@@ -139,9 +146,9 @@ namespace Flux
 
       #endregion
 
-      #region ILogE - Integer natural logarithm.
+      #region LogE - Integer natural logarithm.
 
-      public static (System.Numerics.BigInteger ILogF, System.Numerics.BigInteger ILogC) ILogE(System.Numerics.BigInteger n)
+      public static (System.Numerics.BigInteger LogFloor, System.Numerics.BigInteger LogCeiling) LogE(System.Numerics.BigInteger n)
       {
         if (n <= 1)
           return (System.Numerics.BigInteger.Zero, System.Numerics.BigInteger.Zero);
@@ -152,11 +159,11 @@ namespace Flux
         // Correction: check if e^(k+1) <= n
         // Use: n >= exp(k+1)  <=>  log(n) >= k+1
         // But log(n) = log2(n) * ln(2)
-        double ln_n_est = log2 * 0.6931471805599453;
+        var ln_n_est = log2 * 0.6931471805599453;
 
         // k ≈ log2(n) * ln(2)
         // ln(2) ≈ 0.6931471805599453
-        int k = (int)ln_n_est;
+        var k = (int)ln_n_est;
 
         if (ln_n_est >= k + 1)
           k++;
@@ -169,7 +176,7 @@ namespace Flux
 
       #endregion
 
-      #region IRootN - Newton-Raphson with quadratic convergence.
+      #region RootN - Newton-Raphson with quadratic convergence.
 
       /// <summary>
       /// <para>Newton–Raphson iteration for integer nth root with quadratic convergence and a logarithmic initial guess.</para>
@@ -178,7 +185,7 @@ namespace Flux
       /// <param name="n"></param>
       /// <returns></returns>
       /// <exception cref="System.ArithmeticException"></exception>
-      public static System.Numerics.BigInteger IRootN(System.Numerics.BigInteger value, int n)
+      public static System.Numerics.BigInteger RootN(System.Numerics.BigInteger value, int n)
       {
         System.ArgumentOutOfRangeException.ThrowIfNegative(value);
         System.ArgumentOutOfRangeException.ThrowIfNegativeOrZero(n);
@@ -213,14 +220,14 @@ namespace Flux
 
       #endregion
 
-      #region ISqrt - Integer square root using Newton's method.
+      #region Sqrt - Square root using Newton's method.
 
       /// <summary>
       /// <para>Integer square root using Newton's method.</para>
       /// </summary>
       /// <param name="n"></param>
       /// <returns></returns>
-      public static System.Numerics.BigInteger ISqrt(System.Numerics.BigInteger n)
+      public static System.Numerics.BigInteger Sqrt(System.Numerics.BigInteger n)
       {
         System.ArgumentOutOfRangeException.ThrowIfNegative(n);
 
@@ -238,81 +245,6 @@ namespace Flux
 
           x = y;
         }
-      }
-
-      #endregion
-
-      #region IsPrime - Miller-Rabin probabilistic primality test.
-
-      /// <summary>
-      /// <para>This implementation uses a Miller-Rabin probabilistic algorithm.</para>
-      /// </summary>
-      /// <param name="n"></param>
-      /// <param name="k">Log(bit-length, 1.17) yields an approximately 15 iterations @ 10 bits, 30 @ 100, 44 @ 1000, 59 @ 10000, and can be lowered for a higher iteration (k) count. The lower the base, the higher the count.</param>
-      /// <returns></returns>
-      public static bool IsPrime(System.Numerics.BigInteger n, int k)
-        => MillerRabinProbabilisticIsPrime(n, k);
-
-      /// <summary>
-      /// <para>Probabilistic Miller–Rabin primality test with parallel rounds.</para>
-      /// </summary>
-      /// <param name="n"></param>
-      /// <param name="k">Log(bit-length, 1.17) yields an approximately 15 iterations @ 10 bits, 30 @ 100, 44 @ 1000, 59 @ 10000, and can be lowered for a higher iteration (k) count. The lower the base, the higher the count.</param>
-      /// <returns></returns>
-      private static bool MillerRabinProbabilisticIsPrime(System.Numerics.BigInteger n, int k)
-      {
-        if (n <= 3) return n == 2 || n == 3;
-        if ((n % 2).IsZero) return false;
-
-        // Write n-1 as d*2^r
-        var d = n - 1;
-        while (d % 2 == 0) d /= 2;
-
-        var isPrime = true;
-        var lockObj = new object();
-
-        System.Threading.Tasks.Parallel.For(0, k, (i, state) =>
-        {
-          if (!isPrime) { state.Stop(); return; }
-
-          System.Numerics.BigInteger a; // Random base in [2, n-2]
-
-          lock (lockObj) { a = System.Random.Shared.NextInteger(2, n - 2); }
-
-          if (!MillerRabinProbabilisticTest(d, n, a))
-          {
-            lock (lockObj) { isPrime = false; }
-
-            state.Stop();
-          }
-        });
-
-        return isPrime;
-      }
-
-      /// <summary>
-      /// <para>Miller–Rabin test for a single base</para>
-      /// </summary>
-      /// <param name="d"></param>
-      /// <param name="n"></param>
-      /// <param name="a"></param>
-      /// <returns></returns>
-      private static bool MillerRabinProbabilisticTest(System.Numerics.BigInteger d, System.Numerics.BigInteger n, System.Numerics.BigInteger a)
-      {
-        var x = System.Numerics.BigInteger.ModPow(a, d, n);
-
-        if (x == 1 || x == n - 1) return true;
-
-        while (d != n - 1)
-        {
-          x = (x * x) % n;
-          d *= 2;
-
-          if (x == 1) return false;
-          if (x == n - 1) return true;
-        }
-
-        return false;
       }
 
       #endregion
@@ -349,5 +281,71 @@ namespace Flux
         return byteArray;
       }
     }
+
+    #region IsPrimeNumber.. - Miller-Rabin probabilistic primality test.
+
+    /// <summary>
+    /// <para>Probabilistic Miller–Rabin primality test with parallel rounds.</para>
+    /// </summary>
+    /// <param name="n"></param>
+    /// <param name="k">Log(bit-length, 1.17) yields an approximately 15 iterations @ 10 bits, 30 @ 100, 44 @ 1000, 59 @ 10000, and can be lowered for a higher iteration (k) count. The lower the base, the higher the count.</param>
+    /// <returns></returns>
+    internal static bool IsPrimeNumberProbabilistic(System.Numerics.BigInteger n, int k)
+    {
+      if (n <= 3) return n == 2 || n == 3;
+      if ((n % 2).IsZero) return false;
+
+      // Write n-1 as d*2^r
+      var d = n - 1;
+      while (d % 2 == 0) d /= 2;
+
+      var isPrime = true;
+      var lockObj = new object();
+
+      System.Threading.Tasks.Parallel.For(0, k, (i, state) =>
+      {
+        if (!isPrime) { state.Stop(); return; }
+
+        System.Numerics.BigInteger a; // Random base in [2, n-2]
+
+        lock (lockObj) { a = System.Random.Shared.NextInteger(2, n - 2); }
+
+        if (!IsPrimeNumberProbabilisticTest(d, n, a))
+        {
+          lock (lockObj) { isPrime = false; }
+
+          state.Stop();
+        }
+      });
+
+      return isPrime;
+    }
+
+    /// <summary>
+    /// <para>Miller–Rabin test for a single base.</para>
+    /// </summary>
+    /// <param name="d"></param>
+    /// <param name="n"></param>
+    /// <param name="a"></param>
+    /// <returns></returns>
+    private static bool IsPrimeNumberProbabilisticTest(System.Numerics.BigInteger d, System.Numerics.BigInteger n, System.Numerics.BigInteger a)
+    {
+      var x = System.Numerics.BigInteger.ModPow(a, d, n);
+
+      if (x == 1 || x == n - 1) return true;
+
+      while (d != n - 1)
+      {
+        x = (x * x) % n;
+        d *= 2;
+
+        if (x == 1) return false;
+        if (x == n - 1) return true;
+      }
+
+      return false;
+    }
+
+    #endregion
   }
 }

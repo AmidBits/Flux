@@ -46,58 +46,69 @@ namespace Flux.Units
     public Frequency(Speed soundVelocity, Length wavelength) : this(soundVelocity.Value / wavelength.Value) { }
 
     /// <summary>
+    /// <para>Returns the angular frequency corresponding to the frequency.</para>
+    /// </summary>
+    public AngularFrequency AngularFrequency
+      => new(m_value * double.Tau);
+
+    /// <summary>
+    /// <para>Returns the period corresponding to the frequency.</para>
+    /// </summary>
+    public Time Period
+      => new(1.0 / m_value);
+
+    /// <summary>
+    /// <para>Returns the number of revolutions per minute (RPM) corresponding to the frequency.</para>
+    /// </summary>
+    public double RevolutionsPerMinute
+      => m_value * 60;
+
+    /// <summary>
+    /// <para>Returns the normalized frequency corresponding to the frequency and sample rate.</para>
     /// <para>In digital signal processing (DSP), a normalized frequency is a ratio of a variable <see cref="Frequency"/> and a constant frequency associated with a system (e.g. sampling rate).</para>
+    /// <para>This is also the same as cycles per sample.</para>
     /// </summary>
-    /// <param name="systemFrequency">E.g. sampling rate.</param>
+    /// <param name="sampleRate"></param>
     /// <returns></returns>
-    public Time ComputeNormalizedFrequency(double systemFrequency) => new(1.0 / m_value);
+    public Frequency NormalizedFrequency(double sampleRate)
+      => new(m_value / sampleRate);
 
     /// <summary>
-    /// <para>Creates a new Time instance representing the time it takes to complete one cycle at the frequency.</para>
+    /// <para>Computes the number of samples per cycle at the specified frequency and sample rate.</para>
     /// </summary>
+    /// <param name="sampleRate"></param>
     /// <returns></returns>
-    public Time ComputePeriod() => new(1.0 / m_value);
-
-    /// <summary>
-    /// <para>Returns the angular velocity from the (rotational) frequency.</para>
-    /// <para><see href="https://en.wikipedia.org/wiki/Revolutions_per_minute"/></para>
-    /// </summary>
-    /// <returns></returns>
-    public AngularFrequency ToAngularVelocity() => new(double.Tau * m_value);
+    public double SamplesPerPeriod(double sampleRate)
+      => sampleRate / m_value;
 
     #region Static methods
-    /// <remarks>Revolutions Per Minute (RPM) is officially a frequency and as such measured in Hertz (which is 'per second'). Conversion is a straight forward by a factor of 60 (i.e. seconds per minute)</remarks>
-    /// <see href="https://en.wikipedia.org/wiki/Revolutions_per_minute"/>
 
-    public static double ConvertFrequencyToRpm(double frequency)
-      => frequency * 60;
+    /// <summary>
+    /// <para>Constructs a frequency from an angular frequency.</para>
+    /// </summary>
+    /// <param name="angularFrequency"></param>
+    /// <returns></returns>
+    public static Frequency FromAngularFrequency(double angularFrequency)
+      => new(angularFrequency / double.Tau);
 
-    /// <remarks>Revolutions Per Minute (RPM) is officially a frequency and as such measured in Hertz (which is 'per second'). Conversion is a straight forward by a factor of 60 (i.e. seconds per minute)</remarks>
-    /// <see href="https://en.wikipedia.org/wiki/Revolutions_per_minute"/>
+    public static Frequency FromNormalizedFrequency(double normalizedFrequency, double sampleRate)
+      => new(normalizedFrequency * sampleRate);
 
-    public static double ConvertRpmToFrequency(double revolutionPerMinute)
-      => revolutionPerMinute / 60;
+    /// <summary>
+    /// <para>Constructs a frequency from a period.</para>
+    /// </summary>
+    /// <param name="period"></param>
+    /// <returns></returns>
+    public static Frequency FromPeriod(double period)
+      => new(1.0 / period);
 
-    /// <summary>Computes the normalized frequency (a.k.a. cycles/sample) of the specified frequency and sample rate. The normalized frequency represents a fractional part of the cycle, per sample.</summary>
-    /// <see href="https://en.wikipedia.org/wiki/Normalized_frequency_(unit)"/>
-    public static double NormalizedFrequency(double frequency, double sampleRate)
-      => frequency / sampleRate;
-
-    ///// <summary>Creates a new Frequency instance from the specified frequency shifted in pitch (positive or negative) by the interval specified in cents.</summary>
-    ///// <param name="frequency"></param>
-    ///// <param name="cent"></param>
-    //public static Frequency PitchShift(Frequency frequency, Music.Cent cent)
-    //  => new(frequency.Value * Music.Cent.ConvertCentToFrequencyRatio(cent.Value));
-
-    ///// <summary>Creates a new Frequency instance from the specified frequency shifted in pitch (positive or negative) by the interval specified in semitones.</summary>
-    ///// <param name="frequency"></param>
-    ///// <param name="semitone"></param>
-    //public static Frequency PitchShift(Frequency frequency, Music.Semitone semitone)
-    //  => new(frequency.Value * Music.Semitone.ConvertSemitoneToFrequencyRatio(semitone.Value));
-
-    /// <summary>Computes the number of samples per cycle at the specified frequency and sample rate.</summary>
-    public static double SamplesPerCycle(double frequency, double sampleRate)
-      => sampleRate / frequency;
+    /// <summary>
+    /// <para>Constructs a frequency from revolutions per minute (RPM).</para>
+    /// </summary>
+    /// <param name="rpm"></param>
+    /// <returns></returns>
+    public static Frequency FromRevolutionsPerMinute(double rpm)
+      => new(rpm / 60.0);
 
     /// <summary>Returns the <paramref name="frequency"/> pitch shifted by the <paramref name="frequencyRatio"/> (positive or negative).</summary>
     /// <param name="frequency"></param>
@@ -105,13 +116,12 @@ namespace Flux.Units
     public static double ShiftPitch(double frequency, double frequencyRatio)
       => frequency * frequencyRatio;
 
-    /// <summary>Creates a new Frequency instance from the specified acoustic properties of sound velocity and wavelength.</summary>
-    /// <param name="soundVelocity"></param>
-    /// <param name="wavelength"></param>
-
     #endregion Static methods
 
     #region Overloaded operators
+
+    public static explicit operator Frequency(double value) => new(value);
+    public static implicit operator double(Frequency value) => value.m_value;
 
     public static bool operator <(Frequency a, Frequency b) => a.CompareTo(b) < 0;
     public static bool operator >(Frequency a, Frequency b) => a.CompareTo(b) > 0;

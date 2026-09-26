@@ -891,7 +891,7 @@
       /// <para>Locate the index, item and value of both the largest element that is less-than(-or-equal) and the smallest element that is greater-than(-or-equal) to the singleton set {<paramref name="referenceValue"/>} (set S) identified by the <paramref name="valueSelector"/> (in set P). Uses the specified comparer (null for default).</para>
       /// <see href="https://en.wikipedia.org/wiki/Infimum_and_supremum"/>
       /// </summary>
-      /// <remarks>By definition of infimum and supremum, the function is supposed to return both the less-than-or-equal and greater-than-or-equal, but this version makes the (-or-equal) optional via the <paramref name="proper"/> parameter. Also, infimum and supremum are positive constructs, so to accomodate negatives we return as toward-zero and away-from-zero for clarity.</remarks>
+      /// <remarks>By definition of infimum and supremum, the proper function is supposed to return both the less-than-or-equal and greater-than-or-equal, but this version makes the (-or-equal) optional via the <paramref name="proper"/> parameter. Also, infimum and supremum are positive constructs, so to accomodate negatives we return as toward-zero and away-from-zero for clarity.</remarks>
       /// <typeparam name="TValue"></typeparam>
       /// <param name="referenceValue"></param>
       /// <param name="valueSelector"></param>

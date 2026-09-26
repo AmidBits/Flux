@@ -108,19 +108,7 @@ namespace Flux
         var remainder = new T[System.Numerics.Vector<T>.Count];
 
         for (var i = System.Numerics.Vector<T>.Count - 1; i >= 0; i--)
-          (quotient[i], remainder[i]) = BinaryInteger.CeilingDivRem(source[i], divisor[i]);
-
-        return (new System.Numerics.Vector<T>(quotient), new System.Numerics.Vector<T>(remainder));
-      }
-
-      public static (System.Numerics.Vector<T> Quotient, System.Numerics.Vector<T> Remainder) ClosestDivRem<T>(System.Numerics.Vector<T> source, System.Numerics.Vector<T> divisor)
-        where T : System.Numerics.IBinaryInteger<T>
-      {
-        var quotient = new T[System.Numerics.Vector<T>.Count];
-        var remainder = new T[System.Numerics.Vector<T>.Count];
-
-        for (var i = System.Numerics.Vector<T>.Count - 1; i >= 0; i--)
-          (quotient[i], remainder[i]) = BinaryInteger.ClosestDivRem(source[i], divisor[i]);
+          (quotient[i], remainder[i]) = Number.IntegerDivRemCeiling(source[i], divisor[i]);
 
         return (new System.Numerics.Vector<T>(quotient), new System.Numerics.Vector<T>(remainder));
       }
@@ -132,7 +120,7 @@ namespace Flux
         var remainder = new T[System.Numerics.Vector<T>.Count];
 
         for (var i = System.Numerics.Vector<T>.Count - 1; i >= 0; i--)
-          (quotient[i], remainder[i]) = BinaryInteger.EuclideanDivRem(source[i], divisor[i]);
+          (quotient[i], remainder[i]) = Number.IntegerDivRemEuclidean(source[i], divisor[i]);
 
         return (new System.Numerics.Vector<T>(quotient), new System.Numerics.Vector<T>(remainder));
       }
@@ -144,19 +132,7 @@ namespace Flux
         var remainder = new T[System.Numerics.Vector<T>.Count];
 
         for (var i = System.Numerics.Vector<T>.Count - 1; i >= 0; i--)
-          (quotient[i], remainder[i]) = BinaryInteger.FlooredDivRem(source[i], divisor[i]);
-
-        return (new System.Numerics.Vector<T>(quotient), new System.Numerics.Vector<T>(remainder));
-      }
-
-      public static (System.Numerics.Vector<T> Quotient, System.Numerics.Vector<T> Remainder) RoundedDivRem<T>(System.Numerics.Vector<T> source, System.Numerics.Vector<T> divisor)
-        where T : System.Numerics.IBinaryInteger<T>
-      {
-        var quotient = new T[System.Numerics.Vector<T>.Count];
-        var remainder = new T[System.Numerics.Vector<T>.Count];
-
-        for (var i = System.Numerics.Vector<T>.Count - 1; i >= 0; i--)
-          (quotient[i], remainder[i]) = BinaryInteger.RoundedDivRem(source[i], divisor[i]);
+          (quotient[i], remainder[i]) = Number.IntegerDivRemFloored(source[i], divisor[i]);
 
         return (new System.Numerics.Vector<T>(quotient), new System.Numerics.Vector<T>(remainder));
       }

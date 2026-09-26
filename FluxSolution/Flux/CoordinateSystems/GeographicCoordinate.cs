@@ -396,6 +396,7 @@ namespace Flux
       private readonly double m_longitude;
 
       private readonly double m_altitude; // Geocentric altitude, i.e. the distance from the center of Earth, not the height above sea level.
+
       public GeographicCoordinate(double latitudeRadian, double longitudeRadian, double altitudeMeter)
       {
         m_latitude = new Units.Latitude(latitudeRadian, Units.AngleUnit.Radian).Radians;

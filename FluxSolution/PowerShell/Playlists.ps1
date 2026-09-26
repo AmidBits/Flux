@@ -2,7 +2,7 @@ Clear-Host
 
 $base = [System.IO.DirectoryInfo]"E:\Media\Audio"
 
-function Add-ToPlaylist([string]$playlist, [string[]]$directories, [string]$filter = "*.mp3")
+function Add-ToPlaylist([string]$playlist, [string[]]$directories, [string[]]$filters = "*.mp3")
 {
     $playlistFileInfo = [System.IO.FileInfo][System.IO.Path]::Combine($base, "Playlists\$playlist.m3u8")
 
@@ -12,13 +12,15 @@ function Add-ToPlaylist([string]$playlist, [string[]]$directories, [string]$filt
 
     $m3u8 = $playlistFileInfo.AppendText();
 
-    $fileInfos = ($directories | ForEach-Object { $directory = [System.IO.DirectoryInfo][System.IO.Path]::Combine($base, $_); $directory.EnumerateFiles($filter, [System.IO.SearchOption]::AllDirectories) } | Sort-Object { $_.FullName })
+    foreach($filter in $filters) {
+        $fileInfos = ($directories | ForEach-Object { $directory = [System.IO.DirectoryInfo][System.IO.Path]::Combine($base, $_); $directory.EnumerateFiles($filter, [System.IO.SearchOption]::AllDirectories) } | Sort-Object { $_.FullName })
 
-    foreach($fileInfo in $fileInfos) {
-        $filePath = [System.IO.Path]::GetRelativePath([System.IO.Path]::Combine($base, "Playlists"), $fileInfo.FullName)
-        $filePath = $filePath.Replace("\", "/")
-        #$filePath = $filePath.Replace(' ', "%20")
-        $m3u8.WriteLine($filePath)
+        foreach($fileInfo in $fileInfos) {
+            $filePath = [System.IO.Path]::GetRelativePath([System.IO.Path]::Combine($base, "Playlists"), $fileInfo.FullName)
+            $filePath = $filePath.Replace("\", "/")
+            #$filePath = $filePath.Replace(' ', "%20")
+            $m3u8.WriteLine($filePath)
+        }
     }
 
     $m3u8.Close()
@@ -26,7 +28,7 @@ function Add-ToPlaylist([string]$playlist, [string[]]$directories, [string]$filt
     Write-Host "Add-ToPlaylist: $playlistName $directories $filter"
 }
 
-function Build-Playlist([string]$playlist, [string[]]$directories, [string]$filter = "*.mp3")
+function Build-Playlist([string]$playlist, [string[]]$directories, [string]$filters = "*.mp3")
 {
     $playlistFileInfo = [System.IO.FileInfo][System.IO.Path]::Combine($base, "Playlists\$playlist.m3u8")
 
@@ -40,13 +42,15 @@ function Build-Playlist([string]$playlist, [string[]]$directories, [string]$filt
     #$m3u8.WriteLine("#$($playlistFileInfo.Name)");
     $m3u8.WriteLine("#PLAYLIST:$playlistName");
 
-    $fileInfos = ($directories | ForEach-Object { $directory = [System.IO.DirectoryInfo][System.IO.Path]::Combine($base, $_); $directory.EnumerateFiles($filter, [System.IO.SearchOption]::AllDirectories) } | Sort-Object { $_.FullName })
+    foreach($filter in $filters) {
+        $fileInfos = ($directories | ForEach-Object { $directory = [System.IO.DirectoryInfo][System.IO.Path]::Combine($base, $_); $directory.EnumerateFiles($filter, [System.IO.SearchOption]::AllDirectories) } | Sort-Object { $_.FullName })
 
-    foreach($fileInfo in $fileInfos) {
-        $filePath = [System.IO.Path]::GetRelativePath([System.IO.Path]::Combine($base, "Playlists"), $fileInfo.FullName)
-        $filePath = $filePath.Replace("\", "/")
-        #$filePath = $filePath.Replace(' ', "%20")
-        $m3u8.WriteLine($filePath)
+        foreach($fileInfo in $fileInfos) {
+            $filePath = [System.IO.Path]::GetRelativePath([System.IO.Path]::Combine($base, "Playlists"), $fileInfo.FullName)
+            $filePath = $filePath.Replace("\", "/")
+            #$filePath = $filePath.Replace(' ', "%20")
+            $m3u8.WriteLine($filePath)
+        }
     }
 
     $m3u8.Close()
@@ -207,34 +211,41 @@ Build-Playlist "Kraftwerk" ("Tracks\Collections\Kraftwerk")
 Build-Playlist "Logic System" ("Tracks\Collections\Logic System")
 Build-Playlist "Lustans Lakejer" ("Tracks\Collections\Lustans Lakejer")
 Build-Playlist "The Shamen" ("Tracks\Collections\The Shamen")
-Build-Playlist "Wipeout" ("Tracks\MediaTracks\CoLD SToRAGE", "Tracks\MediaTracks\Wip3out")
+Build-Playlist "Wipeout" ("Tracks\Collections\Soundtracks\CoLD SToRAGE", "Tracks\Collections\Soundtracks\Wip3out")
 Build-Playlist "Yazoo" ("Tracks\Collections\Yazoo", "Tracks\Collections\Yaz")
 Build-Playlist "Yello" ("Tracks\Collections\Yello")
 Build-Playlist "Zombies" ("Tracks\Collections\Rob Zombie", "Tracks\Collections\White Zombie")
 
-Build-Playlist "All Music" ("Tracks\Miscellaneous", "Tracks\Collections", "Tracks\Classical", "Tracks\MediaTracks")
+Build-Playlist "All Music" ("Tracks\Auggie", "Tracks\Collections")
 
-Build-Playlist "All Music (Incl. Auggies)" ("Tracks\Auggie", "Tracks\Miscellaneous", "Tracks\Collections", "Tracks\Classical", "Tracks\MediaTracks")
+Build-Playlist "Classical" ("Tracks\Collections\Classical")
 
-Build-Playlist "Auggies Music" ("Tracks\Auggie")
+Build-Playlist "Personal Jesus" ("Tracks\Collections") "*Personal Jesus*.mp3"
 
-Build-Playlist "Collections" ("Tracks\Collections")
+Build-Playlist "Soundtracks" ("Tracks\Collections\Soundtracks")
 
-Build-Playlist "MediaTracks" ("Tracks\MediaTracks")
-
-Build-Playlist "Miscellaneous" ("Tracks\Miscellaneous")
-
-Build-Playlist "Personal Jesus" ("Tracks\Collections", "Tracks\MediaTracks", "Tracks\Miscellaneous") "*Personal Jesus*.mp3"
+Build-Playlist "World Music" ("Tracks\Collections\Mixes\Dinner In Paris", "Tracks\Collections\Mixes\Putumayo Presents Italian Cafe", "Tracks\Collections\Mixes\Putumayo Presents Paris", "Tracks\Collections\Mixes\Venice Lounge")
 
 $currentPlaylistName = "Svensk Musik"
 New-Playlist $currentPlaylistName
- Add-ToPlaylist $currentPlaylistName ("Tracks\Collections\Adolphson & Falk", "Tracks\Collections\Alf Robertson", "Tracks\Collections\Freestyle", "Tracks\Collections\Gyllene Tider", "Tracks\Collections\Lustans Lakejer", "Tracks\Collections\Magnum Bonum", "Tracks\Collections\Noice", "Tracks\Collections\Ratata")
- Add-ToPlaylist $currentPlaylistName ("Tracks\Miscellaneous") "Björn Rosenström - *.mp3"
- Add-ToPlaylist $currentPlaylistName ("Tracks\Miscellaneous") "Bo Kaspers Orkester - *.mp3"
- Add-ToPlaylist $currentPlaylistName ("Tracks\Miscellaneous") "Nasa - *.mp3"
- Add-ToPlaylist $currentPlaylistName ("Tracks\Miscellaneous") "Niels Jensen - *.mp3"
- Add-ToPlaylist $currentPlaylistName ("Tracks\Miscellaneous") "Onkel Konkel - *.mp3"
- Add-ToPlaylist $currentPlaylistName ("Tracks\Miscellaneous") "Page - *.mp3"
+ Add-ToPlaylist $currentPlaylistName (
+    "Tracks\Collections\Adolphson & Falk", 
+    "Tracks\Collections\Alf Robertson", 
+    "Tracks\Collections\Freestyle", 
+    "Tracks\Collections\Gyllene Tider", 
+    "Tracks\Collections\Lustans Lakejer", 
+    "Tracks\Collections\Magnum Bonum", 
+    "Tracks\Collections\Noice", 
+    "Tracks\Collections\Ratata"
+ )
+ Add-ToPlaylist $currentPlaylistName ("Tracks\Collections\Miscellaneous") (
+    "Björn Rosenström - *.mp3", 
+    "Bo Kaspers Orkester - *.mp3", 
+    "Nasa - *.mp3", 
+    "Niels Jensen - *.mp3", 
+    "Onkel Konkel - *.mp3", 
+    "Page - *.mp3"
+  )
 
 Build-Playlist "Lindeman" ("Comedy") "*Lindeman*.mp3"
 
@@ -264,31 +275,41 @@ New-Playlist $currentPlaylistName
 Add-ToPlaylist $currentPlaylistName ("Tracks/Collections/A Flock Of Seagulls") "A Flock Of Seagulls - I Ran (So Far Away).mp3"
 Add-ToPlaylist $currentPlaylistName ("Tracks/Collections/A Flock Of Seagulls\20 Classics Of The '80s") "11 Messages.mp3"
 
-Add-ToPlaylist $currentPlaylistName ("Tracks/Collections/a-ha/Scoundrel Days") "01 Scoundrel Days.mp3"
-Add-ToPlaylist $currentPlaylistName ("Tracks/Collections/a-ha/Scoundrel Days") "06 Cry Wolf.mp3"
-Add-ToPlaylist $currentPlaylistName ("Tracks/Collections/a-ha/Hunting High & Low") "04 The Blue Sky.mp3"
-Add-ToPlaylist $currentPlaylistName ("Tracks/Collections/a-ha/Hunting High & Low") "06 The Sun Always Shines On T.V.mp3"
+Add-ToPlaylist $currentPlaylistName ("Tracks/Collections/a-ha") (
+    "01 Scoundrel Days.mp3",
+    "06 Cry Wolf.mp3",
+    "04 The Blue Sky.mp3",
+    "06 The Sun Always Shines On T.V.mp3"
+)
 
-Add-ToPlaylist $currentPlaylistName ("Tracks/Collections/A-Teens") "A-Teens - Schools Out.mp3"
-Add-ToPlaylist $currentPlaylistName ("Tracks/Collections/A-Teens") "A-Teens - The Letter.wma"
+Add-ToPlaylist $currentPlaylistName ("Tracks/Collections/A-Teens") (
+    "A-Teens - Schools Out.mp3",
+    "A-Teens - The Letter.wma"
+)
 
 Add-ToPlaylist $currentPlaylistName ("Tracks/Collections/Bananarama")
 
-Add-ToPlaylist $currentPlaylistName ("Tracks/Collections/Billy Idol/Cyberpunk") "06 Adam In Chains.mp3"
-Add-ToPlaylist $currentPlaylistName ("Tracks/Collections/Billy Idol/Cyberpunk") "07 Neuromancer.mp3"
-Add-ToPlaylist $currentPlaylistName ("Tracks/Collections/Billy Idol/Cyberpunk") "16 Venus.mp3"
-Add-ToPlaylist $currentPlaylistName ("Tracks/Collections/Billy Idol/Cyberpunk") "17 Then The Night Comes.mp3"
-Add-ToPlaylist $currentPlaylistName ("Tracks/Collections/Billy Idol/Cyberpunk") "19 Mother Dawn.mp3"
-Add-ToPlaylist $currentPlaylistName ("Tracks/Collections/Billy Idol/Greatest Hits") "Billy Idol, Don't Need A Gun (Single Edit).mp3"
-Add-ToPlaylist $currentPlaylistName ("Tracks/Collections/Billy Idol/Greatest Hits") "Billy Idol. Flesh For Fantasy.mp3"
-Add-ToPlaylist $currentPlaylistName ("Tracks/Collections/Billy Idol/Greatest Hits") "Billy Idol, Rebel Yell.mp3"
-Add-ToPlaylist $currentPlaylistName ("Tracks/Collections/Billy Idol/Whiplash Smile") "04 Sweet Sixteen.mp3"
-Add-ToPlaylist $currentPlaylistName ("Tracks/Collections/Billy Idol/Vital Idol") "01 White Wedding, Pts. 1 & 2 (Shot Gun Mix).mp3"
+Add-ToPlaylist $currentPlaylistName ("Tracks/Collections/Billy Idol") (
+    "06 Adam In Chains.mp3",
+    "07 Neuromancer.mp3",
+    "16 Venus.mp3",
+    "17 Then The Night Comes.mp3",
+    "19 Mother Dawn.mp3",
+    "Billy Idol, Don't Need A Gun (Single Edit).mp3",
+    "Billy Idol. Flesh For Fantasy.mp3",
+    "Billy Idol, Rebel Yell.mp3",
+    "04 Sweet Sixteen.mp3",
+    "01 White Wedding, Pts. 1 & 2 (Shot Gun Mix).mp3"
+)
 
-Add-ToPlaylist $currentPlaylistName ("Tracks/Collections/Chemical Brothers") "Chemical Brothers - Come With Us.mp3"
+Add-ToPlaylist $currentPlaylistName ("Tracks/Collections/Chemical Brothers") (
+    "Chemical Brothers - Come With Us.mp3"
+)
 
-Add-ToPlaylist $currentPlaylistName ("Tracks/Collections/David Bowie/Changesbowie") "15 Let's Dance.mp3"
-Add-ToPlaylist $currentPlaylistName ("Tracks/Collections/David Bowie") "David Bowie - Cat People (Putting Out Fire).mp3"
+Add-ToPlaylist $currentPlaylistName ("Tracks/Collections/David Bowie") (
+    "15 Let's Dance.mp3",
+    "David Bowie - Cat People (Putting Out Fire).mp3"
+)
 
 Add-ToPlaylist $currentPlaylistName ("Tracks/Collections/Depeche Mode/Black Celebration") "01 Black Celebration.mp3"
 Add-ToPlaylist $currentPlaylistName ("Tracks/Collections/Depeche Mode/Get The Balance Right! (Single)") "03 Get The Balance Right! (Combination Mix).mp3"
@@ -375,51 +396,65 @@ Add-ToPlaylist $currentPlaylistName ("Tracks/Collections/Lustans Lakejer/Spotlig
 
 Add-ToPlaylist $currentPlaylistName ("Tracks/Collections/Madonna")
 
-Add-ToPlaylist $currentPlaylistName ("Tracks/Collections/Marilyn Manson/Lest We Forget") "12 Rock Is Dead.mp3"
+Add-ToPlaylist $currentPlaylistName ("Tracks/Collections/Marilyn Manson/Lest We Forget") ("12 Rock Is Dead.mp3")
 
-Add-ToPlaylist $currentPlaylistName ("Tracks/Collections/Men Without Hats") "Men Without Hats - You Can Dance If You Want To.mp3"
+Add-ToPlaylist $currentPlaylistName ("Tracks/Collections/Men Without Hats") ("Men Without Hats - You Can Dance If You Want To.mp3")
 
 Add-ToPlaylist $currentPlaylistName ("Tracks/Collections/Michael Jackson")
 
-Add-ToPlaylist $currentPlaylistName ("Tracks/Collections/New Order/Blue Monday 1983 (Single)") "Blue Monday 1983 (12' Mix).mp3"
+Add-ToPlaylist $currentPlaylistName ("Tracks/Collections/New Order/Blue Monday 1983 (Single)") ("Blue Monday 1983 (12' Mix).mp3")
 
-Add-ToPlaylist $currentPlaylistName ("Tracks/Collections/Nomad/Songman") "01 With You.mp3"
-Add-ToPlaylist $currentPlaylistName ("Tracks/Collections/Nomad/Songman") "03 Kava.mp3"
-Add-ToPlaylist $currentPlaylistName ("Tracks/Collections/Nomad/Songman") "08 Garpi.mp3"
+Add-ToPlaylist $currentPlaylistName ("Tracks/Collections/Nomad/Songman") (
+    "01 With You.mp3",
+    "03 Kava.mp3",
+    "08 Garpi.mp3"
+)
 
-Add-ToPlaylist $currentPlaylistName ("Tracks/Collections/Peter Gabriel") "Peter Gabriel - Big Time.mp3"
-Add-ToPlaylist $currentPlaylistName ("Tracks/Collections/Peter Gabriel") "Peter Gabriel - Sledgehammer.mp3"
+Add-ToPlaylist $currentPlaylistName ("Tracks/Collections/Peter Gabriel") (
+    "Peter Gabriel - Big Time.mp3",
+    "Peter Gabriel - Sledgehammer.mp3"
+)
 
 Add-ToPlaylist $currentPlaylistName ("Tracks/Collections/Propaganda") "Propaganda - P-Machinery.mp3"
 
 Add-ToPlaylist $currentPlaylistName ("Tracks/Collections/Queen")
 
-Add-ToPlaylist $currentPlaylistName ("Tracks/Collections/Rammstein/Reise, Reise") "02 Mein Teil.mp3"
-Add-ToPlaylist $currentPlaylistName ("Tracks/Collections/Rammstein/Sehnsucht") "05 Du Hast.mp3"
-Add-ToPlaylist $currentPlaylistName ("Tracks/Collections/Rammstein") "Rammstein - Deutschland.mp3"
-Add-ToPlaylist $currentPlaylistName ("Tracks/Collections/Rammstein") "Rammstein - Feuer Frei.mp3"
+Add-ToPlaylist $currentPlaylistName ("Tracks/Collections/Rammstein/Reise, Reise") (
+    "02 Mein Teil.mp3",
+    "05 Du Hast.mp3",
+    "Rammstein - Deutschland.mp3",
+    "Rammstein - Feuer Frei.mp3"
+)
 
-Add-ToPlaylist $currentPlaylistName ("Tracks/Collections/Rob Zombie/Hellbilly Deluxe") "02 Superbeast.mp3"
-Add-ToPlaylist $currentPlaylistName ("Tracks/Collections/Rob Zombie/Hellbilly Deluxe") "09 Meet The Creeper.mp3"
-Add-ToPlaylist $currentPlaylistName ("Tracks/Collections/Rob Zombie") "Rob Zombie - Dragula (Hot Rod Herman Remix).mp3"
+Add-ToPlaylist $currentPlaylistName ("Tracks/Collections/Rob Zombie") (
+    "02 Superbeast.mp3",
+    "09 Meet The Creeper.mp3",
+    "Rob Zombie - Dragula (Hot Rod Herman Remix).mp3"
+)
 
-Add-ToPlaylist $currentPlaylistName ("Tracks/Collections/Robert Palmer/Addictions, Vol. 1") "01 Bad Case Of Loving You (Doctor, Doctor).mp3"
-Add-ToPlaylist $currentPlaylistName ("Tracks/Collections/Robert Palmer/Addictions, Vol. 1") "12 Simply Irresistible.mp3"
+Add-ToPlaylist $currentPlaylistName ("Tracks/Collections/Robert Palmer") (
+    "01 Bad Case Of Loving You (Doctor, Doctor).mp3",
+    "12 Simply Irresistible.mp3"
+)
 
 Add-ToPlaylist $currentPlaylistName ("Tracks/Collections/Roxette") "Roxette - The Look.mp3"
 
-Add-ToPlaylist $currentPlaylistName ("Tracks/Collections/Simple Minds/Glittering Prize 81-92") "01 Waterfront.mp3"
-Add-ToPlaylist $currentPlaylistName ("Tracks/Collections/Simple Minds/Glittering Prize 81-92") "05 Love Song.mp3"
-Add-ToPlaylist $currentPlaylistName ("Tracks/Collections/Simple Minds") "Simple Minds - New Gold Dream.mp3"
-Add-ToPlaylist $currentPlaylistName ("Tracks/Collections/Simple Minds") "Simple Minds - Up On The Catwalk.mp3"
+Add-ToPlaylist $currentPlaylistName ("Tracks/Collections/Simple Minds") (
+    "01 Waterfront.mp3",
+    "05 Love Song.mp3",
+    "Simple Minds - New Gold Dream.mp3",
+    "Simple Minds - Up On The Catwalk.mp3"
+)
 
 Add-ToPlaylist $currentPlaylistName ("Tracks/Collections/Smash Mouth") "All Star.mp3"
 
-Add-ToPlaylist $currentPlaylistName ("Tracks/Collections/Talk Talk/Natural History- The Very Best Of Talk Talk") "01 Today.mp3"
-Add-ToPlaylist $currentPlaylistName ("Tracks/Collections/Talk Talk/Natural History- The Very Best Of Talk Talk") "02 Talk Talk.mp3"
-Add-ToPlaylist $currentPlaylistName ("Tracks/Collections/Talk Talk/Natural History- The Very Best Of Talk Talk") "03 My Foolish Friend.mp3"
-Add-ToPlaylist $currentPlaylistName ("Tracks/Collections/Talk Talk/Natural History- The Very Best Of Talk Talk") "04 Such A Shame.mp3"
-Add-ToPlaylist $currentPlaylistName ("Tracks/Collections/Talk Talk/Natural History- The Very Best Of Talk Talk") "06 It's My Life.mp3"
+Add-ToPlaylist $currentPlaylistName ("Tracks/Collections/Talk Talk/Natural History- The Very Best Of Talk Talk") (
+    "01 Today.mp3",
+    "02 Talk Talk.mp3",
+    "03 My Foolish Friend.mp3",
+    "04 Such A Shame.mp3",
+    "06 It's My Life.mp3"
+)
 
 Add-ToPlaylist $currentPlaylistName ("Tracks/Collections/Tears For Fears/Tears Roll Down (Greatest Hits 82-92)") "01 Sowing The Seeds Of Love.mp3"
 Add-ToPlaylist $currentPlaylistName ("Tracks/Collections/Tears For Fears/Tears Roll Down (Greatest Hits 82-92)") "02 Everybody Wants To Rule The World.mp3"
@@ -454,8 +489,8 @@ Add-ToPlaylist $currentPlaylistName ("Tracks/Collections/Yello/Zebra") "03 Night
 Add-ToPlaylist $currentPlaylistName ("Tracks/Collections/ZZ Top") "ZZ Top - Delirious.mp3"
 Add-ToPlaylist $currentPlaylistName ("Tracks/Collections/ZZ Top") "ZZ Top - Planet Of Women.mp3"
 
-Add-ToPlaylist $currentPlaylistName ("Tracks/MediaTracks/Gone In 60 Seconds") "Too Sick to Pray.mp3"
+Add-ToPlaylist $currentPlaylistName ("Tracks/Collections/Soundtracks/Gone In 60 Seconds") "Too Sick to Pray.mp3"
 
-Add-ToPlaylist $currentPlaylistName ("Tracks/MediaTracks/Matrix, The") "Rob D - Clubbed to Death (Kurayamino Mix).mp3"
+Add-ToPlaylist $currentPlaylistName ("Tracks/Collections/Soundtracks/Matrix, The") "Rob D - Clubbed to Death (Kurayamino Mix).mp3"
 
-Add-ToPlaylist $currentPlaylistName ("Tracks/Miscellaneous")
+Add-ToPlaylist $currentPlaylistName ("Tracks/Collections/Miscellaneous")

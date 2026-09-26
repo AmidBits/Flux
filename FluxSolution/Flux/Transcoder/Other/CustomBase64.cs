@@ -26,7 +26,7 @@ namespace Flux.Transcode
 
     public byte[] DecodeString(string input)
     {
-      var output = new byte[3 * int.EnvelopedDivRem(input.Length, 4).Quotient];
+      var output = new byte[3 * int.IntegerDivRemEnveloped(input.Length, 4).Quotient];
 
       byte byte0 = 0;
       byte byte1 = 0;
@@ -92,7 +92,7 @@ namespace Flux.Transcode
     public string EncodeString(byte[] input)
     {
       //var (q, r) = input.Length.EnvelopedDivRem(3);
-      var output = new char[4 * int.EnvelopedDivRem(input.Length, 3).Quotient];
+      var output = new char[4 * int.IntegerDivRemEnveloped(input.Length, 3).Quotient];
 
       //var bits0 = input.ReadBits<byte>(1, 6);
       //var bits1 = input.ReadBits<byte>(6, 6);

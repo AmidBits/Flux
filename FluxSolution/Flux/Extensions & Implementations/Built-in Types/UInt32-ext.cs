@@ -47,7 +47,7 @@ namespace Flux
 
       #endregion
 
-      #region IsPrime - Deterministic straightforward deterministic 6k ± 1 test.
+      #region IsPrimeNumber.. - Deterministic straightforward deterministic 6k ± 1 test.
 
       /// <summary>
       /// <para>Deterministic 6k ± 1 prime number test. This is the most efficient algorithm for testing primality of numbers within the range of an unsigned 32-bit integer.</para>
@@ -55,7 +55,7 @@ namespace Flux
       /// <param name="n"></param>
       /// <returns></returns>
       [System.CLSCompliant(false)]
-      public static bool IsPrime(uint n)
+      public static bool IsPrimeNumberDeterministic(uint n)
       {
         if (n <= 3) return n > 1;
         if ((n & 1) == 0 || n % 3 == 0) return false;

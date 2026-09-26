@@ -5,100 +5,6 @@ namespace Flux
     extension<TNumber>(TNumber)
       where TNumber : System.Numerics.INumber<TNumber>
     {
-      #region ArithmeticMean (type of average)
-
-      /// <summary>
-      /// <para><see href="https://en.wikipedia.org/wiki/Arithmetic_mean"/></para>
-      /// </summary>
-      /// <typeparam name="TFloat"></typeparam>
-      /// <param name="sumOfTerms"></param>
-      /// <param name="terms"></param>
-      /// <returns></returns>
-      public static TFloat ArithmeticMean<TFloat>(out int countOfTerms, out TFloat sumOfTerms, params System.Collections.Generic.IEnumerable<TNumber> terms)
-        where TFloat : System.Numerics.IFloatingPoint<TFloat>
-      {
-        sumOfTerms = TFloat.CreateChecked(terms.Sum(out countOfTerms));
-
-        return sumOfTerms / TFloat.CreateChecked(countOfTerms);
-      }
-
-      #endregion
-
-      #region ArithmeticSequence.. (progression)
-
-      /// <summary>
-      /// <para>Creates a new sequence of non-zero numbers where each term after the first <paramref name="a1"/> is found by multiplying the previous one by a fixed, non-zero number called the <paramref name="commonDifference"/>.</para>
-      /// <para><see href="https://en.wikipedia.org/wiki/Arithmetic_progression"/></para>
-      /// </summary>
-      /// <remarks>This function runs indefinitely, if allowed.</remarks>
-      /// <param name="a1">The first term.</param>
-      /// <param name="commonDifference">The common difference of the arithmetic sequence.</param>
-      /// <returns></returns>
-      /// <exception cref="System.ArgumentOutOfRangeException"></exception>
-      public static System.Collections.Generic.IEnumerable<TNumber> ArithmeticSequence(TNumber a1, TNumber commonDifference)
-      {
-        System.ArgumentOutOfRangeException.ThrowIfZero(commonDifference);
-
-        for (var n = 0; true; n++) // We can start at zero..
-          yield return checked(a1 + TNumber.CreateChecked(n) * commonDifference); // ..and get away with NOT subtracting one from n: (a + n * d)
-      }
-
-      /// <summary>
-      /// <para>Get the <paramref name="n"/> term of a arithmetic sequence with the specified <paramref name="a1"/> and <paramref name="commonDifference"/>.</para>
-      /// <para><see href="https://en.wikipedia.org/wiki/Arithmetic_progression"/></para>
-      /// </summary>
-      /// <typeparam name="TInteger"></typeparam>
-      /// <param name="a1">The first term.</param>
-      /// <param name="commonDifference">The common difference of the arithmetic sequence.</param>
-      /// <param name="n">The term to retrieve.</param>
-      /// <returns></returns>
-      public static TNumber ArithmeticSequenceNthTerm<TInteger>(TNumber a1, TNumber commonDifference, TInteger n)
-        where TInteger : System.Numerics.IBinaryInteger<TInteger>
-      {
-        System.ArgumentOutOfRangeException.ThrowIfZero(commonDifference);
-
-        return a1 + TNumber.CreateChecked(n - TInteger.One) * commonDifference; // (a + (n - 1) * d)
-      }
-
-      #endregion
-
-      #region ArithmeticSeries.. (sum)
-
-      /// <summary>
-      /// <para>Gets the mean of the arithmetic series of an arithmetic sequence with the specified <paramref name="a1"/>, <paramref name="commonDifference"/> and <paramref name="n"/> terms.</para>
-      /// <para><see href="https://en.wikipedia.org/wiki/Arithmetic_progression#Sum"/></para>
-      /// </summary>
-      /// <param name="a1">The first term.</param>
-      /// <param name="commonDifference">The common difference of the arithmetic sequence.</param>
-      /// <param name="n">The number of terms.</param>
-      /// <returns></returns>
-      public static TNumber ArithmeticSeriesMeanOfNTerms<TInteger>(TNumber a1, TNumber commonDifference, TInteger n)
-        where TInteger : System.Numerics.IBinaryInteger<TInteger>
-        => (a1 + ArithmeticSequenceNthTerm(a1, commonDifference, n)) / TNumber.CreateChecked(2);
-
-      ///// <summary>
-      ///// <para>Gets the arithmetic series (sum) of a arithmetic sequence with infinite terms and the specified <paramref name="d"/>.</para>
-      ///// </summary>
-      ///// <param name="d">The common ratio of the arithmetic sequence.</param>
-      ///// <returns></returns>
-      //public static TNumber ArithmeticSeriesOfInfiniteTerms<TNumber>(this TNumber a, TNumber d)
-      //  where TNumber : System.Numerics.INumber<TNumber>
-      //  => ()
-
-      /// <summary>
-      /// <para>Gets the arithmetic series (sum) of an arithmetic sequence with the specified <paramref name="a1"/>, <paramref name="commonDifference"/> and <paramref name="n"/> terms.</para>
-      /// <para><see href="https://en.wikipedia.org/wiki/Arithmetic_progression#Sum"/></para>
-      /// </summary>
-      /// <param name="a1">The first term.</param>
-      /// <param name="commonDifference">The common difference of the arithmetic sequence.</param>
-      /// <param name="n">The number of terms.</param>
-      /// <returns></returns>
-      public static TNumber ArithmeticSeriesOfNTerms<TInteger>(TNumber a1, TNumber commonDifference, TInteger n)
-        where TInteger : System.Numerics.IBinaryInteger<TInteger>
-        => TNumber.CreateChecked(n) * (a1 + ArithmeticSequenceNthTerm(a1, commonDifference, n)) / TNumber.CreateChecked(2);
-
-      #endregion
-
       #region Detent
 
       /// <summary>
@@ -208,86 +114,44 @@ namespace Flux
       #region FoldAcross
 
       /// <summary>
-      /// <para>Folds an out-of-bound <paramref name="value"/> (back and forth) across the closed interval [<paramref name="minValue"/>, <paramref name="maxValue"/>], until the <paramref name="value"/> is within the closed interval.</para>
+      /// <para>Performs a triangle‑wave fold (i.e. back and forth) across the closed interval [<paramref name="minValue"/>, <paramref name="maxValue"/>], until the <paramref name="value"/> is within the closed interval.</para>
       /// </summary>
+      /// <param name="value"></param>
       /// <param name="minValue"></param>
       /// <param name="maxValue"></param>
       /// <returns></returns>
       public static TNumber FoldAcross(TNumber value, TNumber minValue, TNumber maxValue)
-        => (value > maxValue)
-        ? (ITruncatedDivRem(value - maxValue, maxValue - minValue) is var (tqHi, remHi) && TNumber.IsEvenInteger(tqHi) ? maxValue - remHi : minValue + remHi)
-        : (value < minValue)
-        ? (ITruncatedDivRem(minValue - value, maxValue - minValue) is var (tqLo, remLo) && TNumber.IsEvenInteger(tqLo) ? minValue + remLo : maxValue - remLo)
-        : value;
-
-      #endregion
-
-      #region GeometricMean (type of average)
-
-      /// <summary>
-      /// <para>The geometric mean is a mean or average which indicates a central tendency of a finite collection of positive real numbers by using the product of their values (as opposed to the arithmetic mean, which uses their sum).</para>
-      /// <para>Each term in a geometric series is the geometric mean of the term before it and the term after it, in the same way that each term of an arithmetic series is the arithmetic mean of its neighbors.</para>
-      /// <para><see href="https://en.wikipedia.org/wiki/Geometric_mean"/></para>
-      /// </summary>
-      /// <typeparam name="TFloat"></typeparam>
-      /// <param name="productOfTerms">The product of out parameter</param>
-      /// <param name="terms"></param>
-      /// <returns></returns>
-
-      public static TFloat GeometricMean<TFloat>(out int countOfTerms, out TFloat productOfTerms, params System.Collections.Generic.IEnumerable<TNumber> terms)
-        where TFloat : System.Numerics.IFloatingPoint<TFloat>, System.Numerics.IRootFunctions<TFloat>
       {
-        productOfTerms = TFloat.CreateChecked(terms.Product(out countOfTerms));
+        if (value >= minValue && value <= maxValue)
+          return value;
 
-        return checked(TFloat.RootN(productOfTerms, countOfTerms));
+        var above = value > maxValue; // Determine overshoot direction.
+
+        var overshoot = above ? value - maxValue : minValue - value;
+        var range = maxValue - minValue;
+
+        var (q, r) = IntegerDivRemTruncated(overshoot, range); // Truncated division gives quotient parity + remainder.
+
+        return TNumber.IsEvenInteger(q)
+            ? (above ? maxValue - r : minValue + r) // Even q → reflect toward boundary crossed.
+            : (above ? minValue + r : maxValue - r); // Odd q → reflect toward opposite boundary.
       }
 
-      #endregion
+      //public static TNumber FoldAcross(TNumber value, TNumber minValue, TNumber maxValue)
+      //  => (value > maxValue)
+      //  ? (TruncDivRem(value - maxValue, maxValue - minValue) is var (tqHi, remHi) && TNumber.IsEvenInteger(tqHi) ? maxValue - remHi : minValue + remHi)
+      //  : (value < minValue)
+      //  ? (TruncDivRem(minValue - value, maxValue - minValue) is var (tqLo, remLo) && TNumber.IsEvenInteger(tqLo) ? minValue + remLo : maxValue - remLo)
+      //  : value;
 
-      #region GeometricSequence (progression)
+      #endregion
 
       /// <summary>
-      /// <para>Creates a new sequence of non-zero numbers where each term after the first <paramref name="a1"/> is found by multiplying the previous one by a fixed, non-zero number called the <paramref name="commonRatio"/>.</para>
-      /// <para><see href="https://en.wikipedia.org/wiki/Geometric_progression"/></para>
+      /// <para>Indicates whether <typeparamref name="TNumber"/> is a type built-in to <see cref="System.Runtime"/> (i.e. .NET).</para>
       /// </summary>
-      /// <remarks>This function runs indefinitely, if allowed.</remarks>
-      /// <param name="a1"></param>
-      /// <param name="commonRatio"></param>
       /// <returns></returns>
-      public static System.Collections.Generic.IEnumerable<TNumber> GeometricSequence(TNumber a1, TNumber commonRatio)
-      {
-        System.ArgumentOutOfRangeException.ThrowIfZero(a1);
-        System.ArgumentOutOfRangeException.ThrowIfZero(commonRatio);
-
-        while (true)
-        {
-          yield return a1;
-
-          try { checked { a1 *= commonRatio; } } catch { break; }
-        }
-      }
-
-      #endregion
-
-      #region GeometricSeries.. (sum)
-
-      /// <summary>
-      /// <para></para>
-      /// <para>Gets the geometric series of a geometric sequence with infinite terms after the first <paramref name="a1"/> with the specified <paramref name="commonRatio"/>. The sum of a geometric progression's terms is called a geometric series.</para>
-      /// <para><see href="https://en.wikipedia.org/wiki/Geometric_series"/></para>
-      /// </summary>
-      /// <param name="commonRatio">The common ratio of the geometric sequence.</param>
-      /// <returns></returns>
-      public static TFloat GeometricSeriesOfInfiniteTerms<TFloat>(TNumber a1, TFloat commonRatio)
-        where TFloat : System.Numerics.IFloatingPoint<TFloat>
-      {
-        if (commonRatio >= TFloat.One)
-          throw new System.ArithmeticException("The geometric series is divergent.");
-
-        return TFloat.CreateChecked(a1) / (TFloat.One - commonRatio);
-      }
-
-      #endregion
+      public static bool IsBuiltIn()
+        => typeof(TNumber).Assembly == typeof(byte).Assembly; // System.Private.CoreLib
 
       #region IsConsideredPlural
 
@@ -298,29 +162,9 @@ namespace Flux
       /// <remarks>This function consider all numbers (e.g. 1.0, 2, etc.), except <c>integer</c> types equal to 1, to be plural.</remarks>
       /// <returns></returns>
       public static bool IsConsideredPlural(TNumber value)
-        => !(value == TNumber.One && value.GetType().ImplementsIBinaryInteger()); // Only an integer 1 (not 1.0) is singular, otherwise a number is considered plural.
+        => !(value == TNumber.One && value.GetType().IsNumericsIBinaryInteger()); // Only an integer 1 (not 1.0) is singular, otherwise a number is considered plural.
 
       #endregion
-
-      public static bool StoreLessThan(ref TNumber value, TNumber other)
-      {
-        var lessThan = other < value;
-
-        if (lessThan)
-          value = other;
-
-        return lessThan;
-      }
-
-      public static bool StoreGreaterThan(ref TNumber value, TNumber other)
-      {
-        var greaterThan = other > value;
-
-        if (greaterThan)
-          value = other;
-
-        return greaterThan;
-      }
 
       #region KroneckerDelta
 
@@ -335,128 +179,7 @@ namespace Flux
 
       #endregion
 
-      #region Loops/iterations
-
-      public static System.Collections.Generic.IEnumerable<(int Index, TNumber Value, TNumber OpposingValue)> LoopCross(TNumber startValue, TNumber step, int count)
-      {
-        var minValue = ArithmeticSequenceNthTerm(startValue, step, 1);
-        var maxValue = ArithmeticSequenceNthTerm(startValue, step, count);
-
-        return ArithmeticSequence(minValue, step).Take(count).Select((n, i) => (i, n, minValue + maxValue - n));
-      }
-
-      /// <summary>
-      /// <para>Creates a sequence of numbers that are controlled through three methods: <paramref name="initialization"/>(), <paramref name="condition"/>() and <paramref name="updation"/>().</para>
-      /// </summary>
-      /// <param name="initialization">Initializes a current-loop-value.</param>
-      /// <param name="condition">Conditionally allows/denies the loop to continue. In parameters are (current-loop-value, index). A false condition terminates the custom loop.</param>
-      /// <param name="updation">Advances the loop. In parameters (current-loop-value, index).</param>
-      /// <returns></returns>
-      public static System.Collections.Generic.IEnumerable<(TNumber Value, int Index)> LoopCustom(System.Func<TNumber> initialization, System.Func<TNumber, int, bool> condition, System.Func<TNumber, int, TNumber> updation)
-      {
-        TNumber value;
-
-        try { value = initialization(); } catch { yield break; }
-
-        for (var index = 0; ; index++)
-        {
-          try { checked { if (!condition(value, index)) break; } } catch { yield break; }
-
-          yield return (value, index);
-
-          try { checked { value = updation(value, index); } } catch { yield break; }
-        }
-      }
-
-      /// <summary>
-      /// <para>Loop toward or away-from and back-and-forth over <paramref name="direction"/>, in <paramref name="stepSize"/> for <paramref name="count"/> times.</para>
-      /// <para>E.g. a direction = away-from, mean = 0, stepSize = -3 and count = 5, would yield the sequence [0, -3, 3, -6, 6].</para>
-      /// <para>If the loop logic overflows/underflows for any reason, an exception occurs.</para>
-      /// </summary>
-      /// <typeparam name="TCount"></typeparam>
-      /// <param name="meanNumber">The order of alternating numbers, either from mean to the outer limit, or from the outer limit to mean.</param>
-      /// <param name="direction">This is the direction of looping in reference to number.</param>
-      /// <param name="stepSize">The increasing (positive) and decreasing (negative) step size. Note, the min/max value of the loop inherits the same sign as step-size.</param>
-      /// <param name="count">The number of numbers in the sequence.</param>
-      /// <returns></returns>
-      /// <exception cref="System.ArgumentOutOfRangeException"></exception>
-      public static System.Collections.Generic.IEnumerable<TNumber> LoopPivot(TNumber meanNumber, CoordinateSystems.ReferenceRelativeOrientationTAf direction, TNumber stepSize, int count)
-      {
-        System.ArgumentOutOfRangeException.ThrowIfZero(stepSize);
-        System.ArgumentOutOfRangeException.ThrowIfNegativeOrZero(count);
-
-        checked
-        {
-          switch (direction)
-          {
-            case CoordinateSystems.ReferenceRelativeOrientationTAf.AwayFrom:
-              if (int.IsOddInteger(count)) stepSize = -stepSize;
-
-              for (var index = 1; index <= count; index++)
-              {
-                yield return meanNumber;
-
-                meanNumber += stepSize * TNumber.CreateChecked(index);
-                stepSize = -stepSize;
-              }
-              break;
-            case CoordinateSystems.ReferenceRelativeOrientationTAf.Toward:
-              meanNumber += stepSize * ITruncatedDivRem(TNumber.CreateChecked(count), TNumber.One + TNumber.One).Quotient;  // Setup the inital outer edge value for inward iteration.
-
-              for (var index = count - 1; index >= 0; index--)
-              {
-                yield return meanNumber;
-
-                meanNumber -= stepSize * TNumber.CreateChecked(index);
-                stepSize = -stepSize;
-              }
-              break;
-            default:
-              throw new System.ArgumentOutOfRangeException(nameof(direction));
-          }
-        }
-      }
-
-      #endregion
-
-      #region Modulo operation (remainder)
-
-      /// <summary>
-      /// <para>Remainder is the standard remainder.</para>
-      /// <para>RemainderNoZero is the same as standard except no zero, and instead returns the divisor with the sign of the dividend.</para>
-      /// <para>ReverseRemainder is the reverse order of the standard remainder, except for 0, which is still in same.</para>
-      /// <para>ReverseRemainderNoZero is the same as ReverseRemainder except no zero, and instead returns the divisor with the sign of dividend.</para>
-      /// </summary>
-      /// <typeparam name="TNumber"></typeparam>
-      /// <param name="value"></param>
-      /// <param name="modulus"></param>
-      /// <returns></returns>
-      public static (TNumber Remainder, TNumber RemainderNoZero, TNumber ReverseRemainder, TNumber ReverseRemainderNoZero) Modulo(TNumber value, TNumber modulus)
-      {
-        var remainder = value % modulus;
-
-        var copySign = TNumber.CopySign(modulus, value);
-
-        if (TNumber.IsZero(remainder))
-          return (remainder, copySign, remainder, copySign);
-
-        var minusRemainder = copySign - remainder;
-
-        return (remainder, remainder, minusRemainder, minusRemainder);
-      }
-
-      #endregion
-
       #region ..MultipleOf
-
-      /// <summary>
-      /// <para>Determines whether the <paramref name="value"/> is of a <paramref name="multiple"/>.</para>
-      /// </summary>
-      /// <param name="value"></param>
-      /// <param name="multiple">The multiple to which <paramref name="value"/> is measured.</param>
-      /// <returns></returns>
-      public static bool IsMultipleOf(TNumber value, TNumber multiple)
-        => TNumber.IsZero(value % multiple);
 
       /// <summary>
       /// 
@@ -464,9 +187,9 @@ namespace Flux
       /// <param name="value"></param>
       /// <param name="multiple">The multiple to which <paramref name="value"/> is measured.</param>
       /// <param name="unequal"></param>
-      /// <param name="mode"></param>
+      /// <param name="nearestRoundingTies"></param>
       /// <returns></returns>
-      public static (TNumber MultipleTowardZero, TNumber NearestMultiple, TNumber MultipleAwayFromZero) MultipleOf(TNumber value, TNumber multiple, bool unequal = false, MidpointRoundingEx mode = MidpointRoundingEx.TowardZero)
+      public static (TNumber MultipleTowardZero, TNumber NearestMultiple, TNumber MultipleAwayFromZero) MultipleOf(TNumber value, TNumber multiple, bool unequal = false, NearestRoundingRule nearestRoundingTies = NearestRoundingRule.TowardZero)
       {
         var csmv = TNumber.CopySign(multiple, value);
 
@@ -479,7 +202,7 @@ namespace Flux
         if (unequal || moafz != value)
           moafz += csmv;
 
-        return (motz, RoundToNearest(value, mode, false, [motz, moafz]), moafz);
+        return (motz, RoundToNearest(value, nearestRoundingTies, false, [motz, moafz]), moafz);
       }
 
       #endregion
@@ -492,18 +215,12 @@ namespace Flux
       /// <param name="value"></param>
       /// <returns></returns>
       /// <exception cref="System.NotImplementedException"></exception>
-      public static TNumber NativeDecrement(TNumber value)
-        => value.GetType().ImplementsIBinaryInteger()
-        ? checked(value - TNumber.One) // Binary integers are fundamentally the same, so simply subtract one.
-        : value switch // Floating point types have structures depending on specific operations to decrement.
-        {
-          decimal dfp128 => TNumber.CreateChecked(decimal.NativeDecrement(dfp128)),
-          double bfp64 => TNumber.CreateChecked(double.NativeDecrement(bfp64)),
-          float bfp32 => TNumber.CreateChecked(float.NativeDecrement(bfp32)),
-          System.Half bfp16 => TNumber.CreateChecked(System.Half.NativeDecrement(bfp16)),
-          System.Runtime.InteropServices.NFloat nf => TNumber.CreateChecked(System.Runtime.InteropServices.NFloat.NativeDecrement(nf)),
-          _ => throw new System.NotImplementedException()
-        };
+      public static TNumber UlpDecrement(TNumber value)
+      {
+        TryGetUlp(value, out var ulp);
+
+        return checked(value - ulp); // If the ULP is available, use it for decrementing.
+      }
 
       /// <summary>
       /// <para>Increments a number. If integer, then by -1, otherwise by native-increment.</para>
@@ -511,18 +228,12 @@ namespace Flux
       /// <param name="value"></param>
       /// <returns></returns>
       /// <exception cref="System.NotImplementedException"></exception>
-      public static TNumber NativeIncrement(TNumber value)
-        => value.GetType().ImplementsIBinaryInteger()
-        ? checked(value + TNumber.One) // Binary integers are fundamentally the same, so simply add one.
-        : value switch // Floating point types have structures depending on specific operations to increment.
-        {
-          decimal dfp128 => TNumber.CreateChecked(decimal.NativeIncrement(dfp128)),
-          double bfp64 => TNumber.CreateChecked(double.NativeIncrement(bfp64)),
-          float bfp32 => TNumber.CreateChecked(float.NativeIncrement(bfp32)),
-          System.Half bfp16 => TNumber.CreateChecked(System.Half.NativeIncrement(bfp16)),
-          System.Runtime.InteropServices.NFloat nf => TNumber.CreateChecked(System.Runtime.InteropServices.NFloat.NativeIncrement(nf)),
-          _ => throw new System.NotImplementedException()
-        };
+      public static TNumber UlpIncrement(TNumber value)
+      {
+        TryGetUlp(value, out var ulp);
+
+        return checked(value + ulp); // If the ULP is available, use it for incrementing.
+      }
 
       #endregion
 
@@ -798,49 +509,6 @@ namespace Flux
 
       #endregion
 
-      #region RoundToNearest
-
-      public static TNumber RoundToNearest(TNumber value, MidpointRoundingEx mode, bool proper, params System.ReadOnlySpan<TNumber> values)
-      {
-        System.ArgumentOutOfRangeException.ThrowIfZero(values.Length);
-
-        var closestValues = new System.Collections.Generic.List<TNumber>() { values[0] };
-        var closestDistance = TNumber.Abs(value - TNumber.CreateChecked(values[0]));
-
-        for (var i = 1; i < values.Length; i++)
-        {
-          var currentValue = values[i];
-          var currentDistance = TNumber.Abs(value - TNumber.CreateChecked(currentValue));
-
-          if ((!proper || currentValue != value) && currentDistance <= closestDistance)
-          {
-            if (currentDistance < closestDistance)
-            {
-              closestValues.Clear();
-              closestDistance = currentDistance;
-            }
-
-            if (!closestValues.Contains(currentValue))
-              closestValues.Add(currentValue);
-          }
-        }
-
-        return mode switch // If the distances are equal, i.e. the value is exactly halfway to all closestValues, we use the appropriate rounding strategy to resolve a winner.
-        {
-          MidpointRoundingEx.ToEven => closestValues.FirstOrValue(closestValues[0], TNumber.IsEvenInteger).Item,
-          MidpointRoundingEx.AwayFromZero => closestValues.AsSpan().InfimumSupremum(value, v => v, false) is var (infimumItem, infimumIndex, infimumValue, supremumItem, supremumIndex, supremumValue) && value >= TNumber.Zero ? (supremumIndex > -1 ? supremumValue : infimumValue) : (infimumIndex > -1 ? infimumValue : supremumValue),
-          MidpointRoundingEx.TowardZero => closestValues.AsSpan().InfimumSupremum(value, v => v, false) is var (infimumItem, infimumIndex, infimumValue, supremumItem, supremumIndex, supremumValue) && value >= TNumber.Zero ? (infimumIndex > -1 ? infimumValue : supremumValue) : (supremumIndex > -1 ? supremumValue : infimumValue),
-          MidpointRoundingEx.ToNegativeInfinity => closestValues.Min() ?? throw new System.NullReferenceException(),
-          MidpointRoundingEx.ToPositiveInfinity => closestValues.Max() ?? throw new System.NullReferenceException(),
-          MidpointRoundingEx.ToOdd => closestValues.FirstOrValue(closestValues[0], TNumber.IsOddInteger).Item,
-          MidpointRoundingEx.ToRandom => closestValues.AsSpan().GetRandomElement(),
-          MidpointRoundingEx.ToAlternating => closestValues.AsSpan().GetAlternatingElement(),
-          _ => throw new NotImplementedException(),
-        };
-      }
-
-      #endregion
-
       #region Sign
 
       /// <summary>
@@ -862,17 +530,17 @@ namespace Flux
       /// </summary>
       /// <param name="minValue"></param>
       /// <param name="maxValue"></param>
-      /// <param name="mode"></param>
+      /// <param name="rule"></param>
       /// <param name="margin"></param>
       /// <returns></returns>
-      public static TNumber Spread(TNumber value, TNumber minValue, TNumber maxValue, MidpointRoundingEx mode, TNumber margin)
+      public static TNumber Spread(TNumber value, TNumber minValue, TNumber maxValue, NearestRoundingRule rule, TNumber margin)
       {
         System.ArgumentOutOfRangeException.ThrowIfNegative(margin);
 
         if (value < minValue || value > maxValue)
           return value; // If number is already spread, nothing to do but return it.
 
-        var nearestValue = RoundToNearest(value, mode, false, [minValue, maxValue]);
+        var nearestValue = RoundToNearest(value, rule, false, [minValue, maxValue]);
 
         return (nearestValue == minValue)
           ? minValue - margin
@@ -888,197 +556,65 @@ namespace Flux
       /// </summary>
       /// <param name="minValue"></param>
       /// <param name="maxValue"></param>
-      /// <param name="mode"></param>
+      /// <param name="nearestRoundingTies"></param>
       /// <returns></returns>
-      public static TNumber SpreadNative(TNumber value, TNumber minValue, TNumber maxValue, MidpointRoundingEx mode)
+      public static TNumber SpreadNative(TNumber value, TNumber minValue, TNumber maxValue, NearestRoundingRule nearestRoundingTies)
       {
         if (value < minValue || value > maxValue)
           return value; // If number is already spread, nothing to do but return it.
 
-        var nearestValue = RoundToNearest(value, mode, false, [minValue, maxValue]);
+        var nearestValue = RoundToNearest(value, nearestRoundingTies, false, [minValue, maxValue]);
 
         return (nearestValue == minValue)
-          ? NativeDecrement(minValue)
+          ? UlpDecrement(minValue)
           : (nearestValue == maxValue)
-          ? NativeIncrement(maxValue)
+          ? UlpIncrement(maxValue)
           : nearestValue;
       }
 
       #endregion
 
-      #region Integer DivRem functions
-
-      #region ICeilingDivRem
+      #region TriangleModulo
 
       /// <summary>
-      /// <para>Ceiling division, where the remainder has the opposite sign of that of the divisor.</para>
-      /// <para><see href="https://en.wikipedia.org/wiki/Modulo"/></para>
-      /// <para><see href="https://stackoverflow.com/a/20638659/3178666"/></para>
+      /// <para>Computes the triangle (folded) modulo of a number <paramref name="value"/> with respect to a positive modulus <paramref name="modulus"/>.</para>
+      /// <para>The resulting waveform has period 2 × modulus.</para>
+      /// <para>A.K.A. "reflected", "folded" or "mirrored" modulo.</para>
       /// </summary>
-      /// <param name="a"></param>
-      /// <param name="n"></param>
-      /// <returns>
-      /// <para><c>q = ceiling(a / n)</c></para>
-      /// <para><c>r = a - n * q</c></para>
-      /// </returns>
-      public static (TNumber Quotient, TNumber Remainder) ICeilingDivRem(TNumber a, TNumber b)
+      /// <param name="value"></param>
+      /// <param name="modulus"></param>
+      /// <returns>value in the range [0, modulus]</returns>
+      public static TNumber TriangleModulo(TNumber value, TNumber modulus)
       {
-        if (TNumber.IsZero(b)) throw new System.DivideByZeroException();
+        System.ArgumentOutOfRangeException.ThrowIfNegativeOrZero(modulus);
 
-        var q0 = a / b; // q0 = truncated division
+        var remainder = EuclideanModulo(value, modulus + modulus);
 
-        var t = q0 - (q0 % TNumber.One); // trunc(q0) = q0 - (q0 % 1)
-
-        var bump = TNumber.CreateChecked(Convert.ToInt32(q0 > t)); // bump = (q0 > t) ? 1 : 0
-
-        var q = t + bump;
-        var r = a - q * b;
-
-        return (q, r);
+        return modulus - TNumber.Abs(remainder - modulus);
       }
 
       #endregion
 
-      #region IEuclideanDivRem
+      #region ULP functions
 
-      /// <summary>
-      /// <para>Performs Euclidean division on two numbers and returns the quotient and non-negative remainder.</para>
-      /// </summary>
-      /// <remarks>The remainder is always greater than or equal to zero and less than the absolute value of the divisor, regardless of the signs of the input values. This method follows the Euclidean definition of division, which differs from standard integer division when negative numbers are involved.</remarks>
-      /// <param name="dividend">The number to be divided.</param>
-      /// <param name="divisor">The number by which to divide the dividend. Cannot be zero.</param>
-      /// <returns>A tuple containing the quotient and the non-negative remainder resulting from the Euclidean division of the dividend by the divisor.</returns>
-      public static (TNumber Quotient, TNumber Remainder) IEuclideanDivRem(TNumber a, TNumber b)
+      public static TNumber GetUlp(TNumber value)
+        => value switch
+        {
+          decimal dfp128 => TNumber.CreateChecked(decimal.GetDecimalUlp(dfp128)),
+          double bfp64 => TNumber.CreateChecked(double.GetDoubleUlp(bfp64)),
+          float bfp32 => TNumber.CreateChecked(float.GetSingleUlp(bfp32)),
+          System.Half bfp16 => TNumber.CreateChecked(System.Half.GetHalfUlp(bfp16)),
+          System.Runtime.InteropServices.NFloat nf => TNumber.CreateChecked(System.Runtime.InteropServices.NFloat.GetNFloatUlp(nf)),
+          int or uint or long or ulong or short or ushort or byte or sbyte or nint or nuint or System.Int128 or System.UInt128 or System.Numerics.BigInteger => TNumber.One,
+          _ => throw new System.NotImplementedException(value.GetType().Name)
+        };
+
+      public static bool TryGetUlp(TNumber value, out TNumber ulp)
       {
-        if (TNumber.IsZero(b)) throw new System.DivideByZeroException();
+        ulp = GetUlp(value);
 
-        var r = a % b;
-
-        if (TNumber.IsNegative(r))
-          r += b;
-
-        var q = (a - r) / b;
-
-        return (q, r);
+        return TNumber.IsFinite(ulp);
       }
-
-      #endregion
-
-      #region IFlooredDivRem
-
-      /// <summary>
-      /// <para>Floored division, where the remainder has the same sign as the divisor.</para>
-      /// <para><see href="https://en.wikipedia.org/wiki/Modulo"/></para>
-      /// <para><see href="https://stackoverflow.com/a/20638659/3178666"/></para>
-      /// </summary>
-      /// <param name="a"></param>
-      /// <param name="n"></param>
-      /// <returns>
-      /// <para><c>q = floor(a / n)</c></para>
-      /// <para><c>r = a - n * q</c></para>
-      /// </returns>
-      public static (TNumber Quotient, TNumber Remainder) IFlooredDivRem(TNumber a, TNumber b)
-      {
-        if (TNumber.IsZero(b)) throw new System.DivideByZeroException();
-
-        var q0 = a / b; // q0 = truncated division
-
-        var t = q0 - (q0 % TNumber.One); // trunc(q0) = q0 - (q0 % 1)
-
-        var bump = TNumber.CreateChecked(Convert.ToInt32(t > q0)); // bump = (t > q0) ? 1 : 0
-
-        var q = t - bump;
-        var r = a - q * b;
-
-        return (q, r);
-      }
-
-      #endregion
-
-      #region IRoundedDivRem
-
-      /// <summary>
-      /// <para>RoundedDivRem (nearest-integer division with ties to even).</para>
-      /// <list type="bullet">
-      /// <item>Round to nearest.</item>
-      /// <item>Ties go to the even integer.</item>
-      /// <item>Remainder is whatever makes the identity hold.</item>
-      /// </list>
-      /// </summary>
-      /// <param name="a"></param>
-      /// <param name="b"></param>
-      /// <returns></returns>
-      public static (TNumber Quotient, TNumber Remainder) IRoundedDivRem(TNumber a, TNumber b)
-      {
-        if (TNumber.IsZero(b)) throw new System.DivideByZeroException();
-
-        var q0 = a / b;
-
-        var t = q0 - (q0 % TNumber.One); // trunc(q0) = q0 - (q0 % 1)
-
-        var frac = q0 - t; // fractional part
-        var half = TNumber.CreateChecked(0.5);
-
-        var bump = TNumber.CreateChecked(Convert.ToInt32(frac >= half)); // bump = (frac >= 0.5) ? 1 : 0
-
-        var q = t + bump;
-        var r = a - q * b;
-
-        return (q, r);
-      }
-
-      #endregion
-
-      #region ISymmetricDivRem
-
-      /// <summary>
-      /// <para>Symmetric division (nearest-integer division with ties toward zero) chooses the quotient so that the remainder is as close to zero as possible.</para>
-      /// <list type="bullet">
-      /// <item>The remainder is always in the interval: <c><![CDATA[-|b|/2, |b|/2]]></c></item>
-      /// <item>The quotient is the nearest integer to <c>a / b</c>.</item>
-      /// <item>If the remainder is exactly halfway, it is rounded toward zero.</item>
-      /// </list>
-      /// </summary>
-      /// <param name="a"></param>
-      /// <param name="b"></param>
-      /// <returns></returns>
-      public static (TNumber Quotient, TNumber Remainder) ISymmetricDivRem(TNumber a, TNumber b)
-      {
-        var q0 = a / b;
-        var r0 = a - q0 * b;
-
-        var half = TNumber.Abs(b) / TNumber.CreateChecked(2); // Half divisor magnitude
-
-        var bumpUp = (r0 > half) ? TNumber.One : TNumber.Zero;
-        var bumpDown = (r0 < -half) ? TNumber.One : TNumber.Zero;
-
-        var q = q0 + bumpUp - bumpDown;
-        var r = a - q * b;
-
-        return (q, r);
-      }
-
-      #endregion
-
-      #region ITruncatedDivRem
-
-      /// <summary>
-      /// <para>Computes the integer (truncated toward zero) quotient and remainder of (<paramref name="a"/> / <paramref name="b"/>).</para>
-      /// <para>The integer "truncated" divrem</para>
-      /// </summary>
-      /// <param name="a"></param>
-      /// <param name="b"></param>
-      /// <returns>Returns the integer (truncated toward zero) quotient and remainder.</returns>
-      public static (TNumber Quotient, TNumber Remainder) ITruncatedDivRem(TNumber a, TNumber b) // The old TruncMod
-      {
-        if (TNumber.IsZero(b)) throw new System.DivideByZeroException();
-
-        var r = a % b;
-
-        return ((a - r) / b, r);
-      }
-
-      #endregion
 
       #endregion
 
@@ -1095,6 +631,43 @@ namespace Flux
 
       #endregion
 
+      public static TNumber Wrap(TNumber value, TNumber min, TNumber max, IntervalNotation notation, TNumber epsilon)
+      {
+        if (max <= min)
+          throw new ArgumentException("max must be greater than min.");
+
+        if (epsilon <= TNumber.Zero)
+          throw new ArgumentException("epsilon must be positive.");
+
+        var range = max - min;
+
+        if (notation == IntervalNotation.Closed)
+          range += epsilon;
+        else if (notation == IntervalNotation.Open)
+          range -= epsilon;
+
+        var shift = min;
+
+        if (notation == IntervalNotation.HalfOpenLeft)
+          shift = max;
+        else if (notation == IntervalNotation.Open)
+          shift = min + epsilon;
+
+        return shift + EuclideanModulo(value - shift, range);
+      }
+
+      //public static TNumber WrapHalfOpenRight(TNumber value, TNumber min, TNumber max)
+      //  => min + ModuloHalfOpenRight(value - min, max - min);
+
+      //public static TNumber WrapHalfOpenLeft(TNumber value, TNumber min, TNumber max)
+      //  => min + ModuloHalfOpenLeft(value - min, max - min);
+
+      //public static TNumber WrapClosed(TNumber value, TNumber min, TNumber max)
+      //  => min + ModuloClosed(value - min, max - min);
+
+      //public static TNumber WrapOpen(TNumber value, TNumber min, TNumber max)
+      //  => min + ModuloOpen(value - min, max - min);
+
       #region WrapAround
 
       /// <summary>
@@ -1110,36 +683,136 @@ namespace Flux
         ? maxValue - ((minValue - value - TNumber.One) % (maxValue - minValue + TNumber.One))
         : value;
 
-      #endregion
-    }
+      //public static TNumber UlpWrap(TNumber value, TNumber minValue, TNumber maxValue)
+      //{
+      //  var ulp = GetUlp(value);
 
-    extension<TNumber>(TNumber)
-      where TNumber : System.Numerics.INumber<TNumber>, System.Numerics.IPowerFunctions<TNumber>
-    {
-      #region Geometric progression
-
-      /// <summary>
-      /// <para>Get the <paramref name="nth"/> term of a geometric sequence with the specified <paramref name="commonRatio"/>.</para>
-      /// </summary>
-      /// <typeparam name="TInteger"></typeparam>
-      /// <param name="commonRatio"></param>
-      /// <param name="nth"></param>
-      /// <returns></returns>
-      public static TNumber GeometricSequenceNthTerm<TInteger>(TNumber a1, TNumber commonRatio, TInteger nth)
-        where TInteger : System.Numerics.IBinaryInteger<TInteger>
-        => a1 * TNumber.Pow(commonRatio, TNumber.CreateChecked(nth - TInteger.One));
-
-      /// <summary>
-      /// <para>Gets the geometric series (sum) of a geometric sequence with <paramref name="nth"/> terms and the specified <paramref name="commonRatio"/>.</para>
-      /// </summary>
-      /// <param name="commonRatio">The common ratio of the geometric sequence.</param>
-      /// <param name="nth">The term of which to find the sum up until.</param>
-      /// <returns></returns>
-      public static TNumber GeometricSeriesOfNTerms<TInteger>(TNumber a1, TNumber commonRatio, TInteger nth)
-        where TInteger : System.Numerics.IBinaryInteger<TInteger>
-        => a1 * (TNumber.One - TNumber.Pow(commonRatio, TNumber.CreateChecked(nth))) / (TNumber.One - commonRatio);
+      //  if (value > maxValue)
+      //  {
+      //    return minValue + ((value - maxValue - ulp) % (maxValue - minValue + ulp));
+      //  }
+      //  else if (value < minValue)
+      //  {
+      //    return maxValue - ((minValue - value - ulp) % (maxValue - minValue + ulp));
+      //  }
+      //  else
+      //  {
+      //    return value;
+      //  }
+      //}
 
       #endregion
+
+      public static TNumber WrapToInterval(TNumber value, TNumber minValue, TNumber maxValue/*, WrapMode wrapMode = WrapMode.Normalized*/, IntervalNotation intervalNotation, TNumber epsilon)
+      {
+        System.ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(minValue, maxValue);
+        System.ArgumentOutOfRangeException.ThrowIfNegative(epsilon);
+
+        //if (wrapMode == WrapMode.Strict)
+        //  System.ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(minValue, maxValue);
+        //else if (wrapMode == WrapMode.Normalized && maxValue < minValue)
+        //  (minValue, maxValue) = (maxValue, minValue);
+        //else if (wrapMode == WrapMode.Centered)
+        //{
+        //  var mid = (minValue + maxValue) * TNumber.CreateChecked(0.5);
+        //  var half = (maxValue - minValue) * TNumber.CreateChecked(0.5);
+
+        //  return mid + WrapToInterval(value - mid, -half, half, WrapMode.Normalized, intervalNotation, epsilon);
+        //}
+
+        var range = maxValue - minValue;
+        if (TNumber.IsZero(range))
+          return minValue;
+
+        var wrapped = (value - minValue) % range;
+        if (TNumber.IsNegative(wrapped))
+          wrapped += range;
+
+        var result = minValue + wrapped;
+
+        var ulp = GetUlp(result);
+
+        var eps = TNumber.IsZero(epsilon) ? ulp : epsilon;
+
+        return intervalNotation switch
+        {
+          IntervalNotation.Closed => result,
+          IntervalNotation.HalfOpenRight => result >= maxValue - eps ? minValue : result,
+          IntervalNotation.HalfOpenLeft => result <= minValue + eps ? maxValue : result,
+          IntervalNotation.Open => (result <= minValue + eps) ? minValue + eps : (result >= maxValue - eps) ? maxValue - eps : result,
+          _ => result,
+        };
+      }
+
+
+      public static TNumber Wrap(TNumber value, TNumber minValue, TNumber maxValue, IntervalNotation notation)
+      {
+        return notation switch
+        {
+          IntervalNotation.Closed => WrapClosed(value, minValue, maxValue),
+          IntervalNotation.HalfOpenLeft => WrapHalfOpenLeft(value, minValue, maxValue),
+          IntervalNotation.HalfOpenRight => WrapHalfOpenRight(value, minValue, maxValue),
+          IntervalNotation.Open => WrapOpen(value, minValue, maxValue),
+          _ => throw new System.ArgumentOutOfRangeException(nameof(notation)),
+        };
+      }
+
+      public static TNumber WrapClosed(TNumber value, TNumber minValue, TNumber maxValue)
+      {
+        var rem = ModulusOperators.EuclideanModulo(value - minValue, maxValue - minValue);
+
+        if (TNumber.IsZero(rem))
+          return maxValue;
+
+        return minValue + rem;
+
+        //var range = (maxValue - minValue) + Number.GetUlp(minValue);
+
+        //return minValue + (value - minValue - TFloat.Floor((value - minValue) / range) * range);
+      }
+
+      public static TNumber WrapHalfOpenLeft(TNumber value, TNumber minValue, TNumber maxValue)
+      {
+        var rem = ModulusOperators.EuclideanModulo(value - minValue, maxValue - minValue);
+
+        if (TNumber.IsZero(rem))
+          return maxValue;
+
+        return minValue + rem;
+
+        //var shift = minValue + Number.GetUlp(minValue);
+        //var range = maxValue - shift;
+
+        //return shift + (value - shift - TFloat.Floor((value - shift) / range) * range);
+      }
+
+      public static TNumber WrapHalfOpenRight(TNumber value, TNumber minValue, TNumber maxValue)
+      {
+        return minValue + ModulusOperators.EuclideanModulo(value - minValue, maxValue - minValue);
+
+        //var range = maxValue - minValue;
+
+        //return minValue + (value - minValue - TFloat.Floor((value - minValue) / range) * range);
+      }
+
+      public static TNumber WrapOpen(TNumber value, TNumber minValue, TNumber maxValue)
+      {
+        var rem = ModulusOperators.EuclideanModulo(value - minValue, maxValue - minValue);
+
+        if (TNumber.IsZero(rem))
+          return minValue + Number.GetUlp(minValue);
+
+        return minValue + rem;
+
+        //var range = maxValue - minValue;
+
+        //var w = minValue + (value - minValue - TFloat.Floor((value - minValue) / range) * range);
+
+        //if (w == minValue)
+        //  return minValue + Number.GetUlp(minValue);
+
+        //return w;
+      }
     }
 
     extension<TNumber>(TNumber value)

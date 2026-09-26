@@ -114,13 +114,6 @@ namespace Flux
       }
     }
 
-    public static readonly System.Type NumericsIBinaryInteger = typeof(System.Numerics.IBinaryInteger<>);
-    public static readonly System.Type NumericsIFloatingPoint = typeof(System.Numerics.IFloatingPoint<>);
-    public static readonly System.Type NumericsIMinMaxValue = typeof(System.Numerics.IMinMaxValue<>);
-    public static readonly System.Type NumericsINumber = typeof(System.Numerics.INumber<>);
-    public static readonly System.Type NumericsISignedNumber = typeof(System.Numerics.ISignedNumber<>);
-    public static readonly System.Type NumericsIUnsignedNumber = typeof(System.Numerics.IUnsignedNumber<>);
-
     private static readonly System.Collections.Concurrent.ConcurrentDictionary<Type, Type[]> m_getInterfacesCachedGeneric = new();
 
     private static readonly System.Collections.Concurrent.ConcurrentDictionary<Type, Type[]> m_getInterfacesCachedNonGeneric = new();
@@ -152,26 +145,22 @@ namespace Flux
       });
     }
 
+    extension(System.Type)
+    {
+      public static System.Collections.Generic.IEnumerable<System.Type> GetDefinedTypesInAllLoadedAssemblies()
+      {
+        foreach (var asm in AppDomain.CurrentDomain.GetAssemblies())
+        {
+          foreach (var dt in asm.DefinedTypes)
+          {
+            yield return dt;
+          }
+        }
+      }
+    }
+
     extension(System.Type type)
     {
-      /// <summary>
-      /// <para>A constructed generic type is any generic type that is not a generic type definition.</para>
-      /// </summary>
-      public bool IsConstructedGenericType
-        => type is not null && type.IsGenericType && !type.IsGenericTypeDefinition;
-
-      /// <summary>
-      /// <para>A constructed generic type with no unassigned generic parameters.</para>
-      /// </summary>
-      public bool IsClosedConstructedGenericType
-        => type.IsConstructedGenericType && !type.ContainsGenericParameters;
-
-      /// <summary>
-      /// <para>A constructed generic type that still contains generic parameters.</para>
-      /// </summary>
-      public bool IsOpenConstructedGenericType
-        => type.IsConstructedGenericType && type.ContainsGenericParameters;
-
       /// <summary>
       /// <para>Indicates whether a <see cref="System.Type"/> is a reference type, as how the CLR defines it.</para>
       /// </summary>
@@ -418,7 +407,10 @@ namespace Flux
 
       #endregion
 
-      #region IsAssignableToGenericAware
+      #region IsAssignable..GenericAware
+
+      public bool IsAssignableFromGenericAware(System.Type otherType)
+        => otherType.IsAssignableToGenericAware(type);
 
       /// <summary>
       /// <para>Indicates whether a type is assignable to the specified <paramref name="otherType"/>.</para>
@@ -434,18 +426,21 @@ namespace Flux
         if (type is null || otherType is null)
           return false;
 
-        if (otherType.IsGenericType && !otherType.IsGenericTypeDefinition) // Normalize otherType if it's a constructed generic.
-          otherType = otherType.GetGenericTypeDefinition();
+        var ot = (otherType.IsGenericType && !otherType.IsGenericTypeDefinition) // Extract generic type definition, if needed.
+          ? otherType.GetGenericTypeDefinition()
+          : otherType;
 
-        if (type == otherType || (type.IsGenericType && type.GetGenericTypeDefinition() == otherType)) // Direct match (including generic definition match), or if type is generic, check its definition.
+        if (type == ot
+          || (type.IsGenericType && type.GetGenericTypeDefinition() == ot)) // Direct match (including generic definition match), or if type is generic, check its definition.
           return true;
 
-        foreach (var typeInterface in type.GetInterfaces()) // Check interfaces.
-          if (typeInterface == otherType || (typeInterface.IsGenericType && typeInterface.GetGenericTypeDefinition() == otherType)) // Same logic as above, but for interfaces.
+        foreach (var it in type.GetInterfaces()) // Check interfaces.
+          if (it == ot
+            || (it.IsGenericType && it.GetGenericTypeDefinition() == ot)) // Same logic as above, but for interfaces.
             return true;
 
-        for (var current = type.BaseType; current != null; current = current.BaseType) // Walk base types.
-          if (current == otherType || (current.IsGenericType && current.GetGenericTypeDefinition() == otherType)) // Same logic as above, but for base types.
+        for (var bt = type.BaseType; bt is not null; bt = bt.BaseType) // Walk base types.
+          if (bt.IsAssignableToGenericAware(ot))
             return true;
 
         return false;
@@ -460,42 +455,42 @@ namespace Flux
       /// </summary>
       /// <param name="isPrimitive"></param>
       /// <returns></returns>
-      public bool ImplementsIBinaryInteger() => IsAssignableToGenericAware(type, NumericsIBinaryInteger);
+      public bool IsNumericsIBinaryInteger() => IsAssignableToGenericAware(type, typeof(System.Numerics.IBinaryInteger<>));
 
       /// <summary>
       /// <para>Indicates whether a type inherits from <see cref="System.Numerics.IFloatingPoint{TSelf}"/> and optionally is a .NET primitive.</para>
       /// </summary>
       /// <param name="isPrimitive"></param>
       /// <returns></returns>
-      public bool ImplementsIFloatingPoint() => IsAssignableToGenericAware(type, NumericsIFloatingPoint);
+      public bool IsNumericsIFloatingPoint() => IsAssignableToGenericAware(type, typeof(System.Numerics.IFloatingPoint<>));
 
       /// <summary>
       /// <para>Indicates whether a type inherits from <see cref="System.Numerics.IMinMaxValue{TSelf}"/> and optionally is a .NET primitive.</para>
       /// </summary>
       /// <param name="isPrimitive"></param>
       /// <returns></returns>
-      public bool ImplementsIMinMaxValue() => IsAssignableToGenericAware(type, NumericsIMinMaxValue);
+      public bool IsNumericsIMinMaxValue() => IsAssignableToGenericAware(type, typeof(System.Numerics.IMinMaxValue<>));
 
       /// <summary>
       /// <para>Indicates whether a type inherits from <see cref="System.Numerics.INumber{TSelf}"/> and optionally is a .NET primitive.</para>
       /// </summary>
       /// <param name="isPrimitive"></param>
       /// <returns></returns>
-      public bool ImplementsINumber() => IsAssignableToGenericAware(type, NumericsINumber);
+      public bool IsNumericsINumber() => IsAssignableToGenericAware(type, typeof(System.Numerics.INumber<>));
 
       /// <summary>
       /// <para>Indicates whether a type inherits from <see cref="System.Numerics.ISignedNumber{TSelf}"/> and optionally is a .NET primitive.</para>
       /// </summary>
       /// <param name="isPrimitive"></param>
       /// <returns></returns>
-      public bool ImplementsISignedNumber() => IsAssignableToGenericAware(type, NumericsISignedNumber);
+      public bool IsNumericsISignedNumber() => IsAssignableToGenericAware(type, typeof(System.Numerics.ISignedNumber<>));
 
       /// <summary>
       /// <para>Indicates whether a type inherits from <see cref="System.Numerics.IUnsignedNumber{TSelf}"/> and optionally is a .NET primitive.</para>
       /// </summary>
       /// <param name="isPrimitive"></param>
       /// <returns></returns>
-      public bool ImplementsIUnsignedNumber() => IsAssignableToGenericAware(type, NumericsIUnsignedNumber);
+      public bool IsNumericsIUnsignedNumber() => IsAssignableToGenericAware(type, typeof(System.Numerics.IUnsignedNumber<>));
 
       #endregion
 

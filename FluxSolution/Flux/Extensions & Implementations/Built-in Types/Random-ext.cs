@@ -6,6 +6,8 @@ namespace Flux
   {
     // https://docs.microsoft.com/en-us/dotnet/api/system.random?view=netstandard-2.0
 
+    public const double Inv2Pow53 = 1.0 / (1UL << 53);
+
     extension(System.Random source)
     {
       #region GetNextBytes
@@ -41,9 +43,9 @@ namespace Flux
 
         var excessBits = (byteCount << 3) - bitCount;
 
-        bytes[0] &= (byte)(0xFF >> excessBits);
+        bytes[^1] &= (byte)(0xFF >> excessBits);
 
-        return new(bytes, true, true);
+        return new(bytes, true);
       }
 
       //public System.Numerics.BigInteger NextBigInteger(System.Numerics.BigInteger maxValue)
@@ -430,6 +432,7 @@ namespace Flux
 
       #region NextUniform
 
+
       /// <summary>
       /// <para>Produce a uniform random sample from the open interval (0, 1), i.e. the method will not return either end point.</para>
       /// </summary>
@@ -438,7 +441,7 @@ namespace Flux
       {
         var bits = (ulong)source.NextInt64() >> 11; // keep top 53 bits
 
-        return (bits + 0.5) * double.SignificandScale;
+        return (bits + 0.5) * Inv2Pow53;
       }
 
       #endregion
@@ -462,5 +465,6 @@ namespace Flux
 
       #endregion
     }
+
   }
 }

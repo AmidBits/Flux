@@ -44,8 +44,8 @@
       /// <para>Unsigned integers (natural numbers): "DOUBLE-STRUCK CAPITAL N" = U+2115 = '&#x2115;'</para>
       /// </summary>
       public static char NumberClassificationSymbol
-        => typeof(TInteger).ImplementsISignedNumber() ? '\u2124' // "DOUBLE-STRUCK CAPITAL Z"
-        : typeof(TInteger).ImplementsIUnsignedNumber() ? '\u2115' // "DOUBLE-STRUCK CAPITAL N"
+        => typeof(TInteger).IsNumericsISignedNumber() ? '\u2124' // "DOUBLE-STRUCK CAPITAL Z"
+        : typeof(TInteger).IsNumericsIUnsignedNumber() ? '\u2115' // "DOUBLE-STRUCK CAPITAL N"
         : throw new System.NotImplementedException();
     }
   }

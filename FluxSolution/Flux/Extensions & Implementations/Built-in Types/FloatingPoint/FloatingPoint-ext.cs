@@ -1,43 +1,10 @@
 ﻿namespace Flux
 {
-  public static class FloatingPoint
+  public static partial class FloatingPoint
   {
-    #region RoundMidpointToAlternating (state variable)
-
-    private static bool m_roundMidpointAlternatingState; // Internal state.
-
-    #endregion
-
     extension<TFloat>(TFloat)
       where TFloat : System.Numerics.IFloatingPoint<TFloat>
     {
-      public static TFloat GenericNaN
-      {
-        get
-        {
-          return TFloat.Zero switch
-          {
-            double => TFloat.CreateChecked(double.NaN),
-            float => TFloat.CreateChecked(float.NaN),
-            System.Half => TFloat.CreateChecked(System.Half.NaN),
-            System.Runtime.InteropServices.NFloat => TFloat.CreateChecked(System.Runtime.InteropServices.NFloat.NaN),
-            _ => throw new NotImplementedException($"{typeof(TFloat)}.NaN")
-          };
-        }
-      }
-
-      public static TFloat GetNearEqualityEpsilon()
-        => TFloat.Zero switch
-        {
-          decimal => TFloat.CreateChecked(decimal.NearEqualityEpsilon), // ~28-29 digits precision
-          double => TFloat.CreateChecked(double.NearEqualityEpsilon), // ~15-16 digits precision
-          float => TFloat.CreateChecked(float.NearEqualityEpsilon), // ~7 digits precision
-          System.Runtime.InteropServices.NFloat when System.Runtime.InteropServices.NFloat.Size == 8 => TFloat.CreateChecked(double.NearEqualityEpsilon), // Same as double; ~15-16 digits precision
-          System.Runtime.InteropServices.NFloat when System.Runtime.InteropServices.NFloat.Size == 4 => TFloat.CreateChecked(float.NearEqualityEpsilon), // Same as float; ~7 digits precision
-          System.Half => TFloat.CreateChecked(System.Half.NearEqualityEpsilon), // ~3 digits precision
-          _ => throw new NotImplementedException()
-        };
-
       #region CompareToFractionMidpoint
 
       /// <summary>
@@ -50,89 +17,32 @@
       /// <para>0 if <paramref name="x"/> is equal-to 0.5.</para>
       /// <para>+1 if <paramref name="x"/> is greater-than 0.5.</para>
       /// </returns>
-      public static int CompareToFractionMidpoint(TFloat x)
-        => Number.Sign((x - TFloat.Floor(x)).CompareTo(TFloat.CreateChecked(0.5)));
+      public static int CompareFractionToMidpoint(TFloat value)
+        => CompareFractionToThreshold(value, TFloat.CreateChecked(0.5));
 
       #endregion
 
-      #region CompareToFractionPercent
+      #region CompareFractionToThreshold
 
       /// <summary>
-      /// <para>Compares the fraction part of <paramref name="x"/> to the specified <paramref name="percent"/> and returns the sign of the result (i.e. -1 means less-than, 0 means equal-to, and 1 means greater-than).</para>
+      /// <para>Compares the fraction part of <paramref name="value"/> to the specified <paramref name="threshold"/> and returns the sign of the result (i.e. -1 means less-than, 0 means equal-to, and 1 means greater-than).</para>
       /// </summary>
-      /// <param name="x">The value to be compared.</param>
-      /// <param name="percent">Percent in the range [0, 1].</param>
+      /// <param name="value">The value to be compared.</param>
+      /// <param name="threshold">Must be in the unit interval [0, 1].</param>
       /// <returns>
       /// <para>The result is similar to that of the Compare/CompareTo functionality, but exactly -1, 0, or 1 is always returned.</para>
-      /// <para>-1 when <paramref name="x"/> is less than <paramref name="percent"/>.</para>
-      /// <para>0 when <paramref name="x"/> is equal to <paramref name="percent"/>.</para>
-      /// <para>+1 when <paramref name="x"/> is greater than <paramref name="percent"/>.</para>
+      /// <para>-1 when <paramref name="value"/> is less than <paramref name="threshold"/>.</para>
+      /// <para>0 when <paramref name="value"/> is equal to <paramref name="threshold"/>.</para>
+      /// <para>+1 when <paramref name="value"/> is greater than <paramref name="threshold"/>.</para>
       /// </returns>
-      public static int CompareToFractionPercent(TFloat x, TFloat percent)
-        => Number.Sign((x - TFloat.Floor(x)).CompareTo(percent));
-
-      #endregion
-
-      #region Integer-style-DivRem functions
-
-      public static (TFloat Quotient, TFloat Remainder) ICeilingDivRem(TFloat a, TFloat n)
+      public static int CompareFractionToThreshold(TFloat value, TFloat threshold)
       {
-        var q = TFloat.Ceiling(a / n); // Truncate toward zero, matching integer division.
+        System.ArgumentOutOfRangeException.ThrowIfNegative(threshold);
+        System.ArgumentOutOfRangeException.ThrowIfGreaterThan(threshold, TFloat.One);
 
-        var r = a - q * n; // Compute remainder using integer-style formula.
+        var floor = TFloat.Floor(value);
 
-        return (q, r);
-      }
-
-      public static (TFloat Quotient, TFloat Remainder) IEnvelopedDivRem(TFloat a, TFloat n)
-      {
-        var q = Envelop(a / n); // Truncate toward zero, matching integer division.
-
-        var r = a - q * n; // Compute remainder using integer-style formula.
-
-        return (q, r);
-      }
-
-      public static (TFloat Quotient, TFloat Remainder) IEuclideanDivRem(TFloat a, TFloat n)
-      {
-        var q = TFloat.Floor(a / n); // Floor division gives the Euclidean quotient
-
-        var r = a - q * n; // Compute remainder.
-
-        if (TFloat.IsNegative(r)) // Ensure remainder is always positive.
-        {
-          r += TFloat.Abs(n);
-          q -= TFloat.One;
-        }
-
-        return (q, r);
-      }
-
-      public static (TFloat Quotient, TFloat Remainder) IFlooredDivRem(TFloat a, TFloat n)
-      {
-        var q = TFloat.Floor(a / n); // Truncate toward zero, matching integer division.
-
-        var r = a - q * n; // Compute remainder using integer-style formula.
-
-        return (q, r);
-      }
-
-      public static (TFloat Quotient, TFloat Remainder) IRoundedDivRem(TFloat a, TFloat n, MidpointRounding mode)
-      {
-        var q = TFloat.Round(a / n, mode); // Rounded division, matching integer division.
-
-        var r = a - q * n; // Compute remainder using integer-style formula.
-
-        return (q, r);
-      }
-
-      public static (TFloat Quotient, TFloat Remainder) ITruncatedDivRem(TFloat a, TFloat n)
-      {
-        var q = TFloat.Truncate(a / n); // Truncate toward zero, matching integer division.
-
-        var r = a - q * n; // Compute remainder using integer-style formula.
-
-        return (q, r);
+        return (value - floor).CompareTo(threshold);
       }
 
       #endregion
@@ -221,73 +131,6 @@
 
         return double.Atan(inverseFlatteningCorrection * double.Tan(geocentricLatitude)); // The reverse direction "unshrinks" the tangent.
       }
-
-      #endregion
-
-      #region HarmonicMean.. (type of average)
-
-      /// <summary>
-      /// <para>The harmonic mean is a type of average.</para>
-      /// <para><see href="https://en.wikipedia.org/wiki/Harmonic_mean"/></para>
-      /// </summary>
-      /// <param name="terms"></param>
-      /// <returns></returns>
-      public static TFloat HarmonicMean(out int countOfTerms, out TFloat sumOfHarmonicTerms, params System.Collections.Generic.IEnumerable<TFloat> terms)
-      {
-        sumOfHarmonicTerms = terms.Select(n => TFloat.One / n).Sum(out countOfTerms);
-
-        return TFloat.CreateChecked(countOfTerms) / sumOfHarmonicTerms;
-      }
-
-      /// <summary>
-      /// <para>The harmonic mean of two terms is a special case.</para>
-      /// <para><see href="https://en.wikipedia.org/wiki/Harmonic_mean"/></para>
-      /// </summary>
-      /// <param name="x1"></param>
-      /// <param name="x2"></param>
-      /// <returns></returns>
-      public static TFloat HarmonicMeanOfTwoTerms(TFloat x1, TFloat x2)
-      {
-        if (TFloat.IsZero(x1 + x2)) throw new System.ArithmeticException("The harmonic mean is undefined when the sum of the two terms is zero.");
-
-        return (TFloat.CreateChecked(2) * x1 * x2) / (x1 + x2);
-      }
-
-      /// <summary>
-      /// <para>The harmonic mean of three terms is a special case.</para>
-      /// <para><see href="https://en.wikipedia.org/wiki/Harmonic_mean"/></para>
-      /// </summary>
-      /// <param name="x1"></param>
-      /// <param name="x2"></param>
-      /// <param name="x3"></param>
-      /// <returns></returns>
-      public static TFloat HarmonicMeanOfThreeTerms(TFloat x1, TFloat x2, TFloat x3)
-        => (TFloat.CreateChecked(3) * x1 * x2 * x3) / (x1 * x2 + x2 * x3 + x3 * x1);
-
-      #endregion
-
-      #region HarmonicSequence.. (progression)
-
-      /// <summary>
-      /// <para><see href="https://en.wikipedia.org/wiki/Harmonic_progression_(mathematics)"/></para>
-      /// </summary>
-      /// <param name="a1">The first term.</param>
-      /// <param name="commonDifference">The common difference of the harmmonic sequence.</param>
-      /// <returns></returns>
-      public static System.Collections.Generic.IEnumerable<TFloat> HarmonicSequence(TFloat a1, TFloat commonDifference)
-        => Number.ArithmeticSequence(a1, commonDifference).Select(an => TFloat.One / an);
-
-      /// <summary>
-      /// <para><see href="https://en.wikipedia.org/wiki/Harmonic_series_(mathematics)"/></para>
-      /// </summary>
-      /// <typeparam name="TInteger"></typeparam>
-      /// <param name="a1">The first term.</param>
-      /// <param name="commonDifference">The common difference of the harmmonic sequence.</param>
-      /// <param name="n">The term to retrieve.</param>
-      /// <returns></returns>
-      public static TFloat HarmonicSequenceNthTerm<TInteger>(TFloat a1, TFloat commonDifference, TInteger n)
-        where TInteger : System.Numerics.IBinaryInteger<TInteger>
-        => TFloat.One / (a1 + (TFloat.CreateChecked(n) - TFloat.One) * commonDifference);
 
       #endregion
 
@@ -407,161 +250,6 @@
 
       #endregion
 
-      #region Native..
-
-      /// <summary>
-      /// <para>Decrements a value. If integer, then by 1. If floating-point, then by "bit-decrement". If decimal, by 1e-28m.</para>
-      /// </summary>
-      /// <typeparam name="TNumber"></typeparam>
-      /// <param name="value"></param>
-      /// <returns></returns>
-      /// <remarks>Infimum, for integer types equal (<paramref name="value"/> - 1) and for floating point types equal (<paramref name="value"/> - epsilon). Other types are not implemented at this time.</remarks>
-      public static TFloat NativeDecrement(TFloat value)
-        => value switch
-        {
-          decimal dfp128 => TFloat.CreateChecked(decimal.NativeDecrement(dfp128)),
-          double bfp64 => TFloat.CreateChecked(double.NativeDecrement(bfp64)),
-          float bfp32 => TFloat.CreateChecked(float.NativeDecrement(bfp32)),
-          System.Half bfp16 => TFloat.CreateChecked(System.Half.NativeDecrement(bfp16)),
-          System.Runtime.InteropServices.NFloat nf => TFloat.CreateChecked(System.Runtime.InteropServices.NFloat.NativeDecrement(nf)),
-          _ => throw new System.NotImplementedException(),
-        };
-
-      /// <summary>
-      /// <para>Increments a value. If integer, then by 1. If floating-point, then by "bit-increment". If decimal, by 1e-28m.</para>
-      /// </summary>
-      /// <remarks>Supremum, for integer types equal (<paramref name="value"/> + 1) and for floating point types equal (<paramref name="value"/> + epsilon). Other types are not implemented at this time.</remarks>
-      /// <returns></returns>
-      /// <exception cref="System.NotImplementedException"></exception>
-      public static TFloat NativeIncrement(TFloat value)
-        => value switch
-        {
-          decimal dfp128 => TFloat.CreateChecked(decimal.NativeIncrement(dfp128)),
-          double bfp64 => TFloat.CreateChecked(double.NativeIncrement(bfp64)),
-          float bfp32 => TFloat.CreateChecked(float.NativeIncrement(bfp32)),
-          System.Half bfp16 => TFloat.CreateChecked(System.Half.NativeIncrement(bfp16)),
-          System.Runtime.InteropServices.NFloat nf => TFloat.CreateChecked(System.Runtime.InteropServices.NFloat.NativeIncrement(nf)),
-          _ => throw new System.NotImplementedException(),
-        };
-
-      #endregion
-
-      #region NearInteger functions
-
-      /// <summary>
-      /// <para>Indicates whether a <paramref name="value"/> is near an integer and if so outputs the <paramref name="integer"/> as a parameter.</para>
-      /// <para>The algorithm applies the specified <paramref name="baseEpsilon"/> for custom tolerance.</para>
-      /// <para><see cref="GetNearEqualityEpsilon{TFloat}"/> is the default tolerance and essentially corresponds to calculation errors.</para>
-      /// </summary>
-      /// <param name="value"></param>
-      /// <param name="integer"></param>
-      /// <param name="baseEpsilon"></param>
-      /// <returns></returns>
-      public static bool IsNearInteger(TFloat value, out TFloat integer, TFloat baseEpsilon)
-      {
-        var half = TFloat.CreateChecked(0.5);
-
-        integer = value >= TFloat.Zero ? TFloat.Floor(value + half) : TFloat.Ceiling(value - half); // Find mathematically nearest integer without midpoint bias.
-
-        return TFloat.Abs(value - integer) <= baseEpsilon * (TFloat.One + value);
-      }
-
-      /// <summary>
-      /// <para>Indicates whether a <paramref name="value"/> is near an integer and if so outputs the <paramref name="integer"/> as a parameter.</para>
-      /// <para>The algorithm queries <see cref="GetNearEqualityEpsilon{TFloat}"/> for a default tolerance level.</para>
-      /// <para><see cref="GetNearEqualityEpsilon{TFloat}"/> is the default tolerance and essentially corresponds to calculation errors.</para>
-      /// </summary>
-      /// <param name="value"></param>
-      /// <param name="integer"></param>
-      /// <returns></returns>
-      public static bool IsNearInteger(TFloat value, out TFloat integer)
-        => IsNearInteger(value, out integer, GetNearEqualityEpsilon<TFloat>());
-
-      /// <summary>
-      /// <para>If a value is near an integer, round to that integer, otherwise return the value.</para>
-      /// <para>The algorithm applies the specified <paramref name="baseEpsilon"/> for custom tolerance.</para>
-      /// <para><see cref="GetNearEqualityEpsilon{TFloat}"/> is the default tolerance and essentially corresponds to calculation errors.</para>
-      /// </summary>
-      /// <param name="value"></param>
-      /// <param name="baseEpsilon"></param>
-      /// <returns></returns>
-      public static TFloat RoundNearInteger(TFloat value, TFloat baseEpsilon)
-        => IsNearInteger(value, out var integer, baseEpsilon) ? integer : value;
-
-      /// <summary>
-      /// <para>If a value is near an integer, round to that integer, otherwise return the value.</para>
-      /// <para>The algorithm queries <see cref="GetNearEqualityEpsilon{TFloat}"/> for a default tolerance level.</para>
-      /// <para><see cref="GetNearEqualityEpsilon{TFloat}"/> is the default tolerance and essentially corresponds to calculation errors.</para>
-      /// </summary>
-      /// <param name="value"></param>
-      /// <returns></returns>
-      public static TFloat RoundNearInteger(TFloat value)
-        => IsNearInteger(value, out var integer, GetNearEqualityEpsilon<TFloat>()) ? integer : value;
-
-      #endregion
-
-      #region NearNumber functions
-
-      /// <summary>
-      /// <para>Perform both an absolute and a relative equality test for more robust comparisons. Returns true if any test is considered equal, otherwise false.</para>
-      /// <para>The algorithm applies the specified <paramref name="baseEpsilon"/> for custom tolerance.</para>
-      /// <para><see cref="GetNearEqualityEpsilon{TFloat}"/> is the default tolerance and essentially corresponds to calculation errors.</para>
-      /// </summary>
-      /// <param name="value"></param>
-      /// <param name="number"></param>
-      /// <param name="baseEpsilon">E.g. 1e-12</param>
-      /// <returns></returns>
-      public static bool IsNearNumber(TFloat value, TFloat number, TFloat baseEpsilon)
-      {
-        if (value == number)
-          return true;
-
-        if (TFloat.IsNaN(value) || TFloat.IsNaN(number))
-          return false;
-
-        if (TFloat.IsInfinity(value) || TFloat.IsInfinity(number))
-          return value == number;
-
-        var difference = TFloat.Abs(value - number);
-        var tolerance = baseEpsilon * (TFloat.One + TFloat.Abs(TFloat.MaxMagnitude(value, number)));
-
-        return difference <= tolerance;
-      }
-
-      /// <summary>
-      /// <para>Perform both an absolute and a relative equality test for more robust comparisons. Returns true if any test is considered equal, otherwise false.</para>
-      /// <para>The algorithm queries <see cref="GetNearEqualityEpsilon{TFloat}"/> for tolerance.</para>
-      /// <para><see cref="GetNearEqualityEpsilon{TFloat}"/> is the default tolerance and essentially corresponds to calculation errors.</para>
-      /// </summary>
-      /// <param name="value"></param>
-      /// <param name="number"></param>
-      /// <returns></returns>
-      public static bool IsNearNumber(TFloat value, TFloat number)
-        => IsNearNumber(value, number, GetNearEqualityEpsilon<TFloat>());
-
-      /// <summary>
-      /// <para>If a value is near a number, round to that number, otherwise return the value.</para>
-      /// <para>The algorithm applies the specified <paramref name="baseEpsilon"/> for custom tolerance.</para>
-      /// <para><see cref="GetNearEqualityEpsilon{TFloat}"/> is the default tolerance and essentially corresponds to calculation errors.</para>
-      /// </summary>
-      /// <param name="value"></param>
-      /// <param name="baseEpsilon"></param>
-      /// <returns></returns>
-      public static TFloat RoundNearNumber(TFloat value, TFloat number, TFloat baseEpsilon)
-        => IsNearNumber(value, number, baseEpsilon) ? number : value;
-
-      /// <summary>
-      /// <para>If a value is near a number, round to that number, otherwise return the value.</para>
-      /// <para>The algorithm queries <see cref="GetNearEqualityEpsilon{TFloat}"/> for a default tolerance level.</para>
-      /// <para><see cref="GetNearEqualityEpsilon{TFloat}"/> is the default tolerance and essentially corresponds to calculation errors.</para>
-      /// </summary>
-      /// <param name="value"></param>
-      /// <returns></returns>
-      public static TFloat RoundNearNumber(TFloat value, TFloat number)
-        => IsNearNumber(value, number, GetNearEqualityEpsilon<TFloat>()) ? number : value;
-
-      #endregion
-
       #region Percent..ToPercent..
 
       public static TFloat PercentAddedToPercentRemove(TFloat percentAdded)
@@ -587,38 +275,9 @@
 
       #region RoundMidpoint functions
 
-      /// <summary>
-      /// <para>Rounds a value to the nearest integer, resolving halfway cases using the specified <see cref="MidpointRoundingEx"/> <paramref name="mode"/>.</para>
-      /// </summary>
-      /// <typeparam name="TFloat"></typeparam>
-      /// <param name="value"></param>
-      /// <param name="mode"></param>
-      /// <returns></returns>
-      /// <exception cref="System.ArgumentOutOfRangeException"></exception>
-      public static TFloat RoundMidpoint(TFloat x, MidpointRoundingEx mode)
-        => mode switch
-        {
-          MidpointRoundingEx.ToEven or
-          MidpointRoundingEx.AwayFromZero or
-          MidpointRoundingEx.TowardZero or
-          MidpointRoundingEx.ToNegativeInfinity or
-          MidpointRoundingEx.ToPositiveInfinity => TFloat.Round(x, (MidpointRounding)(int)mode), // Use built-in .NET functionality for standard cases.
-          MidpointRoundingEx.ToAlternating => RoundMidpointToAlternating(x),
-          MidpointRoundingEx.ToOdd => RoundMidpointToOdd(x),
-          MidpointRoundingEx.ToRandom => RoundMidpointToRandom(x),
-          _ => throw new System.ArgumentOutOfRangeException(nameof(mode)),
-        };
-
-      /// <summary>
-      /// <para></para>
-      /// </summary>
-      /// <typeparam name="TFloat"></typeparam>
-      /// <param name="value"></param>
-      /// <param name="state"></param>
-      /// <returns></returns>
-      public static TFloat RoundMidpointToAlternating(TFloat value)
+      public static TFloat RoundMidpointAlternating(TFloat value, ref bool alternatingState)
       {
-        var cmp = CompareToFractionMidpoint(value);
+        var cmp = CompareFractionToMidpoint(value);
 
         var floor = TFloat.Floor(value);
 
@@ -630,55 +289,7 @@
         if (cmp > 0)
           return ceiling;
 
-        return (m_roundMidpointAlternatingState = !m_roundMidpointAlternatingState) ? floor : ceiling;
-      }
-
-      /// <summary>
-      /// <para>Common rounding: round half, bias: odd.</para>
-      /// <para><see cref="MidpointRoundingEx.ToOdd"/></para>
-      /// </summary>
-      /// <typeparam name="TFloat"></typeparam>
-      /// <param name="value"></param>
-      /// <returns></returns>
-      public static TFloat RoundMidpointToOdd(TFloat value)
-      {
-        var cmp = CompareToFractionMidpoint(value);
-
-        var floor = TFloat.Floor(value);
-
-        if (cmp < 0)
-          return floor;
-
-        var ceiling = TFloat.Ceiling(value);
-
-        if (cmp > 0)
-          return ceiling;
-
-        return TFloat.IsOddInteger(floor) ? floor : ceiling;
-      }
-
-      /// <summary>
-      /// <para><see cref="MidpointRoundingEx.ToRandom"/></para>
-      /// </summary>
-      /// <typeparam name="TFloat"></typeparam>
-      /// <param name="value"></param>
-      /// <param name="rng"></param>
-      /// <returns></returns>
-      public static TFloat RoundMidpointToRandom(TFloat value)
-      {
-        var cmp = CompareToFractionMidpoint(value);
-
-        var floor = TFloat.Floor(value);
-
-        if (cmp < 0)
-          return floor;
-
-        var ceiling = TFloat.Ceiling(value);
-
-        if (cmp > 0)
-          return ceiling;
-
-        return RandomNumberGenerators.SscRng.Shared.Next(2) == 0 ? floor : ceiling;
+        return (alternatingState = !alternatingState) ? floor : ceiling;
       }
 
       #endregion
@@ -715,6 +326,35 @@
 
       #endregion
 
+      #region Temperature conversions
+
+      /// <summary>Convert the temperature specified in Celsius to Fahrenheit.</summary>
+      public static TFloat CelsiusToFahrenheit(TFloat celsius) => celsius * TFloat.CreateChecked(1.8) + TFloat.CreateChecked(32);
+      /// <summary>Convert the temperature specified in Celsius to Kelvin.</summary>
+      public static TFloat CelsiusToKelvin(TFloat celsius) => celsius + TFloat.CreateChecked(273.15);
+      /// <summary>Convert the temperature specified in Celsius to Rankine.</summary>
+      public static TFloat CelsiusToRankine(TFloat celsius) => (celsius + TFloat.CreateChecked(273.15)) * TFloat.CreateChecked(1.8);
+      /// <summary>Convert the temperature specified in Fahrenheit to Celsius.</summary>
+      public static TFloat FahrenheitToCelsius(TFloat fahrenheit) => (fahrenheit - TFloat.CreateChecked(32)) / TFloat.CreateChecked(1.8);
+      /// <summary>Convert the temperature specified in Fahrenheit to Kelvin.</summary>
+      public static TFloat FahrenheitToKelvin(TFloat fahrenheit) => (fahrenheit + TFloat.CreateChecked(459.67)) / TFloat.CreateChecked(1.8);
+      /// <summary>Convert the temperature specified in Fahrenheit to Rankine.</summary>
+      public static TFloat FahrenheitToRankine(TFloat fahrenheit) => fahrenheit + TFloat.CreateChecked(459.67);
+      /// <summary>Convert the temperature specified in Kelvin to Celsius.</summary>
+      public static TFloat KelvinToCelsius(TFloat kelvin) => kelvin - TFloat.CreateChecked(273.15);
+      /// <summary>Convert the temperature specified in Kelvin to Fahrenheit.</summary>
+      public static TFloat KelvinToFahrenheit(TFloat kelvin) => kelvin * TFloat.CreateChecked(1.8) - TFloat.CreateChecked(459.67);
+      /// <summary>Convert the temperature specified in Kelvin to Rankine.</summary>
+      public static TFloat KelvinToRankine(TFloat kelvin) => kelvin * TFloat.CreateChecked(1.8);
+      /// <summary>Convert the temperature specified in Rankine to Celsius.</summary>
+      public static TFloat RankineToCelsius(TFloat rankine) => (rankine - TFloat.CreateChecked(459.67)) / TFloat.CreateChecked(1.8);
+      /// <summary>Convert the temperature specified in Rankine to Kelvin.</summary>
+      public static TFloat RankineToKelvin(TFloat rankine) => rankine / TFloat.CreateChecked(1.8);
+      /// <summary>Convert the temperature specified in Rankine to Fahrenheit.</summary>
+      public static TFloat RankineToFahrenheit(TFloat rankine) => rankine - TFloat.CreateChecked(459.67);
+
+      #endregion
+
       #region Truncate
 
       /// <summary>
@@ -733,6 +373,82 @@
       }
 
       #endregion
+
+      public static TFloat Wrap(TFloat value, TFloat minValue, TFloat maxValue, IntervalNotation notation)
+      {
+        return notation switch
+        {
+          IntervalNotation.Closed => WrapClosed(value, minValue, maxValue),
+          IntervalNotation.HalfOpenLeft => WrapHalfOpenLeft(value, minValue, maxValue),
+          IntervalNotation.HalfOpenRight => WrapHalfOpenRight(value, minValue, maxValue),
+          IntervalNotation.Open => WrapOpen(value, minValue, maxValue),
+          _ => throw new System.ArgumentOutOfRangeException(nameof(notation)),
+        };
+      }
+
+      public static TFloat WrapClosed(TFloat value, TFloat minValue, TFloat maxValue)
+      {
+        var range = (maxValue - minValue) + Number.GetUlp(minValue);
+
+        var nrem = Number.EuclideanModulo(value - minValue, range);
+
+        return minValue + nrem;
+
+        //var range = (maxValue - minValue) + Number.GetUlp(minValue);
+
+        //return minValue + (value - minValue - TFloat.Floor((value - minValue) / range) * range);
+      }
+
+      public static TFloat WrapHalfOpenLeft(TFloat value, TFloat minValue, TFloat maxValue)
+      {
+        var openLeftMinValue = minValue + Number.GetUlp(minValue);
+        var range = maxValue - openLeftMinValue;
+
+        var nrem = Number.EuclideanModulo(value - openLeftMinValue, range);
+
+        return openLeftMinValue + nrem;
+
+        //var shift = minValue + Number.GetUlp(minValue);
+        //var range = maxValue - shift;
+
+        //return shift + (value - shift - TFloat.Floor((value - shift) / range) * range);
+      }
+
+      public static TFloat WrapHalfOpenRight(TFloat value, TFloat minValue, TFloat maxValue)
+      {
+        var range = maxValue - minValue;
+
+        var nrem = Number.EuclideanModulo(value - minValue, range);
+
+        return minValue + nrem;
+
+        //var range = maxValue - minValue;
+
+        //return minValue + (value - minValue - TFloat.Floor((value - minValue) / range) * range);
+      }
+
+      public static TFloat WrapOpen(TFloat value, TFloat minValue, TFloat maxValue)
+      {
+        var range = maxValue - minValue;
+
+        var nrem = Number.EuclideanModulo(value - minValue, range);
+
+        var w = minValue + nrem;
+
+        if (w == minValue)
+          return minValue + Number.GetUlp(minValue);
+
+        return w;
+
+        //var range = maxValue - minValue;
+
+        //var w = minValue + (value - minValue - TFloat.Floor((value - minValue) / range) * range);
+
+        //if (w == minValue)
+        //  return minValue + Number.GetUlp(minValue);
+
+        //return w;
+      }
     }
 
     extension<TFloat>(TFloat)
@@ -746,6 +462,26 @@
       => TFloat.One / (TFloat.Exp(-x) + TFloat.One);
 
       #endregion
+
+      /// <summary>
+      /// <para>Exponential wave function.</para>
+      /// </summary>
+      /// <param name="value"></param>
+      /// <param name="modulus"></param>
+      /// <param name="k"></param>
+      /// <returns></returns>
+      public static TFloat ExponentialWave(TFloat value, TFloat modulus, TFloat k)
+      {
+        System.ArgumentOutOfRangeException.ThrowIfNegativeOrZero(modulus);
+
+        var phase = ModulusOperators.EuclideanModulo(value, modulus); // Phase in [0, modulus).
+
+        var unitInterval = phase / modulus; // Normalize to [0, 1).
+
+        var x = k * unitInterval; // Scale to [0, k].
+
+        return TFloat.Exp(x);
+      }
 
       #region Logistic
 
@@ -802,24 +538,6 @@
     extension<TFloat>(TFloat)
       where TFloat : System.Numerics.IFloatingPoint<TFloat>, System.Numerics.ILogarithmicFunctions<TFloat>
     {
-      #region HarmonicSeries.. (sum)
-
-      /// <summary>
-      /// <para>Gets the harmonic series (sum) of a geometric sequence with <paramref name="nth"/> terms and the specified <paramref name="commonRatio"/>.</para>
-      /// </summary>
-      /// <param name="commonRatio">The common ratio of the geometric sequence.</param>
-      /// <param name="nth">The term of which to find the sum up until.</param>
-      /// <returns></returns>
-      public static TFloat HarmonicSeriesOfNTerms<TInteger>(TFloat a, TFloat d, TInteger n)
-        where TInteger : System.Numerics.IBinaryInteger<TInteger>
-      {
-        var two = TFloat.CreateChecked(2);
-
-        return TFloat.One / d * TFloat.Log((two * a + (two * TFloat.CreateChecked(n) - TFloat.One) * d) / (two * a - d));
-      }
-
-      #endregion
-
       #region Logit
 
       /// <summary>
@@ -832,6 +550,27 @@
         => TFloat.Log(TFloat.CreateChecked(ProbabilityToOdds(probability).Value));
 
       #endregion
+
+      /// <summary>
+      /// <para>Logarithmic wave function.</para>
+      /// </summary>
+      /// <typeparam name="T"></typeparam>
+      /// <param name="value"></param>
+      /// <param name="modulus"></param>
+      /// <param name="k"></param>
+      /// <returns></returns>
+      public static TFloat LogarithmicWave<T>(TFloat value, TFloat modulus, TFloat k)
+      {
+        System.ArgumentOutOfRangeException.ThrowIfNegativeOrZero(modulus);
+
+        var phase = ModulusOperators.EuclideanModulo(value, modulus); // Phase in [0, modulus).
+
+        var unitInterval = phase / modulus; // Normalize to [0, 1).
+
+        var x = TFloat.One + k * unitInterval; // Shift to [1, 1 + k] to ensure domain is always valid: argument >= 1.
+
+        return TFloat.Log(x);
+      }
 
       #region RescaleLogarithmicToLinear
 
@@ -895,7 +634,7 @@
       #region RoundByPrecision
 
       /// <summary>
-      /// <para>Rounds the <paramref name="value"/> to the nearest <paramref name="significantDigits"/> in base <paramref name="radix"/>. The <paramref name="mode"/> specifies the halfway rounding strategy to use.</para>
+      /// <para>Rounds the <paramref name="value"/> to the nearest <paramref name="significantDigits"/> in base <paramref name="radix"/>. The <paramref name="nearestRoundingTies"/> specifies the halfway rounding strategy to use.</para>
       /// <example>
       /// <code>var r = RoundByPrecision(99.96535789, 2, HalfwayRounding.ToEven); // = 99.97 (compare with the corresponding <see cref="RoundByTruncatedPrecision{TSelf}(TSelf, UniversalRounding, int, int)"/> method)</code>
       /// </example>
@@ -903,11 +642,11 @@
       /// <typeparam name="TValue"></typeparam>
       /// <typeparam name="TRadix"></typeparam>
       /// <param name="value"></param>
-      /// <param name="mode"></param>
+      /// <param name="nearestRoundingTies"></param>
       /// <param name="significantDigits"></param>
       /// <param name="radix"></param>
       /// <returns></returns>
-      public static TFloat RoundByPrecision<TRadix>(TFloat x, MidpointRoundingEx mode, int significantDigits, TRadix radix)
+      public static TFloat RoundByPrecision<TRadix>(TFloat x, NearestRoundingRule nearestRoundingTies, int significantDigits, TRadix radix)
       where TRadix : System.Numerics.IBinaryInteger<TRadix>
       {
         System.ArgumentOutOfRangeException.ThrowIfNegative(significantDigits);
@@ -915,7 +654,7 @@
 
         var scalar = TFloat.Pow(TFloat.CreateChecked(radix), TFloat.CreateChecked(significantDigits));
 
-        return RoundMidpoint(x * scalar, mode) / scalar;
+        return RoundToNearestInteger(x * scalar, nearestRoundingTies) / scalar;
       }
 
       #endregion
@@ -923,7 +662,7 @@
       #region RoundByTruncatedPrecision
 
       /// <summary>
-      /// <para>Rounds <paramref name="x"/> by truncating to the specified number of <paramref name="significantDigits"/> in base <paramref name="radix"/> and then round using the <paramref name="mode"/>. The reason for doing this is because unless a value is EXACTLY between two numbers, to the decimal, it will be rounded based on the next least significant decimal digit and so on.</para>
+      /// <para>Rounds <paramref name="x"/> by truncating to the specified number of <paramref name="significantDigits"/> in base <paramref name="radix"/> and then round using the <paramref name="nearestRoundingTies"/>. The reason for doing this is because unless a value is EXACTLY between two numbers, to the decimal, it will be rounded based on the next least significant decimal digit and so on.</para>
       /// <para><seealso href="https://stackoverflow.com/questions/1423074/rounding-to-even-in-c-sharp"/></para>
       /// <example>
       /// <code>var r = RoundByTruncatedPrecision(99.96535789, 2, HalfwayRounding.ToEven); // = 99.96 (compare with the corresponding <see cref="RoundByPrecision{TValue}(TValue, UniversalRounding, int, int)"/> method)</code>
@@ -931,12 +670,12 @@
       /// </summary>
       /// <typeparam name="TValue"></typeparam>
       /// <param name="x"></param>
-      /// <param name="mode"></param>
+      /// <param name="nearestRoundingTies"></param>
       /// <param name="significantDigits"></param>
       /// <param name="radix"></param>
       /// <returns></returns>
       /// <exception cref="System.ArgumentOutOfRangeException"></exception>
-      public static TFloat RoundByTruncatedPrecision<TRadix>(TFloat x, MidpointRoundingEx mode, int significantDigits, TRadix radix)
+      public static TFloat RoundByTruncatedPrecision<TRadix>(TFloat x, NearestRoundingRule nearestRoundingTies, int significantDigits, TRadix radix)
         where TRadix : System.Numerics.IBinaryInteger<TRadix>
       {
         System.ArgumentOutOfRangeException.ThrowIfNegative(significantDigits);
@@ -944,7 +683,7 @@
 
         var scalar = TFloat.Pow(TFloat.CreateChecked(radix), TFloat.CreateChecked(significantDigits + 1));
 
-        return RoundByPrecision(TFloat.Truncate(x * scalar) / scalar, mode, significantDigits, radix);
+        return RoundByPrecision(TFloat.Truncate(x * scalar) / scalar, nearestRoundingTies, significantDigits, radix);
       }
 
       #endregion
@@ -1130,24 +869,7 @@
       }
 
       #endregion
-    }
 
-    extension<TFloat>(TFloat)
-      where TFloat : System.Numerics.IFloatingPoint<TFloat>, System.Numerics.IExponentialFunctions<TFloat>, System.Numerics.ILogarithmicFunctions<TFloat>
-    {
-      #region GeometricMean
-
-      /// <summary>
-      /// <para>The geometric mean is a mean or average which indicates a central tendency of a finite collection of positive real numbers by using the product of their values (as opposed to the arithmetic mean, which uses their sum).</para>
-      /// <para><see href="https://en.wikipedia.org/wiki/Geometric_mean"/></para>
-      /// </summary>
-      /// <remarks>This implementation uses <see cref="TFloat.Exp(TFloat)"/> and <see cref="TFloat.Log(TFloat)"/> to avoid arithmetic overflow or underflow.</remarks>
-      /// <param name="terms"></param>
-      /// <returns></returns>
-      public static TFloat GeometricMean(params System.Collections.Generic.IEnumerable<TFloat> terms)
-        => TFloat.Exp(terms.Select(TFloat.Log).Sum(out var count) / TFloat.CreateChecked(count));
-
-      #endregion
     }
 
     extension<TFloat>(TFloat)

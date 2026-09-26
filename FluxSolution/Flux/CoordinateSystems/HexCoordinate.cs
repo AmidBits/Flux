@@ -137,13 +137,13 @@ namespace Flux.CoordinateSystems
     //  );
     //}
 
-    public static HexCoordinate<TTarget> Round<TSource, TTarget>(TSource sq, TSource sr, TSource ss, MidpointRoundingEx mode, out TTarget tq, out TTarget tr, out TTarget ts)
+    public static HexCoordinate<TTarget> Round<TSource, TTarget>(TSource sq, TSource sr, TSource ss, NearestRoundingRule nearestRoundingTies, out TTarget tq, out TTarget tr, out TTarget ts)
       where TSource : System.Numerics.IFloatingPoint<TSource>
       where TTarget : System.Numerics.INumber<TTarget>
     {
-      var rQ = FloatingPoint.RoundMidpoint(sq, mode);
-      var rR = FloatingPoint.RoundMidpoint(sr, mode);
-      var rS = FloatingPoint.RoundMidpoint(ss, mode);
+      var rQ = FloatingPoint.RoundToNearestInteger(sq, nearestRoundingTies);
+      var rR = FloatingPoint.RoundToNearestInteger(sr, nearestRoundingTies);
+      var rS = FloatingPoint.RoundToNearestInteger(ss, nearestRoundingTies);
 
       var aQ = TSource.Abs(rQ - sq);
       var aR = TSource.Abs(rR - sr);
@@ -195,13 +195,13 @@ namespace Flux.CoordinateSystems
       );
     }
 
-    public static HexCoordinate<TResult> ToHexCoordinate<TSelf, TResult>(this HexCoordinate<TSelf> source, MidpointRoundingEx mode, out TResult q, out TResult r, out TResult s)
+    public static HexCoordinate<TResult> ToHexCoordinate<TSelf, TResult>(this HexCoordinate<TSelf> source, NearestRoundingRule nearestRoundingTies, out TResult q, out TResult r, out TResult s)
       where TSelf : System.Numerics.IFloatingPoint<TSelf>
       where TResult : System.Numerics.INumber<TResult>
     {
       var (sq, sr, ss) = source;
 
-      HexCoordinate.Round(sq, sr, ss, mode, out q, out r, out s);
+      HexCoordinate.Round(sq, sr, ss, nearestRoundingTies, out q, out r, out s);
 
       return new(q, r, s);
     }

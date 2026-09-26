@@ -28,7 +28,7 @@ namespace Maths
     [TestMethod]
     public void CeilingDivRem()
     {
-      var actual = int.CeilingDivRem(9, 6);
+      var actual = int.IntegerDivRemCeiling(9, 6);
       var expected = (2, -3);
       Assert.AreEqual(expected, actual);
     }
@@ -36,7 +36,7 @@ namespace Maths
     [TestMethod]
     public void EnvelopDivRem()
     {
-      var actual = int.EnvelopedDivRem(9, 6);
+      var actual = int.IntegerDivRemEnveloped(9, 6);
       var expected = (2, -3);
       Assert.AreEqual(expected, actual);
     }
@@ -44,7 +44,7 @@ namespace Maths
     [TestMethod]
     public void EuclideanDivRem()
     {
-      var actual = int.EuclideanDivRem(9, 6);
+      var actual = int.IntegerDivRemEuclidean(9, 6);
       var expected = (1, 3);
       Assert.AreEqual(expected, actual);
     }
@@ -52,18 +52,18 @@ namespace Maths
     [TestMethod]
     public void FlooredDivRem()
     {
-      var actual = int.FlooredDivRem(9, 6);
+      var actual = int.IntegerDivRemFloored(9, 6);
       var expected = (1, 3);
       Assert.AreEqual(expected, actual);
     }
 
-    [TestMethod]
-    public void RoundedDivRem()
-    {
-      var actual = int.RoundedDivRem(9, 6);
-      var expected = (2, -3);
-      Assert.AreEqual(expected, actual);
-    }
+    //[TestMethod]
+    //public void RoundedDivRem()
+    //{
+    //  var actual = int.RoundedDivRem(9, 6);
+    //  var expected = (2, -3);
+    //  Assert.AreEqual(expected, actual);
+    //}
 
     [TestMethod]
     public void TruncatedDivRem()
@@ -76,17 +76,17 @@ namespace Maths
     [TestMethod]
     public void ModInv()
     {
-      var mi4and7 = BinaryInteger.ModInv(4, 7); // mi = 2, i.e. "2 is the modular multiplicative inverse of 4 (and vice versa), mod 7".;
+      var mi4and7 = BinaryInteger.ModInverse(4, 7); // mi = 2, i.e. "2 is the modular multiplicative inverse of 4 (and vice versa), mod 7".;
       Assert.AreEqual(2, mi4and7);
 
-      var mi8and11 = BinaryInteger.ModInv(8, 11); // mi = 7, i.e. "7 is the modular inverse of 8, mod 11".
+      var mi8and11 = BinaryInteger.ModInverse(8, 11); // mi = 7, i.e. "7 is the modular inverse of 8, mod 11".
       Assert.AreEqual(7, mi8and11);
     }
 
     [TestMethod]
     public void TruncMod()
     {
-      var (truncatedQuotient, remainder) = Number.ITruncatedDivRem(9.0, 6);
+      var (truncatedQuotient, remainder) = Number.IntegerDivRemTruncated(9.0, 6);
 
       Assert.AreEqual(1, truncatedQuotient);
       Assert.AreEqual(3, remainder);

@@ -11,28 +11,33 @@ namespace Flux.Units
 
     public AngularFrequency(MetricPrefix prefix, double radianPerSecond) => m_value = prefix.ConvertPrefix(radianPerSecond, MetricPrefix.Unprefixed);
 
-    /// <summary>Creates a new <see cref="AngularFrequency"/> instance from <see cref="Speed">tangential/linear speed</see> and <see cref="Length">radius</see></summary>
+    /// <summary>
+    /// <para>Constructs an angular frequency from tangential speed and radius.</para>
+    /// </summary>
+    /// <param name="tangentialSpeed"></param>
+    /// <param name="radius"></param>
     public AngularFrequency(Speed tangentialSpeed, Length radius) : this(tangentialSpeed.Value / radius.Value) { }
 
-    public Frequency ToFrequency() => new(m_value / double.Tau);
+    /// <summary>
+    /// <para>Returns the frequency corresponding to the angular frequency.</para>
+    /// </summary>
+    public Frequency Frequency => new(m_value / double.Tau);
+
+    /// <summary>
+    /// <para>Returns the number of revolutions per minute (RPM) corresponding to the angular frequency.</para>
+    /// </summary>
+    public double RevolutionsPerMinute
+      => m_value / double.Tau * 60;
 
     #region Static methods
 
     /// <summary>
-    /// <para></para>
-    /// <see href="https://en.wikipedia.org/wiki/Revolutions_per_minute"/>
+    /// <para>Constructs an angular frequency from revolutions per minute (RPM).</para>
     /// </summary>
-    /// <param name="radianPerSecond"></param>
+    /// <param name="rpm"></param>
     /// <returns></returns>
-    public static double ConvertAngularVelocityToRpm(double radianPerSecond) => radianPerSecond / double.Tau;
-
-    /// <summary>
-    /// <para></para>
-    /// <see href="https://en.wikipedia.org/wiki/Revolutions_per_minute"/>
-    /// </summary>
-    /// <param name="revolutionPerMinute"></param>
-    /// <returns></returns>
-    public static double ConvertRpmToAngularVelocity(double revolutionPerMinute) => revolutionPerMinute / 60;
+    public static AngularFrequency FromRevolutionsPerMinute(double rpm)
+      => new(rpm * double.Tau / 60);
 
     #endregion Static methods
 

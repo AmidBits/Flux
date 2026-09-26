@@ -94,12 +94,12 @@ namespace Flux.CoordinateSystems
     }
 
     /// <summary>Creates a new <see cref="Geometry.HexCoordinate{TSelf}"/> from a <see cref="Geometry.CoordinateSystems.CartesianCoordinate"/>.</summary>
-    public static HexCoordinate<TResult> ToHexCoordinate<TResult>(CartesianCoordinate source, MidpointRoundingEx mode, out TResult q, out TResult r, out TResult s)
+    public static HexCoordinate<TResult> ToHexCoordinate<TResult>(CartesianCoordinate source, NearestRoundingRule nearestRoundingTies, out TResult q, out TResult r, out TResult s)
       where TResult : System.Numerics.INumber<TResult>
     {
       var (x, y, z) = source;
 
-      HexCoordinate.Round(x, y, z, mode, out q, out r, out s);
+      HexCoordinate.Round(x, y, z, nearestRoundingTies, out q, out r, out s);
 
       return new(
         q,
@@ -108,7 +108,7 @@ namespace Flux.CoordinateSystems
       );
     }
 
-    public System.Drawing.Point ToPoint(MidpointRoundingEx mode) => new(System.Convert.ToInt32(double.RoundMidpoint(m_v[0], mode)), System.Convert.ToInt32(double.RoundMidpoint(m_v[1], mode)));
+    public System.Drawing.Point ToPoint(NearestRoundingRule nearestRoundingTies) => new(System.Convert.ToInt32(double.RoundToNearestInteger(m_v[0], nearestRoundingTies)), System.Convert.ToInt32(double.RoundToNearestInteger(m_v[1], nearestRoundingTies)));
 
     public System.Drawing.PointF ToPointF() => new((float)m_v[0], (float)m_v[1]);
 

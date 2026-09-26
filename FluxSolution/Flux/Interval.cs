@@ -29,9 +29,9 @@
       /// <param name="minValue"></param>
       /// <param name="maxValue"></param>
       /// <returns></returns>
-      public Interval<TNumber> Round<TNumber>(MidpointRoundingEx minValueRounding, MidpointRoundingEx maxValueRounding, out TNumber minValue, out TNumber maxValue)
+      public Interval<TNumber> Round<TNumber>(NearestRoundingRule minValueRounding, NearestRoundingRule maxValueRounding, out TNumber minValue, out TNumber maxValue)
         where TNumber : System.Numerics.INumber<TNumber>
-        => new(minValue = TNumber.CreateChecked(FloatingPoint.RoundMidpoint(source.MinValue, minValueRounding)), maxValue = TNumber.CreateChecked(FloatingPoint.RoundMidpoint(source.MaxValue, maxValueRounding)));
+        => new(minValue = TNumber.CreateChecked(FloatingPoint.RoundToNearestInteger(source.MinValue, minValueRounding)), maxValue = TNumber.CreateChecked(FloatingPoint.RoundToNearestInteger(source.MaxValue, maxValueRounding)));
     }
 
     //// https://math.stackexchange.com/a/4894702
@@ -42,7 +42,7 @@
       {
         var (minValue, maxValue) = intervalNotation.GetExtentRelative(source.MinValue, source.MaxValue, 1);
 
-        return BinaryInteger.FlooredDivRem(maxValue, k).Quotient - BinaryInteger.CeilingDivRem(minValue, k).Quotient + TInteger.One;
+        return Number.IntegerDivRemFloored(maxValue, k).Quotient - Number.IntegerDivRemCeiling(minValue, k).Quotient + TInteger.One;
       }
 
       /// <summary>
@@ -137,6 +137,45 @@
       public System.Collections.Generic.IEnumerable<TNumber> Loop(TNumber stepSize)
         => IntervalNotation.Closed.Loop(source.MinValue, source.MaxValue, stepSize);
 
+      public Interval<TNumber> NewByMagnitude(IntervalNotation intervalNotation, int magnitude)
+      {
+        var (minValue, maxValue) = (source.MinValue, source.MaxValue);
+
+        if (intervalNotation != IntervalNotation.Closed)
+        {
+          System.ArgumentOutOfRangeException.ThrowIfNegative(magnitude);
+
+          while (--magnitude >= 0)
+          {
+            if (intervalNotation is IntervalNotation.Open or IntervalNotation.HalfOpenLeft)
+              minValue = Number.UlpIncrement(minValue);
+
+            if (intervalNotation is IntervalNotation.Open or IntervalNotation.HalfOpenRight)
+              maxValue = Number.UlpDecrement(maxValue);
+          }
+        }
+
+        return new(minValue, maxValue);
+      }
+
+      public Interval<TNumber> NewByFixed(IntervalNotation intervalNotation, TNumber margin)
+      {
+        var (minValue, maxValue) = (source.MinValue, source.MaxValue);
+
+        if (intervalNotation != IntervalNotation.Closed)
+        {
+          System.ArgumentOutOfRangeException.ThrowIfNegative(margin);
+
+          if (intervalNotation is IntervalNotation.Open or IntervalNotation.HalfOpenLeft)
+            minValue += margin;
+
+          if (intervalNotation is IntervalNotation.Open or IntervalNotation.HalfOpenRight)
+            maxValue -= margin;
+        }
+
+        return new(minValue, maxValue);
+      }
+
       /// <summary>
       /// <para>Sub-divides an interval into sub-intervals.</para>
       /// </summary>
@@ -175,12 +214,12 @@
 
         var cmp = IntervalNotation.Closed.CompareWith(value, minValue, maxValue);
 
-        var addon = value != minValue && value != maxValue ? TNumber.One : TNumber.Zero;
+        var eps = value != minValue && value != maxValue ? TNumber.One : TNumber.Zero;
 
         if (cmp > 0)
-          return minValue + (value - maxValue - addon) % (maxValue - minValue + addon);
+          return minValue + (value - maxValue - eps) % (maxValue - minValue + eps);
         else if (cmp < 0)
-          return maxValue - (minValue - value - addon) % (maxValue - minValue + addon);
+          return maxValue - (minValue - value - eps) % (maxValue - minValue + eps);
         else
           return value;
       }

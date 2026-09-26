@@ -48,7 +48,7 @@ namespace Flux
 
       #endregion
 
-      #region ICbrt - Integer cube root.
+      #region Cbrt - Integer cube root.
 
       /// <summary>
       /// <para>Computes the integer cube root of a 64-bit unsigned integer.</para>
@@ -56,43 +56,37 @@ namespace Flux
       /// <param name="b"></param>
       /// <returns></returns>
       [System.CLSCompliant(false)]
-      public static ulong ICbrt(ulong n)
+      public static ulong Cbrt(ulong n)
       {
         if (n < 8)
           return n == 0 ? 0u : 1u;
 
-        var x = 1UL << (System.Numerics.BitOperations.Log2(n) / 3); // Initial guess.
+        var x = 1UL << ((System.Numerics.BitOperations.Log2(n) + 2) / 3);
 
         while (true)
         {
           var xp = x;
 
-          if (x != 0 && x > n / x) // Overflow‑safe x².
+          // Overflow‑safe x²
+          if (x != 0 && x > n / x)
             return xp;
 
           var x2 = x * x;
 
-          if (x2 != 0 && x > n / x2) // Overflow‑safe x³.
+          // Overflow‑safe n/x²
+          var div = (x2 == 0) ? 0 : n / x2;
+
+          // Newton iteration
+          x = (2 * x + div) / 3;
+
+          if (x >= xp)
             return xp;
-
-          var x3 = x2 * x;
-
-          if (x3 == n)
-            return x;
-
-          if (x3 > n) // Adjust x by ±1.
-            x--;
-          else
-            x++;
-
-          if (x == xp) // Convergence check.
-            return x;
         }
       }
 
       #endregion
 
-      #region ILog - Integer logarithm.
+      #region Log - Integer logarithm.
 
       /// <summary>
       /// <para>Computes the integer logarithm of a 64-bit unsigned integer with a specified base.</para>
@@ -101,7 +95,7 @@ namespace Flux
       /// <param name="b"></param>
       /// <returns></returns>
       [System.CLSCompliant(false)]
-      public static (ulong ILogF, ulong ILogC, bool IsExactLog) ILog(ulong n, ulong b)
+      public static (ulong LogFloor, ulong LogCeiling, bool IsExactLog) Log(ulong n, ulong b)
       {
         System.ArgumentOutOfRangeException.ThrowIfLessThan(b, 2ul);
 
@@ -152,7 +146,7 @@ namespace Flux
 
       #endregion
 
-      #region ILogE - Integer natural logarithm.
+      #region LogE - Integer natural logarithm.
 
       /// <summary>
       /// <para>Computes the integer natural logarithm of a 64-bit unsigned integer.</para>
@@ -160,7 +154,7 @@ namespace Flux
       /// <param name="n"></param>
       /// <returns></returns>
       [System.CLSCompliant(false)]
-      public static (ulong ILogF, ulong ILogC) ILogE(ulong n)
+      public static (ulong LogFloor, ulong LogCeiling) LogE(ulong n)
       {
         System.ArgumentOutOfRangeException.ThrowIfNegativeOrZero(n);
 
@@ -181,7 +175,7 @@ namespace Flux
 
       #endregion
 
-      #region IRootN - Integer nth root.
+      #region RootN - Integer nth root.
 
       /// <summary>
       /// <para>Compute the nth root of a 64-bit unsigned integer. This implementation uses Newton's method.</para>
@@ -190,7 +184,7 @@ namespace Flux
       /// <param name="degree"></param>
       /// <returns></returns>
       [System.CLSCompliant(false)]
-      public static ulong IRootN(ulong value, int degree)
+      public static ulong RootN(ulong value, int degree)
       {
         if (degree <= 1)
           return value;
@@ -202,7 +196,7 @@ namespace Flux
           return (ulong)double.Sqrt(value);
 
         if (degree == 3) // Fast path for cube root (integer‑safe).
-          return ICbrt(value);
+          return Cbrt(value);
 
         var x = 1UL << (System.Numerics.BitOperations.Log2(value) / degree);
 
@@ -210,7 +204,7 @@ namespace Flux
         {
           var xp = x;
 
-          var pow = Pow(x, degree - 1, value);
+          var pow = Pow(x, (ulong)degree - 1, value);
           var div = (pow == ulong.MaxValue) ? 0 : value / pow;
 
           x = ((ulong)(degree - 1) * x + div) / (ulong)degree;
@@ -222,7 +216,7 @@ namespace Flux
 
       #endregion
 
-      #region ISqrt - Integer square root.
+      #region Sqrt - Integer square root.
 
       /// <summary>
       /// <para>Computes the integer square root of a 64-bit unsigned integer.</para>
@@ -230,7 +224,7 @@ namespace Flux
       /// <param name="n"></param>
       /// <returns></returns>
       [System.CLSCompliant(false)]
-      public static ulong ISqrt(ulong n)
+      public static ulong Sqrt(ulong n)
       {
         if (n <= 1)
           return n;
@@ -259,16 +253,16 @@ namespace Flux
 
       #endregion
 
-      #region IsPrime - Miller-Rabin deterministic primality test.
+      #region IsPrimeNumber.. - Miller-Rabin deterministic primality test.
 
-      /// <summary>
-      /// <para>Deterministic Miller-Rabin prime number test.</para>
-      /// </summary>
-      /// <param name="n"></param>
-      /// <returns></returns>
-      [System.CLSCompliant(false)]
-      public static bool IsPrime(ulong n)
-        => MillerRabinDeterministicIsPrime(n);
+      ///// <summary>
+      ///// <para>Deterministic Miller-Rabin prime number test.</para>
+      ///// </summary>
+      ///// <param name="n"></param>
+      ///// <returns></returns>
+      //[System.CLSCompliant(false)]
+      //public static bool IsPrime(ulong n)
+      //  => MillerRabinDeterministicIsPrime(n);
 
       /// <summary>
       /// <para>Deterministic Miller-Rabin primality test for 64-bit integers using bases 2,3,5,7,11,13,17.</para>
@@ -276,7 +270,7 @@ namespace Flux
       /// <remarks>Guaranteed correct for n &lt; 2^64.</remarks>
       /// <param name="n"></param>
       /// <returns></returns>
-      private static bool MillerRabinDeterministicIsPrime(ulong n)
+      internal static bool IsPrimeNumberDeterministic(ulong n)
       {
         if (n < 64)
           return (m_primeBitMask & (1UL << (int)n)) != 0; // Initial 64-bit-mask takes care of [0, 63].
@@ -308,25 +302,23 @@ namespace Flux
           if (a >= n)
             break;
 
-          if (!MillerRabinDeterministicPass(a, s, d, n))
+          if (!IsPrimeNumberDeterministicPass(a, s, d, n))
             return false;
         }
 
         return true;
       }
 
-      private static bool MillerRabinDeterministicPass(ulong a, int s, ulong d, ulong n)
+      private static bool IsPrimeNumberDeterministicPass(ulong a, int s, ulong d, ulong n)
       {
-        System.Numerics.BigInteger nBI = n;
-        System.Numerics.BigInteger aBI = a;
-        System.Numerics.BigInteger x = System.Numerics.BigInteger.ModPow(aBI, d, nBI);
+        var x = PowMod(a, d, n);
 
         if (x == 1 || x == n - 1)
           return true;
 
-        for (var r = 1; r < s; r++)
+        for (int r = 1; r < s; r++)
         {
-          x = System.Numerics.BigInteger.ModPow(x, 2, nBI);
+          x = MulMod(x, x, n);
 
           if (x == n - 1)
             return true;
@@ -335,7 +327,75 @@ namespace Flux
         return false;
       }
 
+      private static ulong MulMod(ulong a, ulong b, ulong mod)
+        => (ulong)(((UInt128)a * (UInt128)b) % mod);
+
+      private static ulong PowMod(ulong a, ulong d, ulong mod)
+      {
+        var result = 1UL;
+
+        while (d > 0)
+        {
+          if ((d & 1) != 0)
+            result = MulMod(result, a, mod);
+
+          a = MulMod(a, a, mod);
+          d >>>= 1;
+        }
+
+        return result;
+      }
+
+      //private static bool MillerRabinDeterministicPass(ulong a, int s, ulong d, ulong n)
+      //{
+      //  System.Numerics.BigInteger nBI = n;
+      //  System.Numerics.BigInteger aBI = a;
+      //  System.Numerics.BigInteger x = System.Numerics.BigInteger.ModPow(aBI, d, nBI);
+
+      //  if (x == 1 || x == n - 1)
+      //    return true;
+
+      //  for (var r = 1; r < s; r++)
+      //  {
+      //    x = System.Numerics.BigInteger.ModPow(x, 2, nBI);
+
+      //    if (x == n - 1)
+      //      return true;
+      //  }
+
+      //  return false;
+      //}
+
       #endregion
+
+      /// <summary>
+      /// <para>Computes base^exp for ulong using exponentiation by squaring. Throws OverflowException if result exceeds ulong.MaxValue.</para>
+      /// </summary>
+      /// <param name="value"></param>
+      /// <param name="exponent"></param>
+      /// <returns></returns>
+      private static ulong Pow(ulong value, ulong exponent)
+      {
+        if (exponent == 0) return 1;
+        if (value == 0) return 0;
+
+        var result = 1UL;
+        var current = value;
+
+        while (exponent > 0)
+          checked // Detect overflow.
+          {
+            if ((exponent & 1) != 0)
+              result *= current;
+
+            exponent >>= 1;
+
+            if (exponent > 0)
+              current *= current;
+          }
+
+        return result;
+      }
 
       #region Pow - Overflow‑safe exponentiation.
 
@@ -346,7 +406,7 @@ namespace Flux
       /// <param name="exponent"></param>
       /// <param name="limit"></param>
       /// <returns></returns>
-      private static ulong Pow(ulong value, int exponent, ulong limit)
+      private static ulong Pow(ulong value, ulong exponent, ulong limit)
       {
         var result = 1ul;
 

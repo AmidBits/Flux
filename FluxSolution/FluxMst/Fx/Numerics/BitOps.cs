@@ -198,13 +198,13 @@ namespace Numerics
     [TestMethod]
     public void Log2AwayFromZero()
     {
-      Assert.AreEqual(8, BinaryInteger.IntegerLog(215, 2).IntegralLogAwayFromZero);
+      Assert.AreEqual(8, BinaryInteger.Log(215, 2).LogAwayFromZero);
     }
 
     [TestMethod]
     public void Log2TowardZero()
     {
-      Assert.AreEqual(4, BinaryInteger.IntegerLog(215, 3).IntegralLogTowardZero);
+      Assert.AreEqual(4, BinaryInteger.Log(215, 3).LogTowardZero);
     }
 
     #endregion // Log2
@@ -262,7 +262,7 @@ namespace Numerics
       var towardsZero = Flux.BinaryInteger.RoundDownToPowerOf2(value, false);
       var awayFromZero = Flux.BinaryInteger.RoundUpToPowerOf2(value, false);
 
-      var rounded = Number.RoundToNearest(88, MidpointRoundingEx.AwayFromZero, false, [towardsZero, awayFromZero]);
+      var rounded = Number.RoundToNearest(88, NearestRoundingRule.AwayFromZero, false, [towardsZero, awayFromZero]);
 
       Assert.AreEqual(64, rounded);
 

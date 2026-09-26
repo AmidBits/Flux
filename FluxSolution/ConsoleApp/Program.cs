@@ -264,59 +264,185 @@ namespace ConsoleApp
 
     #endregion // Mock DataTables
 
-    public static void ComputeDivRem(int a, int b)
+    public static string Dr<TNumber>((TNumber Quotient, TNumber Remainder) divRem)
+      where TNumber : System.Numerics.INumber<TNumber>
     {
-      a = int.Abs(a);
-      b = int.Abs(b);
+      var q = divRem.Quotient;
+      var r = divRem.Remainder;
+
+      var sb = new System.Text.StringBuilder();
+
+      if (q >= TNumber.Zero)
+        sb.Append('+');
+      sb.Append(q);
+      sb.Append(", ");
+      if (r >= TNumber.Zero)
+        sb.Append('+');
+      sb.Append(r);
+
+      return sb.ToString();
+    }
+
+    public static void ComputeDivRem<TNumber>(TNumber a, TNumber b)
+      where TNumber : System.Numerics.INumber<TNumber>
+    {
+      a = TNumber.Abs(a);
+      b = TNumber.Abs(b);
 
       var array = new object[][]{
         ["", $"{a} / {b}", $"{-a} / {b}", $"{a} / {-b}", $"{-a} / {-b}"],
-        [" Ceiling", int.CeilingDivRem(a, b), int.CeilingDivRem(-a, b), int.CeilingDivRem(a, -b), int.CeilingDivRem(-a, -b)],
-        //[" Closest", int.ClosestDivRem(a, b), int.ClosestDivRem(-a, b), int.ClosestDivRem(a, -b), int.ClosestDivRem(-a, -b)],
-        //[" Envelop", int.EnvelopedDivRem(a, b), int.EnvelopedDivRem(-a, b), int.EnvelopedDivRem(a, -b), int.EnvelopedDivRem(-a, -b)],
-        [" Euclids", int.EuclideanDivRem(a, b), int.EuclideanDivRem(-a, b), int.EuclideanDivRem(a, -b), int.EuclideanDivRem(-a, -b)],
-        [" Floored", int.FlooredDivRem(a, b), int.FlooredDivRem(-a, b), int.FlooredDivRem(a, -b), int.FlooredDivRem(-a, -b)],
-        ["TruncMod", int.ITruncatedDivRem(a, b), int.ITruncatedDivRem(-a, b), int.ITruncatedDivRem(a, -b), int.ITruncatedDivRem(-a, -b)],
-        [" Rounded", int.RoundedDivRem(a, b), int.RoundedDivRem(-a, b), int.RoundedDivRem(a, -b), int.RoundedDivRem(-a, -b)],
+        ["    Ceiling", Dr(Number.IntegerDivRemCeiling(a, b)), Dr(Number.IntegerDivRemCeiling(-a, b)), Dr(Number.IntegerDivRemCeiling(a, -b)), Dr(Number.IntegerDivRemCeiling(-a, -b))],
+        ["  Enveloped", Dr(Number.IntegerDivRemEnveloped(a, b)), Dr(Number.IntegerDivRemEnveloped(-a, b)), Dr(Number.IntegerDivRemEnveloped(a, -b)), Dr(Number.IntegerDivRemEnveloped(-a, -b))],
+        [" Euclidean", Dr(Number.IntegerDivRemEuclidean(a, b)), Dr(Number.IntegerDivRemEuclidean(-a, b)), Dr(Number.IntegerDivRemEuclidean(a, -b)), Dr(Number.IntegerDivRemEuclidean(-a, -b))],
+        ["    Floored", Dr(Number.IntegerDivRemFloored(a, b)), Dr(Number.IntegerDivRemFloored(-a, b)), Dr(Number.IntegerDivRemFloored(a, -b)), Dr(Number.IntegerDivRemFloored(-a, -b))],
+        ["  Truncated", Dr(Number.IntegerDivRemTruncated(a, b)), Dr(Number.IntegerDivRemTruncated(-a, b)), Dr(Number.IntegerDivRemTruncated(a, -b)), Dr(Number.IntegerDivRemTruncated(-a, -b))],
       };
 
       System.Console.WriteLine(System.Array.JaggedArrayToConsoleString(array, new ConsoleFormatOptions() { HorizontalAlignment = AlignmentHorizontal.Right }));
-
-      System.Console.WriteLine();
-
-      array = new object[][]{
-        ["", $"{a} / {b}", $"{-a} / {b}", $"{a} / {-b}", $"{-a} / {-b}"],
-        [" Ceiling", int.ICeilingDivRem(a, b), int.ICeilingDivRem(-a, b), int.ICeilingDivRem(a, -b), int.CeilingDivRem(-a, -b)],
-        [" Euclids", int.IEuclideanDivRem(a, b), int.IEuclideanDivRem(-a, b), int.IEuclideanDivRem(a, -b), int.IEuclideanDivRem(-a, -b)],
-        [" Floored", int.IFlooredDivRem(a, b), int.IFlooredDivRem(-a, b), int.IFlooredDivRem(a, -b), int.IFlooredDivRem(-a, -b)],
-        [" Rounded", int.IRoundedDivRem(a, b), int.IRoundedDivRem(-a, b), int.IRoundedDivRem(a, -b), int.IRoundedDivRem(-a, -b)],
-        ["Symetric", int.ISymmetricDivRem(a, b), int.ISymmetricDivRem(-a, b), int.ISymmetricDivRem(a, -b), int.ISymmetricDivRem(-a, -b)],
-        ["Truncate", int.ITruncatedDivRem(a, b), int.ITruncatedDivRem(-a, b), int.ITruncatedDivRem(a, -b), int.ITruncatedDivRem(-a, -b)],
-      };
-
-      System.Console.WriteLine(System.Array.JaggedArrayToConsoleString(array, new ConsoleFormatOptions() { HorizontalAlignment = AlignmentHorizontal.Right }));
-    }
-
-    private static System.Numerics.BigInteger RandomBigInteger(int bits)
-    {
-      int bytes = (bits + 7) / 8;
-      byte[] buffer = new byte[bytes];
-
-      System.Security.Cryptography.RandomNumberGenerator.Fill(buffer);
-
-      // Ensure positive and roughly correct bit length
-      int topBit = (bits - 1) % 8;
-      buffer[^1] &= (byte)((1 << (topBit + 1)) - 1);
-      buffer[^1] |= (byte)(1 << topBit);
-
-      return new System.Numerics.BigInteger(buffer, isUnsigned: true, isBigEndian: false);
     }
 
     private static void TimedMain(string[] _)
     {
+      var vrtmd = -23d;
+      var vrtmn = 10d;
+
+      var d = Number.RoundToMultiple(vrtmd, vrtmn, DirectedRoundingMode.TowardNegativeInfinity);
+      var u = Number.RoundToMultiple(vrtmd, vrtmn, DirectedRoundingMode.TowardPositiveInfinity);
+
+      var (remainder, remainderNoZero, reverseRemainder, reverseRemainderNoZero) = Number.RemainderAnalysis(10.2d, 3);
+
+      var a = 58585.3456d;
+
+      var alt = Number.RoundToMultiple(a, 1000, DirectedRoundingMode.TowardNegativeInfinity);
+      var agt = Number.RoundToMultiple(a, 1000, DirectedRoundingMode.TowardPositiveInfinity);
+
+      var altq = Number.RoundToMultiple(a, 0.25, DirectedRoundingMode.TowardNegativeInfinity);
+      var agtq = Number.RoundToMultiple(a, 0.25, DirectedRoundingMode.TowardPositiveInfinity);
+
+      var ai = (int)a;
+
+      var (powerTowardZero, powerAwayFromZero, isExactPower) = BinaryInteger.RoundToPower(ai, 2);
+
+      var n = -45;
+
+      var answer1 = double.Round(3.5, MidpointRounding.ToZero);
+      var answer2 = double.RoundToNearestInteger(3.5, NearestRoundingRule.TowardZero);
+
+      var test = false;
+
+
+      var a1 = FloatingPoint.RoundMidpointAlternating(5.5, ref test);
+      var a2 = FloatingPoint.RoundMidpointAlternating(5.5, ref test);
+      var a3 = FloatingPoint.RoundMidpointAlternating(5.5, ref test);
+
+      ComputeDivRem(a, n);
+
+      var ceiling = Number.IntegerDivRemCeiling(a, n);
+      var enveloped = Number.IntegerDivRemEnveloped(a, n);
+      var euclidean = Number.IntegerDivRemEuclidean(a, n);
+      var floored = Number.IntegerDivRemFloored(a, n);
+      var truncated = Number.IntegerDivRemTruncated(a, n);
+      //(-1301, 40)
+      //( 1302,  5)
+      //(-1301, 40)
+      //(-1302, -5)
+      //(-1301, 40)
+      var nm = ModulusOperators.EuclideanModulo(12.3f, 5.5f);
+
+      var min = 0.0;
+      var max = 360;
+
+      var value = 361;
+
+
+      var ic = IntervalNotation.Closed.WrapAround(value, min, max);
+      var il = IntervalNotation.HalfOpenLeft.WrapAround(value, min, max);
+      var ir = IntervalNotation.HalfOpenRight.WrapAround(value, min, max);
+      var io = IntervalNotation.Open.WrapAround(value, min, max);
+
+      var xc = Number.Wrap(value, min, max, IntervalNotation.Closed);
+      var xl = Number.Wrap(value, min, max, IntervalNotation.HalfOpenLeft);
+      var xr = Number.Wrap(value, min, max, IntervalNotation.HalfOpenRight);
+      var xo = Number.Wrap(value, min, max, IntervalNotation.Open);
+
+
+      return;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
       //if (args.Length is var argsLength && argsLength > 0) System.Console.WriteLine($"Args ({argsLength}):{System.Environment.NewLine}{string.Join(System.Environment.NewLine, System.Linq.Enumerable.Select(args, s => $"\"{s}\""))}");
       //if (Zamplez.IsSupported) { Zamplez.Run(); return; }
 
+      var zoom1 = 12;
+      var (latitude1, longitude1) = (32.221667, -110.926389);
+
+
+
+      Flux.XyzTileScheme.LatLonToTile(zoom1, latitude1, longitude1, out int x, out int y);
+
+      int.TileToLatLon(zoom1, x, y, out double latitude2a, out double longitude2a);
+      int.TileToLatLon(zoom1, x + 1, y + 1, out double latitude2b, out double longitude2b);
+
+      // lat_deg = 32.221667
+      // lat_rad = 0.5623741796312036
+      // tan(lat_rad) = 0.630261859897542
+      // sec(lat_rad) = 1.1820448434985489
+      // lon_deg = -110.926389
+      // z = 12
+      // n = 4096
+      // X = 785.9041962666666 = n * ((lon_deg + 180) / 360)
+      // x = 785
+      // Y = 1660.3807675081966 = 4096 * (1 - double.Log(0.630261859897542 + 1.1820448434985489) / double.Pi) * 0.5
+      // y = 1660
+
+      var v = -13.25;
+
+      var (sign, exponent, fraction, significand) = double.ExtractIeeeBinaryFields(v, out var recomputedValue);
+
+      var res = double.Pow(-1, sign) * significand * double.Pow(2, exponent);
+
+      ComputeDivRem(-11, -4);
+
+
+      var bfr = int.BitFoldLeft(0b10100000);
+      var bits = System.Convert.ToString(bfr, 2);
+
+      //var iv = new Interval<int>(2, 10);
+
+      //var w = iv.Wrap(13);
+
+      //var (ic, ir) = Number.GetIntervalCenterRadius(13, 2, 10);
+
+      //var wv = int.WrapToInterval(13 - ic, -ir, ir);
+      //var r = ic + wv;
+
+      //var wti = int.WrapToInterval(13, 2, 10, WrapMode.Centered, IntervalNotation.Closed);
+
+      //var rs = int.Rescale(13, 2, 10, -4, 4);
+
+
+      var fn64 = long.MaxFactorialNForBitCount(64);
+      var fn128 = long.MaxFactorialNForBitCount(128);
 
       var d1 = 11 / 3;
       var r1 = 11 % 3;
@@ -324,7 +450,7 @@ namespace ConsoleApp
       var d2 = 11d / 3;
       var r2 = 11d % 3;
 
-      var (d3, r3) = FloatingPoint.ITruncatedDivRem(11d, 3d);
+      //      var (d3, r3) = FloatingPoint.ITruncatedDivRem(11d, 3d);
 
       var ipo1 = int.IsPowOf(12, 3);
       var ipo2 = int.IsPowOf(14, 3);
@@ -361,11 +487,11 @@ namespace ConsoleApp
       System.Console.WriteLine("Converted the UInt64 value {0:N0} to {1:N0}.",
                         originalNumber, newNumber);
 
-      var bi27 = RandomBigInteger(24);
+      var bi27 = System.Random.Shared.NextNBitBigInteger(24);
 
       var bi = System.Numerics.BigInteger.Parse("123456789123456789123456789123456789123456789123456789");
 
-      var nrrn = System.Numerics.BigInteger.IRootN(bi, 2);
+      var nrrn = System.Numerics.BigInteger.RootN(bi, 2);
       return;
 
       var sonoita = new Flux.CoordinateSystems.GeographicCoordinate(31.679444, Flux.Units.AngleUnit.Degree, -110.655278, Flux.Units.AngleUnit.Degree, 1489);

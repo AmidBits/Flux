@@ -5,6 +5,17 @@
     extension(System.Single)
     {
       /// <summary>
+      /// <para>The base epsilon 1e‑6f → about the scale where single‑precision (binary32) stops reliably distinguishing differences.</para>
+      /// <para>A tolerance for “close enough” comparisons — the smallest meaningful difference before rounding noise dominates.</para>
+      /// </summary>
+      public static float EngineeringEpsilon => 1e-6f;
+
+      /// <summary>
+      /// <para></para>
+      /// </summary>
+      public static float MachineEpsilon => 1.1920929e-7f;
+
+      /// <summary>
       /// <para>The largest integer that can be stored in a <see cref="System.Single"/> without losing precision is <c>16,777,216</c>.</para>
       /// <para>This is because a <see cref="System.Single"/> is a base-2/binary single-precision floating point with a 24-bit mantissa, which means it can precisely represent integers up to 16,777,216 = <c>(1 &lt;&lt; 24)</c> = 2²⁴, before precision starts to degrade.</para>
       /// </summary>
@@ -21,95 +32,117 @@
       /// </summary>
       public static float MaxExactPrimeNumber => 16777213;
 
-      /// <summary>
-      /// <para>A <see cref="System.Single"/> has a precision of about 6-9 significant digits.</para>
-      /// </summary>
-      public static int MaxExactSignificantDigits => 6;
+      #region ULP functions
 
       /// <summary>
-      /// <para>The default epsilon scalar (1e-6f) used for near-integer functions.</para>
+      /// <para>Get the unit in the last place (ULP) of a <see cref="System.Single"/> value.</para>
       /// </summary>
-      public static float NearEqualityEpsilon => 1e-6f;
+      /// <param name="value"></param>
+      /// <returns></returns>
+      public static float GetSingleUlp(float value)
+        => float.IsNaN(value)
+        ? float.NaN
+        : float.IsInfinity(value)
+        ? float.PositiveInfinity
+        : float.BitIncrement(value) - value;
 
       /// <summary>
-      /// <para>The number of bits in the significand of a <see cref="System.Single"/>.</para>
+      /// <para>Get the unit in the last place (ULP) of a <see cref="System.Single"/> value.</para>
       /// </summary>
-      public static int SignificandBits => 24;
-
-      /// <summary>
-      /// <para>The scale factor for the significand of a <see cref="System.Single"/>.</para>
-      /// </summary>
-      public static float SignificandScale => 1f / (1u << 24);
-
-      #region GetComponents
-
-      /// <summary>
-      /// <para>Get the three binary32 parts of a 32-bit floating point both raw (but shifted to LSB) as out parameters and returned adjusted (see below).</para>
-      /// <para><see href="https://en.wikipedia.org/wiki/Single-precision_floating-point_format"/></para>
-      /// </summary>
-      /// <param name="binary32SignBit">This is 1 single sign bit. 0 = positive, 1 = negative.</param>
-      /// <param name="binary32ExponentBiased">This is an 8-bit exponent in biased form, where the values [1, 254] (-126 to +127) represents the actual exponent. The two remaining values 0 (-127) and 255 (+128) are reserved for special numbers.</param>
-      /// <param name="binary32Significand23">These are the stored 23 fraction bits of the significand. Please note that the total precision is actually 24 bits.</param>
-      /// <returns>
-      /// <para>The three adjusted binary32 parts as a tuple: <c>(int Binary32Sign = 1 or -1, int Binary32ExponentUnbiased = [−126, +127], long Binary32Significand24 = [0, <see cref="MaxPreciseInteger"/>])</c>.</para>
-      /// </returns>
-      public static (int Sign, int ExponentUnbiased, long Significand24) GetComponents(System.Single value, out int signBit, out int exponentBiased, out int significand23)
+      /// <param name="value"></param>
+      /// <param name="ulp32FromExponent"></param>
+      /// <returns></returns>
+      public static bool TryGetSingleUlp(float value, out float ulp32)
       {
-        var bits = System.BitConverter.SingleToUInt32Bits(value);
+        ulp32 = GetSingleUlp(value);
 
-        signBit = (int)((bits & 0x80000000U) >>> 31);
-        exponentBiased = (int)((bits & 0x7FF00000U) >>> 23);
-        significand23 = (int)(bits & 0x007FFFFFU);
+        return float.IsFinite(ulp32);
+      }
 
-        return (
-          signBit == 0 ? 1 : -1,
-          exponentBiased - 127,
-          (exponentBiased & 0x00100000) | significand23
-        );
+      /// <summary>
+      /// <para>Get the unit in the last place (ULP) of a <see cref="System.Single"/> value.</para>
+      /// </summary>
+      /// <param name="value"></param>
+      /// <param name="ulp32FromExponent"></param>
+      /// <returns></returns>
+      public static bool TryGetSingleUlp(float value, out float ulp32FromBitIncrement, out float ulp32FromExponent)
+      {
+        var hasMeaningfulUlp = TryGetSingleUlp(value, out ulp32FromBitIncrement);
+
+        if (hasMeaningfulUlp)
+        {
+          var bits = System.BitConverter.SingleToInt32Bits(value);
+          var exponent = (bits >> 23) & 0xFF;
+
+          if (exponent == 0) // subnormal: ULP = 2^-149
+          {
+            ulp32FromExponent = float.BitIncrement(0f);
+          }
+          else // normal: ULP = 2^(e - 23)
+          {
+            var unbiased = exponent - 127;
+            ulp32FromExponent = System.BitConverter.Int32BitsToSingle((127 + unbiased - 23) << 23);
+          }
+        }
+        else
+          ulp32FromExponent = ulp32FromBitIncrement;
+
+        return hasMeaningfulUlp;
       }
 
       #endregion
 
-      #region GetParts
+      #region WrapToInterval
 
       /// <summary>
-      /// <para>Get the integral part and the fractional part of a <see cref="System.Single"/>.</para>
-      /// <para><see href="https://en.wikipedia.org/wiki/Decimal"/></para>
-      /// <para><seealso href="https://en.wikipedia.org/wiki/Decimal_separator"/></para>
-      /// <para><seealso href="https://stackoverflow.com/a/33996511/3178666"/></para>
+      /// <para>Wraps a float value to a specified interval [minValue, maxValue] according to the specified wrap mode and interval notation.</para>
       /// </summary>
-      /// <returns>
-      /// <para>The integral (integer) part and the fractional part of a 32-bit floating point value.</para>
-      /// </returns>
-      public static (float IntegerPart, float FractionalPart) GetParts(System.Single value)
+      /// <param name="value"></param>
+      /// <param name="minValue"></param>
+      /// <param name="maxValue"></param>
+      /// <param name="wrapMode"></param>
+      /// <param name="intervalNotation"></param>
+      /// <param name="epsilon"></param>
+      /// <returns></returns>
+      public static float WrapToInterval(float value, float minValue, float maxValue, WrapMode wrapMode = WrapMode.Normalized, IntervalNotation intervalNotation = IntervalNotation.HalfOpenRight, float epsilon = 0f)
       {
-        var integralPart = float.Truncate(value);
-        var fractionalPart = value - integralPart;
+        System.ArgumentOutOfRangeException.ThrowIfNegative(epsilon);
 
-        return (integralPart, fractionalPart);
+        if (wrapMode == WrapMode.Strict)
+          System.ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(minValue, maxValue);
+        else if (wrapMode == WrapMode.Normalized && maxValue < minValue)
+          (minValue, maxValue) = (maxValue, minValue);
+        else if (wrapMode == WrapMode.Centered)
+        {
+          var mid = (minValue + maxValue) * 0.5f;
+          var half = (maxValue - minValue) * 0.5f;
+
+          return mid + WrapToInterval(value - mid, -half, half, WrapMode.Normalized, intervalNotation, epsilon);
+        }
+
+        var range = maxValue - minValue;
+        if (range == 0d)
+          return minValue;
+
+        var wrapped = (value - minValue) % range;
+        if (wrapped < 0d)
+          wrapped += range;
+
+        var result = wrapped + minValue;
+
+        TryGetSingleUlp(result, out var ulp32FromBitIncrement, out var _);
+
+        var eps = (epsilon != 0d) ? epsilon : ulp32FromBitIncrement;
+
+        return intervalNotation switch
+        {
+          IntervalNotation.Closed => result,
+          IntervalNotation.HalfOpenRight => result >= maxValue - eps ? minValue : result,
+          IntervalNotation.HalfOpenLeft => result <= minValue + eps ? maxValue : result,
+          IntervalNotation.Open => (result <= minValue + eps) ? minValue + eps : (result >= maxValue - eps) ? maxValue - eps : result,
+          _ => result,
+        };
       }
-
-      #endregion
-
-      #region Native..
-
-      public static float NativeDecrement(float value)
-        => float.IsNaN(value)
-        ? throw new System.ArithmeticException(value.ToString())
-        : float.IsNegativeInfinity(value)
-        ? throw new System.OverflowException(value.ToString())
-        : float.IsPositiveInfinity(value)
-        ? float.MaxValue
-        : float.BitDecrement(value);
-
-      public static float NativeIncrement(float value)
-        => float.IsNaN(value)
-        ? throw new System.ArithmeticException(value.ToString())
-        : float.IsPositiveInfinity(value)
-        ? throw new System.OverflowException(value.ToString())
-        : float.IsNegativeInfinity(value)
-        ? float.MinValue
-        : float.BitIncrement(value);
 
       #endregion
     }

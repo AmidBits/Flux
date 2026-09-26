@@ -113,7 +113,7 @@ namespace Flux
 
         if (value is decimal decimalValue)
         {
-          var (integerPart, _, fractionalPartAsWholeNumber) = decimal.GetParts(decimalValue, out var _, out var _, out var scaleFactor, out var _);
+          var (integerPart, _, fractionalPartAsWholeNumber) = decimal.GetDecimalParts(decimalValue, out var scaleFactor);
 
           if (!integerPart.IsZero)
           {
