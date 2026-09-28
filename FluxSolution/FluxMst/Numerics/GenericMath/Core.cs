@@ -151,7 +151,7 @@ namespace Maths
       var (multipleTowardsZero, nNearestMultiple, multipleAwayFromZero) = Number.MultipleOf(n, m, false, NearestRoundingRule.AwayFromZero);
       //n.MultipleOfNearest(m, false, HalfRounding.AwayFromZero, out var multipleTowardsZero, out var multipleAwayFromZero);
 
-      var nearestMultiple = Number.RoundToNearest(n, NearestRoundingRule.TowardZero, false, [multipleTowardsZero, multipleAwayFromZero]);
+      var nearestMultiple = Number.RoundToNearestOf(n, NearestRoundingRule.TowardZero, false, [multipleTowardsZero, multipleAwayFromZero]);
 
       Assert.AreEqual(520, nearestMultiple);
 

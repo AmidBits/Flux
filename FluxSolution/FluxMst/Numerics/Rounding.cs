@@ -29,8 +29,8 @@ namespace Maths
     [TestMethod]
     public void RoundToBoundary()
     {
-      Assert.AreEqual(17, Number.RoundToNearest(12, NearestRoundingRule.AwayFromZero, false, [7, 17]), NearestRoundingRule.AwayFromZero.ToString());
-      Assert.AreEqual(7, Number.RoundToNearest(12, NearestRoundingRule.TowardZero, false, [7, 17]), NearestRoundingRule.TowardZero.ToString());
+      Assert.AreEqual(17, Number.RoundToNearestOf(12, NearestRoundingRule.AwayFromZero, false, [7, 17]), NearestRoundingRule.AwayFromZero.ToString());
+      Assert.AreEqual(7, Number.RoundToNearestOf(12, NearestRoundingRule.TowardZero, false, [7, 17]), NearestRoundingRule.TowardZero.ToString());
     }
 
     [TestMethod]
@@ -42,7 +42,7 @@ namespace Maths
       var (multipleTowardsZero, _, multipleAwayFromZero) = Number.MultipleOf(n, m, false, NearestRoundingRule.AwayFromZero);
       //n.MultipleOfNearest(m, false, HalfRounding.AwayFromZero, out var multipleTowardsZero, out var multipleAwayFromZero);
 
-      Assert.AreEqual(1.8, Number.RoundToNearest(n, NearestRoundingRule.AwayFromZero, false, [multipleTowardsZero, multipleAwayFromZero]), $"{nameof(RoundToMultipleOf)} {NearestRoundingRule.AwayFromZero}");
+      Assert.AreEqual(1.8, Number.RoundToNearestOf(n, NearestRoundingRule.AwayFromZero, false, [multipleTowardsZero, multipleAwayFromZero]), $"{nameof(RoundToMultipleOf)} {NearestRoundingRule.AwayFromZero}");
     }
 
     [TestMethod]

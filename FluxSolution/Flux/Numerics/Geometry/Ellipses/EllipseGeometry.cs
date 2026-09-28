@@ -149,7 +149,7 @@ namespace Flux.Numerics.Geometry.Ellipses
         if (maxRandomness > 0)
           angle += rng.NextDouble(0, arc * maxRandomness);
 
-        var (x, y) = double.PolarToCartesian(1, angle, true);
+        double.PolarToCartesian(1, angle, true, out double x, out double y);
 
         yield return System.Runtime.Intrinsics.Vector128.Create(x * a + translateX, y * b + translateY);
       }
@@ -180,7 +180,7 @@ namespace Flux.Numerics.Geometry.Ellipses
         if (maxRandomness > 0)
           angle += rng.NextDouble(0, arc * maxRandomness);
 
-        var (x, y) = double.PolarToCartesian(1, angle, false);
+        double.PolarToCartesian(1, angle, false, out double x, out double y);
 
         yield return System.Runtime.Intrinsics.Vector128.Create(x * a + translateX, y * b + translateY);
       }

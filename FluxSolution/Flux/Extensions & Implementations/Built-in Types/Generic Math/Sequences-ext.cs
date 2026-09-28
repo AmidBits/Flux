@@ -1,5 +1,358 @@
 ﻿namespace Flux
 {
+  public static partial class BinaryInteger
+  {
+    extension<TInteger>(TInteger)
+      where TInteger : System.Numerics.IBinaryInteger<TInteger>
+    {
+      #region FibonacciSequence
+
+      /// <summary>
+      /// <para>Creates a new sequence of <typeparamref name="TInteger"/> with Fibonacci numbers.</para>
+      /// <para><see href="https://en.wikipedia.org/wiki/Fibonacci_number"/></para>
+      /// </summary>
+      /// <remarks>This function generate results until the type <typeparamref name="TInteger"/> under/overflows in any calculation. No exception is thrown.</remarks>
+      /// <typeparam name="TInteger"></typeparam>
+      /// <returns></returns>
+      public static System.Collections.Generic.IEnumerable<TInteger> FibonacciSequence()
+      {
+        var n1 = TInteger.Zero;
+        var n2 = TInteger.One;
+
+        while (true)
+        {
+          yield return n1;
+
+          try { checked { n1 += n2; } } catch { break; }
+
+          yield return n2;
+
+          try { checked { n2 += n1; } } catch { break; }
+        }
+      }
+
+      #endregion
+
+      #region IsFibonacciNumber
+
+      /// <summary>
+      /// <para>Determines whether the <paramref name="number"/> is a Fibonacci number.</para>
+      /// <para><see href="https://en.wikipedia.org/wiki/Fibonacci_number"/></para>
+      /// </summary>
+      /// <typeparam name="TInteger"></typeparam>
+      /// <param name="number"></param>
+      /// <returns></returns>
+      public static bool IsFibonacciNumber(TInteger n)
+      {
+        checked
+        {
+          var four = TInteger.CreateChecked(4);
+
+          var fivens = TInteger.CreateChecked(5) * n * n;
+          var fp4 = fivens + four;
+          var fp4sr = SquareRoot(fp4);
+          var fm4 = fivens - four;
+          var fm4sr = SquareRoot(fm4);
+
+          return fp4sr * fp4sr == fp4 || fm4sr * fm4sr == fm4;
+        }
+      }
+
+      #endregion
+
+      #region LeonardoSequence
+
+      /// <summary>
+      /// <para>Creates a new sequence with Leonardo numbers.</para>
+      /// <para><see href="https://en.wikipedia.org/wiki/Leonardo_number"/></para>
+      /// </summary>
+      /// <param name="first"></param>
+      /// <param name="second"></param>
+      /// <param name="step"></param>
+      /// <returns></returns>
+      public static System.Collections.Generic.IEnumerable<TInteger> LeonardoSequence(TInteger first, TInteger second, TInteger step)
+      {
+        while (true)
+        {
+          yield return first;
+
+          checked { (first, second) = (second, first + second + step); }
+        }
+      }
+
+      #endregion
+
+      #region MoserDeBruijnSequence
+
+      /// <summary>Creates a sequence of Moser/DeBruijn numbers.</summary>
+      /// <see href="https://en.wikipedia.org/wiki/Moser%E2%80%93De_Bruijn_sequence"/>
+      /// <seealso cref="https://www.geeksforgeeks.org/moser-de-bruijn-sequence/"/>
+      public static System.Collections.Generic.List<TInteger> MoserDeBruijnSequence(TInteger n)
+      {
+        System.ArgumentOutOfRangeException.ThrowIfNegative(n);
+
+        var sequence = new System.Collections.Generic.List<TInteger>(int.CreateChecked(n)) { TInteger.Zero };
+
+        if (n > TInteger.Zero)
+          sequence.Add(TInteger.One);
+
+        for (var i = TInteger.CreateChecked(2); i < n; i++)
+        {
+          var (q, r) = TInteger.DivRem(i, TInteger.CreateChecked(2));
+
+          var next = TInteger.CreateChecked(4) * sequence[int.CreateChecked(q)];
+
+          if (!TInteger.IsZero(r)) // Zero remainder: S(2 * n) = 4 * S(n)
+            next++; // Non-zero remainder: S(2 * n + 1) = 4 * S(n) + 1
+
+          sequence.Add(next);
+        }
+
+        return sequence;
+      }
+
+      #endregion
+
+      #region PadovanSequence
+
+      /// <summary>
+      /// <para>Creates a new sequence with Padovan numbers.</para>
+      /// <para><see href="https://en.wikipedia.org/wiki/Padovan_sequence"/></para>
+      /// </summary>
+      /// <remarks>This function generate results until the type <typeparamref name="TInteger"/> under/overflows in any calculation. No exception is thrown.</remarks>
+      /// <typeparam name="TSelf"></typeparam>
+      /// <returns></returns>
+      public static System.Collections.Generic.IEnumerable<TInteger> PadovanSequence()
+      {
+        TInteger p1 = TInteger.One, p2 = TInteger.One, p3 = TInteger.One;
+
+        yield return p1;
+        yield return p2;
+        yield return p3;
+
+        TInteger pn;
+
+        while (true)
+        {
+          try
+          {
+            pn = checked(p2 + p3);
+          }
+          catch { break; }
+
+          yield return pn;
+
+          p3 = p2;
+          p2 = p1;
+          p1 = pn;
+        }
+      }
+
+      #endregion
+
+      #region PerrinNumbers
+
+      /// <summary>
+      /// <para>Creates an indefinite sequence of Perrin numbers.</para>
+      /// <para><see href="https://en.wikipedia.org/wiki/Perrin_number"/></para>
+      /// </summary>
+      /// <remarks>This function generate results until the type <typeparamref name="TInteger"/> under/overflows in any calculation. No exception is thrown.</remarks>
+      /// <typeparam name="TSelf"></typeparam>
+      /// <returns></returns>
+      public static System.Collections.Generic.IEnumerable<TInteger> PerrinNumbers()
+      {
+        TInteger a = TInteger.CreateChecked(3), b = TInteger.Zero, c = TInteger.CreateChecked(2);
+
+        yield return a;
+        yield return b;
+        yield return c;
+
+        TInteger p;
+
+        while (true)
+        {
+          try
+          {
+            p = checked(a + b);
+          }
+          catch { break; }
+
+          a = b;
+          b = c;
+          c = p;
+
+          yield return p;
+        }
+      }
+
+      #endregion
+
+      #region VanEcksSequence
+
+      /// <summary>
+      /// <para>Creates a new Van Eck's sequence, starting with the specified <paramref name="minNumber"/> (where 0 yields the original sequence).</para>
+      /// <para><see href="https://en.wikipedia.org/wiki/Van_Eck%27s_sequence"/></para>
+      /// </summary>
+      /// <param name="minNumber"></param>
+      /// <returns></returns>
+      /// <exception cref="System.ArgumentOutOfRangeException"></exception>
+      public static System.Collections.Generic.IEnumerable<TInteger> VanEcksSequence(TInteger minNumber)
+      {
+        System.ArgumentOutOfRangeException.ThrowIfNegative(minNumber);
+
+        var lasts = new System.Collections.Generic.Dictionary<TInteger, TInteger>();
+        var last = minNumber;
+
+        checked
+        {
+          for (var index = TInteger.Zero; ; index++)
+          {
+            yield return last;
+
+            TInteger next = TInteger.Zero;
+
+            if (!lasts.TryAdd(last, index))
+            {
+              next = index - lasts[last];
+
+              lasts[last] = index;
+            }
+
+            last = next;
+          }
+        }
+      }
+
+      #endregion
+    }
+  }
+
+  public static partial class FloatingPoint
+  {
+    extension<TFloat>(TFloat)
+      where TFloat : System.Numerics.IFloatingPoint<TFloat>
+    {
+      #region HarmonicMean (type of average)
+
+      /// <summary>
+      /// <para>The harmonic mean is a type of average.</para>
+      /// <para><see href="https://en.wikipedia.org/wiki/Harmonic_mean"/></para>
+      /// </summary>
+      /// <param name="terms"></param>
+      /// <returns></returns>
+      public static TFloat HarmonicMean(out int countOfTerms, out TFloat sumOfHarmonicTerms, params System.Collections.Generic.IEnumerable<TFloat> terms)
+      {
+        sumOfHarmonicTerms = terms.Select(n => TFloat.One / n).Sum(out countOfTerms);
+
+        return TFloat.CreateChecked(countOfTerms) / sumOfHarmonicTerms;
+      }
+
+      #endregion
+
+      #region HarmonicMeanOfTwoTerms
+
+      /// <summary>
+      /// <para>The harmonic mean of two terms is a special case.</para>
+      /// <para><see href="https://en.wikipedia.org/wiki/Harmonic_mean"/></para>
+      /// </summary>
+      /// <param name="x1"></param>
+      /// <param name="x2"></param>
+      /// <returns></returns>
+      public static TFloat HarmonicMeanOfTwoTerms(TFloat x1, TFloat x2)
+      {
+        if (TFloat.IsZero(x1 + x2)) throw new System.ArithmeticException("The harmonic mean is undefined when the sum of the two terms is zero.");
+
+        return (TFloat.CreateChecked(2) * x1 * x2) / (x1 + x2);
+      }
+
+      #endregion
+
+      #region HarmonicMeanOfThreeTerms
+
+      /// <summary>
+      /// <para>The harmonic mean of three terms is a special case.</para>
+      /// <para><see href="https://en.wikipedia.org/wiki/Harmonic_mean"/></para>
+      /// </summary>
+      /// <param name="x1"></param>
+      /// <param name="x2"></param>
+      /// <param name="x3"></param>
+      /// <returns></returns>
+      public static TFloat HarmonicMeanOfThreeTerms(TFloat x1, TFloat x2, TFloat x3)
+        => (TFloat.CreateChecked(3) * x1 * x2 * x3) / (x1 * x2 + x2 * x3 + x3 * x1);
+
+      #endregion
+
+      #region HarmonicSequence (progression)
+
+      /// <summary>
+      /// <para><see href="https://en.wikipedia.org/wiki/Harmonic_progression_(mathematics)"/></para>
+      /// </summary>
+      /// <param name="a1">The first term.</param>
+      /// <param name="commonDifference">The common difference of the harmmonic sequence.</param>
+      /// <returns></returns>
+      public static System.Collections.Generic.IEnumerable<TFloat> HarmonicSequence(TFloat a1, TFloat commonDifference)
+        => Number.ArithmeticSequence(a1, commonDifference).Select(an => TFloat.One / an);
+
+      #endregion
+
+      #region HarmonicSequenceNthTerm
+
+      /// <summary>
+      /// <para><see href="https://en.wikipedia.org/wiki/Harmonic_series_(mathematics)"/></para>
+      /// </summary>
+      /// <typeparam name="TInteger"></typeparam>
+      /// <param name="a1">The first term.</param>
+      /// <param name="commonDifference">The common difference of the harmmonic sequence.</param>
+      /// <param name="n">The term to retrieve.</param>
+      /// <returns></returns>
+      public static TFloat HarmonicSequenceNthTerm<TInteger>(TFloat a1, TFloat commonDifference, TInteger n)
+        where TInteger : System.Numerics.IBinaryInteger<TInteger>
+        => TFloat.One / (a1 + (TFloat.CreateChecked(n) - TFloat.One) * commonDifference);
+
+      #endregion
+    }
+
+    extension<TFloat>(TFloat)
+      where TFloat : System.Numerics.IFloatingPoint<TFloat>, System.Numerics.ILogarithmicFunctions<TFloat>
+    {
+      #region HarmonicSeriesOfNTerms
+
+      /// <summary>
+      /// <para>Gets the harmonic series (sum) of a geometric sequence with <paramref name="nth"/> terms and the specified <paramref name="commonRatio"/>.</para>
+      /// </summary>
+      /// <param name="commonRatio">The common ratio of the geometric sequence.</param>
+      /// <param name="nth">The term of which to find the sum up until.</param>
+      /// <returns></returns>
+      public static TFloat HarmonicSeriesOfNTerms<TInteger>(TFloat a, TFloat d, TInteger n)
+        where TInteger : System.Numerics.IBinaryInteger<TInteger>
+      {
+        var two = TFloat.CreateChecked(2);
+
+        return TFloat.One / d * TFloat.Log((two * a + (two * TFloat.CreateChecked(n) - TFloat.One) * d) / (two * a - d));
+      }
+
+      #endregion
+    }
+
+    extension<TFloat>(TFloat)
+      where TFloat : System.Numerics.IFloatingPoint<TFloat>, System.Numerics.IExponentialFunctions<TFloat>, System.Numerics.ILogarithmicFunctions<TFloat>
+    {
+      #region GeometricMean (type of average)
+
+      /// <summary>
+      /// <para>The geometric mean is a mean or average which indicates a central tendency of a finite collection of positive real numbers by using the product of their values (as opposed to the arithmetic mean, which uses their sum).</para>
+      /// <para><see href="https://en.wikipedia.org/wiki/Geometric_mean"/></para>
+      /// </summary>
+      /// <remarks>This implementation uses <see cref="TFloat.Exp(TFloat)"/> and <see cref="TFloat.Log(TFloat)"/> to avoid arithmetic overflow or underflow.</remarks>
+      /// <param name="terms"></param>
+      /// <returns></returns>
+      public static TFloat GeometricMean(params System.Collections.Generic.IEnumerable<TFloat> terms)
+        => TFloat.Exp(terms.Select(TFloat.Log).Sum(out var count) / TFloat.CreateChecked(count));
+
+      #endregion
+    }
+  }
+
   public static partial class Number
   {
     extension<TNumber>(TNumber)

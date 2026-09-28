@@ -53,14 +53,14 @@ namespace Flux.CoordinateSystems
 
     public CartesianCoordinate ToCartesianCoordinate()
     {
-      var (x, y) = double.PolarToCartesian(m_radius, m_azimuth, true);
+      double.PolarToCartesian(m_radius, m_azimuth, true, out double x, out double y);
 
       return new(x, y, 0, 0);
     }
 
     public CartesianCoordinate ToCartesianCoordinateEx()
     {
-      var (x, y) = double.PolarToCartesian(m_radius, m_azimuth, false);
+      double.PolarToCartesian(m_radius, m_azimuth, false, out double x, out double y);
 
       return new(x, y, 0, 0);
     }
@@ -98,7 +98,7 @@ namespace Flux.CoordinateSystems
     /// <remarks>All angles in radians.</remarks>
     public System.Numerics.Vector2 ToVector2()
     {
-      var (x, y) = double.PolarToCartesian(m_radius, m_azimuth, true);
+      double.PolarToCartesian(m_radius, m_azimuth, true, out double x, out double y);
 
       return new((float)x, (float)y);
     }

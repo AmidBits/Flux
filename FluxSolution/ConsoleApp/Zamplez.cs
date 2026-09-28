@@ -350,9 +350,9 @@ namespace ConsoleApp
 
       //      n = 0;
       //      var nlpow2 = n.NextLargerPowerOf2();
-      var np2TowardsZero = (int)Number.RoundToNearest(n, NearestRoundingRule.TowardZero, false, [Flux.BinaryInteger.RoundDownToPowerOf2(n, false), Flux.BinaryInteger.RoundUpToPowerOf2(n, false)]);
+      var np2TowardsZero = (int)Number.RoundToNearestOf(n, NearestRoundingRule.TowardZero, false, [Flux.BinaryInteger.RoundDownToPowerOf2(n, false), Flux.BinaryInteger.RoundUpToPowerOf2(n, false)]);
       System.Console.WriteLine($" Pow2TowardsZero = {np2TowardsZero}");
-      var np2AwayFromZero = (int)Number.RoundToNearest(n, NearestRoundingRule.AwayFromZero, false, [Flux.BinaryInteger.RoundDownToPowerOf2(n, false), Flux.BinaryInteger.RoundUpToPowerOf2(n, false)]);
+      var np2AwayFromZero = (int)Number.RoundToNearestOf(n, NearestRoundingRule.AwayFromZero, false, [Flux.BinaryInteger.RoundDownToPowerOf2(n, false), Flux.BinaryInteger.RoundUpToPowerOf2(n, false)]);
       System.Console.WriteLine($"Pow2AwayFromZero = {np2AwayFromZero}");
 
       var birbits = BinaryInteger.ReverseBits(n);

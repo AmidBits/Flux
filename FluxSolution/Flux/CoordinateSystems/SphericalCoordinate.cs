@@ -69,7 +69,7 @@ namespace Flux.CoordinateSystems
     /// <summary>Creates new <see cref="CartesianCoordinate"/> from the <see cref="SphericalCoordinate"/>.</summary>
     public CartesianCoordinate ToCartesianCoordinate()
     {
-      var (x, y, z) = double.SphericalToCartesian(m_radius, m_inclination, m_azimuth);
+      double.SphericalToCartesian(m_radius, m_inclination, m_azimuth, out double x, out double y, out double z);
 
       return new(x, y, z);
     }
@@ -99,7 +99,7 @@ namespace Flux.CoordinateSystems
     /// <remarks>All angles in radians.</remarks>
     public System.Numerics.Vector3 ToVector3()
     {
-      var (x, y, z) = double.SphericalToCartesian(m_radius, m_inclination, m_azimuth);
+      double.SphericalToCartesian(m_radius, m_inclination, m_azimuth, out double x, out double y, out double z);
 
       return new((float)x, (float)y, (float)z);
     }

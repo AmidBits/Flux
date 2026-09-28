@@ -231,7 +231,7 @@ namespace Flux
 
       #endregion
 
-      #region ULP functions
+      #region DecimalUlp
 
       /// <summary>
       /// <para>Gets the unit in the last place (ULP) of a <see langword="decimal"/> number.</para>
@@ -240,33 +240,58 @@ namespace Flux
       /// </summary>
       /// <param name="value"></param>
       /// <returns></returns>
-      public static decimal GetDecimalUlp(decimal value)
+      public static decimal DecimalUlp(decimal value)
       {
         var bits = decimal.GetBits(value);
         var scale = (bits[3] >> 16) & 0xFF; // 0–28
         return m_decimalScaleFactorsNegative[scale];
       }
 
+      #endregion
+
+      #region DecimalUlpDecrement
+
       /// <summary>
       /// <para>Decrements a decimal value by one unit in the last place (ULP).</para>
       /// </summary>
       /// <param name="value"></param>
       /// <returns></returns>
-      public static decimal UlpDecrement(decimal value)
+      public static decimal DecimalUlpDecrement(decimal value)
       {
-        var ulp = GetDecimalUlp(value);
+        var ulp = DecimalUlp(value);
 
         return checked(value - ulp);
       }
+
+      #endregion
+
+      #region DecimalUlpDistance
+
+      public static System.Int128 DecimalUlpDistance(decimal left, decimal right)
+      {
+        var (lInteger, lScale, _) = ExtractDecimalFields(left);
+        var (rInteger, rScale, _) = ExtractDecimalFields(right);
+
+        var scale = int.Max(lScale, rScale);
+
+        lInteger *= System.Int128.Pow(10, scale - lScale);
+        rInteger *= System.Int128.Pow(10, scale - rScale);
+
+        return System.Int128.Abs(lInteger - rInteger);
+      }
+
+      #endregion
+
+      #region DecimalUlpIncrement
 
       /// <summary>
       /// <para>Increments a decimal value by one unit in the last place (ULP).</para>
       /// </summary>
       /// <param name="value"></param>
       /// <returns></returns>
-      public static decimal UlpIncrement(decimal value)
+      public static decimal DecimalUlpIncrement(decimal value)
       {
-        var ulp = GetDecimalUlp(value);
+        var ulp = DecimalUlp(value);
 
         return checked(value + ulp);
       }
@@ -348,7 +373,7 @@ namespace Flux
 
         var result = wrapped + minValue;
 
-        var eps = (epsilon != 0m) ? epsilon : GetDecimalUlp(result);
+        var eps = (epsilon != 0m) ? epsilon : DecimalUlp(result);
 
         return intervalNotation switch
         {

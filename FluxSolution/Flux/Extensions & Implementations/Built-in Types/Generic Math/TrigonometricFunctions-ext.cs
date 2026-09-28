@@ -1,6 +1,48 @@
 ﻿namespace Flux
 {
-  public static class TrigonometricFunctions
+  public static partial class Complex
+  {
+    extension(System.Numerics.Complex)
+    {
+      #region Gudermannian
+
+      /// <summary>Returns the inverse Gudermannian of the specified x.</summary>
+      /// <see href="https://en.wikipedia.org/wiki/Gudermannian_function#Inverse"/>
+      /// <remarks>The integral of the secant function defines the inverse of the Gudermannian function.</remarks>
+      /// <remarks>The lambertian function (lam) is a notation for the inverse of the gudermannian which is encountered in the theory of map projections.</remarks>
+      public static System.Numerics.Complex Agd(System.Numerics.Complex y)
+        => 2 * System.Numerics.Complex.Atanh(System.Numerics.Complex.Tan(0.5 * y));
+
+      /// <summary>Returns the complex Gudermannian of the specified x.</summary>
+      /// <see href="https://en.wikipedia.org/wiki/Gudermannian_function"/>
+      public static System.Numerics.Complex Gd(System.Numerics.Complex x)
+        => 2 * System.Numerics.Complex.Atan(System.Numerics.Complex.Tanh(0.5 * x));
+
+      #endregion
+
+      public static System.Numerics.Complex Asinh(System.Numerics.Complex z)
+      => System.Numerics.Complex.Log(z + System.Numerics.Complex.Sqrt(z * z + 1));
+
+      public static System.Numerics.Complex Acosh(System.Numerics.Complex z)
+        => System.Numerics.Complex.Log(z + System.Numerics.Complex.Sqrt(z + 1) * System.Numerics.Complex.Sqrt(z - 1));
+
+      public static System.Numerics.Complex Acoth(System.Numerics.Complex z)
+        => z == 0
+        ? 0.5 * System.Numerics.Complex.Log((z + 1) / (z - 1))
+        : 0.5 * System.Numerics.Complex.Log(1 + 1 / z) - 0.5 * System.Numerics.Complex.Log(1 - 1 / z);
+
+      public static System.Numerics.Complex Acsch(System.Numerics.Complex z)
+        => System.Numerics.Complex.Log(1 / z + System.Numerics.Complex.Sqrt((1 / z * z) + 1));
+
+      public static System.Numerics.Complex Asech(System.Numerics.Complex z)
+        => System.Numerics.Complex.Log((1 / z) + System.Numerics.Complex.Sqrt(1 / z + 1) * System.Numerics.Complex.Sqrt(1 / z - 1));
+
+      public static System.Numerics.Complex Atanh(System.Numerics.Complex z)
+        => 0.5 * System.Numerics.Complex.Log(1 + z) - 0.5 * System.Numerics.Complex.Log(1 - z);
+    }
+  }
+
+  public static partial class FloatingPoint
   {
     extension<TFloat>(TFloat)
       where TFloat : System.Numerics.ITrigonometricFunctions<TFloat>
@@ -160,6 +202,52 @@
       /// <see href="https://en.wikipedia.org/wiki/Versine#Inverse_functions"/>
       public static TFloat Ahcvcos(TFloat y)
         => TFloat.Asin(TFloat.CreateChecked(2) * y - TFloat.One);
+
+      #endregion
+    }
+
+    extension<TFloat>(TFloat)
+      where TFloat : System.Numerics.IFloatingPoint<TFloat>, System.Numerics.IFloatingPointConstants<TFloat>, System.Numerics.ITrigonometricFunctions<TFloat>
+    {
+      #region Atan2.. functions
+
+      /// <summary>
+      /// <para>This is a signed Atan2 which means the output is in the interval [-PI, +PI] (i.e. the radian equivalent of -180 to 180 degrees).</para>
+      /// </summary>
+      /// <param name="y"></param>
+      /// <param name="x"></param>
+      /// <returns></returns>
+      public static TFloat Atan2Signed(TFloat y, TFloat x)
+      {
+        if (TFloat.IsNaN(x) || TFloat.IsNaN(y))
+          return TFloat.CreateChecked(double.NaN);
+
+        var zero = TFloat.Zero;
+
+        if (x == zero) // Handle x == 0 separately (vertical axis)
+        {
+          if (y == zero)
+            return zero;
+
+          var halfPi = TFloat.Pi / TFloat.CreateChecked(2);
+
+          return y > zero ? halfPi : -halfPi;
+        }
+
+        var angle = TFloat.Atan(y / x); // Compute the base angle.
+
+        return x > zero ? angle // Quadrants I and IV → angle is already correct.
+          : y >= zero ? angle + TFloat.Pi : angle - TFloat.Pi; // Quadrant II and III → Correction needed: add 180 degrees if in the second quadrant (x < 0, y >= 0) or subtract 180 degrees if in the third quadrant (x < 0, y < 0).
+      }
+
+      /// <summary>
+      /// <para>This is an unsigned Atan2 which means the output is in the interval [0, 2*PI] (i.e. the radian equivalent of 0 to 360 degrees).</para>
+      /// </summary>
+      /// <param name="y"></param>
+      /// <param name="x"></param>
+      /// <returns></returns>
+      public static TFloat Atan2Unsigned(TFloat y, TFloat x)
+        => Atan2Signed(y, x) is var a && a < TFloat.Zero ? a + TFloat.Tau : a;
 
       #endregion
     }

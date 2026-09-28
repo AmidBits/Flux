@@ -32,14 +32,14 @@
       /// </summary>
       public static float MaxExactPrimeNumber => 16777213;
 
-      #region ULP functions
+      #region SingleUlp/TryGet
 
       /// <summary>
       /// <para>Get the unit in the last place (ULP) of a <see cref="System.Single"/> value.</para>
       /// </summary>
       /// <param name="value"></param>
       /// <returns></returns>
-      public static float GetSingleUlp(float value)
+      public static float SingleUlp(float value)
         => float.IsNaN(value)
         ? float.NaN
         : float.IsInfinity(value)
@@ -54,7 +54,7 @@
       /// <returns></returns>
       public static bool TryGetSingleUlp(float value, out float ulp32)
       {
-        ulp32 = GetSingleUlp(value);
+        ulp32 = SingleUlp(value);
 
         return float.IsFinite(ulp32);
       }
@@ -88,6 +88,24 @@
           ulp32FromExponent = ulp32FromBitIncrement;
 
         return hasMeaningfulUlp;
+      }
+
+      #endregion
+
+      #region SingleUlpDistance
+
+      public static int SingleUlpDistance(float left, float right)
+      {
+        var a = BitConverter.SingleToInt32Bits(left);
+        var b = BitConverter.SingleToInt32Bits(right);
+
+        if (a < 0)
+          a = int.MinValue - a;
+
+        if (b < 0)
+          b = int.MinValue - b;
+
+        return int.Abs(a - b);
       }
 
       #endregion

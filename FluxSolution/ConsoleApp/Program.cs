@@ -306,6 +306,8 @@ namespace ConsoleApp
       var vrtmd = -23d;
       var vrtmn = 10d;
 
+
+
       var d = Number.RoundToMultiple(vrtmd, vrtmn, DirectedRoundingMode.TowardNegativeInfinity);
       var u = Number.RoundToMultiple(vrtmd, vrtmn, DirectedRoundingMode.TowardPositiveInfinity);
 
@@ -331,9 +333,9 @@ namespace ConsoleApp
       var test = false;
 
 
-      var a1 = FloatingPoint.RoundMidpointAlternating(5.5, ref test);
-      var a2 = FloatingPoint.RoundMidpointAlternating(5.5, ref test);
-      var a3 = FloatingPoint.RoundMidpointAlternating(5.5, ref test);
+      var a1 = FloatingPoint.RoundToNearestIntegerAlternating(5.5, ref test);
+      var a2 = FloatingPoint.RoundToNearestIntegerAlternating(5.5, ref test);
+      var a3 = FloatingPoint.RoundToNearestIntegerAlternating(5.5, ref test);
 
       ComputeDivRem(a, n);
 

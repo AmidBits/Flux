@@ -187,9 +187,9 @@ namespace Flux
       /// <param name="value"></param>
       /// <param name="multiple">The multiple to which <paramref name="value"/> is measured.</param>
       /// <param name="unequal"></param>
-      /// <param name="nearestRoundingTies"></param>
+      /// <param name="rule"></param>
       /// <returns></returns>
-      public static (TNumber MultipleTowardZero, TNumber NearestMultiple, TNumber MultipleAwayFromZero) MultipleOf(TNumber value, TNumber multiple, bool unequal = false, NearestRoundingRule nearestRoundingTies = NearestRoundingRule.TowardZero)
+      public static (TNumber MultipleTowardZero, TNumber NearestMultiple, TNumber MultipleAwayFromZero) MultipleOf(TNumber value, TNumber multiple, bool unequal = false, NearestRoundingRule rule = NearestRoundingRule.ToEven)
       {
         var csmv = TNumber.CopySign(multiple, value);
 
@@ -202,291 +202,7 @@ namespace Flux
         if (unequal || moafz != value)
           moafz += csmv;
 
-        return (motz, RoundToNearest(value, nearestRoundingTies, false, [motz, moafz]), moafz);
-      }
-
-      #endregion
-
-      #region Native..
-
-      /// <summary>
-      /// <para>Decrements a number. If integer, then by +1. If floating-point, then by "bit-decrement". If decimal, by 1e-28m.</para>
-      /// </summary>
-      /// <param name="value"></param>
-      /// <returns></returns>
-      /// <exception cref="System.NotImplementedException"></exception>
-      public static TNumber UlpDecrement(TNumber value)
-      {
-        TryGetUlp(value, out var ulp);
-
-        return checked(value - ulp); // If the ULP is available, use it for decrementing.
-      }
-
-      /// <summary>
-      /// <para>Increments a number. If integer, then by -1, otherwise by native-increment.</para>
-      /// </summary>
-      /// <param name="value"></param>
-      /// <returns></returns>
-      /// <exception cref="System.NotImplementedException"></exception>
-      public static TNumber UlpIncrement(TNumber value)
-      {
-        TryGetUlp(value, out var ulp);
-
-        return checked(value + ulp); // If the ULP is available, use it for incrementing.
-      }
-
-      #endregion
-
-      #region Quantiles
-
-      /// <summary>
-      /// <para>Computes by linear interpolation of the EDF.</para>
-      /// </summary>
-      /// <param name="ordered"></param>
-      /// <param name="h"></param>
-      /// <returns>An estimated value.</returns>
-      /// <exception cref="System.ArgumentNullException"/>
-      private static TPercent QuantileEdfLerp<TPercent>(System.Span<TNumber> ordered, TPercent h)
-        where TPercent : System.Numerics.IFloatingPoint<TPercent>
-      {
-        var fh = TPercent.Floor(h); // Floor of h.
-        var ch = TPercent.Ceiling(h); // Ceiling of h.
-
-        var fhi = System.Convert.ToInt32(fh);
-        var chi = System.Convert.ToInt32(ch);
-
-        var maxIndex = ordered.Length - 1;
-
-        // Ensure roundings are clamped to quantile rank [0, maxIndex] range (variable 'h' on Wikipedia). There are no adjustments for 0-based indexing.
-        fhi = int.Clamp(fhi, 0, maxIndex);
-        chi = int.Clamp(chi, 0, maxIndex);
-
-        var fv = ordered[fhi]; // Value at fhi.
-        var cv = ordered[chi]; // Value at chi.
-
-        return TPercent.CreateChecked(fv) + (h - fh) * TPercent.CreateChecked(cv - fv); // Linear interpolation between floor and ceiling using difference between h and fh (making it [0-1]).
-      }
-
-      /// <summary>
-      /// <para>An empirical distribution function (commonly also called an empirical Cumulative Distribution Function, eCDF) is the distribution function associated with the empirical measure of a sample.</para>
-      /// <para><see href="https://en.wikipedia.org/wiki/Quantile"/></para>
-      /// <para><see href="https://en.wikipedia.org/wiki/Empirical_distribution_function"/></para>
-      /// </summary>
-      /// <typeparam name="TPercent"></typeparam>
-      /// <param name="ordered"></param>
-      /// <param name="p"></param>
-      /// <returns></returns>
-      public static TPercent QuantileEdf<TPercent>(System.Span<TNumber> ordered, TPercent p)
-        where TPercent : System.Numerics.IFloatingPoint<TPercent>
-      {
-        System.ArgumentOutOfRangeException.ThrowIfNegative(p);
-        System.ArgumentOutOfRangeException.ThrowIfGreaterThan(p, TPercent.One);
-
-        var h = p * TPercent.CreateChecked(ordered.Length + 1);
-
-        return QuantileEdfLerp(ordered, h - TPercent.One);
-      }
-
-      /// <summary>
-      /// <para>Inverse of empirical distribution function.</para>
-      /// <para><see href="https://en.wikipedia.org/wiki/Quantile#Estimating_quantiles_from_a_sample"/></para>
-      /// </summary>
-      /// <typeparam name="TPercent"></typeparam>
-      /// <param name="numbers"></param>
-      /// <param name="p"></param>
-      /// <returns></returns>
-      public static TPercent QuantileR1<TPercent>(System.Span<TNumber> numbers, TPercent p)
-        where TPercent : System.Numerics.IFloatingPoint<TPercent>
-      {
-        System.ArgumentOutOfRangeException.ThrowIfNegative(p);
-        System.ArgumentOutOfRangeException.ThrowIfGreaterThan(p, TPercent.One);
-
-        var h = TPercent.CreateChecked(numbers.Length) * p;
-
-        var index = System.Convert.ToInt32(TPercent.Ceiling(h));
-
-        index = int.Clamp(index, 1, numbers.Length) - 1; // Ensure roundings are clamped to quantile rank [1, count] range (variable 'h' on Wikipedia) and then adjust to 0-based index.
-
-        return TPercent.CreateChecked(numbers[index]);
-      }
-
-      /// <summary>
-      /// <para>The same as R1, but with averaging at discontinuities.</para>
-      /// <para><see href="https://en.wikipedia.org/wiki/Quantile#Estimating_quantiles_from_a_sample"/></para>
-      /// </summary>
-      /// <typeparam name="TPercent"></typeparam>
-      /// <param name="numbers"></param>
-      /// <param name="p"></param>
-      /// <returns></returns>
-      public static TPercent QuantileR2<TPercent>(System.Span<TNumber> numbers, TPercent p)
-        where TPercent : System.Numerics.IFloatingPoint<TPercent>
-      {
-        System.ArgumentOutOfRangeException.ThrowIfNegative(p);
-        System.ArgumentOutOfRangeException.ThrowIfGreaterThan(p, TPercent.One);
-
-        var h = TPercent.CreateChecked(numbers.Length) * p + TPercent.CreateChecked(0.5);
-
-        var half = TPercent.CreateChecked(0.5);
-
-        var chi = System.Convert.ToInt32(TPercent.Ceiling(h - half)); // ceiling(h - 0.5).
-        var fhi = System.Convert.ToInt32(TPercent.Floor(h + half)); // floor(h + 0.5).
-
-        // Ensure roundings are clamped to quantile rank [1, count] range (variable 'h' on Wikipedia) and then adjust to 0-based index.
-        chi = int.Clamp(chi, 1, numbers.Length) - 1;
-        fhi = int.Clamp(fhi, 1, numbers.Length) - 1;
-
-        return TPercent.CreateChecked(numbers[chi] + numbers[fhi]) / TPercent.CreateChecked(2);
-      }
-
-      /// <summary>
-      /// <para>The observation numbered closest to Np. Here, h indicates rounding to the nearest integer, choosing the even integer in the case of a tie.</para>
-      /// <para><see href="https://en.wikipedia.org/wiki/Quantile#Estimating_quantiles_from_a_sample"/></para>
-      /// </summary>
-      /// <typeparam name="TPercent"></typeparam>
-      /// <param name="numbers"></param>
-      /// <param name="p"></param>
-      /// <returns></returns>
-      public static TPercent QuantileR3<TPercent>(System.Span<TNumber> numbers, TPercent p)
-        where TPercent : System.Numerics.IFloatingPoint<TPercent>
-      {
-        System.ArgumentOutOfRangeException.ThrowIfNegative(p);
-        System.ArgumentOutOfRangeException.ThrowIfGreaterThan(p, TPercent.One);
-
-        var h = TPercent.CreateChecked(numbers.Length) * p - TPercent.CreateChecked(0.5);
-
-        var index = System.Convert.ToInt32(TPercent.Round(h, System.MidpointRounding.ToEven)); // Round h to the nearest integer, choosing the even integer in the case of a tie.
-
-        index = int.Clamp(index, 0, numbers.Length - 1); // Ensure roundings are clamped to quantile rank [1, count] range (variable 'h' on Wikipedia) and then adjust to 0-based index.
-
-        return TPercent.CreateChecked(numbers[index]);
-      }
-
-      /// <summary>
-      /// <para>Linear interpolation of the empirical distribution function.</para>
-      /// <para><see href="https://en.wikipedia.org/wiki/Quantile#Estimating_quantiles_from_a_sample"/></para>
-      /// </summary>
-      /// <typeparam name="TPercent"></typeparam>
-      /// <param name="numbers"></param>
-      /// <param name="p"></param>
-      /// <returns></returns>
-      public static TPercent QuantileR4<TPercent>(System.Span<TNumber> numbers, TPercent p)
-        where TPercent : System.Numerics.IFloatingPoint<TPercent>
-      {
-        System.ArgumentOutOfRangeException.ThrowIfNegative(p);
-        System.ArgumentOutOfRangeException.ThrowIfGreaterThan(p, TPercent.One);
-
-        var h = TPercent.CreateChecked(numbers.Length) * p;
-
-        return QuantileEdfLerp(numbers, h - TPercent.One); // Adjust for 0-based indexing.
-      }
-
-      /// <summary>
-      /// <para>Piecewise linear function where the knots are the values midway through the steps of the empirical distribution function.</para>
-      /// <para><see href="https://en.wikipedia.org/wiki/Quantile#Estimating_quantiles_from_a_sample"/></para>
-      /// </summary>
-      /// <typeparam name="TPercent"></typeparam>
-      /// <param name="numbers"></param>
-      /// <param name="p"></param>
-      /// <returns></returns>
-      public static TPercent QuantileR5<TPercent>(System.Span<TNumber> numbers, TPercent p)
-        where TPercent : System.Numerics.IFloatingPoint<TPercent>
-      {
-        System.ArgumentOutOfRangeException.ThrowIfNegative(p);
-        System.ArgumentOutOfRangeException.ThrowIfGreaterThan(p, TPercent.One);
-
-        var h = TPercent.CreateChecked(numbers.Length) * p + TPercent.CreateChecked(0.5);
-
-        return QuantileEdfLerp(numbers, h - TPercent.One); // Adjust for 0-based indexing.
-      }
-
-      /// <summary>
-      /// <para>Linear interpolation of the expectations for the order statistics for the uniform distribution on [0,1]. That is, it is the linear interpolation between points (ph, xh), where ph = h/(N+1) is the probability that the last of (N+1) randomly drawn values will not exceed the h-th smallest of the first N randomly drawn values.</para>
-      /// <para></para>
-      /// <para><see href="https://en.wikipedia.org/wiki/Quantile#Estimating_quantiles_from_a_sample"/></para>
-      /// </summary>
-      /// <remarks>
-      /// <list type="bullet">
-      /// <item><see href="https://en.wikipedia.org/wiki/Percentile#Third_variant,_C_=_0">Percentile, Third variant C = 0</see> - Microsoft Excel PERCENTILE.EXC function - Python's default "exclusive" method - Primary variant recommended by NIST.</item>
-      /// <item><see href="https://en.wikipedia.org/wiki/Quartile#Method_4">Quartile, Method 4</see> - Microsoft Excel QUARTILE.EXC function</item>
-      /// </list>
-      /// </remarks>
-      /// <typeparam name="TPercent"></typeparam>
-      /// <param name="numbers"></param>
-      /// <param name="p"></param>
-      /// <returns></returns>
-      public static TPercent QuantileR6<TPercent>(System.Span<TNumber> numbers, TPercent p)
-        where TPercent : System.Numerics.IFloatingPoint<TPercent>
-      {
-        System.ArgumentOutOfRangeException.ThrowIfNegative(p);
-        System.ArgumentOutOfRangeException.ThrowIfGreaterThan(p, TPercent.One);
-
-        var h = TPercent.CreateChecked(numbers.Length + 1) * p;
-
-        return QuantileEdfLerp(numbers, h - TPercent.One); // Adjust for 0-based indexing.
-      }
-
-      /// <summary>
-      /// <para>Linear interpolation of the modes for the order statistics for the uniform distribution on [0, 1].</para>
-      /// <para><see href="https://en.wikipedia.org/wiki/Quantile#Estimating_quantiles_from_a_sample"/></para>
-      /// </summary>
-      /// <remarks>
-      /// <para>Equivalent to</para>
-      /// <list type="bullet">
-      /// <item><see href="https://en.wikipedia.org/wiki/Percentile#Second_variant,_C_=_1">Percentile - Second variant, C = 1</see> - Microsoft Excel PERCENTILE.INC function - Python's optional "inclusive" method - Noted as an alternative by NIST</item>
-      /// <item><see href="https://en.wikipedia.org/wiki/Quartile#Method_3">Quartile Method 3</see> - Microsoft Excel	QUARTILE.INC function</item>
-      /// </list>
-      /// </remarks>
-      /// <typeparam name="TPercent"></typeparam>
-      /// <param name="numbers"></param>
-      /// <param name="p"></param>
-      /// <returns></returns>
-      public static TPercent QuantileR7<TPercent>(System.Span<TNumber> numbers, TPercent p)
-        where TPercent : System.Numerics.IFloatingPoint<TPercent>
-      {
-        System.ArgumentOutOfRangeException.ThrowIfNegative(p);
-        System.ArgumentOutOfRangeException.ThrowIfGreaterThan(p, TPercent.One);
-
-        var h = TPercent.CreateChecked(numbers.Length - 1) * p + TPercent.One;
-
-        return QuantileEdfLerp(numbers, h - TPercent.One); // Adjust for 0-based indexing.
-      }
-
-      /// <summary>
-      /// <para>Linear interpolation of the approximate medians for order statistics.</para>
-      /// <para><see href="https://en.wikipedia.org/wiki/Quantile#Estimating_quantiles_from_a_sample"/></para>
-      /// </summary>
-      /// <typeparam name="TPercent"></typeparam>
-      /// <param name="numbers"></param>
-      /// <param name="p"></param>
-      /// <returns></returns>
-      public static TPercent QuantileR8<TPercent>(System.Span<TNumber> numbers, TPercent p)
-        where TPercent : System.Numerics.IFloatingPoint<TPercent>
-      {
-        System.ArgumentOutOfRangeException.ThrowIfNegative(p);
-        System.ArgumentOutOfRangeException.ThrowIfGreaterThan(p, TPercent.One);
-
-        var h = (TPercent.CreateChecked(numbers.Length) + TPercent.CreateChecked(1d / 3d)) * p + TPercent.CreateChecked(1d / 3d);
-
-        return QuantileEdfLerp(numbers, h - TPercent.One); // Adjust for 0-based indexing.
-      }
-
-      /// <summary>
-      /// <para>The resulting quantile estimates are approximately unbiased for the expected order statistics if x is normally distributed.</para>
-      /// <para><see href="https://en.wikipedia.org/wiki/Quantile#Estimating_quantiles_from_a_sample"/></para>
-      /// </summary>
-      /// <typeparam name="TPercent"></typeparam>
-      /// <param name="numbers"></param>
-      /// <param name="p"></param>
-      /// <returns></returns>
-      public static TPercent QuantileR9<TPercent>(System.Span<TNumber> numbers, TPercent p)
-        where TPercent : System.Numerics.IFloatingPoint<TPercent>
-      {
-        System.ArgumentOutOfRangeException.ThrowIfNegative(p);
-        System.ArgumentOutOfRangeException.ThrowIfGreaterThan(p, TPercent.One);
-
-        var h = (TPercent.CreateChecked(numbers.Length) + TPercent.CreateChecked(1d / 4d)) * p + TPercent.CreateChecked(3d / 8d);
-
-        return QuantileEdfLerp(numbers, h - TPercent.One); // Adjust for 0-based indexing.
+        return (motz, RoundToNearestOf(value, rule, false, [motz, moafz]), moafz);
       }
 
       #endregion
@@ -540,7 +256,7 @@ namespace Flux
         if (value < minValue || value > maxValue)
           return value; // If number is already spread, nothing to do but return it.
 
-        var nearestValue = RoundToNearest(value, rule, false, [minValue, maxValue]);
+        var nearestValue = RoundToNearestOf(value, rule, false, [minValue, maxValue]);
 
         return (nearestValue == minValue)
           ? minValue - margin
@@ -563,7 +279,7 @@ namespace Flux
         if (value < minValue || value > maxValue)
           return value; // If number is already spread, nothing to do but return it.
 
-        var nearestValue = RoundToNearest(value, nearestRoundingTies, false, [minValue, maxValue]);
+        var nearestValue = RoundToNearestOf(value, nearestRoundingTies, false, [minValue, maxValue]);
 
         return (nearestValue == minValue)
           ? UlpDecrement(minValue)
@@ -591,29 +307,6 @@ namespace Flux
         var remainder = EuclideanModulo(value, modulus + modulus);
 
         return modulus - TNumber.Abs(remainder - modulus);
-      }
-
-      #endregion
-
-      #region ULP functions
-
-      public static TNumber GetUlp(TNumber value)
-        => value switch
-        {
-          decimal dfp128 => TNumber.CreateChecked(decimal.GetDecimalUlp(dfp128)),
-          double bfp64 => TNumber.CreateChecked(double.GetDoubleUlp(bfp64)),
-          float bfp32 => TNumber.CreateChecked(float.GetSingleUlp(bfp32)),
-          System.Half bfp16 => TNumber.CreateChecked(System.Half.GetHalfUlp(bfp16)),
-          System.Runtime.InteropServices.NFloat nf => TNumber.CreateChecked(System.Runtime.InteropServices.NFloat.GetNFloatUlp(nf)),
-          int or uint or long or ulong or short or ushort or byte or sbyte or nint or nuint or System.Int128 or System.UInt128 or System.Numerics.BigInteger => TNumber.One,
-          _ => throw new System.NotImplementedException(value.GetType().Name)
-        };
-
-      public static bool TryGetUlp(TNumber value, out TNumber ulp)
-      {
-        ulp = GetUlp(value);
-
-        return TNumber.IsFinite(ulp);
       }
 
       #endregion
@@ -730,7 +423,7 @@ namespace Flux
 
         var result = minValue + wrapped;
 
-        var ulp = GetUlp(result);
+        var ulp = Ulp(result);
 
         var eps = TNumber.IsZero(epsilon) ? ulp : epsilon;
 
@@ -800,7 +493,7 @@ namespace Flux
         var rem = ModulusOperators.EuclideanModulo(value - minValue, maxValue - minValue);
 
         if (TNumber.IsZero(rem))
-          return minValue + Number.GetUlp(minValue);
+          return minValue + Number.Ulp(minValue);
 
         return minValue + rem;
 
@@ -871,38 +564,6 @@ namespace Flux
 
       #endregion
     }
-
-    #region MeanMedianAbsoluteDeviation
-
-    /// <summary>
-    /// <para>The mean absolute deviation (MAD), of a data set is the average of the absolute deviations from a central point.</para>
-    /// <para>In this function, both M(AD)ean, M(AD)edian and the regular mode are computed.</para>
-    /// <para><see href="https://en.wikipedia.org/wiki/Average_absolute_deviation"/></para>
-    /// </summary>
-    /// <typeparam name="TNumber"></typeparam>
-    /// <param name="values"></param>
-    /// <returns></returns>
-    public static (double MeanAbsoluteDeviation, double MedianAbsoluteDeviation) MeanMedianAbsoluteDeviation<TNumber>(this System.Collections.Generic.IList<TNumber> values)
-      where TNumber : System.Numerics.INumber<TNumber>
-    {
-      var mmo = new Statistics.OnlineMeanMedianMode<TNumber>(values);
-
-      var madMean = 0d;
-      var madMedian = 0d;
-
-      foreach (var value in values.Select(v => double.CreateChecked(v)))
-      {
-        madMean += double.Abs(value - mmo.Mean);
-        madMedian += double.Abs(value - mmo.Median);
-      }
-
-      madMean /= mmo.Count;
-      madMedian /= mmo.Count;
-
-      return (madMean, madMedian);
-    }
-
-    #endregion
 
     //#region PowOf
 

@@ -124,14 +124,14 @@ namespace Flux
 
       #endregion
 
-      #region ULP functions
+      #region DoubleUlp/TryGet
 
       /// <summary>
       /// <para>Get the unit in the last place (ULP) of a <see cref="System.Double"/>.</para>
       /// </summary>
       /// <param name="value"></param>
       /// <returns></returns>
-      public static double GetDoubleUlp(double value)
+      public static double DoubleUlp(double value)
         => double.IsNaN(value)
         ? double.NaN
         : double.IsInfinity(value)
@@ -146,7 +146,7 @@ namespace Flux
       /// <returns></returns>
       public static bool TryGetDoubleUlp(double value, out double ulp64)
       {
-        ulp64 = GetDoubleUlp(value);
+        ulp64 = DoubleUlp(value);
 
         return double.IsFinite(ulp64);
       }
@@ -180,6 +180,24 @@ namespace Flux
           ulp64FromExponent = ulp64FromBitIncrement;
 
         return hasMeaningfulUlp;
+      }
+
+      #endregion
+
+      #region DoubleUlpDistance
+
+      public static long DoubleUlpDistance(double left, double right)
+      {
+        var a = BitConverter.DoubleToInt64Bits(left);
+        var b = BitConverter.DoubleToInt64Bits(right);
+
+        if (a < 0)
+          a = long.MinValue - a;
+
+        if (b < 0)
+          b = long.MinValue - b;
+
+        return long.Abs(a - b);
       }
 
       #endregion

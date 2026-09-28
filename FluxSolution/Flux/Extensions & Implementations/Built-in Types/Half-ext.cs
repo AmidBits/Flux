@@ -29,14 +29,14 @@
       /// </summary>
       public static System.Half MaxExactPrimeNumber => System.Half.CreateChecked(2039);
 
-      #region ULP functions
+      #region HalfUlp/TryGet
 
       /// <summary>
       /// <para>Get the unit in the last place (ULP) of a <see cref="System.Half"/> value.</para>
       /// </summary>
       /// <param name="value"></param>
       /// <returns></returns>
-      public static System.Half GetHalfUlp(System.Half value)
+      public static System.Half HalfUlp(System.Half value)
         => System.Half.IsNaN(value)
         ? System.Half.NaN
         : System.Half.IsInfinity(value)
@@ -51,7 +51,7 @@
       /// <returns></returns>
       public static bool TryGetHalfUlp(System.Half value, out System.Half ulp16)
       {
-        ulp16 = GetHalfUlp(value);
+        ulp16 = HalfUlp(value);
 
         return System.Half.IsFinite(ulp16);
       }
@@ -88,6 +88,24 @@
           ulp16FromExponent = ulp16FromBitIncrement;
 
         return hasMeaningfulUlp;
+      }
+
+      #endregion
+
+      #region HalfUlpDistance
+
+      public static short HalfUlpDistance(System.Half left, System.Half right)
+      {
+        var a = BitConverter.HalfToInt16Bits(left);
+        var b = BitConverter.HalfToInt16Bits(right);
+
+        if (a < 0)
+          a = (short)(short.MinValue - a);
+
+        if (b < 0)
+          b = (short)(short.MinValue - b);
+
+        return short.Abs((short)(a - b));
       }
 
       #endregion

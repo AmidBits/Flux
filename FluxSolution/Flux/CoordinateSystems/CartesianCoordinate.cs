@@ -88,7 +88,7 @@ namespace Flux.CoordinateSystems
     {
       var (x, y, z) = this;
 
-      var (radius, azimuth, height) = double.CartesianToCylindrical(x, y, z);
+      double.CartesianToCylindrical(x, y, z, out double radius, out double azimuth, out double height);
 
       return new(radius, azimuth, height);
     }
@@ -117,7 +117,7 @@ namespace Flux.CoordinateSystems
     {
       var (x, y) = this;
 
-      var (radius, angle) = double.CartesianToPolar(x, y, true);
+      double.CartesianToPolar(x, y, true, out double radius, out double angle);
 
       return new(radius, angle);
     }
@@ -127,7 +127,7 @@ namespace Flux.CoordinateSystems
     {
       var (x, y) = this;
 
-      var (radius, angle) = double.CartesianToPolar(x, y, false);
+      double.CartesianToPolar(x, y, false, out double radius, out double angle);
 
       return new(radius, angle);
     }
@@ -137,7 +137,7 @@ namespace Flux.CoordinateSystems
     {
       var (x, y, z) = this;
 
-      var (radius, inclination, azimuth) = double.CartesianToSpherical(x, y, z);
+      double.CartesianToSpherical(x, y, z, out double radius, out double inclination, out double azimuth);
 
       return new(radius, inclination, azimuth);
     }

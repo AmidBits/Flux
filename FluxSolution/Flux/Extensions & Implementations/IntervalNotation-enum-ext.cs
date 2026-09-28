@@ -416,7 +416,7 @@ namespace Flux
       public TNumber WrapAround<TNumber>(TNumber value, TNumber minValue, TNumber maxValue)
         where TNumber : System.Numerics.INumber<TNumber>
       {
-        var ulp = Number.GetUlp(value);
+        var ulp = Number.Ulp(value);
         ulp = TNumber.One;
         (minValue, maxValue) = source.GetExtentAbsolute(minValue, maxValue, ulp);
 

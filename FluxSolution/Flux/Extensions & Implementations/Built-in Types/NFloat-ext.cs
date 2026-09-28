@@ -52,14 +52,14 @@
         ? System.Runtime.InteropServices.NFloat.CreateChecked(float.MaxExactPrimeNumber)
         : throw new System.NotImplementedException();
 
-      #region ULP functions
+      #region NFloatUlp/TryGet
 
       /// <summary>
       /// <para>Get the unit in the last place (ULP) of a <see cref="System.Double"/>.</para>
       /// </summary>
       /// <param name="value"></param>
       /// <returns></returns>
-      public static System.Runtime.InteropServices.NFloat GetNFloatUlp(System.Runtime.InteropServices.NFloat value)
+      public static System.Runtime.InteropServices.NFloat NFloatUlp(System.Runtime.InteropServices.NFloat value)
         => System.Runtime.InteropServices.NFloat.IsNaN(value)
         ? System.Runtime.InteropServices.NFloat.NaN
         : System.Runtime.InteropServices.NFloat.IsInfinity(value)
@@ -74,10 +74,21 @@
       /// <returns></returns>
       public static bool TryGetNFloatUlp(System.Runtime.InteropServices.NFloat value, out System.Runtime.InteropServices.NFloat ulpNFloat)
       {
-        ulpNFloat = GetNFloatUlp(value);
+        ulpNFloat = NFloatUlp(value);
 
         return System.Runtime.InteropServices.NFloat.IsFinite(ulpNFloat);
       }
+
+      #endregion
+
+      #region NFloatUlpDistance
+
+      public static long NFloatUlpDistance(System.Runtime.InteropServices.NFloat left, System.Runtime.InteropServices.NFloat right)
+        => System.Runtime.InteropServices.NFloat.Size == 8
+        ? double.DoubleUlpDistance(double.CreateChecked(left), double.CreateChecked(right))
+        : System.Runtime.InteropServices.NFloat.Size == 4
+        ? float.SingleUlpDistance(float.CreateChecked(left), float.CreateChecked(right))
+        : throw new System.NotImplementedException();
 
       #endregion
     }

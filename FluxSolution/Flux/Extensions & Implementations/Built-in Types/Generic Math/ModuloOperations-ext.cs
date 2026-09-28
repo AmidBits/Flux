@@ -105,6 +105,55 @@
         return (qf, a - qf * n);
       }
 
+      //public static (TNumber Quotient, TNumber Remainder) IntegerDivRemRound(TNumber a, TNumber n, NearestRoundingRule rule)
+      //{
+      //  var (q, r) = IntegerDivRemFloored(a, n);
+
+      //  if (TNumber.Abs(r + r) >= TNumber.Abs(n))
+      //    q += TNumber.Sign(r) == TNumber.Sign(n) ? TNumber.One : -TNumber.One;
+
+      //  return (q, a - q * n);
+
+      //  //var q = a / n;
+
+      //  //var qr = FloatingPoint.RoundToNearestInteger(q, rule);
+
+      //  //return (qr, a - qr * n);
+      //}
+
+      public static (TNumber Quotient, TNumber Remainder) IntegerDivRemRound(TNumber a, TNumber n, NearestRoundingRule rule = NearestRoundingRule.ToEven)
+      {
+        var (q, r) = IntegerDivRemFloored(a, n);
+
+        var twiceR = TNumber.Abs(r + r);
+        var absN = TNumber.Abs(n);
+
+        if (twiceR > absN)
+        {
+          q += TNumber.Sign(r) == TNumber.Sign(n) ? TNumber.One : -TNumber.One;
+        }
+        else if (twiceR == absN)
+        {
+          var qafz = q + TNumber.CreateChecked(TNumber.Sign(n));
+
+          q = rule switch
+          {
+            NearestRoundingRule.TowardNegativeInfinity => TNumber.Min(q, qafz),
+            NearestRoundingRule.TowardPositiveInfinity => TNumber.Max(q, qafz),
+            NearestRoundingRule.TowardZero => TNumber.Abs(q) <= TNumber.Abs(qafz) ? q : qafz,
+            NearestRoundingRule.AwayFromZero => TNumber.Abs(q) >= TNumber.Abs(qafz) ? q : qafz,
+            NearestRoundingRule.ToEven => (q % (TNumber.One + TNumber.One)) == TNumber.Zero ? q : qafz,
+            NearestRoundingRule.ToOdd => (q % (TNumber.One + TNumber.One)) != TNumber.Zero ? q : qafz,
+            NearestRoundingRule.Random => System.Random.Shared.Next() == 0 ? q : qafz,
+            _ => throw new System.NotImplementedException(nameof(rule))
+          };
+        }
+
+        // if (twiceR > absN) then q is already correct, so no else branch is needed for the default condition.
+
+        return (q, a - q * n);
+      }
+
       public static (TNumber Quotient, TNumber Remainder) IntegerDivRemTruncated(TNumber a, TNumber n)
       {
         var q = a / n;

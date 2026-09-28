@@ -65,7 +65,7 @@ namespace Flux.CoordinateSystems
 
     public CartesianCoordinate ToCartesianCoordinate()
     {
-      var (x, y, z) = double.CylindricalToCartesian(m_radius, m_azimuth, m_height);
+      double.CylindricalToCartesian(m_radius, m_azimuth, m_height, out double x, out double y, out double z);
 
       return new(x, y, z);
     }
@@ -113,7 +113,7 @@ namespace Flux.CoordinateSystems
     /// <remarks>All angles in radians.</remarks>
     public System.Numerics.Vector3 ToVector3()
     {
-      var (x, y, z) = double.CylindricalToCartesian(m_radius, m_azimuth, m_height);
+      double.CylindricalToCartesian(m_radius, m_azimuth, m_height, out double x, out double y, out double z);
 
       return new((float)x, (float)y, (float)z);
     }

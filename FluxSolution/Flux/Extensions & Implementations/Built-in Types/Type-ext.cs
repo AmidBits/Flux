@@ -492,6 +492,10 @@ namespace Flux
       /// <returns></returns>
       public bool IsNumericsIUnsignedNumber() => IsAssignableToGenericAware(type, typeof(System.Numerics.IUnsignedNumber<>));
 
+      public bool IsNumericsSignedInteger() => IsAssignableToGenericAware(type, typeof(System.Numerics.ISignedNumber<>)) && IsNumericsIBinaryInteger(type);
+
+      public bool IsNumericsUnsignedInteger() => IsAssignableToGenericAware(type, typeof(System.Numerics.IUnsignedNumber<>)) && IsNumericsIBinaryInteger(type);
+
       #endregion
 
       #region IsSub/SuperTypeOf
