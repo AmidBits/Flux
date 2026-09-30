@@ -92,6 +92,28 @@
 
       #endregion
 
+      #region SingleUlpDecrement
+
+      /// <summary>
+      /// <para>Decrement a double by n ULPs (n can be negative for increment).</para>
+      /// </summary>
+      /// <param name="value"></param>
+      /// <param name="ulps"></param>
+      /// <returns></returns>
+      public static float SingleUlpDecrement(float value, int ulps = 1)
+      {
+        if (ulps < 0) return SingleUlpIncrement(value, -ulps);
+
+        if (value == 0f) return System.BitConverter.Int32BitsToSingle(-ulps); // handle negative zero
+
+        var bits = System.BitConverter.SingleToInt32Bits(value);
+        if (value > 0) bits -= ulps;
+        else bits += ulps;
+        return System.BitConverter.Int32BitsToSingle(bits);
+      }
+
+      #endregion
+
       #region SingleUlpDistance
 
       public static int SingleUlpDistance(float left, float right)
@@ -106,6 +128,28 @@
           b = int.MinValue - b;
 
         return int.Abs(a - b);
+      }
+
+      #endregion
+
+      #region SingleUlpIncrement
+
+      /// <summary>
+      /// <para>Increment a double by n ULPs (n can be negative for decrement).</para>
+      /// </summary>
+      /// <param name="value"></param>
+      /// <param name="ulps"></param>
+      /// <returns></returns>
+      public static float SingleUlpIncrement(float value, int ulps = 1)
+      {
+        if (ulps < 0) return SingleUlpDecrement(value, -ulps);
+
+        if (value == 0f) return System.BitConverter.Int32BitsToSingle(ulps); // handle positive zero
+
+        var bits = System.BitConverter.SingleToInt32Bits(value);
+        if (value > 0) bits += ulps;
+        else bits -= ulps;
+        return System.BitConverter.Int32BitsToSingle(bits);
       }
 
       #endregion

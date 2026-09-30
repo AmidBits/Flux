@@ -262,7 +262,7 @@ namespace Numerics
       var towardsZero = Flux.BinaryInteger.RoundDownToPowerOf2(value, false);
       var awayFromZero = Flux.BinaryInteger.RoundUpToPowerOf2(value, false);
 
-      var rounded = Number.RoundToNearestOf(88, NearestRoundingRule.AwayFromZero, false, [towardsZero, awayFromZero]);
+      var rounded = Number.RoundToNearestValue(88, NearestRoundingRule.AwayFromZero, false, towardsZero, awayFromZero);
 
       Assert.AreEqual(64, rounded);
 

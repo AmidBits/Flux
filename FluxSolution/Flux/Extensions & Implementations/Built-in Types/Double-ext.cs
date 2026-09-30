@@ -184,6 +184,28 @@ namespace Flux
 
       #endregion
 
+      #region DoubleUlpDecrement
+
+      /// <summary>
+      /// <para>Decrement a double by n ULPs (n can be negative for increment).</para>
+      /// </summary>
+      /// <param name="x"></param>
+      /// <param name="ulps"></param>
+      /// <returns></returns>
+      public static double DoubleUlpDecrement(double x, long ulps = 1)
+      {
+        if (ulps < 0) return DoubleUlpIncrement(x, -ulps);
+
+        if (x == 0d) return System.BitConverter.Int64BitsToDouble(-ulps); // handle negative zero
+
+        var bits = System.BitConverter.DoubleToInt64Bits(x);
+        if (x > 0) bits -= ulps;
+        else bits += ulps;
+        return System.BitConverter.Int64BitsToDouble(bits);
+      }
+
+      #endregion
+
       #region DoubleUlpDistance
 
       public static long DoubleUlpDistance(double left, double right)
@@ -198,6 +220,28 @@ namespace Flux
           b = long.MinValue - b;
 
         return long.Abs(a - b);
+      }
+
+      #endregion
+
+      #region DoubleUlpIncrement
+
+      /// <summary>
+      /// <para>Increment a double by n ULPs (n can be negative for decrement).</para>
+      /// </summary>
+      /// <param name="x"></param>
+      /// <param name="ulps"></param>
+      /// <returns></returns>
+      public static double DoubleUlpIncrement(double x, long ulps = 1)
+      {
+        if (ulps < 0) return DoubleUlpDecrement(x, -ulps);
+
+        if (x == 0d) return System.BitConverter.Int64BitsToDouble(ulps); // handle positive zero
+
+        var bits = System.BitConverter.DoubleToInt64Bits(x);
+        if (x > 0) bits += ulps;
+        else bits -= ulps;
+        return System.BitConverter.Int64BitsToDouble(bits);
       }
 
       #endregion

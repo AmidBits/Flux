@@ -5,37 +5,6 @@
     extension<TInteger>(TInteger)
       where TInteger : System.Numerics.IBinaryInteger<TInteger>
     {
-      //#region CartesianToLinearIndex (2D & 3D)
-
-      ///// <summary>
-      ///// <para>Converts cartesian-coordinates (<paramref name="x"/>, <paramref name="y"/>) to a linear index of a grid with the specified <paramref name="width"/> (the length of the x-axis).</para>
-      ///// </summary>
-      //public static TInteger CartesianToLinearIndex(TInteger x, TInteger y, TInteger width)
-      //{
-      //  System.ArgumentOutOfRangeException.ThrowIfNegativeOrZero(width);
-
-      //  checked
-      //  {
-      //    return x + (y * width);
-      //  }
-      //}
-
-      ///// <summary>
-      ///// <para>Converts cartesian-coordinates (<paramref name="x"/>, <paramref name="y"/>, <paramref name="z"/>) to a linear index of a cube with the specified <paramref name="width"/> (the length of the x-axis) and <paramref name="height"/> (the length of the y-axis).</para>
-      ///// </summary>
-      //public static TInteger CartesianToLinearIndex(TInteger x, TInteger y, TInteger z, TInteger width, TInteger height)
-      //{
-      //  System.ArgumentOutOfRangeException.ThrowIfNegativeOrZero(width);
-      //  System.ArgumentOutOfRangeException.ThrowIfNegativeOrZero(height);
-
-      //  checked
-      //  {
-      //    return x + (y * width) + (z * width * height);
-      //  }
-      //}
-
-      //#endregion
-
       #region CreateFormatStringWithCountDecimals
 
       /// <summary>
@@ -88,34 +57,6 @@
       //}
 
       #endregion
-
-      //#region Gray
-
-      ///// <summary>
-      ///// <para>Converts a binary number to a reflected binary Gray code.</para>
-      ///// <see href="https://en.wikipedia.org/wiki/Gray_code"/>
-      ///// </summary>
-      //public static TInteger BinaryToGray(TInteger value)
-      //  => value ^ (value >>> 1);
-
-      ///// <summary>
-      ///// <para>Converts a reflected binary gray code to a binary number.</para>
-      ///// <see href="https://en.wikipedia.org/wiki/Gray_code"/>
-      ///// </summary>
-      //public static TInteger GrayToBinary(TInteger value)
-      //{
-      //  var mask = value;
-
-      //  while (!TInteger.IsZero(mask))
-      //  {
-      //    mask >>>= 1;
-      //    value ^= mask;
-      //  }
-
-      //  return value;
-      //}
-
-      //#endregion
 
       #region GenerateSubRanges
 
@@ -401,92 +342,6 @@
 
       #endregion
 
-      //public static TInteger ISqrt(TInteger value)
-      //{
-      //  System.ArgumentOutOfRangeException.ThrowIfNegative(value);
-
-      //  if (TInteger.IsZero(value))
-      //    return value;
-
-      //  var log2 = int.CreateChecked(TInteger.Log2(value));
-
-      //  if (log2 < 128) // First check if the 128‑bit restoring fast path is applicable.
-      //  {
-      //    var n = value;
-      //    var r = TInteger.Zero;
-      //    var bit = TInteger.One << (int.CreateChecked(TInteger.Log2(value)) & ~1);
-
-      //    bit >>= int.CreateChecked((-(bit > n ? TInteger.One : TInteger.Zero)) & TInteger.CreateChecked(2)); // Align bit without branch
-
-      //    while (bit != TInteger.Zero)
-      //    {
-      //      var t = r + bit;
-      //      var ge = -(n >= t ? TInteger.One : TInteger.Zero);
-      //      n -= t & ge;
-      //      r = (r >> 1) + (bit & ge);
-      //      bit >>= 2;
-      //    }
-
-      //    return TInteger.CreateChecked(r);
-      //  }
-      //  else // For larger values, fall back to the integer Newton iteration.
-      //  {
-      //    var x = TInteger.One << (value.GetBitLength() / 2); // Initial approximation: 2^(bitLength/2)
-
-      //    while (true)
-      //    {
-      //      var y = (x + value / x) >> 1;
-
-      //      if (x - y is var diff && diff <= TInteger.One && diff >= TInteger.Zero)
-      //        return y;
-
-      //      x = y;
-      //    }
-      //  }
-      //}
-
-      //#region LinearIndexToCartesian (2D & 3D)
-
-      ///// <summary>
-      ///// <para>Converts a <paramref name="linearIndex"/> of a grid with the specified <paramref name="width"/> (the length of the x-axis) to cartesian-coordinates (x, y).</para>
-      ///// </summary>
-      ///// <param name="linearIndex"></param>
-      ///// <param name="width"></param>
-      ///// <returns>A 2D cartesian-coordinate.</returns>
-      //public static (TInteger x, TInteger y) LinearIndexToCartesian(TInteger linearIndex, TInteger width)
-      //{
-      //  System.ArgumentOutOfRangeException.ThrowIfNegativeOrZero(width);
-
-      //  return (
-      //    linearIndex % width,
-      //    linearIndex / width
-      //  );
-      //}
-
-      ///// <summary>
-      ///// <para>Converts a <paramref name="linearIndex"/> of a cube with the <paramref name="width"/> (the length of the x-axis) and <paramref name="height"/> (the length of the y-axis), to cartesian 3D (x, y, z) coordinates.</para>
-      ///// </summary>
-      ///// <param name="linearIndex"></param>
-      ///// <param name="width"></param>
-      ///// <param name="height"></param>
-      ///// <returns>A 3D cartesian-coordinate.</returns>
-      //public static (TInteger x, TInteger y, TInteger z) LinearIndexToCartesian(TInteger linearIndex, TInteger width, TInteger height)
-      //{
-      //  System.ArgumentOutOfRangeException.ThrowIfNegativeOrZero(width);
-      //  System.ArgumentOutOfRangeException.ThrowIfNegativeOrZero(height);
-
-      //  var xy = checked(width * height);
-      //  var irxy = linearIndex % xy;
-
-      //  return (
-      //    irxy % width,
-      //    irxy / width,
-      //    linearIndex / xy
-      //  );
-      //}
-
-      //#endregion
-
       #region Pow
 
       /// <summary>
@@ -623,71 +478,6 @@
       }
 
       #endregion
-
-      #region Probability functions
-
-      /// <summary>
-      /// <para>Returns the probability that at least 2 events are equal. This is computation P(A), which is the complement to P(A') computed in (<see cref="OfNoDuplicates(System.Numerics.BigInteger, System.Numerics.BigInteger)"/>).</para>
-      /// <para><seealso href="https://en.wikipedia.org/wiki/Birthday_problem"/></para>
-      /// <para><seealso href="https://en.wikipedia.org/wiki/Conditional_probability"/></para>
-      /// </summary>
-      /// <returns>The probability, which is in the range [0, 1].</returns>
-      public static double ProbabilityOfDuplicates(TInteger whenCount, TInteger ofTotalCount)
-        => 1.0 - ProbabilityOfNoDuplicates(whenCount, ofTotalCount);
-
-      /// <summary>
-      /// <para>Returns the probability that specified event count in a group of total event count are all different (or unique). This is the computation P(A').</para>
-      /// <para><seealso cref="https://en.wikipedia.org/wiki/Birthday_problem"/></para>
-      /// <para><seealso cref="https://en.wikipedia.org/wiki/Conditional_probability"/></para>
-      /// </summary>
-      /// <returns>The probability, which is in the range [0, 1].</returns>
-      public static double ProbabilityOfNoDuplicates(TInteger whenCount, TInteger ofTotalCount)
-      {
-        var accumulation = 1.0;
-        for (var index = ofTotalCount - whenCount + TInteger.One; index < ofTotalCount; index++)
-          accumulation *= double.CreateChecked(index) / double.CreateChecked(ofTotalCount);
-        return accumulation;
-      }
-
-      #endregion
-
-      //#region TileToLatLon
-
-      ///// <summary>
-      ///// <para>Convert XYZ Tile Scheme (z, x, y) to geographic coordinates.</para>
-      ///// </summary>
-      ///// <param name="z">
-      ///// <para>Controls how many tiles exists:</para>
-      ///// <list type="bullet">
-      ///// <item>zoom = 0 → 1 tile</item>
-      ///// <item>zoom = 1 → 2×2 tiles</item>
-      ///// <item>zoom = 2 → 4×4 tiles</item>
-      ///// <item>zoom = 18–19 → very detailed street‑level tiles</item>
-      ///// </list>
-      ///// </param>
-      ///// <param name="x">
-      ///// <list type="bullet">
-      ///// <item>x = 0 is the far west</item>
-      ///// <item>x increases as you move east</item>
-      ///// </list>
-      ///// </param>
-      ///// <param name="y">
-      ///// <list type="bullet">
-      ///// <item>y = 0 is the top(north)</item>
-      ///// <item>y increases as you move south</item>
-      ///// </list>
-      ///// </param>
-      ///// <returns></returns>
-      //public static void TileToLatLon<TFloat>(TInteger z, TInteger x, TInteger y, out TFloat latitude, out TFloat longitude)
-      //  where TFloat : System.Numerics.IFloatingPointIeee754<TFloat>
-      //{
-      //  var n = TFloat.Pow(TFloat.CreateChecked(2), TFloat.CreateChecked(z));
-
-      //  longitude = TFloat.RadiansToDegrees(TFloat.CreateChecked(x) / n * TFloat.Tau - TFloat.Pi); // West corner of tile.
-      //  latitude = TFloat.RadiansToDegrees(TFloat.Atan(TFloat.Sinh(TFloat.Pi * (TFloat.One - TFloat.CreateChecked(2) * TFloat.CreateChecked(y) / n)))); // North corner of tile.
-      //}
-
-      //#endregion
 
       #region ToOrdinalFieldName(s)
 
@@ -981,6 +771,3 @@
     #endregion
   }
 }
-
-// <seealso cref="http://aggregate.org/MAGIC/"/>
-// <seealso cref="http://graphics.stanford.edu/~seander/bithacks.html"/>

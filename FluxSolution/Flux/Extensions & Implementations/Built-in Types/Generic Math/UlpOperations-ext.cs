@@ -159,6 +159,20 @@ namespace Flux
             : throw new System.NotImplementedException(typeof(TNumber).Name)
         };
 
+      public static TNumber UlpDecrement(TNumber value, long ulps)
+              => value switch
+              {
+                //decimal dfp128 => TNumber.CreateChecked(decimal.DecimalUlpDecrement(dfp128)), // There is no ULPs argument function yet.
+                double bfp64 => TNumber.CreateChecked(double.UlpDecrement(bfp64, ulps)),
+                float bfp32 => TNumber.CreateChecked(float.UlpDecrement(bfp32, int.CreateChecked(ulps))),
+                System.Half bfp16 => TNumber.CreateChecked(System.Half.UlpDecrement(bfp16, short.CreateChecked(ulps))),
+                System.Runtime.InteropServices.NFloat nf => TNumber.CreateChecked(System.Runtime.InteropServices.NFloat.UlpDecrement(nf, ulps)),
+                System.SByte or System.Int16 or System.Int32 or System.Int64 or System.Int128 or System.IntPtr or System.Byte or System.UInt16 or System.UInt32 or System.UInt64 or System.UInt128 or System.UIntPtr or System.Numerics.BigInteger => value - TNumber.CreateChecked(ulps),
+                _ => typeof(TNumber).IsNumericsIBinaryInteger() // If there are new ones.
+                  ? value - TNumber.CreateChecked(ulps)
+                  : throw new System.NotImplementedException(typeof(TNumber).Name)
+              };
+
       #endregion
 
       #region UlpDistance
@@ -206,6 +220,20 @@ namespace Flux
           System.SByte or System.Int16 or System.Int32 or System.Int64 or System.Int128 or System.IntPtr or System.Byte or System.UInt16 or System.UInt32 or System.UInt64 or System.UInt128 or System.UIntPtr or System.Numerics.BigInteger => value + TNumber.One,
           _ => typeof(TNumber).IsNumericsIBinaryInteger() // If there are new ones.
             ? value + TNumber.One
+            : throw new System.NotImplementedException(typeof(TNumber).Name)
+        };
+
+      public static TNumber UlpIncrement(TNumber value, long ulps)
+        => value switch
+        {
+          //decimal dfp128 => TNumber.CreateChecked(decimal.DecimalUlpIncrement(dfp128)), // There is no ULPs argument function yet.
+          double bfp64 => TNumber.CreateChecked(double.UlpIncrement(bfp64, ulps)),
+          float bfp32 => TNumber.CreateChecked(float.UlpIncrement(bfp32, int.CreateChecked(ulps))),
+          System.Half bfp16 => TNumber.CreateChecked(System.Half.UlpIncrement(bfp16, short.CreateChecked(ulps))),
+          System.Runtime.InteropServices.NFloat nf => TNumber.CreateChecked(System.Runtime.InteropServices.NFloat.UlpIncrement(nf, ulps)),
+          System.SByte or System.Int16 or System.Int32 or System.Int64 or System.Int128 or System.IntPtr or System.Byte or System.UInt16 or System.UInt32 or System.UInt64 or System.UInt128 or System.UIntPtr or System.Numerics.BigInteger => value + TNumber.CreateChecked(ulps),
+          _ => typeof(TNumber).IsNumericsIBinaryInteger() // If there are new ones.
+            ? value + TNumber.CreateChecked(ulps)
             : throw new System.NotImplementedException(typeof(TNumber).Name)
         };
 

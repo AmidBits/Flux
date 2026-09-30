@@ -92,6 +92,28 @@
 
       #endregion
 
+      #region HalfUlpDecrement
+
+      /// <summary>
+      /// <para>Decrement a double by n ULPs (n can be negative for increment).</para>
+      /// </summary>
+      /// <param name="value"></param>
+      /// <param name="ulps"></param>
+      /// <returns></returns>
+      public static System.Half HalfUlpDecrement(System.Half value, short ulps = 1)
+      {
+        if (ulps < 0) return HalfUlpIncrement(value, (short)-ulps);
+
+        if (value == System.Half.Zero) return System.BitConverter.Int16BitsToHalf((short)-ulps); // handle negative zero
+
+        var bits = System.BitConverter.HalfToInt16Bits(value);
+        if (value > System.Half.Zero) bits -= ulps;
+        else bits += ulps;
+        return System.BitConverter.Int16BitsToHalf(bits);
+      }
+
+      #endregion
+
       #region HalfUlpDistance
 
       public static short HalfUlpDistance(System.Half left, System.Half right)
@@ -109,6 +131,28 @@
       }
 
       #endregion
+
+      #region SingleUlpIncrement
+
+      /// <summary>
+      /// <para>Increment a double by n ULPs (n can be negative for decrement).</para>
+      /// </summary>
+      /// <param name="value"></param>
+      /// <param name="ulps"></param>
+      /// <returns></returns>
+      public static System.Half HalfUlpIncrement(System.Half value, short ulps = 1)
+      {
+        if (ulps < 0) return HalfUlpDecrement(value, (short)-ulps);
+
+        if (value == System.Half.Zero) return System.BitConverter.Int16BitsToHalf(ulps); // handle positive zero
+
+        var bits = System.BitConverter.HalfToInt16Bits(value);
+        if (value > System.Half.Zero) bits += ulps;
+        else bits -= ulps;
+        return System.BitConverter.Int16BitsToHalf(bits);
+      }
+
+      #endregion    
     }
   }
 }

@@ -81,6 +81,24 @@
 
       #endregion
 
+      #region NFloatUlpDecrement
+
+      /// <summary>
+      /// <para>Decrement a double by n ULPs (n can be negative for increment).</para>
+      /// </summary>
+      /// <param name="value"></param>
+      /// <param name="ulps"></param>
+      /// <returns></returns>
+      public static System.Runtime.InteropServices.NFloat NFloatUlpDecrement(System.Runtime.InteropServices.NFloat value, long ulps = 1)
+        => System.Runtime.InteropServices.NFloat.Size == 8
+        ? System.Runtime.InteropServices.NFloat.CreateChecked(double.DoubleUlpDecrement(double.CreateChecked(value), ulps))
+        : System.Runtime.InteropServices.NFloat.Size == 4
+        ? System.Runtime.InteropServices.NFloat.CreateChecked(float.SingleUlpDistance(float.CreateChecked(value), int.CreateChecked(ulps)))
+        : throw new System.NotImplementedException();
+
+
+      #endregion
+
       #region NFloatUlpDistance
 
       public static long NFloatUlpDistance(System.Runtime.InteropServices.NFloat left, System.Runtime.InteropServices.NFloat right)
@@ -88,6 +106,23 @@
         ? double.DoubleUlpDistance(double.CreateChecked(left), double.CreateChecked(right))
         : System.Runtime.InteropServices.NFloat.Size == 4
         ? float.SingleUlpDistance(float.CreateChecked(left), float.CreateChecked(right))
+        : throw new System.NotImplementedException();
+
+      #endregion
+
+      #region SingleUlpIncrement
+
+      /// <summary>
+      /// <para>Increment a double by n ULPs (n can be negative for decrement).</para>
+      /// </summary>
+      /// <param name="value"></param>
+      /// <param name="ulps"></param>
+      /// <returns></returns>
+      public static System.Runtime.InteropServices.NFloat SingleUlpIncrement(System.Runtime.InteropServices.NFloat value, long ulps = 1)
+        => System.Runtime.InteropServices.NFloat.Size == 8
+        ? System.Runtime.InteropServices.NFloat.CreateChecked(double.DoubleUlpIncrement(double.CreateChecked(value), ulps))
+        : System.Runtime.InteropServices.NFloat.Size == 4
+        ? System.Runtime.InteropServices.NFloat.CreateChecked(float.SingleUlpIncrement(float.CreateChecked(value), int.CreateChecked(ulps)))
         : throw new System.NotImplementedException();
 
       #endregion

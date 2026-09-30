@@ -29,7 +29,7 @@ namespace Flux
       /// </list>
       /// </returns>
       public int CompareToDefault()
-        => Number.Sign(source.CompareTo(default));
+        => int.Sign(source.CompareTo(default));
     }
   }
 }

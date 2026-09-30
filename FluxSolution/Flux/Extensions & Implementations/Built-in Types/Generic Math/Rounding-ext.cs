@@ -5,15 +5,66 @@
     extension<TInteger>(TInteger)
       where TInteger : System.Numerics.IBinaryInteger<TInteger>
     {
-      public static (TInteger PowerTowardZero, TInteger PowerAwayFromZero, bool IsExactPower) RoundToPower<TRadix>(TInteger value, TRadix radix)
-        where TRadix : System.Numerics.IBinaryInteger<TRadix>
+      #region RoundToPower
+
+      /// <summary>
+      /// <para>Rounds value to a power-of-radix 2-tuple.</para>
+      /// </summary>
+      /// <param name="value"></param>
+      /// <param name="radix"></param>
+      /// <param name="unequal"></param>
+      /// <param name="rule"></param>
+      /// <returns>
+      /// <para>(<typeparamref name="TInteger"/> PowerTowardZero, <typeparamref name="TInteger"/> PowerAwayFromZero, <see langword="bool"/> IsExactPower, <typeparamref name="TInteger"/> NearestPower)</para>
+      /// <list type="bullet">
+      /// <item>PowerTowardZero - a power-of-<paramref name="radix"/> less-than-or-equal to <paramref name="value"/></item>
+      /// <item>PowerAwayFromZero - a power-of-<paramref name="radix"/> greater-than-or-equal to <paramref name="value"/></item>
+      /// <item>IsExactPower - indicates whether <paramref name="value"/> is an exact power-of-<paramref name="radix"/></item>
+      /// <item>NearestPower - the power-of-<paramref name="radix"/> nearest to <paramref name="value"/></item>
+      /// </list>
+      /// </returns>
+      public static (TInteger PowerTowardZero, TInteger PowerAwayFromZero, bool IsExactPower, TInteger NearestPower) RoundToPower(TInteger value, TInteger radix, bool unequal = false, NearestRoundingRule rule = NearestRoundingRule.ToEven)
       {
-        AssertRadix(radix, out TInteger rdx);
+        TInteger powerTowardZero; TInteger powerAwayFromZero; bool isExactPower; TInteger nearestPower;
 
-        var (logTowardZero, logAwayFromZero, isExactLog) = Log(value, rdx);
+        System.ArgumentOutOfRangeException.ThrowIfLessThanOrEqual(radix, TInteger.One);
 
-        return (Pow(rdx, logTowardZero), Pow(rdx, logAwayFromZero), isExactLog);
+        if (TInteger.IsZero(value))
+          return (TInteger.Zero, TInteger.Zero, false, TInteger.Zero); // Zero is the result.
+        else if (TInteger.IsNegative(value))
+        {
+          (powerTowardZero, powerAwayFromZero, isExactPower, nearestPower) = RoundToPower(TInteger.Abs(value), radix, unequal, rule); // Recursive call with abs(value).
+
+          return (-powerTowardZero, -powerAwayFromZero, isExactPower, -nearestPower); // Negate all values.
+        }
+        else // Otherwise value is greater than zero, and we find the toward-zero and away-from-zero, closest to or equal to value.
+        {
+          powerAwayFromZero = TInteger.One;
+          while (powerAwayFromZero < value) // Find the smallest power-of-radix that is greater than value.
+            powerAwayFromZero *= radix;
+
+          isExactPower = powerAwayFromZero == value; // Whether the original value is a power-of-radix.
+
+          powerTowardZero = isExactPower
+            ? powerAwayFromZero // If value is a power-of-radix, then powerTowardZero equals powerAwayFromZero.
+            : powerAwayFromZero / radix; // Otherwise powerTowardZero is the next lower power-of-radix.
+        }
+
+        if (unequal) // This is the only place where the unequal is handled.
+        {
+          if (powerTowardZero == value)
+            powerTowardZero /= radix;
+
+          if (powerAwayFromZero == value)
+            powerAwayFromZero *= radix;
+        }
+
+        nearestPower = isExactPower ? value : Number.RoundToNearestValue(value, rule, false, powerTowardZero, powerAwayFromZero); // Find the nearest of the two.
+
+        return (powerTowardZero, powerAwayFromZero, isExactPower, nearestPower);
       }
+
+      #endregion
     }
   }
 
@@ -22,6 +73,60 @@
     extension<TFloat>(TFloat)
       where TFloat : System.Numerics.IFloatingPoint<TFloat>
     {
+      #region RoundToInteger
+
+      /// <summary>
+      /// <para>Rounds value to an integer 2-tuple.</para>
+      /// </summary>
+      /// <param name="value"></param>
+      /// <param name="unequal"></param>
+      /// <param name="rule"></param>
+      /// <returns>
+      /// <para>(<typeparamref name="TFloat"/> IntegerTowardZero, <typeparamref name="TFloat"/> IntegerAwayFromZero, <see langword="bool"/> IsExactInteger, <typeparamref name="TFloat"/> NearestInteger)</para>
+      /// <list type="bullet">
+      /// <item>IntegerTowardZero - an integer less-than-or-equal to <paramref name="value"/></item>
+      /// <item>IntegerAwayFromZero - an integer greater-than-or-equal to <paramref name="value"/></item>
+      /// <item>IsExactInteger - indicates whether <paramref name="value"/> is an exact integer</item>
+      /// <item>NearestInteger - the integer nearest to <paramref name="value"/></item>
+      /// </list>
+      /// </returns>
+      public static (TFloat IntegerTowardZero, TFloat IntegerAwayFromZero, bool IsExactInteger, TFloat NearestInteger) RoundToInteger(TFloat value, bool unequal, NearestRoundingRule rule = NearestRoundingRule.ToEven)
+      {
+        TFloat integerTowardZero; TFloat integerAwayFromZero; bool isExactInteger; TFloat nearestInteger;
+
+        // We don't want immediate return on TFloat.IsInteger(value) because that disables the feature of unequal.
+
+        if (TFloat.IsNegative(value))
+        {
+          (integerTowardZero, integerAwayFromZero, isExactInteger, nearestInteger) = RoundToInteger(TFloat.Abs(value), unequal, rule); // Recursive call with abs(value).
+
+          return (-integerTowardZero, -integerAwayFromZero, isExactInteger, -nearestInteger); // Negate all values.
+        }
+        else // Otherwise value is greater than or equal to zero, and we find toward-zero and away-from-zero, closest to or equal to value.
+        {
+          integerTowardZero = TFloat.Truncate(value);
+
+          isExactInteger = integerTowardZero == value;
+
+          integerAwayFromZero = isExactInteger ? integerTowardZero : integerTowardZero + TFloat.One;
+        }
+
+        if (unequal) // This is the only place where the unequal is handled.
+        {
+          if (integerTowardZero == value)
+            integerTowardZero -= TFloat.One;
+
+          if (integerAwayFromZero == value)
+            integerAwayFromZero += TFloat.One;
+        }
+
+        nearestInteger = Number.RoundToNearestValue(value, rule, false, integerTowardZero, integerAwayFromZero);
+
+        return (integerTowardZero, integerAwayFromZero, isExactInteger, nearestInteger);
+      }
+
+      #endregion
+
       #region RoundToNearestInteger
 
       /// <summary>
@@ -48,7 +153,7 @@
           {
             NearestRoundingRule.TowardNegativeInfinity => floor,
             NearestRoundingRule.TowardPositiveInfinity => ceiling,
-            NearestRoundingRule.TowardZero => TFloat.Truncate(value),
+            NearestRoundingRule.TowardZero => TFloat.Truncate(value), // TFloat.IsNegative(value) ? ceiling : floor,
             NearestRoundingRule.AwayFromZero => TFloat.IsNegative(value) ? floor : ceiling,
             NearestRoundingRule.ToEven => TFloat.IsEvenInteger(floor) ? floor : ceiling,
             NearestRoundingRule.ToOdd => TFloat.IsOddInteger(floor) ? floor : ceiling,
@@ -58,27 +163,6 @@
         }
 
         return fraction < half ? floor : ceiling; // Non-midpoint nearest-integer rounding.
-      }
-
-      #endregion
-
-      #region RoundToNearestIntegerAlternating
-
-      public static TFloat RoundToNearestIntegerAlternating(TFloat value, ref bool alternatingState)
-      {
-        var cmp = CompareFractionToMidpoint(value);
-
-        var floor = TFloat.Floor(value);
-
-        if (cmp < 0)
-          return floor;
-
-        var ceiling = TFloat.Ceiling(value);
-
-        if (cmp > 0)
-          return ceiling;
-
-        return (alternatingState = !alternatingState) ? floor : ceiling;
       }
 
       #endregion
@@ -175,6 +259,8 @@
 
       public static TNumber RoundToMultiple(TNumber value, TNumber multiple, DirectedRoundingMode mode)
       {
+        System.ArgumentOutOfRangeException.ThrowIfNegativeOrZero(multiple);
+
         var quotient = mode switch
         {
           DirectedRoundingMode.TowardNegativeInfinity => IntegerDivRemFloored(value, multiple).Quotient,
@@ -187,33 +273,78 @@
         return quotient * multiple;
       }
 
-      #endregion
-
-      #region RoundToNearestOf
-
       /// <summary>
-      /// <para></para>
+      /// <para>Rounds value to a multiple 2-tuple.</para>
       /// </summary>
       /// <param name="value"></param>
+      /// <param name="multiple"></param>
+      /// <param name="unequal"></param>
       /// <param name="rule"></param>
-      /// <param name="proper"></param>
-      /// <param name="values"></param>
-      /// <returns></returns>
-      /// <exception cref="System.NullReferenceException"></exception>
-      /// <exception cref="NotImplementedException"></exception>
-      public static TNumber RoundToNearestOf(TNumber value, NearestRoundingRule rule, bool proper, params System.ReadOnlySpan<TNumber> values)
+      /// <returns>
+      /// <para>(<typeparamref name="TNumber"/> MultipleTowardZero, <typeparamref name="TNumber"/> MultipleAwayFromZero, <see langword="bool"/> IsExactMultiple, <typeparamref name="TNumber"/> NearestMultiple)</para>
+      /// <list type="bullet">
+      /// <item>MultipleTowardZero - a <paramref name="multiple"/> less-than-or-equal to <paramref name="value"/></item>
+      /// <item>MultipleAwayFromZero - a <paramref name="multiple"/> greater-than-or-equal to <paramref name="value"/></item>
+      /// <item>IsExactMultiple - indicates whether <paramref name="value"/> is an exact <paramref name="multiple"/></item>
+      /// <item>NearestMultiple - the <paramref name="multiple"/> nearest to <paramref name="value"/></item>
+      /// </list>
+      /// </returns>
+      public static (TNumber MultipleTowardZero, TNumber MultipleAwayFromZero, bool IsExactMultiple, TNumber NearestMultiple) RoundToMultiple(TNumber value, TNumber multiple, bool unequal = false, NearestRoundingRule rule = NearestRoundingRule.ToEven)
+      {
+        TNumber multipleTowardZero; TNumber multipleAwayFromZero; bool isExactMultiple; TNumber nearestMultiple;
+
+        System.ArgumentOutOfRangeException.ThrowIfNegativeOrZero(multiple);
+
+        if (TNumber.IsZero(value))
+          return (TNumber.Zero, TNumber.Zero, false, TNumber.Zero); // Zero is the result.
+        else if (TNumber.IsNegative(value))
+        {
+          (multipleTowardZero, multipleAwayFromZero, isExactMultiple, nearestMultiple) = RoundToMultiple(TNumber.Abs(value), multiple, unequal, rule); // Recursive call with abs(value).
+
+          return (-multipleTowardZero, -multipleAwayFromZero, isExactMultiple, -nearestMultiple); // Negate all values.
+        }
+        else // Otherwise value is greater than zero, and we find toward-zero and away-from-zero, closest to or equal to value.
+        {
+          var (quotient, remainder) = IntegerDivRemTruncated(value, multiple); // Truncated division works on negative numbers for quotient which is used for multipleTowardZero.
+
+          multipleTowardZero = quotient * multiple;
+
+          isExactMultiple = TNumber.IsZero(remainder); // Whether the original value is a multiple.
+
+          multipleAwayFromZero = isExactMultiple ? multipleTowardZero : multipleTowardZero + multiple;
+        }
+
+        if (unequal) // This is the only place where the unequal is handled.
+        {
+          if (multipleTowardZero == value)
+            multipleTowardZero -= multiple;
+
+          if (multipleAwayFromZero == value)
+            multipleAwayFromZero += multiple;
+        }
+
+        nearestMultiple = RoundToNearestValue(value, rule, false, multipleTowardZero, multipleAwayFromZero); // Find the nearest of the two.
+
+        return (multipleTowardZero, multipleAwayFromZero, isExactMultiple, nearestMultiple);
+      }
+
+      #endregion
+
+      #region RoundToNearestValue
+
+      public static TNumber RoundToNearestValue(TNumber value, NearestRoundingRule rule, bool proper, params System.ReadOnlySpan<TNumber> values)
       {
         System.ArgumentOutOfRangeException.ThrowIfZero(values.Length);
 
-        var closestValues = new System.Collections.Generic.List<TNumber>() { values[0] };
-        var closestDistance = TNumber.Abs(value - TNumber.CreateChecked(values[0]));
+        var closestValues = new System.Collections.Generic.HashSet<TNumber>();
+        var closestDistance = TNumber.Abs(value - values[0]);
 
-        for (var i = 1; i < values.Length; i++)
+        for (var i = 0; i < values.Length; i++)
         {
           var currentValue = values[i];
-          var currentDistance = TNumber.Abs(value - TNumber.CreateChecked(currentValue));
+          var currentDistance = TNumber.Abs(value - currentValue);
 
-          if ((!proper || currentValue != value) && currentDistance <= closestDistance)
+          if ((!proper || currentValue != value) && (currentDistance <= closestDistance))
           {
             if (currentDistance < closestDistance)
             {
@@ -221,59 +352,23 @@
               closestDistance = currentDistance;
             }
 
-            if (!closestValues.Contains(currentValue))
-              closestValues.Add(currentValue);
+            closestValues.Add(currentValue);
           }
         }
 
-        return rule switch // If the distances are equal, i.e. the value is exactly halfway to all closestValues, we use the appropriate rounding strategy to resolve a winner.
-        {
-          NearestRoundingRule.TowardNegativeInfinity => closestValues.Min() ?? throw new System.NullReferenceException(),
-          NearestRoundingRule.TowardPositiveInfinity => closestValues.Max() ?? throw new System.NullReferenceException(),
-          NearestRoundingRule.TowardZero => closestValues.AsSpan().InfimumSupremum(value, v => v, false) is var (infimumItem, infimumIndex, infimumValue, supremumItem, supremumIndex, supremumValue) && value >= TNumber.Zero ? (infimumIndex > -1 ? infimumValue : supremumValue) : (supremumIndex > -1 ? supremumValue : infimumValue),
-          NearestRoundingRule.AwayFromZero => closestValues.AsSpan().InfimumSupremum(value, v => v, false) is var (infimumItem, infimumIndex, infimumValue, supremumItem, supremumIndex, supremumValue) && value >= TNumber.Zero ? (supremumIndex > -1 ? supremumValue : infimumValue) : (infimumIndex > -1 ? infimumValue : supremumValue),
-          NearestRoundingRule.ToEven => closestValues.FirstOrValue(closestValues[0], TNumber.IsEvenInteger).Item,
-          NearestRoundingRule.ToOdd => closestValues.FirstOrValue(closestValues[0], TNumber.IsOddInteger).Item,
-          NearestRoundingRule.Random => closestValues.AsSpan().GetRandomElement(),
-          _ => throw new NotImplementedException(),
-        };
-      }
-
-      #endregion
-
-      #region RoundToNearestMultiple
-
-      public static TNumber RoundToNearestMultiple(TNumber value, TNumber multiple, NearestRoundingRule rule = NearestRoundingRule.ToEven)
-      {
-        System.ArgumentOutOfRangeException.ThrowIfZero(multiple);
-
-        var (quotient, remainder) = IntegerDivRemFloored(value, multiple);
-
-        if (TNumber.IsZero(remainder))
-          return value;
-
-        var floor = quotient * multiple;
-        var ceiling = floor + TNumber.Abs(multiple);
-
-        var distanceToFloor = remainder;
-        var distanceToCeiling = TNumber.Abs(multiple) - remainder;
-
-        if (distanceToFloor == distanceToCeiling)
-        {
-          return rule switch
+        return (closestValues.Count > 1) // If multiple values were found, i.e. the distances are equal, or in other words the value is exactly halfway to all closestValues, we use the nearest rounding rule to resolve a winner.
+          ? rule switch
           {
-            NearestRoundingRule.TowardNegativeInfinity => floor,
-            NearestRoundingRule.TowardPositiveInfinity => ceiling,
-            NearestRoundingRule.TowardZero => TNumber.IsNegative(value) ? ceiling : floor,
-            NearestRoundingRule.AwayFromZero => TNumber.IsNegative(value) ? floor : ceiling,
-            NearestRoundingRule.ToEven => TNumber.IsEvenInteger(floor) ? floor : ceiling,
-            NearestRoundingRule.ToOdd => TNumber.IsOddInteger(floor) ? floor : ceiling,
-            NearestRoundingRule.Random => Random.Shared.Next(2) == 0 ? floor : ceiling,
-            _ => throw new ArgumentOutOfRangeException(nameof(rule)),
-          };
-        }
-
-        return distanceToFloor < distanceToCeiling ? floor : ceiling;
+            NearestRoundingRule.TowardNegativeInfinity => closestValues.Min()!,
+            NearestRoundingRule.TowardPositiveInfinity => closestValues.Max()!,
+            NearestRoundingRule.TowardZero => closestValues.InfimumSupremum(value, v => v, false) is var (_, _, _, _, infIndex, infValue, _, supIndex, supValue, _, _, _) && value >= TNumber.Zero ? (infIndex > -1 ? infValue! : supValue!) : (supIndex > -1 ? supValue! : infValue!),
+            NearestRoundingRule.AwayFromZero => closestValues.InfimumSupremum(value, v => v, false) is var (_, _, _, _, infIndex, infValue, _, supIndex, supValue, _, _, _) && value >= TNumber.Zero ? (supIndex > -1 ? supValue! : infValue!) : (infIndex > -1 ? infValue! : supValue!),
+            NearestRoundingRule.ToEven => closestValues.FirstOrValue(closestValues.First(), TNumber.IsEvenInteger).Item,
+            NearestRoundingRule.ToOdd => closestValues.FirstOrValue(closestValues.First(), TNumber.IsOddInteger).Item,
+            NearestRoundingRule.Random => closestValues.GetRandomElement(),
+            _ => throw new System.NotImplementedException(nameof(rule)),
+          }
+          : closestValues.First(); // Only one that is closest.
       }
 
       #endregion

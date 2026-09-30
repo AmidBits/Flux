@@ -148,10 +148,7 @@ namespace Maths
       var n = 512d;
       var m = 20;
 
-      var (multipleTowardsZero, nNearestMultiple, multipleAwayFromZero) = Number.MultipleOf(n, m, false, NearestRoundingRule.AwayFromZero);
-      //n.MultipleOfNearest(m, false, HalfRounding.AwayFromZero, out var multipleTowardsZero, out var multipleAwayFromZero);
-
-      var nearestMultiple = Number.RoundToNearestOf(n, NearestRoundingRule.TowardZero, false, [multipleTowardsZero, multipleAwayFromZero]);
+      var (multipleTowardsZero, multipleAwayFromZero, isExactMultiple, nearestMultiple) = Number.RoundToMultiple(n, m, false, NearestRoundingRule.TowardZero);
 
       Assert.AreEqual(520, nearestMultiple);
 

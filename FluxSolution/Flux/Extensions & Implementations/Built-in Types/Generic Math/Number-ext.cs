@@ -166,163 +166,35 @@ namespace Flux
 
       #endregion
 
-      #region KroneckerDelta
+      //#region ..MultipleOf
 
-      /// <summary>
-      /// <para>The Kronecker delta is a function of two variables, usually just non-negative integers. The function is 1 if the variables are equal, and 0 otherwise.</para>
-      /// <para><see href="https://en.wikipedia.org/wiki/Kronecker_delta"/></para>
-      /// </summary>
-      /// <param name="b"></param>
-      /// <returns></returns>
-      public static TNumber KroneckerDelta(TNumber value, TNumber other)
-        => value == other ? TNumber.One : TNumber.Zero;
+      ///// <summary>
+      ///// 
+      ///// </summary>
+      ///// <param name="value"></param>
+      ///// <param name="multiple">The multiple to which <paramref name="value"/> is measured.</param>
+      ///// <param name="unequal"></param>
+      ///// <param name="rule"></param>
+      ///// <returns></returns>
+      //public static (TNumber MultipleTowardZero, TNumber NearestMultiple, TNumber MultipleAwayFromZero) MultipleOf(TNumber value, TNumber multiple, bool unequal = false, NearestRoundingRule rule = NearestRoundingRule.ToEven)
+      //{
+      //  var csmv = TNumber.CopySign(multiple, value);
 
-      #endregion
+      //  var motz = value - (value % multiple);
+      //  var moafz = motz;
 
-      #region ..MultipleOf
+      //  if (unequal && motz == value)
+      //    motz -= csmv;
 
-      /// <summary>
-      /// 
-      /// </summary>
-      /// <param name="value"></param>
-      /// <param name="multiple">The multiple to which <paramref name="value"/> is measured.</param>
-      /// <param name="unequal"></param>
-      /// <param name="rule"></param>
-      /// <returns></returns>
-      public static (TNumber MultipleTowardZero, TNumber NearestMultiple, TNumber MultipleAwayFromZero) MultipleOf(TNumber value, TNumber multiple, bool unequal = false, NearestRoundingRule rule = NearestRoundingRule.ToEven)
-      {
-        var csmv = TNumber.CopySign(multiple, value);
+      //  if (unequal || moafz != value)
+      //    moafz += csmv;
 
-        var motz = value - (value % multiple);
-        var moafz = motz;
+      //  var nv = RoundToNearestValue(value, rule, false, motz, moafz);
 
-        if (unequal && motz == value)
-          motz -= csmv;
+      //  return (motz, nv, moafz);
+      //}
 
-        if (unequal || moafz != value)
-          moafz += csmv;
-
-        return (motz, RoundToNearestOf(value, rule, false, [motz, moafz]), moafz);
-      }
-
-      #endregion
-
-      #region Rescale
-
-      /// <summary>
-      /// <para>Proportionally rescale the <paramref name="value"/> from the closed interval [<paramref name="minSource"/>, <paramref name="maxSource"/>] to the closed interval [<paramref name="minTarget"/>, <paramref name="maxTarget"/>].</para>
-      /// <para>The <paramref name="value"/> retains its proportional interval ratio, e.g. a 5 from the closed interval [0, 10] becomes 50 when rescaled to the closed interval [0, 100].</para>
-      /// </summary>
-      /// <typeparam name="TNumber"></typeparam>
-      /// <param name="value"></param>
-      /// <param name="minSource"></param>
-      /// <param name="maxSource"></param>
-      /// <param name="minTarget"></param>
-      /// <param name="maxTarget"></param>
-      /// <returns></returns>
-      public static TNumber Rescale(TNumber value, TNumber minSource, TNumber maxSource, TNumber minTarget, TNumber maxTarget)
-        => minTarget + (maxTarget - minTarget) * (value - minSource) / (maxSource - minSource);
-
-      #endregion
-
-      #region Sign
-
-      /// <summary>
-      /// <para>Sign step function that guarantees one of {-<typeparamref name="TNumber"/>.One, <typeparamref name="TNumber"/>.Zero, <typeparamref name="TNumber"/>.One} for output (not just less-than-zero and greater-than-zero).</para>
-      /// <para><see href="https://en.wikipedia.org/wiki/Sign_function"/></para>
-      /// <para><seealso href="https://en.wikipedia.org/wiki/Step_function"/></para>
-      /// </summary>
-      /// <returns>Exactly -<typeparamref name="TNumber"/>.One (when <paramref name="value"/> is negative), <typeparamref name="TNumber"/>.Zero (when <paramref name="value"/> is zero) or +<typeparamref name="TNumber"/>.One (when <paramref name="value"/> is positive).</returns>
-      public static TNumber Sign(TNumber value)
-        => TNumber.IsZero(value) ? value : TNumber.CopySign(TNumber.One, value);
-
-      #endregion
-
-      #region Spread.. functions
-
-      /// <summary>
-      /// <para>Spreads an in-interval value around the outside edges of the closed interval [<paramref name="minValue"/>, <paramref name="maxValue"/>].</para>
-      /// <para>This is the opposite of a <see cref="System.Numerics.INumber{TSelf}.Clamp(TSelf, TSelf, TSelf)"/> ( [<paramref name="minValue"/>, <paramref name="maxValue"/>] ) which is inclusive, making the Spread( either [NegativeInfinity, <paramref name="minValue"/>) or (<paramref name="maxValue"/>, PositiveInfinity] ), i.e. exclusive of <paramref name="minValue"/> and <paramref name="maxValue"/>.</para>
-      /// </summary>
-      /// <param name="minValue"></param>
-      /// <param name="maxValue"></param>
-      /// <param name="rule"></param>
-      /// <param name="margin"></param>
-      /// <returns></returns>
-      public static TNumber Spread(TNumber value, TNumber minValue, TNumber maxValue, NearestRoundingRule rule, TNumber margin)
-      {
-        System.ArgumentOutOfRangeException.ThrowIfNegative(margin);
-
-        if (value < minValue || value > maxValue)
-          return value; // If number is already spread, nothing to do but return it.
-
-        var nearestValue = RoundToNearestOf(value, rule, false, [minValue, maxValue]);
-
-        return (nearestValue == minValue)
-          ? minValue - margin
-          : (nearestValue == maxValue)
-          ? maxValue + margin
-          : nearestValue;
-      }
-
-      /// <summary>
-      /// <para>Spreads an in-interval value around the outside edges of the closed interval [<paramref name="minValue"/>, <paramref name="maxValue"/>].</para>
-      /// <para>This is the opposite of a <see cref="System.Numerics.INumber{TSelf}.Clamp(TSelf, TSelf, TSelf)"/> ( [<paramref name="minValue"/>, <paramref name="maxValue"/>] ) which is inclusive, making the Spread( either [NegativeInfinity, <paramref name="minValue"/>) or (<paramref name="maxValue"/>, PositiveInfinity] ), i.e. exclusive of <paramref name="minValue"/> and <paramref name="maxValue"/>.</para>
-      /// <para>A native function means that the difference will be based on the smallest native difference. For integers it is 1, and for floating point (double and float) it is the bit increment/decrement.</para>
-      /// </summary>
-      /// <param name="minValue"></param>
-      /// <param name="maxValue"></param>
-      /// <param name="nearestRoundingTies"></param>
-      /// <returns></returns>
-      public static TNumber SpreadNative(TNumber value, TNumber minValue, TNumber maxValue, NearestRoundingRule nearestRoundingTies)
-      {
-        if (value < minValue || value > maxValue)
-          return value; // If number is already spread, nothing to do but return it.
-
-        var nearestValue = RoundToNearestOf(value, nearestRoundingTies, false, [minValue, maxValue]);
-
-        return (nearestValue == minValue)
-          ? UlpDecrement(minValue)
-          : (nearestValue == maxValue)
-          ? UlpIncrement(maxValue)
-          : nearestValue;
-      }
-
-      #endregion
-
-      #region TriangleModulo
-
-      /// <summary>
-      /// <para>Computes the triangle (folded) modulo of a number <paramref name="value"/> with respect to a positive modulus <paramref name="modulus"/>.</para>
-      /// <para>The resulting waveform has period 2 × modulus.</para>
-      /// <para>A.K.A. "reflected", "folded" or "mirrored" modulo.</para>
-      /// </summary>
-      /// <param name="value"></param>
-      /// <param name="modulus"></param>
-      /// <returns>value in the range [0, modulus]</returns>
-      public static TNumber TriangleModulo(TNumber value, TNumber modulus)
-      {
-        System.ArgumentOutOfRangeException.ThrowIfNegativeOrZero(modulus);
-
-        var remainder = EuclideanModulo(value, modulus + modulus);
-
-        return modulus - TNumber.Abs(remainder - modulus);
-      }
-
-      #endregion
-
-      #region UnitSign
-
-      /// <summary>
-      /// <para>The unit sign step function, i.e. zero is treated as a positive unit value of one.</para>
-      /// <para><see href="https://en.wikipedia.org/wiki/Step_function"/></para>
-      /// <para><seealso href="https://en.wikipedia.org/wiki/Sign_function"/></para>
-      /// </summary>
-      /// <returns>Exactly -<typeparamref name="TNumber"/>.One (when <paramref name="value"/> is negative) or +<typeparamref name="TNumber"/>.One (when <paramref name="value"/> is positive). Zero is considered positive in the context of this function.</returns>
-      public static TNumber UnitSign(TNumber value)
-        => TNumber.CopySign(TNumber.One, value);
-
-      #endregion
+      //#endregion
 
       public static TNumber Wrap(TNumber value, TNumber min, TNumber max, IntervalNotation notation, TNumber epsilon)
       {

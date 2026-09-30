@@ -186,7 +186,7 @@ namespace Flux
     /// <returns></returns>
     public static System.Collections.Generic.List<System.Numerics.BigInteger> GetCompoundNumbers<TInteger>(TInteger value, System.Numerics.BigInteger maxCutoff)
       where TInteger : System.Numerics.IBinaryInteger<TInteger>
-      => [.. GetCompoundNumbers(System.Numerics.BigInteger.Abs(System.Numerics.BigInteger.CreateChecked(value)), maxCutoff).Prepend(System.Numerics.BigInteger.CreateChecked(Flux.Number.Sign(value)))];
+      => [.. GetCompoundNumbers(System.Numerics.BigInteger.Abs(System.Numerics.BigInteger.CreateChecked(value)), maxCutoff).Prepend(System.Numerics.BigInteger.CreateChecked(TInteger.Sign(value)))];
 
     private static System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> GetCompoundNumbers(System.Numerics.BigInteger absNumber, System.Numerics.BigInteger maxCutoff)
     {

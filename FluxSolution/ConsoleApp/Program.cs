@@ -295,6 +295,7 @@ namespace ConsoleApp
         ["  Enveloped", Dr(Number.IntegerDivRemEnveloped(a, b)), Dr(Number.IntegerDivRemEnveloped(-a, b)), Dr(Number.IntegerDivRemEnveloped(a, -b)), Dr(Number.IntegerDivRemEnveloped(-a, -b))],
         [" Euclidean", Dr(Number.IntegerDivRemEuclidean(a, b)), Dr(Number.IntegerDivRemEuclidean(-a, b)), Dr(Number.IntegerDivRemEuclidean(a, -b)), Dr(Number.IntegerDivRemEuclidean(-a, -b))],
         ["    Floored", Dr(Number.IntegerDivRemFloored(a, b)), Dr(Number.IntegerDivRemFloored(-a, b)), Dr(Number.IntegerDivRemFloored(a, -b)), Dr(Number.IntegerDivRemFloored(-a, -b))],
+        ["    Rounded", Dr(Number.IntegerDivRemRounded(a, b)), Dr(Number.IntegerDivRemRounded(-a, b)), Dr(Number.IntegerDivRemRounded(a, -b)), Dr(Number.IntegerDivRemRounded(-a, -b))],
         ["  Truncated", Dr(Number.IntegerDivRemTruncated(a, b)), Dr(Number.IntegerDivRemTruncated(-a, b)), Dr(Number.IntegerDivRemTruncated(a, -b)), Dr(Number.IntegerDivRemTruncated(-a, -b))],
       };
 
@@ -306,6 +307,13 @@ namespace ConsoleApp
       var vrtmd = -23d;
       var vrtmn = 10d;
 
+      var rtpa = double.RoundToInteger(-13, true, NearestRoundingRule.ToEven);
+
+      var v0 = 550;
+      var r0 = 10;
+      var rtp = int.RoundToPower(v0, r0, false, NearestRoundingRule.Random);
+      var rtm = double.RoundToMultiple(v0 + 5, r0, false, NearestRoundingRule.Random);
+      var rti = double.RoundToInteger(v0 + 0.5, false, NearestRoundingRule.Random);
 
 
       var d = Number.RoundToMultiple(vrtmd, vrtmn, DirectedRoundingMode.TowardNegativeInfinity);
@@ -323,19 +331,12 @@ namespace ConsoleApp
 
       var ai = (int)a;
 
-      var (powerTowardZero, powerAwayFromZero, isExactPower) = BinaryInteger.RoundToPower(ai, 2);
+      var (powerTowardZero, powerAwayFromZero, isExactPower, nearestPower) = BinaryInteger.RoundToPower(ai, 2);
 
       var n = -45;
 
       var answer1 = double.Round(3.5, MidpointRounding.ToZero);
       var answer2 = double.RoundToNearestInteger(3.5, NearestRoundingRule.TowardZero);
-
-      var test = false;
-
-
-      var a1 = FloatingPoint.RoundToNearestIntegerAlternating(5.5, ref test);
-      var a2 = FloatingPoint.RoundToNearestIntegerAlternating(5.5, ref test);
-      var a3 = FloatingPoint.RoundToNearestIntegerAlternating(5.5, ref test);
 
       ComputeDivRem(a, n);
 

@@ -1,5 +1,49 @@
 ﻿namespace Flux
 {
+  public static partial class BinaryInteger
+  {
+    extension<TInteger>(TInteger)
+      where TInteger : System.Numerics.IBinaryInteger<TInteger>
+    {
+      #region ProbabilityOfDuplicates
+
+      /// <summary>
+      /// <para>Returns the probability that at least 2 events are equal. This is computation P(A), which is the complement to P(A') computed in (<see cref="OfNoDuplicates(System.Numerics.BigInteger, System.Numerics.BigInteger)"/>).</para>
+      /// <para><seealso href="https://en.wikipedia.org/wiki/Birthday_problem"/></para>
+      /// <para><seealso href="https://en.wikipedia.org/wiki/Conditional_probability"/></para>
+      /// </summary>
+      /// <returns>The probability, which is in the range [0, 1].</returns>
+      public static void ProbabilityOfDuplicates<TFloat>(TInteger whenCount, TInteger ofTotalCount, out TFloat probability)
+        where TFloat : System.Numerics.IFloatingPoint<TFloat>
+      {
+        ProbabilityOfNoDuplicates(whenCount, ofTotalCount, out TFloat pond);
+
+        probability = TFloat.One - pond;
+      }
+
+      #endregion
+
+      #region ProbabilityOfNoDuplicates
+
+      /// <summary>
+      /// <para>Returns the probability that specified event count in a group of total event count are all different (or unique). This is the computation P(A').</para>
+      /// <para><seealso cref="https://en.wikipedia.org/wiki/Birthday_problem"/></para>
+      /// <para><seealso cref="https://en.wikipedia.org/wiki/Conditional_probability"/></para>
+      /// </summary>
+      /// <returns>The probability, which is in the range [0, 1].</returns>
+      public static void ProbabilityOfNoDuplicates<TFloat>(TInteger whenCount, TInteger ofTotalCount, out TFloat probability)
+        where TFloat : System.Numerics.IFloatingPoint<TFloat>
+      {
+        var accumulation = TFloat.One;
+        for (var index = ofTotalCount - whenCount + TInteger.One; index < ofTotalCount; index++)
+          accumulation *= TFloat.CreateChecked(index) / TFloat.CreateChecked(ofTotalCount);
+        probability = accumulation;
+      }
+
+      #endregion
+    }
+  }
+
   public static partial class FloatingPoint
   {
     extension<TFloat>(TFloat)

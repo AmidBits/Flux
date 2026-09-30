@@ -121,7 +121,7 @@
       //  //return (qr, a - qr * n);
       //}
 
-      public static (TNumber Quotient, TNumber Remainder) IntegerDivRemRound(TNumber a, TNumber n, NearestRoundingRule rule = NearestRoundingRule.ToEven)
+      public static (TNumber Quotient, TNumber Remainder) IntegerDivRemRounded(TNumber a, TNumber n, NearestRoundingRule rule = NearestRoundingRule.ToEven)
       {
         var (q, r) = IntegerDivRemFloored(a, n);
 
@@ -134,17 +134,17 @@
         }
         else if (twiceR == absN)
         {
-          var qafz = q + TNumber.CreateChecked(TNumber.Sign(n));
+          var o = q + TNumber.CreateChecked(TNumber.Sign(n)); // The other value.
 
           q = rule switch
           {
-            NearestRoundingRule.TowardNegativeInfinity => TNumber.Min(q, qafz),
-            NearestRoundingRule.TowardPositiveInfinity => TNumber.Max(q, qafz),
-            NearestRoundingRule.TowardZero => TNumber.Abs(q) <= TNumber.Abs(qafz) ? q : qafz,
-            NearestRoundingRule.AwayFromZero => TNumber.Abs(q) >= TNumber.Abs(qafz) ? q : qafz,
-            NearestRoundingRule.ToEven => (q % (TNumber.One + TNumber.One)) == TNumber.Zero ? q : qafz,
-            NearestRoundingRule.ToOdd => (q % (TNumber.One + TNumber.One)) != TNumber.Zero ? q : qafz,
-            NearestRoundingRule.Random => System.Random.Shared.Next() == 0 ? q : qafz,
+            NearestRoundingRule.TowardNegativeInfinity => TNumber.Min(q, o),
+            NearestRoundingRule.TowardPositiveInfinity => TNumber.Max(q, o),
+            NearestRoundingRule.TowardZero => TNumber.Abs(q) <= TNumber.Abs(o) ? q : o,
+            NearestRoundingRule.AwayFromZero => TNumber.Abs(q) >= TNumber.Abs(o) ? q : o,
+            NearestRoundingRule.ToEven => TNumber.IsEvenInteger(q) ? q : o,
+            NearestRoundingRule.ToOdd => TNumber.IsOddInteger(q) ? q : o,
+            NearestRoundingRule.Random => System.Random.Shared.Next() == 0 ? q : o,
             _ => throw new System.NotImplementedException(nameof(rule))
           };
         }
@@ -189,6 +189,27 @@
         var minusRemainder = copySign - remainder;
 
         return (remainder, remainder, minusRemainder, minusRemainder);
+      }
+
+      #endregion
+
+      #region TriangleModulo
+
+      /// <summary>
+      /// <para>Computes the triangle (folded) modulo of a number <paramref name="value"/> with respect to a positive modulus <paramref name="modulus"/>.</para>
+      /// <para>The resulting waveform has period 2 × modulus.</para>
+      /// <para>A.K.A. "reflected", "folded" or "mirrored" modulo.</para>
+      /// </summary>
+      /// <param name="value"></param>
+      /// <param name="modulus"></param>
+      /// <returns>value in the range [0, modulus]</returns>
+      public static TNumber TriangleModulo(TNumber value, TNumber modulus)
+      {
+        System.ArgumentOutOfRangeException.ThrowIfNegativeOrZero(modulus);
+
+        var remainder = EuclideanModulo(value, modulus + modulus);
+
+        return modulus - TNumber.Abs(remainder - modulus);
       }
 
       #endregion
