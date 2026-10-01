@@ -335,13 +335,6 @@
       }
 
       #endregion
-
-      #region ToStringWithCustomDecimals
-
-      public string ToStringWithCustomDecimals(int numberOfDecimals = 339)
-        => x.ToString(BinaryInteger.CreateFormatStringWithCountDecimals(numberOfDecimals), null);
-
-      #endregion
     }
   }
 }

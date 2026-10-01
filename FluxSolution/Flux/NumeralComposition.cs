@@ -10,6 +10,8 @@ namespace Flux
     extension<TInteger>(TInteger value)
       where TInteger : System.Numerics.IBinaryInteger<TInteger>
     {
+      #region ToCardinalNumeralString
+
       /// <summary>
       /// <para>Creates a new string (optionally specify a <paramref name="stringBuilder"/> to use) with english numerals representing an integer value.</para>
       /// <para>E.g. 670530 = "<c>Six Hundred Seventy Thousand Five Hundred Thirty</c>"</para>
@@ -52,6 +54,10 @@ namespace Flux
         return stringBuilder.ToString();
       }
 
+      #endregion
+
+      #region ToOrdinalNumeralString
+
       /// <summary>
       /// <para>Creates a new string (optionally specify a <paramref name="stringBuilder"/> to use) with english numerals representing an integer value.</para>
       /// <para>E.g. 2039 = "<c>Two Thousand Thirty-Ninth</c>"</para>
@@ -93,11 +99,15 @@ namespace Flux
 
         return stringBuilder.ToString();
       }
+
+      #endregion
     }
 
     extension<TFloat>(TFloat value)
       where TFloat : System.Numerics.IFloatingPoint<TFloat>
     {
+      #region ToCardinalNumeralString
+
       /// <summary>
       /// <para>Creates a new string (optionally supply a <paramref name="stringBuilder"/> to use) with english numerals representing a floating-point value.</para>
       /// <para>20.39 = "<c>Twenty And Thirty-Nine Hundredths</c>"</para>
@@ -156,6 +166,8 @@ namespace Flux
 
         return stringBuilder.TrimCommonSuffix(0, char.IsWhiteSpace).ToString();
       }
+
+      #endregion
     }
 
     #region CardinalNumerals

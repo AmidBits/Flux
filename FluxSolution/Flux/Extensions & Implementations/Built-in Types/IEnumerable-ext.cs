@@ -192,44 +192,79 @@ namespace Flux
       #endregion
     }
 
-    extension<TNumber>(System.Collections.Generic.IEnumerable<TNumber> source)
-      where TNumber : System.Numerics.INumber<TNumber>
+    extension<T>(System.Collections.Generic.IEnumerable<T> source)
+      where T : System.Numerics.IAdditiveIdentity<T, T>, System.Numerics.IAdditionOperators<T, T, T>
     {
-      #region GetGapsInSequence
-
-      public System.Collections.Generic.IEnumerable<TNumber> GetGapsInSequence(bool includeLastFirstGap)
-        => source.PartitionTuple2(includeLastFirstGap, (leading, trailing, index) => trailing - leading);
-
-      #endregion
-
-      #region Mean
+      #region Sum
 
       /// <summary>
-      /// <para>Compute the <paramref name="mean"/> of all elements in <paramref name="source"/>, also return the <paramref name="count"/> and the <paramref name="sum"/> of elements as output parameters.</para>
-      /// <para><see href="http://en.wikipedia.org/wiki/Mean"/></para>
+      /// <para>Compute the sum of all numbers in <paramref name="source"/>.</para>
       /// </summary>
       /// <typeparam name="TNumberBase"></typeparam>
-      /// <typeparam name="TResult"></typeparam>
       /// <param name="source"></param>
-      /// <param name="mean"></param>
-      /// <param name="sum"></param>
-      /// <param name="count"></param>
-      public double Mean(out TNumber sum, out int count)
+      /// <returns></returns>
+      public T Sum(out int count)
       {
-        sum = TNumber.Zero;
+        var sum = T.AdditiveIdentity;
         count = 0;
 
-        foreach (var item in source)
+        foreach (var n in source)
         {
-          sum += item;
+          sum = checked(sum + n);
           count++;
         }
 
-        return count > 0 ? double.CreateChecked(sum) / count : 0;
+        return sum;
       }
 
-      #endregion
+      public T Sum() => Sum(source, out var _);
 
+      #endregion
+    }
+
+    extension<TNumberBase>(System.Collections.Generic.IEnumerable<TNumberBase> source)
+      where TNumberBase : System.Numerics.INumberBase<TNumberBase>
+    {
+      #region Product
+
+      /// <summary>
+      /// <para>Compute the product of all numbers in a sequence.</para>
+      /// </summary>
+      /// <param name="count"></param>
+      /// <returns></returns>
+      public TNumberBase Product(out int count)
+      {
+        var product = TNumberBase.MultiplicativeIdentity;
+        count = 0;
+
+        foreach (var n in source)
+        {
+          product = checked(product * n);
+          count++;
+        }
+
+        return count > 0 ? product : TNumberBase.Zero;
+      }
+
+      public TNumberBase Product() => Product(source, out var _);
+
+      #endregion
+    }
+
+    extension<T>(System.Collections.Generic.IEnumerable<T> source)
+      where T : System.Numerics.ISubtractionOperators<T, T, T>
+    {
+      #region GetGapsInSequence
+
+      public System.Collections.Generic.IEnumerable<T> GetGapsInSequence(bool includeLastFirstGap)
+        => source.PartitionTuple2(includeLastFirstGap, (leading, trailing, index) => trailing - leading);
+
+      #endregion
+    }
+
+    extension<TNumber>(System.Collections.Generic.IEnumerable<TNumber> source)
+      where TNumber : System.Numerics.INumber<TNumber>
+    {
       #region MeanMedianMode
 
       /// <summary>
@@ -243,72 +278,6 @@ namespace Flux
         var mmo = new Statistics.OnlineMeanMedianMode<TNumber>(source);
 
         return (mmo.Mean, mmo.Median, mmo.Mode);
-      }
-
-      #endregion
-
-      #region Product
-
-      /// <summary>
-      /// <para>Compute the product of all numbers in a sequence.</para>
-      /// </summary>
-      /// <param name="count"></param>
-      /// <returns></returns>
-      public TNumber Product(out int count)
-      {
-        using var e = source.GetEnumerator();
-
-        var product = TNumber.Zero;
-
-        count = 0;
-
-        if (e.MoveNext())
-        {
-          product = e.Current;
-
-          count++;
-
-          while (e.MoveNext())
-          {
-            product = checked(product * e.Current);
-
-            count++;
-          }
-        }
-
-        return product;
-      }
-
-      public TNumber Product()
-        => Product(source, out var _);
-
-      #endregion
-
-      #region Sum
-
-      public TNumber Sum()
-        => source.Aggregate(TNumber.Zero, (a, n) => checked(a + n));
-
-      /// <summary>
-      /// <para>Compute the sum of all numbers in <paramref name="source"/>.</para>
-      /// </summary>
-      /// <typeparam name="TNumberBase"></typeparam>
-      /// <param name="source"></param>
-      /// <returns></returns>
-      public TNumber Sum(out int count)
-      {
-        var sum = TNumber.Zero;
-
-        count = 0;
-
-        foreach (var n in source)
-        {
-          sum = checked(sum + n);
-
-          count++;
-        }
-
-        return sum;
       }
 
       #endregion

@@ -1,6 +1,6 @@
 namespace Flux
 {
-  public static class LinearIndexing
+  public static partial class BinaryInteger
   {
     extension<TInteger>(TInteger)
       where TInteger : System.Numerics.IBinaryInteger<TInteger>

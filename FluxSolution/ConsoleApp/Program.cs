@@ -304,20 +304,12 @@ namespace ConsoleApp
 
     private static void TimedMain(string[] _)
     {
-      var vrtmd = -23d;
-      var vrtmn = 10d;
-
-      var rtpa = double.RoundToInteger(-13, true, NearestRoundingRule.ToEven);
 
       var v0 = 550;
       var r0 = 10;
       var rtp = int.RoundToPower(v0, r0, false, NearestRoundingRule.Random);
       var rtm = double.RoundToMultiple(v0 + 5, r0, false, NearestRoundingRule.Random);
       var rti = double.RoundToInteger(v0 + 0.5, false, NearestRoundingRule.Random);
-
-
-      var d = Number.RoundToMultiple(vrtmd, vrtmn, DirectedRoundingMode.TowardNegativeInfinity);
-      var u = Number.RoundToMultiple(vrtmd, vrtmn, DirectedRoundingMode.TowardPositiveInfinity);
 
       var (remainder, remainderNoZero, reverseRemainder, reverseRemainderNoZero) = Number.RemainderAnalysis(10.2d, 3);
 
@@ -401,7 +393,7 @@ namespace ConsoleApp
 
 
 
-      Flux.XyzTileScheme.LatLonToTile(zoom1, latitude1, longitude1, out int x, out int y);
+      Flux.BinaryInteger.LatLonToTile(zoom1, latitude1, longitude1, out int x, out int y);
 
       int.TileToLatLon(zoom1, x, y, out double latitude2a, out double longitude2a);
       int.TileToLatLon(zoom1, x + 1, y + 1, out double latitude2b, out double longitude2b);

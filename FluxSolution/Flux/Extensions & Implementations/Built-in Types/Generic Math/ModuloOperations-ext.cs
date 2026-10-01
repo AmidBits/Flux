@@ -44,9 +44,9 @@
         return TNumber.IsZero(em) ? modulus : em;
       }
 
-      #endregion
+      #endregion 
 
-      #region IntegerDivRem.. functions
+      #region IntegerDivRemCeiling
 
       public static (TNumber Quotient, TNumber Remainder) IntegerDivRemCeiling(TNumber a, TNumber n)
       {
@@ -62,6 +62,10 @@
 
         return (qc, rc);
       }
+
+      #endregion
+
+      #region IntegerDivRemEnveloped
 
       public static (TNumber Quotient, TNumber Remainder) IntegerDivRemEnveloped(TNumber a, TNumber n)
       {
@@ -81,6 +85,10 @@
         return (qe, a - qe * n);
       }
 
+      #endregion
+
+      #region IntegerDivRemEuclidean
+
       public static (TNumber Quotient, TNumber Remainder) IntegerDivRemEuclidean(TNumber a, TNumber n)
       {
         var q = a / n; q -= q % TNumber.One;
@@ -91,6 +99,10 @@
 
         return (q, r);
       }
+
+      #endregion
+
+      #region IntegerDivRemFloored
 
       public static (TNumber Quotient, TNumber Remainder) IntegerDivRemFloored(TNumber a, TNumber n)
       {
@@ -105,21 +117,9 @@
         return (qf, a - qf * n);
       }
 
-      //public static (TNumber Quotient, TNumber Remainder) IntegerDivRemRound(TNumber a, TNumber n, NearestRoundingRule rule)
-      //{
-      //  var (q, r) = IntegerDivRemFloored(a, n);
+      #endregion
 
-      //  if (TNumber.Abs(r + r) >= TNumber.Abs(n))
-      //    q += TNumber.Sign(r) == TNumber.Sign(n) ? TNumber.One : -TNumber.One;
-
-      //  return (q, a - q * n);
-
-      //  //var q = a / n;
-
-      //  //var qr = FloatingPoint.RoundToNearestInteger(q, rule);
-
-      //  //return (qr, a - qr * n);
-      //}
+      #region IntegerDivRemRounded
 
       public static (TNumber Quotient, TNumber Remainder) IntegerDivRemRounded(TNumber a, TNumber n, NearestRoundingRule rule = NearestRoundingRule.ToEven)
       {
@@ -153,6 +153,10 @@
 
         return (q, a - q * n);
       }
+
+      #endregion
+
+      #region IntegerDivRemTruncated
 
       public static (TNumber Quotient, TNumber Remainder) IntegerDivRemTruncated(TNumber a, TNumber n)
       {
@@ -212,7 +216,7 @@
         return modulus - TNumber.Abs(remainder - modulus);
       }
 
-      #endregion
+      #endregion 
     }
   }
 }

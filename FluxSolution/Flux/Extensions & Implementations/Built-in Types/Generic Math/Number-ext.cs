@@ -380,63 +380,6 @@ namespace Flux
       }
     }
 
-    extension<TNumber>(TNumber value)
-      where TNumber : System.Numerics.INumber<TNumber>
-    {
-      #region ToEngineeringNotationString
-
-      /// <summary>
-      /// <para>Creates a new string in engineering notation, a version of scientific notation in which the exponent of ten is always selected to be divisible by three to match the common metric prefixes (<see cref="Units.MetricPrefix"/>).</para>
-      /// </summary>
-      /// <param name="stringBuilder"></param>
-      /// <param name="unit"></param>
-      /// <param name="format"></param>
-      /// <param name="formatProvider"></param>
-      /// <param name="restrictToTriplets"></param>
-      /// <returns></returns>
-      public string ToEngineeringNotationString(System.Text.StringBuilder? stringBuilder = null, string? unit = null, string? format = null, System.IFormatProvider? formatProvider = null, bool restrictToTriplets = true, UnicodeSpacing spacing = UnicodeSpacing.Space)
-      {
-        stringBuilder ??= new System.Text.StringBuilder();
-
-        if (!string.IsNullOrWhiteSpace(unit))
-          stringBuilder.Insert(0, unit);
-
-        var engineeringNotationPrefix = Units.MetricPrefix.Unprefixed;
-
-        var engineeringNotationValue = decimal.CreateChecked(value);
-
-        if (engineeringNotationValue != 0)
-          checked
-          {
-            engineeringNotationPrefix = double.Log10(double.Abs(double.CreateChecked(engineeringNotationValue))) is var log10 && restrictToTriplets
-              ? (Units.MetricPrefix)int.CreateChecked(double.Floor(log10 / 3) * 3)
-              : System.Enum.GetValues<Units.MetricPrefix>().InfimumSupremum(int.CreateChecked(double.Floor(log10)), mp => (int)mp, true).InfimumElement;
-
-            engineeringNotationValue *= (decimal)double.Pow(10, -(int)engineeringNotationPrefix);
-          }
-
-        var symbol = engineeringNotationPrefix.GetMetricPrefixSymbol(false);
-
-        if (!string.IsNullOrWhiteSpace(symbol))
-          stringBuilder.Insert(0, symbol);
-
-        if (stringBuilder.Length > 0)
-          stringBuilder.Insert(0, spacing.ToSpacingString());
-
-        stringBuilder.Insert(0, TNumber.CreateChecked(engineeringNotationValue).ToString(format, formatProvider));
-
-        return stringBuilder.ToString();
-      }
-
-      public string ToEngineeringNotationString(string unit)
-        => ToEngineeringNotationString(value, null, unit, null, null);
-
-      public string ToEngineeringNotationString()
-        => ToEngineeringNotationString(value, null, null, null, null);
-
-      #endregion
-    }
-
     //#region PowOf
 
     ///// <summary>

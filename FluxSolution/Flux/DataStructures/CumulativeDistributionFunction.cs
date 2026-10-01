@@ -10,7 +10,7 @@ namespace Flux.DataStructures
   /// <typeparam name="TPercentRank"></typeparam>
   public sealed class CumulativeDistributionFunction<TKey, TPercentRank>
       : System.Collections.Generic.SortedDictionary<TKey, TPercentRank>
-      where TKey : System.Numerics.INumber<TKey>
+      where TKey : System.Numerics.INumberBase<TKey>
       where TPercentRank : System.Numerics.IFloatingPointIeee754<TPercentRank>
   {
     /// <summary>Get the CDF (percent rank) of the <paramref name="key"/>. If the key exists it is returned, otherwise the percent rank is located by enumeration.</summary>

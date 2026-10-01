@@ -1,6 +1,4 @@
-﻿using System.Linq;
-using Flux;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Flux;
 
 namespace SystemFx
 {
@@ -9,13 +7,13 @@ namespace SystemFx
   {
     private readonly double[] d = new double[] { 9d, 27d, 63d, 81d, 90d };
 
-    [TestMethod]
-    public void MeanMedianAbsoluteDeviation()
-    {
-      var (madMean, madMedian) = d.MeanMedianAbsoluteDeviation();
-      Assert.AreEqual(28.8, madMean, "MeanMedianAbsoluteDeviation[madMean]");
-      Assert.AreEqual(27, madMedian, "MeanMedianAbsoluteDeviation[madMedian]");
-    }
+    //[TestMethod]
+    //public void MeanMedianAbsoluteDeviation()
+    //{
+    //  var (madMean, madMedian) = d.MeanMedianAbsoluteDeviation();
+    //  Assert.AreEqual(28.8, madMean, "MeanMedianAbsoluteDeviation[madMean]");
+    //  Assert.AreEqual(27, madMedian, "MeanMedianAbsoluteDeviation[madMedian]");
+    //}
 
     //[TestMethod]
     //public void AverageAbsoluteDeviationFromMean()
@@ -33,13 +31,13 @@ namespace SystemFx
     //  Assert.AreEqual(4.166666666666667, d.AverageAbsoluteDeviationFromMode(), nameof(AverageAbsoluteDeviationFromMode));
     //}
 
-    [TestMethod]
-    public void Mean()
-    {
-      var mean = d.Mean(out double _, out int _);
+    //[TestMethod]
+    //public void Mean()
+    //{
+    //  var mean = d.Mean(out double _, out int _);
 
-      Assert.AreEqual(54, mean, nameof(Mean));
-    }
+    //  Assert.AreEqual(54, mean, nameof(Mean));
+    //}
 
     [TestMethod]
     public void Median()

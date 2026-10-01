@@ -230,8 +230,6 @@
 
       #region RootN functions
 
-      //return TInteger.CreateChecked(BigIntegerExtensions.RootN(System.Numerics.BigInteger.CreateChecked(value), int.CreateChecked(degree)));
-
       private static TInteger RootNCore(TInteger value, TInteger degree)
       {
         if (value <= TInteger.One || degree <= TInteger.One)

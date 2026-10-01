@@ -10,7 +10,7 @@ namespace Flux.DataStructures
   /// <remarks>If there's a need to add a key with a POST NORMALIZED probability, divide the probability by the probability remainder, e.g. Add(key, 0.2) is pre-normalized, and Add(key, 0.2 / 0.8) is post-normalized.</remarks>
   public sealed class ProbabilityMassFunction<TKey, TProbability>
       : System.Collections.Generic.SortedDictionary<TKey, TProbability>
-      where TKey : System.Numerics.INumber<TKey>
+      where TKey : System.Numerics.INumberBase<TKey>
       where TProbability : System.Numerics.IFloatingPointIeee754<TProbability>
   {
     /// <summary>Yields the total sum of all probabilities in the PMF and equates to 1 if normalized.</summary>

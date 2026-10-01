@@ -8,7 +8,7 @@ namespace Flux.DataStructures
   /// <typeparam name="TKey"></typeparam>
   public sealed class Histogram<TKey, TFrequency>
     : System.Collections.Generic.IDictionary<TKey, TFrequency>
-    where TKey : System.Numerics.INumber<TKey>
+    where TKey : System.Numerics.INumberBase<TKey>
     where TFrequency : System.Numerics.IBinaryInteger<TFrequency>
   {
     private readonly System.Collections.Generic.SortedDictionary<TKey, TFrequency> m_data = [];

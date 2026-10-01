@@ -17,8 +17,8 @@
       /// <returns>
       /// <para>(<typeparamref name="TInteger"/> PowerTowardZero, <typeparamref name="TInteger"/> PowerAwayFromZero, <see langword="bool"/> IsExactPower, <typeparamref name="TInteger"/> NearestPower)</para>
       /// <list type="bullet">
-      /// <item>PowerTowardZero - a power-of-<paramref name="radix"/> less-than-or-equal to <paramref name="value"/></item>
-      /// <item>PowerAwayFromZero - a power-of-<paramref name="radix"/> greater-than-or-equal to <paramref name="value"/></item>
+      /// <item>PowerTowardZero - a power-of-<paramref name="radix"/> less-than-(or-equal) to <paramref name="value"/> <i>(depends on <paramref name="unequal"/>)</i></item>
+      /// <item>PowerAwayFromZero - a power-of-<paramref name="radix"/> greater-than-(or-equal) to <paramref name="value"/> <i>(depends on <paramref name="unequal"/>)</i></item>
       /// <item>IsExactPower - indicates whether <paramref name="value"/> is an exact power-of-<paramref name="radix"/></item>
       /// <item>NearestPower - the power-of-<paramref name="radix"/> nearest to <paramref name="value"/></item>
       /// </list>
@@ -37,29 +37,26 @@
 
           return (-powerTowardZero, -powerAwayFromZero, isExactPower, -nearestPower); // Negate all values.
         }
-        else // Otherwise value is greater than zero, and we find the toward-zero and away-from-zero, closest to or equal to value.
+
+        powerAwayFromZero = TInteger.One;
+        while (powerAwayFromZero < value) // Find the smallest power-of-radix that is greater than value.
+          powerAwayFromZero *= radix;
+
+        isExactPower = powerAwayFromZero == value; // Whether the original value is a power-of-radix.
+
+        powerTowardZero = isExactPower
+          ? powerAwayFromZero // If value is a power-of-radix, then powerTowardZero equals powerAwayFromZero.
+          : powerAwayFromZero / radix; // Otherwise powerTowardZero is the next lower power-of-radix.
+
+        if (isExactPower && unequal) // This is the only place where the unequal is handled.
         {
-          powerAwayFromZero = TInteger.One;
-          while (powerAwayFromZero < value) // Find the smallest power-of-radix that is greater than value.
-            powerAwayFromZero *= radix;
-
-          isExactPower = powerAwayFromZero == value; // Whether the original value is a power-of-radix.
-
-          powerTowardZero = isExactPower
-            ? powerAwayFromZero // If value is a power-of-radix, then powerTowardZero equals powerAwayFromZero.
-            : powerAwayFromZero / radix; // Otherwise powerTowardZero is the next lower power-of-radix.
+          powerTowardZero /= radix;
+          powerAwayFromZero *= radix;
         }
 
-        if (unequal) // This is the only place where the unequal is handled.
-        {
-          if (powerTowardZero == value)
-            powerTowardZero /= radix;
-
-          if (powerAwayFromZero == value)
-            powerAwayFromZero *= radix;
-        }
-
-        nearestPower = isExactPower ? value : Number.RoundToNearestValue(value, rule, false, powerTowardZero, powerAwayFromZero); // Find the nearest of the two.
+        nearestPower = isExactPower
+          ? powerTowardZero
+          : Number.RoundToNearestValue(value, rule, false, powerTowardZero, powerAwayFromZero); // Find the nearest of the two.
 
         return (powerTowardZero, powerAwayFromZero, isExactPower, nearestPower);
       }
@@ -84,8 +81,8 @@
       /// <returns>
       /// <para>(<typeparamref name="TFloat"/> IntegerTowardZero, <typeparamref name="TFloat"/> IntegerAwayFromZero, <see langword="bool"/> IsExactInteger, <typeparamref name="TFloat"/> NearestInteger)</para>
       /// <list type="bullet">
-      /// <item>IntegerTowardZero - an integer less-than-or-equal to <paramref name="value"/></item>
-      /// <item>IntegerAwayFromZero - an integer greater-than-or-equal to <paramref name="value"/></item>
+      /// <item>IntegerTowardZero - an integer less-than-(or-equal) to <paramref name="value"/> <i>(depends on <paramref name="unequal"/>)</i></item>
+      /// <item>IntegerAwayFromZero - an integer greater-than-(or-equal) to <paramref name="value"/> <i>(depends on <paramref name="unequal"/>)</i></item>
       /// <item>IsExactInteger - indicates whether <paramref name="value"/> is an exact integer</item>
       /// <item>NearestInteger - the integer nearest to <paramref name="value"/></item>
       /// </list>
@@ -102,22 +99,17 @@
 
           return (-integerTowardZero, -integerAwayFromZero, isExactInteger, -nearestInteger); // Negate all values.
         }
-        else // Otherwise value is greater than or equal to zero, and we find toward-zero and away-from-zero, closest to or equal to value.
+
+        integerTowardZero = TFloat.Truncate(value);
+
+        isExactInteger = integerTowardZero == value;
+
+        integerAwayFromZero = isExactInteger ? integerTowardZero : integerTowardZero + TFloat.One;
+
+        if (isExactInteger && unequal) // This is the only place where the unequal is handled.
         {
-          integerTowardZero = TFloat.Truncate(value);
-
-          isExactInteger = integerTowardZero == value;
-
-          integerAwayFromZero = isExactInteger ? integerTowardZero : integerTowardZero + TFloat.One;
-        }
-
-        if (unequal) // This is the only place where the unequal is handled.
-        {
-          if (integerTowardZero == value)
-            integerTowardZero -= TFloat.One;
-
-          if (integerAwayFromZero == value)
-            integerAwayFromZero += TFloat.One;
+          integerTowardZero -= TFloat.One;
+          integerAwayFromZero += TFloat.One;
         }
 
         nearestInteger = Number.RoundToNearestValue(value, rule, false, integerTowardZero, integerAwayFromZero);
@@ -283,8 +275,8 @@
       /// <returns>
       /// <para>(<typeparamref name="TNumber"/> MultipleTowardZero, <typeparamref name="TNumber"/> MultipleAwayFromZero, <see langword="bool"/> IsExactMultiple, <typeparamref name="TNumber"/> NearestMultiple)</para>
       /// <list type="bullet">
-      /// <item>MultipleTowardZero - a <paramref name="multiple"/> less-than-or-equal to <paramref name="value"/></item>
-      /// <item>MultipleAwayFromZero - a <paramref name="multiple"/> greater-than-or-equal to <paramref name="value"/></item>
+      /// <item>MultipleTowardZero - a <paramref name="multiple"/> less-than-(or-equal) to <paramref name="value"/> <i>(depends on <paramref name="unequal"/>)</i></item>
+      /// <item>MultipleAwayFromZero - a <paramref name="multiple"/> greater-than-(or-equal) to <paramref name="value"/> <i>(depends on <paramref name="unequal"/>)</i></item>
       /// <item>IsExactMultiple - indicates whether <paramref name="value"/> is an exact <paramref name="multiple"/></item>
       /// <item>NearestMultiple - the <paramref name="multiple"/> nearest to <paramref name="value"/></item>
       /// </list>
@@ -303,24 +295,19 @@
 
           return (-multipleTowardZero, -multipleAwayFromZero, isExactMultiple, -nearestMultiple); // Negate all values.
         }
-        else // Otherwise value is greater than zero, and we find toward-zero and away-from-zero, closest to or equal to value.
+
+        var (quotient, remainder) = IntegerDivRemTruncated(value, multiple); // Truncated division works on negative numbers for quotient which is used for multipleTowardZero.
+
+        multipleTowardZero = quotient * multiple;
+
+        isExactMultiple = TNumber.IsZero(remainder); // Whether the original value is a multiple.
+
+        multipleAwayFromZero = isExactMultiple ? multipleTowardZero : multipleTowardZero + multiple;
+
+        if (isExactMultiple && unequal) // This is the only place where the unequal is handled.
         {
-          var (quotient, remainder) = IntegerDivRemTruncated(value, multiple); // Truncated division works on negative numbers for quotient which is used for multipleTowardZero.
-
-          multipleTowardZero = quotient * multiple;
-
-          isExactMultiple = TNumber.IsZero(remainder); // Whether the original value is a multiple.
-
-          multipleAwayFromZero = isExactMultiple ? multipleTowardZero : multipleTowardZero + multiple;
-        }
-
-        if (unequal) // This is the only place where the unequal is handled.
-        {
-          if (multipleTowardZero == value)
-            multipleTowardZero -= multiple;
-
-          if (multipleAwayFromZero == value)
-            multipleAwayFromZero += multiple;
+          multipleTowardZero -= multiple;
+          multipleAwayFromZero += multiple;
         }
 
         nearestMultiple = RoundToNearestValue(value, rule, false, multipleTowardZero, multipleAwayFromZero); // Find the nearest of the two.
