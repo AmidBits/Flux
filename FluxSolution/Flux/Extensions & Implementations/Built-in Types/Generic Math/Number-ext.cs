@@ -5,39 +5,39 @@ namespace Flux
     extension<TNumber>(TNumber)
       where TNumber : System.Numerics.INumber<TNumber>
     {
-      #region Detent
+      //#region Detent
 
-      /// <summary>
-      /// <para>Snaps the <paramref name="value"/> to the nearest <paramref name="interval"/> if it's within the specified <paramref name="proximity"/> of an <paramref name="interval"/> position, otherwise unaltered.</para>
-      /// </summary>
-      /// <remarks>This is similar to a knob that has notches which latches the knob at certain positions.</remarks>
-      /// <typeparam name="TNumber"></typeparam>
-      /// <param name="value"></param>
-      /// <param name="interval">The number will snap to any multiple of the specified <paramref name="interval"/>.</param>
-      /// <param name="proximity">This is the absolute tolerance of proximity, on either side of an <paramref name="interval"/>.</param>
-      /// <returns></returns>
-      public static TNumber DetentInterval(TNumber value, TNumber interval, TNumber proximity)
-        => TNumber.CreateChecked(int.CreateChecked(value / interval)) * interval is var tzPosition && TNumber.Abs(tzPosition - value) <= proximity
-        ? tzPosition
-        : tzPosition + interval is var afzPosition && TNumber.Abs(afzPosition - value) <= proximity
-        ? afzPosition
-        : value;
+      ///// <summary>
+      ///// <para>Snaps the <paramref name="value"/> to the nearest <paramref name="interval"/> if it's within the specified <paramref name="proximity"/> of an <paramref name="interval"/> position, otherwise unaltered.</para>
+      ///// </summary>
+      ///// <remarks>This is similar to a knob that has notches which latches the knob at certain positions.</remarks>
+      ///// <typeparam name="TNumber"></typeparam>
+      ///// <param name="value"></param>
+      ///// <param name="interval">The number will snap to any multiple of the specified <paramref name="interval"/>.</param>
+      ///// <param name="proximity">This is the absolute tolerance of proximity, on either side of an <paramref name="interval"/>.</param>
+      ///// <returns></returns>
+      //public static TNumber DetentInterval(TNumber value, TNumber interval, TNumber proximity)
+      //  => TNumber.CreateChecked(int.CreateChecked(value / interval)) * interval is var tzPosition && TNumber.Abs(tzPosition - value) <= proximity
+      //  ? tzPosition
+      //  : tzPosition + interval is var afzPosition && TNumber.Abs(afzPosition - value) <= proximity
+      //  ? afzPosition
+      //  : value;
 
-      /// <summary>
-      /// <para>Snaps a <paramref name="value"/> to a <paramref name="position"/> if it's within the specified <paramref name="proximity"/> of the <paramref name="position"/>, otherwise unaltered.</para>
-      /// </summary>
-      /// <remarks>This is similar to a knob that has a notch which latches the knob at a certain position.</remarks>
-      /// <typeparam name="TNumber"></typeparam>
-      /// <param name="value"></param>
-      /// <param name="position">E.g. a 0 snaps the <paramref name="value"/> to zero within the <paramref name="proximity"/>.</param>
-      /// <param name="proximity">This is the absolute tolerance of proximity, on either side of the <paramref name="position"/>.</param>
-      /// <returns></returns>
-      public static TNumber DetentPosition(TNumber value, TNumber position, TNumber proximity)
-        => TNumber.Abs(position - value) <= proximity // Inquire whether the difference is within to specified proximity.
-        ? position // If so, detent to the position.
-        : value; // Otherwise leave it where it is.
+      ///// <summary>
+      ///// <para>Snaps a <paramref name="value"/> to a <paramref name="position"/> if it's within the specified <paramref name="proximity"/> of the <paramref name="position"/>, otherwise unaltered.</para>
+      ///// </summary>
+      ///// <remarks>This is similar to a knob that has a notch which latches the knob at a certain position.</remarks>
+      ///// <typeparam name="TNumber"></typeparam>
+      ///// <param name="value"></param>
+      ///// <param name="position">E.g. a 0 snaps the <paramref name="value"/> to zero within the <paramref name="proximity"/>.</param>
+      ///// <param name="proximity">This is the absolute tolerance of proximity, on either side of the <paramref name="position"/>.</param>
+      ///// <returns></returns>
+      //public static TNumber DetentPosition(TNumber value, TNumber position, TNumber proximity)
+      //  => TNumber.Abs(position - value) <= proximity // Inquire whether the difference is within to specified proximity.
+      //  ? position // If so, detent to the position.
+      //  : value; // Otherwise leave it where it is.
 
-      #endregion
+      //#endregion
 
       #region EqualsWithin..
 
@@ -324,7 +324,7 @@ namespace Flux
 
       public static TNumber WrapClosed(TNumber value, TNumber minValue, TNumber maxValue)
       {
-        var rem = ModulusOperators.EuclideanModulo(value - minValue, maxValue - minValue);
+        var rem = Number.EuclideanModulo(value - minValue, maxValue - minValue);
 
         if (TNumber.IsZero(rem))
           return maxValue;
@@ -338,7 +338,7 @@ namespace Flux
 
       public static TNumber WrapHalfOpenLeft(TNumber value, TNumber minValue, TNumber maxValue)
       {
-        var rem = ModulusOperators.EuclideanModulo(value - minValue, maxValue - minValue);
+        var rem = Number.EuclideanModulo(value - minValue, maxValue - minValue);
 
         if (TNumber.IsZero(rem))
           return maxValue;
@@ -353,7 +353,7 @@ namespace Flux
 
       public static TNumber WrapHalfOpenRight(TNumber value, TNumber minValue, TNumber maxValue)
       {
-        return minValue + ModulusOperators.EuclideanModulo(value - minValue, maxValue - minValue);
+        return minValue + Number.EuclideanModulo(value - minValue, maxValue - minValue);
 
         //var range = maxValue - minValue;
 
@@ -362,7 +362,7 @@ namespace Flux
 
       public static TNumber WrapOpen(TNumber value, TNumber minValue, TNumber maxValue)
       {
-        var rem = ModulusOperators.EuclideanModulo(value - minValue, maxValue - minValue);
+        var rem = Number.EuclideanModulo(value - minValue, maxValue - minValue);
 
         if (TNumber.IsZero(rem))
           return minValue + Number.Ulp(minValue);

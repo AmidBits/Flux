@@ -116,50 +116,84 @@ namespace Flux
       /// <para>A tolerance for “close enough” comparisons — the smallest meaningful difference before rounding noise dominates.</para>
       /// <para>The default epsilon scalar (1e-27m) used for near-integer functions.</para>
       /// </summary>
-      public static decimal EngineeringEpsilon => 1e-27m;
+      public static decimal DecimalEngineeringEpsilon => 1e-27m;
 
-      public static decimal MachineEpsilon => 1e-28m;
+      public static decimal DecimalMachineEpsilon => 1e-28m;
 
       /// <summary>
       /// <para>The largest integer that can be stored in a <see cref="System.Decimal"/> without losing precision is 79,228,162,514,264,337,593,543,950,335.</para>
       /// <para>The <see cref="System.Decimal"/> type is a base-10 high-precision decimal, which means it can precisely represent integers up to 79,228,162,514,264,337,593,543,950,335 (approximately 7.9×10²⁸). This is because the decimal type has a precision of 28-29 significant digits and does not use floating-point approximations for integers within this range. Beyond this value, precision may be lost.</para>
       /// </summary>
-      public static decimal MaxExactInteger => 79228162514264337593543950335m;
+      public static decimal DecimalMaxExactInteger => 79228162514264337593543950335m;
 
       /// <summary>
       /// <para>The smallest integer that can be stored in a <see cref="System.Decimal"/> without losing precision is -79,228,162,514,264,337,593,543,950,335.</para>
       /// <para>The <see cref="System.Decimal"/> type is a base-10 high-precision decimal, which means it can precisely represent integers down to -79,228,162,514,264,337,593,543,950,335 (approximately -7.9×10²⁸). This is because the decimal type has a precision of 28-29 significant digits and does not use floating-point approximations for integers within this range. Beyond this value, precision may be lost.</para>
       /// </summary>
-      public static decimal MinExactInteger => -79228162514264337593543950335m;
+      public static decimal DecimalMinExactInteger => -79228162514264337593543950335m;
 
       /// <summary>
       /// <para>The largest prime integer that precisely fit in a decimal.</para>
       /// </summary>
-      public static decimal MaxExactPrimeNumber => 79228162514264337593543950297m;
+      public static decimal DecimalMaxExactPrimeNumber => 79228162514264337593543950297m;
 
-      #region ExtractDecimalFields
+      #region DecimalBinary function
 
       /// <summary>
       /// <para>Gets the components that make up a decimal type, i.e. mantissa, scale and sign.</para>
       /// </summary>
       /// <param name="source"></param>
       /// <returns></returns>
-      public static (System.Int128 Integer, int Scale, int SignBit) ExtractDecimalFields(System.Decimal value)
+      [System.CLSCompliant(false)]
+      public static (int Sign, decimal ScaleMultiplier) AnalyzeDecimalBinary(uint signBit, uint scale, System.UInt128 unsignedMagnitude)
+      {
+        var value = FromDecimalBinary(signBit, scale, unsignedMagnitude);
+
+        var sign = decimal.Sign(value);
+
+        var scaleMultiplier = Pow10((int)scale);
+
+        return (sign, scaleMultiplier);
+      }
+
+      [System.CLSCompliant(false)]
+      public static decimal FromDecimalBinary(uint SignBit, uint Scale, System.UInt128 UnsignedMagnitude)
+      {
+        System.ArgumentOutOfRangeException.ThrowIfGreaterThan(Scale, 28U);
+        System.ArgumentOutOfRangeException.ThrowIfGreaterThan(UnsignedMagnitude, System.UInt128.One << 96);
+
+        var isNegative = SignBit != 0;
+
+        var lo = (int)(UnsignedMagnitude & 0xFFFFFFFF);
+        var mid = (int)((UnsignedMagnitude >> 32) & 0xFFFFFFFF);
+        var hi = (int)((UnsignedMagnitude >> 64) & 0xFFFFFFFF);
+
+        return new decimal(lo, mid, hi, isNegative, (byte)Scale);
+      }
+
+      [System.CLSCompliant(false)]
+      public static (uint SignBit, uint Scale, System.UInt128 UnsignedMagnitude) ToDecimalBinary(System.Decimal value)
       {
         var bits = decimal.GetBits(value);
 
-        //var bytes = System.Runtime.InteropServices.MemoryMarshal.Cast<int, byte>(bits);
+        var scale = (uint)(bits[3] >> 16) & 0xFF;
+        var signBit = (uint)bits[3] >>> 31;
+        var unsignedMagnitude = ((System.UInt128)bits[2] << 64) | ((System.UInt128)bits[1] << 32) | (System.UInt128)bits[0];
 
-        //var integer96 = System.BitConverter.ToInt128(bytes[..12]);
-        //var scale = bytes[14];
-        //var sign = (bytes[15] & 0x80) >>> 7;
+        return (signBit, scale, unsignedMagnitude);
+      }
 
-        var scale = (bits[3] >> 16) & 0xFF;
-        var sign = bits[3] >>> 31;
+      #endregion
 
-        var integer96 = ((System.Int128)bits[2] << 64) | ((System.Int128)bits[1] << 32) | bits[0];
+      #region ExtractDecimalFields
 
-        return (integer96, scale, sign);
+      public static (int Sign, int Scale, System.Int128 Magnitude) ExtractDecimalFields(System.Decimal value)
+      {
+        var (signBit, scale, unsignedMagnitude) = ToDecimalBinary(value);
+
+        var (sign, _) = AnalyzeDecimalBinary(signBit, scale, unsignedMagnitude);
+
+        return (sign, (int)scale, (System.Int128)unsignedMagnitude);
       }
 
       #endregion
@@ -175,21 +209,33 @@ namespace Flux
       /// <param name="scale"></param>
       /// <param name="sign"></param>
       /// <returns></returns>
-      public static (System.Numerics.BigInteger IntegralPart, decimal FractionalPart, System.Numerics.BigInteger FractionalPartAsInteger) GetDecimalParts(System.Decimal value, out System.Numerics.BigInteger scaleFactor)
+      public static (System.Int128 IntegralPart, decimal FractionalPart, System.Int128 FractionalPartAsIntegral) GetDecimalParts(System.Decimal value, out decimal scaleMultiplier)
       {
-        var (significand, scale, _) = ExtractDecimalFields(value);
+        var (signBit, scale, unsignedMagnitude) = ToDecimalBinary(value);
 
-        scaleFactor = System.Numerics.BigInteger.Pow(10, scale);
+        (var sign, scaleMultiplier) = AnalyzeDecimalBinary(signBit, scale, unsignedMagnitude);
 
-        var integerPart = significand / scaleFactor;
+        var truncatedValue = decimal.Truncate(value);
 
-        var fractionalPartAsInteger = significand - (integerPart * scaleFactor);
+        var integralPart = System.Int128.CreateChecked(truncatedValue);
+        var fractionalPart = value - truncatedValue;
+        var fractionalPartAsIntegral = System.Int128.CreateChecked(unsignedMagnitude) % System.Int128.CreateChecked(scaleMultiplier);
 
-        return (
-          integerPart,
-          value - (decimal)integerPart,
-          fractionalPartAsInteger
-        );
+        return (integralPart, fractionalPart, fractionalPartAsIntegral);
+
+        //var (significand, scale, _) = ExtractDecimalFields(value);
+
+        //scaleFactor = System.Numerics.BigInteger.Pow(10, scale);
+
+        //var integerPart = significand / scaleFactor;
+
+        //var fractionalPartAsInteger = significand - (integerPart * scaleFactor);
+
+        //return (
+        //  integerPart,
+        //  value - (decimal)integerPart,
+        //  fractionalPartAsInteger
+        //);
       }
 
       /// <summary>
@@ -212,11 +258,10 @@ namespace Flux
       /// </summary>
       /// <param name="exponent">Allowed range: [-28, 28]</param>
       /// <returns></returns>
-      private static decimal Pow10(int exponent)
+      internal static decimal Pow10(int exponent)
       {
         if (exponent >= 0)
         {
-          System.ArgumentOutOfRangeException.ThrowIfNegative(exponent);
           System.ArgumentOutOfRangeException.ThrowIfGreaterThan(exponent, 28);
 
           return m_decimalScaleFactorsPositive[exponent];
@@ -265,22 +310,22 @@ namespace Flux
 
       #endregion
 
-      #region DecimalUlpDistance
+      //#region DecimalUlpDistance
 
-      public static System.Int128 DecimalUlpDistance(decimal left, decimal right)
-      {
-        var (lInteger, lScale, _) = ExtractDecimalFields(left);
-        var (rInteger, rScale, _) = ExtractDecimalFields(right);
+      //public static System.Int128 DecimalUlpDistance(decimal left, decimal right)
+      //{
+      //  var (_, leftScale, leftSignificand) = ExtractDecimalFields(left);
+      //  var (_, rightScale, rightSignificand) = ExtractDecimalFields(right);
 
-        var scale = int.Max(lScale, rScale);
+      //  var scale = int.Max(leftScale, rightScale);
 
-        lInteger *= System.Int128.Pow(10, scale - lScale);
-        rInteger *= System.Int128.Pow(10, scale - rScale);
+      //  leftSignificand *= (System.Int128)Pow10(scale - leftScale, out var _);
+      //  rightSignificand *= (System.Int128)Pow10(scale - rightScale, out var _);
 
-        return System.Int128.Abs(lInteger - rInteger);
-      }
+      //  return System.Int128.Abs(leftSignificand - rightSignificand);
+      //}
 
-      #endregion
+      //#endregion
 
       #region DecimalUlpIncrement
 
@@ -297,34 +342,6 @@ namespace Flux
       }
 
       #endregion
-
-      public static int Frscale(decimal value, out decimal significand)
-      {
-        if (value == 0m)
-        {
-          significand = 0m;
-          return 0;
-        }
-
-        var (integer, scale, signBit) = decimal.ExtractDecimalFields(value);
-
-        significand = (decimal)integer;
-
-        if (signBit != 0)
-          significand = -significand;
-
-        return scale; // unbiased decimal exponent
-      }
-
-      public static decimal Ldscale(decimal significand, int scale)
-      {
-        scale = int.Clamp(scale, 0, 28);
-
-        return significand * Pow10(-scale);
-      }
-
-      public static decimal ScaleD(decimal value, int decimalExponent)
-        => value * Pow10(decimalExponent);
 
       ///// <summary>
       ///// <para>Snaps a decimal value to the nearest integer if it is within one unit in the last place (ULP) of that integer.</para>
@@ -1137,7 +1154,6 @@ namespace Flux
       }
 
 #endif
-
     }
 
     private const decimal LN2 = 0.693147180559945309417232121458m;

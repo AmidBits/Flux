@@ -8,26 +8,24 @@
       /// <para>The base epsilon 1e‑3 → about the scale where half‑precision (binary16) stops reliably distinguishing differences.</para>
       /// <para>A tolerance for “close enough” comparisons — the smallest meaningful difference before rounding noise dominates.</para>
       /// </summary>
-      public static System.Half EngineeringEpsilon => System.Half.CreateChecked(1e-3);
-
-      public static System.Half MachineEpsilon => (System.Half)0.0009765625;
+      public static System.Half HalfEngineeringEpsilon => System.Half.CreateChecked(1e-3);
 
       /// <summary>
       /// <para>The largest integer that can be stored in a <see cref="System.Half"/> without losing precision is <c>16,777,216</c>.</para>
       /// <para>This is because a <see cref="System.Half"/> is a base-2/binary single-precision floating point with a 24-bit mantissa, which means it can precisely represent integers up to 16,777,216 = <c>(1 &lt;&lt; 24)</c> = 2²⁴, before precision starts to degrade.</para>
       /// </summary>
-      public static System.Half MaxExactInteger => System.Half.CreateChecked(+2048);
+      public static System.Half HalfMaxExactInteger => System.Half.CreateChecked(+2048);
 
       /// <summary>
       /// <para>The smallest integer that can be stored in a <see cref="System.Half"/> without losing precision is <c>-16,777,216</c>.</para>
       /// <para>This is because a <see cref="System.Half"/> is a base-2/binary single-precision floating point with a 24-bit mantissa, which means it can precisely represent integers down to -16,777,216 = <c>-(1 &lt;&lt; 24)</c> = -2²⁴, before precision starts to degrade.</para>
       /// </summary>
-      public static System.Half MinExactInteger => System.Half.CreateChecked(-2048);
+      public static System.Half HalfMinExactInteger => System.Half.CreateChecked(-2048);
 
       /// <summary>
       /// <para>The largest prime integer that precisely fit in a <see cref="System.Half"/>.</para>
       /// </summary>
-      public static System.Half MaxExactPrimeNumber => System.Half.CreateChecked(2039);
+      public static System.Half HalfMaxExactPrimeNumber => System.Half.CreateChecked(2039);
 
       #region HalfUlp/TryGet
 

@@ -8,48 +8,41 @@
       /// <para>The base epsilon (1e-12d or 1e-6f) → about the scale where NFloat‑precision (binary64 or binary32) stops reliably distinguishing differences.</para>
       /// <para>A tolerance for “close enough” comparisons — the smallest meaningful difference before rounding noise dominates.</para>
       /// </summary>
-      public static System.Runtime.InteropServices.NFloat EngineeringEpsilon
+      public static System.Runtime.InteropServices.NFloat NFloatEngineeringEpsilon
         => System.Runtime.InteropServices.NFloat.Size == 8
-        ? System.Runtime.InteropServices.NFloat.CreateChecked(double.EngineeringEpsilon)
+        ? System.Runtime.InteropServices.NFloat.CreateChecked(double.DoubleEngineeringEpsilon)
         : System.Runtime.InteropServices.NFloat.Size == 4
-        ? System.Runtime.InteropServices.NFloat.CreateChecked(float.EngineeringEpsilon)
-        : throw new System.NotImplementedException();
-
-      public static System.Runtime.InteropServices.NFloat MachineEpsilon
-        => System.Runtime.InteropServices.NFloat.Size == 8
-        ? System.Runtime.InteropServices.NFloat.CreateChecked(double.MachineEpsilon)
-        : System.Runtime.InteropServices.NFloat.Size == 4
-        ? System.Runtime.InteropServices.NFloat.CreateChecked(float.MachineEpsilon)
+        ? System.Runtime.InteropServices.NFloat.CreateChecked(float.SingleEngineeringEpsilon)
         : throw new System.NotImplementedException();
 
       /// <summary>
       /// <para>The largest integer that can be stored in a <see cref="System.Runtime.InteropServices.NFloat"/> without losing precision.</para>
       /// </summary>
-      public static System.Runtime.InteropServices.NFloat MaxExactInteger
+      public static System.Runtime.InteropServices.NFloat NFloatMaxExactInteger
         => System.Runtime.InteropServices.NFloat.Size == 8
-        ? System.Runtime.InteropServices.NFloat.CreateChecked(double.MaxExactInteger)
+        ? System.Runtime.InteropServices.NFloat.CreateChecked(double.DoubleMaxExactInteger)
         : System.Runtime.InteropServices.NFloat.Size == 4
-        ? System.Runtime.InteropServices.NFloat.CreateChecked(float.MaxExactInteger)
+        ? System.Runtime.InteropServices.NFloat.CreateChecked(float.SingleMaxExactInteger)
         : throw new System.NotImplementedException();
 
       /// <summary>
       /// <para>The smallest integer that can be stored in a <see cref="System.Runtime.InteropServices.NFloat"/> without losing precision.</para>
       /// </summary>
-      public static System.Runtime.InteropServices.NFloat MinExactInteger
+      public static System.Runtime.InteropServices.NFloat NFloatMinExactInteger
         => System.Runtime.InteropServices.NFloat.Size == 8
-        ? System.Runtime.InteropServices.NFloat.CreateChecked(double.MinExactInteger)
+        ? System.Runtime.InteropServices.NFloat.CreateChecked(double.DoubleMinExactInteger)
         : System.Runtime.InteropServices.NFloat.Size == 4
-        ? System.Runtime.InteropServices.NFloat.CreateChecked(float.MinExactInteger)
+        ? System.Runtime.InteropServices.NFloat.CreateChecked(float.SingleMinExactInteger)
         : throw new System.NotImplementedException();
 
       /// <summary>
       /// <para>The largest prime integer that precisely fit in a <see cref="System.Runtime.InteropServices.NFloat"/>.</para>
       /// </summary>
-      public static double MaxExactPrimeNumber
+      public static double NFloatMaxExactPrimeNumber
         => System.Runtime.InteropServices.NFloat.Size == 8
-        ? System.Runtime.InteropServices.NFloat.CreateChecked(double.MaxExactPrimeNumber)
+        ? System.Runtime.InteropServices.NFloat.CreateChecked(double.DoubleMaxExactPrimeNumber)
         : System.Runtime.InteropServices.NFloat.Size == 4
-        ? System.Runtime.InteropServices.NFloat.CreateChecked(float.MaxExactPrimeNumber)
+        ? System.Runtime.InteropServices.NFloat.CreateChecked(float.SingleMaxExactPrimeNumber)
         : throw new System.NotImplementedException();
 
       #region NFloatUlp/TryGet

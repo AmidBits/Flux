@@ -10,29 +10,24 @@ namespace Flux
       /// <para>The base epsilon 1e‑12d → about the scale where double‑precision (binary64) stops reliably distinguishing differences.</para>
       /// <para>A tolerance for “close enough” comparisons — the smallest meaningful difference before rounding noise dominates.</para>
       /// </summary>
-      public static double EngineeringEpsilon => 1e-12d;
-
-      /// <summary>
-      /// <para></para>
-      /// </summary>
-      public static double MachineEpsilon => 2.220446049250313e-16;
+      public static double DoubleEngineeringEpsilon => 1e-12d;
 
       /// <summary>
       /// <para>The largest integer that can be stored in a <see cref="System.Double"/> without losing precision is <c>9,007,199,254,740,992</c>.</para>
       /// <para>This is because a <see cref="System.Double"/> is a base-2/binary double-precision floating point with a 53-bit mantissa and 15-16 digits of precision, which means it can precisely represent integers up to 9,007,199,254,740,992 = <c>(1 &lt;&lt; 53)</c> = 2⁵³, before precision starts to degrade.</para>
       /// </summary>
-      public static double MaxExactInteger => +9007199254740992;
+      public static double DoubleMaxExactInteger => +9007199254740992;
 
       /// <summary>
       /// <para>The smallest integer that can be stored in a <see cref="System.Double"/> without losing precision is <c>-9,007,199,254,740,992</c>.</para>
       /// <para>This is because a <see cref="System.Double"/> is a base-2/binary double-precision floating point with a 53-bit mantissa and 15-16 digits of precision, which means it can precisely represent integers down to -9,007,199,254,740,992 = <c>-(1 &lt;&lt; 53)</c> = -2⁵³, before precision starts to degrade.</para>
       /// </summary>
-      public static double MinExactInteger => -9007199254740992;
+      public static double DoubleMinExactInteger => -9007199254740992;
 
       /// <summary>
       /// <para>The largest prime integer that precisely fit in a double.</para>
       /// </summary>
-      public static double MaxExactPrimeNumber => 9007199254740881;
+      public static double DoubleMaxExactPrimeNumber => 9007199254740881;
 
       #region SafeExactInteger shortcuts (remarked out for now)
 

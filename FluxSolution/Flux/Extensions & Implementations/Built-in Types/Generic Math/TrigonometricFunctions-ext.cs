@@ -211,43 +211,6 @@
     {
       #region Atan2.. functions
 
-      /// <summary>
-      /// <para>This is a signed Atan2 which means the output is in the interval [-PI, +PI] (i.e. the radian equivalent of -180 to 180 degrees).</para>
-      /// </summary>
-      /// <param name="y"></param>
-      /// <param name="x"></param>
-      /// <returns></returns>
-      public static TFloat Atan2Signed(TFloat y, TFloat x)
-      {
-        if (TFloat.IsNaN(x) || TFloat.IsNaN(y))
-          return TFloat.CreateChecked(double.NaN);
-
-        var zero = TFloat.Zero;
-
-        if (x == zero) // Handle x == 0 separately (vertical axis)
-        {
-          if (y == zero)
-            return zero;
-
-          var halfPi = TFloat.Pi / TFloat.CreateChecked(2);
-
-          return y > zero ? halfPi : -halfPi;
-        }
-
-        var angle = TFloat.Atan(y / x); // Compute the base angle.
-
-        return x > zero ? angle // Quadrants I and IV → angle is already correct.
-          : y >= zero ? angle + TFloat.Pi : angle - TFloat.Pi; // Quadrant II and III → Correction needed: add 180 degrees if in the second quadrant (x < 0, y >= 0) or subtract 180 degrees if in the third quadrant (x < 0, y < 0).
-      }
-
-      /// <summary>
-      /// <para>This is an unsigned Atan2 which means the output is in the interval [0, 2*PI] (i.e. the radian equivalent of 0 to 360 degrees).</para>
-      /// </summary>
-      /// <param name="y"></param>
-      /// <param name="x"></param>
-      /// <returns></returns>
-      public static TFloat Atan2Unsigned(TFloat y, TFloat x)
-        => Atan2Signed(y, x) is var a && a < TFloat.Zero ? a + TFloat.Tau : a;
 
       #endregion
     }
@@ -275,10 +238,10 @@
           return TFloat.CopySign(TFloat.Pi / TFloat.CreateChecked(2), y);
         }
 
-        var atanYX = TFloat.Atan(y / x);
+        var atanYX = TFloat.Atan(y / x); // Compute the base angle.
 
-        if (TFloat.IsNegative(x))
-          atanYX += TFloat.CopySign(TFloat.Pi, y);
+        if (TFloat.IsNegative(x)) // If x >= 0, quadrants I and IV → angle is already correct, skip correction.
+          atanYX += TFloat.CopySign(TFloat.Pi, y); // If x is negative, quadrants II and III → Correction needed: add 180 degrees if in the second quadrant (x < 0, y >= 0) or subtract 180 degrees if in the third quadrant (x < 0, y < 0).
 
         return atanYX;
       }
@@ -330,6 +293,16 @@
 
         return TFloat.CreateChecked(atan2);
       }
+
+
+      /// <summary>
+      /// <para>This is an unsigned Atan2 which means the output is in the interval [0, 2*PI] (i.e. the radian equivalent of 0 to 360 degrees).</para>
+      /// </summary>
+      /// <param name="y"></param>
+      /// <param name="x"></param>
+      /// <returns></returns>
+      public static TFloat Atan2Unsigned(TFloat y, TFloat x)
+        => Atan2(y, x) is var a && a < TFloat.Zero ? a + TFloat.Tau : a;
 
       #endregion
 

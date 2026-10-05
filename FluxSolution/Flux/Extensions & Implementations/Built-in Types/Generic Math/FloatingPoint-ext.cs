@@ -227,7 +227,7 @@
       {
         System.ArgumentOutOfRangeException.ThrowIfNegativeOrZero(modulus);
 
-        var phase = ModulusOperators.EuclideanModulo(value, modulus); // Phase in [0, modulus).
+        var phase = Number.EuclideanModulo(value, modulus); // Phase in [0, modulus).
 
         var unitInterval = phase / modulus; // Normalize to [0, 1).
 
@@ -252,7 +252,7 @@
       {
         System.ArgumentOutOfRangeException.ThrowIfNegativeOrZero(modulus);
 
-        var phase = ModulusOperators.EuclideanModulo(value, modulus); // Phase in [0, modulus).
+        var phase = Number.EuclideanModulo(value, modulus); // Phase in [0, modulus).
 
         var unitInterval = phase / modulus; // Normalize to [0, 1).
 

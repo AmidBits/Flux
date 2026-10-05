@@ -123,13 +123,13 @@ namespace Flux
 
         if (value is decimal decimalValue)
         {
-          var (integerPart, _, fractionalPartAsWholeNumber) = decimal.GetDecimalParts(decimalValue, out var scaleFactor);
+          var (integralPart, _, fractionalPartAsWholeNumber) = decimal.GetDecimalParts(decimalValue, out var scaleMultiplier);
 
-          if (!integerPart.IsZero)
+          if (integralPart != System.Int128.Zero)
           {
-            ToCardinalNumeralString(integerPart, stringBuilder, numeralScale);
+            ToCardinalNumeralString(integralPart, stringBuilder, numeralScale);
 
-            if (!fractionalPartAsWholeNumber.IsZero)
+            if (fractionalPartAsWholeNumber != System.Int128.Zero)
             {
               stringBuilder.Append(' ');
 
@@ -137,7 +137,7 @@ namespace Flux
             }
           }
 
-          if (!fractionalPartAsWholeNumber.IsZero)
+          if (fractionalPartAsWholeNumber != System.Int128.Zero)
           {
             ToCardinalNumeralString(fractionalPartAsWholeNumber, stringBuilder, numeralScale);
 
@@ -145,7 +145,7 @@ namespace Flux
             {
               var sb = new System.Text.StringBuilder();
 
-              ToCardinalNumeralString(scaleFactor, sb, numeralScale);
+              ToCardinalNumeralString(scaleMultiplier, sb, numeralScale);
 
               sb.Replace(' ', '-');
 

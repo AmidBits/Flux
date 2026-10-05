@@ -6,23 +6,23 @@ namespace Maths
   [TestClass]
   public class Core
   {
-    [TestMethod]
-    public void DetentInterval()
-    {
-      Assert.AreEqual(520, Number.DetentInterval(515, 20, 5));
-    }
+    //[TestMethod]
+    //public void DetentInterval()
+    //{
+    //  Assert.AreEqual(520, Number.DetentInterval(515, 20, 5));
+    //}
 
-    [TestMethod]
-    public void DetentPosition()
-    {
-      Assert.AreEqual(520, Number.DetentPosition(515, 520, 5));
-    }
+    //[TestMethod]
+    //public void DetentPosition()
+    //{
+    //  Assert.AreEqual(520, Number.DetentPosition(515, 520, 5));
+    //}
 
-    [TestMethod]
-    public void DetentZero()
-    {
-      Assert.AreEqual(0, Number.DetentPosition(4, 0, 5));
-    }
+    //[TestMethod]
+    //public void DetentZero()
+    //{
+    //  Assert.AreEqual(0, Number.DetentPosition(4, 0, 5));
+    //}
 
     [TestMethod]
     public void Envelop()

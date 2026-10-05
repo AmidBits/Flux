@@ -302,16 +302,244 @@ namespace ConsoleApp
       System.Console.WriteLine(System.Array.JaggedArrayToConsoleString(array, new ConsoleFormatOptions() { HorizontalAlignment = AlignmentHorizontal.Right }));
     }
 
+    #region Eliza example
+
+    static void ElizaExample()
+    {
+      var reflections = new System.Collections.Generic.Dictionary<string, string>
+      {
+        ["am"] = "are",
+        ["was"] = "were",
+        ["i"] = "you",
+        ["i'd"] = "you would",
+        ["i've"] = "you have",
+        ["i'll"] = "you will",
+        ["my"] = "your",
+        ["are"] = "am",
+        ["you've"] = "I have",
+        ["you'll"] = "I will",
+        ["your"] = "my",
+        ["yours"] = "mine",
+        ["you"] = "me",
+        ["me"] = "you"
+      };
+
+      var responses = setupResponses();
+
+      System.Console.WriteLine("Therapist\n---------");
+      System.Console.WriteLine("Talk to the program by typing in plain English, using normal upper-");
+      System.Console.WriteLine("and lower-case letters and punctuation.  Enter 'quit' when done.");
+      System.Console.WriteLine(new String('=', 72));
+      System.Console.WriteLine("Hello.  How are you feeling today?");
+
+      bool exit = false;
+
+      System.Random rnd = new();
+
+      while (!exit)
+      {
+        string chosenResponse = "";
+        string userInput = (System.Console.ReadLine() ?? string.Empty).ToLower();
+        // remove punctuation at end of input
+        userInput = System.Text.RegularExpressions.Regex.Replace(userInput, @"[^\w\s]{1,}$", "");
+
+        // test all regexes in turn
+        foreach (System.Collections.Generic.List<String> possibleResponses in responses)
+        {
+          // right to left as we only need the last match
+          var pattern = new System.Text.RegularExpressions.Regex(possibleResponses[0]);
+          // got a bite?
+          if (pattern.IsMatch(userInput))
+          {
+            // pick a random response
+            int randomIdx = rnd.Next(1, possibleResponses.Count);
+            chosenResponse = possibleResponses[randomIdx];
+
+            // if there's a %1, we need to include part of what the user said
+            if (chosenResponse.Contains("%1"))
+            {
+              // get the bit of the text we're going to include
+              var matchedTextGroups = pattern.Match(userInput).Groups;
+              string reflectedInput = "";
+              foreach (System.Text.RegularExpressions.Group g in matchedTextGroups.Cast<Group>())
+              {
+                reflectedInput = g.ToString();
+              }
+              // check all words, flip using reflections (i.e. I am -> you are)
+              String[] reflectedInputArray = reflectedInput.Split();
+              for (int i = 0; i < reflectedInputArray.Length; i++)
+              {
+                // element and potential dictionary key are different
+                string word = reflectedInputArray[i];
+                // strip punctuation so "am," still becomes "are,"
+                string possibleKey = System.Text.RegularExpressions.Regex.Replace(word, @"\p{P}", "");
+                if (reflections.TryGetValue(possibleKey, out var possibleValue))
+                {
+                  word = word.Replace(possibleKey, possibleValue);
+                  reflectedInputArray[i] = word;
+                }
+              }
+              // join it up again and stick the last matched group into the placeholder
+              reflectedInput = String.Join(" ", reflectedInputArray);
+              chosenResponse = chosenResponse.Replace("%1", reflectedInput);
+              // strip duplicate punctuation
+              chosenResponse = System.Text.RegularExpressions.Regex.Replace(chosenResponse, @"([^\w\s])(\1){1,}", @"$2");
+              // capitalize first letter
+              chosenResponse = Char.ToUpper(chosenResponse[0]).ToString() + chosenResponse[1..];
+            }
+            break;
+          }
+        }
+
+        System.Console.WriteLine(chosenResponse);
+        if (userInput == "quit")
+        {
+          exit = true;
+        }
+      }
+
+      static System.Collections.Generic.List<System.Collections.Generic.List<string>> setupResponses()
+      {
+        // list of lists - first option in each sub-list is the regex to match,
+        // the rest are possible responses
+        var allResponses = new System.Collections.Generic.List<System.Collections.Generic.List<string>>();
+        var uri = new System.Uri(@"file://\Resources\responses.txt");
+        using var stream = uri.GetStream();
+        using var reader = new System.IO.StreamReader(stream, System.Text.Encoding.UTF8);
+
+        string? txtLine;
+        var tempResponseCollector = new System.Collections.Generic.List<string>();
+        while ((txtLine = reader.ReadLine()) != null)
+        {
+          if (txtLine == "-")
+          {
+            allResponses.Add(tempResponseCollector);
+            // .Clear() gives some odd results here
+            tempResponseCollector = [];
+          }
+          else
+          {
+            tempResponseCollector.Add(txtLine.ToString());
+          }
+        }
+
+        return allResponses;
+      }
+    }
+
+    #endregion // Eliza example
+
+    #region Puzzle
+
+    //public static Grid<int> CompletedPuzzle()
+    //{
+    //  var grid = new Grid<int>(4, 4);
+
+    //  for (var index = 0; index < grid.Rows * grid.Columns; index++) grid[index] = index + 1;
+
+    //  grid[15] = 0;
+
+    //  return grid;
+    //}
+
+    //public static void AssertValidPuzzle(Grid<int> puzzle) { if (!IsValidPuzzle(puzzle)) throw new System.Exception("The board is invalid."); }
+
+    ////public static int[] CreatePuzzle() { var puzzle = CompletedPuzzle; puzzle.AsSpan().Shuffle(); AssertValidPuzzle(puzzle); return puzzle; }
+
+    //public static bool IsValidPuzzle(Grid<int> puzzle)
+    //{
+    //  var list = puzzle.GetIndexValuePairs();
+
+    //  return list.Any(pair => pair.Value < 0 || pair.Value > 15) && list.Select(kvp => kvp.Value).Distinct().Count() == 16;
+
+    //  //var index = 0;
+
+    //  //foreach (var kvp in puzzle.GetIndexValuePairs())
+    //  //  if (kvp.Key != index++)
+    //  //    return false;
+
+    //  //if (index != 16)
+    //  //  return false;
+
+    //  //return true;
+    //}
+
+    //public static bool TryMoveBlock(Grid<int> puzzle, int number, Flux.Units.CardinalDirection direction)
+    //{
+    //  var index = System.Array.IndexOf(puzzle, number);
+
+    //  if (index < 0) return false;
+
+    //  switch (direction)
+    //  {
+    //    case Flux.Units.CardinalDirection.N:
+    //      if (index - 4 is var up && puzzle[up] == 0)
+    //      {
+    //        puzzle.Swap(index, up);
+    //        return true;
+    //      }
+    //      break;
+    //    case Flux.Units.CardinalDirection.E:
+    //      if (index + 1 is var right && puzzle[right] == 0)
+    //      {
+    //        puzzle.Swap(index, right);
+    //        return true;
+    //      }
+    //      break;
+    //    case Flux.Units.CardinalDirection.S:
+    //      if (index + 4 is var down && puzzle[down] == 0)
+    //      {
+    //        puzzle.Swap(index, down);
+    //        return true;
+    //      }
+    //      break;
+    //    case Flux.Units.CardinalDirection.W:
+    //      if (index - 1 is var left && puzzle[left] == 0)
+    //      {
+    //        puzzle.Swap(index, left);
+    //        return true;
+    //      }
+    //      break;
+    //    default:
+    //      throw new System.ArgumentOutOfRangeException(nameof(direction));
+    //  }
+
+    //  return false;
+    //}
+
+    //public static System.Collections.Generic.IEnumerable<int> MovableBlocks(Grid<int> puzzle)
+    //{
+    //  for (var index = 0; index < puzzle.Length; index++)
+    //  {
+    //    if (index - 4 is var indexN && indexN >= 0 && puzzle[indexN] is var blockN && blockN == 0)
+    //      yield return puzzle[index];
+
+    //    if (index + 1 is var indexE && indexE <= 15 && puzzle[indexE] is var blockE && blockE == 0)
+    //      yield return puzzle[index];
+
+    //    if (index + 4 is var indexS && indexS <= 15 && puzzle[indexS] is var blockS && blockS == 0)
+    //      yield return puzzle[index];
+
+    //    if (index - 1 is var indexW && indexW >= 0 && puzzle[indexW] is var blockW && blockW == 0)
+    //      yield return puzzle[index];
+    //  }
+    //}
+
+    //public static void PrintPuzzle(Grid<int> puzzle)
+    //{
+    //  AssertValidPuzzle(puzzle);
+
+    //  var twod = puzzle.Select(n => n).ToTwoDimensionalArray(4, 4).Rank2ToConsoleString(new ConsoleStringOptions() { CenterContent = true });
+
+    //  System.Console.WriteLine(twod);
+    //}
+
+    #endregion // Puzzle
+
     private static void TimedMain(string[] _)
     {
 
-      var v0 = 550;
-      var r0 = 10;
-      var rtp = int.RoundToPower(v0, r0, false, NearestRoundingRule.Random);
-      var rtm = double.RoundToMultiple(v0 + 5, r0, false, NearestRoundingRule.Random);
-      var rti = double.RoundToInteger(v0 + 0.5, false, NearestRoundingRule.Random);
-
-      var (remainder, remainderNoZero, reverseRemainder, reverseRemainderNoZero) = Number.RemainderAnalysis(10.2d, 3);
+      var ud = Number.UlpDistance(1.2m, 1.20m);
 
       var a = 58585.3456d;
 
@@ -342,7 +570,7 @@ namespace ConsoleApp
       //(-1301, 40)
       //(-1302, -5)
       //(-1301, 40)
-      var nm = ModulusOperators.EuclideanModulo(12.3f, 5.5f);
+      var nm = Number.EuclideanModulo(12.3f, 5.5f);
 
       var min = 0.0;
       var max = 360;
@@ -412,9 +640,9 @@ namespace ConsoleApp
 
       var v = -13.25;
 
-      var (sign, exponent, fraction, significand) = double.ExtractIeeeBinaryFields(v, out var recomputedValue);
+      var (Sign, UnbiasedExponent, FullSignificand, Significand, IsInfinity, IsNaN, IsNormal, IsSubnormal, IsZero) = double.ExtractIeee754Fields(v, out var recomputedValue);
 
-      var res = double.Pow(-1, sign) * significand * double.Pow(2, exponent);
+      var res = double.Pow(-1, Sign) * Significand * double.Pow(2, UnbiasedExponent);
 
       ComputeDivRem(-11, -4);
 
@@ -663,240 +891,6 @@ namespace ConsoleApp
       var ordinalNumerals = Flux.NumeralComposition.GetOrdinalNumerals(number, out var ordinalNumbers);
 
     }
-
-    #region Eliza example
-
-    static void ElizaExample()
-    {
-      var reflections = new System.Collections.Generic.Dictionary<string, string>
-      {
-        ["am"] = "are",
-        ["was"] = "were",
-        ["i"] = "you",
-        ["i'd"] = "you would",
-        ["i've"] = "you have",
-        ["i'll"] = "you will",
-        ["my"] = "your",
-        ["are"] = "am",
-        ["you've"] = "I have",
-        ["you'll"] = "I will",
-        ["your"] = "my",
-        ["yours"] = "mine",
-        ["you"] = "me",
-        ["me"] = "you"
-      };
-
-      var responses = setupResponses();
-
-      System.Console.WriteLine("Therapist\n---------");
-      System.Console.WriteLine("Talk to the program by typing in plain English, using normal upper-");
-      System.Console.WriteLine("and lower-case letters and punctuation.  Enter 'quit' when done.");
-      System.Console.WriteLine(new String('=', 72));
-      System.Console.WriteLine("Hello.  How are you feeling today?");
-
-      bool exit = false;
-
-      System.Random rnd = new();
-
-      while (!exit)
-      {
-        string chosenResponse = "";
-        string userInput = (System.Console.ReadLine() ?? string.Empty).ToLower();
-        // remove punctuation at end of input
-        userInput = System.Text.RegularExpressions.Regex.Replace(userInput, @"[^\w\s]{1,}$", "");
-
-        // test all regexes in turn
-        foreach (System.Collections.Generic.List<String> possibleResponses in responses)
-        {
-          // right to left as we only need the last match
-          var pattern = new System.Text.RegularExpressions.Regex(possibleResponses[0]);
-          // got a bite?
-          if (pattern.IsMatch(userInput))
-          {
-            // pick a random response
-            int randomIdx = rnd.Next(1, possibleResponses.Count);
-            chosenResponse = possibleResponses[randomIdx];
-
-            // if there's a %1, we need to include part of what the user said
-            if (chosenResponse.Contains("%1"))
-            {
-              // get the bit of the text we're going to include
-              var matchedTextGroups = pattern.Match(userInput).Groups;
-              string reflectedInput = "";
-              foreach (System.Text.RegularExpressions.Group g in matchedTextGroups.Cast<Group>())
-              {
-                reflectedInput = g.ToString();
-              }
-              // check all words, flip using reflections (i.e. I am -> you are)
-              String[] reflectedInputArray = reflectedInput.Split();
-              for (int i = 0; i < reflectedInputArray.Length; i++)
-              {
-                // element and potential dictionary key are different
-                string word = reflectedInputArray[i];
-                // strip punctuation so "am," still becomes "are,"
-                string possibleKey = System.Text.RegularExpressions.Regex.Replace(word, @"\p{P}", "");
-                if (reflections.TryGetValue(possibleKey, out var possibleValue))
-                {
-                  word = word.Replace(possibleKey, possibleValue);
-                  reflectedInputArray[i] = word;
-                }
-              }
-              // join it up again and stick the last matched group into the placeholder
-              reflectedInput = String.Join(" ", reflectedInputArray);
-              chosenResponse = chosenResponse.Replace("%1", reflectedInput);
-              // strip duplicate punctuation
-              chosenResponse = System.Text.RegularExpressions.Regex.Replace(chosenResponse, @"([^\w\s])(\1){1,}", @"$2");
-              // capitalize first letter
-              chosenResponse = Char.ToUpper(chosenResponse[0]).ToString() + chosenResponse[1..];
-            }
-            break;
-          }
-        }
-
-        System.Console.WriteLine(chosenResponse);
-        if (userInput == "quit")
-        {
-          exit = true;
-        }
-      }
-
-      static System.Collections.Generic.List<System.Collections.Generic.List<string>> setupResponses()
-      {
-        // list of lists - first option in each sub-list is the regex to match,
-        // the rest are possible responses
-        var allResponses = new System.Collections.Generic.List<System.Collections.Generic.List<string>>();
-        var uri = new System.Uri(@"file://\Resources\responses.txt");
-        using var stream = uri.GetStream();
-        using var reader = new System.IO.StreamReader(stream, System.Text.Encoding.UTF8);
-
-        string? txtLine;
-        var tempResponseCollector = new System.Collections.Generic.List<string>();
-        while ((txtLine = reader.ReadLine()) != null)
-        {
-          if (txtLine == "-")
-          {
-            allResponses.Add(tempResponseCollector);
-            // .Clear() gives some odd results here
-            tempResponseCollector = [];
-          }
-          else
-          {
-            tempResponseCollector.Add(txtLine.ToString());
-          }
-        }
-
-        return allResponses;
-      }
-    }
-
-    #endregion // Eliza example
-
-    #region Puzzle
-
-    //public static Grid<int> CompletedPuzzle()
-    //{
-    //  var grid = new Grid<int>(4, 4);
-
-    //  for (var index = 0; index < grid.Rows * grid.Columns; index++) grid[index] = index + 1;
-
-    //  grid[15] = 0;
-
-    //  return grid;
-    //}
-
-    //public static void AssertValidPuzzle(Grid<int> puzzle) { if (!IsValidPuzzle(puzzle)) throw new System.Exception("The board is invalid."); }
-
-    ////public static int[] CreatePuzzle() { var puzzle = CompletedPuzzle; puzzle.AsSpan().Shuffle(); AssertValidPuzzle(puzzle); return puzzle; }
-
-    //public static bool IsValidPuzzle(Grid<int> puzzle)
-    //{
-    //  var list = puzzle.GetIndexValuePairs();
-
-    //  return list.Any(pair => pair.Value < 0 || pair.Value > 15) && list.Select(kvp => kvp.Value).Distinct().Count() == 16;
-
-    //  //var index = 0;
-
-    //  //foreach (var kvp in puzzle.GetIndexValuePairs())
-    //  //  if (kvp.Key != index++)
-    //  //    return false;
-
-    //  //if (index != 16)
-    //  //  return false;
-
-    //  //return true;
-    //}
-
-    //public static bool TryMoveBlock(Grid<int> puzzle, int number, Flux.Units.CardinalDirection direction)
-    //{
-    //  var index = System.Array.IndexOf(puzzle, number);
-
-    //  if (index < 0) return false;
-
-    //  switch (direction)
-    //  {
-    //    case Flux.Units.CardinalDirection.N:
-    //      if (index - 4 is var up && puzzle[up] == 0)
-    //      {
-    //        puzzle.Swap(index, up);
-    //        return true;
-    //      }
-    //      break;
-    //    case Flux.Units.CardinalDirection.E:
-    //      if (index + 1 is var right && puzzle[right] == 0)
-    //      {
-    //        puzzle.Swap(index, right);
-    //        return true;
-    //      }
-    //      break;
-    //    case Flux.Units.CardinalDirection.S:
-    //      if (index + 4 is var down && puzzle[down] == 0)
-    //      {
-    //        puzzle.Swap(index, down);
-    //        return true;
-    //      }
-    //      break;
-    //    case Flux.Units.CardinalDirection.W:
-    //      if (index - 1 is var left && puzzle[left] == 0)
-    //      {
-    //        puzzle.Swap(index, left);
-    //        return true;
-    //      }
-    //      break;
-    //    default:
-    //      throw new System.ArgumentOutOfRangeException(nameof(direction));
-    //  }
-
-    //  return false;
-    //}
-
-    //public static System.Collections.Generic.IEnumerable<int> MovableBlocks(Grid<int> puzzle)
-    //{
-    //  for (var index = 0; index < puzzle.Length; index++)
-    //  {
-    //    if (index - 4 is var indexN && indexN >= 0 && puzzle[indexN] is var blockN && blockN == 0)
-    //      yield return puzzle[index];
-
-    //    if (index + 1 is var indexE && indexE <= 15 && puzzle[indexE] is var blockE && blockE == 0)
-    //      yield return puzzle[index];
-
-    //    if (index + 4 is var indexS && indexS <= 15 && puzzle[indexS] is var blockS && blockS == 0)
-    //      yield return puzzle[index];
-
-    //    if (index - 1 is var indexW && indexW >= 0 && puzzle[indexW] is var blockW && blockW == 0)
-    //      yield return puzzle[index];
-    //  }
-    //}
-
-    //public static void PrintPuzzle(Grid<int> puzzle)
-    //{
-    //  AssertValidPuzzle(puzzle);
-
-    //  var twod = puzzle.Select(n => n).ToTwoDimensionalArray(4, 4).Rank2ToConsoleString(new ConsoleStringOptions() { CenterContent = true });
-
-    //  System.Console.WriteLine(twod);
-    //}
-
-    #endregion // Puzzle
 
     private static void Main(string[] args)
     {
