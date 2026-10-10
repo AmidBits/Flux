@@ -16,4 +16,30 @@
     /// </summary>
     AwayFrom = 2,
   }
+
+  //public enum RadialDirection
+  //{
+  //  /// <summary>
+  //  /// <para>Radial inward; toward some reference point.</para>
+  //  /// </summary>
+  //  RadialInward = 1,
+
+  //  /// <summary>
+  //  /// <para>Radial outward; away-from some reference point.</para>
+  //  /// </summary>
+  //  RadialOutward = 2
+  //}
+
+  //public enum MotionType
+  //{
+  //  /// <summary>
+  //  /// <para>Converge to; toward some reference point.</para>
+  //  /// </summary>
+  //  ConvergeTo = 1,
+
+  //  /// <summary>
+  //  /// <para>Diverge from; away-from some reference point.</para>
+  //  /// </summary>
+  //  DivergeFrom = 2
+  //}
 }

@@ -2,11 +2,6 @@ namespace Flux
 {
   public static partial class Int32Extensions
   {
-    /// <summary>
-    /// <para>The largest prime number that fits in a <see cref="System.Int32"/>.</para>
-    /// </summary>
-    public const int MaxPrimeNumber = 2147483647;
-
     extension(System.Int32)
     {
       #region ReverseBits..

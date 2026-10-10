@@ -68,7 +68,7 @@ namespace Flux
       /// <param name="toleranceFactor">Multiplicative factor applied to FloatingPoint.RelativeEpsilon<TFloat>() to form the tolerance; expected to be non-negative.</param>
       /// <returns>True if the absolute value of value is less than or equal to toleranceFactor multiplied by FloatingPoint.RelativeEpsilon<TFloat>(); otherwise, false.</returns>
       public static bool IsNearZero(TFloat value, TFloat toleranceFactor)
-        => TFloat.Abs(value) <= toleranceFactor * FloatingPoint.RelativeEpsilon<TFloat>();
+        => TFloat.Abs(value) <= toleranceFactor * RelativeEpsilon<TFloat>();
 
       /// <summary>
       /// <para>Returns true when the absolute value of value is less than or equal to DefaultToleranceFactor multiplied by FloatingPoint.RelativeEpsilon<TFloat>().</para>

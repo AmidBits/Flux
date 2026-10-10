@@ -2,8 +2,22 @@ namespace Flux
 {
   public static partial class UInt128Extensions
   {
+    internal static readonly UInt128[] m_pow10 = [.. Number.GeometricSequence(System.UInt128.One, System.UInt128.CreateChecked(10)).Where(n => n <= System.UInt128.MaxValue)];
+
     extension(System.UInt128)
     {
+      #region Pow10
+
+      [System.CLSCompliant(false)]
+      public static System.UInt128 Pow10(int exponent)
+      {
+        if ((uint)(exponent + 38) > 76) throw new System.ArgumentOutOfRangeException(nameof(exponent));
+
+        return m_pow10[exponent];
+      }
+
+      #endregion
+
       #region ReverseBits..
 
       /// <summary>

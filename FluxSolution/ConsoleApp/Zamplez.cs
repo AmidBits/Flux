@@ -318,7 +318,7 @@ namespace ConsoleApp
       var (q, remainder) = Number.IntegerDivRemTruncated(value, 1);
       var quotient = int.CreateChecked(q);
 
-      var p2TowardsZero = int.MostSignificant1Bit(quotient);
+      var p2TowardsZero = quotient.MostSignificant1Bit;
       var p2AwayFromZero = (p2TowardsZero < quotient || remainder > 0) ? (p2TowardsZero == 0 ? 1 : p2TowardsZero << 1) : p2TowardsZero;
 
       var p2TowardsZerop = p2TowardsZero == value ? p2TowardsZero >> 1 : p2TowardsZero;
@@ -360,22 +360,22 @@ namespace ConsoleApp
       var birbyts = BinaryInteger.ReverseBytes(n);
       System.Console.WriteLine($"   Reverse Bytes = {birbyts.ToBinaryString()}");
 
-      var bfl = int.BitFoldLeft(n);
+      var bfl = n.BitFoldToMsb();
       System.Console.WriteLine($"   Bit-Fold Left = {bfl}");
       var bfls = bfl.ToBinaryString();
       System.Console.WriteLine($"       As Binary = {bfls}");
-      var bfr = int.BitFoldLeft(n);
+      var bfr = n.BitFoldToLsb();
       System.Console.WriteLine($"  Bit-Fold Right = {bfr}");
       var bfrs = bfr.ToBinaryString();
       System.Console.WriteLine($"       As Binary = {bfrs}");
       //var bsbl = n.GetShortestBitLength();
-      var bln = n.GetBitLength();
+      var bln = n.BitLength;
       //var l2 = bi.IntegerLog2();
-      var ms1b = int.MostSignificant1Bit(n);
-      var bmr = BinaryInteger.CreateBitMaskRight(n.GetBitLength());
+      var ms1b = n.MostSignificant1Bit;
+      var bmr = BinaryInteger.CreateLsbMask(n.BitLength);
       var bmrs = bmr.ToBinaryString();
       var bmrsl = bmrs.Length;
-      var bml = BinaryInteger.CreateBitMaskLeft(n.GetBitLength());
+      var bml = BinaryInteger.CreateMsbMask(n.BitLength);
       var bmls = bml.ToBinaryString();
       var bmlsl = bmls.Length;
     }

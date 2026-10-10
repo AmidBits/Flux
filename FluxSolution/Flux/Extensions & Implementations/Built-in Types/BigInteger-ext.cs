@@ -36,25 +36,6 @@ namespace Flux
 
       #endregion
 
-      #region FitSmallestIntegerType
-
-      //public static object FitSmallestIntegerType(System.Numerics.BigInteger value)
-      //{
-      //  if (value >= sbyte.MinValue && value <= sbyte.MaxValue) return (sbyte)value;
-      //  else if (value >= byte.MinValue && value <= byte.MaxValue) return (byte)value;
-      //  else if (value >= short.MinValue && value <= short.MaxValue) return (short)value;
-      //  else if (value >= ushort.MinValue && value <= ushort.MaxValue) return (ushort)value;
-      //  else if (value >= int.MinValue && value <= int.MaxValue) return (int)value;
-      //  else if (value >= uint.MinValue && value <= uint.MaxValue) return (uint)value;
-      //  else if (value >= long.MinValue && value <= long.MaxValue) return (long)value;
-      //  else if (value >= ulong.MinValue && value <= ulong.MaxValue) return (ulong)value;
-      //  else if (value >= Int128.MinValue && value <= Int128.MaxValue) return (Int128)value;
-      //  else if (value >= UInt128.MinValue && value <= UInt128.MaxValue) return (UInt128)value;
-      //  else return value;
-      //}
-
-      #endregion
-
       #region Cbrt - Cube root using Newton method.
 
       /// <summary>
@@ -63,7 +44,7 @@ namespace Flux
       /// <param name="n"></param>
       /// <returns></returns>
       /// <exception cref="ArgumentException"></exception>
-      public static System.Numerics.BigInteger Cbrt(System.Numerics.BigInteger n)
+      internal static System.Numerics.BigInteger Cbrt(System.Numerics.BigInteger n)
       {
         System.ArgumentOutOfRangeException.ThrowIfNegative(n);
 
@@ -85,75 +66,136 @@ namespace Flux
 
       #endregion
 
+      #region FitToSmallestIntegerType
+
+      public static object FitToSmallestIntegerType(System.Numerics.BigInteger value)
+      {
+        if (value >= byte.MinValue && value <= byte.MaxValue) return (byte)value;
+        else if (value >= sbyte.MinValue && value <= sbyte.MaxValue) return (sbyte)value;
+        else if (value >= short.MinValue && value <= short.MaxValue) return (short)value;
+        else if (value >= ushort.MinValue && value <= ushort.MaxValue) return (ushort)value;
+        else if (value >= int.MinValue && value <= int.MaxValue) return (int)value;
+        else if (value >= uint.MinValue && value <= uint.MaxValue) return (uint)value;
+        else if (value >= long.MinValue && value <= long.MaxValue) return (long)value;
+        else if (value >= ulong.MinValue && value <= ulong.MaxValue) return (ulong)value;
+        else if (value >= Int128.MinValue && value <= Int128.MaxValue) return (Int128)value;
+        else if (value >= UInt128.MinValue && value <= UInt128.MaxValue) return (UInt128)value;
+        else return value;
+      }
+
+      #endregion
+
       #region Log - Integer logarithm.
 
-      public static (System.Numerics.BigInteger LogFloor, System.Numerics.BigInteger LogCeiling, bool IsExactLog) Log(System.Numerics.BigInteger n, System.Numerics.BigInteger b)
+      //internal static (System.Numerics.BigInteger LogFloor, System.Numerics.BigInteger LogCeiling, bool IsExactLog) Log(System.Numerics.BigInteger n, System.Numerics.BigInteger b)
+      //{
+      //  System.ArgumentOutOfRangeException.ThrowIfNegativeOrZero(n);
+      //  System.ArgumentOutOfRangeException.ThrowIfLessThan(b, 2);
+
+      //  if (n < b)
+      //    return (System.Numerics.BigInteger.Zero, System.Numerics.BigInteger.One, false);
+
+      //  if (n == b)
+      //    return (System.Numerics.BigInteger.One, System.Numerics.BigInteger.One, true);
+
+      //  var log2n = n.GetBitLength() - 1; // Exact bit-length (floor log2)
+      //  var log2b = b.GetBitLength() - 1;
+
+      //  var ilogf = System.Numerics.BigInteger.Clamp(log2n / log2b, 0, int.MaxValue); // Initial exponent estimate of floor(log_b(n)), clamped to valid (int) exponent range.
+
+      //  var pow = (ilogf <= 63)
+      //    ? PowSmall(b, (int)ilogf)
+      //    : System.Numerics.BigInteger.Pow(b, ilogf); // If the exponent (ilogf) is small, manual exponentiation-by-squaring is faster, otherwise BigInteger.Pow is faster.
+
+      //  while (pow > n) // Correction: adjust downward.
+      //  {
+      //    pow /= b;
+      //    ilogf--;
+      //  }
+
+      //  while (pow * b <= n) // Correction: adjust upward.
+      //  {
+      //    pow *= b;
+      //    ilogf++;
+      //  }
+
+      //  var exact = pow == n;
+      //  var ilogc = exact ? ilogf : ilogf + 1;
+
+      //  return (ilogf, ilogc, exact);
+      //}
+
+      //public static System.Numerics.BigInteger PowSmall(System.Numerics.BigInteger b, int exp)
+      //{
+      //  if (exp < 0)
+      //    return System.Numerics.BigInteger.One;
+
+      //  if (exp > 63) // If exponent is large, delegate to BigInteger.Pow()
+      //    return System.Numerics.BigInteger.Pow(b, exp);
+
+      //  var result = System.Numerics.BigInteger.One;
+
+      //  for (var factor = b; exp > 0; factor *= factor)
+      //  {
+      //    if ((exp & 1) != 0)
+      //      result *= factor;
+
+      //    exp >>= 1;
+      //  }
+
+      //  return result;
+      //}
+
+      internal static (System.Numerics.BigInteger LogFloor, System.Numerics.BigInteger LogCeiling, bool IsExactLog) Log(System.Numerics.BigInteger n, System.Numerics.BigInteger b)
       {
         System.ArgumentOutOfRangeException.ThrowIfNegativeOrZero(n);
         System.ArgumentOutOfRangeException.ThrowIfLessThan(b, 2);
 
         if (n < b)
-          return (System.Numerics.BigInteger.Zero, System.Numerics.BigInteger.One, false);
+          return (0, 1, false);
 
         if (n == b)
-          return (System.Numerics.BigInteger.One, System.Numerics.BigInteger.One, true);
+          return (1, 1, true);
 
-        var log2n = n.GetBitLength() - 1; // Exact bit-length (floor log2)
+        var log2n = n.GetBitLength() - 1;
         var log2b = b.GetBitLength() - 1;
 
-        var ilogf = System.Numerics.BigInteger.Clamp(log2n / log2b, 0, int.MaxValue); // Initial exponent estimate of floor(log_b(n)), clamped to valid (int) exponent range.
+        var exponent = log2n / log2b; // Initial estimate.
 
-        var pow = (ilogf <= 63) ? PowSmall(b, (int)ilogf) : System.Numerics.BigInteger.Pow(b, ilogf); // If the exponent (ilogf) is small, manual exponentiation-by-squaring is faster, otherwise BigInteger.Pow is faster.
+        var power = System.Numerics.BigInteger.Pow(b, (int)exponent); // Initial power.
 
-        while (pow > n) // Correction: adjust downward.
+        while (power > n) // Correct downward.
         {
-          pow /= b;
-          ilogf--;
+          power /= b;
+          exponent--;
         }
 
-        while (pow * b <= n) // Correction: adjust upward.
+        var nextPower = power * b;
+
+        while (nextPower <= n) // Correct upward.
         {
-          pow *= b;
-          ilogf++;
+          power = nextPower;
+          exponent++;
+
+          nextPower *= b;
         }
 
-        var exact = pow == n;
-        var ilogc = exact ? ilogf : ilogf + 1;
+        var isExact = power == n;
 
-        return (ilogf, ilogc, exact);
-      }
-
-      public static System.Numerics.BigInteger PowSmall(System.Numerics.BigInteger b, int exp)
-      {
-        if (exp < 0)
-          return System.Numerics.BigInteger.One;
-
-        if (exp > 63) // If exponent is large, delegate to BigInteger.Pow()
-          return System.Numerics.BigInteger.Pow(b, exp);
-
-        var result = System.Numerics.BigInteger.One;
-
-        for (var factor = b; exp > 0; factor *= factor)
-        {
-          if ((exp & 1) != 0)
-            result *= factor;
-
-          exp >>= 1;
-        }
-
-        return result;
+        return (exponent, isExact ? exponent : exponent + 1, isExact);
       }
 
       #endregion
 
       #region LogE - Integer natural logarithm.
 
-      public static (System.Numerics.BigInteger LogFloor, System.Numerics.BigInteger LogCeiling) LogE(System.Numerics.BigInteger n)
+      internal static (System.Numerics.BigInteger LogFloor, System.Numerics.BigInteger LogCeiling) LogE(System.Numerics.BigInteger n)
       {
+        System.ArgumentOutOfRangeException.ThrowIfNegativeOrZero(n);
+
         if (n <= 1)
           return (System.Numerics.BigInteger.Zero, System.Numerics.BigInteger.Zero);
 
-        // log2(n) = bitLength - 1
         var log2 = n.GetBitLength() - 1;
 
         // Correction: check if e^(k+1) <= n
@@ -185,37 +227,73 @@ namespace Flux
       /// <param name="n"></param>
       /// <returns></returns>
       /// <exception cref="System.ArithmeticException"></exception>
-      public static System.Numerics.BigInteger RootN(System.Numerics.BigInteger value, int n)
+      //internal static System.Numerics.BigInteger RootN(System.Numerics.BigInteger value, int n)
+      //{
+      //  System.ArgumentOutOfRangeException.ThrowIfNegative(value);
+      //  System.ArgumentOutOfRangeException.ThrowIfNegativeOrZero(n);
+
+      //  if (value == 0 || value == 1 || n == 1)
+      //    return value;
+
+      //  var x = System.Numerics.BigInteger.One << (int)(value.GetBitLength() / n); // Initial guess: 2^(bitLength/n)
+
+      //  while (true)
+      //  {
+      //    var px = x;
+
+      //    var t = System.Numerics.BigInteger.Pow(x, n - 1);
+
+      //    if (t.IsZero) throw new System.ArithmeticException(); // Avoid division by zero (shouldn't happen for valid inputs).
+
+      //    x = ((n - 1) * x + value / t) / n; // Newton iteration.
+
+      //    if (x >= px) // Convergence check.
+      //    { // Final correction to ensure x^n <= value < (x+1)^n
+      //      while (System.Numerics.BigInteger.Pow(x + 1, n) <= value)
+      //        x++;
+
+      //      while (System.Numerics.BigInteger.Pow(x, n) > value)
+      //        x--;
+
+      //      return x;
+      //    }
+      //  }
+      //}
+
+      internal static (System.Numerics.BigInteger RootFloor, System.Numerics.BigInteger RootCeiling, bool IsExactRoot) RootN(System.Numerics.BigInteger value, int n)
       {
         System.ArgumentOutOfRangeException.ThrowIfNegative(value);
         System.ArgumentOutOfRangeException.ThrowIfNegativeOrZero(n);
 
-        if (value == 0 || value == 1 || n == 1)
-          return value;
+        if (value <= System.Numerics.BigInteger.One || n == 1)
+          return (value, value, true);
 
-        var x = System.Numerics.BigInteger.One << (int)(value.GetBitLength() / n); // Initial guess: 2^(bitLength/n)
+        var x = System.Numerics.BigInteger.One << (int)((value.GetBitLength() - 1) / n);
 
         while (true)
         {
-          var px = x;
+          var previous = x;
 
-          var t = System.Numerics.BigInteger.Pow(x, n - 1);
+          x = ((n - 1) * x + value / System.Numerics.BigInteger.Pow(x, n - 1)) / n;
 
-          if (t.IsZero) throw new System.ArithmeticException(); // Avoid division by zero (shouldn't happen for valid inputs).
-
-          x = ((n - 1) * x + value / t) / n; // Newton iteration.
-
-          if (x >= px) // Convergence check.
-          { // Final correction to ensure x^n <= value < (x+1)^n
-            while (System.Numerics.BigInteger.Pow(x + 1, n) <= value)
-              x++;
-
-            while (System.Numerics.BigInteger.Pow(x, n) > value)
-              x--;
-
-            return x;
+          if (x >= previous)
+          {
+            x = previous;
+            break;
           }
         }
+
+        var power = System.Numerics.BigInteger.Pow(x, n); // Newton normally converges to the floor root, but verify once.
+
+        while (power > value)
+        {
+          x--;
+          power = System.Numerics.BigInteger.Pow(x, n);
+        }
+
+        var exact = power == value;
+
+        return (x, exact ? x : x + 1, exact);
       }
 
       #endregion
@@ -227,7 +305,7 @@ namespace Flux
       /// </summary>
       /// <param name="n"></param>
       /// <returns></returns>
-      public static System.Numerics.BigInteger Sqrt(System.Numerics.BigInteger n)
+      internal static System.Numerics.BigInteger Sqrt(System.Numerics.BigInteger n)
       {
         System.ArgumentOutOfRangeException.ThrowIfNegative(n);
 

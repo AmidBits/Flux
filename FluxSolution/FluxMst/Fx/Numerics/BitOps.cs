@@ -29,13 +29,13 @@ namespace Numerics
     [TestMethod]
     public void BitFoldToRight()
     {
-      Assert.AreEqual(0b00000000000000000000000001111111U, uint.BitFoldRight(0b00000000_01011000U));
+      Assert.AreEqual(0b00000000000000000000000001111111U, (0b00000000_01011000U).BitFoldToLsb());
     }
 
     [TestMethod]
     public void BitFoldToLeft()
     {
-      Assert.AreEqual(0b11111111_11111111_11111111_11111000U, uint.BitFoldLeft(0b00000000_10011000U));
+      Assert.AreEqual(0b11111111_11111111_11111111_11111000U, (0b00000000_10011000U).BitFoldToMsb());
     }
 
     #endregion // BitFolds
@@ -83,10 +83,10 @@ namespace Numerics
     [TestMethod]
     public void GetBitLength()
     {
-      Assert.AreEqual(4, 0x08.GetBitLength());
+      Assert.AreEqual(4, 0x08.BitLength);
 
-      Assert.AreEqual(7, 88.GetBitLength());
-      Assert.AreEqual(32, (-88).GetBitLength());
+      Assert.AreEqual(7, 88.BitLength);
+      Assert.AreEqual(32, (-88).BitLength);
     }
 
     #endregion // BitLengths
@@ -114,13 +114,13 @@ namespace Numerics
     [TestMethod]
     public void CreateBitMaskLsbFromBitLength()
     {
-      Assert.AreEqual(127, Flux.BinaryInteger.CreateBitMaskRight(7));
+      Assert.AreEqual(127, Flux.BinaryInteger.CreateLsbMask(7));
     }
 
     [TestMethod]
     public void CreateBitMaskMsbFromBitLength()
     {
-      Assert.AreEqual(-1, Flux.BinaryInteger.CreateBitMaskLeft(32));
+      Assert.AreEqual(-1, Flux.BinaryInteger.CreateMsbMask(32));
     }
 
     [TestMethod]
@@ -130,7 +130,7 @@ namespace Numerics
       var templateBitLength = 3;
 
       var expected = 0b1011_0110_1101_1011_0110_1101_1011_0110U;
-      var actual = unchecked(Flux.BinaryInteger.CreateBitMaskRight((uint)templateBitMask, templateBitLength, expected.GetBitLength()));
+      var actual = unchecked(Flux.BinaryInteger.CreateLsbMask((uint)templateBitMask, templateBitLength, expected.BitLength));
 
       // Debug:
       var e = expected.ToBinaryString();
@@ -146,7 +146,7 @@ namespace Numerics
       var templateBitLength = 3;
 
       var expected = 0b1101_1011_0110_1101_1011_0110_1101_1011U;
-      var actual = unchecked(Flux.BinaryInteger.CreateBitMaskLeft((uint)templateBitMask, templateBitLength, expected.GetBitLength()));
+      var actual = unchecked(Flux.BinaryInteger.CreateMsbMask((uint)templateBitMask, templateBitLength, expected.BitLength));
 
       // Debug:
       var e = expected.ToBinaryString();
@@ -165,7 +165,7 @@ namespace Numerics
     [TestMethod]
     public void GetBitCount()
     {
-      Assert.AreEqual(32, BinaryInteger.GetBitCount(0));
+      Assert.AreEqual(32, (0).BitWidth);
     }
 
     #endregion // GetBitCount
@@ -315,7 +315,7 @@ namespace Numerics
     [TestMethod]
     public void LeastSignificant1Bit()
     {
-      Assert.AreEqual(0b00001000, int.LeastSignificant1Bit(0b01011000));
+      Assert.AreEqual(0b00001000, (0b01011000).LeastSignificant1Bit);
     }
 
     [TestMethod]
@@ -327,7 +327,7 @@ namespace Numerics
     [TestMethod]
     public void MostSignificant1Bit()
     {
-      Assert.AreEqual(0b01000000, int.MostSignificant1Bit(0b01011000));
+      Assert.AreEqual(0b01000000, (0b01011000).MostSignificant1Bit);
     }
 
     [TestMethod]

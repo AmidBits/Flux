@@ -398,7 +398,7 @@
       /// <returns></returns>
       public static TInteger Gcd(TInteger a, TInteger b)
       {
-        var bl = int.Max(a.GetBitLength(), b.GetBitLength());
+        var bl = int.Max(a.GetShortestBitLength(), b.GetShortestBitLength());
 
         if (bl <= 128)
           return GcdBinary(a, b);
@@ -462,7 +462,7 @@
 
         while (b > TInteger.Zero)
         {
-          var shift = int.Max(a.GetBitLength(), b.GetBitLength()) - 64;
+          var shift = int.Max(a.GetShortestBitLength(), b.GetShortestBitLength()) - 64;
 
           var aHigh = a >> shift;
           var bHigh = b >> shift;
@@ -506,7 +506,7 @@
       /// <returns></returns>
       public static TInteger GcdExt(TInteger a, TInteger b, out TInteger x, out TInteger y)
       {
-        if (int.Max(a.GetBitLength(), b.GetBitLength()) < 512)
+        if (int.Max(a.GetShortestBitLength(), b.GetShortestBitLength()) < 512)
           return GcdExtEuclid(a, b, out x, out y);
 
         return GcdExtLehmer(a, b, out x, out y);
@@ -562,7 +562,7 @@
 
         while (!TInteger.IsZero(b))
         {
-          if (a.GetBitLength() < 64 || b.GetBitLength() < 64) // If numbers are small enough, fall back to classical extended Euclid.
+          if (a.GetShortestBitLength() < 64 || b.GetShortestBitLength() < 64) // If numbers are small enough, fall back to classical extended Euclid.
           {
             var q = a / b;
 
@@ -573,7 +573,7 @@
             continue;
           }
 
-          var shift = int.Max(a.GetBitLength(), b.GetBitLength()) - 64; // Lehmer step: use high words only.
+          var shift = int.Max(a.GetShortestBitLength(), b.GetShortestBitLength()) - 64; // Lehmer step: use high words only.
 
           var (aHigh, bHigh) = (a >> shift, b >> shift);
 
@@ -789,9 +789,9 @@
       /// <summary>Creates a new sequence of descending possible primes, less-than-or-equal-to a specified number.</summary>
       private static System.Collections.Generic.IEnumerable<TInteger> DescendingPrimeCandidates(TInteger n)
       {
-        var maxPrimeMultiple = BitFoldLeft(TInteger.One);
+        var maxPrimeMultiple = TInteger.One.BitFoldToMsb();
 
-        if (TypeExtensions.IsNumericsISignedNumber(typeof(TInteger)))
+        if (TypeExtensions.ImplementsISignedNumber(typeof(TInteger)))
           maxPrimeMultiple >>>= 1;
 
         var six = TInteger.CreateChecked(6);

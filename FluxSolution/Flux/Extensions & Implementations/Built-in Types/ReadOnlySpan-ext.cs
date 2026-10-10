@@ -3414,7 +3414,7 @@
         System.ArgumentOutOfRangeException.ThrowIfNegative(index);
         System.ArgumentOutOfRangeException.ThrowIfGreaterThan(index, source.Length * 8); // Cannot start beyond the source bits.
         System.ArgumentOutOfRangeException.ThrowIfNegativeOrZero(count); // Must read something.
-        System.ArgumentOutOfRangeException.ThrowIfGreaterThan(count, BinaryInteger.GetBitCount(TInteger.Zero)); // Cannot write beyond target (buffer) bits.
+        System.ArgumentOutOfRangeException.ThrowIfGreaterThan(count, TInteger.Zero.BitWidth); // Cannot write beyond target (buffer) bits.
         System.ArgumentOutOfRangeException.ThrowIfGreaterThan(index + count, source.Length * 8); // Cannot read beyond the source bits.
 
         var (byteIndex, bitOffset) = int.DivRem(index, 8);
@@ -3425,7 +3425,7 @@
 
         if (prefixBits > 0)
         {
-          bitBuffer = TInteger.CreateChecked(source[byteIndex++] & BinaryInteger.CreateBitMaskRight(prefixBits)); // Note that byteIndex advances if there are prefixBits.
+          bitBuffer = TInteger.CreateChecked(source[byteIndex++] & BinaryInteger.CreateLsbMask(prefixBits)); // Note that byteIndex advances if there are prefixBits.
 
           if (prefixBits > count)
             bitBuffer >>>= prefixBits - count;
@@ -3435,7 +3435,7 @@
           bitBuffer = (bitBuffer << 8) | TInteger.CreateChecked(source[byteIndex + i]);
 
         if (suffixBits > 0)
-          bitBuffer = (bitBuffer << suffixBits) | (TInteger.CreateChecked((source[byteIndex + byteLength] >> (8 - suffixBits)) & BinaryInteger.CreateBitMaskRight(suffixBits)));
+          bitBuffer = (bitBuffer << suffixBits) | (TInteger.CreateChecked((source[byteIndex + byteLength] >> (8 - suffixBits)) & BinaryInteger.CreateLsbMask(suffixBits)));
 
         return bitBuffer;
       }

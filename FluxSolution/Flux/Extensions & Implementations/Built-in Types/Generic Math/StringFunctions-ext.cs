@@ -18,7 +18,7 @@ namespace Flux
       /// <exception cref="System.ArgumentOutOfRangeException"></exception>
       public string ToBinaryString(int minLength = 1, string? alphabet = null)
       {
-        if (minLength <= 0) minLength = GetBitCount(value);
+        if (minLength <= 0) minLength = value.BitWidth;
 
         alphabet ??= System.Text.Encoding.Base62;
 
@@ -26,7 +26,7 @@ namespace Flux
 
         var indices = new System.Collections.Generic.List<int>();
 
-        for (var bitIndex = int.Min(int.Max(value.GetBitLength(), minLength), GetBitCount(value)) - 1; bitIndex >= 0; bitIndex--)
+        for (var bitIndex = int.Min(int.Max(value.GetShortestBitLength(), minLength), value.BitWidth) - 1; bitIndex >= 0; bitIndex--)
         {
           var bitValue = int.CreateChecked((value >>> bitIndex) & TInteger.One);
 
@@ -59,7 +59,7 @@ namespace Flux
       /// <exception cref="System.ArgumentOutOfRangeException"></exception>
       public string ToDecimalString(int minLength = 1, string? alphabet = null, char negativeSymbol = '\u002D')
       {
-        if (minLength <= 0) minLength = GetMaxRepresentableDigitCount(GetBitCount(value), 10, value.GetType().IsNumericsISignedNumber());
+        if (minLength <= 0) minLength = MaxRepresentableDigitCount(value.BitWidth, 10, value.GetType().ImplementsISignedNumber());
 
         alphabet ??= System.Text.Encoding.Base62;
 
@@ -93,7 +93,7 @@ namespace Flux
       /// <exception cref="System.ArgumentOutOfRangeException"></exception>
       public string ToHexadecimalString(int minLength = 1, string? alphabet = null)
       {
-        if (minLength <= 0) minLength = GetMaxRepresentableDigitCount(GetBitCount(value), 16, value.GetType().IsNumericsISignedNumber());
+        if (minLength <= 0) minLength = MaxRepresentableDigitCount(value.BitWidth, 16, value.GetType().ImplementsISignedNumber());
 
         alphabet ??= System.Text.Encoding.Base62;
 
@@ -127,7 +127,7 @@ namespace Flux
       /// <exception cref="System.ArgumentOutOfRangeException"></exception>
       public string ToOctalString(int minLength = 1, string? alphabet = null)
       {
-        if (minLength <= 0) minLength = GetMaxRepresentableDigitCount(GetBitCount(value), 8, value.GetType().IsNumericsISignedNumber());
+        if (minLength <= 0) minLength = MaxRepresentableDigitCount(value.BitWidth, 8, value.GetType().ImplementsISignedNumber());
 
         alphabet ??= System.Text.Encoding.Base62;
 
@@ -192,7 +192,7 @@ namespace Flux
           return value.ToHexadecimalString(minLength, alphabet);
         else
         {
-          if (minLength <= 0) minLength = GetMaxRepresentableDigitCount(GetBitCount(value), rdx, value.GetType().IsNumericsISignedNumber());
+          if (minLength <= 0) minLength = MaxRepresentableDigitCount(value.BitWidth, rdx, value.GetType().ImplementsISignedNumber());
 
           alphabet ??= System.Text.Encoding.Base62;
 

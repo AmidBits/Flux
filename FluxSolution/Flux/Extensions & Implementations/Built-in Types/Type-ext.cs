@@ -2,149 +2,6 @@ namespace Flux
 {
   public static partial class TypeExtensions
   {
-    //public readonly struct JoinedInterfaces : System.Collections.Generic.IEnumerable<Type>
-    //{
-    //  private readonly Type[] _a;
-    //  private readonly Type[] _b;
-
-    //  public JoinedInterfaces(Type[] a, Type[] b)
-    //  {
-    //    _a = a;
-    //    _b = b;
-    //  }
-
-    //  public Enumerator GetEnumerator() => new Enumerator(_a, _b);
-
-    //  System.Collections.Generic.IEnumerator<Type> System.Collections.Generic.IEnumerable<Type>.GetEnumerator()
-    //  {
-    //    foreach (var t in _a) yield return t;
-    //    foreach (var t in _b) yield return t;
-    //  }
-
-    //  System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => ((System.Collections.Generic.IEnumerable<Type>)this).GetEnumerator();
-
-    //  public struct Enumerator
-    //  {
-    //    private readonly Type[] _a;
-    //    private readonly Type[] _b;
-    //    private int _index;
-    //    private bool _inA;
-
-    //    public Enumerator(Type[] a, Type[] b)
-    //    {
-    //      _a = a;
-    //      _b = b;
-    //      _index = -1;
-    //      _inA = true;
-    //    }
-
-    //    public Type Current => _inA ? _a[_index] : _b[_index];
-
-    //    public bool MoveNext()
-    //    {
-    //      if (_inA)
-    //      {
-    //        _index++;
-    //        if (_index < _a.Length)
-    //          return true;
-
-    //        _inA = false;
-    //        _index = 0;
-    //        return _b.Length > 0;
-    //      }
-
-    //      _index++;
-    //      return _index < _b.Length;
-    //    }
-    //  }
-    //}
-
-    public readonly struct CombinedSequence<T>(params System.Collections.Generic.IList<T>[] sequences)
-      : System.Collections.Generic.IEnumerable<T>
-    {
-      public Enumerator GetEnumerator() => new(sequences);
-
-      System.Collections.Generic.IEnumerator<T> System.Collections.Generic.IEnumerable<T>.GetEnumerator()
-      {
-        foreach (var sequence in sequences)
-          foreach (var element in sequence)
-            yield return element;
-      }
-
-      System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-        => ((IEnumerable<T>)this).GetEnumerator();
-
-      public struct Enumerator
-      {
-        private readonly System.Collections.Generic.IList<T>[] m_sequences;
-        private int m_outerIndex;
-        private int m_innerIndex;
-
-        internal Enumerator(System.Collections.Generic.IList<T>[] sequences)
-        {
-          m_sequences = sequences;
-
-          Reset();
-        }
-
-        public readonly T Current
-          => m_sequences[m_outerIndex][m_innerIndex];
-
-        public bool MoveNext()
-        {
-          while (m_outerIndex < m_sequences.Length)
-          {
-            m_innerIndex++;
-
-            if (m_innerIndex < m_sequences[m_outerIndex].Count)
-              return true;
-
-            m_outerIndex++;
-            m_innerIndex = -1;
-          }
-
-          return false;
-        }
-
-        public void Reset()
-        {
-          m_outerIndex = 0;
-          m_innerIndex = -1;
-        }
-      }
-    }
-
-    private static readonly System.Collections.Concurrent.ConcurrentDictionary<Type, Type[]> m_getInterfacesCachedGeneric = new();
-
-    private static readonly System.Collections.Concurrent.ConcurrentDictionary<Type, Type[]> m_getInterfacesCachedNonGeneric = new();
-
-    private static void EnsureInterfaceCaches(Type type)
-    {
-      m_getInterfacesCachedGeneric.GetOrAdd(type, static t =>
-      {
-        var all = t.GetInterfaces();
-        var list = new List<Type>(all.Length);
-
-        foreach (var iface in all)
-          if (iface.IsGenericType)
-            list.Add(iface.GetGenericTypeDefinition());
-
-        return [.. list];
-      });
-
-      m_getInterfacesCachedNonGeneric.GetOrAdd(type, static t =>
-      {
-        var all = t.GetInterfaces();
-        var list = new List<Type>(all.Length);
-
-        foreach (var iface in all)
-          if (!iface.IsGenericType)
-            list.Add(iface);
-
-        return [.. list];
-      });
-    }
-
     extension(System.Type)
     {
       public static System.Collections.Generic.IEnumerable<System.Type> GetDefinedTypesInAllLoadedAssemblies()
@@ -317,18 +174,6 @@ namespace Flux
 
       #region GetImplements
 
-      public System.Collections.Generic.IEnumerable<System.Type> GetInterfacesCached()
-      {
-        System.ArgumentNullException.ThrowIfNull(type);
-
-        EnsureInterfaceCaches(type);
-
-        var g = m_getInterfacesCachedGeneric[type];
-        var ng = m_getInterfacesCachedNonGeneric[type];
-
-        return new CombinedSequence<System.Type>(g, ng);
-      }
-
       /// <summary>
       /// <para>Creates a new list with all implemented interfaces through the inheritance chain of a <see cref="System.Type"/>.</para>
       /// </summary>
@@ -448,55 +293,89 @@ namespace Flux
 
       #endregion
 
-      #region IsNumerics.. functions + helper
+      //      public bool IsDotNetNumberBase()
+      //        => type == typeof(System.Numerics.Complex)
+      //        || IsDotNetNumber(type);
 
-      /// <summary>
-      /// <para>Indicates whether a type inherits from <see cref="System.Numerics.IBinaryInteger{TSelf}"/> and optionally is a .NET primitive.</para>
-      /// </summary>
-      /// <param name="isPrimitive"></param>
-      /// <returns></returns>
-      public bool IsNumericsIBinaryInteger() => IsAssignableToGenericAware(type, typeof(System.Numerics.IBinaryInteger<>));
+      //      public bool IsDotNetNumber()
+      //        => IsDotNetFloatingPoint(type)
+      //        || IsDotNetInteger(type);
 
-      /// <summary>
-      /// <para>Indicates whether a type inherits from <see cref="System.Numerics.IFloatingPoint{TSelf}"/> and optionally is a .NET primitive.</para>
-      /// </summary>
-      /// <param name="isPrimitive"></param>
-      /// <returns></returns>
-      public bool IsNumericsIFloatingPoint() => IsAssignableToGenericAware(type, typeof(System.Numerics.IFloatingPoint<>));
+      //      public bool IsDotNetFloatingPoint()
+      //        => type == typeof(System.Decimal)
+      //        || type == typeof(System.Double)
+      //        || type == typeof(System.Single)
+      //#if NET11_0_OR_GREATER
+      //        || type == typeof(System.Numerics.BFloat16)
+      //        || type == typeof(System.Numerics.Decimal128)
+      //        || type == typeof(System.Numerics.Decimal32)
+      //        || type == typeof(System.Numerics.Decimal64)
+      //#endif
+      //        || type == typeof(System.Runtime.InteropServices.NFloat);
 
-      /// <summary>
-      /// <para>Indicates whether a type inherits from <see cref="System.Numerics.IMinMaxValue{TSelf}"/> and optionally is a .NET primitive.</para>
-      /// </summary>
-      /// <param name="isPrimitive"></param>
-      /// <returns></returns>
-      public bool IsNumericsIMinMaxValue() => IsAssignableToGenericAware(type, typeof(System.Numerics.IMinMaxValue<>));
+      //      public bool IsDotNetInteger()
+      //        => IsDotNetSignedInteger(type)
+      //        || IsDotNetUnsignedInteger(type);
 
-      /// <summary>
-      /// <para>Indicates whether a type inherits from <see cref="System.Numerics.INumber{TSelf}"/> and optionally is a .NET primitive.</para>
-      /// </summary>
-      /// <param name="isPrimitive"></param>
-      /// <returns></returns>
-      public bool IsNumericsINumber() => IsAssignableToGenericAware(type, typeof(System.Numerics.INumber<>));
+      //      public bool IsDotNetUnsignedInteger()
+      //        => type == typeof(System.Byte)
+      //        || type == typeof(System.UInt128)
+      //        || type == typeof(System.UInt16)
+      //        || type == typeof(System.UInt32)
+      //        || type == typeof(System.UInt64)
+      //        || type == typeof(System.UIntPtr);
 
-      /// <summary>
-      /// <para>Indicates whether a type inherits from <see cref="System.Numerics.ISignedNumber{TSelf}"/> and optionally is a .NET primitive.</para>
-      /// </summary>
-      /// <param name="isPrimitive"></param>
-      /// <returns></returns>
-      public bool IsNumericsISignedNumber() => IsAssignableToGenericAware(type, typeof(System.Numerics.ISignedNumber<>));
+      //public bool IsDotNetSignedInteger()
+      //  => type == typeof(System.Int128)
+      //  || type == typeof(System.Int16)
+      //  || type == typeof(System.Int32)
+      //  || type == typeof(System.Int64)
+      //  || type == typeof(System.IntPtr)
+      //  || type == typeof(System.Numerics.BigInteger)
+      //  || type == typeof(System.SByte);
 
-      /// <summary>
-      /// <para>Indicates whether a type inherits from <see cref="System.Numerics.IUnsignedNumber{TSelf}"/> and optionally is a .NET primitive.</para>
-      /// </summary>
-      /// <param name="isPrimitive"></param>
-      /// <returns></returns>
-      public bool IsNumericsIUnsignedNumber() => IsAssignableToGenericAware(type, typeof(System.Numerics.IUnsignedNumber<>));
+      //      #region IsNumerics.. functions + helper
 
-      public bool IsNumericsSignedInteger() => IsAssignableToGenericAware(type, typeof(System.Numerics.ISignedNumber<>)) && IsNumericsIBinaryInteger(type);
+      //      /// <summary>
+      //      /// <para>Indicates whether a type inherits from <see cref="System.Numerics.IBinaryInteger{TSelf}"/> and optionally is a .NET primitive.</para>
+      //      /// </summary>
+      //      public bool IsNumericsIBinaryInteger() => IsAssignableToGenericAware(type, typeof(System.Numerics.IBinaryInteger<>));
 
-      public bool IsNumericsUnsignedInteger() => IsAssignableToGenericAware(type, typeof(System.Numerics.IUnsignedNumber<>)) && IsNumericsIBinaryInteger(type);
+      //      /// <summary>
+      //      /// <para>Indicates whether a type inherits from <see cref="System.Numerics.IFloatingPoint{TSelf}"/> and optionally is a .NET primitive.</para>
+      //      /// </summary>
+      //      public bool IsNumericsIFloatingPoint() => IsAssignableToGenericAware(type, typeof(System.Numerics.IFloatingPoint<>));
 
-      #endregion
+      //      /// <summary>
+      //      /// <para>Indicates whether a type inherits from <see cref="System.Numerics.IBinaryFloatingPointIeee754{TSelf}"/> and optionally is a .NET primitive.</para>
+      //      /// </summary>
+      //      public bool IsNumericsIBinaryFloatingPointIeee754() => IsAssignableToGenericAware(type, typeof(System.Numerics.IBinaryFloatingPointIeee754<>));
+
+      //      /// <summary>
+      //      /// <para>Indicates whether a type inherits from <see cref="System.Numerics.IMinMaxValue{TSelf}"/> and optionally is a .NET primitive.</para>
+      //      /// </summary>
+      //      public bool IsNumericsIMinMaxValue() => IsAssignableToGenericAware(type, typeof(System.Numerics.IMinMaxValue<>));
+
+      //      /// <summary>
+      //      /// <para>Indicates whether a type inherits from <see cref="System.Numerics.INumber{TSelf}"/> and optionally is a .NET primitive.</para>
+      //      /// </summary>
+      //      public bool IsNumericsINumber() => IsAssignableToGenericAware(type, typeof(System.Numerics.INumber<>));
+
+      //      /// <summary>
+      //      /// <para>Indicates whether a type inherits from <see cref="System.Numerics.ISignedNumber{TSelf}"/> and optionally is a .NET primitive.</para>
+      //      /// </summary>
+      //      public bool IsNumericsISignedNumber() => IsAssignableToGenericAware(type, typeof(System.Numerics.ISignedNumber<>));
+
+      //      /// <summary>
+      //      /// <para>Indicates whether a type inherits from <see cref="System.Numerics.IUnsignedNumber{TSelf}"/> and optionally is a .NET primitive.</para>
+      //      /// </summary>
+      //      public bool IsNumericsIUnsignedNumber() => IsAssignableToGenericAware(type, typeof(System.Numerics.IUnsignedNumber<>));
+
+      //      public bool IsNumericsSignedInteger() => IsAssignableToGenericAware(type, typeof(System.Numerics.ISignedNumber<>)) && IsNumericsIBinaryInteger(type);
+
+      //      public bool IsNumericsUnsignedInteger() => IsAssignableToGenericAware(type, typeof(System.Numerics.IUnsignedNumber<>)) && IsNumericsIBinaryInteger(type);
+
+      //      #endregion
 
       #region IsSub/SuperTypeOf
 

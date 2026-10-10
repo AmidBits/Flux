@@ -5,143 +5,29 @@
     extension<TInteger>(TInteger)
       where TInteger : System.Numerics.IBinaryInteger<TInteger>
     {
-      #region BitFold functions
-
-      #region BitFoldLeft
+      #region ClearLeastSignificant1Bit
 
       /// <summary>
-      /// <para>Recursively "folds" all 1-bits, starting at the least-significant-1-bit, into the left-most or higher-order bits. Yields a bit vector with the same least-significant-1-bit as <paramref name="value"/>, and with all 1's above it.</para>
-      /// <para><see cref="System.Numerics.BigInteger"/> does not have a fixed width so the result is dependent on <paramref name="value"/>.</para>
+      /// <para>Clear <paramref name="value"/> of its least-significant-1-bit.</para>
       /// </summary>
-      /// <returns>The left-most or higher-order bits, to the least-significant-1-bit of <paramref name="value"/>, set to 1. If <paramref name="value"/> is negative, -1 is returned (all bits set to 1). Zero returns 0.</returns>
-      public static TInteger BitFoldLeft(TInteger value)
-      {
-        if (TInteger.IsZero(value))
-          return value;
-
-        if (value is System.Numerics.BigInteger) // BigInteger is a special case.
-          return CreateBitMaskRight(TInteger.CreateChecked(GetBitCount(value)));
-
-        return (~TInteger.Zero) << int.CreateChecked(TInteger.TrailingZeroCount(value));
-      }
-
-      //var tzc = value.GetTrailingZeroCount();
-      //return BitFoldRight(value << value.GetLeadingZeroCount()) >> tzc << tzc;
+      /// <see href="https://aggregate.org/MAGIC/#Least%20Significant%201%20Bit"/>
+      public static TInteger ClearLeastSignificant1Bit(TInteger value)
+        => value & (value - TInteger.One);
 
       #endregion
 
-      #region BitFoldRight
+      #region ClearMostSignificant1Bit
 
       /// <summary>
-      /// <para>Recursively "folds" all 1-bits, starting at the most-significant-1-bit, into the right-most or lower-order bits.</para>
-      /// <para>Yields a bit vector with the same most-significant-1-bit as <paramref name="value"/>, and with all 1's below it.</para>
+      /// <para>Clear <paramref name="value"/> of its least-significant-1-bit.</para>
       /// </summary>
-      /// <returns>The right-most or lower-order bits, to the most-significant-1-bit of <paramref name="value"/>, set to 1. If <paramref name="value"/> is negative, -1 is returned (all bits set to 1). Zero returns 0.</returns>
-      public static TInteger BitFoldRight(TInteger value)
-      {
-        if (TInteger.IsZero(value))
-          return value;
-
-        return ((MostSignificant1Bit(value) - TInteger.One) << 1) | TInteger.One;
-      }
-
-#if INCLUDE_SCRATCH
-
-      /// <summary>
-      /// <para>This is the traditional SWAR algorithm that recursively "folds" the lower bits into the upper bits, i.e. folded left or towards the MSB.</para>
-      /// </summary>
-      /// <typeparam name="TValue"></typeparam>
-      /// <param name="value"></param>
-      /// <returns></returns>
-      public TInteger ScratchBitFoldLeft()
-      {
-        // Or loop to accomodate dynamic data types, but works like the traditional unrolled SWAR below:
-        for (var shift = GetBitCount(value) >> 1; shift > 0; shift >>= 1)
-          value |= value << shift;
-
-        // value |= (value << 64); // For a 128-bit type.
-        // value |= (value << 32); // For a 64-bit type.
-        // value |= (value << 16); // For a 32-bit type
-        // value |= (value << 8);
-        // value |= (value << 4);
-        // value |= (value << 2);
-        // value |= (value << 1);
-
-        return value;
-      }
-
-      /// <summary>
-      /// <para>This is the traditional SWAR algorithm that recursively "folds" the upper bits into the lower bits, i.e. folded right or towards the LSB.</para>
-      /// </summary>
-      /// <typeparam name="TValue"></typeparam>
-      /// <param name="value"></param>
-      /// <returns></returns>
-      public TInteger ScratchBitFoldRight()
-      {
-        // Or loop to accomodate dynamic data types, but works like traditional unrolled SWAR below:
-        for (var shift = GetBitCount(value); shift > 0; shift >>= 1)
-          value |= value >>> shift; // Unsigned shift right.
-
-        // value |= (value >> 64); // For a 128-bit type.
-        // value |= (value >> 32); // For a 64-bit type.
-        // value |= (value >> 16); // For a 32-bit type
-        // value |= (value >> 8);
-        // value |= (value >> 4);
-        // value |= (value >> 2);
-        // value |= (value >> 1);
-
-        return value;
-      }
-
-#endif
+      /// <see href="https://aggregate.org/MAGIC/#Most%20Significant%201%20Bit"/>
+      public static TInteger ClearMostSignificant1Bit(TInteger value)
+        => value - value.MostSignificant1Bit;
 
       #endregion
 
-      #endregion
-
-      #region CreateBitMask functions
-
-      #region CreateBitMaskLeft
-
-      /// <summary>
-      /// <para>Create a bit-mask with <paramref name="count"/> most-significant-bits (a.k.a. high-order or left-most bits) set to 1.</para>
-      /// </summary>
-      /// <typeparam name="TInteger"></typeparam>
-      /// <param name="count">Can be up to the number of storage bits (bit-count) available in <typeparamref name="TInteger"/>.</param>
-      /// <returns></returns>
-      /// <remarks><c>PLEASE NOTE THAT THE FIRST ARGUMENT (<paramref name="count"/> for extension method) IS THE NUMBER OF BITS (to account for).</c></remarks>
-      public static TInteger CreateBitMaskLeft(TInteger count)
-      {
-        if (TInteger.IsZero(count))
-          return count;
-
-        return CreateBitMaskRight(count) << (GetBitCount(TInteger.Zero) - int.CreateChecked(count));
-      }
-
-      /// <summary>
-      /// <para>Create a bit-mask with <paramref name="bitLength"/> number of most-significant-bits (a.k.a. high-order or left-most bits) from <paramref name="bitMask"/> of <paramref name="bitMaskLength"/> filled repeatedly from least-to-most-significant-bits over the integer.</para>
-      /// </summary>
-      /// <remarks><c>PLEASE NOTE THAT THE FIRST ARGUMENT (<paramref name="bitMask"/> for extension method) IS THE BIT-MASK (to account for).</c></remarks>
-      public static TInteger CreateBitMaskLeft(TInteger bitMask, int bitMaskLength, int bitLength)
-      {
-        bitMask &= TInteger.CreateChecked((1 << bitMaskLength) - 1); // Ensure only count number of bits in bit-mask in least-significant-bits.
-
-        var (q, r) = int.DivRem(bitLength, bitMaskLength);
-
-        var result = bitMask;
-
-        for (var i = q - 1; i > 0; i--) // Loop bit-count divided by count (minus one) times, hence we skip equal-to zero in the condition.
-          result = bitMask | (result << bitMaskLength); // Shift the mask count bits and | (OR) in count most-significant-bits from bit-mask.
-
-        if (r > 0)
-          result = (result << r) | (bitMask >>> (bitMaskLength - r));
-
-        return result;
-      }
-
-      #endregion
-
-      #region CreateBitMaskRight
+      #region CreateLsbMask
 
       /// <summary>
       /// <para>Create a bit-mask with <paramref name="count"/> least-significant-bits (a.k.a. low-order or right-most bits) set to 1.</para>
@@ -150,11 +36,11 @@
       /// <param name="count">Can be up to the number of storage bits (bit-count) available in <typeparamref name="TInteger"/>.</param>
       /// <returns></returns>
       /// <remarks><c>PLEASE NOTE THAT THE FIRST ARGUMENT (<paramref name="count"/> for extension method) IS THE NUMBER OF BITS (to account for).</c></remarks>
-      public static TInteger CreateBitMaskRight(TInteger count)
+      public static TInteger CreateLsbMask(TInteger count)
       {
         var cnt = int.CreateChecked(count);
 
-        System.ArgumentOutOfRangeException.ThrowIfGreaterThan(cnt, BinaryInteger.GetBitCount(count));
+        System.ArgumentOutOfRangeException.ThrowIfGreaterThan(cnt, count.BitWidth);
 
         if (TInteger.IsZero(count))
           return count;
@@ -166,7 +52,7 @@
       /// <para>Create a bit-mask with <paramref name="bitLength"/> number of least-significant-bits (a.k.a. low-order or right-most bits) from <paramref name="bitMask"/> of <paramref name="bitMaskLength"/> filled repeatedly from most-to-least-significant-bits over the <typeparamref name="TBitMask"/>.</para>
       /// </summary>
       /// <remarks><c>PLEASE NOTE THAT THE FIRST ARGUMENT (<paramref name="bitMask"/> for extension method) IS THE BIT-MASK (to account for).</c></remarks>
-      public static TInteger CreateBitMaskRight(TInteger bitMask, int bitMaskLength, int bitLength)
+      public static TInteger CreateLsbMask(TInteger bitMask, int bitMaskLength, int bitLength)
       {
         bitMask &= TInteger.CreateChecked((1 << bitMaskLength) - 1); // Ensure only count number of bits in bit-mask in least-significant-bits.
 
@@ -185,87 +71,42 @@
 
       #endregion
 
-      #endregion
-
-      #region GetBitCount
+      #region CreateMsbMask
 
       /// <summary>
-      /// <para>Returns the size, in number of bits, needed to store <paramref name="value"/>.</para>
-      /// <para>Most types returns the underlying storage size of the type itself, e.g. <see langword="int"/> = 32 or <see langword="long"/> = 64.</para>
+      /// <para>Create a bit-mask with <paramref name="count"/> most-significant-bits (a.k.a. high-order or left-most bits) set to 1.</para>
       /// </summary>
-      /// <remarks>
-      /// <para>Some data types, e.g. <see cref="System.Numerics.BigInteger"/>, use dynamic storage strategies.</para>
-      /// </remarks>
-      public static int GetBitCount(TInteger value)
-        => value.GetByteCount() * 8;
-
-      #endregion
-
-      #region GetByteCount
-
-      /// <summary>
-      /// <para>Using the built-in <see cref="System.Numerics.IBinaryInteger{TInteger}.GetByteCount()"/>.</para>
-      /// </summary>
-      /// <remarks>
-      /// <para>Note that some datatypes, e.g. <see cref="System.Numerics.BigInteger"/>, use dynamic storage strategies.</para>
-      /// </remarks>
-      public static int GetByteCount(TInteger value)
-        => value.GetByteCount();
-
-      ///// <summary>
-      ///// <para>Using the built-in <see cref="System.Numerics.IBinaryInteger{TInteger}.PopCount(TInteger)"/>.</para>
-      ///// </summary>
-      ///// <returns>The population count of <paramref name="value"/>, i.e. the number of bits set to 1 in <paramref name="value"/>.</returns>
-      //public int GetPopCount()
-      //  => int.CreateChecked(TInteger.PopCount(value));
-
-#if INCLUDE_SCRATCH
-
-      public int ScratchGetPopCount()
+      /// <typeparam name="TInteger"></typeparam>
+      /// <param name="count">Can be up to the number of storage bits (bit-count) available in <typeparamref name="TInteger"/>.</param>
+      /// <returns></returns>
+      /// <remarks><c>PLEASE NOTE THAT THE FIRST ARGUMENT (<paramref name="count"/> for extension method) IS THE NUMBER OF BITS (to account for).</c></remarks>
+      public static TInteger CreateMsbMask(TInteger count)
       {
-        System.ArgumentOutOfRangeException.ThrowIfNegative(value);
+        if (TInteger.IsZero(count))
+          return count;
 
-        var count = 0;
-
-        while (value > TInteger.Zero)
-        {
-          count++;
-
-          value &= value - TInteger.One; // Clear the LS1B.
-        }
-
-        return count;
+        return CreateLsbMask(count) << (TInteger.Zero.BitWidth - int.CreateChecked(count));
       }
 
-#endif
-
-      #endregion
-
-      #region GetMaxRepresentableDigitCount
-
       /// <summary>
-      /// <para>Computes the max number of digits that can be represented by the specified <paramref name="bitLength"/> (number of bits) in <paramref name="radix"/> (number base) and whether to <paramref name="accountForSignBit"/>.</para>
-      /// <code>var mdcf = (10).GetMaxDigitCount(10, false); // Yields 4, because a max value of 1023 can be represented (all bits can be used in an unsigned value).</code>
-      /// <code>var mdct = (10).GetMaxDigitCount(10, true); // Yields 3, because a max value of 511 can be represented (excluding the MSB used for negative values of signed types).</code>
+      /// <para>Create a bit-mask with <paramref name="bitLength"/> number of most-significant-bits (a.k.a. high-order or left-most bits) from <paramref name="bitMask"/> of <paramref name="bitMaskLength"/> filled repeatedly from least-to-most-significant-bits over the integer.</para>
       /// </summary>
-      /// <typeparam name="TRadix"></typeparam>
-      /// <param name="bitLength">This is the number of bits to take into account.</param>
-      /// <param name="radix">This is the radix (base) to use.</param>
-      /// <param name="accountForSignBit">Indicates whether <paramref name="value"/> use one bit for the sign.</param>
-      /// <returns></returns>
-      public static int GetMaxRepresentableDigitCount<TRadix>(TInteger bitLength, TRadix radix, bool accountForSignBit)
-        where TRadix : System.Numerics.IBinaryInteger<TRadix>
+      /// <remarks><c>PLEASE NOTE THAT THE FIRST ARGUMENT (<paramref name="bitMask"/> for extension method) IS THE BIT-MASK (to account for).</c></remarks>
+      public static TInteger CreateMsbMask(TInteger bitMask, int bitMaskLength, int bitLength)
       {
-        System.ArgumentOutOfRangeException.ThrowIfNegativeOrZero(bitLength);
-        System.ArgumentOutOfRangeException.ThrowIfLessThanOrEqual(radix, TRadix.One);
+        bitMask &= TInteger.CreateChecked((1 << bitMaskLength) - 1); // Ensure only count number of bits in bit-mask in least-significant-bits.
 
-        var effectiveBitLength = accountForSignBit ? bitLength - TInteger.One : bitLength;
+        var (q, r) = int.DivRem(bitLength, bitMaskLength);
 
-        System.ArgumentOutOfRangeException.ThrowIfNegativeOrZero(effectiveBitLength);
+        var result = bitMask;
 
-        var mask = CreateBitMaskRight(System.Numerics.BigInteger.CreateChecked(TInteger.Abs(effectiveBitLength))); // Create a bit-mask representing the greatest value for the bit-length.
+        for (var i = q - 1; i > 0; i--) // Loop bit-count divided by count (minus one) times, hence we skip equal-to zero in the condition.
+          result = bitMask | (result << bitMaskLength); // Shift the mask count bits and | (OR) in count most-significant-bits from bit-mask.
 
-        return int.CreateChecked(DigitCount(mask, radix));
+        if (r > 0)
+          result = (result << r) | (bitMask >>> (bitMaskLength - r));
+
+        return result;
       }
 
       #endregion
@@ -298,6 +139,35 @@
 
       #endregion
 
+      #region MaxRepresentableDigitCount
+
+      /// <summary>
+      /// <para>Computes the max number of digits that can be represented by the specified <paramref name="bitLength"/> (number of bits) in <paramref name="radix"/> (number base) and whether to <paramref name="accountForSignBit"/>.</para>
+      /// <code>var mdcf = BinaryInteger.MaxRepresentableDigitCount(10, 10, false); // Yields 4, because a max value of 1023 can be represented (all bits can be used in an unsigned value).</code>
+      /// <code>var mdct = BinaryInteger.MaxRepresentableDigitCount(10, 10, true); // Yields 3, because a max value of 511 can be represented (excluding the MSB used for negative values of signed types).</code>
+      /// </summary>
+      /// <typeparam name="TRadix"></typeparam>
+      /// <param name="bitLength">This is the number of bits to take into account.</param>
+      /// <param name="radix">This is the radix (base) to use.</param>
+      /// <param name="accountForSignBit">Indicates whether one bit should be used for the sign.</param>
+      /// <returns></returns>
+      public static int MaxRepresentableDigitCount<TRadix>(TInteger bitLength, TRadix radix, bool accountForSignBit)
+        where TRadix : System.Numerics.IBinaryInteger<TRadix>
+      {
+        System.ArgumentOutOfRangeException.ThrowIfNegativeOrZero(bitLength);
+        System.ArgumentOutOfRangeException.ThrowIfLessThanOrEqual(radix, TRadix.One);
+
+        var effectiveBitLength = accountForSignBit ? bitLength - TInteger.One : bitLength;
+
+        System.ArgumentOutOfRangeException.ThrowIfNegativeOrZero(effectiveBitLength);
+
+        var mask = CreateLsbMask(System.UInt128.CreateChecked(effectiveBitLength)); // Create a bit-mask representing the greatest value for the bit-length. System.UInt128 is used to ensure that the mask can be created for all bit-lengths, even those greater than 64 bits.
+
+        return int.CreateChecked(DigitCount(mask, radix));
+      }
+
+      #endregion
+
       #region ReverseBits
 
       /// <summary>
@@ -315,7 +185,7 @@
         for (var i = bytes.Length - 1; i >= 0; i--)  // After this loop, all bits are reversed.
           byte.ReverseBitsInPlace(ref bytes[i]); // Mirror (reverse) bits in each byte.
 
-        return TInteger.ReadBigEndian(bytes, value.GetType().IsNumericsIUnsignedNumber()); // Read as BigEndian (decreasing numeric significance in increasing memory addresses).
+        return TInteger.ReadBigEndian(bytes, typeof(TInteger).ImplementsIUnsignedNumber()); // Read as BigEndian (decreasing numeric significance in increasing memory addresses).
       }
 
       #endregion
@@ -336,7 +206,7 @@
 
         value.WriteLittleEndian(bytes); // Write as LittleEndian (increasing numeric significance in increasing memory addresses).
 
-        return TInteger.ReadBigEndian(bytes, value.GetType().IsNumericsIUnsignedNumber()); // Read as BigEndian (decreasing numeric significance in increasing memory addresses).
+        return TInteger.ReadBigEndian(bytes, typeof(TInteger).ImplementsIUnsignedNumber()); // Read as BigEndian (decreasing numeric significance in increasing memory addresses).
       }
 
       #endregion
@@ -345,7 +215,7 @@
 
       public static TInteger RoundUpToPowerOf2(TInteger value, bool unequal)
       {
-        var ms1b = MostSignificant1Bit(TInteger.Abs(value));
+        var ms1b = TInteger.Abs(value).MostSignificant1Bit;
 
         if (unequal || ms1b != value)
           ms1b <<= 1;
@@ -359,7 +229,7 @@
 
       public static TInteger RoundDownToPowerOf2(TInteger value, bool unequal)
       {
-        var ms1b = MostSignificant1Bit(TInteger.Abs(value));
+        var ms1b = TInteger.Abs(value).MostSignificant1Bit;
 
         if (unequal && ms1b == value)
           ms1b >>>= 1;
@@ -384,32 +254,189 @@
 
         rng.Shuffle(bytes);
 
-        return TInteger.ReadLittleEndian(bytes, value.GetType().IsNumericsIUnsignedNumber());
+        return TInteger.ReadLittleEndian(bytes, typeof(TInteger).ImplementsIUnsignedNumber());
       }
 
       #endregion
+    }
 
-      #region ..Significant1Bit functions
-
-      #region ClearLeastSignificant1Bit
+    extension<TInteger>(TInteger value)
+      where TInteger : System.Numerics.IBinaryInteger<TInteger>
+    {
+      #region BitFoldToLsb
 
       /// <summary>
-      /// <para>Clear <paramref name="value"/> of its least-significant-1-bit.</para>
+      /// <para>Recursively "folds" all 1-bits, starting at the most-significant-bit, into the right-most or lower-order bits.</para>
+      /// <para>Yields a bit vector with the same most-significant-bit as <paramref name="value"/>, and with all 1's below it.</para>
       /// </summary>
-      /// <see href="https://aggregate.org/MAGIC/#Least%20Significant%201%20Bit"/>
-      public static TInteger ClearLeastSignificant1Bit(TInteger value)
-        => value & (value - TInteger.One);
+      /// <returns>The right-most or lower-order bits, up to the most-significant-bit of <paramref name="value"/>, set to 1. If <paramref name="value"/> is negative, -1 is returned (all bits set to 1). Zero returns 0.</returns>
+      public TInteger BitFoldToLsb()
+      {
+        if (TInteger.IsZero(value))
+          return value;
+
+        var ms1b = value.MostSignificant1Bit;
+
+        return ms1b | (ms1b - TInteger.One);
+      }
+
+#if INCLUDE_SCRATCH
+
+      /// <summary>
+      /// <para>This is the traditional SWAR algorithm that recursively "folds" the upper bits into the lower bits, i.e. folded right or towards the LSB.</para>
+      /// </summary>
+      /// <typeparam name="TValue"></typeparam>
+      /// <param name="value"></param>
+      /// <returns></returns>
+      public TInteger ScratchBitFoldRight()
+      {
+        // Or loop to accomodate dynamic data types, but works like traditional unrolled SWAR below:
+        for (var shift = GetBitCount(value); shift > 0; shift >>= 1)
+          value |= value >>> shift; // Unsigned shift right.
+
+        // value |= (value >> 64); // For a 128-bit type.
+        // value |= (value >> 32); // For a 64-bit type.
+        // value |= (value >> 16); // For a 32-bit type
+        // value |= (value >> 8);
+        // value |= (value >> 4);
+        // value |= (value >> 2);
+        // value |= (value >> 1);
+
+        return value;
+      }
+
+#endif
 
       #endregion
 
-      #region ClearMostSignificant1Bit
+      #region BitFoldToMsb
 
       /// <summary>
-      /// <para>Clear <paramref name="value"/> of its least-significant-1-bit.</para>
+      /// <para>Recursively "folds" all 1-bits, starting at the least-significant-bit, into the left-most or higher-order bits. Yields a bit vector with the same least-significant-bit as <paramref name="value"/>, and with all 1's above it.</para>
+      /// <para><see cref="System.Numerics.BigInteger"/> does not have a fixed width so the result is dependent on <paramref name="value"/>.</para>
       /// </summary>
-      /// <see href="https://aggregate.org/MAGIC/#Most%20Significant%201%20Bit"/>
-      public static TInteger ClearMostSignificant1Bit(TInteger value)
-        => value - MostSignificant1Bit(value);
+      /// <returns>The left-most or higher-order bits, down to the least-significant-bit of <paramref name="value"/>, set to 1. If <paramref name="value"/> is negative, -1 is returned (all bits set to 1). Zero returns 0.</returns>
+      public TInteger BitFoldToMsb()
+        => ~(value.LeastSignificant1Bit - TInteger.One);
+      //{
+      //  if (TInteger.IsZero(value))
+      //    return value;
+
+      //  if (value is System.Numerics.BigInteger) // BigInteger is a special case.
+      //    return CreateBitMaskRight(TInteger.CreateChecked(value.BitCount));
+
+      //  return (~TInteger.Zero) << int.CreateChecked(TInteger.TrailingZeroCount(value));
+      //}
+
+      //var tzc = value.GetTrailingZeroCount();
+      //return BitFoldRight(value << value.GetLeadingZeroCount()) >> tzc << tzc;
+
+#if INCLUDE_SCRATCH
+
+      /// <summary>
+      /// <para>This is the traditional SWAR algorithm that recursively "folds" the lower bits into the upper bits, i.e. folded left or towards the MSB.</para>
+      /// </summary>
+      /// <typeparam name="TValue"></typeparam>
+      /// <param name="value"></param>
+      /// <returns></returns>
+      public TInteger ScratchBitFoldLeft()
+      {
+        // Or loop to accomodate dynamic data types, but works like the traditional unrolled SWAR below:
+        for (var shift = GetBitCount(value) >> 1; shift > 0; shift >>= 1)
+          value |= value << shift;
+
+        // value |= (value << 64); // For a 128-bit type.
+        // value |= (value << 32); // For a 64-bit type.
+        // value |= (value << 16); // For a 32-bit type
+        // value |= (value << 8);
+        // value |= (value << 4);
+        // value |= (value << 2);
+        // value |= (value << 1);
+
+        return value;
+      }
+
+#endif
+
+      #endregion
+
+      #region BitLength
+
+      /// <summary>
+      /// <para>Returns the size, in bits, of the shortest two's-complement representation, if <paramref name="value"/> is positive. If <paramref name="value"/> is negative, the bit-length represents the storage size of the <typeparamref name="TInteger"/>, based on byte-count (times 8).</para>
+      /// </summary>
+      /// <remarks>
+      /// <para>The bit-length yields the (1-based) position, which is one more than the 0-based index found by log2) of the most significant bit set in <paramref name="value"/>.</para>
+      /// </remarks>
+      public int BitLength
+        => TInteger.IsNegative(value)
+        ? value.BitWidth // When value is negative, return the bit-count (i.e. based on the storage strategy).
+        : value.GetShortestBitLength(); // Otherwise, return the .NET shortest-bit-length.
+
+#if INCLUDE_SCRATCH
+
+      /// <summary>
+      /// <para><see href="https://aggregate.org/MAGIC/#Log2%20of%20an%20Integer"/></para>
+      /// </summary>
+      /// <typeparam name="TInteger"></typeparam>
+      /// <param name="value"></param>
+      /// <returns></returns>
+      public TInteger ScratchBitLength
+        => ScratchLog2(value) + TInteger.One;
+
+#endif
+
+      #endregion
+
+      #region BitWidth
+
+      /// <summary>
+      /// <para>Returns the size, in number of bits, needed to store the value as <typeparamref name="TInteger"/>.</para>
+      /// <para>For fixed-size types, the returned value is the type's pre-defined width (for example <see langword="int"/> = 32 and <see langword="long"/> = 64).</para>
+      /// <para>For dynamic-size types, such as <see cref="System.Numerics.BigInteger"/>, the returned value is the width of the allocated representation currently used to store the value.</para>
+      /// </summary>
+      public int BitWidth
+        => value.GetByteCount() * 8;
+
+      #endregion
+
+      #region ByteCount
+
+      /// <summary>
+      /// <para>Using the built-in <see cref="System.Numerics.IBinaryInteger{TInteger}.GetByteCount()"/>.</para>
+      /// </summary>
+      /// <remarks>
+      /// <para>Note that some datatypes, e.g. <see cref="System.Numerics.BigInteger"/>, use dynamic storage strategies.</para>
+      /// </remarks>
+      public int ByteCount
+        => value.GetByteCount();
+
+      ///// <summary>
+      ///// <para>Using the built-in <see cref="System.Numerics.IBinaryInteger{TInteger}.PopCount(TInteger)"/>.</para>
+      ///// </summary>
+      ///// <returns>The population count of <paramref name="value"/>, i.e. the number of bits set to 1 in <paramref name="value"/>.</returns>
+      //public int GetPopCount()
+      //  => int.CreateChecked(TInteger.PopCount(value));
+
+#if INCLUDE_SCRATCH
+
+      public int ScratchGetPopCount()
+      {
+        System.ArgumentOutOfRangeException.ThrowIfNegative(value);
+
+        var count = 0;
+
+        while (value > TInteger.Zero)
+        {
+          count++;
+
+          value &= value - TInteger.One; // Clear the LS1B.
+        }
+
+        return count;
+      }
+
+#endif
 
       #endregion
 
@@ -420,8 +447,9 @@
       /// </summary>
       /// <remarks>The LS1B is the largest power of two that is also a divisor of <paramref name="value"/>.</remarks>
       /// <see href="https://aggregate.org/MAGIC/#Least%20Significant%201%20Bit"/>
-      public static TInteger LeastSignificant1Bit(TInteger value)
+      public TInteger LeastSignificant1Bit
         => value & ((~value) + TInteger.One);
+      //=> (value ^ (value & (value - TInteger.One))); // Alternative to the above.
       //=> (value & -value); // <<< This optimized version does not work on unsigned integers, obviously since the number has to be negated.
 
       #endregion
@@ -436,62 +464,30 @@
       /// <item>Otherwise the most-significant-1-bit is returned, which also happens to be the same as Log2(<paramref name="value"/>).</item>
       /// </list>
       /// </summary>
-      /// <remarks>Note that for dynamic types, e.g. <see cref="System.Numerics.BigInteger"/>, the number of bits depends on the storage size used for the <paramref name="value"/>.</remarks>
-      public static TInteger MostSignificant1Bit(TInteger value)
-      {
-        if (TInteger.IsZero(value))
-          return value;
-
-        return TInteger.One << int.CreateChecked(TInteger.Log2(value)); // TInteger.One << (value.GetBitLength() - 1);
-      }
-
-#if INCLUDE_SCRATCH
-
-            public static TInteger ScratchLeastSignificant1Bit(TInteger value)
-              => value & ((~value) + TInteger.One); // Works on signed or unsigned integers.
-            // => (value ^ (value & (value - TInteger.One))); // Alternative to the above.
-            // => (value & -value); // Does not work on unsigned integers.
-
-            public static TInteger ScratchMostSignificant1Bit(TInteger value)
-            {
-              value = ScratchBitFoldRight(value);
-
-              return value & ~(value >> 1);
-            }
-
-#endif
-
-      #endregion
-
-      #endregion
-    }
-
-    extension<TInteger>(TInteger value)
-      where TInteger : System.Numerics.IBinaryInteger<TInteger>
-    {
-      #region GetBitLength
-
-      /// <summary>
-      /// <para>Returns the size, in bits, of the shortest two's-complement representation, if <paramref name="value"/> is positive. If <paramref name="value"/> is negative, the bit-length represents the storage size of the <typeparamref name="TInteger"/>, based on byte-count (times 8).</para>
-      /// </summary>
       /// <remarks>
-      /// <para>The <c>bit-length(<paramref name="value"/>)</c> is the bit position (i.e. a 1-based bit-index) of the <c>most-significant-1-bit(<paramref name="value"/>)</c>. A zero-based bit-index is equal to <c>(bit-length(<paramref name="value"/>) - 1)</c>, which is also the same as calling <c>log2(<paramref name="value"/>)</c>.</para>
+      /// <para>The index and position of the most significant bit set in a value, is the log2(value) and bit-length(value) respectively.</para>
       /// </remarks>
-      public int GetBitLength()
-        => TInteger.IsNegative(value)
-        ? GetBitCount(value) // When value is negative, return the bit-count (i.e. based on the storage strategy).
-        : value.GetShortestBitLength(); // Otherwise, return the .NET shortest-bit-length.
+      public TInteger MostSignificant1Bit
+        => TInteger.IsZero(value)
+        ? value
+        : TInteger.One << int.CreateChecked(TInteger.Log2(value)); // TInteger.One << (value.GetBitLength() - 1);
 
 #if INCLUDE_SCRATCH
 
-      /// <summary>
-      /// <para><see href="https://aggregate.org/MAGIC/#Log2%20of%20an%20Integer"/></para>
-      /// </summary>
-      /// <typeparam name="TInteger"></typeparam>
-      /// <param name="value"></param>
-      /// <returns></returns>
-      public TInteger ScratchBitLength()
-        => ScratchLog2(value) + TInteger.One;
+            public TInteger ScratchLeastSignificant1Bit
+              => value & ((~value) + TInteger.One); // Works on signed or unsigned integers.
+            //=> (value ^ (value & (value - TInteger.One))); // Alternative to the above.
+            //=> (value & -value); // Does not work on unsigned integers.
+
+            public TInteger ScratchMostSignificant1Bit
+            {
+              get
+              {
+                value = ScratchBitFoldRight(value);
+
+                return value & ~(value >> 1);
+              }
+            }
 
 #endif
 

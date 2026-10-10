@@ -4,22 +4,6 @@
 
 namespace Flux
 {
-  public enum WrapMode
-  {
-    /// <summary>
-    /// <para>Swap min/max if reversed.</para>
-    /// </summary>
-    Normalized,
-    /// <summary>
-    /// <para>Throw if min >= max.</para>
-    /// </summary>
-    Strict,
-    /// <summary>
-    /// <para>Symmetric wrap around the midpoint of the interval.</para>
-    /// </summary>
-    Centered
-  }
-
   public static partial class DecimalExtensions
   {
 #if DECIMAL_SPECIAL_FUNCTIONS
@@ -41,102 +25,43 @@ namespace Flux
 
     #region Tables of scale factors (negative and positive)
 
-    private static readonly decimal[] m_decimalScaleFactorsNegative =
-    {
-      1m,
-      0.1m,
-      0.01m,
-      0.001m,
-      0.0001m,
-      0.00001m,
-      0.000001m,
-      0.0000001m,
-      0.00000001m,
-      0.000000001m,
-      0.0000000001m,
-      0.00000000001m,
-      0.000000000001m,
-      0.0000000000001m,
-      0.00000000000001m,
-      0.000000000000001m,
-      0.0000000000000001m,
-      0.00000000000000001m,
-      0.000000000000000001m,
-      0.0000000000000000001m,
-      0.00000000000000000001m,
-      0.000000000000000000001m,
-      0.0000000000000000000001m,
-      0.00000000000000000000001m,
-      0.000000000000000000000001m,
-      0.0000000000000000000000001m,
-      0.00000000000000000000000001m,
-      0.000000000000000000000000001m,
-      0.0000000000000000000000000001m,
-    };
-
-    private static readonly decimal[] m_decimalScaleFactorsPositive =
-    {
-      1m,
-      10m,
-      100m,
-      1000m,
-      10000m,
-      100000m,
-      1000000m,
-      10000000m,
-      100000000m,
-      1000000000m,
-      10000000000m,
-      100000000000m,
-      1000000000000m,
-      10000000000000m,
-      100000000000000m,
-      1000000000000000m,
-      10000000000000000m,
-      100000000000000000m,
-      1000000000000000000m,
-      10000000000000000000m,
-      100000000000000000000m,
-      1000000000000000000000m,
-      10000000000000000000000m,
-      100000000000000000000000m,
-      1000000000000000000000000m,
-      10000000000000000000000000m,
-      100000000000000000000000000m,
-      1000000000000000000000000000m,
-      10000000000000000000000000000m
-    };
+    private static readonly decimal[] m_pow10Reciprocal = [.. Number.GeometricSequence(decimal.One, 10m).Where(d => d < decimal.MaxExactInteger).Select(d => 1m / d)];
+    //{
+    //  1m,
+    //  0.1m,
+    //  0.01m,
+    //  0.001m,
+    //  0.0001m,
+    //  0.00001m,
+    //  0.000001m,
+    //  0.0000001m,
+    //  0.00000001m,
+    //  0.000000001m,
+    //  0.0000000001m,
+    //  0.00000000001m,
+    //  0.000000000001m,
+    //  0.0000000000001m,
+    //  0.00000000000001m,
+    //  0.000000000000001m,
+    //  0.0000000000000001m,
+    //  0.00000000000000001m,
+    //  0.000000000000000001m,
+    //  0.0000000000000000001m,
+    //  0.00000000000000000001m,
+    //  0.000000000000000000001m,
+    //  0.0000000000000000000001m,
+    //  0.00000000000000000000001m,
+    //  0.000000000000000000000001m,
+    //  0.0000000000000000000000001m,
+    //  0.00000000000000000000000001m,
+    //  0.000000000000000000000000001m,
+    //  0.0000000000000000000000000001m,
+    //};
 
     #endregion
 
     extension(System.Decimal)
     {
-      /// <summary>
-      /// <para>The base epsilon 1e-27m → about the scale where double‑precision (binary64) stops reliably distinguishing differences.</para>
-      /// <para>A tolerance for “close enough” comparisons — the smallest meaningful difference before rounding noise dominates.</para>
-      /// <para>The default epsilon scalar (1e-27m) used for near-integer functions.</para>
-      /// </summary>
-      public static decimal DecimalEngineeringEpsilon => 1e-27m;
-
-      public static decimal DecimalMachineEpsilon => 1e-28m;
-
-      /// <summary>
-      /// <para>The largest integer that can be stored in a <see cref="System.Decimal"/> without losing precision is 79,228,162,514,264,337,593,543,950,335.</para>
-      /// <para>The <see cref="System.Decimal"/> type is a base-10 high-precision decimal, which means it can precisely represent integers up to 79,228,162,514,264,337,593,543,950,335 (approximately 7.9×10²⁸). This is because the decimal type has a precision of 28-29 significant digits and does not use floating-point approximations for integers within this range. Beyond this value, precision may be lost.</para>
-      /// </summary>
-      public static decimal DecimalMaxExactInteger => 79228162514264337593543950335m;
-
-      /// <summary>
-      /// <para>The smallest integer that can be stored in a <see cref="System.Decimal"/> without losing precision is -79,228,162,514,264,337,593,543,950,335.</para>
-      /// <para>The <see cref="System.Decimal"/> type is a base-10 high-precision decimal, which means it can precisely represent integers down to -79,228,162,514,264,337,593,543,950,335 (approximately -7.9×10²⁸). This is because the decimal type has a precision of 28-29 significant digits and does not use floating-point approximations for integers within this range. Beyond this value, precision may be lost.</para>
-      /// </summary>
-      public static decimal DecimalMinExactInteger => -79228162514264337593543950335m;
-
-      /// <summary>
-      /// <para>The largest prime integer that precisely fit in a decimal.</para>
-      /// </summary>
-      public static decimal DecimalMaxExactPrimeNumber => 79228162514264337593543950297m;
-
       #region DecimalBinary function
 
       /// <summary>
@@ -256,150 +181,15 @@ namespace Flux
       /// <summary>
       /// <para>Computes 10 raised to the power of the specified exponent, which can be in the range [-28, 28].</para>
       /// </summary>
-      /// <param name="exponent">Allowed range: [-28, 28]</param>
+      /// <param name="exponent">Possible range: [-28, 28]</param>
       /// <returns></returns>
-      internal static decimal Pow10(int exponent)
+      public static decimal Pow10(int exponent)
       {
-        if (exponent >= 0)
-        {
-          System.ArgumentOutOfRangeException.ThrowIfGreaterThan(exponent, 28);
+        if ((uint)(exponent + 28) > 56) throw new System.ArgumentOutOfRangeException(nameof(exponent));
 
-          return m_decimalScaleFactorsPositive[exponent];
-        }
-        else
-        {
-          System.ArgumentOutOfRangeException.ThrowIfLessThan(exponent, -28);
-
-          return m_decimalScaleFactorsNegative[-exponent];
-        }
-      }
-
-      #endregion
-
-      #region DecimalUlp
-
-      /// <summary>
-      /// <para>Gets the unit in the last place (ULP) of a <see langword="decimal"/> number.</para>
-      /// <para>Since decimal is not a floating-point type, the ULP is derived from the stored scale inside the 128‑bit layout returned by decimal.GetBits(<paramref name="value"/>).</para>
-      /// <para>A decimal never fails to produce a ULP, because every valid decimal value always has a well‑defined ULP, and that ULP is always: 10^-scale.</para>
-      /// </summary>
-      /// <param name="value"></param>
-      /// <returns></returns>
-      public static decimal DecimalUlp(decimal value)
-      {
-        var bits = decimal.GetBits(value);
-        var scale = (bits[3] >> 16) & 0xFF; // 0–28
-        return m_decimalScaleFactorsNegative[scale];
-      }
-
-      #endregion
-
-      #region DecimalUlpDecrement
-
-      /// <summary>
-      /// <para>Decrements a decimal value by one unit in the last place (ULP).</para>
-      /// </summary>
-      /// <param name="value"></param>
-      /// <returns></returns>
-      public static decimal DecimalUlpDecrement(decimal value)
-      {
-        var ulp = DecimalUlp(value);
-
-        return checked(value - ulp);
-      }
-
-      #endregion
-
-      //#region DecimalUlpDistance
-
-      //public static System.Int128 DecimalUlpDistance(decimal left, decimal right)
-      //{
-      //  var (_, leftScale, leftSignificand) = ExtractDecimalFields(left);
-      //  var (_, rightScale, rightSignificand) = ExtractDecimalFields(right);
-
-      //  var scale = int.Max(leftScale, rightScale);
-
-      //  leftSignificand *= (System.Int128)Pow10(scale - leftScale, out var _);
-      //  rightSignificand *= (System.Int128)Pow10(scale - rightScale, out var _);
-
-      //  return System.Int128.Abs(leftSignificand - rightSignificand);
-      //}
-
-      //#endregion
-
-      #region DecimalUlpIncrement
-
-      /// <summary>
-      /// <para>Increments a decimal value by one unit in the last place (ULP).</para>
-      /// </summary>
-      /// <param name="value"></param>
-      /// <returns></returns>
-      public static decimal DecimalUlpIncrement(decimal value)
-      {
-        var ulp = DecimalUlp(value);
-
-        return checked(value + ulp);
-      }
-
-      #endregion
-
-      ///// <summary>
-      ///// <para>Snaps a decimal value to the nearest integer if it is within one unit in the last place (ULP) of that integer.</para>
-      ///// <para>If the value is near an integer → snap. If not → return the original value.</para>
-      ///// </summary>
-      ///// <param name="value"></param>
-      ///// <returns></returns>
-      //public static decimal SnapIfNearInteger(decimal value)
-      //  => IsNearInteger(value, out var integer) ? integer : value;
-
-      #region WrapToInterval
-
-      /// <summary>
-      /// <para>Wraps a decimal value to a specified interval [minValue, maxValue] according to the specified wrap mode and interval notation.</para>
-      /// </summary>
-      /// <param name="value"></param>
-      /// <param name="minValue"></param>
-      /// <param name="maxValue"></param>
-      /// <param name="wrapMode"></param>
-      /// <param name="intervalNotation"></param>
-      /// <param name="epsilon"></param>
-      /// <returns></returns>
-      public static decimal WrapToInterval(decimal value, decimal minValue, decimal maxValue, WrapMode wrapMode = WrapMode.Normalized, IntervalNotation intervalNotation = IntervalNotation.HalfOpenRight, decimal epsilon = 0m)
-      {
-        System.ArgumentOutOfRangeException.ThrowIfNegative(epsilon);
-
-        if (wrapMode == WrapMode.Strict)
-          System.ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(minValue, maxValue);
-        else if (wrapMode == WrapMode.Normalized && maxValue < minValue)
-          (minValue, maxValue) = (maxValue, minValue);
-        else if (wrapMode == WrapMode.Centered)
-        {
-          var mid = (minValue + maxValue) / 2m;
-          var half = (maxValue - minValue) / 2m;
-
-          return mid + WrapToInterval(value - mid, -half, half, WrapMode.Normalized, intervalNotation, epsilon);
-        }
-
-        var range = maxValue - minValue;
-        if (range == 0m)
-          return minValue;
-
-        var wrapped = (value - minValue) % range;
-        if (wrapped < 0m)
-          wrapped += range;
-
-        var result = wrapped + minValue;
-
-        var eps = (epsilon != 0m) ? epsilon : DecimalUlp(result);
-
-        return intervalNotation switch
-        {
-          IntervalNotation.Closed => result,
-          IntervalNotation.HalfOpenRight => result >= maxValue - eps ? minValue : result,
-          IntervalNotation.HalfOpenLeft => result <= minValue + eps ? maxValue : result,
-          IntervalNotation.Open => (result <= minValue + eps) ? minValue + eps : (result >= maxValue - eps) ? maxValue - eps : result,
-          _ => result,
-        };
+        return exponent < 0
+          ? m_pow10Reciprocal[-exponent]
+          : decimal.CreateChecked(UInt128Extensions.m_pow10[exponent]); ;
       }
 
       #endregion

@@ -75,6 +75,21 @@ namespace Flux
 
       #region IsWithinUlps
 
+      /// <summary>
+      /// <para>Determines whether two numeric values differ by no more than a specified number of ULPs (units in the last place).</para>
+      /// </summary>
+      /// <remarks>
+      /// <i>ULP is the spacing between adjacent representable values at the specified value:</i>
+      /// <list type=">">
+      /// <item>For integral types, the ULP is always 1.</item>
+      /// <item>For <see cref="decimal"/>, the ULP depends on the value's scale.</item>
+      /// <item>For IEEE 754 binary floating-point types (e.g. <see langword="double"/>) the ULP corresponds to the traditional "Unit in the Last Place" definition.</item>
+      /// </list>
+      /// </remarks>
+      /// <param name="left">The first value to compare.</param>
+      /// <param name="right">The second value to compare.</param>
+      /// <param name="maxUlps">The maximum allowed difference measured in units in the last place (ULPs).</param>
+      /// <returns>true if the ULP distance between left and right is less than or equal to maxUlps; otherwise false.</returns>
       public static bool IsWithinUlps(TNumber left, TNumber right, int maxUlps = 1)
         => UlpDistance(left, right) <= maxUlps;
 
@@ -99,6 +114,21 @@ namespace Flux
 
       #region Ulp/TryGet
 
+      /// <summary>
+      /// <para></para>
+      /// </summary>
+      /// <remarks>
+      /// <i>ULP is the spacing between adjacent representable values at the specified value:</i>
+      /// <list type=">">
+      /// <item>For integral types, the ULP is always 1.</item>
+      /// <item>For <see cref="decimal"/>, the ULP depends on the value's scale.</item>
+      /// <item>For IEEE 754 binary floating-point types (e.g. <see langword="double"/>) the ULP corresponds to the traditional "Unit in the Last Place" definition.</item>
+      /// </list>
+      /// </remarks>
+      /// <param name="value"></param>
+      /// <returns></returns>
+      /// <exception cref="System.ArithmeticException"></exception>
+      /// <exception cref="System.NotImplementedException"></exception>
       public static TNumber Ulp(TNumber value)
       {
         if (TNumber.IsNaN(value))
@@ -133,14 +163,26 @@ namespace Flux
           var ulp = tv == System.Half.MaxValue ? tv - System.Half.BitDecrement(tv) : System.Half.BitIncrement(tv) - tv;
           return TNumber.CreateChecked(ulp);
         }
-        else if (typeof(TNumber).IsNumericsIBinaryInteger())
-        {
+        else if (typeof(TNumber).ImplementsIBinaryInteger())
           return TNumber.One;
-        }
         else
           throw new System.NotImplementedException(typeof(TNumber).Name);
       }
 
+      /// <summary>
+      /// <para></para>
+      /// </summary>
+      /// <remarks>
+      /// <i>ULP is the spacing between adjacent representable values at the specified value:</i>
+      /// <list type=">">
+      /// <item>For integral types, the ULP is always 1.</item>
+      /// <item>For <see cref="decimal"/>, the ULP depends on the value's scale.</item>
+      /// <item>For IEEE 754 binary floating-point types (e.g. <see langword="double"/>) the ULP corresponds to the traditional "Unit in the Last Place" definition.</item>
+      /// </list>
+      /// </remarks>
+      /// <param name="value"></param>
+      /// <param name="ulp"></param>
+      /// <returns></returns>
       public static bool TryGetUlp(TNumber value, out TNumber ulp)
       {
         ulp = Ulp(value);
@@ -153,56 +195,68 @@ namespace Flux
       #region UlpDecrement
 
       /// <summary>
-      /// <para>Decrements a number. If integer, then by +1. If floating-point, then by "bit-decrement". If decimal, by 1e-28m.</para>
+      /// <para>Increments a value by <paramref name="count"/> ULPs.</para>
       /// </summary>
+      /// <remarks>
+      /// <i>ULP is the spacing between adjacent representable values at the specified value:</i>
+      /// <list type=">">
+      /// <item>For integral types, the ULP is always 1.</item>
+      /// <item>For <see cref="decimal"/>, the ULP depends on the value's scale.</item>
+      /// <item>For IEEE 754 binary floating-point types (e.g. <see langword="double"/>) the ULP corresponds to the traditional "Unit in the Last Place" definition.</item>
+      /// </list>
+      /// </remarks>
+      /// <param name="value"></param>
+      /// <param name="count"></param>
+      /// <returns></returns>
+      /// <exception cref="System.NotImplementedException"></exception>
+      public static TNumber UlpDecrement(TNumber value, long count)
+      {
+        System.ArgumentOutOfRangeException.ThrowIfNegativeOrZero(count);
+
+        checked
+        {
+          if (typeof(TNumber) == typeof(decimal)) // Decrement by ulps * ULP(value).
+            return checked(value - Ulp(value) * TNumber.CreateChecked(count));
+          else if (typeof(TNumber) == typeof(double) || (typeof(TNumber) == typeof(System.Runtime.InteropServices.NFloat) && System.Runtime.InteropServices.NFloat.Size == 8))
+          {
+            var ordered = double.ToOrderedBits(double.CreateChecked(value));
+            ordered -= (ulong)count;
+            return TNumber.CreateChecked(double.FromOrderedBits(ordered));
+          }
+          else if (typeof(TNumber) == typeof(float) || (typeof(TNumber) == typeof(System.Runtime.InteropServices.NFloat) && System.Runtime.InteropServices.NFloat.Size == 4))
+          {
+            var ordered = float.ToOrderedBits(float.CreateChecked(value));
+            ordered -= (ulong)count;
+            return TNumber.CreateChecked(float.FromOrderedBits(ordered));
+          }
+          else if (typeof(TNumber) == typeof(System.Half))
+          {
+            var ordered = System.Half.ToOrderedBits(System.Half.CreateChecked(value));
+            ordered -= (ulong)count;
+            return TNumber.CreateChecked(System.Half.FromOrderedBits(ordered));
+          }
+          else if (typeof(TNumber).ImplementsIBinaryInteger()) // Is integer, decrement by ulps.
+            return value - TNumber.CreateChecked(count);
+          else // Unrecognized type, throw an exception.
+            throw new System.NotImplementedException(typeof(TNumber).Name);
+        }
+      }
+
+      /// <summary>
+      /// <para>Increments a value by one ULP.</para>
+      /// </summary>
+      /// <remarks>
+      /// <i>ULP is the spacing between adjacent representable values at the specified value:</i>
+      /// <list type=">">
+      /// <item>For integral types, the ULP is always 1.</item>
+      /// <item>For <see cref="decimal"/>, the ULP depends on the value's scale.</item>
+      /// <item>For IEEE 754 binary floating-point types (e.g. <see langword="double"/>) the ULP corresponds to the traditional "Unit in the Last Place" definition.</item>
+      /// </list>
+      /// </remarks>
       /// <param name="value"></param>
       /// <returns></returns>
       /// <exception cref="System.NotImplementedException"></exception>
       public static TNumber UlpDecrement(TNumber value) => UlpDecrement(value, 1);
-      //public static TNumber UlpDecrement(TNumber value)
-      //  => value switch
-      //  {
-      //    decimal dfp128 => TNumber.CreateChecked(decimal.DecimalUlpDecrement(dfp128)),
-      //    double bfp64 => TNumber.CreateChecked(double.BitDecrement(bfp64)),
-      //    float bfp32 => TNumber.CreateChecked(float.BitDecrement(bfp32)),
-      //    System.Half bfp16 => TNumber.CreateChecked(System.Half.BitDecrement(bfp16)),
-      //    System.Runtime.InteropServices.NFloat nf => TNumber.CreateChecked(System.Runtime.InteropServices.NFloat.BitDecrement(nf)),
-      //    System.SByte or System.Int16 or System.Int32 or System.Int64 or System.Int128 or System.IntPtr or System.Byte or System.UInt16 or System.UInt32 or System.UInt64 or System.UInt128 or System.UIntPtr or System.Numerics.BigInteger => value - TNumber.One,
-      //    _ => typeof(TNumber).IsNumericsIBinaryInteger() // If there are new ones.
-      //      ? value - TNumber.One
-      //      : throw new System.NotImplementedException(typeof(TNumber).Name)
-      //  };
-
-      public static TNumber UlpDecrement(TNumber value, long ulps)
-      {
-        if (typeof(TNumber) == typeof(decimal))
-        {
-          return checked(value - Ulp(value) * TNumber.CreateChecked(ulps));
-        }
-        else if (typeof(TNumber) == typeof(double) || (typeof(TNumber) == typeof(System.Runtime.InteropServices.NFloat) && System.Runtime.InteropServices.NFloat.Size == 8))
-        {
-          var ordered = double.ToOrderedBits(double.CreateChecked(value));
-          ordered -= (ulong)ulps;
-          return TNumber.CreateChecked(double.FromOrderedBits(ordered));
-        }
-        else if (typeof(TNumber) == typeof(float) || (typeof(TNumber) == typeof(System.Runtime.InteropServices.NFloat) && System.Runtime.InteropServices.NFloat.Size == 4))
-        {
-          var ordered = float.ToOrderedBits(float.CreateChecked(value));
-          ordered -= (ulong)ulps;
-          return TNumber.CreateChecked(float.FromOrderedBits(ordered));
-        }
-        else if (typeof(TNumber) == typeof(System.Half))
-        {
-          var ordered = System.Half.ToOrderedBits(System.Half.CreateChecked(value));
-          ordered -= (ulong)ulps;
-          return TNumber.CreateChecked(System.Half.FromOrderedBits(ordered));
-        }
-        else if (typeof(TNumber).IsNumericsIBinaryInteger())
-        {
-          return value - TNumber.CreateChecked(ulps);
-        }
-        else throw new System.NotImplementedException(typeof(TNumber).Name);
-      }
 
       #endregion
 
@@ -210,10 +264,20 @@ namespace Flux
 
       /// <summary>
       /// <para>Returns the distance in adjacent representable values.</para>
-      /// <para>For decimal, the result is the distance between normalized decimal significands.</para>
-      /// <para>For IEEE floating-point types, the result is measured in ULPs (Units in the Last Place).</para>
-      /// <para>For integer types, the result is the absolute difference between the values.</para>
+      /// <list type="bullet">
+      /// <item>For integer types, the result is the absolute difference between the values.</item>
+      /// <item>For decimal, the result is the distance between normalized decimal significands.</item>
+      /// <item>For IEEE floating-point types, the result is measured in ULPs (Units in the Last Place).</item>
+      /// </list>
       /// </summary>
+      /// <remarks>
+      /// <i>ULP is the spacing between adjacent representable values at the specified value:</i>
+      /// <list type="bullet">
+      /// <item>For integral types, the ULP is always 1.</item>
+      /// <item>For <see cref="decimal"/>, the ULP depends on the value's scale.</item>
+      /// <item>For IEEE 754 binary floating-point types (e.g. <see langword="double"/>) the ULP corresponds to the traditional "Unit in the Last Place" definition.</item>
+      /// </list>
+      /// </remarks>
       /// <param name="left"></param>
       /// <param name="right"></param>
       /// <returns></returns>
@@ -258,7 +322,7 @@ namespace Flux
           if (leftOrdered < 0) leftOrdered = (System.Numerics.BigInteger)short.MinValue - leftOrdered;
           if (rightOrdered < 0) rightOrdered = (System.Numerics.BigInteger)short.MinValue - rightOrdered;
         }
-        else if (typeof(TNumber).IsNumericsIBinaryInteger())
+        else if (typeof(TNumber).ImplementsIBinaryInteger())
         {
           leftOrdered = System.Numerics.BigInteger.CreateChecked(left);
           rightOrdered = System.Numerics.BigInteger.CreateChecked(right);
@@ -273,55 +337,68 @@ namespace Flux
       #region UlpIncrement
 
       /// <summary>
-      /// <para>Increments a number. If integer, then by -1, otherwise by native-increment.</para>
+      /// <para>Increments a value by <paramref name="count"/> ULPs.</para>
       /// </summary>
+      /// <remarks>
+      /// <i>ULP is the spacing between adjacent representable values at the specified value:</i>
+      /// <list type=">">
+      /// <item>For integral types, the ULP is always 1.</item>
+      /// <item>For <see cref="decimal"/>, the ULP depends on the value's scale.</item>
+      /// <item>For IEEE 754 binary floating-point types (e.g. <see langword="double"/>) the ULP corresponds to the traditional "Unit in the Last Place" definition.</item>
+      /// </list>
+      /// </remarks>
+      /// <param name="value"></param>
+      /// <param name="count"></param>
+      /// <returns></returns>
+      /// <exception cref="System.NotImplementedException"></exception>
+      public static TNumber UlpIncrement(TNumber value, long count)
+      {
+        System.ArgumentOutOfRangeException.ThrowIfNegativeOrZero(count);
+
+        checked
+        {
+          if (typeof(TNumber) == typeof(decimal)) // Increment by ulps * ULP(value).
+            return value + Ulp(value) * TNumber.CreateChecked(count);
+          else if (typeof(TNumber) == typeof(double) || (typeof(TNumber) == typeof(System.Runtime.InteropServices.NFloat) && System.Runtime.InteropServices.NFloat.Size == 8))
+          {
+            var ordered = double.ToOrderedBits(double.CreateChecked(value));
+            ordered += (ulong)count;
+            return TNumber.CreateChecked(double.FromOrderedBits(ordered));
+          }
+          else if (typeof(TNumber) == typeof(float) || (typeof(TNumber) == typeof(System.Runtime.InteropServices.NFloat) && System.Runtime.InteropServices.NFloat.Size == 4))
+          {
+            var ordered = float.ToOrderedBits(float.CreateChecked(value));
+            ordered += (ulong)count;
+            return TNumber.CreateChecked(float.FromOrderedBits(ordered));
+          }
+          else if (typeof(TNumber) == typeof(System.Half))
+          {
+            var ordered = System.Half.ToOrderedBits(System.Half.CreateChecked(value));
+            ordered += (ulong)count;
+            return TNumber.CreateChecked(System.Half.FromOrderedBits(ordered));
+          }
+          else if (typeof(TNumber).ImplementsIBinaryInteger()) // Is integer, increment by ulps.
+            return value + TNumber.CreateChecked(count);
+          else // Unrecognized type, throw an exception.
+            throw new System.NotImplementedException(typeof(TNumber).Name);
+        }
+      }
+
+      /// <summary>
+      /// <para>Increments a value by one ULP.</para>
+      /// </summary>
+      /// <remarks>
+      /// <i>ULP is the spacing between adjacent representable values at the specified value:</i>
+      /// <list type=">">
+      /// <item>For integral types, the ULP is always 1.</item>
+      /// <item>For <see cref="decimal"/>, the ULP depends on the value's scale.</item>
+      /// <item>For IEEE 754 binary floating-point types (e.g. <see langword="double"/>) the ULP corresponds to the traditional "Unit in the Last Place" definition.</item>
+      /// </list>
+      /// </remarks>
       /// <param name="value"></param>
       /// <returns></returns>
       /// <exception cref="System.NotImplementedException"></exception>
       public static TNumber UlpIncrement(TNumber value) => UlpIncrement(value, 1);
-      //=> value switch
-      //{
-      //  decimal dfp128 => TNumber.CreateChecked(decimal.DecimalUlpIncrement(dfp128)),
-      //  double bfp64 => TNumber.CreateChecked(double.BitIncrement(bfp64)),
-      //  float bfp32 => TNumber.CreateChecked(float.BitIncrement(bfp32)),
-      //  System.Half bfp16 => TNumber.CreateChecked(System.Half.BitIncrement(bfp16)),
-      //  System.Runtime.InteropServices.NFloat nf => TNumber.CreateChecked(System.Runtime.InteropServices.NFloat.BitIncrement(nf)),
-      //  System.SByte or System.Int16 or System.Int32 or System.Int64 or System.Int128 or System.IntPtr or System.Byte or System.UInt16 or System.UInt32 or System.UInt64 or System.UInt128 or System.UIntPtr or System.Numerics.BigInteger => value + TNumber.One,
-      //  _ => typeof(TNumber).IsNumericsIBinaryInteger() // If there are new ones.
-      //    ? value + TNumber.One
-      //    : throw new System.NotImplementedException(typeof(TNumber).Name)
-      //};
-
-      public static TNumber UlpIncrement(TNumber value, long ulps)
-      {
-        if (typeof(TNumber) == typeof(decimal))
-        {
-          return checked(value + Ulp(value) * TNumber.CreateChecked(ulps));
-        }
-        else if (typeof(TNumber) == typeof(double) || (typeof(TNumber) == typeof(System.Runtime.InteropServices.NFloat) && System.Runtime.InteropServices.NFloat.Size == 8))
-        {
-          var ordered = double.ToOrderedBits(double.CreateChecked(value));
-          ordered += (ulong)ulps;
-          return TNumber.CreateChecked(double.FromOrderedBits(ordered));
-        }
-        else if (typeof(TNumber) == typeof(float) || (typeof(TNumber) == typeof(System.Runtime.InteropServices.NFloat) && System.Runtime.InteropServices.NFloat.Size == 4))
-        {
-          var ordered = float.ToOrderedBits(float.CreateChecked(value));
-          ordered += (ulong)ulps;
-          return TNumber.CreateChecked(float.FromOrderedBits(ordered));
-        }
-        else if (typeof(TNumber) == typeof(System.Half))
-        {
-          var ordered = System.Half.ToOrderedBits(System.Half.CreateChecked(value));
-          ordered += (ulong)ulps;
-          return TNumber.CreateChecked(System.Half.FromOrderedBits(ordered));
-        }
-        else if (typeof(TNumber).IsNumericsIBinaryInteger())
-        {
-          return value + TNumber.CreateChecked(ulps);
-        }
-        else throw new System.NotImplementedException(typeof(TNumber).Name);
-      }
 
       #endregion
     }

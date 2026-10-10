@@ -1,6 +1,6 @@
 ﻿namespace Flux
 {
-  public static partial class BinaryFloatingPointIeee754Extensions
+  public static partial class BinaryFloatingPointIeee754
   {
     extension<TFloat>(TFloat)
       where TFloat : System.Numerics.IBinaryFloatingPointIeee754<TFloat>
@@ -133,7 +133,7 @@
 
       #endregion
 
-      #region ExtractIeee754Fields
+      #region ExtractFields
 
       /// <summary>
       /// <para>Extracts the IEEE 754 components of the specified floating-point value.</para>
@@ -142,7 +142,7 @@
       /// <param name="value">The floating-point value to decompose into IEEE 754 fields.</param>
       /// <param name="recomputedValue">When the method returns, contains the value recomposed from the extracted fields; NaN and Infinity are preserved exactly.</param>
       /// <returns>A tuple containing: Sign (1 for positive, -1 for negative, or 0 for zero); Exponent (unbiased integer exponent); FullSignificand (integer significand, including the implicit leading bit for normal values or the raw fraction for subnormals); Significand (normalized significand as TFloat); IsInfinity; IsNaN; IsNormal; IsSubnormal; IsZero.</returns>
-      public static (int Sign, long Exponent, long FullSignificand, TFloat Significand, bool IsInfinity, bool IsNaN, bool IsNormal, bool IsSubnormal, bool IsZero) ExtractIeee754Fields(TFloat value, out TFloat recomputedValue)
+      public static (int Sign, long Exponent, long FullSignificand, TFloat Significand, bool IsInfinity, bool IsNaN, bool IsNormal, bool IsSubnormal, bool IsZero) ExtractFields(TFloat value, out TFloat recomputedValue)
       {
         var (signBit, biasedExponent, fraction) = ToIeee754Binary(value);
 
@@ -250,24 +250,6 @@
       }
 
       #endregion
-
-      //public static ulong ToOrderedBits(double value)
-      //{
-      //  var bits = BitConverter.DoubleToInt64Bits(value);
-
-      //  return bits < 0
-      //    ? (ulong)(long.MinValue - bits)
-      //    : (ulong)bits + 0x8000_0000_0000_0000UL;
-      //}
-
-      //public static double FromOrderedBits(ulong ordered)
-      //{
-      //  var bits = ordered < 0x8000_0000_0000_0000UL
-      //      ? unchecked((long.MinValue - (long)ordered))
-      //      : unchecked((long)(ordered - 0x8000_0000_0000_0000UL));
-
-      //  return BitConverter.Int64BitsToDouble(bits);
-      //}
     }
   }
 }

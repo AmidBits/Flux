@@ -2,12 +2,6 @@ namespace Flux
 {
   public static partial class SByteExtensions
   {
-    /// <summary>
-    /// <para>The largest prime number that fits in an <see cref="System.SByte"/>.</para>
-    /// </summary>
-    [System.CLSCompliant(false)]
-    public const sbyte MaxPrimeNumber = 127;
-
     extension(System.SByte)
     {
       #region ReverseBits..

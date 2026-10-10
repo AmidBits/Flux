@@ -2,14 +2,8 @@ namespace Flux
 {
   public static partial class UInt64Extensions
   {
-    /// <summary>
-    /// <para>The largest prime number that fits in an <see cref="System.UInt64"/>.</para>
-    /// </summary>
-    [System.CLSCompliant(false)]
-    public const ulong MaxPrimeNumber = 18446744073709551557ul;
-
     private const ulong m_primeBitMask = 0b0010_1000_0010_0000_1000_1010_0010_0000_1010_0000_1000_1010_0010_1000_1010_1100UL;
-    private static readonly ulong[] m_smallPrimes = { 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37 };
+    private static readonly ulong[] m_smallPrimeBases = { 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37 };
     private static readonly ulong[] m_primeDeterministicBases = { 2, 3, 5, 7, 11, 13, 17 };
 
     extension(System.UInt64)
@@ -52,11 +46,12 @@ namespace Flux
 
       /// <summary>
       /// <para>Computes the integer cube root of a 64-bit unsigned integer.</para>
+      /// <para>This implementation uses ulong native operations.</para>
       /// </summary>
       /// <param name="b"></param>
       /// <returns></returns>
       [System.CLSCompliant(false)]
-      public static ulong Cbrt(ulong n)
+      internal static ulong Cbrt(ulong n)
       {
         if (n < 8)
           return n == 0 ? 0u : 1u;
@@ -90,12 +85,13 @@ namespace Flux
 
       /// <summary>
       /// <para>Computes the integer logarithm of a 64-bit unsigned integer with a specified base.</para>
+      /// <para>This implementation uses ulong native operations.</para>
       /// </summary>
       /// <param name="n"></param>
       /// <param name="b"></param>
       /// <returns></returns>
       [System.CLSCompliant(false)]
-      public static (ulong LogFloor, ulong LogCeiling, bool IsExactLog) Log(ulong n, ulong b)
+      internal static (ulong LogFloor, ulong LogCeiling, bool IsExactLog) Log(ulong n, ulong b)
       {
         System.ArgumentOutOfRangeException.ThrowIfLessThan(b, 2ul);
 
@@ -150,11 +146,12 @@ namespace Flux
 
       /// <summary>
       /// <para>Computes the integer natural logarithm of a 64-bit unsigned integer.</para>
+      /// <para>This implementation uses ulong native operations.</para>
       /// </summary>
       /// <param name="n"></param>
       /// <returns></returns>
       [System.CLSCompliant(false)]
-      public static (ulong LogFloor, ulong LogCeiling) LogE(ulong n)
+      internal static (ulong LogFloor, ulong LogCeiling) LogE(ulong n)
       {
         System.ArgumentOutOfRangeException.ThrowIfNegativeOrZero(n);
 
@@ -179,12 +176,13 @@ namespace Flux
 
       /// <summary>
       /// <para>Compute the nth root of a 64-bit unsigned integer. This implementation uses Newton's method.</para>
+      /// <para>This implementation uses ulong native operations.</para>
       /// </summary>
       /// <param name="value"></param>
       /// <param name="degree"></param>
       /// <returns></returns>
       [System.CLSCompliant(false)]
-      public static ulong RootN(ulong value, int degree)
+      internal static ulong RootN(ulong value, int degree)
       {
         if (degree <= 1)
           return value;
@@ -220,11 +218,12 @@ namespace Flux
 
       /// <summary>
       /// <para>Computes the integer square root of a 64-bit unsigned integer.</para>
+      /// <para>This implementation uses ulong native operations.</para>
       /// </summary>
       /// <param name="n"></param>
       /// <returns></returns>
       [System.CLSCompliant(false)]
-      public static ulong Sqrt(ulong n)
+      internal static ulong Sqrt(ulong n)
       {
         if (n <= 1)
           return n;
@@ -253,19 +252,11 @@ namespace Flux
 
       #endregion
 
-      #region IsPrimeNumber.. - Miller-Rabin deterministic primality test.
-
-      ///// <summary>
-      ///// <para>Deterministic Miller-Rabin prime number test.</para>
-      ///// </summary>
-      ///// <param name="n"></param>
-      ///// <returns></returns>
-      //[System.CLSCompliant(false)]
-      //public static bool IsPrime(ulong n)
-      //  => MillerRabinDeterministicIsPrime(n);
+      #region IsPrimeNumberDeterministic - Miller-Rabin deterministic primality test.
 
       /// <summary>
       /// <para>Deterministic Miller-Rabin primality test for 64-bit integers using bases 2,3,5,7,11,13,17.</para>
+      /// <para>This implementation uses ulong native operations.</para>
       /// </summary>
       /// <remarks>Guaranteed correct for n &lt; 2^64.</remarks>
       /// <param name="n"></param>
@@ -278,14 +269,9 @@ namespace Flux
         if (n % 2 == 0UL)
           return false; // Secondly, eliminate all even numbers (the prime number 2 was handled in the previous step).
 
-        foreach (var p in m_smallPrimes) // Very small prime checks.
-        {
-          //if (n == p)
-          //  return true;
-
+        foreach (var p in m_smallPrimeBases) // Very small prime checks.
           if (n % p == 0UL)
             return false;
-        }
 
         // Write 'n - 1' as 'd * 2^s', where d is an odd number and s is the number of times you can divide n-1 by 2 before it becomes odd.
 

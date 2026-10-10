@@ -519,7 +519,7 @@
 
       #region Loop functions
 
-      public static System.Collections.Generic.IEnumerable<(int Index, TNumber Value, TNumber OpposingValue)> LoopCross(TNumber startValue, TNumber step, int count)
+      public static System.Collections.Generic.IEnumerable<(int Index, TNumber ForwardValue, TNumber ReverseValue)> LoopCross(TNumber startValue, TNumber step, int count)
       {
         var minValue = ArithmeticSequenceNthTerm(startValue, step, 1);
         var maxValue = ArithmeticSequenceNthTerm(startValue, step, count);

@@ -2,12 +2,6 @@ namespace Flux
 {
   public static partial class UInt32Extensions
   {
-    /// <summary>
-    /// <para>The largest prime number that fits in an <see cref="System.UInt32"/>.</para>
-    /// </summary>
-    [System.CLSCompliant(false)]
-    public const uint MaxPrimeNumber = 4294967291u;
-
     extension(System.UInt32)
     {
       #region ReverseBits..

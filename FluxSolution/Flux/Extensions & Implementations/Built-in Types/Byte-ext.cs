@@ -2,14 +2,8 @@ namespace Flux
 {
   public static partial class ByteExtensions
   {
-    /// <summary>
-    /// <para>The largest prime number that fits in a <see cref="System.Byte"/>.</para>
-    /// </summary>
-    public const byte MaxPrimeNumber = 251;
-
     extension(System.Byte)
     {
-
       #region ReverseBits..
 
       /// <summary>

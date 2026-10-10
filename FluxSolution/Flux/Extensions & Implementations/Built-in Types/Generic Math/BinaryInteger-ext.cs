@@ -61,6 +61,16 @@
       #region GenerateSubRanges
 
       /// <summary>
+      /// <para>Generates a new sequence with <paramref name="count"/> <see cref="System.Range"/> objects.</para>
+      /// <para>How many sub-ranges do you want?</para>
+      /// </summary>
+      /// <param name="length"></param>
+      /// <param name="count"></param>
+      /// <returns></returns>
+      public static System.Collections.Generic.List<System.Range> GenerateSubRangesByCount(TInteger length, TInteger count)
+        => GenerateSubRangesBySubLength(length, Number.IntegerDivRemCeiling(length, count).Quotient);
+
+      /// <summary>
       /// <para>Generates a new sequence of <see cref="System.Range"/> objects, each with <paramref name="subLength"/> (the last may contain less) elements from the total length of a super-sequence.</para>
       /// <para>How many items do you want in each sub-range?</para>
       /// </summary>
@@ -76,16 +86,6 @@
 
         return subRanges;
       }
-
-      /// <summary>
-      /// <para>Generates a new sequence with <paramref name="count"/> <see cref="System.Range"/> objects.</para>
-      /// <para>How many sub-ranges do you want?</para>
-      /// </summary>
-      /// <param name="length"></param>
-      /// <param name="count"></param>
-      /// <returns></returns>
-      public static System.Collections.Generic.List<System.Range> GenerateCountSubRanges(TInteger length, TInteger count)
-        => GenerateSubRangesBySubLength(length, Number.IntegerDivRemCeiling(length, count).Quotient);
 
       #endregion
 
@@ -352,13 +352,12 @@
         if (value <= TInteger.Zero)
           return false;
 
-        System.ArgumentOutOfRangeException.ThrowIfLessThanOrEqual(radix, TRadix.One);
-
         if (radix == TRadix.One + TRadix.One) // Fast path for radix = 2 (bit trick).
           return (value & (value - TInteger.One)) == TInteger.Zero;
 
+        AssertRadix(radix, out TInteger r);
+
         var v = value;
-        var r = TInteger.CreateChecked(radix);
 
         while (true) // General case: repeatedly divide by radix until it no longer divides, which is O(log n) but extremely fast in practice.
         {
@@ -374,19 +373,124 @@
           v = q;
         }
       }
+
+      public static int GetDecimalDigitLength(TInteger value)
+      {
+        var abs = TInteger.Abs(value);
+
+        if (abs <= TInteger.CreateChecked(9)) // 0-9.
+          return 1;
+
+        var digits = ((abs.GetShortestBitLength() * 1233) >> 12) + 1;
+
+        if (abs < TInteger.CreateChecked(Pow(10, digits - 1)))
+          digits--;
+
+        return digits;
+      }
+
+      /// <summary>
+      /// <para>Computes the required bit length for the result of <paramref name="value"/> raised to the power of <paramref name="exponent"/>.</para>
+      /// </summary>
+      /// <typeparam name="TExponent"></typeparam>
+      /// <param name="value"></param>
+      /// <param name="exponent"></param>
+      /// <returns></returns>
+      public static int PowRequiredBitLength<TExponent>(TInteger value, TExponent exponent)
+        where TExponent : System.Numerics.IBinaryInteger<TExponent>
+        => checked(value.BitLength * int.CreateChecked(exponent));
+
+      ///// <summary>
+      ///// Computes the power using binary exponentiation (exponentiation by squaring).
+      ///// </summary>
+      ///// <remarks>Performs exponentiation by squaring and uses checked arithmetic to detect overflow. If
+      ///// exponent is less than or equal to TExponent.Zero, returns TInteger.One. Requires TInteger to support
+      ///// multiplication and provide a One value.</remarks>
+      ///// <typeparam name="TExponent">The exponent type that implements System.Numerics.IBinaryInteger<TExponent>; represents the integer exponent
+      ///// and must support binary operations and comparisons.</typeparam>
+      ///// <param name="value">Base value to be raised.</param>
+      ///// <param name="exponent">Exponent specifying the power; expected to be non-negative and manipulated via bitwise operations and right
+      ///// shifts.</param>
+      ///// <returns>The computed value raised to the specified exponent.</returns>
+      //public static TInteger PowBinaryExponentiation<TExponent>(TInteger value, TExponent exponent)
+      //  where TExponent : System.Numerics.IBinaryInteger<TExponent>
       //{
-      //  if (value <= TInteger.Zero)
-      //    return false;
+      //  var result = TInteger.One;
 
-      //  System.ArgumentOutOfRangeException.ThrowIfLessThanOrEqual(radix, TRadix.One);
+      //  while (exponent > TExponent.Zero)
+      //    checked // Detect overflow.
+      //    {
+      //      if (!TExponent.IsZero(exponent & TExponent.One)) // If the current exponent is odd, multiply the result by the current value.
+      //        result *= value;
 
-      //  var log = System.Numerics.BigInteger.Log(System.Numerics.BigInteger.CreateChecked(value), double.CreateChecked(radix));
+      //      exponent >>= 1;
 
-      //  return FloatingPoint.IsNearInteger(log, out var ilog) && Pow(TInteger.CreateChecked(radix), TInteger.CreateChecked(ilog)) == value;
+      //      if (exponent > TExponent.Zero) // If the exponent is still greater than zero, square the current value for the next iteration.
+      //        value *= value;
+      //    }
+
+      //  return result;
+      //}
+      //public static TInteger Pow2<TExponent>(TInteger exponent)
+      //{
+      //  if (TInteger.IsNegative(exponent)) throw new System.ArgumentOutOfRangeException(nameof(exponent));
+
+      //  if (TInteger.IsZero(exponent))
+      //    return TInteger.One;
+
+      //  if (exponent == TInteger.One)
+      //    return TInteger.CreateChecked(2);
+
+      //  if (exponent >= exponent.BitCount && typeof(TInteger).IsNumericsUnsignedInteger)
+      //}
+
+      ///// <summary>
+      ///// <para>Computes 10^exponent using a precomputed table for results up to 128 bits.</para>
+      ///// </summary>
+      ///// <param name="exponent"></param>
+      ///// <param name="result"></param>
+      ///// <returns></returns>
+      //public static bool TryPowFast<TExponent>(TInteger value, TExponent exponent, out TInteger result)
+      //  where TExponent : System.Numerics.IBinaryInteger<TExponent>
+      //{
+      //  var e = int.CreateChecked(exponent);
+
+      //  if (e == 1) // value^1
+      //  {
+      //    result = value;
+      //    return true;
+      //  }
+
+      //  if (e == 2) // value^2
+      //  {
+      //    result = checked(value * value);
+      //    return true;
+      //  }
+
+      //  if (e == 3) // value^3
+      //  {
+      //    result = checked(value * value * value);
+      //    return true;
+      //  }
+
+      //  if (value == TInteger.CreateChecked(2)) // 2^e
+      //  {
+      //    result = TInteger.One << int.CreateChecked(exponent);
+      //    return true;
+      //  }
+
+      //  if (value == TInteger.CreateChecked(10) && e < UInt128Extensions.m_pow10.Length) // 10^e where e is an existing index in the table.
+      //  {
+      //    result = TInteger.CreateChecked(UInt128Extensions.m_pow10[int.CreateChecked(exponent)]);
+      //    return true;
+      //  }
+
+      //  result = TInteger.Zero;
+      //  return false;
       //}
 
       /// <summary>
-      /// <para></para>
+      /// <para>Computes <paramref name="value"/> raised to the power of <paramref name="exponent"/>.</para>
       /// </summary>
       /// <param name="value"></param>
       /// <param name="exponent"></param>
@@ -396,26 +500,50 @@
       {
         System.ArgumentOutOfRangeException.ThrowIfNegative(exponent);
 
-        if (TInteger.IsZero(value)) return TInteger.Zero;
-        if (TExponent.IsZero(exponent)) return TInteger.One;
+        if (TExponent.IsZero(exponent)) // (value^0 : 1)
+          return TInteger.One;
+
+        if (TInteger.IsZero(value)) // (0^exponent : 0)
+          return TInteger.Zero;
+
+        if (exponent == TExponent.One) // (value^1 : value)
+          return value;
+
+        if (exponent == TExponent.CreateChecked(2)) // (value^2 : value * value)
+          return checked(value * value);
+
+        if (value == TInteger.CreateChecked(2)) // (2^exponent : 1 << exponent) 
+          return (int.CreateChecked(exponent) is var ie && ie < value.BitWidth)
+            ? checked(TInteger.One << ie)
+            : throw new System.OverflowException($"The result of {value}^{exponent} cannot be represented by {typeof(TInteger)}.");
+
+        if (value == TInteger.CreateChecked(10) && exponent < TExponent.CreateChecked(UInt128Extensions.m_pow10.Length)) // 10^exponent, where exponent is the size of an existing index in the table.
+          return TInteger.CreateChecked(UInt128Extensions.m_pow10[int.CreateChecked(exponent)]);
+
+        if (typeof(TInteger) == typeof(System.Numerics.BigInteger)) // If BigInteger, use its optimized static pow() method.
+          return (TInteger)(object)System.Numerics.BigInteger.Pow((System.Numerics.BigInteger)(object)value, int.CreateChecked(exponent)); // If TInteger is BigInteger, use it as such.
+
+        // Otherwise, do binary exponentiation (exponentiation by squaring), which is really fast for the non-BigInteger types.
 
         var result = TInteger.One;
-        var current = value;
 
         while (exponent > TExponent.Zero)
           checked // Detect overflow.
           {
-            if (!TExponent.IsZero(exponent & TExponent.One))
-              result *= current;
+            if (!TExponent.IsZero(exponent & TExponent.One)) // If the current exponent is odd, multiply the result by the current value.
+              result *= value;
 
             exponent >>= 1;
 
-            if (exponent > TExponent.Zero)
-              current *= current;
+            if (exponent > TExponent.Zero) // If the exponent is still greater than zero, square the current value for the next iteration.
+              value *= value;
           }
 
         return result;
       }
+
+      public static TInteger Pow10(TInteger exponent)
+        => Pow(TInteger.CreateChecked(10), exponent);
 
       ///// <summary>
       ///// <para>Computes <paramref name="value"/> raised to the power of <paramref name="exponent"/>.</para>
@@ -516,6 +644,8 @@
 
       #endregion
 
+      #region TryConvertTo
+
       public static bool TryConvertTo<TTarget>(TInteger source, out TTarget target)
         where TTarget : System.Numerics.IBinaryInteger<TTarget>
       {
@@ -525,6 +655,8 @@
 
         return roundTrip == source; // If round-trip preserved the value, it fits exactly.
       }
+
+      #endregion
 
       //#region Twelvefold way
 

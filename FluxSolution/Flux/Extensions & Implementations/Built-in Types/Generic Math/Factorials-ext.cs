@@ -139,7 +139,7 @@ namespace Flux
       public static TInteger MaxFactorialNForBitCount(TInteger bitCount)
       {
         var lo = 1;
-        var hi = 1 << (BinaryInteger.GetBitCount(bitCount) - 2);
+        var hi = 1 << (bitCount.BitWidth - 2);
 
         var bc = double.CreateChecked(bitCount);
 
@@ -148,7 +148,7 @@ namespace Flux
           var mid = (lo + hi + 1) / 2;
 
           var log2 = (mid <= 50)
-            ? double.CreateChecked(BinaryInteger.GetBitCount(BinaryInteger.Factorial(System.Numerics.BigInteger.CreateChecked(mid)))) // If less than or equal to 50, actually compute the factorial and get the bit count.
+            ? double.CreateChecked(Factorial(System.Numerics.BigInteger.CreateChecked(mid)).BitWidth) // If less than or equal to 50, actually compute the factorial and get the bit count.
             : DoubleExtensions.Log2FactorialStirlingApproximation(double.CreateChecked(mid)); // If greater than 50, use the approximation of log2(n!) = n * log2(n) - n * log2(e) + 0.5 * log2(2 * pi * n).
 
           if (log2 <= bc)
