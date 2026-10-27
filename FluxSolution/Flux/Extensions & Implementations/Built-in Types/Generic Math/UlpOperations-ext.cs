@@ -163,7 +163,33 @@ namespace Flux
           var ulp = tv == System.Half.MaxValue ? tv - System.Half.BitDecrement(tv) : System.Half.BitIncrement(tv) - tv;
           return TNumber.CreateChecked(ulp);
         }
-        else if (typeof(TNumber).ImplementsIBinaryInteger())
+#if NET11_0_OR_GREATER
+        else if (typeof(TNumber) == typeof(System.Numerics.BFloat16))
+        {
+          var tv = System.Numerics.BFloat16.CreateChecked(value);
+          var ulp = tv == System.Numerics.BFloat16.MaxValue ? tv - System.Numerics.BFloat16.BitDecrement(tv) : System.Numerics.BFloat16.BitIncrement(tv) - tv;
+          return TNumber.CreateChecked(ulp);
+        }
+        else if (typeof(TNumber) == typeof(System.Numerics.Decimal32))
+        {
+          var tv = System.Numerics.Decimal32.CreateChecked(value);
+          var ulp = tv == System.Numerics.Decimal32.MaxValue ? tv - System.Numerics.Decimal32.BitDecrement(tv) : System.Numerics.Decimal32.BitIncrement(tv) - tv;
+          return TNumber.CreateChecked(ulp);
+        }
+        else if (typeof(TNumber) == typeof(System.Numerics.Decimal64))
+        {
+          var tv = System.Numerics.Decimal64.CreateChecked(value);
+          var ulp = tv == System.Numerics.Decimal64.MaxValue ? tv - System.Numerics.Decimal64.BitDecrement(tv) : System.Numerics.Decimal64.BitIncrement(tv) - tv;
+          return TNumber.CreateChecked(ulp);
+        }
+        else if (typeof(TNumber) == typeof(System.Numerics.Decimal128))
+        {
+          var tv = System.Numerics.Decimal128.CreateChecked(value);
+          var ulp = tv == System.Numerics.Decimal128.MaxValue ? tv - System.Numerics.Decimal128.BitDecrement(tv) : System.Numerics.Decimal128.BitIncrement(tv) - tv;
+          return TNumber.CreateChecked(ulp);
+        }
+#endif
+        else if (typeof(TNumber).IsIBinaryInteger())
           return TNumber.One;
         else
           throw new System.NotImplementedException(typeof(TNumber).Name);
@@ -219,23 +245,23 @@ namespace Flux
             return checked(value - Ulp(value) * TNumber.CreateChecked(count));
           else if (typeof(TNumber) == typeof(double) || (typeof(TNumber) == typeof(System.Runtime.InteropServices.NFloat) && System.Runtime.InteropServices.NFloat.Size == 8))
           {
-            var ordered = double.ToOrderedBits(double.CreateChecked(value));
+            var ordered = double.ToOrdered(double.CreateChecked(value));
             ordered -= (ulong)count;
-            return TNumber.CreateChecked(double.FromOrderedBits(ordered));
+            return TNumber.CreateChecked(double.FromOrdered(ordered));
           }
           else if (typeof(TNumber) == typeof(float) || (typeof(TNumber) == typeof(System.Runtime.InteropServices.NFloat) && System.Runtime.InteropServices.NFloat.Size == 4))
           {
-            var ordered = float.ToOrderedBits(float.CreateChecked(value));
+            var ordered = float.ToOrdered(float.CreateChecked(value));
             ordered -= (ulong)count;
-            return TNumber.CreateChecked(float.FromOrderedBits(ordered));
+            return TNumber.CreateChecked(float.FromOrdered(ordered));
           }
           else if (typeof(TNumber) == typeof(System.Half))
           {
-            var ordered = System.Half.ToOrderedBits(System.Half.CreateChecked(value));
+            var ordered = System.Half.ToOrdered(System.Half.CreateChecked(value));
             ordered -= (ulong)count;
-            return TNumber.CreateChecked(System.Half.FromOrderedBits(ordered));
+            return TNumber.CreateChecked(System.Half.FromOrdered(ordered));
           }
-          else if (typeof(TNumber).ImplementsIBinaryInteger()) // Is integer, decrement by ulps.
+          else if (typeof(TNumber).IsIBinaryInteger()) // Is integer, decrement by ulps.
             return value - TNumber.CreateChecked(count);
           else // Unrecognized type, throw an exception.
             throw new System.NotImplementedException(typeof(TNumber).Name);
@@ -322,7 +348,7 @@ namespace Flux
           if (leftOrdered < 0) leftOrdered = (System.Numerics.BigInteger)short.MinValue - leftOrdered;
           if (rightOrdered < 0) rightOrdered = (System.Numerics.BigInteger)short.MinValue - rightOrdered;
         }
-        else if (typeof(TNumber).ImplementsIBinaryInteger())
+        else if (typeof(TNumber).IsIBinaryInteger())
         {
           leftOrdered = System.Numerics.BigInteger.CreateChecked(left);
           rightOrdered = System.Numerics.BigInteger.CreateChecked(right);
@@ -361,23 +387,23 @@ namespace Flux
             return value + Ulp(value) * TNumber.CreateChecked(count);
           else if (typeof(TNumber) == typeof(double) || (typeof(TNumber) == typeof(System.Runtime.InteropServices.NFloat) && System.Runtime.InteropServices.NFloat.Size == 8))
           {
-            var ordered = double.ToOrderedBits(double.CreateChecked(value));
+            var ordered = double.ToOrdered(double.CreateChecked(value));
             ordered += (ulong)count;
-            return TNumber.CreateChecked(double.FromOrderedBits(ordered));
+            return TNumber.CreateChecked(double.FromOrdered(ordered));
           }
           else if (typeof(TNumber) == typeof(float) || (typeof(TNumber) == typeof(System.Runtime.InteropServices.NFloat) && System.Runtime.InteropServices.NFloat.Size == 4))
           {
-            var ordered = float.ToOrderedBits(float.CreateChecked(value));
+            var ordered = float.ToOrdered(float.CreateChecked(value));
             ordered += (ulong)count;
-            return TNumber.CreateChecked(float.FromOrderedBits(ordered));
+            return TNumber.CreateChecked(float.FromOrdered(ordered));
           }
           else if (typeof(TNumber) == typeof(System.Half))
           {
-            var ordered = System.Half.ToOrderedBits(System.Half.CreateChecked(value));
+            var ordered = System.Half.ToOrdered(System.Half.CreateChecked(value));
             ordered += (ulong)count;
-            return TNumber.CreateChecked(System.Half.FromOrderedBits(ordered));
+            return TNumber.CreateChecked(System.Half.FromOrdered(ordered));
           }
-          else if (typeof(TNumber).ImplementsIBinaryInteger()) // Is integer, increment by ulps.
+          else if (typeof(TNumber).IsIBinaryInteger()) // Is integer, increment by ulps.
             return value + TNumber.CreateChecked(count);
           else // Unrecognized type, throw an exception.
             throw new System.NotImplementedException(typeof(TNumber).Name);

@@ -538,11 +538,43 @@ namespace ConsoleApp
 
     private static void TimedMain(string[] _)
     {
+      var n = (System.Numerics.BigInteger)10;
 
-      var lca = Number.GeometricSequence(decimal.One, 10m).Where(d => d < decimal.MaxExactInteger).Select(d => 1m / d).ToArray();
 
 
-      //var pow10 = BinaryInteger.Pow10()
+      //var nibi = n.IsBigInteger();
+      //var nic = n.IsComplex();
+
+      //var niibfpi754 = n.IsIBinaryFloatingPointIeee754();
+      //var niibi = n.IsIBinaryInteger();
+      //var niibn = n.IsIBinaryNumber();
+      //var niifp = n.IsIFloatingPoint();
+      //var niifpi754 = n.IsIFloatingPointIeee754();
+      //var niimmv = n.IsIMinMaxValue();
+      //var niin = n.IsINumber();
+      //var niisn = n.IsISignedNumber();
+      //var niiun = n.IsIUnsignedNumber();
+
+      //var nisi = n.IsSignedInteger();
+      //var niui = n.IsUnsignedInteger();
+
+      var nt = n.GetType();
+
+      var ntibi = nt.IsNumericsBigInteger();
+      var ntic = nt.IsNumericsComplex();
+
+      var ntiibfp = nt.IsIBinaryFloatingPointIeee754();
+      var ntiibi = nt.IsIBinaryInteger();
+      var ntiibn = nt.IsIBinaryNumber();
+      var ntiifp = nt.IsIFloatingPoint();
+      var ntiifpi754 = nt.IsIFloatingPointIeee754();
+      var ntiimmv = nt.IsIMinMaxValue();
+      var ntiin = nt.IsINumber();
+      var ntiisn = nt.IsISignedNumber();
+      var ntiiun = nt.IsIUnsignedNumber();
+
+      var ntsi = nt.IsSignedInteger();
+      var ntui = nt.IsUnsignedInteger();
 
 
     }

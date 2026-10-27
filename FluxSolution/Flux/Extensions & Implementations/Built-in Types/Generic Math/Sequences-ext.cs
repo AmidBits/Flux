@@ -380,7 +380,7 @@
       #region ArithmeticSequence (progression)
 
       /// <summary>
-      /// <para>Creates a new sequence of non-zero numbers where each term after the first <paramref name="a1"/> is found by multiplying the previous one by a fixed, non-zero number called the <paramref name="commonDifference"/>.</para>
+      /// <para>Creates a new sequence of non-zero numbers where each term after the first <paramref name="a1"/> is found by adding the previous one by a fixed, non-zero number called the <paramref name="commonDifference"/>.</para>
       /// <para><see href="https://en.wikipedia.org/wiki/Arithmetic_progression"/></para>
       /// </summary>
       /// <remarks>This function runs indefinitely, if allowed.</remarks>

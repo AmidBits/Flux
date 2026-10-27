@@ -181,20 +181,31 @@ namespace Flux
       /// <summary>The denominator of the fraction. It is always positive and non-zero.</summary>
       public System.Numerics.BigInteger Denominator => m_denominator;
 
+      /// <summary>
+      /// <para>Determines whether a <see cref="BigRational"/> represents a dyadic fraction.</para>
+      /// </summary>
+      /// <remarks></remarks>
       public bool IsDyadicFraction
         => System.Numerics.BigInteger.IsPow2(m_denominator);
 
-      /// <summary>Determines whether the <paramref name="numerator"/> / <paramref name="denominator"/> represents a proper fraction.</summary>
+      /// <summary>
+      /// <para>Determines whether a <see cref="BigRational"/> represents a proper fraction.</para>
+      /// </summary>
       /// <remarks>A fraction is proper if its absolute value is strictly less than 1, i.e. if it is greater than -1 and less than 1.</remarks>
       public bool IsProperFraction
         => !m_numerator.IsZero && System.Numerics.BigInteger.Abs(m_numerator) < m_denominator; // If the numerator is not zero and strictly less than the denominator, it is a proper fraction.
 
-      /// <summary>Determines whether <paramref name="value"/> represents a mixed numbered fraction.</summary>
+      /// <summary>
+      /// <para>Determines whether a <see cref="BigRational"/> represents a mixed numbered fraction.</para>
+      /// </summary>
+      /// <remarks></remarks>
       public bool IsMixedFraction
         => System.Numerics.BigInteger.Abs(m_numerator) > m_denominator;
 
-      /// <summary>Determines whether <paramref name="value"/> represents a unit fraction.</summary>
-      /// <remarks>A fraction is a unit fraction if its <paramref name="numerator"/> is equal to 1.</remarks>
+      /// <summary>
+      /// <para>Determines whether a <see cref="BigRational"/> represents a unit fraction.</para>
+      /// </summary>
+      /// <remarks>A fraction is a unit fraction if its numerator is equal to 1.</remarks>
       public bool IsUnitFraction
         => m_numerator == System.Numerics.BigInteger.One;
 

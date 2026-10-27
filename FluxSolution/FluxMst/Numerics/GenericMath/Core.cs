@@ -27,11 +27,11 @@ namespace Maths
     [TestMethod]
     public void Envelop()
     {
-      Assert.AreEqual(-1, double.Envelop(-0.5));
-      Assert.AreEqual(1, double.Envelop(0.5));
+      Assert.AreEqual(-1, FloatingPoint.Envelop(-0.5));
+      Assert.AreEqual(1, FloatingPoint.Envelop(0.5));
 
-      Assert.AreEqual(-13, double.Envelop(-12.5));
-      Assert.AreEqual(13, double.Envelop(12.5));
+      Assert.AreEqual(-13, FloatingPoint.Envelop(-12.5));
+      Assert.AreEqual(13, FloatingPoint.Envelop(12.5));
     }
 
     [TestMethod]
@@ -148,7 +148,7 @@ namespace Maths
       var n = 512d;
       var m = 20;
 
-      var (multipleTowardsZero, multipleAwayFromZero, isExactMultiple, nearestMultiple) = Number.RoundToMultiple(n, m, false, NearestRoundingRule.TowardZero);
+      var (multipleTowardsZero, multipleAwayFromZero, isExactMultiple, nearestMultiple) = Number.GetNearestMultiples(n, m, false, NearestRoundingRule.TowardZero);
 
       Assert.AreEqual(520, nearestMultiple);
 

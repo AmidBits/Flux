@@ -15,7 +15,7 @@ namespace Numerics
     [TestMethod]
     public void Fold()
     {
-      Assert.AreEqual(3.5, Number.FoldAcross(6.5, 0, 5));
+      Assert.AreEqual(3.5, Number.ReflectedFold(6.5, 0, 5));
     }
 
     [TestMethod]
@@ -25,25 +25,25 @@ namespace Numerics
     }
 
     [TestMethod]
-    public void WrapAround()
+    public void WrapClosed()
     {
-      Assert.AreEqual(2.5, IntervalNotation.Closed.WrapAround(7.5, 1.0, 5.0));
+      Assert.AreEqual(3.5, Number.WrapClosed(7.5, 1.0, 5.0));
     }
 
     [TestMethod]
-    public void WrapAroundHalfOpenMax()
+    public void WrapHalfOpenRight()
     {
       var expected = -1;
-      var actual = Flux.IntervalNotation.HalfOpenRight.WrapAround(7, -2, 2);
+      var actual = Number.WrapHalfOpenRight(7, -2, 2);
 
       Assert.AreEqual(expected, actual);
     }
 
     [TestMethod]
-    public void WrapAroundHalfOpenMin()
+    public void WrapHalfOpenLeft()
     {
       var expected = -1;
-      var actual = Flux.IntervalNotation.HalfOpenLeft.WrapAround(7, -2, 2);
+      var actual = Number.WrapHalfOpenLeft(7, -2, 2);
 
       Assert.AreEqual(expected, actual);
     }

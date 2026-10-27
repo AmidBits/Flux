@@ -32,7 +32,7 @@ namespace Flux.Units
     /// <para>Creates a new <see cref="Azimuth"/> from the specified <paramref name="angle"/> and <paramref name="unit"/>.</para>
     /// </summary>
     public Azimuth(double angle, Units.AngleUnit unit = Units.AngleUnit.Degree)
-      => m_degrees = IntervalNotation.HalfOpenRight.WrapAroundNative(Angle.ConvertUnit(angle, unit, AngleUnit.Degree), MinValue, MaxValue);
+      => m_degrees = Number.WrapHalfOpenRight(Angle.ConvertUnit(angle, unit, AngleUnit.Degree), MinValue, MaxValue);
 
     /// <summary>
     /// <para>Gets the <see cref="Units.Angle"/> of the <see cref="Azimuth"/>.</para>

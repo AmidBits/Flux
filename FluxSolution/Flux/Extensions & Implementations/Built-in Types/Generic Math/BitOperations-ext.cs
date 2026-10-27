@@ -185,7 +185,7 @@
         for (var i = bytes.Length - 1; i >= 0; i--)  // After this loop, all bits are reversed.
           byte.ReverseBitsInPlace(ref bytes[i]); // Mirror (reverse) bits in each byte.
 
-        return TInteger.ReadBigEndian(bytes, typeof(TInteger).ImplementsIUnsignedNumber()); // Read as BigEndian (decreasing numeric significance in increasing memory addresses).
+        return TInteger.ReadBigEndian(bytes, typeof(TInteger).IsIUnsignedNumber()); // Read as BigEndian (decreasing numeric significance in increasing memory addresses).
       }
 
       #endregion
@@ -206,35 +206,7 @@
 
         value.WriteLittleEndian(bytes); // Write as LittleEndian (increasing numeric significance in increasing memory addresses).
 
-        return TInteger.ReadBigEndian(bytes, typeof(TInteger).ImplementsIUnsignedNumber()); // Read as BigEndian (decreasing numeric significance in increasing memory addresses).
-      }
-
-      #endregion
-
-      #region RoundUpToPowerOf2
-
-      public static TInteger RoundUpToPowerOf2(TInteger value, bool unequal)
-      {
-        var ms1b = TInteger.Abs(value).MostSignificant1Bit;
-
-        if (unequal || ms1b != value)
-          ms1b <<= 1;
-
-        return TInteger.CopySign(ms1b, value);
-      }
-
-      #endregion
-
-      #region RoundDownToPowerOf2
-
-      public static TInteger RoundDownToPowerOf2(TInteger value, bool unequal)
-      {
-        var ms1b = TInteger.Abs(value).MostSignificant1Bit;
-
-        if (unequal && ms1b == value)
-          ms1b >>>= 1;
-
-        return TInteger.CopySign(ms1b, value);
+        return TInteger.ReadBigEndian(bytes, typeof(TInteger).IsIUnsignedNumber()); // Read as BigEndian (decreasing numeric significance in increasing memory addresses).
       }
 
       #endregion
@@ -254,7 +226,7 @@
 
         rng.Shuffle(bytes);
 
-        return TInteger.ReadLittleEndian(bytes, typeof(TInteger).ImplementsIUnsignedNumber());
+        return TInteger.ReadLittleEndian(bytes, typeof(TInteger).IsIUnsignedNumber());
       }
 
       #endregion
@@ -470,7 +442,7 @@
       public TInteger MostSignificant1Bit
         => TInteger.IsZero(value)
         ? value
-        : TInteger.One << int.CreateChecked(TInteger.Log2(value)); // TInteger.One << (value.GetBitLength() - 1);
+        : TInteger.One << int.CreateChecked(TInteger.Log2(value)); // alternative: TInteger.One << (value.GetBitLength() - 1);
 
 #if INCLUDE_SCRATCH
 
@@ -490,6 +462,34 @@
             }
 
 #endif
+
+      #endregion
+
+      #region RoundUpToPowerOf2
+
+      public TInteger RoundUpToPowerOf2(bool unequal)
+      {
+        var ms1b = TInteger.Abs(value).MostSignificant1Bit;
+
+        if (unequal || ms1b != value)
+          ms1b <<= 1;
+
+        return TInteger.CopySign(ms1b, value);
+      }
+
+      #endregion
+
+      #region RoundDownToPowerOf2
+
+      public TInteger RoundDownToPowerOf2(bool unequal)
+      {
+        var ms1b = TInteger.Abs(value).MostSignificant1Bit;
+
+        if (unequal && ms1b == value)
+          ms1b >>>= 1;
+
+        return TInteger.CopySign(ms1b, value);
+      }
 
       #endregion
     }

@@ -47,40 +47,23 @@
 
       #endregion
 
-      #region Envelop
+      #region GetParts
 
       /// <summary>
-      /// <para>Envelops a value.</para>
-      /// <para>Equivalent to the opposite effect of the Truncate() functionality, i.e. instead of truncating the fraction and essentially executing a round-toward-zero, envelop the fraction and essentially execute a round-away-from-zero.</para>
-      /// <para>It can also be seen as a companion function to truncate(). Unlike truncate() which calls floor() for positive numbers and ceiling() for negative; envelope() calls ceiling() for positive numbers and floor() for negative.</para>
+      /// <para>Gets the integral part and the fractional part of a <typeparamref name="TFloat"/>.</para>
+      /// <para><see href="https://en.wikipedia.org/wiki/Decimal"/></para>
+      /// <para><seealso href="https://en.wikipedia.org/wiki/Decimal_separator"/></para>
+      /// <para><seealso href="https://stackoverflow.com/a/33996511/3178666"/></para>
       /// </summary>
-      /// <remarks>Like truncate, envelop is a symmetric biased around 0 type rounding.</remarks>
-      /// <typeparam name="TFloat"></typeparam>
-      /// <param name="x"></param>
-      /// <returns></returns>
-      public static TFloat Envelop(TFloat x)
-        => TFloat.IsNegative(x)
-        ? TFloat.Floor(x)
-        : TFloat.Ceiling(x);
-
-      /// <summary>
-      /// <para>Envelops a value at the specified number of <paramref name="significantDigits"/> (decimal places).</para>
-      /// <para>Equivalent to the opposite effect of the Truncate() functionality, i.e. instead of truncating the fraction and essentially executing a round-toward-zero, envelop the fraction and essentially execute a round-away-from-zero.</para>
-      /// <para>It can also be seen as a companion function to truncate(). Unlike truncate() which calls floor() for positive numbers and ceiling() for negative; envelope() calls ceiling() for positive numbers and floor() for negative.</para>
-      /// </summary>
-      /// <remarks>Like truncate, envelop is a symmetric biased around 0 type rounding.</remarks>
-      /// <typeparam name="TFloat"></typeparam>
-      /// <typeparam name="TInteger"></typeparam>
-      /// <param name="x"></param>
-      /// <param name="significantDigits"></param>
-      /// <returns></returns>
-      public static TFloat Envelop(TFloat x, int significantDigits)
+      /// <returns>
+      /// <para>The integral (integer) part and the fractional part of a 64-bit floating point value.</para>
+      /// </returns>
+      public static (TFloat IntegralPart, TFloat FractionalPart) GetParts(TFloat value)
       {
-        System.ArgumentOutOfRangeException.ThrowIfNegative(significantDigits);
+        var integral = TFloat.Truncate(value);
+        var fractional = value - integral;
 
-        var m = TFloat.CreateChecked(System.Numerics.BigInteger.Pow(10, significantDigits));
-
-        return Envelop(x * m) / m;
+        return (integral, fractional);
       }
 
       #endregion
@@ -116,101 +99,6 @@
 #endif
 
       #endregion
-
-      #region Truncate
-
-      /// <summary>
-      /// <para>Truncates a value at the specified number of <paramref name="significantDigits"/> (decimal places).</para>
-      /// </summary>
-      /// <param name="x"></param>
-      /// <param name="significantDigits"></param>
-      /// <returns></returns>
-      public static TFloat Truncate(TFloat x, int significantDigits)
-      {
-        System.ArgumentOutOfRangeException.ThrowIfNegative(significantDigits);
-
-        var m = TFloat.CreateChecked(System.Numerics.BigInteger.Pow(10, significantDigits));
-
-        return TFloat.Truncate(x * m) / m;
-      }
-
-      #endregion
-
-      public static TFloat Wrap(TFloat value, TFloat minValue, TFloat maxValue, IntervalNotation notation)
-      {
-        return notation switch
-        {
-          IntervalNotation.Closed => WrapClosed(value, minValue, maxValue),
-          IntervalNotation.HalfOpenLeft => WrapHalfOpenLeft(value, minValue, maxValue),
-          IntervalNotation.HalfOpenRight => WrapHalfOpenRight(value, minValue, maxValue),
-          IntervalNotation.Open => WrapOpen(value, minValue, maxValue),
-          _ => throw new System.ArgumentOutOfRangeException(nameof(notation)),
-        };
-      }
-
-      public static TFloat WrapClosed(TFloat value, TFloat minValue, TFloat maxValue)
-      {
-        var range = (maxValue - minValue) + Number.Ulp(minValue);
-
-        var nrem = Number.EuclideanModulo(value - minValue, range);
-
-        return minValue + nrem;
-
-        //var range = (maxValue - minValue) + Number.GetUlp(minValue);
-
-        //return minValue + (value - minValue - TFloat.Floor((value - minValue) / range) * range);
-      }
-
-      public static TFloat WrapHalfOpenLeft(TFloat value, TFloat minValue, TFloat maxValue)
-      {
-        var openLeftMinValue = minValue + Number.Ulp(minValue);
-        var range = maxValue - openLeftMinValue;
-
-        var nrem = Number.EuclideanModulo(value - openLeftMinValue, range);
-
-        return openLeftMinValue + nrem;
-
-        //var shift = minValue + Number.GetUlp(minValue);
-        //var range = maxValue - shift;
-
-        //return shift + (value - shift - TFloat.Floor((value - shift) / range) * range);
-      }
-
-      public static TFloat WrapHalfOpenRight(TFloat value, TFloat minValue, TFloat maxValue)
-      {
-        var range = maxValue - minValue;
-
-        var nrem = Number.EuclideanModulo(value - minValue, range);
-
-        return minValue + nrem;
-
-        //var range = maxValue - minValue;
-
-        //return minValue + (value - minValue - TFloat.Floor((value - minValue) / range) * range);
-      }
-
-      public static TFloat WrapOpen(TFloat value, TFloat minValue, TFloat maxValue)
-      {
-        var range = maxValue - minValue;
-
-        var nrem = Number.EuclideanModulo(value - minValue, range);
-
-        var w = minValue + nrem;
-
-        if (w == minValue)
-          return minValue + Number.Ulp(minValue);
-
-        return w;
-
-        //var range = maxValue - minValue;
-
-        //var w = minValue + (value - minValue - TFloat.Floor((value - minValue) / range) * range);
-
-        //if (w == minValue)
-        //  return minValue + Number.GetUlp(minValue);
-
-        //return w;
-      }
     }
 
     extension<TFloat>(TFloat)

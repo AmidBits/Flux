@@ -1,5 +1,6 @@
 namespace Flux
 {
+  [System.CLSCompliant(false)]
   public static partial class UInt16Extensions
   {
     extension(System.UInt16)
@@ -9,7 +10,6 @@ namespace Flux
       /// <summary>
       /// <para>Bit-reversal of a ushort, i.e. trade place of bit 15 with bit 0 and bit 14 with bit 1 and so on.</para>
       /// </summary>
-      [System.CLSCompliant(false)]
       public static ushort ReverseBits(ushort value)
       {
         ReverseBitsInPlace(ref value);
@@ -20,7 +20,6 @@ namespace Flux
       /// <summary>
       /// <para>In-place (by ref) mirror the bits (bit-reversal of a ushort, i.e. trade place of bit 15 with bit 0 and bit 14 with bit 1 and so on.</para>
       /// </summary>
-      [System.CLSCompliant(false)]
       public static void ReverseBitsInPlace(ref ushort value)
         => value = (ushort)(((((((byte)(value & 0xFF)) * 0x0202020202UL) & 0x010884422010UL) % 1023) << 8) | ((((((byte)((value >> 8) & 0xFF)) * 0x0202020202UL) & 0x010884422010UL) % 1023)));
 

@@ -1,16 +1,81 @@
-﻿namespace Flux
+﻿// Modulo operations is just a file organizer. Functions still end up under specific numeric types.
+namespace Flux
 {
+  public static partial class BinaryInteger
+  {
+    extension<TInteger>(TInteger)
+    where TInteger : System.Numerics.IBinaryInteger<TInteger>
+    {
+      #region ModuloClosed
+
+      public static TInteger ModuloClosed(TInteger value, TInteger modulus)
+        => Number.EuclideanModulo(value, modulus + TInteger.One);
+
+      #endregion
+
+      #region ModuloOpen
+
+      public static TInteger ModuloOpen(TInteger value, TInteger modulus)
+        => Number.EuclideanModulo(value - TInteger.One, modulus - TInteger.One) + TInteger.One;
+
+      #endregion
+
+      #region WrapClosed
+
+      public static TInteger WrapClosed(TInteger value, TInteger minValue, TInteger maxValue)
+      {
+        System.ArgumentOutOfRangeException.ThrowIfGreaterThan(minValue, maxValue);
+
+        return Number.EuclideanModulo(value - minValue, maxValue - minValue + TInteger.One) + minValue;
+      }
+
+      #endregion
+
+      #region WrapOpen
+
+      public static TInteger WrapOpen(TInteger value, TInteger minValue, TInteger maxValue)
+      {
+        if (maxValue - minValue <= TInteger.One) throw new System.ArgumentException("An open interval must contain at least one value.");
+
+        return Number.EuclideanModulo(value - minValue - TInteger.One, maxValue - minValue - TInteger.One) + minValue + TInteger.One;
+      }
+
+      #endregion
+    }
+  }
+
   public static partial class Number
   {
     extension<TNumber>(TNumber)
-      where TNumber : System.Numerics.INumber<TNumber>
+    where TNumber : System.Numerics.INumber<TNumber>
     {
+      #region CenteredModulo
+
+      /// <summary>
+      /// <para>Result range:</para>
+      /// <para>Floating-point: [-modulus/2, +modulus/2)</para>
+      /// <para>Integer: [-floor(modulus/2), +ceil(modulus/2))</para>
+      /// </summary>
+      /// <param name="value"></param>
+      /// <param name="modulus"></param>
+      /// <returns></returns>
+      public static TNumber CenteredModulo(TNumber value, TNumber modulus)
+      {
+        System.ArgumentOutOfRangeException.ThrowIfNegativeOrZero(modulus);
+
+        var halfModulus = modulus / NumberConstants<TNumber>.Two;
+
+        return NormalizeZero(EuclideanModulo(value + halfModulus, modulus) - halfModulus);
+      }
+
+      #endregion
+
       #region EuclideanModulo
 
       /// <summary>
       /// <para>Euclidean modulo mormalizes a number <paramref name="value"/> to the range [0, <paramref name="modulus"/>), where <paramref name="modulus"/> is a positive modulus.</para>
       /// <para>For a centered/symmetric result in the range [-range/2, +range/2), use <c>EuclideanModulo(x + halfRange, range) - halfRange</c>.</para>
-      /// <para>This function is also known as HalfOpenRightModulo.</para>
+      /// <para>This function is also known as ModuloHalfOpenRight(value, modulus).</para>
       /// </summary>
       /// <param name="value"></param>
       /// <param name="modulus"></param>
@@ -21,30 +86,13 @@
 
         var remainder = value % modulus;
 
-        return TNumber.IsNegative(remainder) ? remainder + TNumber.Abs(modulus) : remainder;
+        if (TNumber.IsNegative(remainder) && !TNumber.IsZero(remainder))
+          remainder += modulus;
+
+        return NormalizeZero(remainder);
       }
 
       #endregion
-
-      #region HalfOpenLeftModulo
-
-      /// <summary>
-      /// <para>Computes the half-open left modulo of a number <paramref name="value"/> with respect to a positive modulus <paramref name="modulus"/>.</para>
-      /// <para>This is the mirror of <see cref="EuclideanModulo{TNumber}(TNumber, TNumber)"/>, which is also known as HalfOpenRightModulo.</para>
-      /// </summary>
-      /// <param name="value"></param>
-      /// <param name="modulus"></param>
-      /// <returns>value in the range (0, modulus]</returns>
-      public static TNumber HalfOpenLeftModulo(TNumber value, TNumber modulus)
-      {
-        System.ArgumentOutOfRangeException.ThrowIfNegativeOrZero(modulus);
-
-        var em = EuclideanModulo(value, modulus);
-
-        return TNumber.IsZero(em) ? modulus : em;
-      }
-
-      #endregion 
 
       #region IntegerDivRemCeiling
 
@@ -144,12 +192,12 @@
             NearestRoundingRule.AwayFromZero => TNumber.Abs(q) >= TNumber.Abs(o) ? q : o,
             NearestRoundingRule.ToEven => TNumber.IsEvenInteger(q) ? q : o,
             NearestRoundingRule.ToOdd => TNumber.IsOddInteger(q) ? q : o,
-            NearestRoundingRule.Random => System.Random.Shared.Next() == 0 ? q : o,
+            NearestRoundingRule.Random => System.Random.Shared.Next(2) == 0 ? q : o,
             _ => throw new System.NotImplementedException(nameof(rule))
           };
         }
 
-        // if (twiceR > absN) then q is already correct, so no else branch is needed for the default condition.
+        // if (twiceR < absN) then q is already correct, so no else branch is needed for the default condition.
 
         return (q, a - q * n);
       }
@@ -169,6 +217,64 @@
 
       #endregion
 
+      #region ModuloHalfOpenLeft
+
+      /// <summary>
+      /// <para>Computes the half-open left modulo of a number <paramref name="value"/> with respect to a positive modulus <paramref name="modulus"/>.</para>
+      /// <para>This is the mirror of <see cref="EuclideanModulo{TNumber}(TNumber, TNumber)"/>, which is also known as HalfOpenRightModulo.</para>
+      /// </summary>
+      /// <param name="value"></param>
+      /// <param name="modulus"></param>
+      /// <returns>value in the range (0, modulus]</returns>
+      public static TNumber ModuloHalfOpenLeft(TNumber value, TNumber modulus)
+      {
+        System.ArgumentOutOfRangeException.ThrowIfNegativeOrZero(modulus);
+
+        return EuclideanModulo(value - modulus, modulus) + modulus;
+      }
+
+      #endregion 
+
+      #region ReflectedFold
+
+      /// <summary>
+      /// <para>Folds values into the closed interval [minValue, maxValue] by reflecting at the interval boundaries. Unlike wrapping, values do not jump from one endpoint to the other; instead they reverse direction at the boundaries.</para>
+      /// <para>A.K.A. "reflected"-fold.</para>
+      /// </summary>
+      /// <param name="value"></param>
+      /// <param name="minValue"></param>
+      /// <param name="maxValue"></param>
+      /// <returns></returns>
+      public static TNumber ReflectedFold(TNumber value, TNumber minValue, TNumber maxValue)
+      {
+        System.ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(minValue, maxValue);
+
+        var width = checked(maxValue - minValue);
+
+        return minValue + ReflectedModulo(value - minValue, width);
+      }
+
+      #endregion
+
+      #region ReflectedModulo
+
+      /// <summary>
+      /// <para>Computes the triangle (folded) modulo of a number <paramref name="value"/> with respect to a positive modulus <paramref name="modulus"/>.</para>
+      /// <para>The resulting waveform has period 2 × modulus.</para>
+      /// <para>A.K.A. "reflected"-modulo.</para>
+      /// </summary>
+      /// <param name="value"></param>
+      /// <param name="modulus"></param>
+      /// <returns>value in the range [0, modulus]</returns>
+      public static TNumber ReflectedModulo(TNumber value, TNumber modulus)
+      {
+        System.ArgumentOutOfRangeException.ThrowIfNegativeOrZero(modulus);
+
+        return NormalizeZero(modulus - TNumber.Abs(EuclideanModulo(value, checked(modulus + modulus)) - modulus));
+      }
+
+      #endregion
+
       #region RemainderAnalysis (compute all remainder interpretations)
 
       /// <summary>
@@ -183,6 +289,8 @@
       /// <returns></returns>
       public static (TNumber Remainder, TNumber RemainderNoZero, TNumber ReverseRemainder, TNumber ReverseRemainderNoZero) RemainderAnalysis(TNumber value, TNumber modulus)
       {
+        System.ArgumentOutOfRangeException.ThrowIfNegativeOrZero(modulus);
+
         var remainder = value % modulus;
 
         var copySign = TNumber.CopySign(modulus, value);
@@ -197,26 +305,83 @@
 
       #endregion
 
-      #region TriangleModulo
+      #region WrapClosed
 
       /// <summary>
-      /// <para>Computes the triangle (folded) modulo of a number <paramref name="value"/> with respect to a positive modulus <paramref name="modulus"/>.</para>
-      /// <para>The resulting waveform has period 2 × modulus.</para>
-      /// <para>A.K.A. "reflected", "folded" or "mirrored" modulo.</para>
+      /// <para>Wraps <paramref name="value"/> into the closed interval [<paramref name="minValue"/>, <paramref name="maxValue"/>].</para>
       /// </summary>
+      /// <remarks>
+      /// <para>Values already within the interval, including both endpoints, are returned unchanged.</para>
+      /// <para>Values below the interval are wrapped using the corresponding half-open-right interval [minValue, maxValue).</para>
+      /// <para>Values above the interval are wrapped using the corresponding half-open-left interval (minValue, maxValue].</para>
+      /// <para>Unlike the half-open wrapping functions, this operation preserves both endpoints and therefore is not strictly periodic.</para>
+      /// </remarks>
       /// <param name="value"></param>
-      /// <param name="modulus"></param>
-      /// <returns>value in the range [0, modulus]</returns>
-      public static TNumber TriangleModulo(TNumber value, TNumber modulus)
+      /// <param name="minValue"></param>
+      /// <param name="maxValue"></param>
+      /// <returns></returns>
+      public static TNumber WrapClosed(TNumber value, TNumber minValue, TNumber maxValue)
       {
-        System.ArgumentOutOfRangeException.ThrowIfNegativeOrZero(modulus);
+        if (value < minValue)
+          return WrapHalfOpenLeft(value, minValue, maxValue);
 
-        var remainder = EuclideanModulo(value, modulus + modulus);
+        if (value > maxValue)
+          return WrapHalfOpenRight(value, minValue, maxValue);
 
-        return modulus - TNumber.Abs(remainder - modulus);
+        return value;
       }
 
-      #endregion 
+      #endregion
+
+      #region WrapHalfOpenRight
+
+      public static TNumber WrapHalfOpenRight(TNumber value, TNumber minValue, TNumber maxValue)
+      {
+        System.ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(minValue, maxValue);
+
+        return NormalizeZero(EuclideanModulo(value - minValue, maxValue - minValue) + minValue);
+      }
+
+      #endregion
+
+      #region WrapHalfOpenLeft
+
+      public static TNumber WrapHalfOpenLeft(TNumber value, TNumber minValue, TNumber maxValue)
+      {
+        System.ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(minValue, maxValue);
+
+        return NormalizeZero(maxValue - EuclideanModulo(maxValue - value, maxValue - minValue));
+      }
+
+      #endregion
+
+      #region WrapOpen
+
+      /// <summary>
+      /// <para>Wraps <paramref name = "value" /> into the open interval (<paramref name="minValue"/>, <paramref name="maxValue"/>).</para>
+      /// </summary>
+      /// <remarks>
+      /// <para>Values strictly within the interval are returned unchanged.</para>
+      /// <para>Values less than or equal to <paramref name="minValue"/> are wrapped using the corresponding half-open-left interval (minValue, maxValue].</para>
+      /// <para>Values greater than or equal to <paramref name="maxValue"/> are wrapped using the corresponding half-open-right interval [minValue, maxValue).</para>
+      /// <para>Unlike the half-open wrapping functions, this operation excludes both endpoints and therefore is not strictly periodic.</para>
+      /// </remarks>
+      /// <param name="value"></param>
+      /// <param name="minValue"></param>
+      /// <param name="maxValue"></param>
+      /// <returns></returns>
+      public static TNumber WrapOpen(TNumber value, TNumber minValue, TNumber maxValue)
+      {
+        if (value <= minValue)
+          return WrapHalfOpenLeft(value, minValue, maxValue);
+
+        if (value >= maxValue)
+          return WrapHalfOpenRight(value, minValue, maxValue);
+
+        return value;
+      }
+
+      #endregion
     }
   }
 }

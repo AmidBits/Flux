@@ -63,7 +63,7 @@
     /// </summary>
     /// <returns></returns>
     /// <remarks>Values outside the interval [0, 360)) are wrapped, i.e. 370 = 10, -10 = 350, etc.</remarks>
-    public Azimuth ToAzimuth() => new(Number.WrapAround(m_value, 0, double.Tau) % double.Tau, AngleUnit.Radian);
+    public Azimuth ToAzimuth() => new(Number.WrapHalfOpenRight(m_value, 0, double.Tau), AngleUnit.Radian);
 
     /// <summary>
     /// <para>Creates a new latitude, i.e. a value in the interval [-90, +90].</para>
@@ -71,7 +71,7 @@
     /// <param name="angle"></param>
     /// <returns></returns>
     /// <remarks>Values outside the interval [-90, +90] are folded, i.e. +100 = +80, -100 = -80, etc.</remarks>
-    public Latitude ToLatitude() => new(Number.FoldAcross(m_value, -double.HalfPi, double.HalfPi), AngleUnit.Radian);
+    public Latitude ToLatitude() => new(Number.ReflectedFold(m_value, -FloatingPointConstants<double>.PiOver2, FloatingPointConstants<double>.PiOver2), AngleUnit.Radian);
 
     /// <summary>
     /// <para>Creates a new longitude, i.e. a value in the interval [-180, +180].</para>
@@ -79,7 +79,7 @@
     /// <param name="angle"></param>
     /// <returns></returns>
     /// <remarks>Values outside the interval [-180, +180] are wrapped, i.e. 190 = -170, -190 = +170, etc.</remarks>
-    public Longitude ToLongitude() => new(IntervalNotation.Closed.WrapAround(m_value, -double.Pi, double.Pi), AngleUnit.Radian);
+    public Longitude ToLongitude() => new(Number.WrapHalfOpenRight(m_value, -double.Pi, double.Pi), AngleUnit.Radian);
 
     #region Static methods
 

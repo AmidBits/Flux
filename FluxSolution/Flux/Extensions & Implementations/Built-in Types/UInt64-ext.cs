@@ -1,5 +1,6 @@
 namespace Flux
 {
+  [System.CLSCompliant(false)]
   public static partial class UInt64Extensions
   {
     private const ulong m_primeBitMask = 0b0010_1000_0010_0000_1000_1010_0010_0000_1010_0000_1000_1010_0010_1000_1010_1100UL;
@@ -13,32 +14,32 @@ namespace Flux
       /// <summary>
       /// <para>Swap adjacent 1-bits (single bits).</para>
       /// </summary>
-      [System.CLSCompliant(false)] public static ulong BitSwap1(ulong value) => ((value & 0xaaaaaaaaaaaaaaaaUL) >> 0x01) | ((value & 0x5555555555555555UL) << 0x01);
+      public static ulong BitSwap1(ulong value) => ((value & 0xaaaaaaaaaaaaaaaaUL) >> 0x01) | ((value & 0x5555555555555555UL) << 0x01);
 
       /// <summary>
       /// <para>Swap adjacent 2-bits (pairs).</para>
       /// </summary>
-      [System.CLSCompliant(false)] public static ulong BitSwap2(ulong value) => ((value & 0xccccccccccccccccUL) >> 0x02) | ((value & 0x3333333333333333UL) << 0x02);
+      public static ulong BitSwap2(ulong value) => ((value & 0xccccccccccccccccUL) >> 0x02) | ((value & 0x3333333333333333UL) << 0x02);
 
       /// <summary>
       /// <para>Swap adjacent 4-bits (nibbles).</para>
       /// </summary>
-      [System.CLSCompliant(false)] public static ulong BitSwap4(ulong value) => ((value & 0xf0f0f0f0f0f0f0f0UL) >> 0x04) | ((value & 0x0f0f0f0f0f0f0f0fUL) << 0x04);
+      public static ulong BitSwap4(ulong value) => ((value & 0xf0f0f0f0f0f0f0f0UL) >> 0x04) | ((value & 0x0f0f0f0f0f0f0f0fUL) << 0x04);
 
       /// <summary>
       /// <para>Swap adjacent 8-bits (bytes).</para>
       /// </summary>
-      [System.CLSCompliant(false)] public static ulong BitSwap8(ulong value) => ((value & 0xff00ff00ff00ff00UL) >> 0x08) | ((value & 0x00ff00ff00ff00ffUL) << 0x08);
+      public static ulong BitSwap8(ulong value) => ((value & 0xff00ff00ff00ff00UL) >> 0x08) | ((value & 0x00ff00ff00ff00ffUL) << 0x08);
 
       /// <summary>
       /// <para>Swap adjacent 16-bits (short words).</para>
       /// </summary>
-      [System.CLSCompliant(false)] public static ulong BitSwap16(ulong value) => ((value & 0xffff0000ffff0000UL) >> 0x10) | ((value & 0x0000ffff0000ffffUL) << 0x10);
+      public static ulong BitSwap16(ulong value) => ((value & 0xffff0000ffff0000UL) >> 0x10) | ((value & 0x0000ffff0000ffffUL) << 0x10);
 
       /// <summary>
       /// <para>Swap adjacent 32-bits (words).</para>
       /// </summary>
-      [System.CLSCompliant(false)] public static ulong BitSwap32(ulong value) => ((value & 0xffffffff00000000UL) >> 0x20) | ((value & 0x00000000ffffffffUL) << 0x20);
+      public static ulong BitSwap32(ulong value) => ((value & 0xffffffff00000000UL) >> 0x20) | ((value & 0x00000000ffffffffUL) << 0x20);
 
       #endregion
 
@@ -50,7 +51,6 @@ namespace Flux
       /// </summary>
       /// <param name="b"></param>
       /// <returns></returns>
-      [System.CLSCompliant(false)]
       internal static ulong Cbrt(ulong n)
       {
         if (n < 8)
@@ -90,7 +90,6 @@ namespace Flux
       /// <param name="n"></param>
       /// <param name="b"></param>
       /// <returns></returns>
-      [System.CLSCompliant(false)]
       internal static (ulong LogFloor, ulong LogCeiling, bool IsExactLog) Log(ulong n, ulong b)
       {
         System.ArgumentOutOfRangeException.ThrowIfLessThan(b, 2ul);
@@ -150,7 +149,6 @@ namespace Flux
       /// </summary>
       /// <param name="n"></param>
       /// <returns></returns>
-      [System.CLSCompliant(false)]
       internal static (ulong LogFloor, ulong LogCeiling) LogE(ulong n)
       {
         System.ArgumentOutOfRangeException.ThrowIfNegativeOrZero(n);
@@ -181,7 +179,6 @@ namespace Flux
       /// <param name="value"></param>
       /// <param name="degree"></param>
       /// <returns></returns>
-      [System.CLSCompliant(false)]
       internal static ulong RootN(ulong value, int degree)
       {
         if (degree <= 1)
@@ -222,7 +219,6 @@ namespace Flux
       /// </summary>
       /// <param name="n"></param>
       /// <returns></returns>
-      [System.CLSCompliant(false)]
       internal static ulong Sqrt(ulong n)
       {
         if (n <= 1)
@@ -433,7 +429,6 @@ namespace Flux
       /// <summary>
       /// <para>Bit-reversal of a ulong, i.e. trade place of bit 63 with bit 0 and bit 62 with bit 1 and so on.</para>
       /// </summary>
-      [System.CLSCompliant(false)]
       public static ulong ReverseBits(ulong value)
       {
         ReverseBitsInPlace(ref value);
@@ -444,7 +439,6 @@ namespace Flux
       /// <summary>
       /// <para>In-place (by ref) mirror the bits (bit-reversal of a ulong, i.e. trade place of bit 63 with bit 0 and bit 62 with bit 1 and so on.</para>
       /// </summary>
-      [System.CLSCompliant(false)]
       public static void ReverseBitsInPlace(ref ulong value)
       {
         value = ((value & 0xAAAAAAAAAAAAAAAA) >> 0x01) | ((value & 0x5555555555555555) << 0x01);

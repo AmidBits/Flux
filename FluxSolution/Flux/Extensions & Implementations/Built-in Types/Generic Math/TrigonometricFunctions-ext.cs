@@ -20,6 +20,8 @@
 
       #endregion
 
+      #region Inverse hyperbolic functions
+
       public static System.Numerics.Complex Asinh(System.Numerics.Complex z)
       => System.Numerics.Complex.Log(z + System.Numerics.Complex.Sqrt(z * z + 1));
 
@@ -39,6 +41,8 @@
 
       public static System.Numerics.Complex Atanh(System.Numerics.Complex z)
         => 0.5 * System.Numerics.Complex.Log(1 + z) - 0.5 * System.Numerics.Complex.Log(1 - z);
+
+      #endregion
     }
   }
 
@@ -183,10 +187,10 @@
       public static TFloat Acvcos(TFloat y)
         => TFloat.Asin(y - TFloat.One);
 
-      ///// <summary>Returns the inverse of haversed sine of the specified angle.</summary>
-      ///// <see href="https://en.wikipedia.org/wiki/Versine#Inverse_functions"/>
-      //public static TFloat Ahvsin(TFloat y)
-      //  => 2 * Atan2(TFloat.Sqrt(y), TFloat.Sqrt(1 - y));//TFloat.Acos(TFloat.One - TFloat.CreateChecked(2) * y); // An extra subtraction saves a call to the Sqrt function: 2 * double.Asin(double.Sqrt(y));
+      /// <summary>Returns the inverse of haversed sine of the specified angle.</summary>
+      /// <see href="https://en.wikipedia.org/wiki/Versine#Inverse_functions"/>
+      public static TFloat Ahvsin(TFloat y)
+        => TFloat.Acos(TFloat.One - TFloat.CreateChecked(2) * y); // An extra subtraction saves a call to the Sqrt function: 2 * double.Asin(double.Sqrt(y));
 
       /// <summary>Returns the inverse of haversed cosine of the specified angle.</summary>
       /// <see href="https://en.wikipedia.org/wiki/Versine#Inverse_functions"/>
@@ -207,47 +211,12 @@
     }
 
     extension<TFloat>(TFloat)
-      where TFloat : System.Numerics.IFloatingPoint<TFloat>, System.Numerics.IFloatingPointConstants<TFloat>, System.Numerics.ITrigonometricFunctions<TFloat>
+      where TFloat : System.Numerics.IFloatingPointIeee754<TFloat>
     {
-      #region Atan2.. functions
-
-
-      #endregion
-    }
-
-    extension<TFloat>(TFloat)
-      where TFloat : System.Numerics.IFloatingPoint<TFloat>, System.Numerics.ITrigonometricFunctions<TFloat>
-    {
-      #region Atan(y, x)
+      #region Atan2Ccw(y, x)
 
       /// <summary>
-      /// <para>Implementation of Atan2(y, x) resulting in [-Pi, +Pi].</para>
-      /// <para><seealso href="https://en.wikipedia.org/wiki/Atan2"/></para>
-      /// </summary>
-      /// <typeparam name="TNumber"></typeparam>
-      /// <param name="y"></param>
-      /// <param name="x"></param>
-      /// <returns></returns>
-      public static TFloat Atan2(TFloat y, TFloat x)
-      {
-        if (TFloat.IsZero(x))
-        {
-          if (TFloat.IsZero(y))
-            return TFloat.Zero;
-
-          return TFloat.CopySign(TFloat.Pi / TFloat.CreateChecked(2), y);
-        }
-
-        var atanYX = TFloat.Atan(y / x); // Compute the base angle.
-
-        if (TFloat.IsNegative(x)) // If x >= 0, quadrants I and IV → angle is already correct, skip correction.
-          atanYX += TFloat.CopySign(TFloat.Pi, y); // If x is negative, quadrants II and III → Correction needed: add 180 degrees if in the second quadrant (x < 0, y >= 0) or subtract 180 degrees if in the third quadrant (x < 0, y < 0).
-
-        return atanYX;
-      }
-
-      /// <summary>
-      /// <para>Convenience implementation that returns <see cref="double.Atan2(double, double)"/> as [0, +Tau) instead of [-Pi, +Pi], with 0 being 3 o'clock and rotating counter-clockwise.</para>
+      /// <para>Convenience implementation that returns <see cref="TFloat.Atan2(TFloat, TFloat)"/> as [0, Tau) instead of [-Pi, +Pi], with 0 being 3 o'clock and rotating counter-clockwise.</para>
       /// <para><seealso href="https://en.wikipedia.org/wiki/Atan2"/></para>
       /// </summary>
       /// <param name="y"></param>
@@ -255,23 +224,24 @@
       /// <returns></returns>
       /// <remarks>
       /// <para>The method consists of one conditional branch which may incur an extra add operation.</para>
-      /// <para>This uses <see cref="double.Atan2(double, double)"/> in the traditional sense, but without any negative return values.</para>
+      /// <para>This uses <see cref="TFloat.Atan2(TFloat, TFloat)"/> in the traditional sense, but without any negative return values.</para>
       /// </remarks>
       public static TFloat Atan2Ccw(TFloat y, TFloat x)
       {
-        var xx = double.CreateChecked(x);
-        var yy = double.CreateChecked(y);
+        var atan2 = TFloat.Atan2(y, x);
 
-        var atan2 = double.Atan2(yy, xx); // Call Atan2 as usual, which means 0 is at 3 o'clock and rotating counter-clockwise.
+        if (TFloat.IsNegative(atan2))// The positive range is already 0..+Pi, if so, no adjustments needed.
+          atan2 += TFloat.Tau; // Adjust the negative portion of atan2, from -Pi..0 to +Pi..+Tau, which is just a matter of adding a full counter-clock-wise turn (0..+Tau) starting at 3 o'clock.
 
-        if (atan2 < 0)// The positive range is already 0..+Pi, if so, no adjustments needed.
-          atan2 = (atan2 + double.Tau) % double.Tau; // Adjust the negative portion of atan2, from -Pi..0 into +Pi..+Tau, which is just a matter of adding a full counter-clock-wise turn (0..+Tau) starting at 3 o'clock.
-
-        return TFloat.CreateChecked(atan2);
+        return atan2 % TFloat.Tau; // Ensure [0, Tau)
       }
 
+      #endregion
+
+      #region Atan2Cw(y, x)
+
       /// <summary>
-      /// <para>Convenience implementation that returns <see cref="double.Atan2(double, double)"/> as [0, +Tau) instead of [-Pi, +Pi], with 0 being noon and rotating clockwise.</para>
+      /// <para>Convenience implementation that returns <see cref="TFloat.Atan2(TFloat, TFloat)"/> as [0, Tau) instead of [-Pi, +Pi], with 0 being 12 o'clock (noon) and rotating clockwise.</para>
       /// <para><seealsoww href="https://en.wikipedia.org/wiki/Atan2"/></para>
       /// </summary>
       /// <param name="y"></param>
@@ -279,30 +249,17 @@
       /// <returns></returns>
       /// <remarks>
       /// <para>The method consists of one conditional branch which may incur an extra add operation.</para>
-      /// <para>This the reverse rotation and 90 degree offset is done by passing (x, y) rather than (y, x) into <see cref="double.Atan2(double, double)"/>.</para>
+      /// <para>This the reverse rotation and 90 degree offset is done by passing (x, y) rather than (y, x) into <see cref="TFloat.Atan2(TFloat, TFloat)"/>.</para>
       /// </remarks>
       public static TFloat Atan2Cw(TFloat y, TFloat x)
       {
-        var xx = double.CreateChecked(x);
-        var yy = double.CreateChecked(y);
+        var atan2 = TFloat.Atan2(x, y); // Call Atan2 with the arguments switched, which results in a transposition, where 0 is at 12 o'clock.
 
-        var atan2 = double.Atan2(xx, yy); // Call Atan2 with the arguments switched, which results in a transposition, where 0 is at noon and rotation is clockwise.
+        if (TFloat.IsNegative(atan2))  // The positive range is already 0..+Pi, if so, no adjustments needed.
+          atan2 += TFloat.Tau; // Adjust the negative portion of atan2, from -Pi..0 to +Pi..+Tau, which is just a matter of adding a full clock-wise turn (0..+Tau) starting at 12 o'clock.
 
-        if (atan2 < 0)  // The positive range is already 0..+Pi, if so, no adjustments needed.
-          atan2 = (atan2 + double.Tau) % double.Tau; // Adjust the negative portion of atan2, from -Pi..0 into +Pi..+Tau, which is just a matter of adding a full clock-wise turn (0..+Tau) starting at noon.
-
-        return TFloat.CreateChecked(atan2);
+        return atan2 % TFloat.Tau; // Ensure [0, Tau)
       }
-
-
-      /// <summary>
-      /// <para>This is an unsigned Atan2 which means the output is in the interval [0, 2*PI] (i.e. the radian equivalent of 0 to 360 degrees).</para>
-      /// </summary>
-      /// <param name="y"></param>
-      /// <param name="x"></param>
-      /// <returns></returns>
-      public static TFloat Atan2Unsigned(TFloat y, TFloat x)
-        => Atan2(y, x) is var a && a < TFloat.Zero ? a + TFloat.Tau : a;
 
       #endregion
 

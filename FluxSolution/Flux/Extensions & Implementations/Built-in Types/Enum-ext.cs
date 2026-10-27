@@ -20,6 +20,48 @@ namespace Flux
       }
 
       #endregion
+
+      #region HasAllFlags
+
+      //public static bool HasAllFlags<T>(T value, params System.ReadOnlySpan<T> flags)
+      //  where T : struct, System.Enum
+      //{
+      //  var required = 0UL;
+
+      //  foreach (var flag in flags)
+      //    required |= System.Convert.ToUInt64(flag);
+
+      //  var bits = System.Convert.ToUInt64(value);
+
+      //  return (bits & required) == required;
+      //}
+
+      public static bool HasAllFlags<T>(T value, T flags)
+        where T : struct, System.Enum
+        => ((ulong)(long)(object)value & (ulong)(long)(object)flags) == (ulong)(long)(object)flags;
+
+      #endregion
+
+      #region HasAnyFlags
+
+      //public static bool HasAnyFlags<T>(T value, params System.ReadOnlySpan<T> flags)
+      //  where T : struct, System.Enum
+      //{
+      //  var optional = 0UL;
+
+      //  foreach (var flag in flags)
+      //    optional |= System.Convert.ToUInt64(flag);
+
+      //  var bits = System.Convert.ToUInt64(value);
+
+      //  return (bits & optional) != 0UL;
+      //}
+
+      public static bool HasAnyFlags<T>(T value, T flags)
+        where T : struct, System.Enum
+        => ((ulong)(long)(object)value & (ulong)(long)(object)flags) != 0UL;
+
+      #endregion
     }
 
     extension(System.Enum source)

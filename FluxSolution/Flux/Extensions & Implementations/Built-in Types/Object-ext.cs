@@ -149,51 +149,51 @@ namespace Flux
       #endregion
     }
 
-    extension(object source)
-    {
-      #region SerializeToJson
+    //extension(object source)
+    //{
+    //  #region SerializeToJson
 
-      /// <summary>
-      /// <para>Returns a JSON string that represents the current object.</para>
-      /// </summary>
-      /// <returns></returns>
-      public string SerializeToJson()
-        => System.Text.Json.JsonSerializer.Serialize(source);
+    //  /// <summary>
+    //  /// <para>Returns a JSON string that represents the current object.</para>
+    //  /// </summary>
+    //  /// <returns></returns>
+    //  public string SerializeToJson()
+    //    => System.Text.Json.JsonSerializer.Serialize(source);
 
-      #endregion
+    //  #endregion
 
-      #region SerializeToXml
+    //  #region SerializeToXml
 
-      /// <summary>
-      /// <para>Returns an XML string that represents the current object.</para>
-      /// </summary>
-      /// <returns></returns>
-      public string SerializeToXml()
-        => SerializeToXDocument(source).ToString();
+    //  /// <summary>
+    //  /// <para>Returns an XML string that represents the current object.</para>
+    //  /// </summary>
+    //  /// <returns></returns>
+    //  public string SerializeToXml()
+    //    => SerializeToXDocument(source).ToString();
 
-      //public string SerializeToXml()
-      //{
-      //  var xs = new System.Xml.Serialization.XmlSerializer(source.GetType());
-      //  using var sw = new System.IO.StringWriter();
-      //  xs.Serialize(sw, source);
-      //  return sw.ToString();
-      //}
+    //  //public string SerializeToXml()
+    //  //{
+    //  //  var xs = new System.Xml.Serialization.XmlSerializer(source.GetType());
+    //  //  using var sw = new System.IO.StringWriter();
+    //  //  xs.Serialize(sw, source);
+    //  //  return sw.ToString();
+    //  //}
 
-      //public string SerializeToXml(System.Xml.XmlWriterSettings? xmlWriterSettings = null)
-      //{
-      //  xmlWriterSettings ??= new System.Xml.XmlWriterSettings();
+    //  //public string SerializeToXml(System.Xml.XmlWriterSettings? xmlWriterSettings = null)
+    //  //{
+    //  //  xmlWriterSettings ??= new System.Xml.XmlWriterSettings();
 
-      //  using var sw = new System.IO.StringWriter();
-      //  using var xw = System.Xml.XmlWriter.Create(sw, xmlWriterSettings);
-      //  //var xsn = new System.Xml.Serialization.XmlSerializerNamespaces();
-      //  //xsn.Add(string.Empty, string.Empty);
-      //  var xs = new System.Xml.Serialization.XmlSerializer(source.GetType());
-      //  //xs.Serialize(xw, source, xsn);
-      //  xs.Serialize(xw, source);
-      //  return sw.ToString();
-      //}
+    //  //  using var sw = new System.IO.StringWriter();
+    //  //  using var xw = System.Xml.XmlWriter.Create(sw, xmlWriterSettings);
+    //  //  //var xsn = new System.Xml.Serialization.XmlSerializerNamespaces();
+    //  //  //xsn.Add(string.Empty, string.Empty);
+    //  //  var xs = new System.Xml.Serialization.XmlSerializer(source.GetType());
+    //  //  //xs.Serialize(xw, source, xsn);
+    //  //  xs.Serialize(xw, source);
+    //  //  return sw.ToString();
+    //  //}
 
-      #endregion
-    }
+    //  #endregion
+    //}
   }
 }

@@ -24,7 +24,7 @@ namespace Flux.Units
 
     /// <summary>Creates a new <see cref="Longitude"/> from the specified <paramref name="angle"/> and <paramref name="unit"/>.</summary>
     public Longitude(double angle, Units.AngleUnit unit = Units.AngleUnit.Degree)
-      => m_degrees = Number.WrapAround(Angle.ConvertUnit(angle, unit, AngleUnit.Degree), MinValue, MaxValue);
+      => m_degrees = Number.WrapHalfOpenRight(Angle.ConvertUnit(angle, unit, AngleUnit.Degree), MinValue, MaxValue);
 
     /// <summary>The <see cref="Units.Angle"/> of the <see cref="Longitude"/>.</summary>
     public Angle Angle { get => new(m_degrees, AngleUnit.Degree); }

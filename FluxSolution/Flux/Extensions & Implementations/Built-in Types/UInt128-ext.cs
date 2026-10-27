@@ -1,5 +1,6 @@
 namespace Flux
 {
+  [System.CLSCompliant(false)]
   public static partial class UInt128Extensions
   {
     internal static readonly UInt128[] m_pow10 = [.. Number.GeometricSequence(System.UInt128.One, System.UInt128.CreateChecked(10)).Where(n => n <= System.UInt128.MaxValue)];
@@ -8,7 +9,6 @@ namespace Flux
     {
       #region Pow10
 
-      [System.CLSCompliant(false)]
       public static System.UInt128 Pow10(int exponent)
       {
         if ((uint)(exponent + 38) > 76) throw new System.ArgumentOutOfRangeException(nameof(exponent));
@@ -23,7 +23,6 @@ namespace Flux
       /// <summary>
       /// <para>Bit-reversal of a System.UInt128, i.e. trade place of bit 127 with bit 0 and bit 126 with bit 1 and so on.</para>
       /// </summary>
-      [System.CLSCompliant(false)]
       public static System.UInt128 ReverseBits(System.UInt128 value)
       {
         ReverseBitsInPlace(ref value);
@@ -34,7 +33,6 @@ namespace Flux
       /// <summary>
       /// <para>In-place (by ref) mirror the bits (bit-reversal of a System.UInt128, i.e. trade place of bit 127 with bit 0 and bit 126 with bit 1 and so on.</para>
       /// </summary>
-      [System.CLSCompliant(false)]
       public static void ReverseBitsInPlace(ref System.UInt128 value)
       {
         var upper = (ulong)(value >> 64);

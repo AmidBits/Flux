@@ -9,7 +9,7 @@ namespace Maths
     [TestMethod]
     public void Round()
     {
-      Assert.AreEqual(-6, double.Envelop(-5.5));
+      Assert.AreEqual(-6, FloatingPoint.Envelop(-5.5));
       Assert.AreEqual(6, FloatingPoint.RoundToNearestInteger(5.5, NearestRoundingRule.ToEven));
       Assert.AreEqual(6, FloatingPoint.RoundToNearestInteger(5.5, NearestRoundingRule.AwayFromZero));
       Assert.AreEqual(5, FloatingPoint.RoundToNearestInteger(5.5, NearestRoundingRule.TowardZero));
@@ -39,7 +39,7 @@ namespace Maths
       var n = 1.75;
       var m = 0.45;
 
-      var (multipleTowardsZero, multipleAwayFromZero, isExactMultiple, nearestMultiple) = Number.RoundToMultiple(n, m, false, NearestRoundingRule.AwayFromZero);
+      var (multipleTowardsZero, multipleAwayFromZero, isExactMultiple, nearestMultiple) = Number.GetNearestMultiples(n, m, false, NearestRoundingRule.AwayFromZero);
 
       Assert.AreEqual(1.8, nearestMultiple, $"{nameof(RoundToMultiple)} {NearestRoundingRule.AwayFromZero}");
     }

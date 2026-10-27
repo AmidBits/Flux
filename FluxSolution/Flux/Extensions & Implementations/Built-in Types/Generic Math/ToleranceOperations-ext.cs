@@ -12,9 +12,9 @@ namespace Flux
       /// <summary>
       /// <para>Computes an effective tolerance for a floating-point value by returning the larger of a scaled machine epsilon and a scaled unit-in-the-last-place (ULP).</para>
       /// </summary>
-      /// <remarks>Throws ArgumentOutOfRangeException if toleranceFactor is less than or equal to zero. Uses RelativeEpsilon() for an local spacing component and Number.Ulp(value) for a precision  component.</remarks>
+      /// <remarks>Throws ArgumentOutOfRangeException if toleranceFactor is less than or equal to zero. Uses <c>RelativeEpsilon()</c> as a minimum precision bound and <c>Number.Ulp(scale)</c> as the local spacing measure.</remarks>
       /// <param name="scale">The floating-point value for which to compute the tolerance.</param>
-      /// <param name="toleranceFactor">Factor used to scale both relative epsilon and ULP; must be >= 1.</param>
+      /// <param name="toleranceFactor">Factor used to scale both relative epsilon and ULP; must be >= 0.</param>
       /// <returns>The maximum of toleranceFactor * RelativeEpsilon() and toleranceFactor * Ulp(value) where toleranceFactor > 0.</returns>
       public static TFloat EffectiveTolerance(TFloat scale, TFloat toleranceFactor)
       {
@@ -28,7 +28,7 @@ namespace Flux
 
       #endregion
 
-      #region IsWithinTolerance
+      #region IsWithinPrecision
 
       /// <summary>
       /// <para>Determines whether value is within a scale-dependent tolerance of target.</para>
@@ -38,7 +38,7 @@ namespace Flux
       /// <param name="target">Target value for comparison.</param>
       /// <param name="toleranceFactor">Relative factor used to compute an effective tolerance based on the larger magnitude of value and target.</param>
       /// <returns>True if the absolute difference between value and target is less than or equal to the computed tolerance; otherwise, false.</returns>
-      public static bool IsWithinTolerance(TFloat value, TFloat target, TFloat toleranceFactor)
+      public static bool IsWithinPrecision(TFloat value, TFloat target, TFloat toleranceFactor)
       {
         var scale = TFloat.Max(TFloat.Abs(value), TFloat.Abs(target));
 
@@ -54,7 +54,7 @@ namespace Flux
       /// <param name="value">Value to compare with the target.</param>
       /// <param name="target">Target value for comparison.</param>
       /// <returns>True if the absolute difference between value and target is less than or equal to the computed tolerance; otherwise, false.</returns>
-      public static bool IsWithinTolerance(TFloat value, TFloat target) => IsWithinTolerance(value, target, TFloat.CreateChecked(DefaultToleranceFactor));
+      public static bool IsWithinPrecision(TFloat value, TFloat target) => IsWithinPrecision(value, target, TFloat.CreateChecked(DefaultToleranceFactor));
 
       #endregion
 
@@ -112,6 +112,101 @@ namespace Flux
       }
 
       public static bool TrySnapNearZero(TFloat value, out TFloat result) => TrySnapNearZero(value, out result, TFloat.CreateChecked(DefaultToleranceFactor));
+
+      #endregion
+    }
+  }
+
+  public static partial class Number
+  {
+    extension<TNumber>(TNumber)
+      where TNumber : System.Numerics.INumber<TNumber>
+    {
+      #region IsWithinSignificantDigits
+
+      /// <summary>
+      /// <para>Perform an equality test involving the most (integer part) or the least (fraction part) <typeparamref name="TSignificantDigits"/> using the specified <paramref name="radix"/>.</para>
+      /// <para>Negative means most <paramref name="significantDigits"/> tolerance on the fraction part.</para>
+      /// <para>Positive means least <paramref name="significantDigits"/> tolerance on the integer part.</para>
+      /// <para><see href="https://stackoverflow.com/questions/9180385/is-this-value-valid-float-comparison-that-accounts-for-value-set-number-of-decimal-place"/></para>
+      /// </summary>
+      /// <typeparam name="TSignificantDigits"></typeparam>
+      /// <typeparam name="TRadix"></typeparam>
+      /// <param name="value">The value of interest.</param>
+      /// <param name="other">The value to compare to.</param>
+      /// <param name="significantDigits">The number of significant digits considered for equality. A negative value for most significant digits on the right side (fraction part). A positive value for least significant digits on the left side (integer part).</param>
+      /// <param name="radix">&gt; 2</param>
+      /// <remarks>
+      /// <para><see langword="true"/> = EqualsWithin(1000.02, 1000.015, -2, 10); // The difference of abs(<paramref name="value"/> - <paramref name="other"/>) is less than or equal to <paramref name="significantDigits"/> in <paramref name="radix"/>, i.e. 0.01 for radix 10.</para>
+      /// <para><see langword="true"/> = EqualsWithin(1334.261, 1235.272, 2, 10); // The difference of abs(<paramref name="value"/> - <paramref name="other"/>) is less than or equal to negative <paramref name="significantDigits"/> in <paramref name="radix"/>, i.e. 100 for radix 10.</para>
+      /// </remarks>
+      /// <returns></returns>
+      public static bool IsWithinSignificantDigits<TSignificantDigits, TRadix>(TNumber value, TNumber other, TSignificantDigits significantDigits, TRadix radix, DirectedRoundingMode mode)
+        where TSignificantDigits : System.Numerics.IBinaryInteger<TSignificantDigits>
+        where TRadix : System.Numerics.IBinaryInteger<TRadix>
+      {
+        var scale = double.Pow(double.CreateChecked(radix), double.CreateChecked(significantDigits));
+
+        var a = FloatingPoint.RoundToInteger(double.CreateChecked(value) / scale, mode);
+        var b = FloatingPoint.RoundToInteger(double.CreateChecked(other) / scale, mode);
+
+        return a == b;
+      }
+
+      /// <summary>
+      /// <para>Determines whether two numbers are equal within a specified number of significant digits using the given radix and rounding rule.</para>
+      /// </summary>
+      /// <typeparam name="TSignificantDigits">The type representing the number of significant digits.</typeparam>
+      /// <typeparam name="TRadix">The type representing the numeric base (radix).</typeparam>
+      /// <param name="value">The first number to compare.</param>
+      /// <param name="other">The second number to compare.</param>
+      /// <param name="significantDigits">The number of significant digits to consider.</param>
+      /// <param name="radix">The numeric base used for scaling.</param>
+      /// <param name="rule">The rounding rule to apply when comparing values.</param>
+      /// <returns>true if the numbers are equal within the specified significant digits; otherwise, false.</returns>
+      public static bool IsWithinSignificantDigits<TSignificantDigits, TRadix>(TNumber value, TNumber other, TSignificantDigits significantDigits, TRadix radix, NearestRoundingRule rule)
+        where TSignificantDigits : System.Numerics.IBinaryInteger<TSignificantDigits>
+        where TRadix : System.Numerics.IBinaryInteger<TRadix>
+      {
+        var scale = double.Pow(double.CreateChecked(radix), double.CreateChecked(significantDigits));
+
+        var a = FloatingPoint.RoundToNearestInteger(double.CreateChecked(value) / scale, rule);
+        var b = FloatingPoint.RoundToNearestInteger(double.CreateChecked(other) / scale, rule);
+
+        return a == b;
+      }
+
+      #endregion
+
+      #region IsWithinTolerance
+
+      /// <summary>
+      /// <para>Compares two values using a hybrid absolute and relative tolerance.</para>
+      /// <para>The comparison uses: tolerance * (1 + max(|value|, |other|))</para>
+      /// <para>This provides a minimum absolute tolerance near zero while automatically scaling for larger magnitudes.</para>
+      /// </summary>
+      /// <typeparam name="TTolerance"></typeparam>
+      /// <param name="value">The value of interest.</param>
+      /// <param name="other">The value to compare to.</param>
+      /// <param name="tolerance">E.g. 1e-10.</param>
+      /// <returns></returns>
+      public static bool IsWithinTolerance<TTolerance>(TNumber value, TNumber other, TTolerance tolerance)
+        where TTolerance : System.Numerics.IFloatingPoint<TTolerance>
+      {
+        if (value == other)
+          return true;
+
+        if (TNumber.IsNaN(value) || TNumber.IsNaN(other))
+          return false;
+
+        if (TNumber.IsInfinity(value) || TNumber.IsInfinity(other))
+          return value == other;
+
+        var difference = TTolerance.CreateChecked(TNumber.Abs(value - other));
+        var comparison = tolerance * (TTolerance.One + TTolerance.CreateChecked(TNumber.Abs(TNumber.MaxMagnitude(value, other))));
+
+        return difference <= comparison;
+      }
 
       #endregion
     }

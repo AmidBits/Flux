@@ -791,7 +791,7 @@
       {
         var maxPrimeMultiple = TInteger.One.BitFoldToMsb();
 
-        if (TypeExtensions.ImplementsISignedNumber(typeof(TInteger)))
+        if (TypeExtensions.IsISignedNumber(typeof(TInteger)))
           maxPrimeMultiple >>>= 1;
 
         var six = TInteger.CreateChecked(6);

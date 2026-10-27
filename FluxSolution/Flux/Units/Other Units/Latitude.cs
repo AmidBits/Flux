@@ -32,7 +32,7 @@ namespace Flux.Units
 
     /// <summary>Creates a new <see cref="Latitude"/> from the specified <paramref name="angle"/> and <paramref name="unit"/>.</summary>
     public Latitude(double angle, Units.AngleUnit unit = Units.AngleUnit.Degree)
-      => m_degrees = Number.FoldAcross(Angle.ConvertUnit(angle, unit, AngleUnit.Degree), MinValue, MaxValue);
+      => m_degrees = Number.ReflectedFold(Angle.ConvertUnit(angle, unit, AngleUnit.Degree), MinValue, MaxValue);
 
     /// <summary>The <see cref="Units.Angle"/> of the latitude.</summary>
     public Angle Angle { get => new(m_degrees); }

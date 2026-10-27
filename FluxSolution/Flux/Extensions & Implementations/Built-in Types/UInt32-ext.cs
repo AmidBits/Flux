@@ -1,5 +1,6 @@
 namespace Flux
 {
+  [System.CLSCompliant(false)]
   public static partial class UInt32Extensions
   {
     extension(System.UInt32)
@@ -9,7 +10,6 @@ namespace Flux
       /// <summary>
       /// <para>Bit-reversal of a uint, i.e. trade place of bit 31 with bit 0 and bit 30 with bit 1 and so on.</para>
       /// </summary>
-      [System.CLSCompliant(false)]
       public static uint ReverseBits(uint value)
       {
         ReverseBitsInPlace(ref value);
@@ -20,7 +20,6 @@ namespace Flux
       /// <summary>
       /// <para>In-place (by ref) mirror the bits (bit-reversal of a uint, i.e. trade place of bit 31 with bit 0 and bit 30 with bit 1 and so on.</para>
       /// </summary>
-      [System.CLSCompliant(false)]
       public static void ReverseBitsInPlace(ref uint value)
       {
         value = (value << 15) | (value >> 17);
@@ -48,7 +47,6 @@ namespace Flux
       /// </summary>
       /// <param name="n"></param>
       /// <returns></returns>
-      [System.CLSCompliant(false)]
       public static bool IsPrimeNumberDeterministic(uint n)
       {
         if (n <= 3) return n > 1;

@@ -5,27 +5,27 @@
     extension<TInteger>(TInteger)
       where TInteger : System.Numerics.IBinaryInteger<TInteger>
     {
-      #region RoundToPower
+      #region GetNearestPowers
 
       /// <summary>
-      /// <para>Rounds value to a power-of-radix 2-tuple.</para>
+      /// <para>Computes the nearest powers of <paramref name="radix"/> toward and away from zero, determines whether the value is an exact power, and selects the nearest power according to the specified rounding rule.</para>
       /// </summary>
       /// <param name="value"></param>
       /// <param name="radix"></param>
-      /// <param name="unequal"></param>
+      /// <param name="strict">If <see langword="true"/> and <paramref name="value"/> is an exact power-of-radix, the returned toward-zero and away-from-zero powers are adjusted to be strictly different from <paramref name="value"/>.</param>
       /// <param name="rule"></param>
       /// <returns>
       /// <para>(<typeparamref name="TInteger"/> PowerTowardZero, <typeparamref name="TInteger"/> PowerAwayFromZero, <see langword="bool"/> IsExactPower, <typeparamref name="TInteger"/> NearestPower)</para>
       /// <list type="bullet">
-      /// <item>PowerTowardZero - a power-of-<paramref name="radix"/> less-than-(or-equal) to <paramref name="value"/> <i>(depends on <paramref name="unequal"/>)</i></item>
-      /// <item>PowerAwayFromZero - a power-of-<paramref name="radix"/> greater-than-(or-equal) to <paramref name="value"/> <i>(depends on <paramref name="unequal"/>)</i></item>
-      /// <item>IsExactPower - indicates whether <paramref name="value"/> is an exact power-of-<paramref name="radix"/></item>
-      /// <item>NearestPower - the power-of-<paramref name="radix"/> nearest to <paramref name="value"/></item>
+      /// <item>NearestPowerTowardZero - the nearest power of <paramref name="radix"/> in the direction of zero.</item>
+      /// <item>NearestPowerAwayFromZero - the nearest power of <paramref name="radix"/> in the direction away from zero.</item>
+      /// <item>IsExactPower - indicates whether <paramref name="value"/> is an exact power of <paramref name="radix"/>.</item>
+      /// <item>NearestPowerByRule - the nearest power of <paramref name="radix"/> according to <paramref name="rule"/>.</item>
       /// </list>
       /// </returns>
-      public static (TInteger PowerTowardZero, TInteger PowerAwayFromZero, bool IsExactPower, TInteger NearestPower) RoundToPower(TInteger value, TInteger radix, bool unequal = false, NearestRoundingRule rule = NearestRoundingRule.ToEven)
+      public static (TInteger NearestPowerTowardZero, TInteger NearestPowerAwayFromZero, bool IsExactPower, TInteger NearestPowerByRule) GetNearestPowers(TInteger value, TInteger radix, bool strict = false, NearestRoundingRule rule = NearestRoundingRule.ToEven)
       {
-        TInteger powerTowardZero; TInteger powerAwayFromZero; bool isExactPower; TInteger nearestPower;
+        TInteger nearestPowerTowardZero; TInteger nearestPowerAwayFromZero; bool isExactPower; TInteger nearestPowerByRule;
 
         System.ArgumentOutOfRangeException.ThrowIfLessThanOrEqual(radix, TInteger.One);
 
@@ -33,32 +33,32 @@
           return (TInteger.Zero, TInteger.Zero, false, TInteger.Zero); // Zero is the result.
         else if (TInteger.IsNegative(value))
         {
-          (powerTowardZero, powerAwayFromZero, isExactPower, nearestPower) = RoundToPower(TInteger.Abs(value), radix, unequal, rule); // Recursive call with abs(value).
+          (nearestPowerTowardZero, nearestPowerAwayFromZero, isExactPower, nearestPowerByRule) = GetNearestPowers(TInteger.Abs(value), radix, strict, rule); // Recursive call with abs(value).
 
-          return (-powerTowardZero, -powerAwayFromZero, isExactPower, -nearestPower); // Negate all values.
+          return (-nearestPowerTowardZero, -nearestPowerAwayFromZero, isExactPower, -nearestPowerByRule); // Negate all values.
         }
 
-        powerAwayFromZero = TInteger.One;
-        while (powerAwayFromZero < value) // Find the smallest power-of-radix that is greater than value.
-          powerAwayFromZero *= radix;
+        nearestPowerAwayFromZero = TInteger.One;
+        while (nearestPowerAwayFromZero < value) // Find the smallest power-of-radix that is greater than value.
+          nearestPowerAwayFromZero = checked(nearestPowerAwayFromZero * radix);
 
-        isExactPower = powerAwayFromZero == value; // Whether the original value is a power-of-radix.
+        isExactPower = nearestPowerAwayFromZero == value; // Whether the original value is a power-of-radix.
 
-        powerTowardZero = isExactPower
-          ? powerAwayFromZero // If value is a power-of-radix, then powerTowardZero equals powerAwayFromZero.
-          : powerAwayFromZero / radix; // Otherwise powerTowardZero is the next lower power-of-radix.
+        nearestPowerTowardZero = isExactPower
+          ? nearestPowerAwayFromZero // If value is a power-of-radix, then powerTowardZero equals powerAwayFromZero.
+          : nearestPowerAwayFromZero / radix; // Otherwise powerTowardZero is the next lower power-of-radix.
 
-        if (isExactPower && unequal) // This is the only place where the unequal is handled.
+        if (isExactPower && strict) // This is the only place where the unequal is handled.
         {
-          powerTowardZero /= radix;
-          powerAwayFromZero *= radix;
+          nearestPowerTowardZero /= radix;
+          nearestPowerAwayFromZero = checked(nearestPowerAwayFromZero * radix);
         }
 
-        nearestPower = isExactPower
-          ? powerTowardZero
-          : Number.RoundToNearestValue(value, rule, false, powerTowardZero, powerAwayFromZero); // Find the nearest of the two.
+        nearestPowerByRule = isExactPower
+          ? nearestPowerTowardZero
+          : Number.RoundToNearestValue(value, rule, false, nearestPowerTowardZero, nearestPowerAwayFromZero); // Find the nearest of the two.
 
-        return (powerTowardZero, powerAwayFromZero, isExactPower, nearestPower);
+        return (nearestPowerTowardZero, nearestPowerAwayFromZero, isExactPower, nearestPowerByRule);
       }
 
       #endregion
@@ -70,52 +70,72 @@
     extension<TFloat>(TFloat)
       where TFloat : System.Numerics.IFloatingPoint<TFloat>
     {
-      #region RoundToInteger
+      #region GetNearestIntegers
 
       /// <summary>
-      /// <para>Rounds value to an integer 2-tuple.</para>
+      /// <para>Computes the nearest integers in the directions toward and away from zero, determines whether the <paramref name="value"/> is an exact integer, and selects the nearest integer according to the specified rounding <paramref name="rule"/>.</para>
       /// </summary>
       /// <param name="value"></param>
-      /// <param name="unequal"></param>
+      /// <param name="strict">If <see langword="true"/> and <paramref name="value"/> is an exact integer, the returned toward-zero and away-from-zero integers are adjusted to be strictly different from <paramref name="value"/>.</param>      
       /// <param name="rule"></param>
       /// <returns>
-      /// <para>(<typeparamref name="TFloat"/> IntegerTowardZero, <typeparamref name="TFloat"/> IntegerAwayFromZero, <see langword="bool"/> IsExactInteger, <typeparamref name="TFloat"/> NearestInteger)</para>
       /// <list type="bullet">
-      /// <item>IntegerTowardZero - an integer less-than-(or-equal) to <paramref name="value"/> <i>(depends on <paramref name="unequal"/>)</i></item>
-      /// <item>IntegerAwayFromZero - an integer greater-than-(or-equal) to <paramref name="value"/> <i>(depends on <paramref name="unequal"/>)</i></item>
-      /// <item>IsExactInteger - indicates whether <paramref name="value"/> is an exact integer</item>
-      /// <item>NearestInteger - the integer nearest to <paramref name="value"/></item>
+      /// <item>NearestIntegerTowardZero - the nearest integer to <paramref name="value"/> in the direction of zero (equivalent to truncation).</item>
+      /// <item>NearestIntegerAwayFromZero - the nearest integer to <paramref name="value"/> in the direction away from zero.</item>
+      /// <item>IsExactInteger - indicates whether <paramref name="value"/> is an exact integer.</item>
+      /// <item>NearestIntegerByRule - the integer nearest to <paramref name="value"/> according to <paramref name="rule"/>.</item>
       /// </list>
       /// </returns>
-      public static (TFloat IntegerTowardZero, TFloat IntegerAwayFromZero, bool IsExactInteger, TFloat NearestInteger) RoundToInteger(TFloat value, bool unequal, NearestRoundingRule rule = NearestRoundingRule.ToEven)
+      public static (TFloat NearestIntegerTowardZero, TFloat NearestIntegerAwayFromZero, bool IsExactInteger, TFloat NearestIntegerByRule) GetNearestIntegers(TFloat value, bool strict, NearestRoundingRule rule = NearestRoundingRule.ToEven)
       {
-        TFloat integerTowardZero; TFloat integerAwayFromZero; bool isExactInteger; TFloat nearestInteger;
+        TFloat nearestIntegerTowardZero; TFloat nearestIntegerAwayFromZero; bool isExactInteger; TFloat nearestIntegerByRule;
 
         // We don't want immediate return on TFloat.IsInteger(value) because that disables the feature of unequal.
 
         if (TFloat.IsNegative(value))
         {
-          (integerTowardZero, integerAwayFromZero, isExactInteger, nearestInteger) = RoundToInteger(TFloat.Abs(value), unequal, rule); // Recursive call with abs(value).
+          (nearestIntegerTowardZero, nearestIntegerAwayFromZero, isExactInteger, nearestIntegerByRule) = GetNearestIntegers(TFloat.Abs(value), strict, rule); // Recursive call with abs(value).
 
-          return (-integerTowardZero, -integerAwayFromZero, isExactInteger, -nearestInteger); // Negate all values.
+          return (-nearestIntegerTowardZero, -nearestIntegerAwayFromZero, isExactInteger, -nearestIntegerByRule); // Negate all values.
         }
 
-        integerTowardZero = TFloat.Truncate(value);
+        nearestIntegerTowardZero = TFloat.Truncate(value);
 
-        isExactInteger = integerTowardZero == value;
+        isExactInteger = nearestIntegerTowardZero == value;
 
-        integerAwayFromZero = isExactInteger ? integerTowardZero : integerTowardZero + TFloat.One;
+        nearestIntegerAwayFromZero = isExactInteger ? nearestIntegerTowardZero : nearestIntegerTowardZero + TFloat.One;
 
-        if (isExactInteger && unequal) // This is the only place where the unequal is handled.
+        if (isExactInteger && strict) // In strict mode, exact integers are adjusted to their neighboring integers.
         {
-          integerTowardZero -= TFloat.One;
-          integerAwayFromZero += TFloat.One;
+          nearestIntegerTowardZero -= TFloat.One;
+          nearestIntegerAwayFromZero += TFloat.One;
         }
 
-        nearestInteger = Number.RoundToNearestValue(value, rule, false, integerTowardZero, integerAwayFromZero);
+        nearestIntegerByRule = Number.RoundToNearestValue(value, rule, false, nearestIntegerTowardZero, nearestIntegerAwayFromZero);
 
-        return (integerTowardZero, integerAwayFromZero, isExactInteger, nearestInteger);
+        return (nearestIntegerTowardZero, nearestIntegerAwayFromZero, isExactInteger, nearestIntegerByRule);
       }
+
+      #endregion
+
+      #region RoundToInteger
+
+      /// <summary>
+      /// <para>Rounds a floating-point value to the nearest integer according to the specified directed rounding mode.</para>
+      /// </summary>
+      /// <param name="value">The value to round.</param>
+      /// <param name="mode">The directed rounding mode to use.</param>
+      /// <returns>The rounded integer value.</returns>
+      /// <exception cref="System.NotImplementedException">Thrown when the specified rounding mode is not supported.</exception>
+      public static TFloat RoundToInteger(TFloat value, DirectedRoundingMode mode)
+        => mode switch
+        {
+          DirectedRoundingMode.TowardNegativeInfinity => TFloat.Floor(value),
+          DirectedRoundingMode.TowardPositiveInfinity => TFloat.Ceiling(value),
+          DirectedRoundingMode.TowardZero => TFloat.Truncate(value),
+          DirectedRoundingMode.AwayFromZero => Envelop(value),
+          _ => throw new System.NotImplementedException(nameof(mode)),
+        };
 
       #endregion
 
@@ -158,6 +178,25 @@
       }
 
       #endregion
+
+      #region Truncate
+
+      /// <summary>
+      /// <para>Truncates a value at the specified number of <paramref name="significantDigits"/> (decimal places).</para>
+      /// </summary>
+      /// <param name="value"></param>
+      /// <param name="significantDigits"></param>
+      /// <returns></returns>
+      public static TFloat Truncate(TFloat value, int significantDigits)
+      {
+        System.ArgumentOutOfRangeException.ThrowIfNegative(significantDigits);
+
+        var m = TFloat.CreateChecked(System.Numerics.BigInteger.Pow(10, significantDigits));
+
+        return TFloat.Truncate(value * m) / m;
+      }
+
+      #endregion
     }
 
     extension<TFloat>(TFloat)
@@ -178,15 +217,15 @@
       /// <param name="significantDigits"></param>
       /// <param name="radix"></param>
       /// <returns></returns>
-      public static TFloat RoundByPrecision<TRadix>(TFloat x, NearestRoundingRule nearestRoundingTies, int significantDigits, TRadix radix)
-      where TRadix : System.Numerics.IBinaryInteger<TRadix>
+      public static TFloat RoundByPrecision<TRadix>(TFloat value, NearestRoundingRule nearestRoundingTies, int significantDigits, TRadix radix)
+        where TRadix : System.Numerics.IBinaryInteger<TRadix>
       {
         System.ArgumentOutOfRangeException.ThrowIfNegative(significantDigits);
         System.ArgumentOutOfRangeException.ThrowIfLessThanOrEqual(radix, TRadix.One);
 
         var scalar = TFloat.Pow(TFloat.CreateChecked(radix), TFloat.CreateChecked(significantDigits));
 
-        return RoundToNearestInteger(x * scalar, nearestRoundingTies) / scalar;
+        return RoundToNearestInteger(value * scalar, nearestRoundingTies) / scalar;
       }
 
       #endregion
@@ -194,20 +233,20 @@
       #region RoundByTruncatedPrecision
 
       /// <summary>
-      /// <para>Rounds <paramref name="x"/> by truncating to the specified number of <paramref name="significantDigits"/> in base <paramref name="radix"/> and then round using the <paramref name="nearestRoundingTies"/>. The reason for doing this is because unless a value is EXACTLY between two numbers, to the decimal, it will be rounded based on the next least significant decimal digit and so on.</para>
+      /// <para>Rounds <paramref name="value"/> by truncating to the specified number of <paramref name="significantDigits"/> in base <paramref name="radix"/> and then round using the <paramref name="nearestRoundingTies"/>. The reason for doing this is because unless a value is EXACTLY between two numbers, to the decimal, it will be rounded based on the next least significant decimal digit and so on.</para>
       /// <para><seealso href="https://stackoverflow.com/questions/1423074/rounding-to-even-in-c-sharp"/></para>
       /// <example>
       /// <code>var r = RoundByTruncatedPrecision(99.96535789, 2, HalfwayRounding.ToEven); // = 99.96 (compare with the corresponding <see cref="RoundByPrecision{TValue}(TValue, UniversalRounding, int, int)"/> method)</code>
       /// </example>
       /// </summary>
       /// <typeparam name="TValue"></typeparam>
-      /// <param name="x"></param>
+      /// <param name="value"></param>
       /// <param name="nearestRoundingTies"></param>
       /// <param name="significantDigits"></param>
       /// <param name="radix"></param>
       /// <returns></returns>
       /// <exception cref="System.ArgumentOutOfRangeException"></exception>
-      public static TFloat RoundByTruncatedPrecision<TRadix>(TFloat x, NearestRoundingRule nearestRoundingTies, int significantDigits, TRadix radix)
+      public static TFloat RoundByTruncatedPrecision<TRadix>(TFloat value, NearestRoundingRule nearestRoundingTies, int significantDigits, TRadix radix)
         where TRadix : System.Numerics.IBinaryInteger<TRadix>
       {
         System.ArgumentOutOfRangeException.ThrowIfNegative(significantDigits);
@@ -215,8 +254,86 @@
 
         var scalar = TFloat.Pow(TFloat.CreateChecked(radix), TFloat.CreateChecked(significantDigits + 1));
 
-        return RoundByPrecision(TFloat.Truncate(x * scalar) / scalar, nearestRoundingTies, significantDigits, radix);
+        return RoundByPrecision(TFloat.Truncate(value * scalar) / scalar, nearestRoundingTies, significantDigits, radix);
       }
+
+      #endregion
+    }
+
+    extension<TFloat>(TFloat value)
+      where TFloat : System.Numerics.IFloatingPoint<TFloat>
+    {
+      #region Envelop
+
+      /// <summary>
+      /// <para>Envelops a value.</para>
+      /// <para>Equivalent to the opposite effect of the Truncate() functionality, i.e. instead of truncating the fraction and essentially executing a round-toward-zero, envelop the fraction and essentially execute a round-away-from-zero.</para>
+      /// <para>It can also be seen as a companion function to truncate(). Unlike truncate() which calls floor() for positive numbers and ceiling() for negative; envelope() calls ceiling() for positive numbers and floor() for negative.</para>
+      /// </summary>
+      /// <remarks>Like truncate, envelop is a symmetric biased around 0 type rounding.</remarks>
+      /// <typeparam name="TFloat"></typeparam>
+      /// <param name="value"></param>
+      /// <returns></returns>
+      public TFloat Envelop()
+        => TFloat.IsNegative(value) ? TFloat.Floor(value) : TFloat.Ceiling(value);
+
+      /// <summary>
+      /// <para>Envelops a value at the specified number of <paramref name="significantDigits"/> (decimal places).</para>
+      /// <para>Equivalent to the opposite effect of the Truncate() functionality, i.e. instead of truncating the fraction and essentially executing a round-toward-zero, envelop the fraction and essentially execute a round-away-from-zero.</para>
+      /// <para>It can also be seen as a companion function to truncate(). Unlike truncate() which calls floor() for positive numbers and ceiling() for negative; envelope() calls ceiling() for positive numbers and floor() for negative.</para>
+      /// </summary>
+      /// <remarks>Like truncate, envelop is a symmetric biased around 0 type rounding.</remarks>
+      /// <typeparam name="TFloat"></typeparam>
+      /// <typeparam name="TInteger"></typeparam>
+      /// <param name="value"></param>
+      /// <param name="significantDigits"></param>
+      /// <returns></returns>
+      public TFloat Envelop(int significantDigits)
+      {
+        System.ArgumentOutOfRangeException.ThrowIfNegative(significantDigits);
+
+        var factor = TFloat.CreateChecked(System.Numerics.BigInteger.Pow(10, significantDigits));
+
+        return Envelop(value * factor) / factor;
+      }
+
+      #endregion
+
+      #region Normalize
+
+      /// <summary>
+      /// <para>Maps a <paramref name="value"/> from the interval [<paramref name="minValue"/>, <paramref name="maxValue"/>] onto the unit interval [0, 1], preserving its relative position.</para>
+      /// </summary>
+      /// <param name="value"></param>
+      /// <param name="minValue"></param>
+      /// <param name="maxValue"></param>
+      /// <returns></returns>
+      public TFloat Normalize(TFloat minValue, TFloat maxValue)
+        => (value - minValue) / (maxValue - minValue);
+
+      #endregion
+
+      #region Quantize
+
+      /// <summary>
+      /// <para>Quantizes a value by snapping it to a multiple of <paramref name="step"/> according to the specified directed rounding <paramref name="mode"/>.</para>
+      /// </summary>
+      /// <remarks>Equivalent to: <c>RoundToInteger(<paramref name="value"/> / <paramref name="step"/>, <paramref name="mode"/>) * <paramref name="step"/></c></remarks>
+      /// <param name="step"></param>
+      /// <param name="mode"></param>
+      /// <returns></returns>
+      public TFloat Quantize(TFloat step, DirectedRoundingMode mode)
+        => RoundToInteger(value / step, mode) * step;
+
+      /// <summary>
+      /// <para>Quantizes a value by snapping it to a multiple of <paramref name="step"/> according to the specified nearest rounding <paramref name="rule"/>.</para>
+      /// </summary>
+      /// <remarks>Equivalent to: <c>RoundToNearestInteger(<paramref name="value"/> / <paramref name="step"/>, <paramref name="rule"/>) * <paramref name="step"/></c></remarks>
+      /// <param name="step"></param>
+      /// <param name="rule"></param>
+      /// <returns></returns>
+      public TFloat Quantize(TFloat step, NearestRoundingRule rule)
+        => RoundToNearestInteger(value / step, rule) * step;
 
       #endregion
     }
@@ -227,6 +344,60 @@
     extension<TNumber>(TNumber)
       where TNumber : System.Numerics.INumber<TNumber>
     {
+      #region GetNearestMultiples
+
+      /// <summary>
+      /// <para>Computes the nearest multiples of <paramref name="multiple"/> toward and away from zero, determines whether the value is an exact multiple, and selects the nearest multiple according to the specified rounding rule.</para>
+      /// </summary>
+      /// <param name="value"></param>
+      /// <param name="multiple"></param>
+      /// <param name="strict">If <see langword="true"/> and <paramref name="value"/> is an exact multiple of <paramref name="multiple"/>, the returned toward-zero and away-from-zero multiples are adjusted to be strictly different from <paramref name="value"/>.</param>
+      /// <param name="rule"></param>
+      /// <returns>
+      /// <para>(<typeparamref name="TNumber"/> MultipleTowardZero, <typeparamref name="TNumber"/> MultipleAwayFromZero, <see langword="bool"/> IsExactMultiple, <typeparamref name="TNumber"/> NearestMultiple)</para>
+      /// <list type="bullet">
+      /// <item>NearestMultipleTowardZero - the nearest multiple of <paramref name="multiple"/> in the direction of zero.</item>
+      /// <item>NearestMultipleAwayFromZero - the nearest multiple of <paramref name="multiple"/> in the direction away from zero.</item>
+      /// <item>IsExactMultiple - indicates whether <paramref name="value"/> is an exact multiple of <paramref name="multiple"/>.</item>
+      /// <item>NearestMultipleByRule - the nearest multiple of <paramref name="multiple"/> according to <paramref name="rule"/>.</item>
+      /// </list>
+      /// </returns>
+      public static (TNumber NearestMultipleTowardZero, TNumber NearestMultipleAwayFromZero, bool IsExactMultiple, TNumber NearestMultipleByRule) GetNearestMultiples(TNumber value, TNumber multiple, bool strict = false, NearestRoundingRule rule = NearestRoundingRule.ToEven)
+      {
+        TNumber nearestMultipleTowardZero; TNumber nearestMultipleAwayFromZero; bool isExactMultiple; TNumber nearestMultipleByRule;
+
+        System.ArgumentOutOfRangeException.ThrowIfNegativeOrZero(multiple);
+
+        if (TNumber.IsZero(value))
+          return (TNumber.Zero, TNumber.Zero, true, TNumber.Zero); // Zero is the result.
+        else if (TNumber.IsNegative(value))
+        {
+          (nearestMultipleTowardZero, nearestMultipleAwayFromZero, isExactMultiple, nearestMultipleByRule) = GetNearestMultiples(TNumber.Abs(value), multiple, strict, rule); // Recursive call with abs(value).
+
+          return (-nearestMultipleTowardZero, -nearestMultipleAwayFromZero, isExactMultiple, -nearestMultipleByRule); // Negate all values.
+        }
+
+        var (quotient, remainder) = IntegerDivRemTruncated(value, multiple); // Truncated division works on negative numbers for quotient which is used for multipleTowardZero.
+
+        nearestMultipleTowardZero = checked(quotient * multiple);
+
+        isExactMultiple = TNumber.IsZero(remainder); // Whether the original value is a multiple.
+
+        nearestMultipleAwayFromZero = isExactMultiple ? nearestMultipleTowardZero : nearestMultipleTowardZero + multiple;
+
+        if (isExactMultiple && strict) // This is the only place where strict mode is handled.
+        {
+          nearestMultipleTowardZero -= multiple;
+          nearestMultipleAwayFromZero = checked(nearestMultipleAwayFromZero + multiple);
+        }
+
+        nearestMultipleByRule = RoundToNearestValue(value, rule, false, nearestMultipleTowardZero, nearestMultipleAwayFromZero); // Find the nearest of the two.
+
+        return (nearestMultipleTowardZero, nearestMultipleAwayFromZero, isExactMultiple, nearestMultipleByRule);
+      }
+
+      #endregion
+
       #region IsMultipleOf
 
       /// <summary>
@@ -263,56 +434,6 @@
         };
 
         return quotient * multiple;
-      }
-
-      /// <summary>
-      /// <para>Rounds value to a multiple 2-tuple.</para>
-      /// </summary>
-      /// <param name="value"></param>
-      /// <param name="multiple"></param>
-      /// <param name="unequal"></param>
-      /// <param name="rule"></param>
-      /// <returns>
-      /// <para>(<typeparamref name="TNumber"/> MultipleTowardZero, <typeparamref name="TNumber"/> MultipleAwayFromZero, <see langword="bool"/> IsExactMultiple, <typeparamref name="TNumber"/> NearestMultiple)</para>
-      /// <list type="bullet">
-      /// <item>MultipleTowardZero - a <paramref name="multiple"/> less-than-(or-equal) to <paramref name="value"/> <i>(depends on <paramref name="unequal"/>)</i></item>
-      /// <item>MultipleAwayFromZero - a <paramref name="multiple"/> greater-than-(or-equal) to <paramref name="value"/> <i>(depends on <paramref name="unequal"/>)</i></item>
-      /// <item>IsExactMultiple - indicates whether <paramref name="value"/> is an exact <paramref name="multiple"/></item>
-      /// <item>NearestMultiple - the <paramref name="multiple"/> nearest to <paramref name="value"/></item>
-      /// </list>
-      /// </returns>
-      public static (TNumber MultipleTowardZero, TNumber MultipleAwayFromZero, bool IsExactMultiple, TNumber NearestMultiple) RoundToMultiple(TNumber value, TNumber multiple, bool unequal = false, NearestRoundingRule rule = NearestRoundingRule.ToEven)
-      {
-        TNumber multipleTowardZero; TNumber multipleAwayFromZero; bool isExactMultiple; TNumber nearestMultiple;
-
-        System.ArgumentOutOfRangeException.ThrowIfNegativeOrZero(multiple);
-
-        if (TNumber.IsZero(value))
-          return (TNumber.Zero, TNumber.Zero, false, TNumber.Zero); // Zero is the result.
-        else if (TNumber.IsNegative(value))
-        {
-          (multipleTowardZero, multipleAwayFromZero, isExactMultiple, nearestMultiple) = RoundToMultiple(TNumber.Abs(value), multiple, unequal, rule); // Recursive call with abs(value).
-
-          return (-multipleTowardZero, -multipleAwayFromZero, isExactMultiple, -nearestMultiple); // Negate all values.
-        }
-
-        var (quotient, remainder) = IntegerDivRemTruncated(value, multiple); // Truncated division works on negative numbers for quotient which is used for multipleTowardZero.
-
-        multipleTowardZero = quotient * multiple;
-
-        isExactMultiple = TNumber.IsZero(remainder); // Whether the original value is a multiple.
-
-        multipleAwayFromZero = isExactMultiple ? multipleTowardZero : multipleTowardZero + multiple;
-
-        if (isExactMultiple && unequal) // This is the only place where the unequal is handled.
-        {
-          multipleTowardZero -= multiple;
-          multipleAwayFromZero += multiple;
-        }
-
-        nearestMultiple = RoundToNearestValue(value, rule, false, multipleTowardZero, multipleAwayFromZero); // Find the nearest of the two.
-
-        return (multipleTowardZero, multipleAwayFromZero, isExactMultiple, nearestMultiple);
       }
 
       #endregion

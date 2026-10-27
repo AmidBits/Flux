@@ -241,7 +241,7 @@
         {
           var prev = x;
 
-          var t = Pow(x, degree - TInteger.One, value);
+          var t = PowOrLimit(x, degree - TInteger.One, value);
 
           if (t == TInteger.Zero)
             throw new ArithmeticException();
@@ -250,10 +250,10 @@
 
           if (x == prev)
           {
-            while (Pow(x + TInteger.One, degree, value) <= value) // Floor-root correction.
+            while (PowOrLimit(x + TInteger.One, degree, value) <= value) // Floor-root correction.
               x++;
 
-            while (Pow(x, degree, value) > value)
+            while (PowOrLimit(x, degree, value) > value)
               x--;
 
             return x;
@@ -281,7 +281,7 @@
       {
         root = RootNCore(value, degree);
 
-        return Pow(root, degree, value) == value;
+        return PowOrLimit(root, degree, value) == value;
       }
 
       public static bool IsRootN<TNth>(TInteger value, TNth n, TInteger root)
@@ -565,7 +565,7 @@
       /// <param name="exponent"></param>
       /// <param name="limit"></param>
       /// <returns></returns>
-      public static TInteger Pow(TInteger value, TInteger exponent, TInteger limit)
+      public static TInteger PowOrLimit(TInteger value, TInteger exponent, TInteger limit)
       {
         if (TInteger.IsZero(value))
           return TInteger.IsZero(exponent) ? TInteger.One : TInteger.Zero;
@@ -603,6 +603,61 @@
         return result;
       }
 
+      private static int PowCompare1(TInteger value, TInteger exponent, TInteger limit)
+      {
+        var result = TInteger.One;
+
+        while (!TInteger.IsZero(exponent))
+        {
+          if (!TInteger.IsZero(exponent & TInteger.One))
+          {
+            result *= value;
+
+            if (result > limit)
+              return +1;
+          }
+
+          exponent >>= 1;
+
+          if (!TInteger.IsZero(exponent))
+          {
+            value *= value;
+
+            if (value > limit && !TInteger.IsZero(exponent))
+              value = limit + TInteger.One;
+          }
+        }
+
+        return result.CompareTo(limit);
+      }
+
+      private static int PowCompare2(TInteger value, TInteger exponent, TInteger limit)
+      {
+        var result = TInteger.One;
+
+        while (!TInteger.IsZero(exponent))
+        {
+          if (!TInteger.IsZero(exponent & TInteger.One))
+          {
+            result *= value;
+
+            if (result > limit)
+              return 1;
+          }
+
+          exponent >>= 1;
+
+          if (!TInteger.IsZero(exponent))
+          {
+            value *= value;
+
+            if (value > limit) // Saturate once the remaining computation can no longer produce a value <= limit.
+              value = limit + TInteger.One;
+          }
+        }
+
+        return result.CompareTo(limit);
+      }
       #endregion
 
       #region ToOrdinalFieldName(s)
@@ -757,60 +812,6 @@
       //public static TInteger SurjectiveSnSxOrbits(TInteger x, TInteger n) => throw new System.NotImplementedException();
 
       //#endregion
-
-      public static TInteger Wrap(TInteger value, TInteger min, TInteger max, IntervalNotation notation)
-      {
-        var range = max - min;
-
-        if (notation == IntervalNotation.Closed)
-          range += TInteger.One;
-        else if (notation == IntervalNotation.Open)
-          range -= TInteger.One;
-
-        var shift = min;
-
-        if (notation == IntervalNotation.HalfOpenLeft)
-          shift = max;
-        else if (notation == IntervalNotation.Open)
-          shift += TInteger.One;
-
-        return shift + Number.EuclideanModulo(value - shift, range);
-      }
-
-      #region WrapToInterval
-
-      /// <summary>
-      /// <para>Wraps a value to a specified interval, with options for wrap mode and interval notation.</para>
-      /// </summary>
-      /// <param name="value"></param>
-      /// <param name="minValue"></param>
-      /// <param name="maxValue"></param>
-      /// <param name="wrapMode"></param>
-      /// <param name="intervalNotation"></param>
-      /// <returns></returns>
-      public static TInteger WrapToInterval(TInteger value, TInteger minValue, TInteger maxValue, IntervalNotation intervalNotation = IntervalNotation.HalfOpenRight)
-      {
-        var range = maxValue - minValue;
-        if (range == TInteger.Zero)
-          return minValue;
-
-        var wrapped = (value - minValue) % range;
-        if (wrapped < TInteger.Zero)
-          wrapped += range;
-
-        var result = wrapped + minValue;
-
-        return intervalNotation switch
-        {
-          IntervalNotation.Closed => result,
-          IntervalNotation.HalfOpenRight => result == maxValue ? minValue : result,
-          IntervalNotation.HalfOpenLeft => result == minValue ? maxValue : result,
-          IntervalNotation.Open => (result == minValue) ? minValue + TInteger.One : (result == maxValue) ? maxValue - TInteger.One : result,
-          _ => result,
-        };
-      }
-
-      #endregion
     }
 
     #region ..DeBruijnSequence.. (has nested methods)

@@ -108,7 +108,7 @@ namespace Flux.CoordinateSystems
       );
     }
 
-    public System.Drawing.Point ToPoint(NearestRoundingRule nearestRoundingTies) => new(System.Convert.ToInt32(double.RoundToNearestInteger(m_v[0], nearestRoundingTies)), System.Convert.ToInt32(double.RoundToNearestInteger(m_v[1], nearestRoundingTies)));
+    public System.Drawing.Point ToPoint(NearestRoundingRule nearestRoundingTies) => new(System.Convert.ToInt32(FloatingPoint.RoundToNearestInteger(m_v[0], nearestRoundingTies)), System.Convert.ToInt32(FloatingPoint.RoundToNearestInteger(m_v[1], nearestRoundingTies)));
 
     public System.Drawing.PointF ToPointF() => new((float)m_v[0], (float)m_v[1]);
 
