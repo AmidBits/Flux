@@ -1,5 +1,34 @@
 ﻿namespace Flux
 {
+  public static partial class BinaryInteger
+  {
+    extension<TInteger>(TInteger)
+      where TInteger : System.Numerics.IBinaryInteger<TInteger>
+    {
+      #region WrapClosed
+
+      public static TInteger WrapClosed(TInteger value, TInteger minValue, TInteger maxValue)
+      {
+        System.ArgumentOutOfRangeException.ThrowIfGreaterThan(minValue, maxValue);
+
+        return Number.EuclideanModulo(value - minValue, maxValue - minValue + TInteger.One) + minValue;
+      }
+
+      #endregion
+
+      #region WrapOpen
+
+      public static TInteger WrapOpen(TInteger value, TInteger minValue, TInteger maxValue)
+      {
+        if (maxValue - minValue <= TInteger.One) throw new System.ArgumentException("An open interval must contain at least one value.");
+
+        return Number.EuclideanModulo(value - minValue - TInteger.One, maxValue - minValue - TInteger.One) + minValue + TInteger.One;
+      }
+
+      #endregion
+    }
+  }
+
   public static partial class FloatingPoint
   {
     extension<TFloat>(TFloat)
@@ -105,7 +134,7 @@
     }
 
     extension<TFloat>(TFloat)
-    where TFloat : System.Numerics.IFloatingPoint<TFloat>, System.Numerics.ILogarithmicFunctions<TFloat>
+      where TFloat : System.Numerics.IFloatingPoint<TFloat>, System.Numerics.ILogarithmicFunctions<TFloat>
     {
       #region RescaleLogarithmicToLinear
 
@@ -123,7 +152,7 @@
       /// <param name="radix"></param>
       /// <returns></returns>
       public static TFloat RescaleLogarithmicToLinear(TFloat y, TFloat y0, TFloat y1, TFloat x0, TFloat x1, TFloat radix)
-        => Number.Rescale(TFloat.Log(y, radix), TFloat.Log(y0, radix), TFloat.Log(y1, radix), x0, x1); // Extract the numbers and use the standard Rescale() function for the math.
+        => Number.Remap(TFloat.Log(y, radix), TFloat.Log(y0, radix), TFloat.Log(y1, radix), x0, x1); // Extract the numbers and use the standard Rescale() function for the math.
 
       #endregion
     }
@@ -147,7 +176,7 @@
       /// <param name="radix"></param>
       /// <returns></returns>
       public static TFloat RescaleLinearToLogarithmic(TFloat x, TFloat x0, TFloat x1, TFloat y0, TFloat y1, TFloat radix)
-      => TFloat.Pow(radix, Number.Rescale(x, x0, x1, TFloat.Log(y0, radix), TFloat.Log(y1, radix))); // Extract the numbers and use the standard Rescale() function for the math.
+      => TFloat.Pow(radix, Number.Remap(x, x0, x1, TFloat.Log(y0, radix), TFloat.Log(y1, radix))); // Extract the numbers and use the standard Rescale() function for the math.
 
       #endregion
     }
@@ -195,11 +224,32 @@
 
       #endregion
 
-      #region Rescale
+      #region ReflectedFold
 
       /// <summary>
-      /// <para>Proportionally rescale the <paramref name="value"/> from the closed interval [<paramref name="minSource"/>, <paramref name="maxSource"/>] to the closed interval [<paramref name="minTarget"/>, <paramref name="maxTarget"/>].</para>
-      /// <para>The <paramref name="value"/> retains its proportional interval ratio, e.g. a 5 from the closed interval [0, 10] becomes 50 when rescaled to the closed interval [0, 100].</para>
+      /// <para>Folds values into the closed interval [minValue, maxValue] by reflecting at the interval boundaries. Unlike wrapping, values do not jump from one endpoint to the other; instead they reverse direction at the boundaries.</para>
+      /// <para>A.K.A. "reflected"-fold.</para>
+      /// </summary>
+      /// <param name="value"></param>
+      /// <param name="minValue"></param>
+      /// <param name="maxValue"></param>
+      /// <returns></returns>
+      public static TNumber ReflectedFold(TNumber value, TNumber minValue, TNumber maxValue)
+      {
+        System.ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(minValue, maxValue);
+
+        var width = checked(maxValue - minValue);
+
+        return minValue + ReflectedModulo(value - minValue, width);
+      }
+
+      #endregion
+
+      #region Remap
+
+      /// <summary>
+      /// <para>Proportionally remaps the <paramref name="value"/> from the closed interval [<paramref name="minSource"/>, <paramref name="maxSource"/>] to the closed interval [<paramref name="minTarget"/>, <paramref name="maxTarget"/>].</para>
+      /// <para>The <paramref name="value"/> retains its proportional interval ratio, e.g. a 5 from the closed interval [0, 10] becomes 50 when remapped to the closed interval [0, 100].</para>
       /// </summary>
       /// <typeparam name="TNumber"></typeparam>
       /// <param name="value"></param>
@@ -208,7 +258,7 @@
       /// <param name="minTarget"></param>
       /// <param name="maxTarget"></param>
       /// <returns></returns>
-      public static TNumber Rescale(TNumber value, TNumber minSource, TNumber maxSource, TNumber minTarget, TNumber maxTarget)
+      public static TNumber Remap(TNumber value, TNumber minSource, TNumber maxSource, TNumber minTarget, TNumber maxTarget)
         => (value - minSource) / (maxSource - minSource) * (maxTarget - minTarget) + minTarget;
 
       #endregion
@@ -262,6 +312,84 @@
           : (nearestValue == maxValue)
           ? UlpIncrement(maxValue, ulps)
           : nearestValue;
+      }
+
+      #endregion
+
+      #region WrapClosed
+
+      /// <summary>
+      /// <para>Wraps <paramref name="value"/> into the closed interval [<paramref name="minValue"/>, <paramref name="maxValue"/>].</para>
+      /// </summary>
+      /// <remarks>
+      /// <para>Values already within the interval, including both endpoints, are returned unchanged.</para>
+      /// <para>Values below the interval are wrapped using the corresponding half-open-right interval [minValue, maxValue).</para>
+      /// <para>Values above the interval are wrapped using the corresponding half-open-left interval (minValue, maxValue].</para>
+      /// <para>Unlike the half-open wrapping functions, this operation preserves both endpoints and therefore is not strictly periodic.</para>
+      /// </remarks>
+      /// <param name="value"></param>
+      /// <param name="minValue"></param>
+      /// <param name="maxValue"></param>
+      /// <returns></returns>
+      public static TNumber WrapClosed(TNumber value, TNumber minValue, TNumber maxValue)
+      {
+        if (value < minValue)
+          return WrapHalfOpenLeft(value, minValue, maxValue);
+
+        if (value > maxValue)
+          return WrapHalfOpenRight(value, minValue, maxValue);
+
+        return value;
+      }
+
+      #endregion
+
+      #region WrapHalfOpenRight
+
+      public static TNumber WrapHalfOpenRight(TNumber value, TNumber minValue, TNumber maxValue)
+      {
+        System.ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(minValue, maxValue);
+
+        return NormalizeZero(EuclideanModulo(value - minValue, maxValue - minValue) + minValue);
+      }
+
+      #endregion
+
+      #region WrapHalfOpenLeft
+
+      public static TNumber WrapHalfOpenLeft(TNumber value, TNumber minValue, TNumber maxValue)
+      {
+        System.ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(minValue, maxValue);
+
+        return NormalizeZero(maxValue - EuclideanModulo(maxValue - value, maxValue - minValue));
+      }
+
+      #endregion
+
+      #region WrapOpen
+
+      /// <summary>
+      /// <para>Wraps <paramref name = "value" /> into the open interval (<paramref name="minValue"/>, <paramref name="maxValue"/>).</para>
+      /// </summary>
+      /// <remarks>
+      /// <para>Values strictly within the interval are returned unchanged.</para>
+      /// <para>Values less than or equal to <paramref name="minValue"/> are wrapped using the corresponding half-open-left interval (minValue, maxValue].</para>
+      /// <para>Values greater than or equal to <paramref name="maxValue"/> are wrapped using the corresponding half-open-right interval [minValue, maxValue).</para>
+      /// <para>Unlike the half-open wrapping functions, this operation excludes both endpoints and therefore is not strictly periodic.</para>
+      /// </remarks>
+      /// <param name="value"></param>
+      /// <param name="minValue"></param>
+      /// <param name="maxValue"></param>
+      /// <returns></returns>
+      public static TNumber WrapOpen(TNumber value, TNumber minValue, TNumber maxValue)
+      {
+        if (value <= minValue)
+          return WrapHalfOpenLeft(value, minValue, maxValue);
+
+        if (value >= maxValue)
+          return WrapHalfOpenRight(value, minValue, maxValue);
+
+        return value;
       }
 
       #endregion

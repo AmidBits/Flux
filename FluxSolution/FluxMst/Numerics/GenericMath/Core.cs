@@ -148,7 +148,7 @@ namespace Maths
       var n = 512d;
       var m = 20;
 
-      var (multipleTowardsZero, multipleAwayFromZero, isExactMultiple, nearestMultiple) = Number.GetNearestMultiples(n, m, false, NearestRoundingRule.TowardZero);
+      var (multipleTowardsZero, multipleAwayFromZero, isExactMultiple, nearestMultiple) = Number.GetNearestMultiples(n, m, NearestRoundingRule.TowardZero, false);
 
       Assert.AreEqual(520, nearestMultiple);
 

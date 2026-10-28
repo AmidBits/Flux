@@ -87,29 +87,29 @@ namespace Flux
       /// <para>Computes the integer logarithm of a 64-bit unsigned integer with a specified base.</para>
       /// <para>This implementation uses ulong native operations.</para>
       /// </summary>
-      /// <param name="n"></param>
-      /// <param name="b"></param>
+      /// <param name="value"></param>
+      /// <param name="radix"></param>
       /// <returns></returns>
-      internal static (ulong LogFloor, ulong LogCeiling, bool IsExactLog) Log(ulong n, ulong b)
+      internal static (ulong LogFloor, ulong LogCeiling, bool IsExactLog) Log(ulong value, ulong radix)
       {
-        System.ArgumentOutOfRangeException.ThrowIfLessThan(b, 2ul);
+        System.ArgumentOutOfRangeException.ThrowIfLessThan(radix, 2ul);
 
-        if (n == 0)
+        if (value == 0)
           return (0, 0, true);
 
-        if (n < b)
+        if (value < radix)
           return (0, 1, false);
 
-        if (n == b)
+        if (value == radix)
           return (1, 1, true);
 
-        var log2n = System.Numerics.BitOperations.Log2(n);
-        var log2b = System.Numerics.BitOperations.Log2(b);
+        var log2n = System.Numerics.BitOperations.Log2(value);
+        var log2b = System.Numerics.BitOperations.Log2(radix);
 
         var ilogf = (ulong)(log2n / log2b);
 
         var pow = System.UInt128.One;
-        System.UInt128 factor = b;
+        System.UInt128 factor = radix;
         var remexp = ilogf;
 
         while (remexp != 0)
@@ -121,19 +121,19 @@ namespace Flux
           remexp >>= 1;
         }
 
-        while (pow > n)
+        while (pow > value)
         {
-          pow /= b;
+          pow /= radix;
           ilogf--;
         }
 
-        while (pow * b <= n)
+        while (pow * radix <= value)
         {
-          pow *= b;
+          pow *= radix;
           ilogf++;
         }
 
-        var exact = pow == n;
+        var exact = pow == value;
         var ilogc = exact ? ilogf : ilogf + 1;
 
         return (ilogf, ilogc, exact);

@@ -87,41 +87,44 @@ namespace Flux
 
       #region Log - Integer logarithm.
 
-      internal static (System.Numerics.BigInteger LogFloor, System.Numerics.BigInteger LogCeiling, bool IsExactLog) Log(System.Numerics.BigInteger n, System.Numerics.BigInteger b)
+      internal static (System.Numerics.BigInteger LogFloor, System.Numerics.BigInteger LogCeiling, bool IsExactLog) Log(System.Numerics.BigInteger value, System.Numerics.BigInteger radix)
       {
-        System.ArgumentOutOfRangeException.ThrowIfNegativeOrZero(n);
-        System.ArgumentOutOfRangeException.ThrowIfLessThan(b, 2);
+        System.ArgumentOutOfRangeException.ThrowIfNegativeOrZero(value);
+        System.ArgumentOutOfRangeException.ThrowIfLessThan(radix, 2);
 
-        if (n < b)
+        if (value == 0)
+          return (0, 0, true);
+
+        if (value < radix)
           return (0, 1, false);
 
-        if (n == b)
+        if (value == radix)
           return (1, 1, true);
 
-        var log2n = n.GetBitLength() - 1;
-        var log2b = b.GetBitLength() - 1;
+        var log2n = System.Numerics.BigInteger.Log2(value);
+        var log2b = System.Numerics.BigInteger.Log2(radix);
 
         var exponent = log2n / log2b; // Initial estimate.
 
-        var power = System.Numerics.BigInteger.Pow(b, (int)exponent); // Initial power.
+        var power = System.Numerics.BigInteger.Pow(radix, (int)exponent); // Initial power.
 
-        while (power > n) // Correct downward.
+        while (power > value) // Correct downward.
         {
-          power /= b;
+          power /= radix;
           exponent--;
         }
 
-        var nextPower = power * b;
+        var nextPower = power * radix;
 
-        while (nextPower <= n) // Correct upward.
+        while (nextPower <= value) // Correct upward.
         {
           power = nextPower;
           exponent++;
 
-          nextPower *= b;
+          nextPower *= radix;
         }
 
-        var isExact = power == n;
+        var isExact = power == value;
 
         return (exponent, isExact ? exponent : exponent + 1, isExact);
       }

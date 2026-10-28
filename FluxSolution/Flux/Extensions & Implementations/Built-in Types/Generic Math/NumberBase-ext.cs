@@ -12,30 +12,42 @@ namespace Flux
       public static int Radix => TNumberBase.Radix;
     }
 
-    extension<TNumberBase>(TNumberBase numberBase)
+    extension<TNumberBase>(TNumberBase value)
       where TNumberBase : System.Numerics.INumberBase<TNumberBase>
     {
-      //public bool IsBigInteger => numberBase is System.Numerics.BigInteger;
-      //public bool IsComplex => numberBase is System.Numerics.Complex;
+      public TNumberBase Cube()
+        => value * value * value;
 
-      //public bool IsDouble => numberBase is System.Double || (numberBase is System.Runtime.InteropServices.NFloat && System.Runtime.InteropServices.NFloat.Size == 8);
-      //public bool IsSingle => numberBase is System.Single || (numberBase is System.Runtime.InteropServices.NFloat && System.Runtime.InteropServices.NFloat.Size == 4);
+      public TNumberBase DistanceTo(TNumberBase other)
+        => TNumberBase.Abs(other - value);
 
-      //      public bool IsIBinaryFloatingPointIeee754 => typeof(TNumberBase).ImplementsIBinaryFloatingPointIeee754;
-      //      public bool IsIBinaryInteger => typeof(TNumberBase).ImplementsIBinaryInteger;
-      //      public bool IsIBinaryNumber => typeof(TNumberBase).ImplementsIBinaryNumber;
-      //#if NET11_0_OR_GREATER
-      //      public bool IsIDecimalFloatingPointIeee754 => typeof(TNumberBase).ImplementsIDecimalFloatingPointIeee754;
-      //#endif
-      //      public bool IsIFloatingPoint => typeof(TNumberBase).ImplementsIFloatingPoint;
-      //      public bool IsIFloatingPointIeee754 => typeof(TNumberBase).ImplementsIFloatingPointIeee754;
-      //      public bool IsIMinMaxValue => typeof(TNumberBase).ImplementsIMinMaxValue;
-      //      public bool IsINumber => typeof(TNumberBase).ImplementsINumber;
-      //      public bool IsISignedNumber => typeof(TNumberBase).ImplementsISignedNumber;
-      //      public bool IsIUnsignedNumber => typeof(TNumberBase).ImplementsIUnsignedNumber;
+      public TNumberBase NormalizeZero()
+        => TNumberBase.IsZero(value) ? TNumberBase.Zero : value;
 
-      //      public bool IsSignedInteger => typeof(TNumberBase).IsSignedInteger;
-      //      public bool IsUnsignedInteger => typeof(TNumberBase).IsUnsignedInteger;
+      public TNumberBase Square()
+        => value * value;
     }
   }
 }
+
+//public bool IsBigInteger => numberBase is System.Numerics.BigInteger;
+//public bool IsComplex => numberBase is System.Numerics.Complex;
+
+//public bool IsDouble => numberBase is System.Double || (numberBase is System.Runtime.InteropServices.NFloat && System.Runtime.InteropServices.NFloat.Size == 8);
+//public bool IsSingle => numberBase is System.Single || (numberBase is System.Runtime.InteropServices.NFloat && System.Runtime.InteropServices.NFloat.Size == 4);
+
+//      public bool IsIBinaryFloatingPointIeee754 => typeof(TNumberBase).ImplementsIBinaryFloatingPointIeee754;
+//      public bool IsIBinaryInteger => typeof(TNumberBase).ImplementsIBinaryInteger;
+//      public bool IsIBinaryNumber => typeof(TNumberBase).ImplementsIBinaryNumber;
+//#if NET11_0_OR_GREATER
+//      public bool IsIDecimalFloatingPointIeee754 => typeof(TNumberBase).ImplementsIDecimalFloatingPointIeee754;
+//#endif
+//      public bool IsIFloatingPoint => typeof(TNumberBase).ImplementsIFloatingPoint;
+//      public bool IsIFloatingPointIeee754 => typeof(TNumberBase).ImplementsIFloatingPointIeee754;
+//      public bool IsIMinMaxValue => typeof(TNumberBase).ImplementsIMinMaxValue;
+//      public bool IsINumber => typeof(TNumberBase).ImplementsINumber;
+//      public bool IsISignedNumber => typeof(TNumberBase).ImplementsISignedNumber;
+//      public bool IsIUnsignedNumber => typeof(TNumberBase).ImplementsIUnsignedNumber;
+
+//      public bool IsSignedInteger => typeof(TNumberBase).IsSignedInteger;
+//      public bool IsUnsignedInteger => typeof(TNumberBase).IsUnsignedInteger;

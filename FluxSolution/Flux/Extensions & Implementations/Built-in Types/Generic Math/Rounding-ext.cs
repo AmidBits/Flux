@@ -12,8 +12,8 @@
       /// </summary>
       /// <param name="value"></param>
       /// <param name="radix"></param>
-      /// <param name="strict">If <see langword="true"/> and <paramref name="value"/> is an exact power-of-radix, the returned toward-zero and away-from-zero powers are adjusted to be strictly different from <paramref name="value"/>.</param>
       /// <param name="rule"></param>
+      /// <param name="strict">If <see langword="true"/> and <paramref name="value"/> is an exact power-of-radix, the returned toward-zero and away-from-zero powers are adjusted to be strictly different from <paramref name="value"/>.</param>
       /// <returns>
       /// <para>(<typeparamref name="TInteger"/> PowerTowardZero, <typeparamref name="TInteger"/> PowerAwayFromZero, <see langword="bool"/> IsExactPower, <typeparamref name="TInteger"/> NearestPower)</para>
       /// <list type="bullet">
@@ -23,7 +23,7 @@
       /// <item>NearestPowerByRule - the nearest power of <paramref name="radix"/> according to <paramref name="rule"/>.</item>
       /// </list>
       /// </returns>
-      public static (TInteger NearestPowerTowardZero, TInteger NearestPowerAwayFromZero, bool IsExactPower, TInteger NearestPowerByRule) GetNearestPowers(TInteger value, TInteger radix, bool strict = false, NearestRoundingRule rule = NearestRoundingRule.ToEven)
+      public static (TInteger NearestPowerTowardZero, TInteger NearestPowerAwayFromZero, bool IsExactPower, TInteger NearestPowerByRule) GetNearestPowers(TInteger value, TInteger radix, NearestRoundingRule rule = NearestRoundingRule.ToEven, bool strict = false)
       {
         TInteger nearestPowerTowardZero; TInteger nearestPowerAwayFromZero; bool isExactPower; TInteger nearestPowerByRule;
 
@@ -33,7 +33,7 @@
           return (TInteger.Zero, TInteger.Zero, false, TInteger.Zero); // Zero is the result.
         else if (TInteger.IsNegative(value))
         {
-          (nearestPowerTowardZero, nearestPowerAwayFromZero, isExactPower, nearestPowerByRule) = GetNearestPowers(TInteger.Abs(value), radix, strict, rule); // Recursive call with abs(value).
+          (nearestPowerTowardZero, nearestPowerAwayFromZero, isExactPower, nearestPowerByRule) = GetNearestPowers(TInteger.Abs(value), radix, rule, strict); // Recursive call with abs(value).
 
           return (-nearestPowerTowardZero, -nearestPowerAwayFromZero, isExactPower, -nearestPowerByRule); // Negate all values.
         }
@@ -76,8 +76,8 @@
       /// <para>Computes the nearest integers in the directions toward and away from zero, determines whether the <paramref name="value"/> is an exact integer, and selects the nearest integer according to the specified rounding <paramref name="rule"/>.</para>
       /// </summary>
       /// <param name="value"></param>
-      /// <param name="strict">If <see langword="true"/> and <paramref name="value"/> is an exact integer, the returned toward-zero and away-from-zero integers are adjusted to be strictly different from <paramref name="value"/>.</param>      
       /// <param name="rule"></param>
+      /// <param name="strict">If <see langword="true"/> and <paramref name="value"/> is an exact integer, the returned toward-zero and away-from-zero integers are adjusted to be strictly different from <paramref name="value"/>.</param>      
       /// <returns>
       /// <list type="bullet">
       /// <item>NearestIntegerTowardZero - the nearest integer to <paramref name="value"/> in the direction of zero (equivalent to truncation).</item>
@@ -86,7 +86,7 @@
       /// <item>NearestIntegerByRule - the integer nearest to <paramref name="value"/> according to <paramref name="rule"/>.</item>
       /// </list>
       /// </returns>
-      public static (TFloat NearestIntegerTowardZero, TFloat NearestIntegerAwayFromZero, bool IsExactInteger, TFloat NearestIntegerByRule) GetNearestIntegers(TFloat value, bool strict, NearestRoundingRule rule = NearestRoundingRule.ToEven)
+      public static (TFloat NearestIntegerTowardZero, TFloat NearestIntegerAwayFromZero, bool IsExactInteger, TFloat NearestIntegerByRule) GetNearestIntegers(TFloat value, NearestRoundingRule rule = NearestRoundingRule.ToEven, bool strict = false)
       {
         TFloat nearestIntegerTowardZero; TFloat nearestIntegerAwayFromZero; bool isExactInteger; TFloat nearestIntegerByRule;
 
@@ -94,7 +94,7 @@
 
         if (TFloat.IsNegative(value))
         {
-          (nearestIntegerTowardZero, nearestIntegerAwayFromZero, isExactInteger, nearestIntegerByRule) = GetNearestIntegers(TFloat.Abs(value), strict, rule); // Recursive call with abs(value).
+          (nearestIntegerTowardZero, nearestIntegerAwayFromZero, isExactInteger, nearestIntegerByRule) = GetNearestIntegers(TFloat.Abs(value), rule, strict); // Recursive call with abs(value).
 
           return (-nearestIntegerTowardZero, -nearestIntegerAwayFromZero, isExactInteger, -nearestIntegerByRule); // Negate all values.
         }
@@ -362,7 +362,7 @@
       /// <item>NearestMultipleByRule - the nearest multiple of <paramref name="multiple"/> according to <paramref name="rule"/>.</item>
       /// </list>
       /// </returns>
-      public static (TNumber NearestMultipleTowardZero, TNumber NearestMultipleAwayFromZero, bool IsExactMultiple, TNumber NearestMultipleByRule) GetNearestMultiples(TNumber value, TNumber multiple, bool strict = false, NearestRoundingRule rule = NearestRoundingRule.ToEven)
+      public static (TNumber NearestMultipleTowardZero, TNumber NearestMultipleAwayFromZero, bool IsExactMultiple, TNumber NearestMultipleByRule) GetNearestMultiples(TNumber value, TNumber multiple, NearestRoundingRule rule = NearestRoundingRule.ToEven, bool strict = false)
       {
         TNumber nearestMultipleTowardZero; TNumber nearestMultipleAwayFromZero; bool isExactMultiple; TNumber nearestMultipleByRule;
 
@@ -372,7 +372,7 @@
           return (TNumber.Zero, TNumber.Zero, true, TNumber.Zero); // Zero is the result.
         else if (TNumber.IsNegative(value))
         {
-          (nearestMultipleTowardZero, nearestMultipleAwayFromZero, isExactMultiple, nearestMultipleByRule) = GetNearestMultiples(TNumber.Abs(value), multiple, strict, rule); // Recursive call with abs(value).
+          (nearestMultipleTowardZero, nearestMultipleAwayFromZero, isExactMultiple, nearestMultipleByRule) = GetNearestMultiples(TNumber.Abs(value), multiple, rule, strict); // Recursive call with abs(value).
 
           return (-nearestMultipleTowardZero, -nearestMultipleAwayFromZero, isExactMultiple, -nearestMultipleByRule); // Negate all values.
         }
@@ -440,43 +440,66 @@
 
       #region RoundToNearestValue
 
-      public static TNumber RoundToNearestValue(TNumber value, NearestRoundingRule rule, bool proper, params System.ReadOnlySpan<TNumber> values)
+      /// <summary>
+      /// <para></para>
+      /// </summary>
+      /// <param name="value"></param>
+      /// <param name="rule"></param>
+      /// <param name="strict">If <see langword="true"/>, values equal to <paramref name="value"/> are excluded from consideration.</param>
+      /// <param name="values"></param>
+      /// <returns></returns>
+      /// <exception cref="System.NotImplementedException"></exception>
+      public static TNumber RoundToNearestValue(TNumber value, NearestRoundingRule rule, bool strict, params System.ReadOnlySpan<TNumber> values)
       {
         System.ArgumentOutOfRangeException.ThrowIfZero(values.Length);
 
         var closestValues = new System.Collections.Generic.HashSet<TNumber>();
         var closestDistance = TNumber.Abs(value - values[0]);
+        var foundCandidate = false;
 
-        for (var i = 0; i < values.Length; i++)
+        foreach (var currentValue in values)
         {
-          var currentValue = values[i];
+          if (strict && currentValue == value)
+            continue;
+
           var currentDistance = TNumber.Abs(value - currentValue);
 
-          if ((!proper || currentValue != value) && (currentDistance <= closestDistance))
+          if (!foundCandidate)
           {
-            if (currentDistance < closestDistance)
-            {
-              closestValues.Clear();
-              closestDistance = currentDistance;
-            }
+            closestValues.Add(currentValue);
+            closestDistance = currentDistance;
+            foundCandidate = true;
+            continue;
+          }
 
+          if (currentDistance < closestDistance)
+          {
+            closestValues.Clear();
+            closestValues.Add(currentValue);
+            closestDistance = currentDistance;
+          }
+          else if (currentDistance == closestDistance)
+          {
             closestValues.Add(currentValue);
           }
         }
 
-        return (closestValues.Count > 1) // If multiple values were found, i.e. the distances are equal, or in other words the value is exactly halfway to all closestValues, we use the nearest rounding rule to resolve a winner.
-          ? rule switch
-          {
-            NearestRoundingRule.TowardNegativeInfinity => closestValues.Min()!,
-            NearestRoundingRule.TowardPositiveInfinity => closestValues.Max()!,
-            NearestRoundingRule.TowardZero => closestValues.InfimumSupremum(value, v => v, false) is var (_, _, _, _, infIndex, infValue, _, supIndex, supValue, _, _, _) && value >= TNumber.Zero ? (infIndex > -1 ? infValue! : supValue!) : (supIndex > -1 ? supValue! : infValue!),
-            NearestRoundingRule.AwayFromZero => closestValues.InfimumSupremum(value, v => v, false) is var (_, _, _, _, infIndex, infValue, _, supIndex, supValue, _, _, _) && value >= TNumber.Zero ? (supIndex > -1 ? supValue! : infValue!) : (infIndex > -1 ? infValue! : supValue!),
-            NearestRoundingRule.ToEven => closestValues.FirstOrValue(closestValues.First(), TNumber.IsEvenInteger).Item,
-            NearestRoundingRule.ToOdd => closestValues.FirstOrValue(closestValues.First(), TNumber.IsOddInteger).Item,
-            NearestRoundingRule.Random => closestValues.GetRandomElement(),
-            _ => throw new System.NotImplementedException(nameof(rule)),
-          }
-          : closestValues.First(); // Only one that is closest.
+        if (!foundCandidate) throw new System.ArgumentException("No candidate values remain after applying the strict filter.", nameof(values));
+
+        if (closestValues.Count == 1)
+          return closestValues.First();
+
+        return rule switch
+        {
+          NearestRoundingRule.TowardNegativeInfinity => closestValues.Min()!,
+          NearestRoundingRule.TowardPositiveInfinity => closestValues.Max()!,
+          NearestRoundingRule.TowardZero => closestValues.InfimumSupremum(value, v => v, false) is var (_, _, _, _, infIndex, infValue, _, supIndex, supValue, _, _, _) && value >= TNumber.Zero ? (infIndex > -1 ? infValue! : supValue!) : (supIndex > -1 ? supValue! : infValue!),
+          NearestRoundingRule.AwayFromZero => closestValues.InfimumSupremum(value, v => v, false) is var (_, _, _, _, infIndex, infValue, _, supIndex, supValue, _, _, _) && value >= TNumber.Zero ? (supIndex > -1 ? supValue! : infValue!) : (infIndex > -1 ? infValue! : supValue!),
+          NearestRoundingRule.ToEven => closestValues.FirstOrValue(closestValues.First(), TNumber.IsEvenInteger).Item,
+          NearestRoundingRule.ToOdd => closestValues.FirstOrValue(closestValues.First(), TNumber.IsOddInteger).Item,
+          NearestRoundingRule.Random => closestValues.GetRandomElement(),
+          _ => throw new System.NotImplementedException(nameof(rule)),
+        };
       }
 
       #endregion

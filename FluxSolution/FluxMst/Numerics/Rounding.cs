@@ -39,7 +39,7 @@ namespace Maths
       var n = 1.75;
       var m = 0.45;
 
-      var (multipleTowardsZero, multipleAwayFromZero, isExactMultiple, nearestMultiple) = Number.GetNearestMultiples(n, m, false, NearestRoundingRule.AwayFromZero);
+      var (multipleTowardsZero, multipleAwayFromZero, isExactMultiple, nearestMultiple) = Number.GetNearestMultiples(n, m, NearestRoundingRule.AwayFromZero, false);
 
       Assert.AreEqual(1.8, nearestMultiple, $"{nameof(RoundToMultiple)} {NearestRoundingRule.AwayFromZero}");
     }

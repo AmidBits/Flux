@@ -102,55 +102,6 @@
     }
 
     extension<TFloat>(TFloat)
-      where TFloat : System.Numerics.IFloatingPoint<TFloat>, System.Numerics.IExponentialFunctions<TFloat>
-    {
-      /// <summary>
-      /// <para>Exponential wave function.</para>
-      /// </summary>
-      /// <param name="value"></param>
-      /// <param name="modulus"></param>
-      /// <param name="k"></param>
-      /// <returns></returns>
-      public static TFloat ExponentialWave(TFloat value, TFloat modulus, TFloat k)
-      {
-        System.ArgumentOutOfRangeException.ThrowIfNegativeOrZero(modulus);
-
-        var phase = Number.EuclideanModulo(value, modulus); // Phase in [0, modulus).
-
-        var unitInterval = phase / modulus; // Normalize to [0, 1).
-
-        var x = k * unitInterval; // Scale to [0, k].
-
-        return TFloat.Exp(x);
-      }
-    }
-
-    extension<TFloat>(TFloat)
-      where TFloat : System.Numerics.IFloatingPoint<TFloat>, System.Numerics.ILogarithmicFunctions<TFloat>
-    {
-      /// <summary>
-      /// <para>Logarithmic wave function.</para>
-      /// </summary>
-      /// <typeparam name="T"></typeparam>
-      /// <param name="value"></param>
-      /// <param name="modulus"></param>
-      /// <param name="k"></param>
-      /// <returns></returns>
-      public static TFloat LogarithmicWave<T>(TFloat value, TFloat modulus, TFloat k)
-      {
-        System.ArgumentOutOfRangeException.ThrowIfNegativeOrZero(modulus);
-
-        var phase = Number.EuclideanModulo(value, modulus); // Phase in [0, modulus).
-
-        var unitInterval = phase / modulus; // Normalize to [0, 1).
-
-        var x = TFloat.One + k * unitInterval; // Shift to [1, 1 + k] to ensure domain is always valid: argument >= 1.
-
-        return TFloat.Log(x);
-      }
-    }
-
-    extension<TFloat>(TFloat)
       where TFloat : System.Numerics.IFloatingPoint<TFloat>, System.Numerics.IRootFunctions<TFloat>
     {
       #region HelmertsExpansionParameterK1

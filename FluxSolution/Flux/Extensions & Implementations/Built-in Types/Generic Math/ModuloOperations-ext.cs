@@ -4,7 +4,7 @@ namespace Flux
   public static partial class BinaryInteger
   {
     extension<TInteger>(TInteger)
-    where TInteger : System.Numerics.IBinaryInteger<TInteger>
+      where TInteger : System.Numerics.IBinaryInteger<TInteger>
     {
       #region ModuloClosed
 
@@ -17,28 +17,6 @@ namespace Flux
 
       public static TInteger ModuloOpen(TInteger value, TInteger modulus)
         => Number.EuclideanModulo(value - TInteger.One, modulus - TInteger.One) + TInteger.One;
-
-      #endregion
-
-      #region WrapClosed
-
-      public static TInteger WrapClosed(TInteger value, TInteger minValue, TInteger maxValue)
-      {
-        System.ArgumentOutOfRangeException.ThrowIfGreaterThan(minValue, maxValue);
-
-        return Number.EuclideanModulo(value - minValue, maxValue - minValue + TInteger.One) + minValue;
-      }
-
-      #endregion
-
-      #region WrapOpen
-
-      public static TInteger WrapOpen(TInteger value, TInteger minValue, TInteger maxValue)
-      {
-        if (maxValue - minValue <= TInteger.One) throw new System.ArgumentException("An open interval must contain at least one value.");
-
-        return Number.EuclideanModulo(value - minValue - TInteger.One, maxValue - minValue - TInteger.One) + minValue + TInteger.One;
-      }
 
       #endregion
     }
@@ -235,27 +213,6 @@ namespace Flux
 
       #endregion 
 
-      #region ReflectedFold
-
-      /// <summary>
-      /// <para>Folds values into the closed interval [minValue, maxValue] by reflecting at the interval boundaries. Unlike wrapping, values do not jump from one endpoint to the other; instead they reverse direction at the boundaries.</para>
-      /// <para>A.K.A. "reflected"-fold.</para>
-      /// </summary>
-      /// <param name="value"></param>
-      /// <param name="minValue"></param>
-      /// <param name="maxValue"></param>
-      /// <returns></returns>
-      public static TNumber ReflectedFold(TNumber value, TNumber minValue, TNumber maxValue)
-      {
-        System.ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(minValue, maxValue);
-
-        var width = checked(maxValue - minValue);
-
-        return minValue + ReflectedModulo(value - minValue, width);
-      }
-
-      #endregion
-
       #region ReflectedModulo
 
       /// <summary>
@@ -301,84 +258,6 @@ namespace Flux
         var minusRemainder = copySign - remainder;
 
         return (remainder, remainder, minusRemainder, minusRemainder);
-      }
-
-      #endregion
-
-      #region WrapClosed
-
-      /// <summary>
-      /// <para>Wraps <paramref name="value"/> into the closed interval [<paramref name="minValue"/>, <paramref name="maxValue"/>].</para>
-      /// </summary>
-      /// <remarks>
-      /// <para>Values already within the interval, including both endpoints, are returned unchanged.</para>
-      /// <para>Values below the interval are wrapped using the corresponding half-open-right interval [minValue, maxValue).</para>
-      /// <para>Values above the interval are wrapped using the corresponding half-open-left interval (minValue, maxValue].</para>
-      /// <para>Unlike the half-open wrapping functions, this operation preserves both endpoints and therefore is not strictly periodic.</para>
-      /// </remarks>
-      /// <param name="value"></param>
-      /// <param name="minValue"></param>
-      /// <param name="maxValue"></param>
-      /// <returns></returns>
-      public static TNumber WrapClosed(TNumber value, TNumber minValue, TNumber maxValue)
-      {
-        if (value < minValue)
-          return WrapHalfOpenLeft(value, minValue, maxValue);
-
-        if (value > maxValue)
-          return WrapHalfOpenRight(value, minValue, maxValue);
-
-        return value;
-      }
-
-      #endregion
-
-      #region WrapHalfOpenRight
-
-      public static TNumber WrapHalfOpenRight(TNumber value, TNumber minValue, TNumber maxValue)
-      {
-        System.ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(minValue, maxValue);
-
-        return NormalizeZero(EuclideanModulo(value - minValue, maxValue - minValue) + minValue);
-      }
-
-      #endregion
-
-      #region WrapHalfOpenLeft
-
-      public static TNumber WrapHalfOpenLeft(TNumber value, TNumber minValue, TNumber maxValue)
-      {
-        System.ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(minValue, maxValue);
-
-        return NormalizeZero(maxValue - EuclideanModulo(maxValue - value, maxValue - minValue));
-      }
-
-      #endregion
-
-      #region WrapOpen
-
-      /// <summary>
-      /// <para>Wraps <paramref name = "value" /> into the open interval (<paramref name="minValue"/>, <paramref name="maxValue"/>).</para>
-      /// </summary>
-      /// <remarks>
-      /// <para>Values strictly within the interval are returned unchanged.</para>
-      /// <para>Values less than or equal to <paramref name="minValue"/> are wrapped using the corresponding half-open-left interval (minValue, maxValue].</para>
-      /// <para>Values greater than or equal to <paramref name="maxValue"/> are wrapped using the corresponding half-open-right interval [minValue, maxValue).</para>
-      /// <para>Unlike the half-open wrapping functions, this operation excludes both endpoints and therefore is not strictly periodic.</para>
-      /// </remarks>
-      /// <param name="value"></param>
-      /// <param name="minValue"></param>
-      /// <param name="maxValue"></param>
-      /// <returns></returns>
-      public static TNumber WrapOpen(TNumber value, TNumber minValue, TNumber maxValue)
-      {
-        if (value <= minValue)
-          return WrapHalfOpenLeft(value, minValue, maxValue);
-
-        if (value >= maxValue)
-          return WrapHalfOpenRight(value, minValue, maxValue);
-
-        return value;
       }
 
       #endregion

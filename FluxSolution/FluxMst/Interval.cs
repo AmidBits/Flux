@@ -21,7 +21,7 @@ namespace Numerics
     [TestMethod]
     public void Rescale()
     {
-      Assert.AreEqual(25, Number.Rescale(7.5, 0, 5, 10, 20));
+      Assert.AreEqual(25, Number.Remap(7.5, 0, 5, 10, 20));
     }
 
     [TestMethod]

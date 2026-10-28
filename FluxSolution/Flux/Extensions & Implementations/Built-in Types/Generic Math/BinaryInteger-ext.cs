@@ -5,6 +5,35 @@
     extension<TInteger>(TInteger)
       where TInteger : System.Numerics.IBinaryInteger<TInteger>
     {
+      internal static (TInteger LogFloor, TInteger LogCeiling, bool IsExactLog) InternalIntegerLog(TInteger value, TInteger radix)
+      {
+        System.ArgumentOutOfRangeException.ThrowIfNegativeOrZero(value);
+        System.ArgumentOutOfRangeException.ThrowIfLessThanOrEqual(radix, TInteger.One);
+
+        var zero = TInteger.Zero;
+        var one = TInteger.One;
+
+        if (value < radix)
+          return (zero, one, false);
+
+        var log2n = TInteger.Log2(value);
+        var log2b = TInteger.Log2(radix);
+
+        TInteger exponent = log2n / log2b; // Approximate exponent derived from Log2.
+
+        TryPowAtMost(radix, exponent, value, out var power, out exponent); // power == radix^exponent and power <= value
+
+        while (power <= value / radix) // Correct upward.
+        {
+          power *= radix;
+          exponent++;
+        }
+
+        var isExact = power == value;
+
+        return (exponent, isExact ? exponent : exponent + TInteger.One, isExact);
+      }
+
       #region CreateFormatStringWithCountDecimals
 
       /// <summary>
@@ -557,6 +586,37 @@
       //public static TInteger Pow<TExponent>(TInteger value, TExponent exponent)
       //  where TExponent : System.Numerics.IBinaryInteger<TExponent>
       //  => TInteger.CreateChecked(System.Numerics.BigInteger.Pow(System.Numerics.BigInteger.CreateChecked(value), int.CreateChecked(exponent)));
+
+      /// <summary>
+      /// <para>Attempts to compute value^exponent without exceeding limit.</para>
+      /// <para>Returns true if the full exponent was achieved.</para>
+      /// <para>Returns false if the next multiplication would exceed the limit.</para>
+      /// <para>In either case:</para>
+      /// <list type="bullet">
+      /// <item>result == value^achievedExponent</item>
+      /// <item>achievedExponent <= exponent</item>
+      /// <item>result <= limit</item>
+      /// </list>
+      /// </summary>
+      internal static bool TryPowAtMost<TExponent>(TInteger value, TExponent exponent, TInteger limit, out TInteger result, out TExponent achievedExponent)
+        where TExponent : System.Numerics.IBinaryInteger<TExponent>
+      {
+        System.ArgumentOutOfRangeException.ThrowIfNegative(exponent);
+
+        result = TInteger.One;
+        achievedExponent = TExponent.Zero;
+
+        while (achievedExponent < exponent)
+        {
+          if (result > limit / value)
+            return false;
+
+          result *= value;
+          achievedExponent++;
+        }
+
+        return true;
+      }
 
       /// <summary>
       /// <para>Overflow‑safe exponentiation: x^k, stops early if exceeding limit.</para>
