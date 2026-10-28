@@ -21,7 +21,7 @@
 
         TInteger exponent = log2n / log2b; // Approximate exponent derived from Log2.
 
-        TryPowAtMost(radix, exponent, value, out var power, out exponent); // power == radix^exponent and power <= value
+        TryPow(radix, exponent, value, out var power, out exponent); // power == radix^exponent and power <= value
 
         while (power <= value / radix) // Correct upward.
         {
@@ -270,7 +270,7 @@
         {
           var prev = x;
 
-          var t = PowOrLimit(x, degree - TInteger.One, value);
+          var t = Pow(x, degree - TInteger.One, value);
 
           if (t == TInteger.Zero)
             throw new ArithmeticException();
@@ -279,10 +279,10 @@
 
           if (x == prev)
           {
-            while (PowOrLimit(x + TInteger.One, degree, value) <= value) // Floor-root correction.
+            while (Pow(x + TInteger.One, degree, value) <= value) // Floor-root correction.
               x++;
 
-            while (PowOrLimit(x, degree, value) > value)
+            while (Pow(x, degree, value) > value)
               x--;
 
             return x;
@@ -310,7 +310,7 @@
       {
         root = RootNCore(value, degree);
 
-        return PowOrLimit(root, degree, value) == value;
+        return Pow(root, degree, value) == value;
       }
 
       public static bool IsRootN<TNth>(TInteger value, TNth n, TInteger root)
@@ -369,7 +369,7 @@
 
       #endregion
 
-      #region Pow
+      #region Pow functions
 
       /// <summary>
       /// <para>Indicates whether <paramref name="value"/> is a power of <paramref name="radix"/> (base).</para>
@@ -429,95 +429,6 @@
         where TExponent : System.Numerics.IBinaryInteger<TExponent>
         => checked(value.BitLength * int.CreateChecked(exponent));
 
-      ///// <summary>
-      ///// Computes the power using binary exponentiation (exponentiation by squaring).
-      ///// </summary>
-      ///// <remarks>Performs exponentiation by squaring and uses checked arithmetic to detect overflow. If
-      ///// exponent is less than or equal to TExponent.Zero, returns TInteger.One. Requires TInteger to support
-      ///// multiplication and provide a One value.</remarks>
-      ///// <typeparam name="TExponent">The exponent type that implements System.Numerics.IBinaryInteger<TExponent>; represents the integer exponent
-      ///// and must support binary operations and comparisons.</typeparam>
-      ///// <param name="value">Base value to be raised.</param>
-      ///// <param name="exponent">Exponent specifying the power; expected to be non-negative and manipulated via bitwise operations and right
-      ///// shifts.</param>
-      ///// <returns>The computed value raised to the specified exponent.</returns>
-      //public static TInteger PowBinaryExponentiation<TExponent>(TInteger value, TExponent exponent)
-      //  where TExponent : System.Numerics.IBinaryInteger<TExponent>
-      //{
-      //  var result = TInteger.One;
-
-      //  while (exponent > TExponent.Zero)
-      //    checked // Detect overflow.
-      //    {
-      //      if (!TExponent.IsZero(exponent & TExponent.One)) // If the current exponent is odd, multiply the result by the current value.
-      //        result *= value;
-
-      //      exponent >>= 1;
-
-      //      if (exponent > TExponent.Zero) // If the exponent is still greater than zero, square the current value for the next iteration.
-      //        value *= value;
-      //    }
-
-      //  return result;
-      //}
-      //public static TInteger Pow2<TExponent>(TInteger exponent)
-      //{
-      //  if (TInteger.IsNegative(exponent)) throw new System.ArgumentOutOfRangeException(nameof(exponent));
-
-      //  if (TInteger.IsZero(exponent))
-      //    return TInteger.One;
-
-      //  if (exponent == TInteger.One)
-      //    return TInteger.CreateChecked(2);
-
-      //  if (exponent >= exponent.BitCount && typeof(TInteger).IsNumericsUnsignedInteger)
-      //}
-
-      ///// <summary>
-      ///// <para>Computes 10^exponent using a precomputed table for results up to 128 bits.</para>
-      ///// </summary>
-      ///// <param name="exponent"></param>
-      ///// <param name="result"></param>
-      ///// <returns></returns>
-      //public static bool TryPowFast<TExponent>(TInteger value, TExponent exponent, out TInteger result)
-      //  where TExponent : System.Numerics.IBinaryInteger<TExponent>
-      //{
-      //  var e = int.CreateChecked(exponent);
-
-      //  if (e == 1) // value^1
-      //  {
-      //    result = value;
-      //    return true;
-      //  }
-
-      //  if (e == 2) // value^2
-      //  {
-      //    result = checked(value * value);
-      //    return true;
-      //  }
-
-      //  if (e == 3) // value^3
-      //  {
-      //    result = checked(value * value * value);
-      //    return true;
-      //  }
-
-      //  if (value == TInteger.CreateChecked(2)) // 2^e
-      //  {
-      //    result = TInteger.One << int.CreateChecked(exponent);
-      //    return true;
-      //  }
-
-      //  if (value == TInteger.CreateChecked(10) && e < UInt128Extensions.m_pow10.Length) // 10^e where e is an existing index in the table.
-      //  {
-      //    result = TInteger.CreateChecked(UInt128Extensions.m_pow10[int.CreateChecked(exponent)]);
-      //    return true;
-      //  }
-
-      //  result = TInteger.Zero;
-      //  return false;
-      //}
-
       /// <summary>
       /// <para>Computes <paramref name="value"/> raised to the power of <paramref name="exponent"/>.</para>
       /// </summary>
@@ -574,76 +485,37 @@
       public static TInteger Pow10(TInteger exponent)
         => Pow(TInteger.CreateChecked(10), exponent);
 
-      ///// <summary>
-      ///// <para>Computes <paramref name="value"/> raised to the power of <paramref name="exponent"/>.</para>
-      ///// <para>Uses the built-in <see cref="System.Numerics.BigInteger"/> function.</para>
-      ///// </summary>
-      ///// <typeparam name="TInteger"></typeparam>
-      ///// <param name="exponent">The exponent with which to raise the value.</param>
-      ///// <returns>The value raised to the <paramref name="exponent"/>-of.</returns>
-      ///// <remarks>If <paramref name="value"/> and/or <paramref name="exponent"/> are zero, 1 is returned. I.e. 0&#x2070;, x&#x2070; and 0&#x02E3; all return 1 in this version.</remarks>
-      ///// <exception cref="System.ArgumentOutOfRangeException"></exception>
-      //public static TInteger Pow<TExponent>(TInteger value, TExponent exponent)
-      //  where TExponent : System.Numerics.IBinaryInteger<TExponent>
-      //  => TInteger.CreateChecked(System.Numerics.BigInteger.Pow(System.Numerics.BigInteger.CreateChecked(value), int.CreateChecked(exponent)));
-
       /// <summary>
-      /// <para>Attempts to compute value^exponent without exceeding limit.</para>
-      /// <para>Returns true if the full exponent was achieved.</para>
-      /// <para>Returns false if the next multiplication would exceed the limit.</para>
-      /// <para>In either case:</para>
-      /// <list type="bullet">
-      /// <item>result == value^achievedExponent</item>
-      /// <item>achievedExponent <= exponent</item>
-      /// <item>result <= limit</item>
-      /// </list>
+      /// <para>Computes <paramref name="value"/>^<paramref name="exponent"/> using exponentiation by squaring. Stops early if the result would exceed <paramref name="powerLimit"/>.</para>
       /// </summary>
-      internal static bool TryPowAtMost<TExponent>(TInteger value, TExponent exponent, TInteger limit, out TInteger result, out TExponent achievedExponent)
-        where TExponent : System.Numerics.IBinaryInteger<TExponent>
+      /// <remarks>
+      /// <para>For fixed-width integer types, if <paramref name="powerLimit"/> equals <see cref="TInteger.MaxValue"/>, an <see cref="OverflowException"/> is thrown.</para>
+      /// <para>The identity 0^0 = 1 is preserved.</para>
+      /// </remarks>
+      /// <param name="value">The non-negative base.</param>
+      /// <param name="exponent">The non-negative exponent.</param>
+      /// <param name="powerLimit">The maximum permitted power.</param>
+      /// <returns><paramref name="value"/>^<paramref name="exponent"/> if the result does not exceed <paramref name="powerLimit"/>; otherwise returns a value greater than <paramref name="powerLimit"/>.</returns>
+      public static TInteger Pow(TInteger value, TInteger exponent, TInteger powerLimit)
       {
+        System.ArgumentOutOfRangeException.ThrowIfNegative(value);
         System.ArgumentOutOfRangeException.ThrowIfNegative(exponent);
+        System.ArgumentOutOfRangeException.ThrowIfNegative(powerLimit);
 
-        result = TInteger.One;
-        achievedExponent = TExponent.Zero;
-
-        while (achievedExponent < exponent)
-        {
-          if (result > limit / value)
-            return false;
-
-          result *= value;
-          achievedExponent++;
-        }
-
-        return true;
-      }
-
-      /// <summary>
-      /// <para>Overflow‑safe exponentiation: x^k, stops early if exceeding limit.</para>
-      /// </summary>
-      /// <param name="value"></param>
-      /// <param name="exponent"></param>
-      /// <param name="limit"></param>
-      /// <returns></returns>
-      public static TInteger PowOrLimit(TInteger value, TInteger exponent, TInteger limit)
-      {
         if (TInteger.IsZero(value))
           return TInteger.IsZero(exponent) ? TInteger.One : TInteger.Zero;
 
         var result = TInteger.One;
-        var overflow = limit + TInteger.One;
+        var overflow = checked(powerLimit + TInteger.One);
 
-        while (exponent > TInteger.Zero)
+        while (!TInteger.IsZero(exponent))
         {
           if (!TInteger.IsZero(exponent & TInteger.One))
           {
-            if (result > limit / value) // Check: result * value > limit ?
+            if (result > powerLimit / value)
               return overflow;
 
             result *= value;
-
-            if (result > limit)
-              return overflow;
           }
 
           exponent >>= 1;
@@ -651,73 +523,48 @@
           if (TInteger.IsZero(exponent))
             break;
 
-          if (value > limit / value) // Check: value * value > limit ?
+          if (value > powerLimit / value)
             return overflow;
 
           value *= value;
-
-          if (value > limit)
-            return overflow;
         }
 
         return result;
       }
 
-      private static int PowCompare1(TInteger value, TInteger exponent, TInteger limit)
+      /// <summary>
+      /// <para>Attempts to compute value^exponent without exceeding powerLimit.</para>
+      /// <para>Returns true if value^exponent was computed successfully.</para>
+      /// <para>Returns false if computing the next power would exceed powerLimit.</para>
+      /// <para>Upon return:</para>
+      /// <list type="bullet">
+      /// <item>maxPower == value^maxExponent</item>
+      /// <item>0 &lt;= maxExponent &lt;= exponent</item>
+      /// <item>maxPower &lt;= powerLimit</item>
+      /// </list>
+      /// </summary>
+      public static bool TryPow<TExponent>(TInteger value, TExponent exponent, TInteger powerLimit, out TInteger maxPower, out TExponent maxExponent)
+        where TExponent : System.Numerics.IBinaryInteger<TExponent>
       {
-        var result = TInteger.One;
+        System.ArgumentOutOfRangeException.ThrowIfNegativeOrZero(value);
+        System.ArgumentOutOfRangeException.ThrowIfNegative(exponent);
+        System.ArgumentOutOfRangeException.ThrowIfNegative(powerLimit);
 
-        while (!TInteger.IsZero(exponent))
+        maxPower = TInteger.One;
+        maxExponent = TExponent.Zero;
+
+        while (maxExponent < exponent)
         {
-          if (!TInteger.IsZero(exponent & TInteger.One))
-          {
-            result *= value;
+          if (maxPower > powerLimit / value)
+            return false;
 
-            if (result > limit)
-              return +1;
-          }
-
-          exponent >>= 1;
-
-          if (!TInteger.IsZero(exponent))
-          {
-            value *= value;
-
-            if (value > limit && !TInteger.IsZero(exponent))
-              value = limit + TInteger.One;
-          }
+          maxPower *= value;
+          maxExponent++;
         }
 
-        return result.CompareTo(limit);
+        return true;
       }
 
-      private static int PowCompare2(TInteger value, TInteger exponent, TInteger limit)
-      {
-        var result = TInteger.One;
-
-        while (!TInteger.IsZero(exponent))
-        {
-          if (!TInteger.IsZero(exponent & TInteger.One))
-          {
-            result *= value;
-
-            if (result > limit)
-              return 1;
-          }
-
-          exponent >>= 1;
-
-          if (!TInteger.IsZero(exponent))
-          {
-            value *= value;
-
-            if (value > limit) // Saturate once the remaining computation can no longer produce a value <= limit.
-              value = limit + TInteger.One;
-          }
-        }
-
-        return result.CompareTo(limit);
-      }
       #endregion
 
       #region ToOrdinalFieldName(s)
