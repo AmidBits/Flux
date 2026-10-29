@@ -540,7 +540,7 @@ namespace ConsoleApp
     {
       var n = (System.Numerics.BigInteger)10;
 
-
+      System.Console.WriteLine(Flux.Diagnostics.Performance.Measure(() => BinaryInteger.IntegerRootN<System.UInt128>((System.UInt128)System.Int128.MaxValue, (System.UInt128)19)));
 
       //var nibi = n.IsBigInteger();
       //var nic = n.IsComplex();

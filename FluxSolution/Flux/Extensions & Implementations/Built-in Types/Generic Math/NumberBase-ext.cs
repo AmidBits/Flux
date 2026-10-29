@@ -21,6 +21,12 @@ namespace Flux
       public TNumberBase DistanceTo(TNumberBase other)
         => TNumberBase.Abs(other - value);
 
+      public bool IsSignedInteger()
+        => value is System.Int128 or System.Int16 or System.Int32 or System.Int64 or System.IntPtr or System.SByte or System.Numerics.BigInteger;
+
+      public bool IsUnsignedInteger()
+        => value is System.Byte or System.UInt128 or System.UInt16 or System.UInt32 or System.UInt64 or System.UIntPtr;
+
       public TNumberBase NormalizeZero()
         => TNumberBase.IsZero(value) ? TNumberBase.Zero : value;
 

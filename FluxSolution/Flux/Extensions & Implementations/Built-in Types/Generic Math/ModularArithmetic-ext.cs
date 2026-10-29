@@ -85,7 +85,7 @@
 
         while (e > TInteger.Zero)
         {
-          if ((e & TInteger.One) == TInteger.One)
+          if (TInteger.IsOddInteger(e))
             result = ModMul(result, a, m);
 
           a = ModMul(a, a, m);

@@ -845,7 +845,7 @@
         if (n <= TInteger.One) return false; // 0,1 (and negative numbers, if the type is signed)
         if (n <= three) return true;         // 2,3
 
-        if ((n & TInteger.One) == TInteger.Zero) return false; // even numbers
+        if (TInteger.IsEvenInteger(n)) return false; // even numbers
         if (TInteger.IsZero(n % three)) return false;
 
         // If already checked % 2 and % 3, then % 6 adds no new eliminations, because:

@@ -127,16 +127,22 @@
       /// <returns>The square-root of the value.</returns>
       public static TInteger IntegerCbrt(TInteger value)
       {
-        if (TInteger.IsZero(value))
-          return value;
+        System.ArgumentOutOfRangeException.ThrowIfNegative(value);
 
-        var abs = TInteger.Abs(value);
-        var sign = TInteger.CopySign(TInteger.One, value);
+        if (value < NumberConstants<TInteger>.Eight)
+          return value == TInteger.Zero ? TInteger.Zero : TInteger.One;
 
-        if (TryConvertTo(abs, out ulong ulv))
-          return TInteger.CreateChecked(ulong.IntegerCbrt(ulv)) * sign;
+        var x = TInteger.One << int.CreateChecked((TInteger.Log2(value) + NumberConstants<TInteger>.Two) / NumberConstants<TInteger>.Three);
 
-        return TInteger.CreateChecked(System.Numerics.BigInteger.Cbrt(System.Numerics.BigInteger.CreateChecked(abs))) * sign;
+        while (true)
+        {
+          var y = (NumberConstants<TInteger>.Two * x + value / (x * x)) / NumberConstants<TInteger>.Three;
+
+          if (y >= x)
+            return x;
+
+          x = y;
+        }
       }
 
       /// <summary>
@@ -165,6 +171,40 @@
 
       #region IntegerLog
 
+      //public static (TInteger LogFloor, TInteger LogCeiling, bool IsExactLog) IntegerLogCore(TInteger value, TInteger radix)
+      //{
+      //  System.ArgumentOutOfRangeException.ThrowIfLessThanOrEqual(radix, TInteger.One);
+
+      //  if (TInteger.IsZero(value))
+      //    return (TInteger.Zero, TInteger.Zero, true);
+
+      //  if (value < radix)
+      //    return (TInteger.Zero, TInteger.One, false);
+
+      //  if (value == radix)
+      //    return (TInteger.One, TInteger.One, true);
+
+      //  var logFloor = TInteger.Log2(value) / TInteger.Log2(radix);
+
+      //  var power = Pow(radix, logFloor, value);
+
+      //  while (power > value)
+      //  {
+      //    power /= radix;
+      //    logFloor--;
+      //  }
+
+      //  while (power <= value / radix)
+      //  {
+      //    power *= radix;
+      //    logFloor++;
+      //  }
+
+      //  var exact = power == value;
+
+      //  return (logFloor, exact ? logFloor : logFloor + TInteger.One, exact);
+      //}
+
       /// <summary>
       /// <para>Returns the integer (toward-zero, away-from-zero) logarithm of specified a <paramref name="value"/> in a specified <paramref name="radix"/>.</para>
       /// </summary>
@@ -177,93 +217,63 @@
       {
         System.ArgumentOutOfRangeException.ThrowIfLessThanOrEqual(radix, TRadix.One);
 
+        var rdx = TInteger.CreateChecked(radix);
+
         if (TInteger.IsZero(value))
-          return (value, value, false);
+          return (TInteger.Zero, TInteger.Zero, true);
 
-        var abs = TInteger.Abs(value);
-        var sign = TInteger.CopySign(TInteger.One, value);
+        if (value < rdx)
+          return (TInteger.Zero, TInteger.One, false);
 
-        if (TryConvertTo(abs, out ulong ulv) && TryConvertTo(radix, out ulong ulr))
+        if (value == rdx)
+          return (TInteger.One, TInteger.One, true);
+
+        var logFloor = TInteger.Log2(value) / TInteger.Log2(rdx);
+
+        var power = Pow(rdx, logFloor, value);
+
+        while (power > value)
         {
-          var (LogF, LogC, IsExactLog) = ulong.IntegerLog(ulv, ulr);
-
-          return (TInteger.CreateChecked(LogF) * sign, TInteger.CreateChecked(LogC) * sign, IsExactLog);
+          power /= rdx;
+          logFloor--;
         }
-        else // Fall back on BigInteger LOG implementation.
+
+        while (power <= value / rdx)
         {
-          var (LogF, LogC, IsExactLog) = System.Numerics.BigInteger.IntegerLog(System.Numerics.BigInteger.CreateChecked(abs), System.Numerics.BigInteger.CreateChecked(radix));
-
-          return (TInteger.CreateChecked(LogF) * sign, TInteger.CreateChecked(LogC) * sign, IsExactLog);
+          power *= rdx;
+          logFloor++;
         }
+
+        var exact = power == value;
+
+        return (logFloor, exact ? logFloor : logFloor + TInteger.One, exact);
       }
+      //{
+      //  System.ArgumentOutOfRangeException.ThrowIfLessThanOrEqual(radix, TRadix.One);
 
-      #endregion
+      //  if (TInteger.IsZero(value))
+      //    return (value, value, false);
 
-      #region IntegerLogE
+      //  var abs = TInteger.Abs(value);
+      //  var sign = TInteger.CopySign(TInteger.One, value);
 
-      /// <summary>
-      /// <para>Returns the integer (floor) natural logarithm of specified a <paramref name="value"/> in a base/radix E.</para>
-      /// </summary>
-      /// <typeparam name="TRadix"></typeparam>
-      /// <param name="value"></param>
-      /// <returns></returns>
-      public static (TInteger IntegerLogTowardZero, TInteger IntegerLogAwayFromZero) IntegerLogE<TRadix>(TInteger value)
-        where TRadix : System.Numerics.IBinaryInteger<TRadix>
-      {
-        if (TInteger.IsZero(value))
-          return (value, value);
+      //  if (TryConvertTo(abs, out ulong ulv) && TryConvertTo(radix, out ulong ulr))
+      //  {
+      //    var (LogF, LogC, IsExactLog) = ulong.IntegerLog(ulv, ulr);
 
-        var absV = TInteger.Abs(value);
-        var sign = TInteger.CopySign(TInteger.One, value);
+      //    return (TInteger.CreateChecked(LogF) * sign, TInteger.CreateChecked(LogC) * sign, IsExactLog);
+      //  }
+      //  else // Fall back on BigInteger LOG implementation.
+      //  {
+      //    var (LogF, LogC, IsExactLog) = System.Numerics.BigInteger.IntegerLog(System.Numerics.BigInteger.CreateChecked(abs), System.Numerics.BigInteger.CreateChecked(radix));
 
-        if (TryConvertTo(absV, out ulong ulv))
-        {
-          var (ilogf, ilogc) = ulong.IntegerLogE(ulv);
-
-          return (TInteger.CreateChecked(ilogf) * sign, TInteger.CreateChecked(ilogc) * sign);
-        }
-        else // Fall-back on BigInteger ILog, which is more expensive but can handle any size of integer.
-        {
-          var (ilogf, ilogc) = System.Numerics.BigInteger.IntegerLogE(System.Numerics.BigInteger.CreateChecked(absV));
-
-          return (TInteger.CreateChecked(ilogf) * sign, TInteger.CreateChecked(ilogc) * sign);
-        }
-      }
+      //    return (TInteger.CreateChecked(LogF) * sign, TInteger.CreateChecked(LogC) * sign, IsExactLog);
+      //  }
+      //}
 
       #endregion
 
       #region IntegerRootN functions
-
-      private static TInteger RootNCore(TInteger value, TInteger degree)
-      {
-        if (value <= TInteger.One || degree <= TInteger.One)
-          return value;
-
-        var x = TInteger.One << int.CreateChecked(TInteger.Log2(value) / degree); // Initial estimate: 2^(floor(log2(value)/degree))
-
-        while (true)
-        {
-          var prev = x;
-
-          var t = Pow(x, degree - TInteger.One, value);
-
-          if (t == TInteger.Zero)
-            throw new ArithmeticException();
-
-          x = ((degree - TInteger.One) * x + value / t) / degree;
-
-          if (x == prev)
-          {
-            while (Pow(x + TInteger.One, degree, value) <= value) // Floor-root correction.
-              x++;
-
-            while (Pow(x, degree, value) > value)
-              x--;
-
-            return x;
-          }
-        }
-      }
 
       /// <summary>
       /// <para>Computes the integer nth-root of a value.</para>
@@ -274,16 +284,30 @@
       /// <returns></returns>
       public static TInteger IntegerRootN(TInteger value, TInteger degree)
       {
-        //return TInteger.CreateChecked(BigIntegerExtensions.RootN(System.Numerics.BigInteger.CreateChecked(value), int.CreateChecked(degree)));
         System.ArgumentOutOfRangeException.ThrowIfNegative(value);
         System.ArgumentOutOfRangeException.ThrowIfNegativeOrZero(degree);
 
-        return RootNCore(value, degree);
+        if (value <= TInteger.One || degree == TInteger.One)
+          return value;
+
+        var x = TInteger.One << int.CreateChecked((TInteger.Log2(value) + degree - TInteger.One) / degree); // Initial estimate: 2^(ceil(log2(value) / degree))
+
+        while (true)
+        {
+          var t = Pow(x, degree - TInteger.One, value);
+
+          var y = ((degree - TInteger.One) * x + value / t) / degree;
+
+          if (y >= x)
+            return x;
+
+          x = y;
+        }
       }
 
       public static bool TryGetExactRoot(TInteger value, TInteger degree, out TInteger root)
       {
-        root = RootNCore(value, degree);
+        root = IntegerRootN(value, degree);
 
         return Pow(root, degree, value) == value;
       }
@@ -308,16 +332,22 @@
       /// <returns></returns>
       public static TInteger IntegerSqrt(TInteger value)
       {
-        if (TInteger.IsZero(value))
-          return value;
+        System.ArgumentOutOfRangeException.ThrowIfNegative(value);
 
-        var abs = TInteger.Abs(value);
-        var sign = TInteger.CopySign(TInteger.One, value);
+        if (value < NumberConstants<TInteger>.Four)
+          return value == TInteger.Zero ? TInteger.Zero : TInteger.One;
 
-        if (TryConvertTo(abs, out ulong ulv))
-          return TInteger.CreateChecked(ulong.IntegerSqrt(ulv)) * sign;
-        else // Fall back on BigInteger SQRT implementation.
-          return TInteger.CreateChecked(System.Numerics.BigInteger.IntegerSqrt(System.Numerics.BigInteger.CreateChecked(abs))) * sign;
+        var x = TInteger.One << int.CreateChecked((TInteger.Log2(value) + TInteger.One) / NumberConstants<TInteger>.Two);
+
+        while (true)
+        {
+          var y = (x + value / x) / NumberConstants<TInteger>.Two;
+
+          if (y >= x)
+            return x;
+
+          x = y;
+        }
       }
 
       /// <summary>
@@ -454,8 +484,8 @@
 
         if (value == TInteger.CreateChecked(2)) // (2^exponent : 1 << exponent) 
           return (int.CreateChecked(exponent) is var ie && ie < value.BitWidth)
-            ? checked(TInteger.One << ie)
-            : throw new System.OverflowException($"The result of {value}^{exponent} cannot be represented by {typeof(TInteger)}.");
+            ? TInteger.One << ie
+            : throw new System.OverflowException();
 
         if (value == TInteger.CreateChecked(10) && exponent < TExponent.CreateChecked(UInt128Extensions.m_pow10.Length)) // 10^exponent, where exponent is the size of an existing index in the table.
           return TInteger.CreateChecked(UInt128Extensions.m_pow10[int.CreateChecked(exponent)]);
@@ -470,7 +500,7 @@
         while (exponent > TExponent.Zero)
           checked // Detect overflow.
           {
-            if (!TExponent.IsZero(exponent & TExponent.One)) // If the current exponent is odd, multiply the result by the current value.
+            if (TExponent.IsOddInteger(exponent)) // If the current exponent is odd, multiply the result by the current value.
               result *= value;
 
             exponent >>= 1;
@@ -510,7 +540,7 @@
 
         while (!TInteger.IsZero(exponent))
         {
-          if (!TInteger.IsZero(exponent & TInteger.One))
+          if (TInteger.IsOddInteger(exponent))
           {
             if (result > powerLimit / value)
               return overflow;

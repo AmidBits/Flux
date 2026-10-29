@@ -81,173 +81,6 @@ namespace Flux
 
       #endregion
 
-      #region IntegerLog - Integer logarithm.
-
-      /// <summary>
-      /// <para>Computes the integer logarithm of a 64-bit unsigned integer with a specified base.</para>
-      /// <para>This implementation uses ulong native operations.</para>
-      /// </summary>
-      /// <param name="value"></param>
-      /// <param name="radix"></param>
-      /// <returns></returns>
-      internal static (ulong LogFloor, ulong LogCeiling, bool IsExactLog) IntegerLog(ulong value, ulong radix)
-      {
-        System.ArgumentOutOfRangeException.ThrowIfLessThan(radix, 2ul);
-
-        if (value == 0)
-          return (0, 0, true);
-
-        if (value < radix)
-          return (0, 1, false);
-
-        if (value == radix)
-          return (1, 1, true);
-
-        var log2n = System.Numerics.BitOperations.Log2(value);
-        var log2b = System.Numerics.BitOperations.Log2(radix);
-
-        var ilogf = (ulong)(log2n / log2b);
-
-        var pow = System.UInt128.One;
-        System.UInt128 factor = radix;
-        var remexp = ilogf;
-
-        while (remexp != 0)
-        {
-          if ((remexp & 1) != 0)
-            pow *= factor;
-
-          factor *= factor;
-          remexp >>= 1;
-        }
-
-        while (pow > value)
-        {
-          pow /= radix;
-          ilogf--;
-        }
-
-        while (pow * radix <= value)
-        {
-          pow *= radix;
-          ilogf++;
-        }
-
-        var exact = pow == value;
-        var ilogc = exact ? ilogf : ilogf + 1;
-
-        return (ilogf, ilogc, exact);
-      }
-
-      #endregion
-
-      #region IntegerLogE - Integer natural logarithm.
-
-      /// <summary>
-      /// <para>Computes the integer natural logarithm of a 64-bit unsigned integer.</para>
-      /// <para>This implementation uses ulong native operations.</para>
-      /// </summary>
-      /// <param name="n"></param>
-      /// <returns></returns>
-      internal static (ulong LogFloor, ulong LogCeiling) IntegerLogE(ulong n)
-      {
-        System.ArgumentOutOfRangeException.ThrowIfNegativeOrZero(n);
-
-        if (n <= 1)
-          return (0, 0);
-
-        var log2 = System.Numerics.BitOperations.Log2(n); // log2(n) = 63 - clz(n)
-
-        var ln_n_est = log2 * 0.69314718055994530941723212145818; // ln(n) ≈ log2(n) * ln(2)
-
-        var k = (ulong)ln_n_est; // Log-floor estimate.
-
-        if (ln_n_est < k) // Correction for floating-point underestimation.
-          k--;
-
-        return (k, k + 1);
-      }
-
-      #endregion
-
-      #region IntegerRootN - Integer nth root.
-
-      /// <summary>
-      /// <para>Compute the nth root of a 64-bit unsigned integer. This implementation uses Newton's method.</para>
-      /// <para>This implementation uses ulong native operations.</para>
-      /// </summary>
-      /// <param name="value"></param>
-      /// <param name="degree"></param>
-      /// <returns></returns>
-      internal static ulong IntegerRootN(ulong value, int degree)
-      {
-        if (degree <= 1)
-          return value;
-
-        if (value == 0)
-          return 0;
-
-        if (degree == 2) // Fast path for square root.
-          return (ulong)double.Sqrt(value);
-
-        if (degree == 3) // Fast path for cube root (integer‑safe).
-          return IntegerCbrt(value);
-
-        var x = 1UL << (System.Numerics.BitOperations.Log2(value) / degree);
-
-        while (true) // Newton iteration.
-        {
-          var xp = x;
-
-          var pow = Pow(x, (ulong)degree - 1, value);
-          var div = (pow == ulong.MaxValue) ? 0 : value / pow;
-
-          x = ((ulong)(degree - 1) * x + div) / (ulong)degree;
-
-          if (x >= xp)
-            return xp;
-        }
-      }
-
-      #endregion
-
-      #region IntegerSqrt - Integer square root.
-
-      /// <summary>
-      /// <para>Computes the integer square root of a 64-bit unsigned integer.</para>
-      /// <para>This implementation uses ulong native operations.</para>
-      /// </summary>
-      /// <param name="n"></param>
-      /// <returns></returns>
-      internal static ulong IntegerSqrt(ulong n)
-      {
-        if (n <= 1)
-          return n;
-
-        var r = 0ul;
-        var bit = 1ul << (System.Numerics.BitOperations.Log2(n) & ~1); // The highest power of four <= 2^64
-
-        while (bit > n) // Align bit with highest non-zero pair of bits
-          bit >>= 2;
-
-        while (bit != 0)
-        {
-          if (n >= r + bit)
-          {
-            n -= r + bit;
-            r = (r >> 1) + bit;
-          }
-          else
-            r >>= 1;
-
-          bit >>= 2;
-        }
-
-        return r;
-      }
-
-      #endregion
-
       #region IsPrimeNumberDeterministic - Miller-Rabin deterministic primality test.
 
       /// <summary>
@@ -350,79 +183,79 @@ namespace Flux
 
       #endregion
 
-      /// <summary>
-      /// <para>Computes base^exp for ulong using exponentiation by squaring. Throws OverflowException if result exceeds ulong.MaxValue.</para>
-      /// </summary>
-      /// <param name="value"></param>
-      /// <param name="exponent"></param>
-      /// <returns></returns>
-      private static ulong Pow(ulong value, ulong exponent)
-      {
-        if (exponent == 0) return 1;
-        if (value == 0) return 0;
+      ///// <summary>
+      ///// <para>Computes base^exp for ulong using exponentiation by squaring. Throws OverflowException if result exceeds ulong.MaxValue.</para>
+      ///// </summary>
+      ///// <param name="value"></param>
+      ///// <param name="exponent"></param>
+      ///// <returns></returns>
+      //private static ulong Pow(ulong value, ulong exponent)
+      //{
+      //  if (exponent == 0) return 1;
+      //  if (value == 0) return 0;
 
-        var result = 1UL;
-        var current = value;
+      //  var result = 1UL;
+      //  var current = value;
 
-        while (exponent > 0)
-          checked // Detect overflow.
-          {
-            if ((exponent & 1) != 0)
-              result *= current;
+      //  while (exponent > 0)
+      //    checked // Detect overflow.
+      //    {
+      //      if ((exponent & 1) != 0)
+      //        result *= current;
 
-            exponent >>= 1;
+      //      exponent >>= 1;
 
-            if (exponent > 0)
-              current *= current;
-          }
+      //      if (exponent > 0)
+      //        current *= current;
+      //    }
 
-        return result;
-      }
+      //  return result;
+      //}
 
-      #region Pow - Overflow‑safe exponentiation.
+      //#region Pow - Overflow‑safe exponentiation.
 
-      /// <summary>
-      /// <para>Overflow‑safe exponentiation: x^k, stops early if exceeding limit.</para>
-      /// </summary>
-      /// <param name="value"></param>
-      /// <param name="exponent"></param>
-      /// <param name="limit"></param>
-      /// <returns></returns>
-      private static ulong Pow(ulong value, ulong exponent, ulong limit)
-      {
-        var result = 1ul;
+      ///// <summary>
+      ///// <para>Overflow‑safe exponentiation: x^k, stops early if exceeding limit.</para>
+      ///// </summary>
+      ///// <param name="value"></param>
+      ///// <param name="exponent"></param>
+      ///// <param name="limit"></param>
+      ///// <returns></returns>
+      //private static ulong Pow(ulong value, ulong exponent, ulong limit)
+      //{
+      //  var result = 1ul;
 
-        while (exponent > 0)
-        {
-          if ((exponent & 1) != 0)
-          {
-            if (value != 0 && result > limit / value) // Check: result * value > limit ?
-              return ulong.MaxValue;
+      //  while (exponent > 0)
+      //  {
+      //    if ((exponent & 1) != 0)
+      //    {
+      //      if (value != 0 && result > limit / value) // Check: result * value > limit ?
+      //        return ulong.MaxValue;
 
-            result *= value;
+      //      result *= value;
 
-            if (result > limit)
-              return ulong.MaxValue;
-          }
+      //      if (result > limit)
+      //        return ulong.MaxValue;
+      //    }
 
-          exponent >>= 1;
+      //    exponent >>= 1;
 
-          if (exponent == 0)
-            break;
+      //    if (exponent == 0)
+      //      break;
 
-          if (value != 0 && value > limit / value) // Square the base, with overflow check.
-            value = ulong.MaxValue;
-          else
-            value *= value;
+      //    if (value != 0 && value > limit / value) // Square the base, with overflow check.
+      //      value = ulong.MaxValue;
+      //    else
+      //      value *= value;
 
-          if (value > limit)
-            value = ulong.MaxValue;
-        }
+      //    if (value > limit)
+      //      value = ulong.MaxValue;
+      //  }
 
-        return result;
-      }
+      //  return result;
+      //}
 
-      #endregion
+      //#endregion
 
       #region ReverseBits..
 
