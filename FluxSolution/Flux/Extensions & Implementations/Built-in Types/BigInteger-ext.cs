@@ -85,9 +85,9 @@ namespace Flux
 
       #endregion
 
-      #region Log - Integer logarithm.
+      #region IntegerLog - Integer logarithm.
 
-      internal static (System.Numerics.BigInteger LogFloor, System.Numerics.BigInteger LogCeiling, bool IsExactLog) Log(System.Numerics.BigInteger value, System.Numerics.BigInteger radix)
+      internal static (System.Numerics.BigInteger LogFloor, System.Numerics.BigInteger LogCeiling, bool IsExactLog) IntegerLog(System.Numerics.BigInteger value, System.Numerics.BigInteger radix)
       {
         System.ArgumentOutOfRangeException.ThrowIfNegativeOrZero(value);
         System.ArgumentOutOfRangeException.ThrowIfLessThan(radix, 2);
@@ -131,9 +131,9 @@ namespace Flux
 
       #endregion
 
-      #region LogE - Integer natural logarithm.
+      #region IntegerLogE - Integer natural logarithm.
 
-      internal static (System.Numerics.BigInteger LogFloor, System.Numerics.BigInteger LogCeiling) LogE(System.Numerics.BigInteger n)
+      internal static (System.Numerics.BigInteger LogFloor, System.Numerics.BigInteger LogCeiling) IntegerLogE(System.Numerics.BigInteger n)
       {
         System.ArgumentOutOfRangeException.ThrowIfNegativeOrZero(n);
 
@@ -162,7 +162,7 @@ namespace Flux
 
       #endregion
 
-      #region RootN - Newton-Raphson with quadratic convergence.
+      #region IntegerRootN - Newton-Raphson with quadratic convergence.
 
       /// <summary>
       /// <para>Newton–Raphson iteration for integer nth root with quadratic convergence and a logarithmic initial guess.</para>
@@ -171,7 +171,7 @@ namespace Flux
       /// <param name="n"></param>
       /// <returns></returns>
       /// <exception cref="System.ArithmeticException"></exception>
-      internal static (System.Numerics.BigInteger RootFloor, System.Numerics.BigInteger RootCeiling, bool IsExactRoot) RootN(System.Numerics.BigInteger value, int n)
+      internal static (System.Numerics.BigInteger RootFloor, System.Numerics.BigInteger RootCeiling, bool IsExactRoot) IntegerRootN(System.Numerics.BigInteger value, int n)
       {
         System.ArgumentOutOfRangeException.ThrowIfNegative(value);
         System.ArgumentOutOfRangeException.ThrowIfNegativeOrZero(n);
@@ -209,14 +209,14 @@ namespace Flux
 
       #endregion
 
-      #region Sqrt - Square root using Newton's method.
+      #region IntegerSqrt - Square root using Newton's method.
 
       /// <summary>
       /// <para>Integer square root using Newton's method.</para>
       /// </summary>
       /// <param name="n"></param>
       /// <returns></returns>
-      internal static System.Numerics.BigInteger Sqrt(System.Numerics.BigInteger n)
+      internal static System.Numerics.BigInteger IntegerSqrt(System.Numerics.BigInteger n)
       {
         System.ArgumentOutOfRangeException.ThrowIfNegative(n);
 

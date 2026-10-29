@@ -64,13 +64,13 @@ namespace Maths
     [TestMethod]
     public void IntegerRootN()
     {
-      Assert.AreEqual(3, BinaryInteger.RootN(27, 3));
+      Assert.AreEqual(3, BinaryInteger.IntegerRootN(27, 3));
     }
 
     [TestMethod]
     public void IntegerSqrt()
     {
-      Assert.AreEqual(4, BinaryInteger.SquareRoot(21));
+      Assert.AreEqual(4, BinaryInteger.IntegerSqrt(21));
     }
 
     [TestMethod]
@@ -104,9 +104,9 @@ namespace Maths
     {
       var v = 15;
 
-      var iq = BinaryInteger.SquareRoot(v);
+      var iq = BinaryInteger.IntegerSqrt(v);
 
-      var isiq = BinaryInteger.IsSquareRoot(v, iq);
+      var isiq = BinaryInteger.IsIntegerSqrt(v, iq);
 
       Assert.IsTrue(isiq);
     }
@@ -116,9 +116,9 @@ namespace Maths
     {
       var v = 15;
 
-      var iq = BinaryInteger.SquareRoot(v);
+      var iq = BinaryInteger.IntegerSqrt(v);
 
-      var ispiq = BinaryInteger.IsPerfectSquareRoot(v, iq);
+      var ispiq = BinaryInteger.IsPerfectIntegerSqrt(v, iq);
 
       Assert.IsFalse(ispiq);
     }

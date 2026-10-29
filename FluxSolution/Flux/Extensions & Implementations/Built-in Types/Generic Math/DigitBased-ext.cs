@@ -46,7 +46,7 @@
         if (IsSingleDigit(value, radix))
           return TInteger.One;
 
-        return Log(value, radix).LogAwayFromZero;
+        return IntegerLog(value, radix).IntegerLogAwayFromZero;
       }
 
       //{

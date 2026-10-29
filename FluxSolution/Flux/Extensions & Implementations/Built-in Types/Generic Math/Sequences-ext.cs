@@ -50,9 +50,9 @@
 
           var fivens = TInteger.CreateChecked(5) * n * n;
           var fp4 = fivens + four;
-          var fp4sr = SquareRoot(fp4);
+          var fp4sr = IntegerSqrt(fp4);
           var fm4 = fivens - four;
-          var fm4sr = SquareRoot(fm4);
+          var fm4sr = IntegerSqrt(fm4);
 
           return fp4sr * fp4sr == fp4 || fm4sr * fm4sr == fm4;
         }

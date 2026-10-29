@@ -43,7 +43,7 @@ namespace Flux
 
       #endregion
 
-      #region Cbrt - Integer cube root.
+      #region IntegerCbrt - Integer cube root.
 
       /// <summary>
       /// <para>Computes the integer cube root of a 64-bit unsigned integer.</para>
@@ -51,7 +51,7 @@ namespace Flux
       /// </summary>
       /// <param name="b"></param>
       /// <returns></returns>
-      internal static ulong Cbrt(ulong n)
+      internal static ulong IntegerCbrt(ulong n)
       {
         if (n < 8)
           return n == 0 ? 0u : 1u;
@@ -81,7 +81,7 @@ namespace Flux
 
       #endregion
 
-      #region Log - Integer logarithm.
+      #region IntegerLog - Integer logarithm.
 
       /// <summary>
       /// <para>Computes the integer logarithm of a 64-bit unsigned integer with a specified base.</para>
@@ -90,7 +90,7 @@ namespace Flux
       /// <param name="value"></param>
       /// <param name="radix"></param>
       /// <returns></returns>
-      internal static (ulong LogFloor, ulong LogCeiling, bool IsExactLog) Log(ulong value, ulong radix)
+      internal static (ulong LogFloor, ulong LogCeiling, bool IsExactLog) IntegerLog(ulong value, ulong radix)
       {
         System.ArgumentOutOfRangeException.ThrowIfLessThan(radix, 2ul);
 
@@ -141,7 +141,7 @@ namespace Flux
 
       #endregion
 
-      #region LogE - Integer natural logarithm.
+      #region IntegerLogE - Integer natural logarithm.
 
       /// <summary>
       /// <para>Computes the integer natural logarithm of a 64-bit unsigned integer.</para>
@@ -149,7 +149,7 @@ namespace Flux
       /// </summary>
       /// <param name="n"></param>
       /// <returns></returns>
-      internal static (ulong LogFloor, ulong LogCeiling) LogE(ulong n)
+      internal static (ulong LogFloor, ulong LogCeiling) IntegerLogE(ulong n)
       {
         System.ArgumentOutOfRangeException.ThrowIfNegativeOrZero(n);
 
@@ -170,7 +170,7 @@ namespace Flux
 
       #endregion
 
-      #region RootN - Integer nth root.
+      #region IntegerRootN - Integer nth root.
 
       /// <summary>
       /// <para>Compute the nth root of a 64-bit unsigned integer. This implementation uses Newton's method.</para>
@@ -179,7 +179,7 @@ namespace Flux
       /// <param name="value"></param>
       /// <param name="degree"></param>
       /// <returns></returns>
-      internal static ulong RootN(ulong value, int degree)
+      internal static ulong IntegerRootN(ulong value, int degree)
       {
         if (degree <= 1)
           return value;
@@ -191,7 +191,7 @@ namespace Flux
           return (ulong)double.Sqrt(value);
 
         if (degree == 3) // Fast path for cube root (integer‑safe).
-          return Cbrt(value);
+          return IntegerCbrt(value);
 
         var x = 1UL << (System.Numerics.BitOperations.Log2(value) / degree);
 
@@ -211,7 +211,7 @@ namespace Flux
 
       #endregion
 
-      #region Sqrt - Integer square root.
+      #region IntegerSqrt - Integer square root.
 
       /// <summary>
       /// <para>Computes the integer square root of a 64-bit unsigned integer.</para>
@@ -219,7 +219,7 @@ namespace Flux
       /// </summary>
       /// <param name="n"></param>
       /// <returns></returns>
-      internal static ulong Sqrt(ulong n)
+      internal static ulong IntegerSqrt(ulong n)
       {
         if (n <= 1)
           return n;

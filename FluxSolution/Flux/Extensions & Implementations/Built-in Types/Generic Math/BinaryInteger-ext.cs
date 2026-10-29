@@ -118,14 +118,14 @@
 
       #endregion
 
-      #region CubeRoot functions
+      #region IntegerCbrt functions
 
       /// <summary>
       /// <para>Computes the integer (floor) cube-root of a value.</para>
       /// </summary>
       /// <param name="value"></param>
       /// <returns>The square-root of the value.</returns>
-      public static TInteger CubeRoot(TInteger value)
+      public static TInteger IntegerCbrt(TInteger value)
       {
         if (TInteger.IsZero(value))
           return value;
@@ -134,7 +134,7 @@
         var sign = TInteger.CopySign(TInteger.One, value);
 
         if (TryConvertTo(abs, out ulong ulv))
-          return TInteger.CreateChecked(ulong.Cbrt(ulv)) * sign;
+          return TInteger.CreateChecked(ulong.IntegerCbrt(ulv)) * sign;
 
         return TInteger.CreateChecked(System.Numerics.BigInteger.Cbrt(System.Numerics.BigInteger.CreateChecked(abs))) * sign;
       }
@@ -146,7 +146,7 @@
       /// <param name="value">The square value to find the square-<paramref name="root"/> of.</param>
       /// <param name="root">The resulting square-root of <paramref name="value"/>.</param>
       /// <returns>Whether the <paramref name="value"/> is the integer (not necessarily perfect) square of <paramref name="root"/>.</returns>
-      public static bool IsCubeRoot(TInteger value, TInteger root)
+      public static bool IsIntegerCbrt(TInteger value, TInteger root)
         => value >= (root * root * root) // If GTE to cube of root.
         && value < (root + TInteger.One) * (root + TInteger.One) * (root + TInteger.One); // And if LT to cube of (root + 1).
 
@@ -158,37 +158,12 @@
       /// <param name="root">The resulting square-root of <paramref name="square"/>.</param>
       /// <returns>Whether the <paramref name="square"/> is a perfect square of <paramref name="root"/>.</returns>
       /// <remarks>Not using "y == (x * x)" because risk of overflow.</remarks>
-      public static bool IsPerfectCubeRoot(TInteger value, TInteger root)
+      public static bool IsPerfectIntegerCbrt(TInteger value, TInteger root)
         => value == (root * root * root);
 
       #endregion
 
-      #region JosephusProblem
-
-      /// <summary>
-      /// <para>Calculates the last longest surviving position (it's not a 0-based index) of the Flavius Josephus problem where <paramref name="value"/> people stand in a circle and every <paramref name="k"/> person commits suicide.</para>
-      /// <para><see href="https://en.wikipedia.org/wiki/Josephus_problem"/></para>
-      /// </summary>
-      /// <remarks>This is about counting positions, so it is 1-based position that is computed.</remarks>
-      /// <param name="value">The number of people in the initial circle.</param>
-      /// <param name="k">The count of each step. I.e. k-1 people are skipped and the k-th is executed.</param>
-      /// <returns>The 1-indexed position that the survivor occupies.</returns>
-      public static TInteger JosephusProblem(TInteger n, TInteger k)
-      {
-        System.ArgumentOutOfRangeException.ThrowIfNegativeOrZero(k);
-        System.ArgumentOutOfRangeException.ThrowIfGreaterThan(k, n);
-
-        var survivingPosition = TInteger.Zero;
-
-        for (var positionCounter = TInteger.One; positionCounter <= n; positionCounter++)
-          survivingPosition = (survivingPosition + k) % positionCounter;
-
-        return survivingPosition + TInteger.One;
-      }
-
-      #endregion
-
-      #region Log
+      #region IntegerLog
 
       /// <summary>
       /// <para>Returns the integer (toward-zero, away-from-zero) logarithm of specified a <paramref name="value"/> in a specified <paramref name="radix"/>.</para>
@@ -197,7 +172,7 @@
       /// <param name="value"></param>
       /// <param name="radix"></param>
       /// <returns></returns>
-      public static (TInteger LogTowardZero, TInteger LogAwayFromZero, bool IsExactLog) Log<TRadix>(TInteger value, TRadix radix)
+      public static (TInteger IntegerLogTowardZero, TInteger IntegerLogAwayFromZero, bool IsExactLog) IntegerLog<TRadix>(TInteger value, TRadix radix)
         where TRadix : System.Numerics.IBinaryInteger<TRadix>
       {
         System.ArgumentOutOfRangeException.ThrowIfLessThanOrEqual(radix, TRadix.One);
@@ -210,13 +185,13 @@
 
         if (TryConvertTo(abs, out ulong ulv) && TryConvertTo(radix, out ulong ulr))
         {
-          var (LogF, LogC, IsExactLog) = ulong.Log(ulv, ulr);
+          var (LogF, LogC, IsExactLog) = ulong.IntegerLog(ulv, ulr);
 
           return (TInteger.CreateChecked(LogF) * sign, TInteger.CreateChecked(LogC) * sign, IsExactLog);
         }
         else // Fall back on BigInteger LOG implementation.
         {
-          var (LogF, LogC, IsExactLog) = System.Numerics.BigInteger.Log(System.Numerics.BigInteger.CreateChecked(abs), System.Numerics.BigInteger.CreateChecked(radix));
+          var (LogF, LogC, IsExactLog) = System.Numerics.BigInteger.IntegerLog(System.Numerics.BigInteger.CreateChecked(abs), System.Numerics.BigInteger.CreateChecked(radix));
 
           return (TInteger.CreateChecked(LogF) * sign, TInteger.CreateChecked(LogC) * sign, IsExactLog);
         }
@@ -224,7 +199,7 @@
 
       #endregion
 
-      #region LogE
+      #region IntegerLogE
 
       /// <summary>
       /// <para>Returns the integer (floor) natural logarithm of specified a <paramref name="value"/> in a base/radix E.</para>
@@ -232,7 +207,7 @@
       /// <typeparam name="TRadix"></typeparam>
       /// <param name="value"></param>
       /// <returns></returns>
-      public static (TInteger LogTowardZero, TInteger LogAwayFromZero) LogE<TRadix>(TInteger value)
+      public static (TInteger IntegerLogTowardZero, TInteger IntegerLogAwayFromZero) IntegerLogE<TRadix>(TInteger value)
         where TRadix : System.Numerics.IBinaryInteger<TRadix>
       {
         if (TInteger.IsZero(value))
@@ -243,13 +218,13 @@
 
         if (TryConvertTo(absV, out ulong ulv))
         {
-          var (ilogf, ilogc) = ulong.LogE(ulv);
+          var (ilogf, ilogc) = ulong.IntegerLogE(ulv);
 
           return (TInteger.CreateChecked(ilogf) * sign, TInteger.CreateChecked(ilogc) * sign);
         }
         else // Fall-back on BigInteger ILog, which is more expensive but can handle any size of integer.
         {
-          var (ilogf, ilogc) = System.Numerics.BigInteger.LogE(System.Numerics.BigInteger.CreateChecked(absV));
+          var (ilogf, ilogc) = System.Numerics.BigInteger.IntegerLogE(System.Numerics.BigInteger.CreateChecked(absV));
 
           return (TInteger.CreateChecked(ilogf) * sign, TInteger.CreateChecked(ilogc) * sign);
         }
@@ -257,7 +232,7 @@
 
       #endregion
 
-      #region RootN functions
+      #region IntegerRootN functions
 
       private static TInteger RootNCore(TInteger value, TInteger degree)
       {
@@ -297,7 +272,7 @@
       /// <param name="value"></param>
       /// <param name="exponent"></param>
       /// <returns></returns>
-      public static TInteger RootN(TInteger value, TInteger degree)
+      public static TInteger IntegerRootN(TInteger value, TInteger degree)
       {
         //return TInteger.CreateChecked(BigIntegerExtensions.RootN(System.Numerics.BigInteger.CreateChecked(value), int.CreateChecked(degree)));
         System.ArgumentOutOfRangeException.ThrowIfNegative(value);
@@ -313,25 +288,25 @@
         return Pow(root, degree, value) == value;
       }
 
-      public static bool IsRootN<TNth>(TInteger value, TNth n, TInteger root)
+      public static bool IsIntegerRootN<TNth>(TInteger value, TNth n, TInteger root)
         where TNth : System.Numerics.IBinaryInteger<TNth>
         => value >= Pow(root, n) // If GTE to nth of root.
         && value < Pow(root + TInteger.One, n); // And if LT to nth of (root + 1).
 
-      public static bool IsPerfectRootN<TNth>(TInteger value, TNth n, TInteger root)
+      public static bool IsPerfectIntegerRootN<TNth>(TInteger value, TNth n, TInteger root)
         where TNth : System.Numerics.IBinaryInteger<TNth>
         => value == Pow(root, n);
 
       #endregion
 
-      #region SquareRoot functions
+      #region IntegerSqrt functions
 
       /// <summary>
       /// <para>Computes the integer square-root of a value.</para>
       /// </summary>
       /// <param name="value"></param>
       /// <returns></returns>
-      public static TInteger SquareRoot(TInteger value)
+      public static TInteger IntegerSqrt(TInteger value)
       {
         if (TInteger.IsZero(value))
           return value;
@@ -340,9 +315,9 @@
         var sign = TInteger.CopySign(TInteger.One, value);
 
         if (TryConvertTo(abs, out ulong ulv))
-          return TInteger.CreateChecked(ulong.Sqrt(ulv)) * sign;
+          return TInteger.CreateChecked(ulong.IntegerSqrt(ulv)) * sign;
         else // Fall back on BigInteger SQRT implementation.
-          return TInteger.CreateChecked(System.Numerics.BigInteger.Sqrt(System.Numerics.BigInteger.CreateChecked(abs))) * sign;
+          return TInteger.CreateChecked(System.Numerics.BigInteger.IntegerSqrt(System.Numerics.BigInteger.CreateChecked(abs))) * sign;
       }
 
       /// <summary>
@@ -352,7 +327,7 @@
       /// <param name="value">The square value to find the square-<paramref name="root"/> of.</param>
       /// <param name="root">The resulting square-root of <paramref name="value"/>.</param>
       /// <returns>Whether the <paramref name="value"/> is the integer (not necessarily perfect) square of <paramref name="root"/>.</returns>
-      public static bool IsSquareRoot(TInteger value, TInteger root)
+      public static bool IsIntegerSqrt(TInteger value, TInteger root)
         => value >= (root * root) // If GTE to square of root.
         && value < (root + TInteger.One) * (root + TInteger.One); // And if LT to square of (root + 1).
 
@@ -364,8 +339,33 @@
       /// <param name="root">The resulting square-root of <paramref name="square"/>.</param>
       /// <returns>Whether the <paramref name="square"/> is a perfect square of <paramref name="root"/>.</returns>
       /// <remarks>Not using "y == (x * x)" because risk of overflow.</remarks>
-      public static bool IsPerfectSquareRoot(TInteger value, TInteger root)
+      public static bool IsPerfectIntegerSqrt(TInteger value, TInteger root)
         => value == (root * root);
+
+      #endregion
+
+      #region JosephusProblem
+
+      /// <summary>
+      /// <para>Calculates the last longest surviving position (it's not a 0-based index) of the Flavius Josephus problem where <paramref name="value"/> people stand in a circle and every <paramref name="k"/> person commits suicide.</para>
+      /// <para><see href="https://en.wikipedia.org/wiki/Josephus_problem"/></para>
+      /// </summary>
+      /// <remarks>This is about counting positions, so it is 1-based position that is computed.</remarks>
+      /// <param name="value">The number of people in the initial circle.</param>
+      /// <param name="k">The count of each step. I.e. k-1 people are skipped and the k-th is executed.</param>
+      /// <returns>The 1-indexed position that the survivor occupies.</returns>
+      public static TInteger JosephusProblem(TInteger n, TInteger k)
+      {
+        System.ArgumentOutOfRangeException.ThrowIfNegativeOrZero(k);
+        System.ArgumentOutOfRangeException.ThrowIfGreaterThan(k, n);
+
+        var survivingPosition = TInteger.Zero;
+
+        for (var positionCounter = TInteger.One; positionCounter <= n; positionCounter++)
+          survivingPosition = (survivingPosition + k) % positionCounter;
+
+        return survivingPosition + TInteger.One;
+      }
 
       #endregion
 
