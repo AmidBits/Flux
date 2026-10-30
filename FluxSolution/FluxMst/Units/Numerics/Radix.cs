@@ -89,13 +89,13 @@ namespace Units
     [TestMethod]
     public void IntegerLogCeiling()
     {
-      Assert.AreEqual(3, BinaryInteger.IntegerLog(512 - 1, 10).IntegerLogAwayFromZero);
+      Assert.AreEqual(3, BinaryInteger.IntegerLog(512 - 1, 10).LogCeiling);
     }
 
     [TestMethod]
     public void IntegerLogFloor()
     {
-      Assert.AreEqual(2, BinaryInteger.IntegerLog(512, 10).IntegerLogTowardZero);
+      Assert.AreEqual(2, BinaryInteger.IntegerLog(512, 10).LogFloor);
     }
 
     [TestMethod]

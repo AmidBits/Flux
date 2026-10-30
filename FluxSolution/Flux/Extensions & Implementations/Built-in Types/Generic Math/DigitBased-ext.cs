@@ -46,23 +46,8 @@
         if (IsSingleDigit(value, radix))
           return TInteger.One;
 
-        return IntegerLog(value, radix).IntegerLogAwayFromZero;
+        return IntegerLog(value, radix).LogFloor + TInteger.One;
       }
-
-      //{
-      //  var rdx = TInteger.CreateChecked(Units.Radix.AssertMember(radix));
-
-      //  var count = TInteger.Zero;
-
-      //  while (!TInteger.IsZero(value))
-      //  {
-      //    count++;
-
-      //    value /= rdx;
-      //  }
-
-      //  return count;
-      //}
 
       public static TInteger DigitCount2(TInteger n, TInteger b)
       {

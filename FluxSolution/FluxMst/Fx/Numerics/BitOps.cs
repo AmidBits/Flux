@@ -198,13 +198,13 @@ namespace Numerics
     [TestMethod]
     public void Log2AwayFromZero()
     {
-      Assert.AreEqual(8, BinaryInteger.IntegerLog(215, 2).IntegerLogAwayFromZero);
+      Assert.AreEqual(8, BinaryInteger.IntegerLog(215, 2).LogCeiling);
     }
 
     [TestMethod]
     public void Log2TowardZero()
     {
-      Assert.AreEqual(4, BinaryInteger.IntegerLog(215, 3).IntegerLogTowardZero);
+      Assert.AreEqual(4, BinaryInteger.IntegerLog(215, 3).LogFloor);
     }
 
     #endregion // Log2
