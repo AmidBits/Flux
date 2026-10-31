@@ -540,7 +540,13 @@ namespace ConsoleApp
     {
       var n = (System.Numerics.BigInteger)10;
 
-      System.Console.WriteLine(Flux.Diagnostics.Performance.Measure(() => BinaryInteger.IntegerRootN<System.UInt128>((System.UInt128)System.Int128.MaxValue, (System.UInt128)19)));
+      var test1 = Flux.NumericConstants<int>.BitWidth;
+      var test2 = Flux.NumericConstants<long>.BitWidth;
+      var test3 = Flux.NumericConstants<uint>.BitWidth;
+      var test4 = Flux.NumericConstants<ulong>.BitWidth;
+
+
+      System.Console.WriteLine(Flux.Diagnostics.Performance.Measure(() => BinaryInteger.AscendingPrimes(2).Take(1).ToArray(), 100000));
 
       //var nibi = n.IsBigInteger();
       //var nic = n.IsComplex();
@@ -558,23 +564,23 @@ namespace ConsoleApp
       //var nisi = n.IsSignedInteger();
       //var niui = n.IsUnsignedInteger();
 
-      var nt = n.GetType();
+      //var nt = n.GetType();
 
-      var ntibi = nt.IsNumericsBigInteger();
-      var ntic = nt.IsNumericsComplex();
+      //var ntibi = nt.IsNumericsBigInteger();
+      //var ntic = nt.IsNumericsComplex();
 
-      var ntiibfp = nt.IsIBinaryFloatingPointIeee754();
-      var ntiibi = nt.IsIBinaryInteger();
-      var ntiibn = nt.IsIBinaryNumber();
-      var ntiifp = nt.IsIFloatingPoint();
-      var ntiifpi754 = nt.IsIFloatingPointIeee754();
-      var ntiimmv = nt.IsIMinMaxValue();
-      var ntiin = nt.IsINumber();
-      var ntiisn = nt.IsISignedNumber();
-      var ntiiun = nt.IsIUnsignedNumber();
+      //var ntiibfp = nt.IsIBinaryFloatingPointIeee754();
+      //var ntiibi = nt.IsIBinaryInteger();
+      //var ntiibn = nt.IsIBinaryNumber();
+      //var ntiifp = nt.IsIFloatingPoint();
+      //var ntiifpi754 = nt.IsIFloatingPointIeee754();
+      //var ntiimmv = nt.IsIMinMaxValue();
+      //var ntiin = nt.IsINumber();
+      //var ntiisn = nt.IsISignedNumber();
+      //var ntiiun = nt.IsIUnsignedNumber();
 
-      var ntsi = nt.IsSignedInteger();
-      var ntui = nt.IsUnsignedInteger();
+      //var ntsi = nt.IsSignedInteger();
+      //var ntui = nt.IsUnsignedInteger();
 
 
     }

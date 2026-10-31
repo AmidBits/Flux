@@ -171,48 +171,48 @@ namespace Flux
         return numericCapabilities;
       }
 
-      public bool ImplementsInterface(System.Type numericInterface)
-      {
-        var interfaces = type.GetInterfacesWithCache();
+      //      public bool ImplementsInterface(System.Type numericInterface)
+      //      {
+      //        var interfaces = type.GetInterfacesWithCache();
 
-        return interfaces.Any(gi => gi == numericInterface);
-      }
-      public bool ImplementsInterfacesAll(params System.Type[] numericInterfaces)
-      {
-        var interfaces = type.GetInterfacesWithCache();
+      //        return interfaces.Any(gi => gi == numericInterface);
+      //      }
+      //      public bool ImplementsInterfacesAll(params System.Type[] numericInterfaces)
+      //      {
+      //        var interfaces = type.GetInterfacesWithCache();
 
-        return numericInterfaces.All(ni => interfaces.Any(gi => gi == ni));
-      }
-      public bool ImplementsInterfacesAny(params System.Type[] numericInterfaces)
-      {
-        var interfaces = type.GetInterfacesWithCache();
+      //        return numericInterfaces.All(ni => interfaces.Any(gi => gi == ni));
+      //      }
+      //      public bool ImplementsInterfacesAny(params System.Type[] numericInterfaces)
+      //      {
+      //        var interfaces = type.GetInterfacesWithCache();
 
-        return numericInterfaces.Any(ni => interfaces.Any(gi => gi == ni));
-      }
+      //        return numericInterfaces.Any(ni => interfaces.Any(gi => gi == ni));
+      //      }
 
-      public bool IsIBinaryFloatingPointIeee754() => System.Enum.HasAnyFlags(type.GetNumericCapabilitiesWithCache(), NumericCapabilities.IBinaryFloatingPointIeee754);
-      public bool IsIBinaryInteger() => System.Enum.HasAnyFlags(type.GetNumericCapabilitiesWithCache(), NumericCapabilities.IBinaryInteger);
-      public bool IsIBinaryNumber() => System.Enum.HasAnyFlags(type.GetNumericCapabilitiesWithCache(), NumericCapabilities.IBinaryNumber);
-#if NET11_0_OR_GREATER
-      public bool IsIDecimalFloatingPointIeee754() => System.Enum.HasAnyFlags(type.GetNumericCapabilitiesWithCache(), NumericCapabilities.IDecimalFloatingPointIeee754);
-#endif
-      public bool IsIFloatingPoint() => System.Enum.HasAnyFlags(type.GetNumericCapabilitiesWithCache(), NumericCapabilities.IFloatingPoint);
-      public bool IsIFloatingPointIeee754() => System.Enum.HasAnyFlags(type.GetNumericCapabilitiesWithCache(), NumericCapabilities.IFloatingPointIeee754);
-      public bool IsIMinMaxValue() => System.Enum.HasAnyFlags(type.GetNumericCapabilitiesWithCache(), NumericCapabilities.IMinMaxValue);
-      public bool IsINumber() => System.Enum.HasAnyFlags(type.GetNumericCapabilitiesWithCache(), NumericCapabilities.INumber);
-      public bool IsINumberBase() => System.Enum.HasAnyFlags(type.GetNumericCapabilitiesWithCache(), NumericCapabilities.INumberBase);
-      public bool IsISignedNumber() => System.Enum.HasAnyFlags(type.GetNumericCapabilitiesWithCache(), NumericCapabilities.ISignedNumber);
-      public bool IsIUnsignedNumber() => System.Enum.HasAnyFlags(type.GetNumericCapabilitiesWithCache(), NumericCapabilities.IUnsignedNumber);
+      //      public bool IsIBinaryFloatingPointIeee754() => System.Enum.HasAnyFlags(type.GetNumericCapabilitiesWithCache(), NumericCapabilities.IBinaryFloatingPointIeee754);
+      //      public bool IsIBinaryInteger() => System.Enum.HasAnyFlags(type.GetNumericCapabilitiesWithCache(), NumericCapabilities.IBinaryInteger);
+      //      public bool IsIBinaryNumber() => System.Enum.HasAnyFlags(type.GetNumericCapabilitiesWithCache(), NumericCapabilities.IBinaryNumber);
+      //#if NET11_0_OR_GREATER
+      //      public bool IsIDecimalFloatingPointIeee754() => System.Enum.HasAnyFlags(type.GetNumericCapabilitiesWithCache(), NumericCapabilities.IDecimalFloatingPointIeee754);
+      //#endif
+      //      public bool IsIFloatingPoint() => System.Enum.HasAnyFlags(type.GetNumericCapabilitiesWithCache(), NumericCapabilities.IFloatingPoint);
+      //      public bool IsIFloatingPointIeee754() => System.Enum.HasAnyFlags(type.GetNumericCapabilitiesWithCache(), NumericCapabilities.IFloatingPointIeee754);
+      //      public bool IsIMinMaxValue() => System.Enum.HasAnyFlags(type.GetNumericCapabilitiesWithCache(), NumericCapabilities.IMinMaxValue);
+      //      public bool IsINumber() => System.Enum.HasAnyFlags(type.GetNumericCapabilitiesWithCache(), NumericCapabilities.INumber);
+      //      public bool IsINumberBase() => System.Enum.HasAnyFlags(type.GetNumericCapabilitiesWithCache(), NumericCapabilities.INumberBase);
+      //      public bool IsISignedNumber() => System.Enum.HasAnyFlags(type.GetNumericCapabilitiesWithCache(), NumericCapabilities.ISignedNumber);
+      //      public bool IsIUnsignedNumber() => System.Enum.HasAnyFlags(type.GetNumericCapabilitiesWithCache(), NumericCapabilities.IUnsignedNumber);
 
-      public bool IsNumericDouble() => type == typeof(System.Double) || (type == typeof(System.Runtime.InteropServices.NFloat) && System.Runtime.InteropServices.NFloat.Size == 8);
-      public bool IsNumericHalf() => type == typeof(System.Half);
-      public bool IsNumericSingle() => type == typeof(System.Single) || (type == typeof(System.Runtime.InteropServices.NFloat) && System.Runtime.InteropServices.NFloat.Size == 4);
-      public bool IsNumericsBigInteger() => type == typeof(System.Numerics.BigInteger);
-      public bool IsNumericsComplex() => type == typeof(System.Numerics.Complex);
+      //      public bool IsNumericDouble() => type == typeof(System.Double) || (type == typeof(System.Runtime.InteropServices.NFloat) && System.Runtime.InteropServices.NFloat.Size == 8);
+      //      public bool IsNumericHalf() => type == typeof(System.Half);
+      //      public bool IsNumericSingle() => type == typeof(System.Single) || (type == typeof(System.Runtime.InteropServices.NFloat) && System.Runtime.InteropServices.NFloat.Size == 4);
+      //      public bool IsNumericsBigInteger() => type == typeof(System.Numerics.BigInteger);
+      //      public bool IsNumericsComplex() => type == typeof(System.Numerics.Complex);
 
-      public bool IsSignedInteger() => System.Enum.HasAllFlags(type.GetNumericCapabilitiesWithCache(), NumericCapabilities.IBinaryInteger | NumericCapabilities.ISignedNumber);
-      public bool IsSignedIntegerFixedWidth() => System.Enum.HasAllFlags(type.GetNumericCapabilitiesWithCache(), NumericCapabilities.IBinaryInteger | NumericCapabilities.IMinMaxValue | NumericCapabilities.ISignedNumber);
-      public bool IsUnsignedInteger() => System.Enum.HasAllFlags(type.GetNumericCapabilitiesWithCache(), NumericCapabilities.IBinaryInteger | NumericCapabilities.IUnsignedNumber);
+      //      public bool IsSignedInteger() => System.Enum.HasAllFlags(type.GetNumericCapabilitiesWithCache(), NumericCapabilities.IBinaryInteger | NumericCapabilities.ISignedNumber);
+      //      public bool IsSignedIntegerFixedWidth() => System.Enum.HasAllFlags(type.GetNumericCapabilitiesWithCache(), NumericCapabilities.IBinaryInteger | NumericCapabilities.IMinMaxValue | NumericCapabilities.ISignedNumber);
+      //      public bool IsUnsignedInteger() => System.Enum.HasAllFlags(type.GetNumericCapabilitiesWithCache(), NumericCapabilities.IBinaryInteger | NumericCapabilities.IUnsignedNumber);
     }
   }
 }

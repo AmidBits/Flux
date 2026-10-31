@@ -25,38 +25,38 @@ namespace Flux
 
     #region Tables of scale factors (negative and positive)
 
-    private static readonly decimal[] m_pow10Reciprocal = [.. Number.GeometricSequence(decimal.One, 10m).Where(d => d < decimal.MaxExactInteger).Select(d => 1m / d)];
-    //{
-    //  1m,
-    //  0.1m,
-    //  0.01m,
-    //  0.001m,
-    //  0.0001m,
-    //  0.00001m,
-    //  0.000001m,
-    //  0.0000001m,
-    //  0.00000001m,
-    //  0.000000001m,
-    //  0.0000000001m,
-    //  0.00000000001m,
-    //  0.000000000001m,
-    //  0.0000000000001m,
-    //  0.00000000000001m,
-    //  0.000000000000001m,
-    //  0.0000000000000001m,
-    //  0.00000000000000001m,
-    //  0.000000000000000001m,
-    //  0.0000000000000000001m,
-    //  0.00000000000000000001m,
-    //  0.000000000000000000001m,
-    //  0.0000000000000000000001m,
-    //  0.00000000000000000000001m,
-    //  0.000000000000000000000001m,
-    //  0.0000000000000000000000001m,
-    //  0.00000000000000000000000001m,
-    //  0.000000000000000000000000001m,
-    //  0.0000000000000000000000000001m,
-    //};
+    internal static readonly decimal[] Pow10Reciprocal = //[.. Number.GeometricSequence(decimal.One, 10m).Where(d => d < decimal.MaxExactInteger).Select(d => 1m / d)];
+    [
+      1m,
+      0.1m,
+      0.01m,
+      0.001m,
+      0.0001m,
+      0.00001m,
+      0.000001m,
+      0.0000001m,
+      0.00000001m,
+      0.000000001m,
+      0.0000000001m,
+      0.00000000001m,
+      0.000000000001m,
+      0.0000000000001m,
+      0.00000000000001m,
+      0.000000000000001m,
+      0.0000000000000001m,
+      0.00000000000000001m,
+      0.000000000000000001m,
+      0.0000000000000000001m,
+      0.00000000000000000001m,
+      0.000000000000000000001m,
+      0.0000000000000000000001m,
+      0.00000000000000000000001m,
+      0.000000000000000000000001m,
+      0.0000000000000000000000001m,
+      0.00000000000000000000000001m,
+      0.000000000000000000000000001m,
+      0.0000000000000000000000000001m,
+    ];
 
     #endregion
 
@@ -188,8 +188,8 @@ namespace Flux
         if ((uint)(exponent + 28) > 56) throw new System.ArgumentOutOfRangeException(nameof(exponent));
 
         return exponent < 0
-          ? m_pow10Reciprocal[-exponent]
-          : decimal.CreateChecked(UInt128Extensions.m_pow10[exponent]); ;
+          ? Pow10Reciprocal[-exponent]
+          : decimal.CreateChecked(UInt128Extensions.Pow10[exponent]);
       }
 
       #endregion

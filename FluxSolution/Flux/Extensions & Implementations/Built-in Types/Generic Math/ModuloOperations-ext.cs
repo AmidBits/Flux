@@ -41,7 +41,7 @@ namespace Flux
       {
         System.ArgumentOutOfRangeException.ThrowIfNegativeOrZero(modulus);
 
-        var halfModulus = modulus / NumberConstants<TNumber>.Two;
+        var halfModulus = modulus / NumericConstants<TNumber>.Two;
 
         return NormalizeZero(EuclideanModulo(value + halfModulus, modulus) - halfModulus);
       }

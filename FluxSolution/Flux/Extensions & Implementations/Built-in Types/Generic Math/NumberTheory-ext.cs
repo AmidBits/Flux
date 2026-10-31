@@ -2,6 +2,16 @@
 {
   public static partial class BinaryInteger
   {
+    #region Fast path primality test using a 64-bit bit-mask
+
+    private const ulong PrimeNumberBitMask = 0b0010_1000_0010_0000_1000_1010_0010_0000_1010_0000_1000_1010_0010_1000_1010_1100UL;
+
+    internal static bool IsPrimeNumberByBitMask<TInteger>(TInteger value)
+      where TInteger : System.Numerics.IBinaryInteger<TInteger>
+      => value >= NumericConstants<TInteger>.Two && value <= NumericConstants<TInteger>.SixtyThree && ((PrimeNumberBitMask & (1UL << int.CreateChecked(value))) != 0);
+
+    #endregion
+
     extension<TInteger>(TInteger)
       where TInteger : System.Numerics.IBinaryInteger<TInteger>
     {
@@ -791,7 +801,7 @@
       {
         var maxPrimeMultiple = TInteger.One.BitFoldToMsb();
 
-        if (TypeExtensions.IsISignedNumber(typeof(TInteger)))
+        if (NumericConstants<TInteger>.IsISignedNumber)
           maxPrimeMultiple >>>= 1;
 
         var six = TInteger.CreateChecked(6);
@@ -868,7 +878,8 @@
       /// <para>Indicates whether a number is a prime.</para>
       /// <para>This implementation uses a strategy of different algorithms based on the size of the number.</para>
       /// <list type="number">
-      /// <item>A straightforward 6k ± 1 deterministic algorithm for 32-bit numbers.</item>
+      /// <item>A very fast path by way of bit-mask.</item>
+      /// <item>A straightforward but fast 6k ± 1 deterministic loop for 32-bit numbers.</item>
       /// <item>A Miller-Rabin deterministic algorithm for 64-bit numbers.</item>
       /// <item>A Miller-Rabin probabilistic algorithm for larger numbers.</item>
       /// </list>
@@ -882,12 +893,15 @@
         if (n <= TInteger.One)
           return false; // Numbers smaller than 2 are not prime since 2 is the smallest prime.
 
+        if (n >= NumericConstants<TInteger>.Two && n <= NumericConstants<TInteger>.SixtyThree)
+          return IsPrimeNumberByBitMask(n);
+
         var bi = System.Numerics.BigInteger.CreateChecked(n); // Make it a BigInteger, since it could be huge.
 
-        if (bi <= uint.MaxValue) // If less-or-equal-to an unsigned 32-bit value, use straight 6k ± 1 prime test algorithm.
-          return UInt32Extensions.IsPrimeNumberDeterministic(uint.CreateChecked(n));
+        //if (bi <= uint.MaxValue) // If less-or-equal-to an unsigned 32-bit value, use straight 6k ± 1 prime test algorithm.
+        //  return UInt32Extensions.IsPrimeNumberDeterministic(uint.CreateChecked(n));
 
-        if (bi <= ulong.MaxValue) // If less-or-equal-to an unsigned 64-bit value, use Miller-Rabin 64-bit deterministic algorithm.
+        if (bi <= ulong.MaxValue) // If less-or-equal-to an unsigned 64-bit value, use fast path with bit-mask, uint loop, or Miller-Rabin 64-bit deterministic algorithm.
           return UInt64Extensions.IsPrimeNumberDeterministic(ulong.CreateChecked(n));
 
         // Otherwise use Miller-Rabin probabilistic algorithm.

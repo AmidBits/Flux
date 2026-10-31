@@ -49,20 +49,18 @@ namespace Flux
       /// <returns></returns>
       public static bool IsPrimeNumberDeterministic(uint n)
       {
-        if (n <= 3) return n > 1;
-        if ((n & 1) == 0 || n % 3 == 0) return false;
+        if (n <= 63)
+          return BinaryInteger.IsPrimeNumberByBitMask(n);
 
-        var i = 5u;
-        var w = 2u;
+        //if (n <= 3)
+        //  return n > 1;
 
-        while (i * i <= n)
-        {
+        if ((n & 1) == 0 || n % 3 == 0)
+          return false;
+
+        for (uint i = 5u, w = 2u; (ulong)i * i <= n; i += w, w = 6 - w)
           if (n % i == 0)
             return false;
-
-          i += w;
-          w = 6u - w; // 2,4,2,4...
-        }
 
         return true;
       }

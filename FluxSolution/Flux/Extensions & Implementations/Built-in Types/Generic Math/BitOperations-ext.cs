@@ -185,7 +185,7 @@
         for (var i = bytes.Length - 1; i >= 0; i--)  // After this loop, all bits are reversed.
           byte.ReverseBitsInPlace(ref bytes[i]); // Mirror (reverse) bits in each byte.
 
-        return TInteger.ReadBigEndian(bytes, typeof(TInteger).IsIUnsignedNumber()); // Read as BigEndian (decreasing numeric significance in increasing memory addresses).
+        return TInteger.ReadBigEndian(bytes, NumericConstants<TInteger>.IsIUnsignedNumber); // Read as BigEndian (decreasing numeric significance in increasing memory addresses).
       }
 
       #endregion
@@ -206,7 +206,7 @@
 
         value.WriteLittleEndian(bytes); // Write as LittleEndian (increasing numeric significance in increasing memory addresses).
 
-        return TInteger.ReadBigEndian(bytes, typeof(TInteger).IsIUnsignedNumber()); // Read as BigEndian (decreasing numeric significance in increasing memory addresses).
+        return TInteger.ReadBigEndian(bytes, NumericConstants<TInteger>.IsIUnsignedNumber); // Read as BigEndian (decreasing numeric significance in increasing memory addresses).
       }
 
       #endregion
@@ -226,7 +226,7 @@
 
         rng.Shuffle(bytes);
 
-        return TInteger.ReadLittleEndian(bytes, typeof(TInteger).IsIUnsignedNumber());
+        return TInteger.ReadLittleEndian(bytes, NumericConstants<TInteger>.IsIUnsignedNumber);
       }
 
       #endregion
@@ -368,7 +368,7 @@
       /// <para>For dynamic-size types, such as <see cref="System.Numerics.BigInteger"/>, the returned value is the width of the allocated representation currently used to store the value.</para>
       /// </summary>
       public int BitWidth
-        => value.GetByteCount() * 8;
+        => value.ByteCount * 8;
 
       #endregion
 

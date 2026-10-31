@@ -16,14 +16,14 @@
       {
         System.ArgumentOutOfRangeException.ThrowIfNegative(value);
 
-        if (value < NumberConstants<TInteger>.Eight)
+        if (value < NumericConstants<TInteger>.Eight)
           return value == TInteger.Zero ? TInteger.Zero : TInteger.One;
 
-        var x = TInteger.One << int.CreateChecked((TInteger.Log2(value) + NumberConstants<TInteger>.Two) / NumberConstants<TInteger>.Three);
+        var x = TInteger.One << int.CreateChecked((TInteger.Log2(value) + NumericConstants<TInteger>.Two) / NumericConstants<TInteger>.Three);
 
         while (true)
         {
-          var y = (NumberConstants<TInteger>.Two * x + value / (x * x)) / NumberConstants<TInteger>.Three;
+          var y = (NumericConstants<TInteger>.Two * x + value / (x * x)) / NumericConstants<TInteger>.Three;
 
           if (y >= x)
             return x;
@@ -255,14 +255,14 @@
       {
         System.ArgumentOutOfRangeException.ThrowIfNegative(value);
 
-        if (value < NumberConstants<TInteger>.Four)
+        if (value < NumericConstants<TInteger>.Four)
           return value == TInteger.Zero ? TInteger.Zero : TInteger.One;
 
-        var x = TInteger.One << int.CreateChecked((TInteger.Log2(value) + TInteger.One) / NumberConstants<TInteger>.Two);
+        var x = TInteger.One << int.CreateChecked((TInteger.Log2(value) + TInteger.One) / NumericConstants<TInteger>.Two);
 
         while (true)
         {
-          var y = (x + value / x) / NumberConstants<TInteger>.Two;
+          var y = (x + value / x) / NumericConstants<TInteger>.Two;
 
           if (y >= x)
             return x;
@@ -300,15 +300,14 @@
       /// <summary>
       /// <para>Indicates whether <paramref name="value"/> is a power of <paramref name="radix"/> (base).</para>
       /// </summary>
-      /// <remarks>This version also handles negative values simply by mirroring the corresponding positive value. Zero return as false.</remarks>
       public static bool IsPowOf<TRadix>(TInteger value, TRadix radix)
         where TRadix : System.Numerics.IBinaryInteger<TRadix>
       {
         if (value <= TInteger.Zero)
           return false;
 
-        if (radix == TRadix.One + TRadix.One) // Fast path for radix = 2 (bit trick).
-          return (value & (value - TInteger.One)) == TInteger.Zero;
+        if (radix == NumericConstants<TRadix>.Two) // Fast path for radix = 2 (bit trick).
+          return TInteger.IsPow2(value);
 
         AssertRadix(radix, out TInteger r);
 
@@ -329,20 +328,7 @@
         }
       }
 
-      public static int GetDecimalDigitLength(TInteger value)
-      {
-        var abs = TInteger.Abs(value);
-
-        if (abs <= TInteger.CreateChecked(9)) // 0-9.
-          return 1;
-
-        var digits = ((abs.GetShortestBitLength() * 1233) >> 12) + 1;
-
-        if (abs < TInteger.CreateChecked(Pow(10, digits - 1)))
-          digits--;
-
-        return digits;
-      }
+      #region PowMaximumBitLength() - Not exact (computes upper bound) and not used anywhere at this time.
 
       /// <summary>
       /// <para>Computes the required bit length for the result of <paramref name="value"/> raised to the power of <paramref name="exponent"/>.</para>
@@ -351,9 +337,11 @@
       /// <param name="value"></param>
       /// <param name="exponent"></param>
       /// <returns></returns>
-      public static int PowRequiredBitLength<TExponent>(TInteger value, TExponent exponent)
+      private static int PowMaximumBitLength<TExponent>(TInteger value, TExponent exponent)
         where TExponent : System.Numerics.IBinaryInteger<TExponent>
         => checked(value.BitLength * int.CreateChecked(exponent));
+
+      #endregion
 
       /// <summary>
       /// <para>Computes <paramref name="value"/> raised to the power of <paramref name="exponent"/>.</para>
@@ -376,15 +364,16 @@
           return value;
 
         if (exponent == TExponent.CreateChecked(2)) // (value^2 : value * value)
-          return checked(value * value);
+          return NumberBase.Square(value);
 
-        if (value == TInteger.CreateChecked(2)) // (2^exponent : 1 << exponent) 
-          return (int.CreateChecked(exponent) is var ie && ie < value.BitWidth)
-            ? TInteger.One << ie
-            : throw new System.OverflowException();
+        if (exponent == TExponent.CreateChecked(3)) // (value^3 : value * value * value)
+          return NumberBase.Cube(value);
 
-        if (value == TInteger.CreateChecked(10) && exponent < TExponent.CreateChecked(UInt128Extensions.m_pow10.Length)) // 10^exponent, where exponent is the size of an existing index in the table.
-          return TInteger.CreateChecked(UInt128Extensions.m_pow10[int.CreateChecked(exponent)]);
+        if (value == TInteger.CreateChecked(2)) // Pow2 (2^exponent : 1 << exponent) 
+          return TInteger.CreateChecked(Pow2(exponent));
+
+        if (value == TInteger.CreateChecked(10)) // 10^exponent, where exponent is the size of an existing index in the table.
+          return TInteger.CreateChecked(Pow10(exponent));
 
         if (typeof(TInteger) == typeof(System.Numerics.BigInteger)) // If BigInteger, use its optimized static pow() method.
           return (TInteger)(object)System.Numerics.BigInteger.Pow((System.Numerics.BigInteger)(object)value, int.CreateChecked(exponent)); // If TInteger is BigInteger, use it as such.
@@ -407,9 +396,6 @@
 
         return result;
       }
-
-      public static TInteger Pow10(TInteger exponent)
-        => Pow(TInteger.CreateChecked(10), exponent);
 
       /// <summary>
       /// <para>Computes <paramref name="value"/>^<paramref name="exponent"/> using exponentiation by squaring. Stops early if the result would exceed <paramref name="powerLimit"/>.</para>
@@ -456,6 +442,65 @@
         }
 
         return result;
+      }
+
+      /// <summary>
+      /// <para>Computes 10 raised to the power of <paramref name="exponent"/>: <c>10^exponent</c></para>
+      /// </summary>
+      /// <param name="exponent"></param>
+      /// <returns></returns>
+      public static TInteger Pow10(TInteger exponent)
+      {
+        System.ArgumentOutOfRangeException.ThrowIfNegative(exponent);
+
+        var integerExponent = int.CreateChecked(exponent);
+
+        if (integerExponent < UInt128Extensions.Pow10.Length)
+          return TInteger.CreateChecked(UInt128Extensions.Pow10[integerExponent]);
+
+        return TInteger.CreateChecked(System.Numerics.BigInteger.Pow(10, integerExponent));
+      }
+
+      /// <summary>
+      /// <para>Computes the reciprocal of 10 raised to the power of <paramref name="exponent"/>: <c>1/(10^exponent)</c></para>
+      /// </summary>
+      /// <typeparam name="TFloat"></typeparam>
+      /// <param name="exponent"></param>
+      /// <param name="reciprocalPower"></param>
+      /// <returns></returns>
+      /// <exception cref="System.ArgumentOutOfRangeException"></exception>
+      public static TFloat Pow10Reciprocal<TFloat>(TInteger exponent, out TFloat reciprocalPower)
+        where TFloat : System.Numerics.IFloatingPoint<TFloat>, System.Numerics.IPowerFunctions<TFloat>
+      {
+        System.ArgumentOutOfRangeException.ThrowIfNegative(exponent);
+
+        var integerExponent = int.CreateChecked(exponent);
+
+        if (integerExponent < DecimalExtensions.Pow10Reciprocal.Length) // Retrieve reciprocal from table.
+          return reciprocalPower = TFloat.CreateChecked(DecimalExtensions.Pow10Reciprocal[integerExponent]);
+        else if (integerExponent < UInt128Extensions.Pow10.Length) // Compute it by dividing 1 by pow10 from table.
+          return reciprocalPower = TFloat.One / TFloat.CreateChecked(UInt128Extensions.Pow10[integerExponent]);
+        else // Compute it using floating-point pow().
+          return reciprocalPower = TFloat.One / TFloat.Pow(NumericConstants<TFloat>.Ten, TFloat.CreateChecked(integerExponent));
+
+        throw new System.ArgumentOutOfRangeException(nameof(exponent));
+      }
+
+      /// <summary>
+      /// <para>Computes 2 raised to the power of <paramref name="exponent"/>: <c>2^exponent</c></para>
+      /// </summary>
+      /// <param name="exponent"></param>
+      /// <returns></returns>
+      /// <exception cref="System.OverflowException"></exception>
+      public static TInteger Pow2(TInteger exponent)
+      {
+        System.ArgumentOutOfRangeException.ThrowIfNegative(exponent);
+
+        var shift = int.CreateChecked(exponent);
+
+        if (NumericConstants<TInteger>.IsFixedWidth && shift >= TInteger.Zero.BitWidth) throw new System.OverflowException();
+
+        return TInteger.One << shift;
       }
 
       /// <summary>

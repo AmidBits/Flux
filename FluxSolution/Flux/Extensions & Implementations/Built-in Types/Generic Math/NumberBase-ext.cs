@@ -3,7 +3,7 @@ namespace Flux
   public static partial class NumberBase
   {
     extension<TNumberBase>(TNumberBase)
-    where TNumberBase : System.Numerics.INumberBase<TNumberBase>
+      where TNumberBase : System.Numerics.INumberBase<TNumberBase>
     {
       /// <summary>
       /// <para>Gets the radix, or base, for the type.</para>

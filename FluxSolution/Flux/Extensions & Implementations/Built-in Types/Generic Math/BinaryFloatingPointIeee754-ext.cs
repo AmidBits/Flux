@@ -62,9 +62,9 @@
       }
 
       public static (int SignWidth, int ExponentWidth, int FractionWidth) BinaryWidth()
-        => typeof(TFloat).IsNumericDouble()
+        => NumericConstants<TFloat>.IsBinary64
         ? (1, 11, 52)
-        : typeof(TFloat).IsNumericSingle()
+        : NumericConstants<TFloat>.IsBinary32
         ? (1, 8, 23)
         : typeof(TFloat) == typeof(System.Half)
         ? (1, 5, 10)
@@ -85,9 +85,9 @@
 
       [System.CLSCompliant(false)]
       public static TFloat FromBits(ulong bits)
-        => typeof(TFloat).IsNumericDouble()
+        => NumericConstants<TFloat>.IsBinary64
         ? TFloat.CreateChecked(System.BitConverter.UInt64BitsToDouble(bits))
-        : typeof(TFloat).IsNumericSingle()
+        : NumericConstants<TFloat>.IsBinary32
         ? TFloat.CreateChecked(System.BitConverter.UInt32BitsToSingle((uint)bits))
         : (typeof(TFloat) == typeof(System.Half))
         ? TFloat.CreateChecked(System.BitConverter.UInt16BitsToHalf((ushort)bits))
@@ -96,12 +96,12 @@
       [System.CLSCompliant(false)]
       public static TFloat FromOrdered(ulong ordered)
       {
-        if (typeof(TFloat).IsNumericDouble())
+        if (NumericConstants<TFloat>.IsBinary64)
         {
           var bits = ordered < DoubleSignMask ? ~ordered : ordered & DoubleValueMask;
           return TFloat.CreateChecked(System.BitConverter.UInt64BitsToDouble(bits));
         }
-        else if (typeof(TFloat).IsNumericSingle())
+        else if (NumericConstants<TFloat>.IsBinary32)
         {
           var bits = ordered < SingleSignMask ? ~(uint)ordered : (uint)(ordered & SingleValueMask);
           return TFloat.CreateChecked(System.BitConverter.UInt32BitsToSingle(bits));
@@ -130,9 +130,9 @@
 
       [System.CLSCompliant(false)]
       public static ulong ToBits(TFloat value)
-        => typeof(TFloat).IsNumericDouble()
+        => NumericConstants<TFloat>.IsBinary64
         ? System.BitConverter.DoubleToUInt64Bits(double.CreateChecked(value))
-        : typeof(TFloat).IsNumericSingle()
+        : NumericConstants<TFloat>.IsBinary32
         ? System.BitConverter.SingleToUInt32Bits(float.CreateChecked(value))
         : (typeof(TFloat) == typeof(System.Half))
         ? System.BitConverter.HalfToUInt16Bits(System.Half.CreateChecked(value))
@@ -143,9 +143,9 @@
       {
         var bits = ToBits(value);
 
-        if (typeof(TFloat).IsNumericDouble())
+        if (NumericConstants<TFloat>.IsBinary64)
           return (bits & DoubleSignMask) != 0 ? ~bits : bits | DoubleSignMask;
-        else if (typeof(TFloat).IsNumericSingle())
+        else if (NumericConstants<TFloat>.IsBinary32)
           return (bits & SingleSignMask) != 0 ? ~bits : bits | SingleSignMask;
         else if (typeof(TFloat) == typeof(System.Half))
           return (bits & HalfSignMask) != 0 ? ~bits : bits | HalfSignMask;

@@ -19,15 +19,19 @@
         var n1 = TInteger.Zero;
         var n2 = TInteger.One;
 
+        yield return n1;
+
+        yield return n2;
+
         while (true)
         {
-          yield return n1;
-
           try { checked { n1 += n2; } } catch { break; }
 
-          yield return n2;
+          yield return n1;
 
           try { checked { n2 += n1; } } catch { break; }
+
+          yield return n2;
         }
       }
 
