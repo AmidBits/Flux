@@ -540,11 +540,6 @@ namespace ConsoleApp
     {
       var n = (System.Numerics.BigInteger)10;
 
-      var test1 = Flux.NumericConstants<int>.BitWidth;
-      var test2 = Flux.NumericConstants<long>.BitWidth;
-      var test3 = Flux.NumericConstants<uint>.BitWidth;
-      var test4 = Flux.NumericConstants<ulong>.BitWidth;
-
 
       System.Console.WriteLine(Flux.Diagnostics.Performance.Measure(() => BinaryInteger.AscendingPrimes(2).Take(1).ToArray(), 100000));
 
