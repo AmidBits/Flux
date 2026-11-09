@@ -207,8 +207,8 @@ namespace Flux
       {
         var scale = double.Pow(double.CreateChecked(radix), double.CreateChecked(significantDigits));
 
-        var a = FloatingPoint.RoundToInteger(double.CreateChecked(value) / scale, mode);
-        var b = FloatingPoint.RoundToInteger(double.CreateChecked(other) / scale, mode);
+        var a = FloatingPoint.RoundToInteger(double.CreateChecked(value) / scale, mode).RoundedInteger;
+        var b = FloatingPoint.RoundToInteger(double.CreateChecked(other) / scale, mode).RoundedInteger;
 
         return a == b;
       }
@@ -230,8 +230,8 @@ namespace Flux
       {
         var scale = double.Pow(double.CreateChecked(radix), double.CreateChecked(significantDigits));
 
-        var a = FloatingPoint.RoundToInteger(double.CreateChecked(value) / scale, rule);
-        var b = FloatingPoint.RoundToInteger(double.CreateChecked(other) / scale, rule);
+        var a = FloatingPoint.RoundToInteger(double.CreateChecked(value) / scale, rule).RoundedInteger;
+        var b = FloatingPoint.RoundToInteger(double.CreateChecked(other) / scale, rule).RoundedInteger;
 
         return a == b;
       }
