@@ -4,6 +4,14 @@ namespace Flux
   {
     extension(System.Text.StringBuilder source)
     {
+      public System.Text.StringBuilder AppendJoined(string value, string separator = ", ")
+      {
+        if (source.Length > 0 && !source.IsCommonSuffix(0, separator))
+          source.Append(separator);
+
+        return source.Append(value);
+      }
+
       public System.Text.StringBuilder AppendSpaced(string value, UnicodeSpacing spacing = UnicodeSpacing.Space)
       {
         var spacingString = spacing.ToSpacingString();

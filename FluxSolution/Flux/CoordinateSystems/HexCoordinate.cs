@@ -141,9 +141,9 @@ namespace Flux.CoordinateSystems
       where TSource : System.Numerics.IFloatingPoint<TSource>
       where TTarget : System.Numerics.INumber<TTarget>
     {
-      var rQ = FloatingPoint.RoundToNearestInteger(sq, nearestRoundingTies);
-      var rR = FloatingPoint.RoundToNearestInteger(sr, nearestRoundingTies);
-      var rS = FloatingPoint.RoundToNearestInteger(ss, nearestRoundingTies);
+      var rQ = FloatingPoint.RoundToInteger(sq, nearestRoundingTies).RoundedInteger;
+      var rR = FloatingPoint.RoundToInteger(sr, nearestRoundingTies).RoundedInteger;
+      var rS = FloatingPoint.RoundToInteger(ss, nearestRoundingTies).RoundedInteger;
 
       var aQ = TSource.Abs(rQ - sq);
       var aR = TSource.Abs(rR - sr);

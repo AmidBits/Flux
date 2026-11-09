@@ -5,6 +5,11 @@
     extension<TInteger>(TInteger)
       where TInteger : System.Numerics.IBinaryInteger<TInteger>
     {
+      public static TInteger GetBitSize()
+      {
+        return TInteger.PopCount(TInteger.AllBitsSet);
+      }
+
       #region CreateFormatStringWithCountDecimals
 
       /// <summary>

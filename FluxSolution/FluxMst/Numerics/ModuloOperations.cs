@@ -37,13 +37,13 @@ namespace Numerics
     public void EnvelopedDivision()
     {
       var expected = (4, 0);
-      var actual = int.IntegerDivRemEnveloped(-12, -3);
+      var actual = int.IntegerDivRemAwayFromZero(-12, -3);
       Assert.AreEqual(expected, actual);
       expected = (4, 1);
-      actual = int.IntegerDivRemEnveloped(-11, -3);
+      actual = int.IntegerDivRemAwayFromZero(-11, -3);
       Assert.AreEqual(expected, actual);
       expected = (4, 2);
-      actual = int.IntegerDivRemEnveloped(-10, -3);
+      actual = int.IntegerDivRemAwayFromZero(-10, -3);
       Assert.AreEqual(expected, actual);
     }
 

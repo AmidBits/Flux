@@ -14,7 +14,7 @@ namespace Flux
       /// <remarks>This function consider all numbers (e.g. 1.0, 2, etc.), except <c>integer</c> types equal to 1, to be plural.</remarks>
       /// <returns></returns>
       public static bool IsConsideredPlural(TNumber value)
-        => !(value == TNumber.One && NumericConstants<TNumber>.IsIBinaryInteger); // Only an integer 1 (not 1.0) is singular, otherwise a number is considered plural.
+        => !(value == TNumber.One && GenericMathInfo.Get<TNumber>().ImplementsIBinaryInteger); // Only an integer 1 (not 1.0) is singular, otherwise a number is considered plural.
 
       #endregion
 

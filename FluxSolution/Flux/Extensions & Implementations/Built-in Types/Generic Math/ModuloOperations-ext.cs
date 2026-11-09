@@ -41,7 +41,7 @@ namespace Flux
       {
         System.ArgumentOutOfRangeException.ThrowIfNegativeOrZero(modulus);
 
-        var halfModulus = modulus / NumericConstants<TNumber>.Two;
+        var halfModulus = modulus / NumberBaseConstants<TNumber>.Two;
 
         return NormalizeZero(EuclideanModulo(value + halfModulus, modulus) - halfModulus);
       }
@@ -91,22 +91,15 @@ namespace Flux
 
       #endregion
 
-      #region IntegerDivRemEnveloped
+      #region IntegerDivRemAwayFromZero
 
-      public static (TNumber Quotient, TNumber Remainder) IntegerDivRemEnveloped(TNumber a, TNumber n)
+      public static (TNumber Quotient, TNumber Remainder) IntegerDivRemAwayFromZero(TNumber a, TNumber n)
       {
         var q = a / n;
 
         var qt = q - (q % TNumber.One);
 
-        var z = qt * n == a;
-
-        var qe = z ? qt : TNumber.Sign(q) switch
-        {
-          < 0 => qt - TNumber.One,
-          > 0 => qt + TNumber.One,
-          _ => qt
-        };
+        var qe = qt * n == a ? qt : TNumber.Sign(q) switch { < 0 => qt - TNumber.One, > 0 => qt + TNumber.One, _ => qt }; // Ensure that the quotient is away from zero (enveloped).
 
         return (qe, a - qe * n);
       }
@@ -117,13 +110,16 @@ namespace Flux
 
       public static (TNumber Quotient, TNumber Remainder) IntegerDivRemEuclidean(TNumber a, TNumber n)
       {
-        var q = a / n; q -= q % TNumber.One;
+        var q = a / n;
+
+        var qt = q - (q % TNumber.One);
+
         var r = a % n;
 
         if (TNumber.IsNegative(r))
-          return (q - TNumber.CopySign(TNumber.One, n), r + TNumber.Abs(n));
+          return (qt - TNumber.CopySign(TNumber.One, n), r + TNumber.Abs(n));
 
-        return (q, r);
+        return (qt, r);
       }
 
       #endregion
@@ -145,9 +141,40 @@ namespace Flux
 
       #endregion
 
-      #region IntegerDivRemRounded
+      #region IntegerDivRemDirected
 
-      public static (TNumber Quotient, TNumber Remainder) IntegerDivRemRounded(TNumber a, TNumber n, NearestRoundingRule rule = NearestRoundingRule.ToEven)
+      public static (TNumber Quotient, TNumber Remainder) IntegerDivRemDirected(TNumber a, TNumber n, DirectedRoundingMode mode)
+      {
+        var q = a / n;
+
+        var qt = q - (q % TNumber.One);
+
+        var qa = TNumber.Sign(q) switch
+        {
+          < 0 => qt - TNumber.One,
+          > 0 => qt + TNumber.One,
+          _ => qt
+        };
+
+        var qd = mode switch
+        {
+          DirectedRoundingMode.TowardZero => qt,
+          DirectedRoundingMode.TowardPositiveInfinity => TNumber.CopySign(a, q) > TNumber.CopySign(qt * n, q) ? qt + TNumber.One : qt,
+          DirectedRoundingMode.TowardNegativeInfinity => TNumber.CopySign(a, q) < TNumber.CopySign(qt * n, q) ? qt - TNumber.One : qt,
+          DirectedRoundingMode.AwayFromZero => qt * n == a ? qt : TNumber.Sign(q) switch { < 0 => qt - TNumber.One, > 0 => qt + TNumber.One, _ => qt },
+          DirectedRoundingMode.Random => qt * n == a ? qt : Random.Shared.Next(2) == 0 ? qt : TNumber.Sign(q) switch { < 0 => qt - TNumber.One, > 0 => qt + TNumber.One, _ => qt },
+          DirectedRoundingMode.Stochastic => Random.Shared.NextDouble() < double.CreateChecked(TNumber.Abs(q - qt)) ? qa : qt,
+          _ => throw new NotImplementedException(nameof(mode))
+        };
+
+        return (qd, a - qd * n);
+      }
+
+      #endregion
+
+      #region IntegerDivRemNearest
+
+      public static (TNumber Quotient, TNumber Remainder) IntegerDivRemNearest(TNumber a, TNumber n, NearestRoundingRule rule = NearestRoundingRule.ToEven)
       {
         var (q, r) = IntegerDivRemFloored(a, n);
 
@@ -174,8 +201,26 @@ namespace Flux
             _ => throw new System.NotImplementedException(nameof(rule))
           };
         }
-
         // if (twiceR < absN) then q is already correct, so no else branch is needed for the default condition.
+
+        return (q, a - q * n);
+      }
+
+      #endregion
+
+      #region IntegerDivRemStochastic
+
+      public static (TNumber Quotient, TNumber Remainder) IntegerDivRemStochastic(TNumber a, TNumber n)
+      {
+        var (q, r) = IntegerDivRemFloored(a, n);
+
+        if (r == TNumber.Zero)
+          return (q, r);
+
+        var probability = double.CreateChecked(TNumber.Abs(r)) / double.CreateChecked(TNumber.Abs(n));
+
+        if (System.Random.Shared.NextDouble() < probability)
+          q += TNumber.Sign(r) == TNumber.Sign(n) ? TNumber.One : -TNumber.One;
 
         return (q, a - q * n);
       }
@@ -263,4 +308,47 @@ namespace Flux
       #endregion
     }
   }
+
+#if DEBUG
+  public static partial class Number
+  {
+    public static void DisplayDivRem<TNumber>(TNumber a, TNumber b)
+      where TNumber : System.Numerics.INumber<TNumber>
+    {
+      a = TNumber.Abs(a);
+      b = TNumber.Abs(b);
+
+      var array = new object[][]{
+        //["", $"{a} / {b}", $"  {a} / {-b}", $"{-a} / {b}", $"{-a} / {-b}"],
+        ["         ", Dr((a,b)), Dr((a,-b)), Dr((-a,b)), Dr((-a,-b))],
+        ["  Ceiling", Dr(Number.IntegerDivRemCeiling(a, b)), Dr(Number.IntegerDivRemCeiling(a, -b)), Dr(Number.IntegerDivRemCeiling(-a, b)), Dr(Number.IntegerDivRemCeiling(-a, -b))],
+        ["Enveloped", Dr(Number.IntegerDivRemAwayFromZero(a, b)), Dr(Number.IntegerDivRemAwayFromZero(a, -b)), Dr(Number.IntegerDivRemAwayFromZero(-a, b)), Dr(Number.IntegerDivRemAwayFromZero(-a, -b))],
+        ["Euclidean", Dr(Number.IntegerDivRemEuclidean(a, b)), Dr(Number.IntegerDivRemEuclidean(a, -b)), Dr(Number.IntegerDivRemEuclidean(-a, b)), Dr(Number.IntegerDivRemEuclidean(-a, -b))],
+        ["  Floored", Dr(Number.IntegerDivRemFloored(a, b)), Dr(Number.IntegerDivRemFloored(a, -b)), Dr(Number.IntegerDivRemFloored(-a, b)), Dr(Number.IntegerDivRemFloored(-a, -b))],
+        ["  Rounded", Dr(Number.IntegerDivRemNearest(a, b)), Dr(Number.IntegerDivRemNearest(a, -b)), Dr(Number.IntegerDivRemNearest(-a, b)), Dr(Number.IntegerDivRemNearest(-a, -b))],
+        ["Truncated", Dr(Number.IntegerDivRemTruncated(a, b)), Dr(Number.IntegerDivRemTruncated(a, -b)), Dr(Number.IntegerDivRemTruncated(-a, b)), Dr(Number.IntegerDivRemTruncated(-a, -b))],
+      };
+
+      System.Console.WriteLine(System.Array.JaggedArrayToConsoleString(array, new ConsoleFormatOptions() { HorizontalAlignment = AlignmentHorizontal.Right }));
+
+      static string Dr((TNumber Quotient, TNumber Remainder) divRem)
+      {
+        var q = divRem.Quotient;
+        var r = divRem.Remainder;
+
+        var sb = new System.Text.StringBuilder();
+
+        if (q >= TNumber.Zero)
+          sb.Append('+');
+        sb.Append(q);
+        sb.Append(", ");
+        if (r >= TNumber.Zero)
+          sb.Append('+');
+        sb.Append(r);
+
+        return sb.ToString();
+      }
+    }
+  }
+#endif
 }

@@ -25,6 +25,9 @@ namespace Flux
 
     #region Tables of scale factors (negative and positive)
 
+    /// <summary>
+    /// <para>Table of Pow10 reciprocals up to 10^-28.</para>
+    /// </summary>
     internal static readonly decimal[] Pow10Reciprocal = //[.. Number.GeometricSequence(decimal.One, 10m).Where(d => d < decimal.MaxExactInteger).Select(d => 1m / d)];
     [
       1m,
@@ -76,7 +79,7 @@ namespace Flux
 
         var sign = decimal.Sign(value);
 
-        var scaleMultiplier = Pow10((int)scale);
+        var scaleMultiplier = decimal.CreateChecked(UInt128Extensions.Pow10[scale]);
 
         return (sign, scaleMultiplier);
       }
@@ -138,7 +141,7 @@ namespace Flux
       {
         var (signBit, scale, unsignedMagnitude) = ToDecimalBinary(value);
 
-        (var sign, scaleMultiplier) = AnalyzeDecimalBinary(signBit, scale, unsignedMagnitude);
+        (var _, scaleMultiplier) = AnalyzeDecimalBinary(signBit, scale, unsignedMagnitude);
 
         var truncatedValue = decimal.Truncate(value);
 

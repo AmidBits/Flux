@@ -16,14 +16,14 @@
       {
         System.ArgumentOutOfRangeException.ThrowIfNegative(value);
 
-        if (value < NumericConstants<TInteger>.Eight)
+        if (value < NumberBaseConstants<TInteger>.Eight)
           return value == TInteger.Zero ? TInteger.Zero : TInteger.One;
 
-        var x = TInteger.One << int.CreateChecked((TInteger.Log2(value) + NumericConstants<TInteger>.Two) / NumericConstants<TInteger>.Three);
+        var x = TInteger.One << int.CreateChecked((TInteger.Log2(value) + NumberBaseConstants<TInteger>.Two) / NumberBaseConstants<TInteger>.Three);
 
         while (true)
         {
-          var y = (NumericConstants<TInteger>.Two * x + value / (x * x)) / NumericConstants<TInteger>.Three;
+          var y = (NumberBaseConstants<TInteger>.Two * x + value / (x * x)) / NumberBaseConstants<TInteger>.Three;
 
           if (y >= x)
             return x;
@@ -113,17 +113,19 @@
         if (TInteger.IsZero(value))
           return (zero, zero, false);
 
+        if (value == one)
+          return (zero, zero, true);
+
         if (value < rdx)
           return (zero, one, false);
 
-        var log2n = TInteger.Log2(value);
-        var log2b = TInteger.Log2(rdx);
-
-        TInteger exponent = log2n / log2b; // Approximate logarithm exponent derived from Log2.
+        TInteger exponent = TInteger.Log2(value) / TInteger.Log2(rdx); // Approximate logarithm exponent derived from Log2.
 
         TryPow(rdx, exponent, value, out var power, out exponent); // power == radix^exponent and power <= value
 
-        while (power <= value / rdx) // Correct upward.
+        var maxPower = value / rdx;
+
+        while (power <= maxPower) // Correct upward.
         {
           power *= rdx;
           exponent++;
@@ -255,14 +257,14 @@
       {
         System.ArgumentOutOfRangeException.ThrowIfNegative(value);
 
-        if (value < NumericConstants<TInteger>.Four)
+        if (value < NumberBaseConstants<TInteger>.Four)
           return value == TInteger.Zero ? TInteger.Zero : TInteger.One;
 
-        var x = TInteger.One << int.CreateChecked((TInteger.Log2(value) + TInteger.One) / NumericConstants<TInteger>.Two);
+        var x = TInteger.One << int.CreateChecked((TInteger.Log2(value) + TInteger.One) / NumberBaseConstants<TInteger>.Two);
 
         while (true)
         {
-          var y = (x + value / x) / NumericConstants<TInteger>.Two;
+          var y = (x + value / x) / NumberBaseConstants<TInteger>.Two;
 
           if (y >= x)
             return x;
@@ -298,6 +300,99 @@
       #region Pow functions
 
       /// <summary>
+      /// <para>Finds the largest power of <paramref name="radix"/> that does not exceed <paramref name="powerLimit"/>.</para>
+      /// <para>
+      /// Upon return:
+      /// <list type="bullet">
+      /// <item><description><paramref name="maxExponent"/> is the largest exponent <c>e</c> such that <c>radix^e &lt;= powerLimit</c>.</description></item>
+      /// <item><description>The returned value is <c>radix^maxExponent</c> (i.e. the maximum power, or <i>maxPower</i>).</description></item>
+      /// </list>
+      /// </para>
+      /// </summary>
+      /// <typeparam name="TExponent"></typeparam>
+      /// <param name="radix"></param>
+      /// <param name="powerLimit"></param>
+      /// <param name="maxExponent"></param>
+      /// <returns></returns>
+      /// <exception cref="InvalidOperationException"></exception>
+      public static TInteger GetMaxPow<TExponent>(TInteger radix, TInteger powerLimit, out TExponent maxExponent)
+        where TExponent : System.Numerics.IBinaryInteger<TExponent>
+      {
+        System.ArgumentOutOfRangeException.ThrowIfNegativeOrZero(radix);
+        System.ArgumentOutOfRangeException.ThrowIfNegativeOrZero(powerLimit);
+
+        if (radix == TInteger.One) throw new InvalidOperationException("The maximum exponent is unbounded for a base of 1.");  // Special case: 1^e == 1 forever.
+
+        if (radix > powerLimit)
+        {
+          maxExponent = TExponent.Zero;
+          return TInteger.One;
+        }
+
+        if (radix == powerLimit)
+        {
+          maxExponent = TExponent.One;
+          return radix;
+        }
+
+        if (IsPowOf(radix, 2))
+        {
+          var bitsPerPower = TInteger.Log2(radix);
+          var exponent = TInteger.Log2(powerLimit) / bitsPerPower;
+
+          maxExponent = TExponent.CreateChecked(exponent);
+
+          return Pow(radix, maxExponent, powerLimit);
+        }
+
+        if (radix == NumberBaseConstants<TInteger>.Ten)
+        {
+          maxExponent = TExponent.CreateChecked(BinaryInteger.DigitCount(powerLimit, 10) - TInteger.One);
+
+          return Pow10(TInteger.CreateChecked(maxExponent));
+        }
+
+        var lowExponent = TExponent.Zero;
+        var highExponent = TExponent.One;
+
+        var lowPower = TInteger.One;
+
+        while (true) // Exponential search.
+        {
+          var power = Pow(radix, highExponent, powerLimit);
+
+          if (power > powerLimit)
+            break;
+
+          lowExponent = highExponent;
+          lowPower = power;
+
+          highExponent <<= 1;
+        }
+
+        while (lowExponent + TExponent.One < highExponent) // Binary search.
+        {
+          var mid = lowExponent + ((highExponent - lowExponent) >> 1);
+
+          var power = Pow(radix, mid, powerLimit);
+
+          if (power <= powerLimit)
+          {
+            lowExponent = mid;
+            lowPower = power;
+          }
+          else
+          {
+            highExponent = mid;
+          }
+        }
+
+        maxExponent = lowExponent;
+
+        return lowPower;
+      }
+
+      /// <summary>
       /// <para>Indicates whether <paramref name="value"/> is a power of <paramref name="radix"/> (base).</para>
       /// </summary>
       public static bool IsPowOf<TRadix>(TInteger value, TRadix radix)
@@ -306,7 +401,7 @@
         if (value <= TInteger.Zero)
           return false;
 
-        if (radix == NumericConstants<TRadix>.Two) // Fast path for radix = 2 (bit trick).
+        if (radix == NumberBaseConstants<TRadix>.Two) // Fast path for radix = 2 (bit trick).
           return TInteger.IsPow2(value);
 
         AssertRadix(radix, out TInteger r);
@@ -369,10 +464,10 @@
         if (exponent == TExponent.CreateChecked(3)) // (value^3 : value * value * value)
           return NumberBase.Cube(value);
 
-        if (value == TInteger.CreateChecked(2)) // Pow2 (2^exponent : 1 << exponent) 
+        if (value == NumberBaseConstants<TInteger>.Two) // Pow2 (2^exponent : 1 << exponent) 
           return TInteger.CreateChecked(Pow2(exponent));
 
-        if (value == TInteger.CreateChecked(10)) // 10^exponent, where exponent is the size of an existing index in the table.
+        if (value == NumberBaseConstants<TInteger>.Ten) // 10^exponent, where exponent is the size of an existing index in the table.
           return TInteger.CreateChecked(Pow10(exponent));
 
         if (typeof(TInteger) == typeof(System.Numerics.BigInteger)) // If BigInteger, use its optimized static pow() method.
@@ -408,21 +503,22 @@
       /// <param name="exponent">The non-negative exponent.</param>
       /// <param name="powerLimit">The maximum permitted power.</param>
       /// <returns><paramref name="value"/>^<paramref name="exponent"/> if the result does not exceed <paramref name="powerLimit"/>; otherwise returns a value greater than <paramref name="powerLimit"/>.</returns>
-      public static TInteger Pow(TInteger value, TInteger exponent, TInteger powerLimit)
+      public static TInteger Pow<TExponent>(TInteger value, TExponent exponent, TInteger powerLimit)
+        where TExponent : System.Numerics.IBinaryInteger<TExponent>
       {
         System.ArgumentOutOfRangeException.ThrowIfNegative(value);
         System.ArgumentOutOfRangeException.ThrowIfNegative(exponent);
         System.ArgumentOutOfRangeException.ThrowIfNegative(powerLimit);
 
         if (TInteger.IsZero(value))
-          return TInteger.IsZero(exponent) ? TInteger.One : TInteger.Zero;
+          return TExponent.IsZero(exponent) ? TInteger.One : TInteger.Zero;
 
         var result = TInteger.One;
         var overflow = checked(powerLimit + TInteger.One);
 
-        while (!TInteger.IsZero(exponent))
+        while (!TExponent.IsZero(exponent))
         {
-          if (TInteger.IsOddInteger(exponent))
+          if (TExponent.IsOddInteger(exponent))
           {
             if (result > powerLimit / value)
               return overflow;
@@ -430,9 +526,9 @@
             result *= value;
           }
 
-          exponent >>= 1;
+          exponent >>>= 1;
 
-          if (TInteger.IsZero(exponent))
+          if (TExponent.IsZero(exponent))
             break;
 
           if (value > powerLimit / value)
@@ -444,64 +540,18 @@
         return result;
       }
 
-      /// <summary>
-      /// <para>Computes 10 raised to the power of <paramref name="exponent"/>: <c>10^exponent</c></para>
-      /// </summary>
-      /// <param name="exponent"></param>
-      /// <returns></returns>
-      public static TInteger Pow10(TInteger exponent)
-      {
-        System.ArgumentOutOfRangeException.ThrowIfNegative(exponent);
+      //public static TNumber Pow10<TNumber>(TInteger exponent, out TNumber power)
+      //  where TNumber : System.Numerics.INumber<TNumber>
+      //{
+      //  System.ArgumentOutOfRangeException.ThrowIfNegative(exponent);
 
-        var integerExponent = int.CreateChecked(exponent);
+      //  var integerExponent = int.CreateChecked(exponent);
 
-        if (integerExponent < UInt128Extensions.Pow10.Length)
-          return TInteger.CreateChecked(UInt128Extensions.Pow10[integerExponent]);
+      //  if (integerExponent < UInt128Extensions.Pow10.Length)
+      //    return TInteger.CreateChecked(UInt128Extensions.Pow10[integerExponent]);
 
-        return TInteger.CreateChecked(System.Numerics.BigInteger.Pow(10, integerExponent));
-      }
-
-      /// <summary>
-      /// <para>Computes the reciprocal of 10 raised to the power of <paramref name="exponent"/>: <c>1/(10^exponent)</c></para>
-      /// </summary>
-      /// <typeparam name="TFloat"></typeparam>
-      /// <param name="exponent"></param>
-      /// <param name="reciprocalPower"></param>
-      /// <returns></returns>
-      /// <exception cref="System.ArgumentOutOfRangeException"></exception>
-      public static TFloat Pow10Reciprocal<TFloat>(TInteger exponent, out TFloat reciprocalPower)
-        where TFloat : System.Numerics.IFloatingPoint<TFloat>, System.Numerics.IPowerFunctions<TFloat>
-      {
-        System.ArgumentOutOfRangeException.ThrowIfNegative(exponent);
-
-        var integerExponent = int.CreateChecked(exponent);
-
-        if (integerExponent < DecimalExtensions.Pow10Reciprocal.Length) // Retrieve reciprocal from table.
-          return reciprocalPower = TFloat.CreateChecked(DecimalExtensions.Pow10Reciprocal[integerExponent]);
-        else if (integerExponent < UInt128Extensions.Pow10.Length) // Compute it by dividing 1 by pow10 from table.
-          return reciprocalPower = TFloat.One / TFloat.CreateChecked(UInt128Extensions.Pow10[integerExponent]);
-        else // Compute it using floating-point pow().
-          return reciprocalPower = TFloat.One / TFloat.Pow(NumericConstants<TFloat>.Ten, TFloat.CreateChecked(integerExponent));
-
-        throw new System.ArgumentOutOfRangeException(nameof(exponent));
-      }
-
-      /// <summary>
-      /// <para>Computes 2 raised to the power of <paramref name="exponent"/>: <c>2^exponent</c></para>
-      /// </summary>
-      /// <param name="exponent"></param>
-      /// <returns></returns>
-      /// <exception cref="System.OverflowException"></exception>
-      public static TInteger Pow2(TInteger exponent)
-      {
-        System.ArgumentOutOfRangeException.ThrowIfNegative(exponent);
-
-        var shift = int.CreateChecked(exponent);
-
-        if (NumericConstants<TInteger>.IsFixedWidth && shift >= TInteger.Zero.BitWidth) throw new System.OverflowException();
-
-        return TInteger.One << shift;
-      }
+      //  return TInteger.CreateChecked(System.Numerics.BigInteger.Pow(10, integerExponent));
+      //}
 
       /// <summary>
       /// <para>Attempts to compute value^exponent without exceeding powerLimit.</para>
@@ -533,20 +583,198 @@
         System.ArgumentOutOfRangeException.ThrowIfNegative(exponent);
         System.ArgumentOutOfRangeException.ThrowIfNegative(powerLimit);
 
-        maxPower = TInteger.One;
-        maxExponent = TExponent.Zero;
+        var power = Pow(value, exponent, powerLimit);
 
-        while (maxExponent < exponent)
+        if (power <= powerLimit)
         {
-          if (maxPower > powerLimit / value)
-            return false;
-
-          maxPower *= value;
-          maxExponent++;
+          maxPower = power;
+          maxExponent = exponent;
+          return true;
         }
 
+        var low = TExponent.Zero;
+        var high = exponent;
+
+        maxPower = TInteger.One;
+        maxExponent = low;
+
+        while (low + TExponent.One < high)
+        {
+          var mid = low + ((high - low) >> 1);
+
+          power = Pow(value, mid, powerLimit);
+
+          if (power <= powerLimit)
+          {
+            low = mid;
+
+            maxExponent = mid;
+            maxPower = power;
+          }
+          else
+          {
+            high = mid;
+          }
+        }
+
+        return false;
+      }
+
+      #region Try/Pow10
+
+      /// <summary>
+      /// <para>Computes 10 raised to the power of <paramref name="exponent"/>: <c>10^exponent</c></para>
+      /// </summary>
+      /// <param name="exponent"></param>
+      /// <returns></returns>
+      public static TInteger Pow10(TInteger exponent)
+      {
+        System.ArgumentOutOfRangeException.ThrowIfNegative(exponent);
+
+        if (TryFastPow10(exponent, out TInteger pow10))
+          return pow10;
+
+        return TInteger.CreateChecked(System.Numerics.BigInteger.Pow(10, int.CreateChecked(exponent)));
+      }
+
+      /// <summary>
+      /// <para>Attempts to compute 10 raised to the power of <paramref name="exponent"/>: <c>10^exponent</c></para>
+      /// </summary>
+      /// <param name="exponent"></param>
+      /// <returns>true if the value was computed successfully; otherwise, false.</returns>
+      public static bool TryPow10(TInteger exponent, out TInteger pow10)
+      {
+        try
+        {
+          pow10 = Pow10(exponent);
+          return true;
+        }
+        catch (System.ArgumentOutOfRangeException) { }
+        catch (System.OverflowException) { }
+
+        pow10 = TInteger.Zero;
+        return false;
+      }
+
+      #endregion
+
+      #region Try/FastPow10
+
+      /// <summary>
+      /// <para>Computes 10 raised to the power of <paramref name="exponent"/>: <c>10^exponent</c></para>
+      /// </summary>
+      /// <param name="exponent"></param>
+      /// <returns></returns>
+      public static TInteger FastPow10(TInteger exponent)
+      {
+        var values = UInt128Extensions.Pow10;
+
+        System.ArgumentOutOfRangeException.ThrowIfNegative(exponent);
+        System.ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(exponent, TInteger.CreateChecked(values.Length));
+
+        return TInteger.CreateChecked(values[int.CreateChecked(exponent)]);
+      }
+
+      /// <summary>
+      /// <para>Attempts to compute 10 raised to the power of <paramref name="exponent"/>: <c>10^exponent</c></para>
+      /// </summary>
+      /// <param name="exponent"></param>
+      /// <returns>true if the value was computed successfully; otherwise, false.</returns>
+      public static bool TryFastPow10(TInteger exponent, out TInteger pow10)
+      {
+        var values = UInt128Extensions.Pow10;
+
+        if (TInteger.IsNegative(exponent) || exponent >= TInteger.CreateChecked(values.Length))
+        {
+          pow10 = TInteger.Zero;
+          return false;
+        }
+
+        pow10 = TInteger.CreateChecked(values[int.CreateChecked(exponent)]);
         return true;
       }
+
+      #endregion
+
+      #region Try/FastPow10ReciprocalMagnitude
+
+      /// <summary>
+      /// <para>Fast-path computation of power-of-10 reciprocals using precomputed values. Supported exponents are in the range [-28, 0], corresponding to powers from 10^-28 through 1.</para>
+      /// </summary>
+      /// <typeparam name="TFloat"></typeparam>
+      /// <param name="exponent">The power-of-10 exponent, in the range [-28, 0].</param>
+      /// <param name="pow10Reciprocal"></param>
+      /// <returns></returns>
+      public static TFloat FastPow10ReciprocalMagnitude<TFloat>(TInteger exponent, out TFloat pow10Reciprocal)
+        where TFloat : System.Numerics.IFloatingPoint<TFloat>
+      {
+        var values = DecimalExtensions.Pow10Reciprocal;
+
+        System.ArgumentOutOfRangeException.ThrowIfLessThanOrEqual(exponent, TInteger.CreateChecked(-values.Length));
+        System.ArgumentOutOfRangeException.ThrowIfGreaterThan(exponent, TInteger.Zero);
+
+        return pow10Reciprocal = TFloat.CreateChecked(values[int.CreateChecked(TInteger.Abs(exponent))]);
+      }
+
+      /// <summary>
+      /// <para>Attempts fast-path computation of power-of-10 reciprocals from precomputed values. Supported exponents are in the range [-28, 0], corresponding to powers from 10^-28 through 1.</para>
+      /// </summary>
+      /// <typeparam name="TFloat"></typeparam>
+      /// <param name="exponent">The power-of-10 exponent, in the range [-28, 0].</param>
+      /// <param name="pow10Reciprocal"></param>
+      /// <returns>true if the value was computed successfully; otherwise, false.</returns>
+      public static bool TryFastPow10ReciprocalMagnitude<TFloat>(TInteger exponent, out TFloat pow10Reciprocal)
+        where TFloat : System.Numerics.IFloatingPoint<TFloat>
+      {
+        var values = DecimalExtensions.Pow10Reciprocal;
+
+        if (exponent <= TInteger.CreateChecked(-values.Length) || exponent > TInteger.Zero)
+        {
+          pow10Reciprocal = TFloat.Zero;
+          return false;
+        }
+
+        pow10Reciprocal = TFloat.CreateChecked(values[int.CreateChecked(TInteger.Abs(exponent))]);
+        return true;
+      }
+
+      #endregion
+
+      #region Try/Pow2
+
+      /// <summary>
+      /// <para>Computes 2 raised to the power of <paramref name="exponent"/>: <c>2^exponent</c></para>
+      /// </summary>
+      /// <param name="exponent"></param>
+      /// <returns>2 raised to the specified exponent.</returns>
+      /// <exception cref="System.OverflowException"></exception>
+      public static TInteger Pow2(TInteger exponent)
+      {
+        System.ArgumentOutOfRangeException.ThrowIfNegative(exponent);
+        if (!GenericMathInfo.Get<TInteger>().IsBigInteger && exponent >= TInteger.CreateChecked(TInteger.Zero.BitWidth)) throw new System.OverflowException();
+
+        return TInteger.One << int.CreateChecked(exponent);
+      }
+
+      /// <summary>
+      /// <para>Attempts to compute of 2 raised to the power of <paramref name="exponent"/>: <c>2^exponent</c></para>
+      /// </summary>
+      /// <param name="exponent"></param>
+      /// <param name="pow2"></param>
+      /// <returns>true if the value was computed successfully; otherwise, false.</returns>
+      public static bool TryPow2(TInteger exponent, out TInteger pow2)
+      {
+        if (TInteger.IsNegative(exponent) || (!GenericMathInfo.Get<TInteger>().IsBigInteger && exponent >= TInteger.CreateChecked(TInteger.Zero.BitWidth)))
+        {
+          pow2 = TInteger.Zero;
+          return false;
+        }
+
+        pow2 = TInteger.One << int.CreateChecked(exponent);
+        return true;
+      }
+
+      #endregion
 
       #endregion
     }

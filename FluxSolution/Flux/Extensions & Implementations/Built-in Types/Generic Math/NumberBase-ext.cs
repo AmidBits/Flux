@@ -15,6 +15,10 @@ namespace Flux
     extension<TNumberBase>(TNumberBase value)
       where TNumberBase : System.Numerics.INumberBase<TNumberBase>
     {
+      /// <summary>
+      /// Returns the cube of the current value.
+      /// </summary>
+      /// <returns>The cube of the current value.</returns>
       public TNumberBase Cube()
         => value * value * value;
 
@@ -30,6 +34,17 @@ namespace Flux
       public TNumberBase NormalizeZero()
         => TNumberBase.IsZero(value) ? TNumberBase.Zero : value;
 
+      /// <summary>
+      /// <para>Returns a <see cref="GenericMathInfo"/> containing information about the numeric capabilities of the current value.</para>
+      /// </summary>
+      /// <returns></returns>
+      public GenericMathInfo NumericCapabilities()
+        => GenericMathInfo.Get(value.GetType());
+
+      /// <summary>
+      /// <para>A very cheap way of performing <c>value^2</c>.</para>
+      /// </summary>
+      /// <returns></returns>
       public TNumberBase Square()
         => value * value;
     }

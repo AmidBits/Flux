@@ -36,7 +36,7 @@ namespace Maths
     [TestMethod]
     public void EnvelopDivRem()
     {
-      var actual = int.IntegerDivRemEnveloped(9, 6);
+      var actual = int.IntegerDivRemAwayFromZero(9, 6);
       var expected = (2, -3);
       Assert.AreEqual(expected, actual);
     }

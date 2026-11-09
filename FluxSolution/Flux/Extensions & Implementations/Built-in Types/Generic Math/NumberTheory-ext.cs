@@ -8,7 +8,7 @@
 
     internal static bool IsPrimeNumberByBitMask<TInteger>(TInteger value)
       where TInteger : System.Numerics.IBinaryInteger<TInteger>
-      => value >= NumericConstants<TInteger>.Two && value <= NumericConstants<TInteger>.SixtyThree && ((PrimeNumberBitMask & (1UL << int.CreateChecked(value))) != 0);
+      => value >= NumberBaseConstants<TInteger>.Two && value <= NumberBaseConstants<TInteger>.SixtyThree && ((PrimeNumberBitMask & (1UL << int.CreateChecked(value))) != 0);
 
     #endregion
 
@@ -801,7 +801,7 @@
       {
         var maxPrimeMultiple = TInteger.One.BitFoldToMsb();
 
-        if (NumericConstants<TInteger>.IsISignedNumber)
+        if (GenericMathInfo.Get<TInteger>().ImplementsISignedNumber)
           maxPrimeMultiple >>>= 1;
 
         var six = TInteger.CreateChecked(6);
@@ -893,7 +893,7 @@
         if (n <= TInteger.One)
           return false; // Numbers smaller than 2 are not prime since 2 is the smallest prime.
 
-        if (n >= NumericConstants<TInteger>.Two && n <= NumericConstants<TInteger>.SixtyThree)
+        if (n >= NumberBaseConstants<TInteger>.Two && n <= NumberBaseConstants<TInteger>.SixtyThree)
           return IsPrimeNumberByBitMask(n);
 
         var bi = System.Numerics.BigInteger.CreateChecked(n); // Make it a BigInteger, since it could be huge.

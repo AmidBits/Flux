@@ -42,80 +42,6 @@ namespace Flux
 
       #endregion
 
-      ///// <summary>
-      ///// <para>Computes base^exp for ulong using exponentiation by squaring. Throws OverflowException if result exceeds ulong.MaxValue.</para>
-      ///// </summary>
-      ///// <param name="value"></param>
-      ///// <param name="exponent"></param>
-      ///// <returns></returns>
-      //private static ulong Pow(ulong value, ulong exponent)
-      //{
-      //  if (exponent == 0) return 1;
-      //  if (value == 0) return 0;
-
-      //  var result = 1UL;
-      //  var current = value;
-
-      //  while (exponent > 0)
-      //    checked // Detect overflow.
-      //    {
-      //      if ((exponent & 1) != 0)
-      //        result *= current;
-
-      //      exponent >>= 1;
-
-      //      if (exponent > 0)
-      //        current *= current;
-      //    }
-
-      //  return result;
-      //}
-
-      //#region Pow - Overflow‑safe exponentiation.
-
-      ///// <summary>
-      ///// <para>Overflow‑safe exponentiation: x^k, stops early if exceeding limit.</para>
-      ///// </summary>
-      ///// <param name="value"></param>
-      ///// <param name="exponent"></param>
-      ///// <param name="limit"></param>
-      ///// <returns></returns>
-      //private static ulong Pow(ulong value, ulong exponent, ulong limit)
-      //{
-      //  var result = 1ul;
-
-      //  while (exponent > 0)
-      //  {
-      //    if ((exponent & 1) != 0)
-      //    {
-      //      if (value != 0 && result > limit / value) // Check: result * value > limit ?
-      //        return ulong.MaxValue;
-
-      //      result *= value;
-
-      //      if (result > limit)
-      //        return ulong.MaxValue;
-      //    }
-
-      //    exponent >>= 1;
-
-      //    if (exponent == 0)
-      //      break;
-
-      //    if (value != 0 && value > limit / value) // Square the base, with overflow check.
-      //      value = ulong.MaxValue;
-      //    else
-      //      value *= value;
-
-      //    if (value > limit)
-      //      value = ulong.MaxValue;
-      //  }
-
-      //  return result;
-      //}
-
-      //#endregion
-
       #region ReverseBits..
 
       /// <summary>
@@ -156,7 +82,7 @@ namespace Flux
     internal static bool IsPrimeNumberDeterministic(ulong n)
     {
       if (n <= uint.MaxValue)
-        return uint.IsPrimeNumberDeterministic((uint)n);
+        return UInt32Extensions.IsPrimeNumberDeterministic((uint)n);
 
       if ((n & 1) == 0) // Eliminate all even numbers.
         return false;

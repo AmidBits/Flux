@@ -82,7 +82,7 @@ namespace Maths
     [TestMethod]
     public void IntegerPow()
     {
-      Assert.AreEqual(10000000000, BinaryInteger.Pow(10L, 10));
+      Assert.AreEqual(10000000000L, BinaryInteger.Pow(10L, 10L));
     }
 
     //[TestMethod]
@@ -148,7 +148,7 @@ namespace Maths
       var n = 512d;
       var m = 20;
 
-      var (multipleTowardsZero, multipleAwayFromZero, isExactMultiple, nearestMultiple) = Number.GetNearestMultiples(n, m, NearestRoundingRule.TowardZero, false);
+      var (multipleTowardsZero, multipleAwayFromZero, isExactMultiple, nearestMultiple) = Number.RoundToMultiple(n, m, NearestRoundingRule.TowardZero, false);
 
       Assert.AreEqual(520, nearestMultiple);
 

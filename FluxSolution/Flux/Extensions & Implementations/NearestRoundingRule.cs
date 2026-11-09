@@ -11,6 +11,6 @@ namespace Flux
     AwayFromZero = System.MidpointRounding.AwayFromZero,
     ToEven = System.MidpointRounding.ToEven,
     ToOdd = 17,
-    Random = 19
+    Random = 23
   }
 }

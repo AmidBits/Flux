@@ -39,33 +39,33 @@ namespace Flux
       }
 
       #endregion
+    }
 
-      #region IsPrimeNumber.. - Deterministic straightforward deterministic 6k ± 1 test.
+    #region IsPrimeNumber.. - Deterministic straightforward deterministic 6k ± 1 test.
 
-      /// <summary>
-      /// <para>Deterministic 6k ± 1 prime number test. This is the most efficient algorithm for testing primality of numbers within the range of an unsigned 32-bit integer.</para>
-      /// </summary>
-      /// <param name="n"></param>
-      /// <returns></returns>
-      public static bool IsPrimeNumberDeterministic(uint n)
-      {
-        if (n <= 63)
-          return BinaryInteger.IsPrimeNumberByBitMask(n);
+    /// <summary>
+    /// <para>Deterministic 6k ± 1 prime number test. This is the most efficient algorithm for testing primality of numbers within the range of an unsigned 32-bit integer.</para>
+    /// </summary>
+    /// <param name="n"></param>
+    /// <returns></returns>
+    internal static bool IsPrimeNumberDeterministic(uint n)
+    {
+      if (n <= 63)
+        return BinaryInteger.IsPrimeNumberByBitMask(n);
 
-        //if (n <= 3)
-        //  return n > 1;
+      //if (n <= 3)
+      //  return n > 1;
 
-        if ((n & 1) == 0 || n % 3 == 0)
+      if ((n & 1) == 0 || n % 3 == 0)
+        return false;
+
+      for (uint i = 5u, w = 2u; (ulong)i * i <= n; i += w, w = 6 - w)
+        if (n % i == 0)
           return false;
 
-        for (uint i = 5u, w = 2u; (ulong)i * i <= n; i += w, w = 6 - w)
-          if (n % i == 0)
-            return false;
-
-        return true;
-      }
-
-      #endregion
+      return true;
     }
+
+    #endregion
   }
 }

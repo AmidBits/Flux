@@ -5,9 +5,11 @@ namespace Flux
   /// </summary>
   public enum DirectedRoundingMode
   {
-    TowardNegativeInfinity,
-    TowardPositiveInfinity,
-    TowardZero,
-    AwayFromZero,
+    TowardNegativeInfinity = System.MidpointRounding.ToNegativeInfinity,
+    TowardPositiveInfinity = System.MidpointRounding.ToPositiveInfinity,
+    TowardZero = System.MidpointRounding.ToZero,
+    AwayFromZero = System.MidpointRounding.AwayFromZero,
+    Random = 23,
+    Stochastic = 24
   }
 }

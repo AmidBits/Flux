@@ -121,7 +121,7 @@ namespace Flux
       /// <para>The smallest prime number representable by <typeparamref name="TNumber"/>.</para>
       /// </summary>
       public static TNumber MinPrime
-        => NumericConstants<TNumber>.Two;
+        => NumberBaseConstants<TNumber>.Two;
 
       #endregion
     }

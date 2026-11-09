@@ -268,7 +268,7 @@
       {
         var digits = GetDigits(value, radix); // Already checks lower radix bound.
 
-        var ceilingHalf = int.IntegerDivRemEnveloped(digits.Count, 2).Quotient;
+        var ceilingHalf = int.IntegerDivRemAwayFromZero(digits.Count, 2).Quotient;
 
         var left = digits[..ceilingHalf].Sum();
         var right = digits[^ceilingHalf..].Sum();

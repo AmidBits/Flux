@@ -2,20 +2,6 @@ namespace Flux
 {
   public static partial class TypeExtensions
   {
-    extension(System.Type)
-    {
-      public static System.Collections.Generic.IEnumerable<System.Type> GetDefinedTypesInAllLoadedAssemblies()
-      {
-        foreach (var asm in AppDomain.CurrentDomain.GetAssemblies())
-        {
-          foreach (var dt in asm.DefinedTypes)
-          {
-            yield return dt;
-          }
-        }
-      }
-    }
-
     extension(System.Type type)
     {
       /// <summary>
@@ -162,7 +148,7 @@ namespace Flux
       /// <para>Creates a new sequence with the derived types of a <see cref="System.Type"/> selected from types within the type assembly.</para>
       /// </summary>
       public System.Collections.Generic.List<System.Type> GetDerived()
-        => type.GetDerived(type.Assembly.DefinedTypes);
+        => type.GetDerived(System.AppDomain.CurrentDomain.GetAssemblies().SelectMany(a => a.GetTypes()));
 
       /// <summary>
       /// <para>Creates a new sequence with the derived types of a <see cref="System.Type"/> in the specified <paramref name="typeCollection"/>.</para>
@@ -454,6 +440,32 @@ namespace Flux
         => (underlyingType = System.Nullable.GetUnderlyingType(type)) is not null;
 
       #endregion
+    }
+  }
+
+  public static partial class TypeExtensions
+  {
+    private static readonly System.Collections.Concurrent.ConcurrentDictionary<System.Type, System.Type[]> m_cachedInterfaces = new();
+
+    extension(System.Type)
+    {
+      public static void ClearCachedInterfaces() => m_cachedInterfaces.Clear();
+    }
+
+    extension(System.Type type)
+    {
+      public System.Type[] GetInterfacesWithCache(bool skipCaching = false)
+      {
+        if (m_cachedInterfaces.TryGetValue(type, out var interfaces))
+          return interfaces;
+
+        interfaces = [.. type.GetInterfaces().Select(ti => ti.IsGenericType ? ti.GetGenericTypeDefinition() : ti)];
+
+        if (!skipCaching && interfaces.Length > 0)
+          m_cachedInterfaces[type] = interfaces;
+
+        return interfaces;
+      }
     }
   }
 }

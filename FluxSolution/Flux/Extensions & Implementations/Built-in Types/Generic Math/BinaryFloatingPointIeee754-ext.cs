@@ -17,7 +17,7 @@
       [System.CLSCompliant(false)]
       public static (int Sign, long UnbiasedExponent, ulong FullSignificand, TFloat Significand, bool IsInfinity, bool IsNaN, bool IsNormal, bool IsSubnormal, bool IsZero) AnalyzeBinary(ulong binarySign, ulong binaryExponent, ulong binaryFraction, out TFloat recomputedValue)
       {
-        var (signWidth, exponentWidth, fractionWidth) = BinaryWidth<TFloat>();
+        var (_, exponentWidth, fractionWidth) = BinaryWidth<TFloat>();
 
         var exponentBias = (1L << (exponentWidth - 1)) - 1;
         var exponentMax = (1UL << exponentWidth) - 1;
@@ -62,9 +62,9 @@
       }
 
       public static (int SignWidth, int ExponentWidth, int FractionWidth) BinaryWidth()
-        => NumericConstants<TFloat>.IsBinary64
+        => GenericMathInfo.Get<TFloat>().IsBinary64
         ? (1, 11, 52)
-        : NumericConstants<TFloat>.IsBinary32
+        : GenericMathInfo.Get<TFloat>().IsBinary32
         ? (1, 8, 23)
         : typeof(TFloat) == typeof(System.Half)
         ? (1, 5, 10)
@@ -73,7 +73,7 @@
       [System.CLSCompliant(false)]
       public static TFloat FromBinary(ulong binarySign, ulong binaryExponent, ulong binaryFraction)
       {
-        var (signWidth, exponentWidth, fractionWidth) = BinaryWidth<TFloat>();
+        var (_, exponentWidth, fractionWidth) = BinaryWidth<TFloat>();
 
         var bits =
           (binarySign << (exponentWidth + fractionWidth)) |
@@ -85,9 +85,9 @@
 
       [System.CLSCompliant(false)]
       public static TFloat FromBits(ulong bits)
-        => NumericConstants<TFloat>.IsBinary64
+        => GenericMathInfo.Get<TFloat>().IsBinary64
         ? TFloat.CreateChecked(System.BitConverter.UInt64BitsToDouble(bits))
-        : NumericConstants<TFloat>.IsBinary32
+        : GenericMathInfo.Get<TFloat>().IsBinary32
         ? TFloat.CreateChecked(System.BitConverter.UInt32BitsToSingle((uint)bits))
         : (typeof(TFloat) == typeof(System.Half))
         ? TFloat.CreateChecked(System.BitConverter.UInt16BitsToHalf((ushort)bits))
@@ -96,12 +96,12 @@
       [System.CLSCompliant(false)]
       public static TFloat FromOrdered(ulong ordered)
       {
-        if (NumericConstants<TFloat>.IsBinary64)
+        if (GenericMathInfo.Get<TFloat>().IsBinary64)
         {
           var bits = ordered < DoubleSignMask ? ~ordered : ordered & DoubleValueMask;
           return TFloat.CreateChecked(System.BitConverter.UInt64BitsToDouble(bits));
         }
-        else if (NumericConstants<TFloat>.IsBinary32)
+        else if (GenericMathInfo.Get<TFloat>().IsBinary32)
         {
           var bits = ordered < SingleSignMask ? ~(uint)ordered : (uint)(ordered & SingleValueMask);
           return TFloat.CreateChecked(System.BitConverter.UInt32BitsToSingle(bits));
@@ -119,7 +119,7 @@
       {
         var bits = ToBits(value);
 
-        var (signWidth, exponentWidth, fractionWidth) = BinaryWidth<TFloat>();
+        var (_, exponentWidth, fractionWidth) = BinaryWidth<TFloat>();
 
         var sign = (bits >>> (fractionWidth + exponentWidth)) & 1;
         var exponent = (bits >>> fractionWidth) & ((1UL << exponentWidth) - 1);
@@ -130,9 +130,9 @@
 
       [System.CLSCompliant(false)]
       public static ulong ToBits(TFloat value)
-        => NumericConstants<TFloat>.IsBinary64
+        => GenericMathInfo.Get<TFloat>().IsBinary64
         ? System.BitConverter.DoubleToUInt64Bits(double.CreateChecked(value))
-        : NumericConstants<TFloat>.IsBinary32
+        : GenericMathInfo.Get<TFloat>().IsBinary32
         ? System.BitConverter.SingleToUInt32Bits(float.CreateChecked(value))
         : (typeof(TFloat) == typeof(System.Half))
         ? System.BitConverter.HalfToUInt16Bits(System.Half.CreateChecked(value))
@@ -143,9 +143,9 @@
       {
         var bits = ToBits(value);
 
-        if (NumericConstants<TFloat>.IsBinary64)
+        if (GenericMathInfo.Get<TFloat>().IsBinary64)
           return (bits & DoubleSignMask) != 0 ? ~bits : bits | DoubleSignMask;
-        else if (NumericConstants<TFloat>.IsBinary32)
+        else if (GenericMathInfo.Get<TFloat>().IsBinary32)
           return (bits & SingleSignMask) != 0 ? ~bits : bits | SingleSignMask;
         else if (typeof(TFloat) == typeof(System.Half))
           return (bits & HalfSignMask) != 0 ? ~bits : bits | HalfSignMask;

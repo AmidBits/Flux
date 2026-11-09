@@ -51,8 +51,8 @@
       public Interval<TNumber> RoundToNearestIntegers<TNumber>(NearestRoundingRule minValueRounding, NearestRoundingRule maxValueRounding, out TNumber minValue, out TNumber maxValue)
         where TNumber : System.Numerics.INumber<TNumber>
       {
-        minValue = TNumber.CreateChecked(FloatingPoint.RoundToNearestInteger(source.MinValue, minValueRounding));
-        maxValue = TNumber.CreateChecked(FloatingPoint.RoundToNearestInteger(source.MaxValue, maxValueRounding));
+        minValue = TNumber.CreateChecked(FloatingPoint.RoundToInteger(source.MinValue, minValueRounding).RoundedInteger);
+        maxValue = TNumber.CreateChecked(FloatingPoint.RoundToInteger(source.MaxValue, maxValueRounding).RoundedInteger);
 
         return new(minValue, maxValue);
       }

@@ -281,7 +281,7 @@
         if (value < minValue || value > maxValue)
           return value; // If number is already not in the interval, nothing to do but return it.
 
-        var nearestValue = RoundToNearestValue(value, rule, false, minValue, maxValue);
+        var nearestValue = RoundToValue(value, rule, false, minValue, maxValue);
 
         return (nearestValue == minValue)
           ? minValue - margin
@@ -305,7 +305,7 @@
         if (value < minValue || value > maxValue)
           return value; // If number is already spread, nothing to do but return it.
 
-        var nearestValue = RoundToNearestValue(value, rule, false, minValue, maxValue);
+        var nearestValue = RoundToValue(value, rule, false, minValue, maxValue);
 
         return (nearestValue == minValue)
           ? UlpDecrement(minValue, ulps)

@@ -5,6 +5,13 @@
     extension<TInteger>(TInteger)
       where TInteger : System.Numerics.IBinaryInteger<TInteger>
     {
+      #region BitLengthToDigitCount
+
+      public static TInteger BitLengthToDigitCount(TInteger bitLength, TInteger radix)
+        => TInteger.CreateChecked(double.Floor(double.CreateChecked(bitLength - TInteger.One) / double.Log2(double.CreateChecked(radix)))) + TInteger.One;
+
+      #endregion
+
       #region ClearLeastSignificant1Bit
 
       /// <summary>
@@ -111,6 +118,16 @@
 
       #endregion
 
+      #region DigitCountTo..BitLength
+
+      public static TInteger DigitCountToMaxBitLength(TInteger digitCount, TInteger radix)
+        => TInteger.CreateChecked(double.Ceiling(double.CreateChecked(digitCount) * double.Log2(double.CreateChecked(radix))));
+
+      public static TInteger DigitCountToMinBitLength(TInteger digitCount, TInteger radix)
+        => TInteger.CreateChecked(double.Floor(double.CreateChecked(digitCount - TInteger.One) * double.Log2(double.CreateChecked(radix)))) + TInteger.One;
+
+      #endregion
+
       #region GrayCode
 
       /// <summary>
@@ -185,7 +202,7 @@
         for (var i = bytes.Length - 1; i >= 0; i--)  // After this loop, all bits are reversed.
           byte.ReverseBitsInPlace(ref bytes[i]); // Mirror (reverse) bits in each byte.
 
-        return TInteger.ReadBigEndian(bytes, NumericConstants<TInteger>.IsIUnsignedNumber); // Read as BigEndian (decreasing numeric significance in increasing memory addresses).
+        return TInteger.ReadBigEndian(bytes, GenericMathInfo.Get<TInteger>().ImplementsIUnsignedNumber); // Read as BigEndian (decreasing numeric significance in increasing memory addresses).
       }
 
       #endregion
@@ -206,7 +223,7 @@
 
         value.WriteLittleEndian(bytes); // Write as LittleEndian (increasing numeric significance in increasing memory addresses).
 
-        return TInteger.ReadBigEndian(bytes, NumericConstants<TInteger>.IsIUnsignedNumber); // Read as BigEndian (decreasing numeric significance in increasing memory addresses).
+        return TInteger.ReadBigEndian(bytes, GenericMathInfo.Get<TInteger>().ImplementsIUnsignedNumber); // Read as BigEndian (decreasing numeric significance in increasing memory addresses).
       }
 
       #endregion
@@ -226,7 +243,7 @@
 
         rng.Shuffle(bytes);
 
-        return TInteger.ReadLittleEndian(bytes, NumericConstants<TInteger>.IsIUnsignedNumber);
+        return TInteger.ReadLittleEndian(bytes, GenericMathInfo.Get<TInteger>().ImplementsIUnsignedNumber);
       }
 
       #endregion

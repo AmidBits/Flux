@@ -3,6 +3,9 @@ namespace Flux
   [System.CLSCompliant(false)]
   public static partial class UInt128Extensions
   {
+    /// <summary>
+    /// <para>Table of Pow10 values up to 10^38.</para>
+    /// </summary>
     internal static readonly UInt128[] Pow10 = [.. Number.GeometricSequence(System.UInt128.One, System.UInt128.CreateChecked(10)).Where(n => n <= System.UInt128.MaxValue)];
 
     extension(System.UInt128)

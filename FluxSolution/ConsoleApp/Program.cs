@@ -264,44 +264,6 @@ namespace ConsoleApp
 
     #endregion // Mock DataTables
 
-    public static string Dr<TNumber>((TNumber Quotient, TNumber Remainder) divRem)
-      where TNumber : System.Numerics.INumber<TNumber>
-    {
-      var q = divRem.Quotient;
-      var r = divRem.Remainder;
-
-      var sb = new System.Text.StringBuilder();
-
-      if (q >= TNumber.Zero)
-        sb.Append('+');
-      sb.Append(q);
-      sb.Append(", ");
-      if (r >= TNumber.Zero)
-        sb.Append('+');
-      sb.Append(r);
-
-      return sb.ToString();
-    }
-
-    public static void ComputeDivRem<TNumber>(TNumber a, TNumber b)
-      where TNumber : System.Numerics.INumber<TNumber>
-    {
-      a = TNumber.Abs(a);
-      b = TNumber.Abs(b);
-
-      var array = new object[][]{
-        ["", $"{a} / {b}", $"{-a} / {b}", $"{a} / {-b}", $"{-a} / {-b}"],
-        ["    Ceiling", Dr(Number.IntegerDivRemCeiling(a, b)), Dr(Number.IntegerDivRemCeiling(-a, b)), Dr(Number.IntegerDivRemCeiling(a, -b)), Dr(Number.IntegerDivRemCeiling(-a, -b))],
-        ["  Enveloped", Dr(Number.IntegerDivRemEnveloped(a, b)), Dr(Number.IntegerDivRemEnveloped(-a, b)), Dr(Number.IntegerDivRemEnveloped(a, -b)), Dr(Number.IntegerDivRemEnveloped(-a, -b))],
-        [" Euclidean", Dr(Number.IntegerDivRemEuclidean(a, b)), Dr(Number.IntegerDivRemEuclidean(-a, b)), Dr(Number.IntegerDivRemEuclidean(a, -b)), Dr(Number.IntegerDivRemEuclidean(-a, -b))],
-        ["    Floored", Dr(Number.IntegerDivRemFloored(a, b)), Dr(Number.IntegerDivRemFloored(-a, b)), Dr(Number.IntegerDivRemFloored(a, -b)), Dr(Number.IntegerDivRemFloored(-a, -b))],
-        ["    Rounded", Dr(Number.IntegerDivRemRounded(a, b)), Dr(Number.IntegerDivRemRounded(-a, b)), Dr(Number.IntegerDivRemRounded(a, -b)), Dr(Number.IntegerDivRemRounded(-a, -b))],
-        ["  Truncated", Dr(Number.IntegerDivRemTruncated(a, b)), Dr(Number.IntegerDivRemTruncated(-a, b)), Dr(Number.IntegerDivRemTruncated(a, -b)), Dr(Number.IntegerDivRemTruncated(-a, -b))],
-      };
-
-      System.Console.WriteLine(System.Array.JaggedArrayToConsoleString(array, new ConsoleFormatOptions() { HorizontalAlignment = AlignmentHorizontal.Right }));
-    }
-
     #region Eliza example
 
     static void ElizaExample()
@@ -538,10 +500,15 @@ namespace ConsoleApp
 
     private static void TimedMain(string[] _)
     {
-      var n = (System.Numerics.BigInteger)10;
+      Flux.GenericMathInfo.PreloadNumericTypes();
+
+      var n = (long)10;
+
+      //Flux.Number.DisplayDivRem(7, 3);
+
+      var idrs = Flux.Number.IntegerDivRemStochastic(7, 3);
 
 
-      System.Console.WriteLine(Flux.Diagnostics.Performance.Measure(() => BinaryInteger.AscendingPrimes(2).Take(1).ToArray(), 100000));
 
       //var nibi = n.IsBigInteger();
       //var nic = n.IsComplex();
