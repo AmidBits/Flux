@@ -19,7 +19,7 @@ namespace Flux
 
   public static partial class IntervalNotationExtensions
   {
-    extension(IntervalNotation notation)
+    extension(IntervalNotation intervalNotation)
     {
       /// <summary>
       /// <para>Inverts an <see cref="IntervalNotation"/>.</para>
@@ -35,36 +35,36 @@ namespace Flux
       /// </returns>
       /// <exception cref="NotImplementedException"></exception>
       public IntervalNotation InvertNotation()
-        => (notation == IntervalNotation.Closed) ? IntervalNotation.Open
-        : (notation == IntervalNotation.Open) ? IntervalNotation.Closed
-        : (notation == IntervalNotation.HalfOpenLeft) ? IntervalNotation.HalfOpenRight
-        : (notation == IntervalNotation.HalfOpenRight) ? IntervalNotation.HalfOpenLeft
-        : throw new NotImplementedException(notation.ToString());
+        => (intervalNotation == IntervalNotation.Closed) ? IntervalNotation.Open
+        : (intervalNotation == IntervalNotation.Open) ? IntervalNotation.Closed
+        : (intervalNotation == IntervalNotation.HalfOpenLeft) ? IntervalNotation.HalfOpenRight
+        : (intervalNotation == IntervalNotation.HalfOpenRight) ? IntervalNotation.HalfOpenLeft
+        : throw new NotImplementedException(intervalNotation.ToString());
 
       /// <summary>
-      /// <para>Gets a char representing the <see cref="IntervalNotation"/> (specified by <paramref name="notation"/>) on the left hand side.</para>
+      /// <para>Gets a char representing the <see cref="IntervalNotation"/> (specified by <paramref name="intervalNotation"/>) on the left hand side.</para>
       /// </summary>
       /// <param name="source"></param>
       /// <returns></returns>
       /// <exception cref="NotImplementedException"></exception>
       public char ToIntervalNotationCharLeft()
-        => (notation is IntervalNotation.Closed or IntervalNotation.HalfOpenRight) ? '['
-        : (notation is IntervalNotation.Open or IntervalNotation.HalfOpenLeft) ? '('
+        => (intervalNotation is IntervalNotation.Closed or IntervalNotation.HalfOpenRight) ? '['
+        : (intervalNotation is IntervalNotation.Open or IntervalNotation.HalfOpenLeft) ? '('
         : throw new NotImplementedException();
 
       /// <summary>
-      /// <para>Gets a char representing the <see cref="IntervalNotation"/> (specified by <paramref name="notation"/>) on the right hand side.</para>
+      /// <para>Gets a char representing the <see cref="IntervalNotation"/> (specified by <paramref name="intervalNotation"/>) on the right hand side.</para>
       /// </summary>
       /// <param name="source"></param>
       /// <returns></returns>
       /// <exception cref="NotImplementedException"></exception>
       public char ToIntervalNotationCharRight()
-        => (notation is IntervalNotation.Closed or IntervalNotation.HalfOpenLeft) ? ']'
-        : (notation is IntervalNotation.Open or IntervalNotation.HalfOpenRight) ? ')'
+        => (intervalNotation is IntervalNotation.Closed or IntervalNotation.HalfOpenLeft) ? ']'
+        : (intervalNotation is IntervalNotation.Open or IntervalNotation.HalfOpenRight) ? ')'
         : throw new NotImplementedException();
 
       /// <summary>
-      /// <para>Creates a string representing the <see cref="IntervalNotation"/> (specified by <paramref name="notation"/>) of the interval <paramref name="minValue"/>..<paramref name="maxValue"/>.</para>
+      /// <para>Creates a string representing the <see cref="IntervalNotation"/> (specified by <paramref name="intervalNotation"/>) of the interval <paramref name="minValue"/>..<paramref name="maxValue"/>.</para>
       /// </summary>
       /// <typeparam name="T"></typeparam>
       /// <param name="source"></param>
@@ -76,7 +76,7 @@ namespace Flux
       {
         format = $"{{0{(format is null ? string.Empty : $":{format}")}}}";
 
-        return $"{notation.ToIntervalNotationCharLeft()}{string.Format(provider, format, minValue)}, {string.Format(provider, format, maxValue)}{notation.ToIntervalNotationCharRight()}";
+        return $"{intervalNotation.ToIntervalNotationCharLeft()}{string.Format(provider, format, minValue)}, {string.Format(provider, format, maxValue)}{intervalNotation.ToIntervalNotationCharRight()}";
       }
     }
   }

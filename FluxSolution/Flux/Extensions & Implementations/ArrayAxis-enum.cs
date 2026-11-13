@@ -1,22 +1,26 @@
 namespace Flux
 {
-  // <summary>
-  // <para>Two-dimensional arrays are arbitrary in terms of rows and columns, we simply choose the "native storage orientation".</para>
-  // <para>The native storage orientation is row-major order (see link). I.e. the array consists of elements by row then by column, as opposed to first by column then by row.</para>
-  // <para>This is the order in which .NET yield elements using the IEnumerate interface of such an array.</para>
-  // <see href="https://en.wikipedia.org/wiki/Row-_and_column-major_order"/>
-  // </summary>
+  /// <summary>
+  /// <para>Represents the logical axes of a two-dimensional array.</para>
+  /// <para>By convention, dimension 0 represents rows and dimension 1 represents columns.</para>
+  /// <see href="https://en.wikipedia.org/wiki/Row-_and_column-major_order"/>
+  /// </summary>
+  /// <remarks>In .NET, a rectangular array (<see cref="System.Array"/>) is stored and enumerated in row-major order: all elements of a row are traversed before moving to the next row.</remarks>
   public enum ArrayAxis
   {
-    // <summary>
-    // <para>The row is represented as dimension 0.</para>
-    // </summary>
-    // <remark>The concept of dimension 0 as the row is entirely a matter of choice, and simply a matter of adoption.</remark>
+    /// <summary>
+    /// <para>The row axis (dimension 0).</para>
+    /// </summary>
+    /// <remarks>
+    /// <para>Indexes position along rows. In a two-dimensional array, the first dimension corresponds to the row coordinate.</para>
+    /// </remarks>
     Row = 0,
-    // <summary>
-    // <para>The column is represented as dimension 1.</para>
-    // </summary>
-    // <remark>The concept of dimension 1 as the column is entirely a matter of choice, and simply a matter of adoption.</remark>
+    /// <summary>
+    /// <para>The column axis (dimension 1).</para>
+    /// </summary>
+    /// <remarks>
+    /// <para>Indexes position along columns. In a two-dimensional array, the second dimension corresponds to the column coordinate.</para>
+    /// </remarks>
     Column = 1
   }
 }

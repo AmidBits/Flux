@@ -59,7 +59,7 @@ namespace Flux
       /// <exception cref="System.ArgumentOutOfRangeException"></exception>
       public string ToDecimalString(int minLength = 1, string? alphabet = null, char negativeSymbol = '\u002D')
       {
-        if (minLength <= 0) minLength = MaxRepresentableDigitCount(value.BitWidth, 10, GenericMathInfo.Get<TInteger>().ImplementsISignedNumber);
+        if (minLength <= 0) minLength = MaxRepresentableDigitCount(value.BitWidth, 10, NumericTypeInfo<TInteger>.ImplementsISignedNumber);
 
         alphabet ??= System.Text.Encoding.Base62;
 
@@ -93,7 +93,7 @@ namespace Flux
       /// <exception cref="System.ArgumentOutOfRangeException"></exception>
       public string ToHexadecimalString(int minLength = 1, string? alphabet = null)
       {
-        if (minLength <= 0) minLength = MaxRepresentableDigitCount(value.BitWidth, 16, GenericMathInfo.Get<TInteger>().ImplementsISignedNumber);
+        if (minLength <= 0) minLength = MaxRepresentableDigitCount(value.BitWidth, 16, NumericTypeInfo<TInteger>.ImplementsISignedNumber);
 
         alphabet ??= System.Text.Encoding.Base62;
 
@@ -127,7 +127,7 @@ namespace Flux
       /// <exception cref="System.ArgumentOutOfRangeException"></exception>
       public string ToOctalString(int minLength = 1, string? alphabet = null)
       {
-        if (minLength <= 0) minLength = MaxRepresentableDigitCount(value.BitWidth, 8, GenericMathInfo.Get<TInteger>().ImplementsISignedNumber);
+        if (minLength <= 0) minLength = MaxRepresentableDigitCount(value.BitWidth, 8, NumericTypeInfo<TInteger>.ImplementsISignedNumber);
 
         alphabet ??= System.Text.Encoding.Base62;
 
@@ -192,7 +192,7 @@ namespace Flux
           return value.ToHexadecimalString(minLength, alphabet);
         else
         {
-          if (minLength <= 0) minLength = MaxRepresentableDigitCount(value.BitWidth, rdx, GenericMathInfo.Get<TInteger>().ImplementsISignedNumber);
+          if (minLength <= 0) minLength = MaxRepresentableDigitCount(value.BitWidth, rdx, NumericTypeInfo<TInteger>.ImplementsISignedNumber);
 
           alphabet ??= System.Text.Encoding.Base62;
 
@@ -329,6 +329,21 @@ namespace Flux
       }
 
       #endregion
+    }
+  }
+  public static partial class NumberBase
+  {
+    extension<TNumberBase>(TNumberBase)
+      where TNumberBase : System.Numerics.INumberBase<TNumberBase>
+    {
+      public static string GetCSharpLiteralSuffix()
+        => typeof(TNumberBase) == typeof(decimal) ? "m"
+        : typeof(TNumberBase) == typeof(double) ? "d"
+        : typeof(TNumberBase) == typeof(float) ? "f"
+        : typeof(TNumberBase) == typeof(long) ? "l"
+        : typeof(TNumberBase) == typeof(ulong) ? "ul"
+        : typeof(TNumberBase) == typeof(uint) ? "u"
+        : string.Empty;
     }
   }
 }

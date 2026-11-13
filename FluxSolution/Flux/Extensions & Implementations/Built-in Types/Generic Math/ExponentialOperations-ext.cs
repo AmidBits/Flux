@@ -751,7 +751,7 @@
       public static TInteger Pow2(TInteger exponent)
       {
         System.ArgumentOutOfRangeException.ThrowIfNegative(exponent);
-        if (!GenericMathInfo.Get<TInteger>().IsBigInteger && exponent >= TInteger.CreateChecked(TInteger.Zero.BitWidth)) throw new System.OverflowException();
+        if (!NumericTypeInfo<TInteger>.IsBigInteger && exponent >= TInteger.CreateChecked(TInteger.Zero.BitWidth)) throw new System.OverflowException();
 
         return TInteger.One << int.CreateChecked(exponent);
       }
@@ -764,7 +764,7 @@
       /// <returns>true if the value was computed successfully; otherwise, false.</returns>
       public static bool TryPow2(TInteger exponent, out TInteger pow2)
       {
-        if (TInteger.IsNegative(exponent) || (!GenericMathInfo.Get<TInteger>().IsBigInteger && exponent >= TInteger.CreateChecked(TInteger.Zero.BitWidth)))
+        if (TInteger.IsNegative(exponent) || (!NumericTypeInfo<TInteger>.IsBigInteger && exponent >= TInteger.CreateChecked(TInteger.Zero.BitWidth)))
         {
           pow2 = TInteger.Zero;
           return false;

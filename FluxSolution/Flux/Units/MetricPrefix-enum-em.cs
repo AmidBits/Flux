@@ -49,7 +49,7 @@ namespace Flux
     public static (T OriginalValue, Units.MetricPrefix OriginalPrefix, T InfimumValue, Units.MetricPrefix InfimumPrefix, T SupremumValue, Units.MetricPrefix SupremumPrefix, T UnprefixedValue) GetInfimumSupremum<T>(this Units.MetricPrefix source, T value, bool proper)
       where T : System.Numerics.INumber<T>, System.Numerics.IPowerFunctions<T>
     {
-      var (infimumItem, _, _, supremumItem, _, _) = source.InfimumSupremum();
+      var (infimumItem, _, _, supremumItem, _, _) = System.Enum.InfimumSupremum(source);
 
       var iValue = source.ConvertPrefix(value, infimumItem);
       var sValue = source.ConvertPrefix(value, supremumItem);

@@ -35,13 +35,6 @@ namespace Flux
         => TNumberBase.IsZero(value) ? TNumberBase.Zero : value;
 
       /// <summary>
-      /// <para>Returns a <see cref="GenericMathInfo"/> containing information about the numeric capabilities of the current value.</para>
-      /// </summary>
-      /// <returns></returns>
-      public GenericMathInfo NumericCapabilities()
-        => GenericMathInfo.Get(value.GetType());
-
-      /// <summary>
       /// <para>A very cheap way of performing <c>value^2</c>.</para>
       /// </summary>
       /// <returns></returns>

@@ -386,7 +386,7 @@ namespace Flux
           return TNumber.CreateChecked(ulp);
         }
 #endif
-        else if (GenericMathInfo.Get<TNumber>().ImplementsIBinaryInteger)
+        else if (NumericTypeInfo<TNumber>.ImplementsIBinaryInteger)
           return TNumber.One;
         else
           throw new System.NotImplementedException(typeof(TNumber).Name);
@@ -458,7 +458,7 @@ namespace Flux
             ordered -= (ulong)count;
             return TNumber.CreateChecked(System.Half.FromOrdered(ordered));
           }
-          else if (GenericMathInfo.Get<TNumber>().ImplementsIBinaryInteger) // Is integer, decrement by ulps.
+          else if (NumericTypeInfo<TNumber>.ImplementsIBinaryInteger) // Is integer, decrement by ulps.
             return value - TNumber.CreateChecked(count);
           else // Unrecognized type, throw an exception.
             throw new System.NotImplementedException(typeof(TNumber).Name);
@@ -545,7 +545,7 @@ namespace Flux
           if (leftOrdered < 0) leftOrdered = (System.Numerics.BigInteger)short.MinValue - leftOrdered;
           if (rightOrdered < 0) rightOrdered = (System.Numerics.BigInteger)short.MinValue - rightOrdered;
         }
-        else if (GenericMathInfo.Get<TNumber>().ImplementsIBinaryInteger)
+        else if (NumericTypeInfo<TNumber>.ImplementsIBinaryInteger)
         {
           leftOrdered = System.Numerics.BigInteger.CreateChecked(left);
           rightOrdered = System.Numerics.BigInteger.CreateChecked(right);
@@ -600,7 +600,7 @@ namespace Flux
             ordered += (ulong)count;
             return TNumber.CreateChecked(System.Half.FromOrdered(ordered));
           }
-          else if (GenericMathInfo.Get<TNumber>().ImplementsIBinaryInteger) // Is integer, increment by ulps.
+          else if (NumericTypeInfo<TNumber>.ImplementsIBinaryInteger) // Is integer, increment by ulps.
             return value + TNumber.CreateChecked(count);
           else // Unrecognized type, throw an exception.
             throw new System.NotImplementedException(typeof(TNumber).Name);

@@ -208,23 +208,32 @@ Build-Playlist "Enya" ("Tracks\Collections\Enya")
 Build-Playlist "Jean-Michel Jarre" ("Tracks\Collections\Jean-Michel Jarre")
 Build-Playlist "KMFDM" ("Tracks\Collections\KMFDM")
 Build-Playlist "Kraftwerk" ("Tracks\Collections\Kraftwerk")
+Build-Playlist "Laufey" ("Tracks\Collections\Laufey")
 Build-Playlist "Logic System" ("Tracks\Collections\Logic System")
 Build-Playlist "Lustans Lakejer" ("Tracks\Collections\Lustans Lakejer")
 Build-Playlist "The Shamen" ("Tracks\Collections\The Shamen")
-Build-Playlist "Wipeout" ("Tracks\Collections\Soundtracks\CoLD SToRAGE", "Tracks\Collections\Soundtracks\Wip3out")
+Build-Playlist "Wipeout" ("Tracks\Collections\Wipeout")
 Build-Playlist "Yazoo" ("Tracks\Collections\Yazoo", "Tracks\Collections\Yaz")
 Build-Playlist "Yello" ("Tracks\Collections\Yello")
 Build-Playlist "Zombies" ("Tracks\Collections\Rob Zombie", "Tracks\Collections\White Zombie")
 
-Build-Playlist "All Music" ("Tracks\Auggie", "Tracks\Collections")
+Build-Playlist "All Auggie" ("Tracks\Auggie")
 
-Build-Playlist "Classical" ("Tracks\Collections\Classical")
+Build-Playlist "All Classical" ("Tracks\Classical")
+
+Build-Playlist "All Collections" ("Tracks\Collections")
+
+Build-Playlist "All Compilations" ("Tracks\Compilations")
+
+Build-Playlist "All Cultural" ("Tracks\Cultural")
+
+Build-Playlist "All Music" ("Tracks\Auggie", "Tracks\Classical", "Tracks\Collections", "Tracks\Compilations", "Tracks\Cultural", "Tracks\Soundtracks")
+
+Build-Playlist "All Soundtracks" ("Tracks\Soundtracks")
 
 Build-Playlist "Personal Jesus" ("Tracks\Collections") "*Personal Jesus*.mp3"
 
-Build-Playlist "Soundtracks" ("Tracks\Collections\Soundtracks")
-
-Build-Playlist "World Music" ("Tracks\Collections\Mixes\Dinner In Paris", "Tracks\Collections\Mixes\Putumayo Presents Italian Cafe", "Tracks\Collections\Mixes\Putumayo Presents Paris", "Tracks\Collections\Mixes\Venice Lounge")
+Build-Playlist "Street Music" ("Tracks\Cultural\Dinner In Paris", "Tracks\Cultural\Putumayo Presents Italian Cafe", "Tracks\Cultural\Putumayo Presents Paris", "Tracks\Cultural\Venice Lounge")
 
 $currentPlaylistName = "Svensk Musik"
 New-Playlist $currentPlaylistName
@@ -489,8 +498,8 @@ Add-ToPlaylist $currentPlaylistName ("Tracks/Collections/Yello/Zebra") "03 Night
 Add-ToPlaylist $currentPlaylistName ("Tracks/Collections/ZZ Top") "ZZ Top - Delirious.mp3"
 Add-ToPlaylist $currentPlaylistName ("Tracks/Collections/ZZ Top") "ZZ Top - Planet Of Women.mp3"
 
-Add-ToPlaylist $currentPlaylistName ("Tracks/Collections/Soundtracks/Gone In 60 Seconds") "Too Sick to Pray.mp3"
+Add-ToPlaylist $currentPlaylistName ("Tracks/Soundtracks/Gone In 60 Seconds") "Too Sick to Pray.mp3"
 
-Add-ToPlaylist $currentPlaylistName ("Tracks/Collections/Soundtracks/Matrix, The") "Rob D - Clubbed to Death (Kurayamino Mix).mp3"
+Add-ToPlaylist $currentPlaylistName ("Tracks/Soundtracks/Matrix, The") "Rob D - Clubbed to Death (Kurayamino Mix).mp3"
 
 Add-ToPlaylist $currentPlaylistName ("Tracks/Collections/Miscellaneous")

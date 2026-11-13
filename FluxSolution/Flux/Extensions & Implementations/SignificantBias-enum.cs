@@ -1,10 +1,17 @@
 ﻿namespace Flux
 {
+  /// <summary>
+  /// <para>Specifies the bias for significant digit handling.</para>
+  /// </summary>
   public enum SignificantBias
   {
-    /// <summary>The bias is toward lower address.</summary>
+    /// <summary>
+    /// <para>The bias is toward lower address.</para>
+    /// </summary>
     LeastSignificant,
-    /// <summary>The bias is toward upper address.</summary>
+    /// <summary>
+    /// <para>The bias is toward upper address.</para>
+    /// </summary>
     MostSignificant
   }
 }

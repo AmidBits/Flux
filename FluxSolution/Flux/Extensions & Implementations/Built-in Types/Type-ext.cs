@@ -2,21 +2,54 @@ namespace Flux
 {
   public static partial class TypeExtensions
   {
+    #region ConcurrentDictionary of Cached Interfaces
+
+    private static readonly System.Collections.Concurrent.ConcurrentDictionary<System.Type, System.Type[]> m_cachedInterfaces = new();
+
+    #endregion
+
+    #region FrozenDictionary of C# Aliases
+
+    private static readonly System.Collections.Frozen.FrozenDictionary<System.Type, string> m_csharpAliases
+      = System.Collections.Frozen.FrozenDictionary.ToFrozenDictionary<System.Type, string>(new System.Collections.Generic.Dictionary<System.Type, string>()
+      {
+        [typeof(bool)] = "bool",
+        [typeof(byte)] = "byte",
+        [typeof(sbyte)] = "sbyte",
+        [typeof(short)] = "short",
+        [typeof(ushort)] = "ushort",
+        [typeof(int)] = "int",
+        [typeof(uint)] = "uint",
+        [typeof(long)] = "long",
+        [typeof(ulong)] = "ulong",
+        [typeof(nint)] = "nint",
+        [typeof(nuint)] = "nuint",
+        [typeof(char)] = "char",
+        [typeof(float)] = "float",
+        [typeof(double)] = "double",
+        [typeof(decimal)] = "decimal",
+        [typeof(string)] = "string",
+        [typeof(object)] = "object",
+        [typeof(void)] = "void",
+      });
+
+    #endregion
+
+    extension(System.Type)
+    {
+      #region ClearCachedInterfaces
+
+      /// <summary>
+      /// <para>Clears all cached interfaces.</para>
+      /// </summary>
+      public static void ClearCachedInterfaces()
+        => m_cachedInterfaces.Clear();
+
+      #endregion
+    }
+
     extension(System.Type type)
     {
-      /// <summary>
-      /// <para>Indicates whether a <see cref="System.Type"/> is a reference type, as how the CLR defines it.</para>
-      /// </summary>
-      public bool IsReferenceType
-        => !type.IsValueType && !type.IsByRefLike;
-
-      /// <summary>
-      /// <para>Indicates whether a <see cref="System.Type"/> is a static class, as how the .</para>
-      /// </summary>
-      public bool IsStaticClass
-        => type is not null && type.IsClass && type.IsAbstract && type.IsSealed
-        && type.GetConstructors(System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic).Length == 0; // Static classes cannot have instance constructors, so this eliminates false positives.
-
       #region CreateDefaultValue
 
       /// <summary>
@@ -29,7 +62,7 @@ namespace Flux
 
       #endregion
 
-      #region ..GetArrayType functions
+      #region Try/GetArrayType
 
       /// <summary>
       /// <para>If a type is an array, determines its specific array type.</para>
@@ -99,46 +132,39 @@ namespace Flux
 
       #endregion
 
-      #region Try/GetCsharpKeyword
+      #region GetCachedInterfaces
 
       /// <summary>
-      /// <para>Get the C# keyword alias of a <see cref="System.Type"/>, if it exist.</para>
-      /// <para>This was originally constructed for numeric types but expanded somewhat over time (for various reasons).</para>
-      /// <para><see href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/"/></para>
+      /// <para>Gets the interfaces of a <paramref name="type"/> by either retrieving from reflection or from interface cache. Generic types are replaced with generic type definitions.</para>
       /// </summary>
-      public string GetCsharpKeyword()
-        => type is null ? string.Empty
-        : (type == typeof(System.Boolean)) ? "bool"
-        : (type == typeof(System.Byte)) ? typeof(System.Byte).Name.ToLowerInvariant()
-        : (type == typeof(System.Char)) ? typeof(System.Char).Name.ToLowerInvariant()
-        : (type == typeof(System.Decimal)) ? typeof(System.Decimal).Name.ToLowerInvariant()
-        : (type == typeof(System.Double)) ? typeof(System.Double).Name.ToLowerInvariant()
-        : (type == typeof(System.Enum)) ? typeof(System.Enum).Name.ToLowerInvariant()
-        : (type == typeof(System.Int16)) ? "short"
-        : (type == typeof(System.Int32)) ? "int"
-        : (type == typeof(System.Int64)) ? "long"
-        : (type == typeof(System.IntPtr)) ? "nint"
-        : (type == typeof(System.Object)) ? typeof(System.Object).Name.ToLowerInvariant() // Reference type.
-        : (type == typeof(System.SByte)) ? "sbyte"
-        : (type == typeof(System.Single)) ? "float"
-        : (type == typeof(System.String)) ? typeof(System.String).Name.ToLowerInvariant() // Reference type.
-        : (type == typeof(System.UInt16)) ? "ushort"
-        : (type == typeof(System.UInt32)) ? "uint"
-        : (type == typeof(System.UInt64)) ? "ulong"
-        : (type == typeof(System.UIntPtr)) ? "nuint"
-        : string.Empty;
-
-      /// <summary>
-      /// <para>Attempt to get the C# keyword alias of a <see cref="System.Type"/>, if it exist.</para>
-      /// <para>This was originally constructed for numeric types but expanded somewhat over time (for various reasons).</para>
-      /// <para><see href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/"/></para>
-      /// </summary>
-      public bool TryGetCsharpKeyword(out string keyword)
+      /// <param name="skipCaching"></param>
+      /// <returns>All interfaces implemented by the <paramref name="type"/>.</returns>
+      public System.Type[] GetCachedInterfaces(bool skipCaching = false)
       {
-        keyword = type.GetCsharpKeyword();
+        if (m_cachedInterfaces.TryGetValue(type, out var interfaces))
+          return interfaces;
 
-        return !string.IsNullOrEmpty(keyword);
+        interfaces = [.. type.GetInterfaces().Select(ti => ti.IsGenericType ? ti.GetGenericTypeDefinition() : ti)];
+
+        if (!skipCaching && interfaces.Length > 0)
+          m_cachedInterfaces[type] = interfaces;
+
+        return interfaces;
       }
+
+      #endregion
+
+      #region GetCsharpAlias
+
+      public string? GetCsharpAlias()
+        => m_csharpAliases.TryGetValue(type, out var value) ? value : null;
+
+      #endregion
+
+      #region GetCsharpName
+
+      public string GetCsharpName()
+        => m_csharpAliases.TryGetValue(type, out var value) ? value : type.Name;
 
       #endregion
 
@@ -279,89 +305,26 @@ namespace Flux
 
       #endregion
 
-      //      public bool IsDotNetNumberBase()
-      //        => type == typeof(System.Numerics.Complex)
-      //        || IsDotNetNumber(type);
+      #region IsReferenceType
 
-      //      public bool IsDotNetNumber()
-      //        => IsDotNetFloatingPoint(type)
-      //        || IsDotNetInteger(type);
+      /// <summary>
+      /// <para>Indicates whether a <see cref="System.Type"/> is a reference type, as how the CLR defines it.</para>
+      /// </summary>
+      public bool IsReferenceType
+        => !type.IsValueType && !type.IsByRefLike;
 
-      //      public bool IsDotNetFloatingPoint()
-      //        => type == typeof(System.Decimal)
-      //        || type == typeof(System.Double)
-      //        || type == typeof(System.Single)
-      //#if NET11_0_OR_GREATER
-      //        || type == typeof(System.Numerics.BFloat16)
-      //        || type == typeof(System.Numerics.Decimal128)
-      //        || type == typeof(System.Numerics.Decimal32)
-      //        || type == typeof(System.Numerics.Decimal64)
-      //#endif
-      //        || type == typeof(System.Runtime.InteropServices.NFloat);
+      #endregion
 
-      //      public bool IsDotNetInteger()
-      //        => IsDotNetSignedInteger(type)
-      //        || IsDotNetUnsignedInteger(type);
+      #region IsStaticClass
 
-      //      public bool IsDotNetUnsignedInteger()
-      //        => type == typeof(System.Byte)
-      //        || type == typeof(System.UInt128)
-      //        || type == typeof(System.UInt16)
-      //        || type == typeof(System.UInt32)
-      //        || type == typeof(System.UInt64)
-      //        || type == typeof(System.UIntPtr);
+      /// <summary>
+      /// <para>Indicates whether a <see cref="System.Type"/> is a static class, as how the .</para>
+      /// </summary>
+      public bool IsStaticClass
+        => type is not null && type.IsClass && type.IsAbstract && type.IsSealed
+        && type.GetConstructors(System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic).Length == 0; // Static classes cannot have instance constructors, so this eliminates false positives.
 
-      //public bool IsDotNetSignedInteger()
-      //  => type == typeof(System.Int128)
-      //  || type == typeof(System.Int16)
-      //  || type == typeof(System.Int32)
-      //  || type == typeof(System.Int64)
-      //  || type == typeof(System.IntPtr)
-      //  || type == typeof(System.Numerics.BigInteger)
-      //  || type == typeof(System.SByte);
-
-      //      #region IsNumerics.. functions + helper
-
-      //      /// <summary>
-      //      /// <para>Indicates whether a type inherits from <see cref="System.Numerics.IBinaryInteger{TSelf}"/> and optionally is a .NET primitive.</para>
-      //      /// </summary>
-      //      public bool IsNumericsIBinaryInteger() => IsAssignableToGenericAware(type, typeof(System.Numerics.IBinaryInteger<>));
-
-      //      /// <summary>
-      //      /// <para>Indicates whether a type inherits from <see cref="System.Numerics.IFloatingPoint{TSelf}"/> and optionally is a .NET primitive.</para>
-      //      /// </summary>
-      //      public bool IsNumericsIFloatingPoint() => IsAssignableToGenericAware(type, typeof(System.Numerics.IFloatingPoint<>));
-
-      //      /// <summary>
-      //      /// <para>Indicates whether a type inherits from <see cref="System.Numerics.IBinaryFloatingPointIeee754{TSelf}"/> and optionally is a .NET primitive.</para>
-      //      /// </summary>
-      //      public bool IsNumericsIBinaryFloatingPointIeee754() => IsAssignableToGenericAware(type, typeof(System.Numerics.IBinaryFloatingPointIeee754<>));
-
-      //      /// <summary>
-      //      /// <para>Indicates whether a type inherits from <see cref="System.Numerics.IMinMaxValue{TSelf}"/> and optionally is a .NET primitive.</para>
-      //      /// </summary>
-      //      public bool IsNumericsIMinMaxValue() => IsAssignableToGenericAware(type, typeof(System.Numerics.IMinMaxValue<>));
-
-      //      /// <summary>
-      //      /// <para>Indicates whether a type inherits from <see cref="System.Numerics.INumber{TSelf}"/> and optionally is a .NET primitive.</para>
-      //      /// </summary>
-      //      public bool IsNumericsINumber() => IsAssignableToGenericAware(type, typeof(System.Numerics.INumber<>));
-
-      //      /// <summary>
-      //      /// <para>Indicates whether a type inherits from <see cref="System.Numerics.ISignedNumber{TSelf}"/> and optionally is a .NET primitive.</para>
-      //      /// </summary>
-      //      public bool IsNumericsISignedNumber() => IsAssignableToGenericAware(type, typeof(System.Numerics.ISignedNumber<>));
-
-      //      /// <summary>
-      //      /// <para>Indicates whether a type inherits from <see cref="System.Numerics.IUnsignedNumber{TSelf}"/> and optionally is a .NET primitive.</para>
-      //      /// </summary>
-      //      public bool IsNumericsIUnsignedNumber() => IsAssignableToGenericAware(type, typeof(System.Numerics.IUnsignedNumber<>));
-
-      //      public bool IsNumericsSignedInteger() => IsAssignableToGenericAware(type, typeof(System.Numerics.ISignedNumber<>)) && IsNumericsIBinaryInteger(type);
-
-      //      public bool IsNumericsUnsignedInteger() => IsAssignableToGenericAware(type, typeof(System.Numerics.IUnsignedNumber<>)) && IsNumericsIBinaryInteger(type);
-
-      //      #endregion
+      #endregion
 
       #region IsSub/SuperTypeOf
 
@@ -440,32 +403,6 @@ namespace Flux
         => (underlyingType = System.Nullable.GetUnderlyingType(type)) is not null;
 
       #endregion
-    }
-  }
-
-  public static partial class TypeExtensions
-  {
-    private static readonly System.Collections.Concurrent.ConcurrentDictionary<System.Type, System.Type[]> m_cachedInterfaces = new();
-
-    extension(System.Type)
-    {
-      public static void ClearCachedInterfaces() => m_cachedInterfaces.Clear();
-    }
-
-    extension(System.Type type)
-    {
-      public System.Type[] GetInterfacesWithCache(bool skipCaching = false)
-      {
-        if (m_cachedInterfaces.TryGetValue(type, out var interfaces))
-          return interfaces;
-
-        interfaces = [.. type.GetInterfaces().Select(ti => ti.IsGenericType ? ti.GetGenericTypeDefinition() : ti)];
-
-        if (!skipCaching && interfaces.Length > 0)
-          m_cachedInterfaces[type] = interfaces;
-
-        return interfaces;
-      }
     }
   }
 }

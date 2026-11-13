@@ -202,7 +202,7 @@
         for (var i = bytes.Length - 1; i >= 0; i--)  // After this loop, all bits are reversed.
           byte.ReverseBitsInPlace(ref bytes[i]); // Mirror (reverse) bits in each byte.
 
-        return TInteger.ReadBigEndian(bytes, GenericMathInfo.Get<TInteger>().ImplementsIUnsignedNumber); // Read as BigEndian (decreasing numeric significance in increasing memory addresses).
+        return TInteger.ReadBigEndian(bytes, NumericTypeInfo<TInteger>.ImplementsIUnsignedNumber); // Read as BigEndian (decreasing numeric significance in increasing memory addresses).
       }
 
       #endregion
@@ -223,7 +223,7 @@
 
         value.WriteLittleEndian(bytes); // Write as LittleEndian (increasing numeric significance in increasing memory addresses).
 
-        return TInteger.ReadBigEndian(bytes, GenericMathInfo.Get<TInteger>().ImplementsIUnsignedNumber); // Read as BigEndian (decreasing numeric significance in increasing memory addresses).
+        return TInteger.ReadBigEndian(bytes, NumericTypeInfo<TInteger>.ImplementsIUnsignedNumber); // Read as BigEndian (decreasing numeric significance in increasing memory addresses).
       }
 
       #endregion
@@ -243,7 +243,7 @@
 
         rng.Shuffle(bytes);
 
-        return TInteger.ReadLittleEndian(bytes, GenericMathInfo.Get<TInteger>().ImplementsIUnsignedNumber);
+        return TInteger.ReadLittleEndian(bytes, NumericTypeInfo<TInteger>.ImplementsIUnsignedNumber);
       }
 
       #endregion

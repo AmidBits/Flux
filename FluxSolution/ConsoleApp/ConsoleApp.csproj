@@ -2,7 +2,7 @@
 
 	<PropertyGroup>
 		<OutputType>Exe</OutputType>
-		<TargetFramework>net10.0</TargetFramework>
+		<TargetFramework>net11.0</TargetFramework>
 		<StartupObject>ConsoleApp.Program</StartupObject>
 		<LangVersion>preview</LangVersion>
 		<Nullable>enable</Nullable>
@@ -36,6 +36,7 @@
 	</PropertyGroup>-->
 
 	<ItemGroup>
+		<ProjectReference Include="..\Flux\Flux.csproj" />
 		<ProjectReference Include="..\Modeling\Modeling.csproj" />
 	</ItemGroup>
 

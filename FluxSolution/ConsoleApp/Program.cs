@@ -500,14 +500,19 @@ namespace ConsoleApp
 
     private static void TimedMain(string[] _)
     {
-      Flux.GenericMathInfo.PreloadNumericTypes();
+      //Flux.NumericTypeInfo.PreloadNumericTypes();
+
+      var ini = Flux.NumericTypeInfo<int>.BitWidth;
+      var inbi = NumericTypeInfo<double>.BitWidth;
+      var ind128 = NumericTypeInfo<System.Numerics.Decimal128>.BitWidth;
+
+      var inbn = Flux.NumericTypeInfo<System.Numerics.BigInteger>.BitWidth;
 
       var n = (long)10;
 
       //Flux.Number.DisplayDivRem(7, 3);
 
       var idrs = Flux.Number.IntegerDivRemStochastic(7, 3);
-
 
 
       //var nibi = n.IsBigInteger();

@@ -13,11 +13,7 @@ namespace Flux
       /// <returns></returns>
       public static (T ExtremumMinElement, int ExtremumMinIndex, int ExtremumMinValue, T ExtremumMaxElement, int ExtremumMaxIndex, int ExtremumMaxValue) Extremum<T>()
         where T : struct, System.Enum
-      {
-        var (ExtremumMinItem, ExtremumMinIndex, ExtremumMinValue, ExtremumMaxItem, ExtremumMaxIndex, ExtremumMaxValue) = IEnumerableExtensions.Extremum(System.Enum.GetValues<T>(), e => (int)(object)e);
-
-        return ((T)(object)ExtremumMinItem, ExtremumMinIndex, ExtremumMinValue, (T)(object)ExtremumMaxItem, ExtremumMaxIndex, ExtremumMaxValue);
-      }
+        => System.Enum.GetValues<T>().Extremum(e => (int)(object)e);
 
       #endregion
 
@@ -62,6 +58,22 @@ namespace Flux
         => ((ulong)(long)(object)value & (ulong)(long)(object)flags) != 0UL;
 
       #endregion
+
+      #region InfimumSupremum
+
+      /// <summary>
+      /// <para>Gets the infimum and supremum of a singleton set <paramref name="source"/> of a set <typeparamref name="TEnum"/>. I.e. the nearest ("less-than" and "greater-than") elements and indices to <paramref name="source"/> in <typeparamref name="TEnum"/>.</para>
+      /// <para>The infimum of a subset <paramref name="source"/> of a set <typeparamref name="TEnum"/> is the greatest element in <typeparamref name="TEnum"/> that is less than <paramref name="source"/>.</para>
+      /// <para>The supremum of a subset <paramref name="source"/> of a set <typeparamref name="TEnum"/> is the least element in <typeparamref name="TEnum"/> that is greater than <paramref name="source"/>.</para>
+      /// </summary>
+      /// <typeparam name="T"></typeparam>
+      /// <param name="source"></param>
+      /// <returns></returns>
+      public static (TEnum InfimumItem, int InfimumIndex, int InfimumValue, TEnum SupremumItem, int SupremumIndex, int SupremumValue) InfimumSupremum<TEnum>(TEnum source)
+        where TEnum : struct, System.Enum
+        => System.Enum.GetValues<TEnum>().InfimumSupremum((int)(object)source, e => (int)(object)e, true);
+
+      #endregion
     }
 
     extension(System.Enum source)
@@ -92,29 +104,6 @@ namespace Flux
         catch { attributes = []; }
 
         return attributes is not null && attributes.Count > 0;
-      }
-
-      #endregion
-    }
-
-    extension<T>(T source)
-      where T : struct, System.Enum
-    {
-      #region InfimumSupremum
-
-      /// <summary>
-      /// <para>Gets the infimum and supremum of a singleton set <paramref name="source"/> of a set <typeparamref name="T"/>. I.e. the nearest ("less-than" and "greater-than") elements and indices to <paramref name="source"/> in <typeparamref name="T"/>.</para>
-      /// <para>The infimum of a subset <paramref name="source"/> of a set <typeparamref name="T"/> is the greatest element in <typeparamref name="T"/> that is less than <paramref name="source"/>.</para>
-      /// <para>The supremum of a subset <paramref name="source"/> of a set <typeparamref name="T"/> is the least element in <typeparamref name="T"/> that is greater than <paramref name="source"/>.</para>
-      /// </summary>
-      /// <typeparam name="T"></typeparam>
-      /// <param name="source"></param>
-      /// <returns></returns>
-      public (T InfimumItem, int InfimumIndex, int InfimumValue, T SupremumItem, int SupremumIndex, int SupremumValue) InfimumSupremum()
-      {
-        var (InfimumItem, InfimumIndex, InfimumValue, SupremumItem, SupremumIndex, SupremumValue) = System.Enum.GetValues<T>().InfimumSupremum((int)(object)source, e => (int)(object)e, true);
-
-        return ((T)(object)InfimumItem, InfimumIndex, InfimumValue, (T)(object)SupremumItem, SupremumIndex, SupremumValue);
       }
 
       #endregion
