@@ -708,7 +708,7 @@
       public static TFloat FastPow10ReciprocalMagnitude<TFloat>(TInteger exponent, out TFloat pow10Reciprocal)
         where TFloat : System.Numerics.IFloatingPoint<TFloat>
       {
-        var values = DecimalExtensions.Pow10Reciprocal;
+        var values = Decimal128Extensions.Pow10Reciprocal;
 
         System.ArgumentOutOfRangeException.ThrowIfLessThanOrEqual(exponent, TInteger.CreateChecked(-values.Length));
         System.ArgumentOutOfRangeException.ThrowIfGreaterThan(exponent, TInteger.Zero);
@@ -726,7 +726,7 @@
       public static bool TryFastPow10ReciprocalMagnitude<TFloat>(TInteger exponent, out TFloat pow10Reciprocal)
         where TFloat : System.Numerics.IFloatingPoint<TFloat>
       {
-        var values = DecimalExtensions.Pow10Reciprocal;
+        var values = Decimal128Extensions.Pow10Reciprocal;
 
         if (exponent <= TInteger.CreateChecked(-values.Length) || exponent > TInteger.Zero)
         {

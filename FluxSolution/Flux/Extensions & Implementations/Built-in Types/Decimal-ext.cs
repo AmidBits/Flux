@@ -23,45 +23,45 @@ namespace Flux
 
 #endif
 
-    #region Tables of scale factors (negative and positive)
+    //#region Tables of scale factors (negative and positive)
 
-    /// <summary>
-    /// <para>Table of Pow10 reciprocals up to 10^-28.</para>
-    /// </summary>
-    internal static readonly decimal[] Pow10Reciprocal = //[.. Number.GeometricSequence(decimal.One, 10m).Where(d => d < decimal.MaxExactInteger).Select(d => 1m / d)];
-    [
-      1m,
-      0.1m,
-      0.01m,
-      0.001m,
-      0.0001m,
-      0.00001m,
-      0.000001m,
-      0.0000001m,
-      0.00000001m,
-      0.000000001m,
-      0.0000000001m,
-      0.00000000001m,
-      0.000000000001m,
-      0.0000000000001m,
-      0.00000000000001m,
-      0.000000000000001m,
-      0.0000000000000001m,
-      0.00000000000000001m,
-      0.000000000000000001m,
-      0.0000000000000000001m,
-      0.00000000000000000001m,
-      0.000000000000000000001m,
-      0.0000000000000000000001m,
-      0.00000000000000000000001m,
-      0.000000000000000000000001m,
-      0.0000000000000000000000001m,
-      0.00000000000000000000000001m,
-      0.000000000000000000000000001m,
-      0.0000000000000000000000000001m,
-    ];
+    ///// <summary>
+    ///// <para>Table of Pow10 reciprocals up to 10^-28.</para>
+    ///// </summary>
+    //internal static readonly decimal[] Pow10Reciprocal = //[.. Number.GeometricSequence(decimal.One, 10m).Where(d => d < decimal.MaxExactInteger).Select(d => 1m / d)];
+    //[
+    //  1m,
+    //  0.1m,
+    //  0.01m,
+    //  0.001m,
+    //  0.0001m,
+    //  0.00001m,
+    //  0.000001m,
+    //  0.0000001m,
+    //  0.00000001m,
+    //  0.000000001m,
+    //  0.0000000001m,
+    //  0.00000000001m,
+    //  0.000000000001m,
+    //  0.0000000000001m,
+    //  0.00000000000001m,
+    //  0.000000000000001m,
+    //  0.0000000000000001m,
+    //  0.00000000000000001m,
+    //  0.000000000000000001m,
+    //  0.0000000000000000001m,
+    //  0.00000000000000000001m,
+    //  0.000000000000000000001m,
+    //  0.0000000000000000000001m,
+    //  0.00000000000000000000001m,
+    //  0.000000000000000000000001m,
+    //  0.0000000000000000000000001m,
+    //  0.00000000000000000000000001m,
+    //  0.000000000000000000000000001m,
+    //  0.0000000000000000000000000001m,
+    //];
 
-    #endregion
+    //#endregion
 
     extension(System.Decimal)
     {
@@ -179,23 +179,23 @@ namespace Flux
 
       #endregion
 
-      #region Pow10
+      //#region Pow10
 
-      /// <summary>
-      /// <para>Computes 10 raised to the power of the specified exponent, which can be in the range [-28, 28].</para>
-      /// </summary>
-      /// <param name="exponent">Possible range: [-28, 28]</param>
-      /// <returns></returns>
-      public static decimal Pow10(int exponent)
-      {
-        if ((uint)(exponent + 28) > 56) throw new System.ArgumentOutOfRangeException(nameof(exponent));
+      ///// <summary>
+      ///// <para>Computes 10 raised to the power of the specified exponent, which can be in the range [-28, 28].</para>
+      ///// </summary>
+      ///// <param name="exponent">Possible range: [-28, 28]</param>
+      ///// <returns></returns>
+      //public static decimal Pow10(int exponent)
+      //{
+      //  if ((uint)(exponent + 28) > 56) throw new System.ArgumentOutOfRangeException(nameof(exponent));
 
-        return exponent < 0
-          ? Pow10Reciprocal[-exponent]
-          : decimal.CreateChecked(UInt128Extensions.Pow10[exponent]);
-      }
+      //  return exponent < 0
+      //    ? Pow10Reciprocal[-exponent]
+      //    : decimal.CreateChecked(UInt128Extensions.Pow10[exponent]);
+      //}
 
-      #endregion
+      //#endregion
 
 #if DECIMAL_TRANSCENDENTAL_FUNCTIONS
 

@@ -1,158 +1,91 @@
 namespace Flux
 {
+  using System.Collections.Frozen;
+
   public static class NumericTypeInfo<TNumberBase>
     where TNumberBase : System.Numerics.INumberBase<TNumberBase>
   {
-    static NumericTypeInfo()
+    private static readonly System.Type m_type = typeof(TNumberBase);
+
+    #region Lookup Tables
+
+    public enum NumberBaseType : long
     {
-      foreach (var itype in typeof(TNumberBase).GetCachedInterfaces()) // GetCachedInterfaces expands generic type descriptions.
-      {
-        #region Constants
+      Unknown = 0,
 
-        if (itype == typeof(System.Numerics.IFloatingPointConstants<>))
-          Constants |= NumericConstants.IFloatingPointConstants;
-
-        #endregion
-
-        #region Core
-
-        if (itype == typeof(System.Numerics.Complex<>))
-          Core |= NumericCore.ComplexT;
-        else if (itype == typeof(System.Numerics.IBinaryFloatingPointIeee754<>))
-          Core |= NumericCore.IBinaryFloatingPointIeee754;
-        else if (itype == typeof(System.Numerics.IBinaryInteger<>))
-          Core |= NumericCore.IBinaryInteger;
-        else if (itype == typeof(System.Numerics.IBinaryNumber<>))
-          Core |= NumericCore.IBinaryNumber;
-        else if (itype == typeof(System.Numerics.IDecimalFloatingPointIeee754<>))
-          Core |= NumericCore.IDecimalFloatingPointIeee754;
-        else if (itype == typeof(System.Numerics.IFloatingPoint<>))
-          Core |= NumericCore.IFloatingPoint;
-        else if (itype == typeof(System.Numerics.IFloatingPointIeee754<>))
-          Core |= NumericCore.IFloatingPointIeee754;
-        else if (itype == typeof(System.Numerics.IMinMaxValue<>))
-          Core |= NumericCore.IMinMaxValue;
-        else if (itype == typeof(System.Numerics.INumber<>))
-          Core |= NumericCore.INumber;
-        else if (itype == typeof(System.Numerics.INumberBase<>))
-          Core |= NumericCore.INumberBase;
-        else if (itype == typeof(System.Numerics.ISignedNumber<>))
-          Core |= NumericCore.ISignedNumber;
-        else if (itype == typeof(System.Numerics.IUnsignedNumber<>))
-          Core |= NumericCore.IUnsignedNumber;
-
-        #endregion
-
-        #region Formattable
-
-        if (itype == typeof(System.IFormattable))
-          Formattable |= NumericFormattable.IFormattable;
-        else if (itype == typeof(System.ISpanFormattable))
-          Formattable |= NumericFormattable.ISpanFormattable;
-        else if (itype == typeof(System.IUtf8SpanFormattable))
-          Formattable |= NumericFormattable.IUtf8SpanFormattable;
-
-        #endregion
-
-        #region Functions
-
-        if (itype == typeof(System.Numerics.IExponentialFunctions<>))
-          Functions |= NumericFunctions.IExponentialFunctions;
-        else if (itype == typeof(System.Numerics.IHyperbolicFunctions<>))
-          Functions |= NumericFunctions.IHyperbolicFunctions;
-        else if (itype == typeof(System.Numerics.ILogarithmicFunctions<>))
-          Functions |= NumericFunctions.ILogarithmicFunctions;
-        else if (itype == typeof(System.Numerics.IPowerFunctions<>))
-          Functions |= NumericFunctions.IPowerFunctions;
-        else if (itype == typeof(System.Numerics.IRootFunctions<>))
-          Functions |= NumericFunctions.IRootFunctions;
-        else if (itype == typeof(System.Numerics.ITrigonometricFunctions<>))
-          Functions |= NumericFunctions.ITrigonometricFunctions;
-
-        #endregion
-
-        #region Identity
-
-        if (itype == typeof(System.Numerics.IAdditiveIdentity<,>))
-          Identity |= NumericIdentity.IAdditiveIdentity;
-        else if (itype == typeof(System.Numerics.IMultiplicativeIdentity<,>))
-          Identity |= NumericIdentity.IMultiplicativeIdentity;
-
-        #endregion
-
-        #region Operators
-
-        if (itype == typeof(System.Numerics.IAdditionOperators<,,>))
-          Operators |= NumericOperators.IAdditionOperators;
-        else if (itype == typeof(System.Numerics.IBitwiseOperators<,,>))
-          Operators |= NumericOperators.IBitwiseOperators;
-        else if (itype == typeof(System.Numerics.IComparisonOperators<,,>))
-          Operators |= NumericOperators.IComparisonOperators;
-        else if (itype == typeof(System.Numerics.IDecrementOperators<>))
-          Operators |= NumericOperators.IDecrementOperators;
-        else if (itype == typeof(System.Numerics.IDivisionOperators<,,>))
-          Operators |= NumericOperators.IDivisionOperators;
-        else if (itype == typeof(System.Numerics.IEqualityOperators<,,>))
-          Operators |= NumericOperators.IEqualityOperators;
-        else if (itype == typeof(System.Numerics.IIncrementOperators<>))
-          Operators |= NumericOperators.IIncrementOperators;
-        else if (itype == typeof(System.Numerics.IModulusOperators<,,>))
-          Operators |= NumericOperators.IModulusOperators;
-        else if (itype == typeof(System.Numerics.IMultiplyOperators<,,>))
-          Operators |= NumericOperators.IMultiplyOperators;
-        else if (itype == typeof(System.Numerics.IShiftOperators<,,>))
-          Operators |= NumericOperators.IShiftOperators;
-        else if (itype == typeof(System.Numerics.ISubtractionOperators<,,>))
-          Operators |= NumericOperators.ISubtractionOperators;
-        else if (itype == typeof(System.Numerics.IUnaryNegationOperators<,>))
-          Operators |= NumericOperators.IUnaryNegationOperators;
-        else if (itype == typeof(System.Numerics.IUnaryPlusOperators<,>))
-          Operators |= NumericOperators.IUnaryPlusOperators;
-
-        #endregion
-
-        #region Parsable
-
-        if (itype == typeof(System.IParsable<>))
-          Parsable |= NumericParsable.IParsable;
-        else if (itype == typeof(System.ISpanParsable<>))
-          Parsable |= NumericParsable.ISpanParsable;
-        else if (itype == typeof(System.IUtf8SpanParsable<>))
-          Parsable |= NumericParsable.IUtf8SpanParsable;
-
-        #endregion
-      }
-
-      IsSignedInteger = ImplementsIBinaryInteger && ImplementsISignedNumber;
-      IsUnsignedInteger = ImplementsIBinaryInteger && ImplementsIUnsignedNumber;
-
-      IsArbitraryPrecision = IsBigInteger;
-      IsFixedWidth = !IsArbitraryPrecision;
-      StorageBytes = System.Runtime.CompilerServices.Unsafe.SizeOf<TNumberBase>();
-      BitWidth = IsFixedWidth ? StorageBytes * 8 : null;
+      BFloat16,
+      BigInteger,
+      BigRational,
+      Byte,
+      Complex,
+      ComplexT,
+      Decimal,
+      Decimal32,
+      Decimal64,
+      Decimal128,
+      Double,
+      Half,
+      Int16,
+      Int32,
+      Int64,
+      Int128,
+      IntPtr,
+      NFloat,
+      SByte,
+      Single,
+      UInt16,
+      UInt32,
+      UInt64,
+      UInt128,
+      UIntPtr,
     }
 
-    #region NumericConstants
+    private static readonly FrozenDictionary<Type, NumberBaseType> m_numberBaseType
+      = new Dictionary<Type, NumberBaseType>
+      {
+        [typeof(System.Numerics.BFloat16)] = NumberBaseType.BFloat16,
+        [typeof(System.Numerics.BigInteger)] = NumberBaseType.BigInteger,
+        [typeof(System.Byte)] = NumberBaseType.Byte,
+        [typeof(System.Numerics.Complex)] = NumberBaseType.Complex,
+        [typeof(System.Numerics.Complex<>)] = NumberBaseType.ComplexT,
+        [typeof(System.Decimal)] = NumberBaseType.Decimal,
+        [typeof(System.Numerics.Decimal32)] = NumberBaseType.Decimal32,
+        [typeof(System.Numerics.Decimal64)] = NumberBaseType.Decimal64,
+        [typeof(System.Numerics.Decimal128)] = NumberBaseType.Decimal128,
+        [typeof(System.Double)] = NumberBaseType.Double,
+        [typeof(System.Half)] = NumberBaseType.Half,
+        [typeof(System.Int16)] = NumberBaseType.Int16,
+        [typeof(System.Int32)] = NumberBaseType.Int32,
+        [typeof(System.Int64)] = NumberBaseType.Int64,
+        [typeof(System.Int128)] = NumberBaseType.Int128,
+        [typeof(System.IntPtr)] = NumberBaseType.IntPtr,
+        [typeof(System.Runtime.InteropServices.NFloat)] = NumberBaseType.NFloat,
+        [typeof(System.SByte)] = NumberBaseType.SByte,
+        [typeof(System.Single)] = NumberBaseType.Single,
+        [typeof(System.UInt16)] = NumberBaseType.UInt16,
+        [typeof(System.UInt32)] = NumberBaseType.UInt32,
+        [typeof(System.UInt64)] = NumberBaseType.UInt64,
+        [typeof(System.UInt128)] = NumberBaseType.UInt128,
+        [typeof(System.UIntPtr)] = NumberBaseType.UIntPtr,
+        [typeof(Numerics.BigRational)] = NumberBaseType.BigRational,
+      }.ToFrozenDictionary();
 
     [System.Flags]
-    public enum NumericConstants : long
+    public enum NumericConstants
     {
       NoConstants = 0,
 
       IFloatingPointConstants = 0x0000_0000_0000_0001,
     }
 
-    public static readonly NumericConstants Constants;
-
-    /// <summary>Indicates whether the type implements <see cref="System.Numerics.IFloatingPointConstants{TSelf}"/>.</summary>
-    public static bool ImplementsIFloatingPointConstants => (Constants & NumericConstants.IFloatingPointConstants) != 0;
-
-    #endregion
-
-    #region NumericCore
+    private static readonly FrozenDictionary<Type, NumericConstants> m_constantsMap
+      = new Dictionary<Type, NumericConstants>
+      {
+        [typeof(System.Numerics.IFloatingPointConstants<>)] = NumericConstants.IFloatingPointConstants,
+      }.ToFrozenDictionary();
 
     [System.Flags]
-    public enum NumericCore : long
+    public enum NumericCore
     {
       NoCore = 0,
 
@@ -169,6 +102,197 @@ namespace Flux
       ISignedNumber = 0x0000_0000_0000_0400,
       IUnsignedNumber = 0x0000_0000_0000_0800,
     }
+
+    private static readonly FrozenDictionary<Type, NumericCore> m_coreMap
+      = new Dictionary<Type, NumericCore>
+      {
+        [typeof(System.Numerics.Complex<>)] = NumericCore.ComplexT,
+        [typeof(System.Numerics.IBinaryFloatingPointIeee754<>)] = NumericCore.IBinaryFloatingPointIeee754,
+        [typeof(System.Numerics.IBinaryInteger<>)] = NumericCore.IBinaryInteger,
+        [typeof(System.Numerics.IBinaryNumber<>)] = NumericCore.IBinaryNumber,
+        [typeof(System.Numerics.IDecimalFloatingPointIeee754<>)] = NumericCore.IDecimalFloatingPointIeee754,
+        [typeof(System.Numerics.IFloatingPoint<>)] = NumericCore.IFloatingPoint,
+        [typeof(System.Numerics.IFloatingPointIeee754<>)] = NumericCore.IFloatingPointIeee754,
+        [typeof(System.Numerics.IMinMaxValue<>)] = NumericCore.IMinMaxValue,
+        [typeof(System.Numerics.INumber<>)] = NumericCore.INumber,
+        [typeof(System.Numerics.INumberBase<>)] = NumericCore.INumberBase,
+        [typeof(System.Numerics.ISignedNumber<>)] = NumericCore.ISignedNumber,
+        [typeof(System.Numerics.IUnsignedNumber<>)] = NumericCore.IUnsignedNumber,
+      }.ToFrozenDictionary();
+
+    [System.Flags]
+    public enum NumericFormattable
+    {
+      NotFormattable = 0,
+
+      IFormattable = 0x0000_0000_0000_0001,
+      ISpanFormattable = 0x0000_0000_0000_0002,
+      IUtf8SpanFormattable = 0x0000_0000_0000_0004,
+    }
+
+    private static readonly FrozenDictionary<Type, NumericFormattable> m_formattableMap
+      = new Dictionary<Type, NumericFormattable>
+      {
+        [typeof(System.IFormattable)] = NumericFormattable.IFormattable,
+        [typeof(System.ISpanFormattable)] = NumericFormattable.ISpanFormattable,
+        [typeof(System.IUtf8SpanFormattable)] = NumericFormattable.IUtf8SpanFormattable,
+      }.ToFrozenDictionary();
+
+    [System.Flags]
+    public enum NumericFunctions
+    {
+      NoFunctions = 0,
+
+      IExponentialFunctions = 0x0000_0000_0000_0001,
+      IHyperbolicFunctions = 0x0000_0000_0000_0002,
+      ILogarithmicFunctions = 0x0000_0000_0000_0004,
+      IPowerFunctions = 0x0000_0000_0000_0008,
+      IRootFunctions = 0x0000_0000_0000_0010,
+      ITrigonometricFunctions = 0x0000_0000_0000_0020,
+    }
+
+    private static readonly FrozenDictionary<Type, NumericFunctions> m_functionsMap
+      = new Dictionary<Type, NumericFunctions>
+      {
+        [typeof(System.Numerics.IExponentialFunctions<>)] = NumericFunctions.IExponentialFunctions,
+        [typeof(System.Numerics.IHyperbolicFunctions<>)] = NumericFunctions.IHyperbolicFunctions,
+        [typeof(System.Numerics.ILogarithmicFunctions<>)] = NumericFunctions.ILogarithmicFunctions,
+        [typeof(System.Numerics.IPowerFunctions<>)] = NumericFunctions.IPowerFunctions,
+        [typeof(System.Numerics.IRootFunctions<>)] = NumericFunctions.IRootFunctions,
+        [typeof(System.Numerics.ITrigonometricFunctions<>)] = NumericFunctions.ITrigonometricFunctions,
+      }.ToFrozenDictionary();
+
+    [System.Flags]
+    public enum NumericIdentity
+    {
+      NoIdentities = 0,
+
+      IAdditiveIdentity = 0x0000_0000_0000_0001,
+      IMultiplicativeIdentity = 0x0000_0000_0000_0002,
+    }
+
+    private static readonly FrozenDictionary<Type, NumericIdentity> m_identityMap
+      = new Dictionary<Type, NumericIdentity>
+      {
+        [typeof(System.Numerics.IAdditiveIdentity<,>)] = NumericIdentity.IAdditiveIdentity,
+        [typeof(System.Numerics.IMultiplicativeIdentity<,>)] = NumericIdentity.IMultiplicativeIdentity,
+      }.ToFrozenDictionary();
+
+    [System.Flags]
+    public enum NumericOperators
+    {
+      NoOperators = 0,
+
+      IAdditionOperators = 0x0000_0000_0000_0001,
+      IBitwiseOperators = 0x0000_0000_0000_0002,
+      IComparisonOperators = 0x0000_0000_0000_0004,
+      IDecrementOperators = 0x0000_0000_0000_0008,
+      IDivisionOperators = 0x0000_0000_0000_0010,
+      IEqualityOperators = 0x0000_0000_0000_0020,
+      IIncrementOperators = 0x0000_0000_0000_0040,
+      IModulusOperators = 0x0000_0000_0000_0080,
+      IMultiplyOperators = 0x0000_0000_0000_0100,
+      IShiftOperators = 0x0000_0000_0000_0200,
+      ISubtractionOperators = 0x0000_0000_0000_0400,
+      IUnaryNegationOperators = 0x0000_0000_0000_0800,
+      IUnaryPlusOperators = 0x0000_0000_0000_1000,
+    }
+
+    private static readonly FrozenDictionary<Type, NumericOperators> m_operatorsMap
+      = new Dictionary<Type, NumericOperators>
+      {
+        [typeof(System.Numerics.IAdditionOperators<,,>)] = NumericOperators.IAdditionOperators,
+        [typeof(System.Numerics.IBitwiseOperators<,,>)] = NumericOperators.IBitwiseOperators,
+        [typeof(System.Numerics.IComparisonOperators<,,>)] = NumericOperators.IComparisonOperators,
+        [typeof(System.Numerics.IDecrementOperators<>)] = NumericOperators.IDecrementOperators,
+        [typeof(System.Numerics.IDivisionOperators<,,>)] = NumericOperators.IDivisionOperators,
+        [typeof(System.Numerics.IEqualityOperators<,,>)] = NumericOperators.IEqualityOperators,
+        [typeof(System.Numerics.IIncrementOperators<>)] = NumericOperators.IIncrementOperators,
+        [typeof(System.Numerics.IModulusOperators<,,>)] = NumericOperators.IModulusOperators,
+        [typeof(System.Numerics.IMultiplyOperators<,,>)] = NumericOperators.IMultiplyOperators,
+        [typeof(System.Numerics.IShiftOperators<,,>)] = NumericOperators.IShiftOperators,
+        [typeof(System.Numerics.ISubtractionOperators<,,>)] = NumericOperators.ISubtractionOperators,
+        [typeof(System.Numerics.IUnaryNegationOperators<,>)] = NumericOperators.IUnaryNegationOperators,
+        [typeof(System.Numerics.IUnaryPlusOperators<,>)] = NumericOperators.IUnaryPlusOperators,
+      }.ToFrozenDictionary();
+
+    [System.Flags]
+    public enum NumericParsable
+    {
+      NotParsable = 0,
+
+      IParsable = 0x0000_0000_0000_0001,
+      ISpanParsable = 0x0000_0000_0000_0002,
+      IUtf8SpanParsable = 0x0000_0000_0000_0004,
+    }
+
+    private static readonly System.Collections.Frozen.FrozenDictionary<Type, NumericParsable> m_parsableMap
+      = new Dictionary<Type, NumericParsable>
+      {
+        [typeof(System.IParsable<>)] = NumericParsable.IParsable,
+        [typeof(System.ISpanParsable<>)] = NumericParsable.ISpanParsable,
+        [typeof(System.IUtf8SpanParsable<>)] = NumericParsable.IUtf8SpanParsable,
+      }.ToFrozenDictionary();
+
+    #endregion
+
+    static NumericTypeInfo()
+    {
+      foreach (var interfaceType in typeof(TNumberBase).GetCachedInterfaces()) // GetCachedInterfaces expands generic type descriptions.
+      {
+        if (m_constantsMap.TryGetValue(interfaceType, out var constants))
+          Constants |= constants;
+
+        if (m_coreMap.TryGetValue(interfaceType, out var core))
+          Core |= core;
+
+        if (m_formattableMap.TryGetValue(interfaceType, out var formattable))
+          Formattable |= formattable;
+
+        if (m_functionsMap.TryGetValue(interfaceType, out var functions))
+          Functions |= functions;
+
+        if (m_identityMap.TryGetValue(interfaceType, out var identity))
+          Identity |= identity;
+
+        if (m_operatorsMap.TryGetValue(interfaceType, out var operators))
+          Operators |= operators;
+
+        if (m_parsableMap.TryGetValue(interfaceType, out var parsable))
+          Parsable |= parsable;
+      }
+
+      if (m_numberBaseType.TryGetValue(m_type.IsGenericType ? m_type.GetGenericTypeDefinition() : m_type, out var baseType)) // Has to evaluate generic-type and get type-definition is so, for sake of "System.Numerics.Complex<>".
+        BaseType = baseType;
+
+      // Sanity checks.
+
+      System.Diagnostics.Debug.Assert(IntPtr.Size == UIntPtr.Size);
+      System.Diagnostics.Debug.Assert(IntPtr.Size == System.Runtime.InteropServices.NFloat.Size);
+
+      System.Diagnostics.Debug.WriteLine(ToStringEx());
+    }
+
+    public static Type Type => m_type;
+
+    #region Stored Flags
+
+    #region BaseType
+
+    public static readonly NumberBaseType BaseType;
+
+    #endregion
+
+    #region NumericConstants
+
+    public static readonly NumericConstants Constants;
+
+    /// <summary>Indicates whether the type implements <see cref="System.Numerics.IFloatingPointConstants{TSelf}"/>.</summary>
+    public static bool ImplementsIFloatingPointConstants => (Constants & NumericConstants.IFloatingPointConstants) != 0;
+
+    #endregion
+
+    #region NumericCore
 
     public static readonly NumericCore Core;
 
@@ -209,43 +333,20 @@ namespace Flux
 
     #region NumericFormattable
 
-    [System.Flags]
-    public enum NumericFormattable : long
-    {
-      NoFormattable = 0,
-
-      IFormattable = 0x0000_0000_0000_0001,
-      ISpanFormattable = 0x0000_0000_0000_0002,
-      IUtf8SpanFormattable = 0x0000_0000_0000_0004,
-    }
-
     public static readonly NumericFormattable Formattable;
 
-    /// <summary>Indicates whether the type implements <see cref="System.Numerics.IFormattable"/>.</summary>
+    /// <summary>Indicates whether the type implements <see cref="System.IFormattable"/>.</summary>
     public static bool ImplementsIFormattable => (Formattable & NumericFormattable.IFormattable) != 0;
 
-    /// <summary>Indicates whether the type implements <see cref="System.Numerics.ISpanFormattable"/>.</summary>
+    /// <summary>Indicates whether the type implements <see cref="System.ISpanFormattable"/>.</summary>
     public static bool ImplementsISpanFormattable => (Formattable & NumericFormattable.ISpanFormattable) != 0;
 
-    /// <summary>Indicates whether the type implements <see cref="System.Numerics.IUtf8SpanFormattable"/>.</summary>
+    /// <summary>Indicates whether the type implements <see cref="System.IUtf8SpanFormattable"/>.</summary>
     public static bool ImplementsIUtf8SpanFormattable => (Formattable & NumericFormattable.IUtf8SpanFormattable) != 0;
 
     #endregion
 
     #region NumericFunctions
-
-    [System.Flags]
-    public enum NumericFunctions : long
-    {
-      NoFunctions = 0,
-
-      IExponentialFunctions = 0x0000_0000_0000_0001,
-      IHyperbolicFunctions = 0x0000_0000_0000_0002,
-      ILogarithmicFunctions = 0x0000_0000_0000_0004,
-      IPowerFunctions = 0x0000_0000_0000_0008,
-      IRootFunctions = 0x0000_0000_0000_0010,
-      ITrigonometricFunctions = 0x0000_0000_0000_0020,
-    }
 
     public static readonly NumericFunctions Functions;
 
@@ -271,15 +372,6 @@ namespace Flux
 
     #region NumericIdentity
 
-    [System.Flags]
-    public enum NumericIdentity : long
-    {
-      NoIdentity = 0,
-
-      IAdditiveIdentity = 0x0000_0000_0000_0001,
-      IMultiplicativeIdentity = 0x0000_0000_0000_0002,
-    }
-
     public static readonly NumericIdentity Identity;
 
     /// <summary>Indicates whether the type implements <see cref="System.Numerics.IAdditiveIdentity{TSelf, TResult}"/>.</summary>
@@ -291,26 +383,6 @@ namespace Flux
     #endregion
 
     #region NumericOperators
-
-    [System.Flags]
-    public enum NumericOperators : long
-    {
-      NoOperators = 0,
-
-      IAdditionOperators = 0x0000_0000_0000_0001,
-      IBitwiseOperators = 0x0000_0000_0000_0002,
-      IComparisonOperators = 0x0000_0000_0000_0004,
-      IDecrementOperators = 0x0000_0000_0000_0008,
-      IDivisionOperators = 0x0000_0000_0000_0010,
-      IEqualityOperators = 0x0000_0000_0000_0020,
-      IIncrementOperators = 0x0000_0000_0000_0040,
-      IModulusOperators = 0x0000_0000_0000_0080,
-      IMultiplyOperators = 0x0000_0000_0000_0100,
-      IShiftOperators = 0x0000_0000_0000_0200,
-      ISubtractionOperators = 0x0000_0000_0000_0400,
-      IUnaryNegationOperators = 0x0000_0000_0000_0800,
-      IUnaryPlusOperators = 0x0000_0000_0000_1000,
-    }
 
     public static readonly NumericOperators Operators;
 
@@ -357,1099 +429,237 @@ namespace Flux
 
     #region NumericParsable
 
-    [System.Flags]
-    public enum NumericParsable : long
-    {
-      NoParsable = 0,
-
-      IParsable = 0x0000_0000_0000_0001,
-      ISpanParsable = 0x0000_0000_0000_0002,
-      IUtf8SpanParsable = 0x0000_0000_0000_0004,
-    }
-
     public static readonly NumericParsable Parsable;
 
-    /// <summary>Indicates whether the type implements <see cref="System.Numerics.IParsable{TSelf}"/>.</summary>
+    /// <summary>Indicates whether the type implements <see cref="System.IParsable{TSelf}"/>.</summary>
     public static bool ImplementsIParsable => (Parsable & NumericParsable.IParsable) != 0;
 
-    /// <summary>Indicates whether the type implements <see cref="System.Numerics.ISpanParsable{TSelf}"/>.</summary>
+    /// <summary>Indicates whether the type implements <see cref="System.ISpanParsable{TSelf}"/>.</summary>
     public static bool ImplementsISpanParsable => (Parsable & NumericParsable.ISpanParsable) != 0;
 
-    /// <summary>Indicates whether the type implements <see cref="System.Numerics.IUtf8SpanParsable{TSelf}"/>.</summary>
+    /// <summary>Indicates whether the type implements <see cref="System.IUtf8SpanParsable{TSelf}"/>.</summary>
     public static bool ImplementsIUtf8SpanParsable => (Parsable & NumericParsable.IUtf8SpanParsable) != 0;
 
     #endregion
 
-    #region Is.. Type Checks
+    #endregion
+
+    #region Is.. Concrete Type Checks
 
     /// <summary>Indicates whether the type represents <see cref="System.Numerics.BFloat16"/>.</summary>
-    public static readonly bool IsBFloat16 = typeof(TNumberBase) == typeof(System.Numerics.BFloat16);
+    public static bool IsBFloat16 => BaseType == NumberBaseType.BFloat16;
 
     /// <summary>Indicates whether the type represents <see cref="System.Numerics.BigInteger"/>.</summary>
-    public static readonly bool IsBigInteger = typeof(TNumberBase) == typeof(System.Numerics.BigInteger);
-
-    /// <summary>Indicates whether the type represents <see cref="System.Numerics.Complex"/>.</summary>
-    public static readonly bool IsComplex = typeof(TNumberBase) == typeof(System.Numerics.Complex);
-
-    /// <summary>Indicates whether the type represents <see cref="System.Decimal"/>.</summary>
-    public static readonly bool IsDecimal = typeof(TNumberBase) == typeof(System.Decimal);
+    public static bool IsBigInteger => BaseType == NumberBaseType.BigInteger;
 
     /// <summary>Indicates whether the type represents <see cref="Flux.Numerics.BigRational"/>.</summary>
-    public static readonly bool IsBigRational = typeof(TNumberBase) == typeof(Flux.Numerics.BigRational);
+    public static bool IsBigRational => BaseType == NumberBaseType.BigRational;
 
-    /// <summary>Indicates whether the type represents an IEEE binary16 floating-point, such as <see cref="System.Half"/></summary>
-    public static readonly bool IsBinary16 = typeof(TNumberBase) == typeof(System.Half);
+    /// <summary>Indicates whether the type represents <see cref="byte"/>.</summary>
+    public static bool IsByte => BaseType == NumberBaseType.Byte;
+
+    /// <summary>Indicates whether the type represents <see cref="System.Numerics.Complex"/>.</summary>
+    public static bool IsComplex => BaseType == NumberBaseType.Complex;
+
+    /// <summary>Indicates whether the type represents <see cref="System.Numerics.Complex{TSelf}"/>.</summary>
+    public static bool IsComplexT => BaseType == NumberBaseType.ComplexT;
+
+    /// <summary>Indicates whether the type represents <see cref="decimal"/>.</summary>
+    public static bool IsDecimal => BaseType == NumberBaseType.Decimal;
+
+    /// <summary>Indicates whether the type represents <see cref="System.Numerics.Decimal32"/>.</summary>
+    public static bool IsDecimal32 => BaseType == NumberBaseType.Decimal32;
+
+    /// <summary>Indicates whether the type represents <see cref="System.Numerics.Decimal64"/>.</summary>
+    public static bool IsDecimal64 => BaseType == NumberBaseType.Decimal64;
+
+    /// <summary>Indicates whether the type represents <see cref="System.Numerics.Decimal128"/>.</summary>
+    public static bool IsDecimal128 => BaseType == NumberBaseType.Decimal128;
+
+    /// <summary>Indicates whether the type represents <see cref="double"/>.</summary>
+    public static bool IsDouble => BaseType == NumberBaseType.Double;
+
+    /// <summary>Indicates whether the type represents <see cref="System.Half"/>.</summary>
+    public static bool IsHalf => BaseType == NumberBaseType.Half;
+
+    /// <summary>Indicates whether the type represents <see cref="short"/>.</summary>
+    public static bool IsInt16 => BaseType == NumberBaseType.Int16;
+
+    /// <summary>Indicates whether the type represents <see cref="int"/>.</summary>
+    public static bool IsInt32 => BaseType == NumberBaseType.Int32;
+
+    /// <summary>Indicates whether the type represents <see cref="long"/>.</summary>
+    public static bool IsInt64 => BaseType == NumberBaseType.Int64;
+
+    /// <summary>Indicates whether the type represents <see cref="System.Int128"/>.</summary>
+    public static bool IsInt128 => BaseType == NumberBaseType.Int128;
+
+    /// <summary>Indicates whether the type represents <see cref="System.UIntPtr"/>.</summary>
+    public static bool IsIntPtr => BaseType == NumberBaseType.IntPtr;
+
+    /// <summary>Indicates whether the type represents <see cref="System.IntPtr"/> with <see cref="System.IntPtr.Size"/> equal to 4.</summary>
+    public static bool IsIntPtr32 => IsIntPtr && System.IntPtr.Size == 4;
+
+    /// <summary>Indicates whether the type represents <see cref="System.IntPtr"/> with <see cref="System.IntPtr.Size"/> equal to 8.</summary>
+    public static bool IsIntPtr64 => IsIntPtr && System.IntPtr.Size == 8;
+
+    /// <summary>Indicates whether the type represents <see cref="System.Runtime.InteropServices.NFloat"/>.</summary>
+    public static bool IsNFloat => BaseType == NumberBaseType.NFloat;
+
+    /// <summary>Indicates whether the type represents <see cref="System.Runtime.InteropServices.NFloat"/> with <see cref="System.Runtime.InteropServices.NFloat.Size"/> equal to 4.</summary>
+    public static bool IsNFloat32 => IsNFloat && System.Runtime.InteropServices.NFloat.Size == 4;
+
+    /// <summary>Indicates whether the type represents <see cref="System.Runtime.InteropServices.NFloat"/> with <see cref="System.Runtime.InteropServices.NFloat.Size"/> equal to 8.</summary>
+    public static bool IsNFloat64 => IsNFloat && System.Runtime.InteropServices.NFloat.Size == 8;
+
+    /// <summary>Indicates whether the type represents <see cref="System.SByte"/>.</summary>
+    public static bool IsSByte => BaseType == NumberBaseType.SByte;
+
+    /// <summary>Indicates whether the type represents <see cref="float"/>.</summary>
+    public static bool IsSingle => BaseType == NumberBaseType.Single;
+
+    /// <summary>Indicates whether the type represents <see cref="ushort"/>.</summary>
+    public static bool IsUInt16 => BaseType == NumberBaseType.UInt16;
+
+    /// <summary>Indicates whether the type represents <see cref="uint"/>.</summary>
+    public static bool IsUInt32 => BaseType == NumberBaseType.UInt32;
+
+    /// <summary>Indicates whether the type represents <see cref="ulong"/>.</summary>
+    public static bool IsUInt64 => BaseType == NumberBaseType.UInt64;
+
+    /// <summary>Indicates whether the type represents <see cref="System.UInt128"/>.</summary>
+    public static bool IsUInt128 => BaseType == NumberBaseType.UInt128;
+
+    /// <summary>Indicates whether the type represents <see cref="System.UIntPtr"/>.</summary>
+    public static bool IsUIntPtr => BaseType == NumberBaseType.UIntPtr;
+
+    /// <summary>Indicates whether the type represents <see cref="System.UIntPtr"/> with <see cref="System.UIntPtr.Size"/> equal to 4.</summary>
+    public static bool IsUIntPtr32 => IsUIntPtr && System.UIntPtr.Size == 4;
+
+    /// <summary>Indicates whether the type represents <see cref="System.UIntPtr"/> with <see cref="System.UIntPtr.Size"/> equal to 8.</summary>
+    public static bool IsUIntPtr64 => IsUIntPtr && System.UIntPtr.Size == 8;
+
+    #endregion
+
+    #region Is.. for Native Compares
 
     /// <summary>Indicates whether the type represents an IEEE binary32 floating-point, such as <see cref="System.Single"/> or <see cref="System.Runtime.InteropServices.NFloat"/> when <see cref="System.Runtime.InteropServices.NFloat.Size"/> is 4.</summary>
-    public static readonly bool IsBinary32 = typeof(TNumberBase) == typeof(System.Single) || (typeof(TNumberBase) == typeof(System.Runtime.InteropServices.NFloat) && System.Runtime.InteropServices.NFloat.Size == 4);
+    public static bool IsBinary32 => IsSingle || IsNFloat32;
 
     /// <summary>Indicates whether the type represents an IEEE binary64 floating-point, such as <see cref="System.Double"/> or <see cref="System.Runtime.InteropServices.NFloat"/> when <see cref="System.Runtime.InteropServices.NFloat.Size"/> is 8.</summary>
-    public static readonly bool IsBinary64 = typeof(TNumberBase) == typeof(System.Double) || (typeof(TNumberBase) == typeof(System.Runtime.InteropServices.NFloat) && System.Runtime.InteropServices.NFloat.Size == 8);
+    public static bool IsBinary64 => IsDouble || IsNFloat64;
 
-    /// <summary>Indicates whether the type represents an IEEE binary128 floating-point. There are currently no such types in .NET.</summary>
-    public static readonly bool IsBinary128 = false;
+    //public static bool IsNativeSized => IsIntPtr || IsUIntPtr || IsNFloat;
 
-    /// <summary>Indicates whether the type represents an IEEE decimal32 floating-point, such as <see cref="System.Decimal32"/>.</summary>
-    public static readonly bool IsDecimal32 = typeof(TNumberBase) == typeof(System.Numerics.Decimal32);
+    //public static bool IsNative32 => IsNativeSized && NativeBitWidth == 32;
 
-    /// <summary>Indicates whether the type represents an IEEE decimal64 floating-point, such as <see cref="System.Decimal64"/>.</summary>
-    public static readonly bool IsDecimal64 = typeof(TNumberBase) == typeof(System.Numerics.Decimal64);
-
-    /// <summary>Indicates whether the type represents an IEEE decimal128 floating-point, such as <see cref="System.Decimal128"/>.</summary>
-    public static readonly bool IsDecimal128 = typeof(TNumberBase) == typeof(System.Numerics.Decimal128);
-
-    /// <summary>Indicates whether the type represents an 8-bit integer type, such as <see cref="System.Byte"/> or <see cref="System.SByte"/>.</summary>
-    public static readonly bool IsInteger8 = typeof(TNumberBase) == typeof(System.Byte) || typeof(TNumberBase) == typeof(System.SByte);
-
-    /// <summary>Indicates whether the type represents a 16-bit integer type, such as <see cref="System.Int16"/> or <see cref="System.UInt16"/>.</summary>
-    public static readonly bool IsInteger16 = typeof(TNumberBase) == typeof(System.Int16) || typeof(TNumberBase) == typeof(System.UInt16);
-
-    /// <summary>Indicates whether the type represents a 32-bit integer type, such as <see cref="System.Int32"/>, <see cref="System.UInt32"/>, <see cref="System.IntPtr"/> (when <see cref="System.IntPtr.Size"/> is 4), or <see cref="System.UIntPtr"/> (when <see cref="System.UIntPtr.Size"/> is 4).</summary>
-    public static readonly bool IsInteger32 = typeof(TNumberBase) == typeof(System.Int32) || typeof(TNumberBase) == typeof(System.UInt32) || (typeof(TNumberBase) == typeof(System.IntPtr) && System.IntPtr.Size == 4) || (typeof(TNumberBase) == typeof(System.UIntPtr) && System.UIntPtr.Size == 4);
-
-    /// <summary>Indicates whether the type represents a 64-bit integer type, such as <see cref="System.Int64"/>, <see cref="System.UInt64"/>, <see cref="System.IntPtr"/> (when <see cref="System.IntPtr.Size"/> is 8), or <see cref="System.UIntPtr"/> (when <see cref="System.UIntPtr.Size"/> is 8).</summary>
-    public static readonly bool IsInteger64 = typeof(TNumberBase) == typeof(System.Int64) || typeof(TNumberBase) == typeof(System.UInt64) || (typeof(TNumberBase) == typeof(System.IntPtr) && System.IntPtr.Size == 8) || (typeof(TNumberBase) == typeof(System.UIntPtr) && System.UIntPtr.Size == 8);
-
-    /// <summary>Indicates whether the type represents a 128-bit integer type, such as <see cref="System.Int128"/> or <see cref="System.UInt128"/>.</summary>
-    public static readonly bool IsInteger128 = typeof(TNumberBase) == typeof(System.Int128) || typeof(TNumberBase) == typeof(System.UInt128);
+    //public static bool IsNative64 => IsNativeSized && NativeBitWidth == 64;
 
     #endregion
 
     #region Additional Information
 
-    /// <summary>The width of the type in bits.</summary>
-    /// <remarks>For fixed-width types, this equals <see cref="StorageBytes"/> × 8. If <see cref="IsArbitraryPrecision"/> is <see langword="true"/>, this value is null, indicating an unbounded/not applicable bit-width.</remarks>
-    public static readonly int? BitWidth;
-
     /// <summary>Indicates whether the type has an unbounded bit-width, such as <see cref="System.Numerics.BigInteger"/>.</summary>
-    public static readonly bool IsArbitraryPrecision;
+    public static bool IsArbitraryPrecision => IsBigInteger || IsBigRational;
 
     /// <summary>Indicates whether the type has a fixed bit-width, such as <see cref="System.Decimal"/>, <see cref="System.Decimal128"/>, <see cref="System.Int32"/>, or <see cref="System.Single"/>.</summary>
-    public static readonly bool IsFixedWidth;
+    public static bool IsFixedWidth => !IsArbitraryPrecision;
 
     /// <summary>Indicates whether the type represents a signed integer, such as <see cref="System.Int128"/>, <see cref="System.Int16"/>, <see cref="System.Int32"/>, <see cref="System.Int64"/>, <see cref="System.SByte"/>, or <see cref="System.Numerics.BigInteger"/>.</summary>
-    public static readonly bool IsSignedInteger;
+    public static bool IsSignedInteger => ImplementsIBinaryInteger && ImplementsISignedNumber;
 
     /// <summary>Indicates whether the type represents an unsigned integer , such as <see cref="System.Byte"/>, <see cref="System.UInt128"/>, <see cref="System.UInt16"/>, <see cref="System.UInt32"/>, or <see cref="System.UInt64"/>.</summary>
-    public static readonly bool IsUnsignedInteger;
+    public static bool IsUnsignedInteger => ImplementsIBinaryInteger && ImplementsIUnsignedNumber;
 
-    /// <summary>The number of storage bytes used by the type.</summary>
+    /// <summary>
+    /// <para>The width, in bits, of a native-sized value in the current process.</para>
+    /// </summary>
+    public static int NativeBitWidth => System.IntPtr.Size * 8;
+
+    /// <summary>
+    /// <para>The size, in bytes, of a native-sized value in the current process.</para>
+    /// </summary>
+    public static int NativeSizeInBytes => System.IntPtr.Size;
+
+    /// <summary>
+    /// <para>The width of the type in bits.</para>
+    /// </summary>
+    /// <remarks>For fixed-width types, this equals <see cref="NominalSizeInBytes"/> × 8. If <see cref="IsArbitraryPrecision"/> is <see langword="true"/>, this value is null, indicating an unbounded/not applicable bit-width.</remarks>
+    public static int? NominalBitWidth => NominalSizeInBytes * 8;
+
+    /// <summary>
+    /// <para>The number of bytes required to represent a value of the type.</para>
+    /// </summary>
     /// <remarks>This does not include implementation-dependent padding, object headers, or additional heap allocations (for example, <see cref="System.Numerics.BigInteger"/>).</remarks>
-    public static readonly int StorageBytes;
+    public static int? NominalSizeInBytes => IsArbitraryPrecision ? null : System.Runtime.CompilerServices.Unsafe.SizeOf<TNumberBase>();
 
     #endregion
+
+    public static string ToStringEx()
+    {
+      var sb = new System.Text.StringBuilder();
+
+      sb.Append(m_type.FullName);
+
+      if (m_type.GetCsharpAlias() is var keyword && !string.IsNullOrEmpty(keyword))
+        sb.Append($" ({keyword})");
+
+      if (NumberBase.GetNumericDomain<TNumberBase>() != NumericDomain.Unknown)
+        sb.AppendJoined($"{NumberBase.GetNumericDomainSymbol<TNumberBase>()}");
+
+      if (IsArbitraryPrecision) sb.AppendJoined(nameof(IsArbitraryPrecision));
+      else if (IsFixedWidth) sb.AppendJoined($"{nameof(IsFixedWidth)} {NominalBitWidth}-bit ({NominalSizeInBytes} byte{(Number.IsConsideredPlural(NominalSizeInBytes.HasValue ? NominalSizeInBytes.Value : 0) ? "s" : string.Empty)})");
+      if (IsSignedInteger) sb.AppendJoined(nameof(IsSignedInteger));
+      else if (IsUnsignedInteger) sb.AppendJoined(nameof(IsUnsignedInteger));
+
+      // Represented CLR types
+      if (IsBFloat16) sb.AppendJoined(nameof(IsBFloat16));
+      else if (IsBigInteger) sb.AppendJoined(nameof(IsBigInteger));
+      else if (IsByte) sb.AppendJoined(nameof(IsByte));
+      else if (IsComplex) sb.AppendJoined(nameof(IsComplex));
+      else if (IsDecimal) sb.AppendJoined(nameof(IsDecimal));
+      else if (IsDecimal32) sb.AppendJoined(nameof(IsDecimal32));
+      else if (IsDecimal64) sb.AppendJoined(nameof(IsDecimal64));
+      else if (IsDecimal128) sb.AppendJoined(nameof(IsDecimal128));
+      else if (IsDouble) sb.AppendJoined(nameof(IsDouble));
+      else if (IsInt16) sb.AppendJoined(nameof(IsInt16));
+      else if (IsInt32) sb.AppendJoined(nameof(IsInt32));
+      else if (IsInt64) sb.AppendJoined(nameof(IsInt64));
+      else if (IsInt128) sb.AppendJoined(nameof(IsInt128));
+      else if (IsIntPtr) sb.AppendJoined(nameof(IsIntPtr));
+      else if (IsNFloat) sb.AppendJoined(nameof(IsNFloat));
+      else if (IsSByte) sb.AppendJoined(nameof(IsSByte));
+      else if (IsSingle) sb.AppendJoined(nameof(IsSingle));
+      else if (IsUInt16) sb.AppendJoined(nameof(IsUInt16));
+      else if (IsUInt32) sb.AppendJoined(nameof(IsUInt32));
+      else if (IsUInt64) sb.AppendJoined(nameof(IsUInt64));
+      else if (IsUInt128) sb.AppendJoined(nameof(IsUInt128));
+      else if (IsUIntPtr) sb.AppendJoined(nameof(IsUIntPtr));
+
+      if (IsIntPtr32) sb.AppendJoined(nameof(IsIntPtr32));
+      else if (IsIntPtr64) sb.AppendJoined(nameof(IsIntPtr64));
+
+      if (IsNFloat32) sb.AppendJoined(nameof(IsNFloat32));
+      else if (IsNFloat64) sb.AppendJoined(nameof(IsNFloat64));
+
+      if (IsUIntPtr32) sb.AppendJoined(nameof(IsUIntPtr32));
+      else if (IsUIntPtr64) sb.AppendJoined(nameof(IsUIntPtr64));
+
+      if (IsBigRational) sb.AppendJoined(nameof(IsBigRational));
+
+      if (IsBinary32) sb.AppendJoined(nameof(IsBinary32));
+      else if (IsBinary64) sb.AppendJoined(nameof(IsBinary64));
+
+      // Implemented capabilities
+      sb.AppendJoined($"{Constants}");
+      sb.AppendJoined($"{Core}");
+      sb.AppendJoined($"{Formattable}");
+      sb.AppendJoined($"{Functions}");
+      sb.AppendJoined($"{Identity}");
+      sb.AppendJoined($"{Operators}");
+      sb.AppendJoined($"{Parsable}");
+
+      return sb.ToString();
+    }
   }
-
-  //  public interface INumericTypeInfo
-  //  {
-  //    #region Implements
-
-  //    #region Implements ..Constants Interfaces
-
-  //    /// <summary>Indicates whether the type implements <see cref="System.Numerics.IFloatingPointConstants{TSelf}"/>.</summary>
-  //    public bool ImplementsIFloatingPointConstants { get; }
-
-  //    #endregion
-
-  //    #region Implements "Core" Interfaces
-
-  //    /// <summary>Indicates whether the type implements <see cref="System.Numerics.IBinaryFloatingPointIeee754{TSelf}"/>.</summary>
-  //    public bool ImplementsIBinaryFloatingPointIeee754 { get; }
-
-  //    /// <summary>Indicates whether the type implements <see cref="System.Numerics.IBinaryInteger{TSelf}"/>.</summary>
-  //    public bool ImplementsIBinaryInteger { get; }
-
-  //    /// <summary>Indicates whether the type implements <see cref="System.Numerics.IBinaryNumber{TSelf}"/>.</summary>
-  //    public bool ImplementsIBinaryNumber { get; }
-
-  //    /// <summary>Indicates whether the type implements <see cref="System.Numerics.IDecimalFloatingPointIeee754{TSelf}"/>.</summary>
-  //    public bool ImplementsIDecimalFloatingPointIeee754 { get; }
-
-  //    /// <summary>Indicates whether the type implements <see cref="System.Numerics.IFloatingPoint{TSelf}"/>.</summary>
-  //    public bool ImplementsIFloatingPoint { get; }
-
-  //    /// <summary>Indicates whether the type implements <see cref="System.Numerics.IFloatingPointIeee754{TSelf}"/>.</summary>
-  //    public bool ImplementsIFloatingPointIeee754 { get; }
-
-  //    /// <summary>Indicates whether the type implements <see cref="System.Numerics.IMinMaxValue{TSelf}"/>.</summary>
-  //    public bool ImplementsIMinMaxValue { get; }
-
-  //    /// <summary>Indicates whether the type implements <see cref="System.Numerics.INumber{TSelf}"/>.</summary>
-  //    public bool ImplementsINumber { get; }
-
-  //    /// <summary>Indicates whether the type implements <see cref="System.Numerics.INumberBase{TSelf}"/>.</summary>
-  //    public bool ImplementsINumberBase { get; }
-
-  //    /// <summary>Indicates whether the type implements <see cref="System.Numerics.ISignedNumber{TSelf}"/>.</summary>
-  //    public bool ImplementsISignedNumber { get; }
-
-  //    /// <summary>Indicates whether the type implements <see cref="System.Numerics.IUnsignedNumber{TSelf}"/>.</summary>
-  //    public bool ImplementsIUnsignedNumber { get; }
-
-  //    #endregion
-
-  //    #region Implements ..Formattable Interfaces
-
-  //    /// <summary>Indicates whether the type implements <see cref="System.Numerics.IFormattable"/>.</summary>
-  //    public bool ImplementsIFormattable { get; }
-
-  //    /// <summary>Indicates whether the type implements <see cref="System.Numerics.ISpanFormattable"/>.</summary>
-  //    public bool ImplementsISpanFormattable { get; }
-
-  //    /// <summary>Indicates whether the type implements <see cref="System.Numerics.IUtf8SpanFormattable"/>.</summary>
-  //    public bool ImplementsIUtf8SpanFormattable { get; }
-
-  //    #endregion
-
-  //    #region Implements ..Functions Interfaces
-
-  //    /// <summary>Indicates whether the type implements <see cref="System.Numerics.IExponentialFunctions{TSelf}"/>.</summary>
-  //    public bool ImplementsIExponentialFunctions { get; }
-
-  //    /// <summary>Indicates whether the type implements <see cref="System.Numerics.IHyperbolicFunctions{TSelf}"/>.</summary>
-  //    public bool ImplementsIHyperbolicFunctions { get; }
-
-  //    /// <summary>Indicates whether the type implements <see cref="System.Numerics.ILogarithmicFunctions{TSelf}"/>.</summary>
-  //    public bool ImplementsILogarithmicFunctions { get; }
-
-  //    /// <summary>Indicates whether the type implements <see cref="System.Numerics.IPowerFunctions{TSelf}"/>.</summary>
-  //    public bool ImplementsIPowerFunctions { get; }
-
-  //    /// <summary>Indicates whether the type implements <see cref="System.Numerics.IRootFunctions{TSelf}"/>.</summary>
-  //    public bool ImplementsIRootFunctions { get; }
-
-  //    /// <summary>Indicates whether the type implements <see cref="System.Numerics.ITrigonometricFunctions{TSelf}"/>.</summary>
-  //    public bool ImplementsITrigonometricFunctions { get; }
-
-  //    #endregion
-
-  //    #region Implements ..Identity Interfaces
-
-  //    /// <summary>Indicates whether the type implements <see cref="System.Numerics.IAdditiveIdentity{TSelf, TResult}"/>.</summary>
-  //    public bool ImplementsIAdditiveIdentity { get; }
-
-  //    /// <summary>Indicates whether the type implements <see cref="System.Numerics.IMultiplicativeIdentity{TSelf, TResult}"/>.</summary>
-  //    public bool ImplementsIMultiplicativeIdentity { get; }
-
-  //    #endregion
-
-  //    #region Implements ..Operators Interfaces
-
-  //    /// <summary>Indicates whether the type implements <see cref="System.Numerics.IAdditionOperators{TSelf, TOther, TResult}"/>.</summary>
-  //    public bool ImplementsIAdditionOperators { get; }
-
-  //    /// <summary>Indicates whether the type implements <see cref="System.Numerics.IBitwiseOperators{TSelf, TOther, TResult}"/>.</summary>
-  //    public bool ImplementsIBitwiseOperators { get; }
-
-  //    /// <summary>Indicates whether the type implements <see cref="System.Numerics.IComparisonOperators{TSelf, TOther, TResult}"/>.</summary>
-  //    public bool ImplementsIComparisonOperators { get; }
-
-  //    /// <summary>Indicates whether the type implements <see cref="System.Numerics.IDecrementOperators{TSelf}"/>.</summary>
-  //    public bool ImplementsIDecrementOperators { get; }
-
-  //    /// <summary>Indicates whether the type implements <see cref="System.Numerics.IDivisionOperators{TSelf, TOther, TResult}"/>.</summary>
-  //    public bool ImplementsIDivisionOperators { get; }
-
-  //    /// <summary>Indicates whether the type implements <see cref="System.Numerics.IEqualityOperators{TSelf, TOther, TResult}"/>.</summary>
-  //    public bool ImplementsIEqualityOperators { get; }
-
-  //    /// <summary>Indicates whether the type implements <see cref="System.Numerics.IIncrementOperators{TSelf}"/>.</summary>
-  //    public bool ImplementsIIncrementOperators { get; }
-
-  //    /// <summary>Indicates whether the type implements <see cref="System.Numerics.IModulusOperators{TSelf, TOther, TResult}"/>.</summary>
-  //    public bool ImplementsIModulusOperators { get; }
-
-  //    /// <summary>Indicates whether the type implements <see cref="System.Numerics.IMultiplyOperators{TSelf, TOther, TResult}"/>.</summary>
-  //    public bool ImplementsIMultiplyOperators { get; }
-
-  //    /// <summary>Indicates whether the type implements <see cref="System.Numerics.IShiftOperators{TSelf, TOther, TResult}"/>.</summary>
-  //    public bool ImplementsIShiftOperators { get; }
-
-  //    /// <summary>Indicates whether the type implements <see cref="System.Numerics.ISubtractionOperators{TSelf, TOther, TResult}"/>.</summary>
-  //    public bool ImplementsISubtractionOperators { get; }
-
-  //    /// <summary>Indicates whether the type implements <see cref="System.Numerics.IUnaryNegationOperators{TSelf, TResult}"/>.</summary>
-  //    public bool ImplementsIUnaryNegationOperators { get; }
-
-  //    /// <summary>Indicates whether the type implements <see cref="System.Numerics.IUnaryPlusOperators{TSelf, TResult}"/>.</summary>
-  //    public bool ImplementsIUnaryPlusOperators { get; }
-
-  //    #endregion
-
-  //    #region Implements ..Parsable Interfaces
-
-  //    /// <summary>Indicates whether the type implements <see cref="System.Numerics.IParsable{TSelf}"/>.</summary>
-  //    public bool ImplementsIParsable { get; }
-
-  //    /// <summary>Indicates whether the type implements <see cref="System.Numerics.ISpanParsable{TSelf}"/>.</summary>
-  //    public bool ImplementsISpanParsable { get; }
-
-  //    /// <summary>Indicates whether the type implements <see cref="System.Numerics.IUtf8SpanParsable{TSelf}"/>.</summary>
-  //    public bool ImplementsIUtf8SpanParsable { get; }
-
-  //    #endregion
-
-  //    #endregion
-
-  //    #region Is.. for Concrete Types
-
-  //    /// <summary>Indicates whether the type represents <see cref="System.Numerics.BFloat16"/>.</summary>
-  //    public bool IsBFloat16 { get; }
-
-  //    /// <summary>Indicates whether the type represents <see cref="System.Numerics.BigInteger"/>.</summary>
-  //    public bool IsBigInteger { get; }
-
-  //    /// <summary>Indicates whether the type represents <see cref="System.Numerics.Complex"/>.</summary>
-  //    public bool IsComplex { get; }
-
-  //    /// <summary>Indicates whether the type represents <see cref="System.Decimal"/>.</summary>
-  //    public bool IsDecimal { get; }
-
-  //    /// <summary>Indicates whether the type represents <see cref="Flux.Numerics.BigRational"/>.</summary>
-  //    public bool IsBigRational { get; }
-
-  //    #endregion
-
-  //    #region IsBinary.. IEEE Formats
-
-  //    /// <summary>Indicates whether the type represents an IEEE binary16 floating-point, such as <see cref="System.Half"/></summary>
-  //    public bool IsBinary16 { get; }
-
-  //    /// <summary>Indicates whether the type represents an IEEE binary32 floating-point, such as <see cref="System.Single"/> or <see cref="System.Runtime.InteropServices.NFloat"/> when <see cref="System.Runtime.InteropServices.NFloat.Size"/> is 4.</summary>
-  //    public bool IsBinary32 { get; }
-
-  //    /// <summary>Indicates whether the type represents an IEEE binary64 floating-point, such as <see cref="System.Double"/> or <see cref="System.Runtime.InteropServices.NFloat"/> when <see cref="System.Runtime.InteropServices.NFloat.Size"/> is 8.</summary>
-  //    public bool IsBinary64 { get; }
-
-  //    /// <summary>Indicates whether the type represents an IEEE binary128 floating-point. There are currently no such types in .NET.</summary>
-  //    public bool IsBinary128 { get; }
-
-  //    #endregion
-
-  //    #region IsDecimal.. IEEE Formats
-
-  //    /// <summary>Indicates whether the type represents an IEEE decimal32 floating-point, such as <see cref="System.Decimal32"/>.</summary>
-  //    public bool IsDecimal32 { get; }
-
-  //    /// <summary>Indicates whether the type represents an IEEE decimal64 floating-point, such as <see cref="System.Decimal64"/>.</summary>
-  //    public bool IsDecimal64 { get; }
-
-  //    /// <summary>Indicates whether the type represents an IEEE decimal128 floating-point, such as <see cref="System.Decimal128"/>.</summary>
-  //    public bool IsDecimal128 { get; }
-
-  //    #endregion
-
-  //    #region IsInteger.. Fixed Width
-
-  //    /// <summary>Indicates whether the type represents an 8-bit integer type, such as <see cref="System.Byte"/> or <see cref="System.SByte"/>.</summary>
-  //    public bool IsInteger8 { get; }
-
-  //    /// <summary>Indicates whether the type represents a 16-bit integer type, such as <see cref="System.Int16"/> or <see cref="System.UInt16"/>.</summary>
-  //    public bool IsInteger16 { get; }
-
-  //    /// <summary>Indicates whether the type represents a 32-bit integer type, such as <see cref="System.Int32"/>, <see cref="System.UInt32"/>, <see cref="System.IntPtr"/> (when <see cref="System.IntPtr.Size"/> is 4), or <see cref="System.UIntPtr"/> (when <see cref="System.UIntPtr.Size"/> is 4).</summary>
-  //    public bool IsInteger32 { get; }
-
-  //    /// <summary>Indicates whether the type represents a 64-bit integer type, such as <see cref="System.Int64"/>, <see cref="System.UInt64"/>, <see cref="System.IntPtr"/> (when <see cref="System.IntPtr.Size"/> is 8), or <see cref="System.UIntPtr"/> (when <see cref="System.UIntPtr.Size"/> is 8).</summary>
-  //    public bool IsInteger64 { get; }
-
-  //    /// <summary>Indicates whether the type represents a 128-bit integer type, such as <see cref="System.Int128"/> or <see cref="System.UInt128"/>.</summary>
-  //    public bool IsInteger128 { get; }
-
-  //    #endregion
-
-  //    #region Other Properties
-
-  //    /// <summary>The width of the type in bits.</summary>
-  //    /// <remarks>For fixed-width types, this equals <see cref="StorageBytes"/> × 8. If <see cref="IsArbitraryPrecision"/> is <see langword="true"/>, this value is 0, indicating an unbounded bit-width.</remarks>
-  //    public int BitWidth { get; }
-
-  //    /// <summary>Indicates whether the type has an unbounded bit-width, such as <see cref="System.Numerics.BigInteger"/>.</summary>
-  //    public bool IsArbitraryPrecision { get; }
-
-  //    /// <summary>Indicates whether the type has a fixed bit-width, such as <see cref="System.Decimal"/>, <see cref="System.Decimal128"/>, <see cref="System.Int32"/>, or <see cref="System.Single"/>.</summary>
-  //    public bool IsFixedWidth { get; }
-
-  //    /// <summary>Indicates whether the type represents a signed integer, such as <see cref="System.Int128"/>, <see cref="System.Int16"/>, <see cref="System.Int32"/>, <see cref="System.Int64"/>, <see cref="System.SByte"/>, or <see cref="System.Numerics.BigInteger"/>.</summary>
-  //    public bool IsSignedInteger { get; }
-
-  //    /// <summary>Indicates whether the type represents an unsigned integer , such as <see cref="System.Byte"/>, <see cref="System.UInt128"/>, <see cref="System.UInt16"/>, <see cref="System.UInt32"/>, or <see cref="System.UInt64"/>.</summary>
-  //    public bool IsUnsignedInteger { get; }
-
-  //    /// <summary>The number of storage bytes used by the type.</summary>
-  //    /// <remarks>This does not include implementation-dependent padding, object headers, or additional heap allocations (for example, <see cref="System.Numerics.BigInteger"/>).</remarks>
-  //    public int StorageBytes { get; }
-
-  //    #endregion
-  //  }
-
-  //  //public interface IIntegerTypeInfo<T>
-  //  //  //: INumericTypeInfo
-  //  //  where T : System.Numerics.IBinaryInteger<T>
-  //  //{
-  //  //  T MinPrime { get; }
-  //  //  T MaxPrime { get; }
-  //  //}
-
-  //  //public interface IFloatingPointTypeInfo<T>
-  //  //  : INumericTypeInfo
-  //  //  where T : System.Numerics.IFloatingPoint<T>
-  //  //{
-  //  //  T MinExactInteger { get; }
-  //  //  T MaxExactInteger { get; }
-
-  //  //  T MinExactPrime { get; }
-  //  //  T MaxExactPrime { get; }
-  //  //}
-
-  //  //public interface IFloatingPointBinaryTypeInfo<T>
-  //  //  : IFloatingPointTypeInfo<T>
-  //  //  where T : System.Numerics.IFloatingPoint<T>
-  //  //{
-  //  //  (System.Int128 Sign, System.Int128 Exponent, System.Int128 Significand) BinaryWidth { get; }
-  //  //}
-
-  //  //public interface IFloatingPointDecimalTypeInfo<T>
-  //  //  : IFloatingPointTypeInfo<T>
-  //  //  where T : System.Numerics.IFloatingPoint<T>
-  //  //{
-  //  //  (System.Int128 Sign, System.Int128 Combination, System.Int128 ExponentContinuation, System.Int128 CoefficientContinuation) DecimalWidth { get; }
-  //  //}
-
-  //  #region GenericMathConstants enum flags
-
-  //  [System.Flags]
-  //  public enum GenericMathConstants : long
-  //  {
-  //    NoConstants = 0,
-
-  //    IFloatingPointConstants = 0x0000_0000_0000_0001,
-  //  }
-
-  //  #endregion
-
-  //  #region GenericMathCore enum flags
-
-  //  [System.Flags]
-  //  public enum GenericMathCore : long
-  //  {
-  //    NoCore = 0,
-
-  //    ComplexT = 0x0000_0000_0000_0001,
-  //    IBinaryFloatingPointIeee754 = 0x0000_0000_0000_0002,
-  //    IBinaryInteger = 0x0000_0000_0000_0004,
-  //    IBinaryNumber = 0x0000_0000_0000_0008,
-  //    IDecimalFloatingPointIeee754 = 0x0000_0000_0000_0010,
-  //    IFloatingPoint = 0x0000_0000_0000_0020,
-  //    IFloatingPointIeee754 = 0x0000_0000_0000_0040,
-  //    IMinMaxValue = 0x0000_0000_0000_0080,
-  //    INumber = 0x0000_0000_0000_0100,
-  //    INumberBase = 0x0000_0000_0000_0200,
-  //    ISignedNumber = 0x0000_0000_0000_0400,
-  //    IUnsignedNumber = 0x0000_0000_0000_0800,
-  //  }
-
-  //  #endregion
-
-  //  #region GenericMathFormattable enum flags
-
-  //  [System.Flags]
-  //  public enum GenericMathFormattable : long
-  //  {
-  //    NoFormattable = 0,
-
-  //    IFormattable = 0x0000_0000_0000_0001,
-  //    ISpanFormattable = 0x0000_0000_0000_0002,
-  //    IUtf8SpanFormattable = 0x0000_0000_0000_0004,
-  //  }
-
-  //  #endregion
-
-  //  #region GenericMathFunctions enum flags
-
-  //  [System.Flags]
-  //  public enum GenericMathFunctions : long
-  //  {
-  //    NoFunctions = 0,
-
-  //    IExponentialFunctions = 0x0000_0000_0000_0001,
-  //    IHyperbolicFunctions = 0x0000_0000_0000_0002,
-  //    ILogarithmicFunctions = 0x0000_0000_0000_0004,
-  //    IPowerFunctions = 0x0000_0000_0000_0008,
-  //    IRootFunctions = 0x0000_0000_0000_0010,
-  //    ITrigonometricFunctions = 0x0000_0000_0000_0020,
-  //  }
-
-  //  #endregion
-
-  //  #region GenericMathIdentity enum flags
-
-  //  [System.Flags]
-  //  public enum GenericMathIdentity : long
-  //  {
-  //    NoIdentity = 0,
-
-  //    IAdditiveIdentity = 0x0000_0000_0000_0001,
-  //    IMultiplicativeIdentity = 0x0000_0000_0000_0002,
-  //  }
-
-  //  #endregion
-
-  //  #region GenericMathOperators enum flags
-
-  //  [System.Flags]
-  //  public enum GenericMathOperators : long
-  //  {
-  //    NoOperators = 0,
-
-  //    IAdditionOperators = 0x0000_0000_0000_0001,
-  //    IBitwiseOperators = 0x0000_0000_0000_0002,
-  //    IComparisonOperators = 0x0000_0000_0000_0004,
-  //    IDecrementOperators = 0x0000_0000_0000_0008,
-  //    IDivisionOperators = 0x0000_0000_0000_0010,
-  //    IEqualityOperators = 0x0000_0000_0000_0020,
-  //    IIncrementOperators = 0x0000_0000_0000_0040,
-  //    IModulusOperators = 0x0000_0000_0000_0080,
-  //    IMultiplyOperators = 0x0000_0000_0000_0100,
-  //    IShiftOperators = 0x0000_0000_0000_0200,
-  //    ISubtractionOperators = 0x0000_0000_0000_0400,
-  //    IUnaryNegationOperators = 0x0000_0000_0000_0800,
-  //    IUnaryPlusOperators = 0x0000_0000_0000_1000,
-  //  }
-
-  //  #endregion
-
-  //  #region GenericMathParsable enum flags
-
-  //  [System.Flags]
-  //  public enum GenericMathParsable : long
-  //  {
-  //    NoParsable = 0,
-
-  //    IParsable = 0x0000_0000_0000_0001,
-  //    ISpanParsable = 0x0000_0000_0000_0002,
-  //    IUtf8SpanParsable = 0x0000_0000_0000_0004,
-  //  }
-
-  //  #endregion
-
-  //  //public class IntegerTypeInfo<TInteger>
-  //  //  : IIntegerTypeInfo<TInteger>
-  //  //  where TInteger : System.Numerics.IBinaryInteger<TInteger>
-  //  //{
-  //  //  private static readonly System.Collections.Concurrent.ConcurrentDictionary<Type, IntegerTypeInfo<TInteger>> m_cache = new();
-
-  //  //  public IntegerTypeInfo()
-  //  //  {
-  //  //    MinPrime
-  //  //      = TInteger.CreateChecked(2);
-
-  //  //    MaxPrime
-  //  //      = typeof(TInteger) == typeof(System.Byte)
-  //  //      ? TInteger.CreateChecked(251)
-  //  //      : typeof(TInteger) == typeof(System.Int128)
-  //  //      ? TInteger.CreateChecked(System.Int128.Parse("170141183460469231731687303715884105727"))
-  //  //      : typeof(TInteger) == typeof(System.Int16)
-  //  //      ? TInteger.CreateChecked(32749)
-  //  //      : typeof(TInteger) == typeof(System.Int32) || (typeof(TInteger) == typeof(System.IntPtr) && System.IntPtr.Size == 4)
-  //  //      ? TInteger.CreateChecked(2147483647)
-  //  //      : typeof(TInteger) == typeof(System.Int64) || (typeof(TInteger) == typeof(System.IntPtr) && System.IntPtr.Size == 8)
-  //  //      ? TInteger.CreateChecked(9223372036854775783)
-  //  //      : typeof(TInteger) == typeof(System.SByte)
-  //  //      ? TInteger.CreateChecked(127)
-  //  //      : typeof(TInteger) == typeof(System.UInt128)
-  //  //      ? TInteger.CreateChecked(System.UInt128.Parse("340282366920938463463374607431768211297"))
-  //  //      : typeof(TInteger) == typeof(System.UInt16)
-  //  //      ? TInteger.CreateChecked(65521)
-  //  //      : typeof(TInteger) == typeof(System.UInt32) || (typeof(TInteger) == typeof(System.UIntPtr) && System.UIntPtr.Size == 4)
-  //  //      ? TInteger.CreateChecked(4294967291u)
-  //  //      : typeof(TInteger) == typeof(System.UInt64) || (typeof(TInteger) == typeof(System.UIntPtr) && System.UIntPtr.Size == 8)
-  //  //      ? TInteger.CreateChecked(18446744073709551557ul)
-  //  //      : throw new System.NotImplementedException(typeof(TInteger).Name);
-
-  //  //    NumericTypeInfo = new NumericTypeInfo(typeof(TInteger));
-  //  //  }
-
-  //  //  public TInteger MinPrime { get; }
-
-  //  //  public TInteger MaxPrime { get; }
-
-  //  //  public NumericTypeInfo NumericTypeInfo { get; }
-  //  //}
-
-  //  //public class IntegerTypeInfo
-  //  //{
-
-  //  //  public static IntegerTypeInfo<TInteger> Get<TInteger>(Type type)
-  //  //    where TInteger : System.Numerics.IBinaryInteger<TInteger>
-  //  //    => (IntegerTypeInfo<TInteger>)m_cache.GetOrAdd(type, static t => new IntegerTypeInfo<TInteger>());
-
-  //  //  public static IntegerTypeInfo<TInteger> Get<TInteger>()
-  //  //    where TInteger : System.Numerics.IBinaryInteger<TInteger>
-  //  //    => Get(typeof(TInteger));
-
-  //  //}
-
-  //  //public class IntegerTypeInfo
-  //  //{
-  //  //  public IntegerTypeInfo<TInteger> Create(System.Type integerType)
-  //  //  {
-  //  //    var genericType = typeof(IntegerTypeInfo<>).MakeGenericType(integerType);
-
-  //  //    return Activator.CreateInstance(genericType)!;
-  //  //  }
-  //  //}
-
-  //  public class NumericTypeInfo
-  //    : INumericTypeInfo
-  //  {
-  //    private static readonly System.Collections.Concurrent.ConcurrentDictionary<Type, NumericTypeInfo> m_cache = new();
-  //    public static System.Collections.Generic.IReadOnlyDictionary<Type, NumericTypeInfo> Cache => m_cache;
-
-  //    private readonly System.Type m_type;
-
-  //    public NumericTypeInfo(System.Type type)
-  //    {
-  //      m_type = type;
-
-  //      Constants = GetGenericMathConstants(m_type);
-  //      Core = GetGenericMathCore(m_type);
-  //      Formattable = GetGenericMathFormattable(m_type);
-  //      Functions = GetGenericMathFunctions(m_type);
-  //      Identity = GetGenericMathIdentity(m_type);
-  //      Operators = GetGenericMathOperators(m_type);
-  //      Parsable = GetGenericMathParsable(m_type);
-  //    }
-
-  //    public System.Type Type
-  //      => m_type;
-
-  //    #region Groups
-
-  //    public GenericMathConstants Constants { get; }
-  //    public GenericMathCore Core { get; }
-  //    public GenericMathFormattable Formattable { get; }
-  //    public GenericMathFunctions Functions { get; }
-  //    public GenericMathIdentity Identity { get; }
-  //    public GenericMathOperators Operators { get; }
-  //    public GenericMathParsable Parsable { get; }
-
-  //    #endregion
-
-  //    #region Implements ..Constants Interfaces
-
-  //    /// <summary>Indicates whether the type implements <see cref="System.Numerics.IFloatingPointConstants{TSelf}"/>.</summary>
-  //    public bool ImplementsIFloatingPointConstants => (Constants & GenericMathConstants.IFloatingPointConstants) != 0;
-
-  //    #endregion
-
-  //    #region Implements "Core" Interfaces
-
-  //    /// <summary>Indicates whether the type implements <see cref="System.Numerics.IBinaryFloatingPointIeee754{TSelf}"/>.</summary>
-  //    public bool ImplementsIBinaryFloatingPointIeee754 => (Core & GenericMathCore.IBinaryFloatingPointIeee754) != 0;
-  //    /// <summary>Indicates whether the type implements <see cref="System.Numerics.IBinaryInteger{TSelf}"/>.</summary>
-  //    public bool ImplementsIBinaryInteger => (Core & GenericMathCore.IBinaryInteger) != 0;
-  //    /// <summary>Indicates whether the type implements <see cref="System.Numerics.IBinaryNumber{TSelf}"/>.</summary>
-  //    public bool ImplementsIBinaryNumber => (Core & GenericMathCore.IBinaryNumber) != 0;
-  //    /// <summary>Indicates whether the type implements <see cref="System.Numerics.IDecimalFloatingPointIeee754{TSelf}"/>.</summary>
-  //    public bool ImplementsIDecimalFloatingPointIeee754 => (Core & GenericMathCore.IDecimalFloatingPointIeee754) != 0;
-  //    /// <summary>Indicates whether the type implements <see cref="System.Numerics.IFloatingPoint{TSelf}"/>.</summary>
-  //    public bool ImplementsIFloatingPoint => (Core & GenericMathCore.IFloatingPoint) != 0;
-  //    /// <summary>Indicates whether the type implements <see cref="System.Numerics.IFloatingPointIeee754{TSelf}"/>.</summary>
-  //    public bool ImplementsIFloatingPointIeee754 => (Core & GenericMathCore.IFloatingPointIeee754) != 0;
-  //    /// <summary>Indicates whether the type implements <see cref="System.Numerics.IMinMaxValue{TSelf}"/>.</summary>
-  //    public bool ImplementsIMinMaxValue => (Core & GenericMathCore.IMinMaxValue) != 0;
-  //    /// <summary>Indicates whether the type implements <see cref="System.Numerics.INumber{TSelf}"/>.</summary>
-  //    public bool ImplementsINumber => (Core & GenericMathCore.INumber) != 0;
-  //    /// <summary>Indicates whether the type implements <see cref="System.Numerics.INumberBase{TSelf}"/>.</summary>
-  //    public bool ImplementsINumberBase => (Core & GenericMathCore.INumberBase) != 0;
-  //    /// <summary>Indicates whether the type implements <see cref="System.Numerics.ISignedNumber{TSelf}"/>.</summary>
-  //    public bool ImplementsISignedNumber => (Core & GenericMathCore.ISignedNumber) != 0;
-  //    /// <summary>Indicates whether the type implements <see cref="System.Numerics.IUnsignedNumber{TSelf}"/>.</summary>
-  //    public bool ImplementsIUnsignedNumber => (Core & GenericMathCore.IUnsignedNumber) != 0;
-
-  //    #endregion
-
-  //    #region Implements ..Formattable Interfaces
-
-  //    /// <summary>Indicates whether the type implements <see cref="System.Numerics.IFormattable"/>.</summary>
-  //    public bool ImplementsIFormattable => (Formattable & GenericMathFormattable.IFormattable) != 0;
-  //    /// <summary>Indicates whether the type implements <see cref="System.Numerics.ISpanFormattable"/>.</summary>
-  //    public bool ImplementsISpanFormattable => (Formattable & GenericMathFormattable.ISpanFormattable) != 0;
-  //    /// <summary>Indicates whether the type implements <see cref="System.Numerics.IUtf8SpanFormattable"/>.</summary>
-  //    public bool ImplementsIUtf8SpanFormattable => (Formattable & GenericMathFormattable.IUtf8SpanFormattable) != 0;
-
-  //    #endregion
-
-  //    #region Implements ..Functions Interfaces
-
-  //    /// <summary>Indicates whether the type implements <see cref="System.Numerics.IExponentialFunctions{TSelf}"/>.</summary>
-  //    public bool ImplementsIExponentialFunctions => (Functions & GenericMathFunctions.IExponentialFunctions) != 0;
-  //    /// <summary>Indicates whether the type implements <see cref="System.Numerics.IHyperbolicFunctions{TSelf}"/>.</summary>
-  //    public bool ImplementsIHyperbolicFunctions => (Functions & GenericMathFunctions.IHyperbolicFunctions) != 0;
-  //    /// <summary>Indicates whether the type implements <see cref="System.Numerics.ILogarithmicFunctions{TSelf}"/>.</summary>
-  //    public bool ImplementsILogarithmicFunctions => (Functions & GenericMathFunctions.ILogarithmicFunctions) != 0;
-  //    /// <summary>Indicates whether the type implements <see cref="System.Numerics.IPowerFunctions{TSelf}"/>.</summary>
-  //    public bool ImplementsIPowerFunctions => (Functions & GenericMathFunctions.IPowerFunctions) != 0;
-  //    /// <summary>Indicates whether the type implements <see cref="System.Numerics.IRootFunctions{TSelf}"/>.</summary>
-  //    public bool ImplementsIRootFunctions => (Functions & GenericMathFunctions.IRootFunctions) != 0;
-  //    /// <summary>Indicates whether the type implements <see cref="System.Numerics.ITrigonometricFunctions{TSelf}"/>.</summary>
-  //    public bool ImplementsITrigonometricFunctions => (Functions & GenericMathFunctions.ITrigonometricFunctions) != 0;
-
-  //    #endregion
-
-  //    #region Implements ..Identity Interfaces
-
-  //    /// <summary>Indicates whether the type implements <see cref="System.Numerics.IAdditiveIdentity{TSelf, TResult}"/>.</summary>
-  //    public bool ImplementsIAdditiveIdentity => (Identity & GenericMathIdentity.IAdditiveIdentity) != 0;
-  //    /// <summary>Indicates whether the type implements <see cref="System.Numerics.IMultiplicativeIdentity{TSelf, TResult}"/>.</summary>
-  //    public bool ImplementsIMultiplicativeIdentity => (Identity & GenericMathIdentity.IMultiplicativeIdentity) != 0;
-
-  //    #endregion
-
-  //    #region Implements ..Operators Interfaces
-
-  //    /// <summary>Indicates whether the type implements <see cref="System.Numerics.IAdditionOperators{TSelf, TOther, TResult}"/>.</summary>
-  //    public bool ImplementsIAdditionOperators => (Operators & GenericMathOperators.IAdditionOperators) != 0;
-  //    /// <summary>Indicates whether the type implements <see cref="System.Numerics.IBitwiseOperators{TSelf, TOther, TResult}"/>.</summary>
-  //    public bool ImplementsIBitwiseOperators => (Operators & GenericMathOperators.IBitwiseOperators) != 0;
-  //    /// <summary>Indicates whether the type implements <see cref="System.Numerics.IComparisonOperators{TSelf, TOther, TResult}"/>.</summary>
-  //    public bool ImplementsIComparisonOperators => (Operators & GenericMathOperators.IComparisonOperators) != 0;
-  //    /// <summary>Indicates whether the type implements <see cref="System.Numerics.IDecrementOperators{TSelf}"/>.</summary>
-  //    public bool ImplementsIDecrementOperators => (Operators & GenericMathOperators.IDecrementOperators) != 0;
-  //    /// <summary>Indicates whether the type implements <see cref="System.Numerics.IDivisionOperators{TSelf, TOther, TResult}"/>.</summary>
-  //    public bool ImplementsIDivisionOperators => (Operators & GenericMathOperators.IDivisionOperators) != 0;
-  //    /// <summary>Indicates whether the type implements <see cref="System.Numerics.IEqualityOperators{TSelf, TOther, TResult}"/>.</summary>
-  //    public bool ImplementsIEqualityOperators => (Operators & GenericMathOperators.IEqualityOperators) != 0;
-  //    /// <summary>Indicates whether the type implements <see cref="System.Numerics.IIncrementOperators{TSelf}"/>.</summary>
-  //    public bool ImplementsIIncrementOperators => (Operators & GenericMathOperators.IIncrementOperators) != 0;
-  //    /// <summary>Indicates whether the type implements <see cref="System.Numerics.IModulusOperators{TSelf, TOther, TResult}"/>.</summary>
-  //    public bool ImplementsIModulusOperators => (Operators & GenericMathOperators.IModulusOperators) != 0;
-  //    /// <summary>Indicates whether the type implements <see cref="System.Numerics.IMultiplyOperators{TSelf, TOther, TResult}"/>.</summary>
-  //    public bool ImplementsIMultiplyOperators => (Operators & GenericMathOperators.IMultiplyOperators) != 0;
-  //    /// <summary>Indicates whether the type implements <see cref="System.Numerics.IShiftOperators{TSelf, TOther, TResult}"/>.</summary>
-  //    public bool ImplementsIShiftOperators => (Operators & GenericMathOperators.IShiftOperators) != 0;
-  //    /// <summary>Indicates whether the type implements <see cref="System.Numerics.ISubtractionOperators{TSelf, TOther, TResult}"/>.</summary>
-  //    public bool ImplementsISubtractionOperators => (Operators & GenericMathOperators.ISubtractionOperators) != 0;
-  //    /// <summary>Indicates whether the type implements <see cref="System.Numerics.IUnaryNegationOperators{TSelf, TResult}"/>.</summary>
-  //    public bool ImplementsIUnaryNegationOperators => (Operators & GenericMathOperators.IUnaryNegationOperators) != 0;
-  //    /// <summary>Indicates whether the type implements <see cref="System.Numerics.IUnaryPlusOperators{TSelf, TResult}"/>.</summary>
-  //    public bool ImplementsIUnaryPlusOperators => (Operators & GenericMathOperators.IUnaryPlusOperators) != 0;
-
-  //    #endregion
-
-  //    #region Implements ..Parsable Interfaces
-
-  //    /// <summary>Indicates whether the type implements <see cref="System.Numerics.IParsable{TSelf}"/>.</summary>
-  //    public bool ImplementsIParsable => (Parsable & GenericMathParsable.IParsable) != 0;
-  //    /// <summary>Indicates whether the type implements <see cref="System.Numerics.ISpanParsable{TSelf}"/>.</summary>
-  //    public bool ImplementsISpanParsable => (Parsable & GenericMathParsable.ISpanParsable) != 0;
-  //    /// <summary>Indicates whether the type implements <see cref="System.Numerics.IUtf8SpanParsable{TSelf}"/>.</summary>
-  //    public bool ImplementsIUtf8SpanParsable => (Parsable & GenericMathParsable.IUtf8SpanParsable) != 0;
-
-  //    #endregion
-
-  //    #region Is.. for Concrete Types
-
-  //    /// <summary>Indicates whether the type represents <see cref="System.Numerics.BFloat16"/>.</summary>
-  //#if NET11_0_OR_GREATER
-  //    public bool IsBFloat16 => m_type == typeof(System.Numerics.BFloat16);
-  //#else
-  //    public bool IsBFloat16 => false;
-  //#endif
-
-  //    /// <summary>Indicates whether the type represents <see cref="System.Numerics.BigInteger"/>.</summary>
-  //    public bool IsBigInteger => m_type == typeof(System.Numerics.BigInteger);
-
-  //    /// <summary>Indicates whether the type represents <see cref="System.Numerics.Complex"/>.</summary>
-  //    public bool IsComplex => m_type == typeof(System.Numerics.Complex);
-
-  //    /// <summary>Indicates whether the type represents <see cref="System.Decimal"/>.</summary>
-  //    public bool IsDecimal => m_type == typeof(System.Decimal);
-
-  //    /// <summary>Indicates whether the type represents <see cref="Flux.Numerics.BigRational"/>.</summary>
-  //    public bool IsBigRational => m_type == typeof(Flux.Numerics.BigRational);
-
-  //    #endregion
-
-  //    #region IsBinary.. IEEE Formats
-
-  //    /// <summary>Indicates whether the type represents an IEEE binary16 floating-point, such as <see cref="System.Half"/></summary>
-  //    public bool IsBinary16
-  //      => m_type == typeof(System.Half);
-
-  //    /// <summary>Indicates whether the type represents an IEEE binary32 floating-point, such as <see cref="System.Single"/> or <see cref="System.Runtime.InteropServices.NFloat"/> when <see cref="System.Runtime.InteropServices.NFloat.Size"/> is 4.</summary>
-  //    public bool IsBinary32
-  //      => m_type == typeof(System.Single) || (m_type == typeof(System.Runtime.InteropServices.NFloat) && System.Runtime.InteropServices.NFloat.Size == 4);
-
-  //    /// <summary>Indicates whether the type represents an IEEE binary64 floating-point, such as <see cref="System.Double"/> or <see cref="System.Runtime.InteropServices.NFloat"/> when <see cref="System.Runtime.InteropServices.NFloat.Size"/> is 8.</summary>
-  //    public bool IsBinary64
-  //      => m_type == typeof(System.Double) || (m_type == typeof(System.Runtime.InteropServices.NFloat) && System.Runtime.InteropServices.NFloat.Size == 8);
-
-  //    /// <summary>Indicates whether the type represents an IEEE binary128 floating-point. There are currently no such types in .NET.</summary>
-  //    public bool IsBinary128
-  //      => false;
-
-  //    #endregion
-
-  //    #region IsDecimal.. IEEE Formats
-
-  //    /// <summary>Indicates whether the type represents an IEEE decimal32 floating-point, such as <see cref="System.Decimal32"/>.</summary>
-  //#if NET11_0_OR_GREATER
-  //    public bool IsDecimal32
-  //      => m_type == typeof(System.Numerics.Decimal32);
-  //#else
-  //    public bool IsDecimal32
-  //      => false;
-  //#endif
-
-  //    /// <summary>Indicates whether the type represents an IEEE decimal64 floating-point, such as <see cref="System.Decimal64"/>.</summary>
-  //#if NET11_0_OR_GREATER
-  //    public bool IsDecimal64
-  //      => m_type == typeof(System.Numerics.Decimal64);
-  //#else
-  //    public bool IsDecimal64
-  //      => false;
-  //#endif
-
-  //    /// <summary>Indicates whether the type represents an IEEE decimal128 floating-point, such as <see cref="System.Decimal128"/>.</summary>
-  //#if NET11_0_OR_GREATER
-  //    public bool IsDecimal128
-  //      => m_type == typeof(System.Numerics.Decimal128);
-  //#else
-  //    public bool IsDecimal128
-  //      => false;
-  //#endif
-
-  //    #endregion
-
-  //    #region IsInteger.. Fixed Width
-
-  //    /// <summary>Indicates whether the type represents an 8-bit integer type, such as <see cref="System.Byte"/> or <see cref="System.SByte"/>.</summary>
-  //    public bool IsInteger8
-  //      => m_type == typeof(System.Byte) || m_type == typeof(System.SByte);
-
-  //    /// <summary>Indicates whether the type represents a 16-bit integer type, such as <see cref="System.Int16"/> or <see cref="System.UInt16"/>.</summary>
-  //    public bool IsInteger16
-  //      => m_type == typeof(System.Int16) || m_type == typeof(System.UInt16);
-
-  //    /// <summary>Indicates whether the type represents a 32-bit integer type, such as <see cref="System.Int32"/>, <see cref="System.UInt32"/>, <see cref="System.IntPtr"/> (when <see cref="System.IntPtr.Size"/> is 4), or <see cref="System.UIntPtr"/> (when <see cref="System.UIntPtr.Size"/> is 4).</summary>
-  //    public bool IsInteger32
-  //      => m_type == typeof(System.Int32) || m_type == typeof(System.UInt32) || (m_type == typeof(System.IntPtr) && System.IntPtr.Size == 4) || (m_type == typeof(System.UIntPtr) && System.UIntPtr.Size == 4);
-
-  //    /// <summary>Indicates whether the type represents a 64-bit integer type, such as <see cref="System.Int64"/>, <see cref="System.UInt64"/>, <see cref="System.IntPtr"/> (when <see cref="System.IntPtr.Size"/> is 8), or <see cref="System.UIntPtr"/> (when <see cref="System.UIntPtr.Size"/> is 8).</summary>
-  //    public bool IsInteger64
-  //      => m_type == typeof(System.Int64) || m_type == typeof(System.UInt64) || (m_type == typeof(System.IntPtr) && System.IntPtr.Size == 8) || (m_type == typeof(System.UIntPtr) && System.UIntPtr.Size == 8);
-
-  //    /// <summary>Indicates whether the type represents a 128-bit integer type, such as <see cref="System.Int128"/> or <see cref="System.UInt128"/>.</summary>
-  //    public bool IsInteger128
-  //      => m_type == typeof(System.Int128) || m_type == typeof(System.UInt128);
-
-  //    #endregion
-
-  //    #region Other Properties
-
-  //    /// <summary>The width of the type in bits.</summary>
-  //    /// <remarks>For fixed-width types, this equals <see cref="StorageBytes"/> × 8. If <see cref="IsArbitraryPrecision"/> is <see langword="true"/>, this value is 0, indicating an unbounded bit-width.</remarks>
-  //    public int BitWidth => IsArbitraryPrecision ? 0 : StorageBytes * 8;
-
-  //    /// <summary>Indicates whether the type has an unbounded bit-width, such as <see cref="System.Numerics.BigInteger"/>.</summary>
-  //    public bool IsArbitraryPrecision => IsBigInteger;
-
-  //    /// <summary>Indicates whether the type has a fixed bit-width, such as <see cref="System.Decimal"/>, <see cref="System.Decimal128"/>, <see cref="System.Int32"/>, or <see cref="System.Single"/>.</summary>
-  //    public bool IsFixedWidth => !IsBigInteger;
-
-  //    /// <summary>Indicates whether the type represents a signed integer, such as <see cref="System.Int128"/>, <see cref="System.Int16"/>, <see cref="System.Int32"/>, <see cref="System.Int64"/>, <see cref="System.SByte"/>, or <see cref="System.Numerics.BigInteger"/>.</summary>
-  //    public bool IsSignedInteger => (Core & (GenericMathCore.IBinaryInteger | GenericMathCore.ISignedNumber)) == (GenericMathCore.IBinaryInteger | GenericMathCore.ISignedNumber);
-
-  //    /// <summary>Indicates whether the type represents an unsigned integer , such as <see cref="System.Byte"/>, <see cref="System.UInt128"/>, <see cref="System.UInt16"/>, <see cref="System.UInt32"/>, or <see cref="System.UInt64"/>.</summary>
-  //    public bool IsUnsignedInteger => (Core & (GenericMathCore.IBinaryInteger | GenericMathCore.IUnsignedNumber)) == (GenericMathCore.IBinaryInteger | GenericMathCore.IUnsignedNumber);
-
-  //    public string CSharpLiteralSuffix
-  //      => m_type == typeof(decimal) ? "m" :
-  //      m_type == typeof(double) ? "d" :
-  //      m_type == typeof(float) ? "f" :
-  //      m_type == typeof(long) ? "l" :
-  //      m_type == typeof(ulong) ? "ul" :
-  //      m_type == typeof(uint) ? "u" :
-  //      string.Empty;
-
-  //    public NumericDomain NumberSystem
-  //      => IsUnsignedInteger ? NumericDomain.NaturalNumbers
-  //      : IsSignedInteger ? NumericDomain.Integers
-  //      : ImplementsIFloatingPoint ? NumericDomain.RealNumbers
-  //      : IsComplex ? NumericDomain.ComplexNumbers
-  //      : IsBigRational ? NumericDomain.RationalNumbers
-  //      : NumericDomain.Unknown;
-
-  //    public System.Text.Rune NumberSystemSymbol
-  //      => (System.Text.Rune)(char)NumberSystem;
-
-  //    /// <summary>The number of storage bytes used by the type.</summary>
-  //    /// <remarks>This does not include implementation-dependent padding, object headers, or additional heap allocations (for example, <see cref="System.Numerics.BigInteger"/>).</remarks>
-  //    public int StorageBytes
-  //      => IsInteger8 ? 1
-  //      : (IsBFloat16 || IsBinary16 || IsInteger16) ? 2
-  //      : (IsBinary32 || IsDecimal32 || IsInteger32) ? 4
-  //      : (IsBinary64 || IsDecimal64 || IsInteger64) ? 8
-  //      : (IsBinary128 || IsDecimal128 || IsInteger128) ? 16
-  //      : SizeOf(m_type);
-
-  //    #endregion
-
-  //    #region Static methods
-
-  //    public static NumericTypeInfo Get(Type type)
-  //      => m_cache.GetOrAdd(type, static t => new NumericTypeInfo(t));
-
-  //    public static NumericTypeInfo Get<TNumberBase>()
-  //      where TNumberBase : System.Numerics.INumberBase<TNumberBase>
-  //      => Get(typeof(TNumberBase));
-
-  //    public static GenericMathConstants GetGenericMathConstants(System.Type type)
-  //    {
-  //      var numericCapabilityOperators = GenericMathConstants.NoConstants;
-
-  //      foreach (var itype in type.GetCachedInterfaces())
-  //      {
-  //        if (itype == typeof(System.Numerics.IFloatingPointConstants<>))
-  //          numericCapabilityOperators |= GenericMathConstants.IFloatingPointConstants;
-  //      }
-
-  //      return numericCapabilityOperators;
-  //    }
-
-  //    public static GenericMathCore GetGenericMathCore(System.Type type)
-  //    {
-  //      var numericCapabilityCore = GenericMathCore.NoCore;
-
-  //      foreach (var itype in type.GetCachedInterfaces())
-  //      {
-  //#if NET11_0_OR_GREATER
-  //        if (itype == typeof(System.Numerics.Complex<>))
-  //          numericCapabilityCore |= GenericMathCore.ComplexT;
-  //        else
-  //#endif
-  //          if (itype == typeof(System.Numerics.IBinaryFloatingPointIeee754<>))
-  //            numericCapabilityCore |= GenericMathCore.IBinaryFloatingPointIeee754;
-  //          else if (itype == typeof(System.Numerics.IBinaryInteger<>))
-  //            numericCapabilityCore |= GenericMathCore.IBinaryInteger;
-  //          else if (itype == typeof(System.Numerics.IBinaryNumber<>))
-  //            numericCapabilityCore |= GenericMathCore.IBinaryNumber;
-  //#if NET11_0_OR_GREATER
-  //          else if (itype == typeof(System.Numerics.IDecimalFloatingPointIeee754<>))
-  //            numericCapabilityCore |= GenericMathCore.IDecimalFloatingPointIeee754;
-  //#endif
-  //          else if (itype == typeof(System.Numerics.IFloatingPoint<>))
-  //            numericCapabilityCore |= GenericMathCore.IFloatingPoint;
-  //          else if (itype == typeof(System.Numerics.IFloatingPointIeee754<>))
-  //            numericCapabilityCore |= GenericMathCore.IFloatingPointIeee754;
-  //          else if (itype == typeof(System.Numerics.IMinMaxValue<>))
-  //            numericCapabilityCore |= GenericMathCore.IMinMaxValue;
-  //          else if (itype == typeof(System.Numerics.INumber<>))
-  //            numericCapabilityCore |= GenericMathCore.INumber;
-  //          else if (itype == typeof(System.Numerics.INumberBase<>))
-  //            numericCapabilityCore |= GenericMathCore.INumberBase;
-  //          else if (itype == typeof(System.Numerics.ISignedNumber<>))
-  //            numericCapabilityCore |= GenericMathCore.ISignedNumber;
-  //          else if (itype == typeof(System.Numerics.IUnsignedNumber<>))
-  //            numericCapabilityCore |= GenericMathCore.IUnsignedNumber;
-  //      }
-
-  //      return numericCapabilityCore;
-  //    }
-  //    public static GenericMathFormattable GetGenericMathFormattable(System.Type type)
-  //    {
-  //      var numericCapabilityOperators = GenericMathFormattable.NoFormattable;
-
-  //      foreach (var itype in type.GetCachedInterfaces())
-  //      {
-  //        if (itype == typeof(System.IFormattable))
-  //          numericCapabilityOperators |= GenericMathFormattable.IFormattable;
-  //        else if (itype == typeof(System.ISpanFormattable))
-  //          numericCapabilityOperators |= GenericMathFormattable.ISpanFormattable;
-  //        else if (itype == typeof(System.IUtf8SpanFormattable))
-  //          numericCapabilityOperators |= GenericMathFormattable.IUtf8SpanFormattable;
-  //      }
-
-  //      return numericCapabilityOperators;
-  //    }
-  //    public static GenericMathFunctions GetGenericMathFunctions(System.Type type)
-  //    {
-  //      var numericCapabilityOperators = GenericMathFunctions.NoFunctions;
-
-  //      foreach (var itype in type.GetCachedInterfaces())
-  //      {
-  //        if (itype == typeof(System.Numerics.IExponentialFunctions<>))
-  //          numericCapabilityOperators |= GenericMathFunctions.IExponentialFunctions;
-  //        else if (itype == typeof(System.Numerics.IHyperbolicFunctions<>))
-  //          numericCapabilityOperators |= GenericMathFunctions.IHyperbolicFunctions;
-  //        else if (itype == typeof(System.Numerics.ILogarithmicFunctions<>))
-  //          numericCapabilityOperators |= GenericMathFunctions.ILogarithmicFunctions;
-  //        else if (itype == typeof(System.Numerics.IPowerFunctions<>))
-  //          numericCapabilityOperators |= GenericMathFunctions.IPowerFunctions;
-  //        else if (itype == typeof(System.Numerics.IRootFunctions<>))
-  //          numericCapabilityOperators |= GenericMathFunctions.IRootFunctions;
-  //        else if (itype == typeof(System.Numerics.ITrigonometricFunctions<>))
-  //          numericCapabilityOperators |= GenericMathFunctions.ITrigonometricFunctions;
-  //      }
-
-  //      return numericCapabilityOperators;
-  //    }
-  //    public static GenericMathIdentity GetGenericMathIdentity(System.Type type)
-  //    {
-  //      var numericCapabilityOperators = GenericMathIdentity.NoIdentity;
-
-  //      foreach (var itype in type.GetCachedInterfaces())
-  //      {
-  //        if (itype == typeof(System.Numerics.IAdditiveIdentity<,>))
-  //          numericCapabilityOperators |= GenericMathIdentity.IAdditiveIdentity;
-  //        else if (itype == typeof(System.Numerics.IMultiplicativeIdentity<,>))
-  //          numericCapabilityOperators |= GenericMathIdentity.IMultiplicativeIdentity;
-  //      }
-
-  //      return numericCapabilityOperators;
-  //    }
-  //    public static GenericMathOperators GetGenericMathOperators(System.Type type)
-  //    {
-  //      var numericCapabilityOperators = GenericMathOperators.NoOperators;
-
-  //      foreach (var itype in type.GetCachedInterfaces())
-  //      {
-  //        if (itype == typeof(System.Numerics.IAdditionOperators<,,>))
-  //          numericCapabilityOperators |= GenericMathOperators.IAdditionOperators;
-  //        else if (itype == typeof(System.Numerics.IBitwiseOperators<,,>))
-  //          numericCapabilityOperators |= GenericMathOperators.IBitwiseOperators;
-  //        else if (itype == typeof(System.Numerics.IComparisonOperators<,,>))
-  //          numericCapabilityOperators |= GenericMathOperators.IComparisonOperators;
-  //        else if (itype == typeof(System.Numerics.IDecrementOperators<>))
-  //          numericCapabilityOperators |= GenericMathOperators.IDecrementOperators;
-  //        else if (itype == typeof(System.Numerics.IDivisionOperators<,,>))
-  //          numericCapabilityOperators |= GenericMathOperators.IDivisionOperators;
-  //        else if (itype == typeof(System.Numerics.IEqualityOperators<,,>))
-  //          numericCapabilityOperators |= GenericMathOperators.IEqualityOperators;
-  //        else if (itype == typeof(System.Numerics.IIncrementOperators<>))
-  //          numericCapabilityOperators |= GenericMathOperators.IIncrementOperators;
-  //        else if (itype == typeof(System.Numerics.IModulusOperators<,,>))
-  //          numericCapabilityOperators |= GenericMathOperators.IModulusOperators;
-  //        else if (itype == typeof(System.Numerics.IMultiplyOperators<,,>))
-  //          numericCapabilityOperators |= GenericMathOperators.IMultiplyOperators;
-  //        else if (itype == typeof(System.Numerics.IShiftOperators<,,>))
-  //          numericCapabilityOperators |= GenericMathOperators.IShiftOperators;
-  //        else if (itype == typeof(System.Numerics.ISubtractionOperators<,,>))
-  //          numericCapabilityOperators |= GenericMathOperators.ISubtractionOperators;
-  //        else if (itype == typeof(System.Numerics.IUnaryNegationOperators<,>))
-  //          numericCapabilityOperators |= GenericMathOperators.IUnaryNegationOperators;
-  //        else if (itype == typeof(System.Numerics.IUnaryPlusOperators<,>))
-  //          numericCapabilityOperators |= GenericMathOperators.IUnaryPlusOperators;
-  //      }
-
-  //      return numericCapabilityOperators;
-  //    }
-  //    public static GenericMathParsable GetGenericMathParsable(System.Type type)
-  //    {
-  //      var numericCapabilityOperators = GenericMathParsable.NoParsable;
-
-  //      foreach (var itype in type.GetCachedInterfaces())
-  //      {
-  //        if (itype == typeof(System.IParsable<>))
-  //          numericCapabilityOperators |= GenericMathParsable.IParsable;
-  //        else if (itype == typeof(System.ISpanParsable<>))
-  //          numericCapabilityOperators |= GenericMathParsable.ISpanParsable;
-  //        else if (itype == typeof(System.IUtf8SpanParsable<>))
-  //          numericCapabilityOperators |= GenericMathParsable.IUtf8SpanParsable;
-  //      }
-
-  //      return numericCapabilityOperators;
-  //    }
-
-  //    public static void PreloadNumericTypes()
-  //    {
-  //      foreach (var type in typeof(System.Numerics.INumberBase<>).GetDerived().Where(t => !t.IsInterface).OrderBy(t => t.FullName))
-  //      {
-  //        var gmi = Get(type);
-
-  //#if DEBUG
-  //        System.Diagnostics.Debug.WriteLine(gmi.ToString());
-  //#endif
-  //      }
-  //    }
-
-  //    private static class SizeOfCache<T> { public static readonly int Value = System.Runtime.CompilerServices.Unsafe.SizeOf<T>(); }
-  //    private static int SizeOf(System.Type type) => (int)typeof(SizeOfCache<>).MakeGenericType(type).GetField(nameof(SizeOfCache<>.Value))!.GetValue(null)!;
-
-  //    #endregion
-
-  //    public override string ToString()
-  //    {
-  //      var sb = new System.Text.StringBuilder();
-
-  //      sb.Append(m_type.FullName);
-
-  //      if (m_type.GetCsharpAlias() is var keyword && !string.IsNullOrEmpty(keyword))
-  //        sb.Append($" ({keyword})");
-
-  //      // Main number system (classification) symbol
-  //      if (NumberSystem != NumericDomain.Unknown)
-  //        sb.AppendJoined($"{NumberSystemSymbol}");
-
-  //      // Derived capabilities
-  //      if (IsArbitraryPrecision) sb.AppendJoined(nameof(IsArbitraryPrecision));
-  //      else if (IsFixedWidth) sb.AppendJoined($"{nameof(IsFixedWidth)} {BitWidth}-bit ({StorageBytes} byte{(Number.IsConsideredPlural(StorageBytes) ? "s" : string.Empty)})");
-  //      if (IsSignedInteger) sb.AppendJoined(nameof(IsSignedInteger));
-  //      else if (IsUnsignedInteger) sb.AppendJoined(nameof(IsUnsignedInteger));
-
-  //      // Represented CLR types
-  //      if (IsBFloat16) sb.AppendJoined(nameof(IsBFloat16));
-  //      else if (IsBigInteger) sb.AppendJoined(nameof(IsBigInteger));
-  //      else if (IsComplex) sb.AppendJoined(nameof(IsComplex));
-  //      else if (IsDecimal) sb.AppendJoined(nameof(IsDecimal));
-
-  //      // IEEE formats
-  //      if (IsBinary16) sb.AppendJoined(nameof(IsBinary16));
-  //      else if (IsBinary32) sb.AppendJoined(nameof(IsBinary32));
-  //      else if (IsBinary64) sb.AppendJoined(nameof(IsBinary64));
-  //      else if (IsDecimal128) sb.AppendJoined(nameof(IsDecimal128));
-  //      else if (IsDecimal32) sb.AppendJoined(nameof(IsDecimal32));
-  //      else if (IsDecimal64) sb.AppendJoined(nameof(IsDecimal64));
-
-  //      // Integer types
-  //      if (IsInteger128) sb.AppendJoined(nameof(IsInteger128));
-  //      else if (IsInteger16) sb.AppendJoined(nameof(IsInteger16));
-  //      else if (IsInteger32) sb.AppendJoined(nameof(IsInteger32));
-  //      else if (IsInteger64) sb.AppendJoined(nameof(IsInteger64));
-  //      else if (IsInteger8) sb.AppendJoined(nameof(IsInteger8));
-
-  //      // Implemented capabilities
-  //      sb.AppendJoined($"{Constants}");
-  //      sb.AppendJoined($"{Core}");
-  //      sb.AppendJoined($"{Formattable}");
-  //      sb.AppendJoined($"{Functions}");
-  //      sb.AppendJoined($"{Identity}");
-  //      sb.AppendJoined($"{Operators}");
-  //      sb.AppendJoined($"{Parsable}");
-
-  //      return sb.ToString();
-  //    }
-  //  }
 }

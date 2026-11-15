@@ -191,6 +191,8 @@
       /// <para>Reverses the bits of an integer. The LSBs (least significant bits) becomes the MSBs (most significant bits) and vice versa, i.e. the bits are mirrored across the integer storage space. It's a reversal of all storage bits.</para>
       /// </summary>
       /// <remarks>See <see cref="ReverseBytes{TInteger}(TInteger)"/> for byte reversal.</remarks>
+      /// <param name="value"></param>
+      /// <returns></returns>
       public static TInteger ReverseBits(TInteger value)
       {
         var count = value.GetByteCount();

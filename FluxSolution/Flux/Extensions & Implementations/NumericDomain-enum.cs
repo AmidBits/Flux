@@ -41,19 +41,17 @@ namespace Flux
 
   public static partial class NumberBase
   {
-    extension<TNumberBase>(TNumberBase)
+    public static NumericDomain GetNumericDomain<TNumberBase>()
       where TNumberBase : System.Numerics.INumberBase<TNumberBase>
-    {
-      public static NumericDomain GetNumericDomain()
-        => NumericTypeInfo<TNumberBase>.IsUnsignedInteger ? NumericDomain.NaturalNumbers
-        : NumericTypeInfo<TNumberBase>.IsSignedInteger ? NumericDomain.Integers
-        : NumericTypeInfo<TNumberBase>.IsBigRational ? NumericDomain.RationalNumbers
-        : NumericTypeInfo<TNumberBase>.ImplementsIFloatingPoint ? NumericDomain.RealNumbers
-        : NumericTypeInfo<TNumberBase>.IsComplex ? NumericDomain.ComplexNumbers
-        : NumericDomain.Unknown;
+      => NumericTypeInfo<TNumberBase>.IsUnsignedInteger ? NumericDomain.NaturalNumbers
+      : NumericTypeInfo<TNumberBase>.IsSignedInteger ? NumericDomain.Integers
+      : NumericTypeInfo<TNumberBase>.IsBigRational ? NumericDomain.RationalNumbers
+      : NumericTypeInfo<TNumberBase>.ImplementsIFloatingPoint ? NumericDomain.RealNumbers
+      : NumericTypeInfo<TNumberBase>.IsComplex ? NumericDomain.ComplexNumbers
+      : NumericDomain.Unknown;
 
-      public static System.Text.Rune GetNumericDomainSymbol()
-        => (System.Text.Rune)(char)GetNumericDomain<TNumberBase>();
-    }
+    public static System.Text.Rune GetNumericDomainSymbol<TNumberBase>()
+      where TNumberBase : System.Numerics.INumberBase<TNumberBase>
+      => (System.Text.Rune)(char)GetNumericDomain<TNumberBase>();
   }
 }

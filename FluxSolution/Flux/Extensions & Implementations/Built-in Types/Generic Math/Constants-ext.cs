@@ -1,5 +1,9 @@
 ﻿namespace Flux
 {
+  /// <summary>
+  /// <para>The values in this static class represent various constants for types implementing <see cref="System.Numerics.IFloatingPoint{TSelf}"/>.</para>
+  /// </summary>
+  /// <typeparam name="TFloat"></typeparam>
   public static partial class FloatingPointConstants<TFloat>
     where TFloat : System.Numerics.IFloatingPoint<TFloat>
   {
@@ -49,6 +53,10 @@
   //  }
   //}
 
+  /// <summary>
+  /// <para>The values in this static class represent various constants for types implementing <see cref="System.Numerics.INumberBase{TSelf}"/>.</para>
+  /// </summary>
+  /// <typeparam name="TNumberBase"></typeparam>
   public static partial class NumberBaseConstants<TNumberBase>
     where TNumberBase : System.Numerics.INumberBase<TNumberBase>
   {
@@ -75,56 +83,114 @@
     /// <summary>Yields the integer value 9.</summary>
     public static readonly TNumberBase Nine = TNumberBase.CreateChecked(9);
 
-    /// <summary>Yields the integer alue 10.</summary>
+    /// <summary>Yields the integer value 10.</summary>
     public static readonly TNumberBase Ten = TNumberBase.CreateChecked(10);
 
     /// <summary>Yields the integer value 63.</summary>
     public static readonly TNumberBase SixtyThree = TNumberBase.CreateChecked(63);
 
-    /// <summary>Yields the minimum prime number (2).</summary>
-    public static readonly TNumberBase MinPrime = Two;
+    #region LargestInteger/SmallestInteger
 
-    /// <summary>Yields the maximum prime number.</summary>
-    public static readonly TNumberBase MaxPrime
-      = typeof(TNumberBase) == typeof(System.Byte)
+    public static readonly TNumberBase? LargestInteger
+      = NumericTypeInfo<TNumberBase>.IsByte
+      ? TNumberBase.CreateChecked(System.Byte.MaxValue)
+      : NumericTypeInfo<TNumberBase>.IsInt16
+      ? TNumberBase.CreateChecked(System.Int16.MaxValue)
+      : NumericTypeInfo<TNumberBase>.IsInt32
+      ? TNumberBase.CreateChecked(System.Int32.MaxValue)
+      : NumericTypeInfo<TNumberBase>.IsInt64
+      ? TNumberBase.CreateChecked(System.Int64.MaxValue)
+      : NumericTypeInfo<TNumberBase>.IsInt128
+      ? TNumberBase.CreateChecked(System.Int128.MaxValue)
+      : NumericTypeInfo<TNumberBase>.IsSByte
+      ? TNumberBase.CreateChecked(System.SByte.MaxValue)
+      : NumericTypeInfo<TNumberBase>.IsUInt16
+      ? TNumberBase.CreateChecked(System.UInt16.MaxValue)
+      : NumericTypeInfo<TNumberBase>.IsUInt32
+      ? TNumberBase.CreateChecked(System.UInt32.MaxValue)
+      : NumericTypeInfo<TNumberBase>.IsUInt64
+      ? TNumberBase.CreateChecked(System.UInt64.MaxValue)
+      : NumericTypeInfo<TNumberBase>.IsUInt128
+      ? TNumberBase.CreateChecked(System.UInt128.MaxValue)
+      : NumericTypeInfo<TNumberBase>.IsHalf
+      ? TNumberBase.CreateChecked(2048)
+      : NumericTypeInfo<TNumberBase>.IsBinary32
+      ? TNumberBase.CreateChecked(16777216)
+      : NumericTypeInfo<TNumberBase>.IsBinary64
+      ? TNumberBase.CreateChecked(9007199254740992)
+      : NumericTypeInfo<TNumberBase>.IsBFloat16
+      ? TNumberBase.CreateChecked(128)
+      : NumericTypeInfo<TNumberBase>.IsDecimal
+      ? TNumberBase.CreateChecked(79228162514264337593543950335m)
+      : NumericTypeInfo<TNumberBase>.IsDecimal32
+      ? TNumberBase.CreateChecked(System.Numerics.Decimal32.Parse("9999999"))
+      : NumericTypeInfo<TNumberBase>.IsDecimal64
+      ? TNumberBase.CreateChecked(System.Numerics.Decimal64.Parse("9999999999999999"))
+      : NumericTypeInfo<TNumberBase>.IsDecimal128
+      ? TNumberBase.CreateChecked(System.Numerics.Decimal128.Parse("9999999999999999999999999999999999"))
+      : default;
+
+    public static readonly TNumberBase? SmallestInteger
+      = NumericTypeInfo<TNumberBase>.IsUnsignedInteger
+      ? TNumberBase.Zero
+      : NumericTypeInfo<TNumberBase>.IsSignedInteger
+      ? -LargestInteger! - TNumberBase.One
+      : NumericTypeInfo<TNumberBase>.ImplementsIFloatingPoint
+      ? -LargestInteger!
+      : default;
+
+    #endregion
+
+    #region LargestPrime/SmallestPrime
+
+    /// <summary>
+    /// <para>Gets the largest prime number exactly representable by <typeparamref name="TNumberBase"/></para>
+    /// </summary>
+    public static readonly TNumberBase? LargestPrime
+      = NumericTypeInfo<TNumberBase>.IsByte
       ? TNumberBase.CreateChecked(251)
-      : typeof(TNumberBase) == typeof(System.Int128)
-      ? TNumberBase.CreateChecked(System.Int128.Parse("170141183460469231731687303715884105727"))
-      : typeof(TNumberBase) == typeof(System.Int16)
+      : NumericTypeInfo<TNumberBase>.IsInt16
       ? TNumberBase.CreateChecked(32749)
-      : typeof(TNumberBase) == typeof(System.Int32) || (typeof(TNumberBase) == typeof(System.IntPtr) && System.IntPtr.Size == 4)
-      ? TNumberBase.CreateChecked(2147483647)
-      : typeof(TNumberBase) == typeof(System.Int64) || (typeof(TNumberBase) == typeof(System.IntPtr) && System.IntPtr.Size == 8)
+      : NumericTypeInfo<TNumberBase>.IsInt32
+      ? TNumberBase.CreateChecked(System.Int32.MaxValue) // int.MaxValue is a prime
+      : NumericTypeInfo<TNumberBase>.IsInt64
       ? TNumberBase.CreateChecked(9223372036854775783)
-      : typeof(TNumberBase) == typeof(System.SByte)
-      ? TNumberBase.CreateChecked(127)
-      : typeof(TNumberBase) == typeof(System.UInt128)
-      ? TNumberBase.CreateChecked(System.UInt128.Parse("340282366920938463463374607431768211297"))
-      : typeof(TNumberBase) == typeof(System.UInt16)
+      : NumericTypeInfo<TNumberBase>.IsInt128
+      ? TNumberBase.CreateChecked(System.Int128.MaxValue) // Int128.MaxValue is a prime
+      : NumericTypeInfo<TNumberBase>.IsSByte
+      ? TNumberBase.CreateChecked(System.SByte.MaxValue) // SByte.MaxValue is a prime
+      : NumericTypeInfo<TNumberBase>.IsUInt16
       ? TNumberBase.CreateChecked(65521)
-      : typeof(TNumberBase) == typeof(System.UInt32) || (typeof(TNumberBase) == typeof(System.UIntPtr) && System.UIntPtr.Size == 4)
+      : NumericTypeInfo<TNumberBase>.IsUInt32
       ? TNumberBase.CreateChecked(4294967291u)
-      : typeof(TNumberBase) == typeof(System.UInt64) || (typeof(TNumberBase) == typeof(System.UIntPtr) && System.UIntPtr.Size == 8)
+      : NumericTypeInfo<TNumberBase>.IsUInt64
       ? TNumberBase.CreateChecked(18446744073709551557ul)
-      : typeof(TNumberBase) == typeof(System.Decimal)
-      ? TNumberBase.CreateChecked(79228162514264337593543950297m)
-      : typeof(TNumberBase) == typeof(System.Double) || (typeof(TNumberBase) == typeof(System.Runtime.InteropServices.NFloat) && System.Runtime.InteropServices.NFloat.Size == 8)
-      ? TNumberBase.CreateChecked(9007199254740881d)
-      : typeof(TNumberBase) == typeof(System.Half)
+      : NumericTypeInfo<TNumberBase>.IsUInt128
+      ? TNumberBase.CreateChecked(System.UInt128.MaxValue - 158)
+      : NumericTypeInfo<TNumberBase>.IsHalf
       ? TNumberBase.CreateChecked(2039)
-      : typeof(TNumberBase) == typeof(System.Single) || (typeof(TNumberBase) == typeof(System.Runtime.InteropServices.NFloat) && System.Runtime.InteropServices.NFloat.Size == 4)
+      : NumericTypeInfo<TNumberBase>.IsBinary32
       ? TNumberBase.CreateChecked(16777213)
-#if NET11_0_OR_GREATER
-      : typeof(TNumberBase) == typeof(System.Numerics.BFloat16)
+      : NumericTypeInfo<TNumberBase>.IsBinary64
+      ? TNumberBase.CreateChecked(9007199254740881ul)
+      : NumericTypeInfo<TNumberBase>.IsBFloat16
       ? TNumberBase.CreateChecked(127)
-      : typeof(TNumberBase) == typeof(System.Numerics.Decimal128)
-      ? TNumberBase.CreateChecked(System.Numerics.Decimal128.Parse("9999999999999999999999999999999989"))
-      : typeof(TNumberBase) == typeof(System.Numerics.Decimal32)
+      : NumericTypeInfo<TNumberBase>.IsDecimal
+      ? TNumberBase.CreateChecked(79228162514264337593543950319m)
+      : NumericTypeInfo<TNumberBase>.IsDecimal32
       ? TNumberBase.CreateChecked(System.Numerics.Decimal32.Parse("9999991"))
-      : typeof(TNumberBase) == typeof(System.Numerics.Decimal64)
-      ? TNumberBase.CreateChecked(System.Numerics.Decimal64.Parse("9999999999999989"))
-#endif
-      : MinPrime;
+      : NumericTypeInfo<TNumberBase>.IsDecimal64
+      ? TNumberBase.CreateChecked(System.Numerics.Decimal64.Parse("9999999999999937"))
+      : NumericTypeInfo<TNumberBase>.IsDecimal128
+      ? TNumberBase.CreateChecked(System.Numerics.Decimal128.Parse("9999999999999999999999999999999589"))
+      : default;
+
+    /// <summary>
+    /// <para>Gets the smallest prime number exactly representable by <typeparamref name="TNumberBase"/>, which is 2.</para>
+    /// </summary>
+    public static readonly TNumberBase SmallestPrime = Two;
+
+    #endregion
 
     #endregion
   }

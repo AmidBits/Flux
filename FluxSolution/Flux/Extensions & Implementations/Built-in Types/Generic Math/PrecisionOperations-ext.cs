@@ -339,7 +339,7 @@ namespace Flux
           var tv = decimal.CreateChecked(value);
           var bits = decimal.GetBits(tv);
           var scale = (uint)((bits[3] >> 16) & 0xFF);
-          var ulp = DecimalExtensions.Pow10Reciprocal[scale];
+          var ulp = Decimal128Extensions.Pow10Reciprocal[scale];
           return TNumber.CreateChecked(ulp);
         }
         else if ((typeof(TNumber) == typeof(double) || (typeof(TNumber) == typeof(System.Runtime.InteropServices.NFloat) && System.Runtime.InteropServices.NFloat.Size == 8)))
@@ -521,8 +521,8 @@ namespace Flux
           var (_, leftScale, leftSignificand) = decimal.ExtractDecimalFields(decimal.CreateChecked(left));
           var (_, rightScale, rightSignificand) = decimal.ExtractDecimalFields(decimal.CreateChecked(right));
           var scale = int.Max(leftScale, rightScale);
-          leftOrdered = leftSignificand * (System.Numerics.BigInteger)decimal.Pow10(scale - leftScale);
-          rightOrdered = rightSignificand * (System.Numerics.BigInteger)decimal.Pow10(scale - rightScale);
+          leftOrdered = leftSignificand * System.Numerics.BigInteger.Pow10(scale - leftScale);
+          rightOrdered = rightSignificand * System.Numerics.BigInteger.Pow10(scale - rightScale);
         }
         else if (typeof(TNumber) == typeof(double) || (typeof(TNumber) == typeof(System.Runtime.InteropServices.NFloat) && System.Runtime.InteropServices.NFloat.Size == 8))
         {

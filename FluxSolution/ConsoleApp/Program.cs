@@ -502,11 +502,22 @@ namespace ConsoleApp
     {
       //Flux.NumericTypeInfo.PreloadNumericTypes();
 
-      var ini = Flux.NumericTypeInfo<int>.BitWidth;
-      var inbi = NumericTypeInfo<double>.BitWidth;
-      var ind128 = NumericTypeInfo<System.Numerics.Decimal128>.BitWidth;
+      var uint128 = Number.GeometricSequence(System.UInt128.One, NumberBaseConstants<System.UInt128>.Ten).Where(n => n <= System.UInt128.MaxValue);
 
-      var inbn = Flux.NumericTypeInfo<System.Numerics.BigInteger>.BitWidth;
+      var ini = Flux.NumericTypeInfo<int>.NominalBitWidth;
+      var inbi = NumericTypeInfo<double>.NominalBitWidth;
+      var ind128 = NumericTypeInfo<System.Numerics.Decimal128>.NominalBitWidth;
+      var ind128mp = NumberBaseConstants<System.SByte>.LargestInteger;
+
+      var c = NumericTypeInfo<System.Numerics.Complex>.BaseType;
+
+      var coft = NumericTypeInfo<System.Numerics.Complex<System.Numerics.Decimal128>>.BaseType;
+      var coftbw = NumericTypeInfo<System.Numerics.Complex<System.Numerics.Decimal128>>.NominalBitWidth;
+
+      var inbn = Flux.NumericTypeInfo<System.Numerics.BFloat16>.NominalBitWidth;
+      var inbt = Flux.NumericTypeInfo<System.Numerics.BigInteger>.BaseType;
+
+      var inbr = Flux.NumericTypeInfo<Flux.Numerics.BigRational>.NominalBitWidth;
 
       var n = (long)10;
 
