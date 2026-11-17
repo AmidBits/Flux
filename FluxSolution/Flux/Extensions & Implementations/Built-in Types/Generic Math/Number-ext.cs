@@ -29,6 +29,93 @@ namespace Flux
         => TNumber.IsZero(value) ? TNumber.Zero : value;
 
       #endregion
+
+      public static string ToPlural(string text, TNumber value)
+      {
+        if (!IsConsideredPlural(value))
+          return text;
+
+        var sb = new System.Text.StringBuilder(text);
+
+        if (text.EndsWith('y'))
+          sb.Append("ies");
+        else if (text.EndsWith('x'))
+          sb.Append("es");
+        else if (!text.EndsWith('s'))
+          sb.Append('s');
+
+        return sb.ToString();
+      }
+
+      public static bool TryMultiply(TNumber left, TNumber right, out TNumber product)
+      {
+        if (left == TNumber.Zero || right == TNumber.Zero)
+        {
+          product = TNumber.Zero;
+          return true;
+        }
+
+        if (NumericTypeInfo<TNumber>.IsUnsignedInteger && left > NumberBaseConstants<TNumber>.LargestInteger / right)
+        {
+          product = default!;
+          return false;
+        }
+
+        if (NumericTypeInfo<TNumber>.ImplementsIBinaryInteger || NumericTypeInfo<TNumber>.IsSystemDecimal)
+        {
+          var max = NumberBaseConstants<TNumber>.LargestInteger;
+          var min = NumberBaseConstants<TNumber>.SmallestInteger;
+
+          if (left > TNumber.Zero)
+          {
+            if (right > TNumber.Zero)
+            {
+              if (left > max / right)
+              {
+                product = default!;
+                return false;
+              }
+            }
+            else
+            {
+              if (right < min / left)
+              {
+                product = default!;
+                return false;
+              }
+            }
+          }
+          else
+          {
+            if (right > TNumber.Zero)
+            {
+              if (left < min / right)
+              {
+                product = default!;
+                return false;
+              }
+            }
+            else
+            {
+              if (left < max / right)
+              {
+                product = default!;
+                return false;
+              }
+            }
+          }
+        }
+
+        if (NumericTypeInfo<TNumber>.ImplementsIFloatingPoint)
+        {
+          product = left * right;
+
+          return !TNumber.IsNaN(product) && !TNumber.IsInfinity(product);
+        }
+
+        product = left * right;
+        return true;
+      }
     }
   }
 }

@@ -88,6 +88,7 @@ namespace Flux
       , System.IFormattable
       , System.Numerics.IAdditiveIdentity<BigRational, BigRational>
       , System.Numerics.IAdditionOperators<BigRational, BigRational, BigRational>, System.Numerics.IAdditionOperators<BigRational, System.Numerics.BigInteger, BigRational>
+      //, System.Numerics.IBinaryNumber<BigRational>
       , System.Numerics.IBitwiseOperators<BigRational, BigRational, BigRational>
       , System.Numerics.IComparisonOperators<BigRational, BigRational, bool>
       , System.Numerics.IDecrementOperators<BigRational>

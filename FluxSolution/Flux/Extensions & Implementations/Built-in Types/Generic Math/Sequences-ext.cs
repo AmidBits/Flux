@@ -495,7 +495,8 @@
         {
           yield return a1;
 
-          try { checked { a1 *= commonRatio; } } catch { break; }
+          if (!TryMultiply(a1, commonRatio, out a1))
+            break;
         }
       }
 

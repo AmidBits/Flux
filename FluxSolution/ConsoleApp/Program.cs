@@ -502,23 +502,53 @@ namespace ConsoleApp
     {
       //Flux.NumericTypeInfo.PreloadNumericTypes();
 
+      var dp = Flux.BinaryInteger.DescendingPrimes(int.MaxValue).Take(1).ToArray();
+
       var uint128 = Number.GeometricSequence(System.UInt128.One, NumberBaseConstants<System.UInt128>.Ten).Where(n => n <= System.UInt128.MaxValue);
 
-      var ini = Flux.NumericTypeInfo<int>.NominalBitWidth;
-      var inbi = NumericTypeInfo<double>.NominalBitWidth;
-      var ind128 = NumericTypeInfo<System.Numerics.Decimal128>.NominalBitWidth;
-      var ind128mp = NumberBaseConstants<System.SByte>.LargestInteger;
+      var t0 = Flux.NumericTypeInfo<Flux.Numerics.BigDecimal>.Type;
 
-      var c = NumericTypeInfo<System.Numerics.Complex>.BaseType;
+      var t1 = Flux.NumericTypeInfo<System.Numerics.BFloat16>.Type;
+      var t2 = Flux.NumericTypeInfo<System.Numerics.BigInteger>.Type;
+      var t3 = Flux.NumericTypeInfo<Flux.Numerics.BigRational>.Type;
+      var t4 = Flux.NumericTypeInfo<byte>.Type;
+      var t5 = Flux.NumericTypeInfo<System.Numerics.Complex>.Type;
+      var t6 = Flux.NumericTypeInfo<System.Numerics.Complex<double>>.Type;
+      var t7 = Flux.NumericTypeInfo<decimal>.Type;
+      var t8 = Flux.NumericTypeInfo<System.Numerics.Decimal32>.Type;
+      var t9 = Flux.NumericTypeInfo<System.Numerics.Decimal64>.Type;
+      var t10 = Flux.NumericTypeInfo<System.Numerics.Decimal128>.Type;
+      var t11 = Flux.NumericTypeInfo<double>.Type;
+      var t12 = Flux.NumericTypeInfo<System.Half>.Type;
+      var t13 = Flux.NumericTypeInfo<short>.Type;
+      var t14 = Flux.NumericTypeInfo<int>.Type;
+      var t15 = Flux.NumericTypeInfo<long>.Type;
+      var t16 = Flux.NumericTypeInfo<System.Int128>.Type;
+      var t17 = Flux.NumericTypeInfo<System.IntPtr>.Type;
+      var t18 = Flux.NumericTypeInfo<System.Runtime.InteropServices.NFloat>.Type;
+      var t19 = Flux.NumericTypeInfo<System.SByte>.Type;
+      var t20 = Flux.NumericTypeInfo<float>.Type;
+      var t21 = Flux.NumericTypeInfo<ushort>.Type;
+      var t22 = Flux.NumericTypeInfo<uint>.Type;
+      var t23 = Flux.NumericTypeInfo<ulong>.Type;
+      var t24 = Flux.NumericTypeInfo<System.UInt128>.Type;
+      var t25 = Flux.NumericTypeInfo<System.UIntPtr>.Type;
 
-      var coft = NumericTypeInfo<System.Numerics.Complex<System.Numerics.Decimal128>>.BaseType;
-      var coftbw = NumericTypeInfo<System.Numerics.Complex<System.Numerics.Decimal128>>.NominalBitWidth;
+      //var test = System.Numerics.Decimal128.CreateChecked(System.Numerics.BigInteger.One);
 
-      var inbn = Flux.NumericTypeInfo<System.Numerics.BFloat16>.NominalBitWidth;
-      var inbt = Flux.NumericTypeInfo<System.Numerics.BigInteger>.BaseType;
+      var a = Flux.Numerics.BigDecimal.CreateFromBinaryN((System.Half)3.5f);
+      var b = Flux.Numerics.BigDecimal.CreateFromDecimal(2m);
+      var c = a / b;
 
-      var inbr = Flux.NumericTypeInfo<Flux.Numerics.BigRational>.NominalBitWidth;
+      var d128 = System.Numerics.Decimal128.CreateChecked(1.2300m);
+      var d = Flux.Numerics.BigDecimal.CreateFromDecimalN(d128);
 
+
+      var q = System.Numerics.Decimal128.GetQuantum(d128);
+      var exponent = System.Numerics.Decimal128.ILogB(System.Numerics.Decimal128.GetQuantum(d128));
+      var coefficient = System.UInt128.CreateChecked(System.Numerics.Decimal128.ScaleB(d128, -exponent));
+      //System.UInt128 = System.Numerics.Decimal128.EncodeBinary
+      //System.UInt128 = System.Numerics.Decimal128.EncodeDecimal
       var n = (long)10;
 
       //Flux.Number.DisplayDivRem(7, 3);

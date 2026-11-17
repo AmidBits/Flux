@@ -5,70 +5,7 @@ namespace Flux
   public static class NumericTypeInfo<TNumberBase>
     where TNumberBase : System.Numerics.INumberBase<TNumberBase>
   {
-    private static readonly System.Type m_type = typeof(TNumberBase);
-
     #region Lookup Tables
-
-    public enum NumberBaseType : long
-    {
-      Unknown = 0,
-
-      BFloat16,
-      BigInteger,
-      BigRational,
-      Byte,
-      Complex,
-      ComplexT,
-      Decimal,
-      Decimal32,
-      Decimal64,
-      Decimal128,
-      Double,
-      Half,
-      Int16,
-      Int32,
-      Int64,
-      Int128,
-      IntPtr,
-      NFloat,
-      SByte,
-      Single,
-      UInt16,
-      UInt32,
-      UInt64,
-      UInt128,
-      UIntPtr,
-    }
-
-    private static readonly FrozenDictionary<Type, NumberBaseType> m_numberBaseType
-      = new Dictionary<Type, NumberBaseType>
-      {
-        [typeof(System.Numerics.BFloat16)] = NumberBaseType.BFloat16,
-        [typeof(System.Numerics.BigInteger)] = NumberBaseType.BigInteger,
-        [typeof(System.Byte)] = NumberBaseType.Byte,
-        [typeof(System.Numerics.Complex)] = NumberBaseType.Complex,
-        [typeof(System.Numerics.Complex<>)] = NumberBaseType.ComplexT,
-        [typeof(System.Decimal)] = NumberBaseType.Decimal,
-        [typeof(System.Numerics.Decimal32)] = NumberBaseType.Decimal32,
-        [typeof(System.Numerics.Decimal64)] = NumberBaseType.Decimal64,
-        [typeof(System.Numerics.Decimal128)] = NumberBaseType.Decimal128,
-        [typeof(System.Double)] = NumberBaseType.Double,
-        [typeof(System.Half)] = NumberBaseType.Half,
-        [typeof(System.Int16)] = NumberBaseType.Int16,
-        [typeof(System.Int32)] = NumberBaseType.Int32,
-        [typeof(System.Int64)] = NumberBaseType.Int64,
-        [typeof(System.Int128)] = NumberBaseType.Int128,
-        [typeof(System.IntPtr)] = NumberBaseType.IntPtr,
-        [typeof(System.Runtime.InteropServices.NFloat)] = NumberBaseType.NFloat,
-        [typeof(System.SByte)] = NumberBaseType.SByte,
-        [typeof(System.Single)] = NumberBaseType.Single,
-        [typeof(System.UInt16)] = NumberBaseType.UInt16,
-        [typeof(System.UInt32)] = NumberBaseType.UInt32,
-        [typeof(System.UInt64)] = NumberBaseType.UInt64,
-        [typeof(System.UInt128)] = NumberBaseType.UInt128,
-        [typeof(System.UIntPtr)] = NumberBaseType.UIntPtr,
-        [typeof(Numerics.BigRational)] = NumberBaseType.BigRational,
-      }.ToFrozenDictionary();
 
     [System.Flags]
     public enum NumericConstants
@@ -262,9 +199,6 @@ namespace Flux
           Parsable |= parsable;
       }
 
-      if (m_numberBaseType.TryGetValue(m_type.IsGenericType ? m_type.GetGenericTypeDefinition() : m_type, out var baseType)) // Has to evaluate generic-type and get type-definition is so, for sake of "System.Numerics.Complex<>".
-        BaseType = baseType;
-
       // Sanity checks.
 
       System.Diagnostics.Debug.Assert(IntPtr.Size == UIntPtr.Size);
@@ -273,13 +207,12 @@ namespace Flux
       System.Diagnostics.Debug.WriteLine(ToStringEx());
     }
 
+    #region Type
+
+    private static readonly System.Type m_type = typeof(TNumberBase);
     public static Type Type => m_type;
 
-    #region Stored Flags
-
-    #region BaseType
-
-    public static readonly NumberBaseType BaseType;
+    private static readonly System.Type m_genericTypeDefinition = m_type.IsGenericType ? m_type.GetGenericTypeDefinition() : m_type;
 
     #endregion
 
@@ -442,133 +375,187 @@ namespace Flux
 
     #endregion
 
-    #endregion
-
-    #region Is.. Concrete Type Checks
+    #region Is[Namespace][Type]
 
     /// <summary>Indicates whether the type represents <see cref="System.Numerics.BFloat16"/>.</summary>
-    public static bool IsBFloat16 => BaseType == NumberBaseType.BFloat16;
+    public static bool IsSystemNumericsBFloat16 => m_type == typeof(System.Numerics.BFloat16);
 
     /// <summary>Indicates whether the type represents <see cref="System.Numerics.BigInteger"/>.</summary>
-    public static bool IsBigInteger => BaseType == NumberBaseType.BigInteger;
+    public static bool IsSystemNumericsBigInteger => m_type == typeof(System.Numerics.BigInteger);
 
     /// <summary>Indicates whether the type represents <see cref="Flux.Numerics.BigRational"/>.</summary>
-    public static bool IsBigRational => BaseType == NumberBaseType.BigRational;
+    public static bool IsFluxNumericsBigRational => m_type == typeof(Flux.Numerics.BigRational);
 
     /// <summary>Indicates whether the type represents <see cref="byte"/>.</summary>
-    public static bool IsByte => BaseType == NumberBaseType.Byte;
+    public static bool IsSystemByte => m_type == typeof(System.Byte);
 
     /// <summary>Indicates whether the type represents <see cref="System.Numerics.Complex"/>.</summary>
-    public static bool IsComplex => BaseType == NumberBaseType.Complex;
+    public static bool IsSystemNumericsComplex => m_type == typeof(System.Numerics.Complex);
 
     /// <summary>Indicates whether the type represents <see cref="System.Numerics.Complex{TSelf}"/>.</summary>
-    public static bool IsComplexT => BaseType == NumberBaseType.ComplexT;
+    public static bool IsSystemNumericsComplexT => m_genericTypeDefinition == typeof(System.Numerics.Complex<>);
 
     /// <summary>Indicates whether the type represents <see cref="decimal"/>.</summary>
-    public static bool IsDecimal => BaseType == NumberBaseType.Decimal;
+    public static bool IsSystemDecimal => m_type == typeof(System.Decimal);
 
     /// <summary>Indicates whether the type represents <see cref="System.Numerics.Decimal32"/>.</summary>
-    public static bool IsDecimal32 => BaseType == NumberBaseType.Decimal32;
+    public static bool IsSystemNumericsDecimal32 => m_type == typeof(System.Numerics.Decimal32);
 
     /// <summary>Indicates whether the type represents <see cref="System.Numerics.Decimal64"/>.</summary>
-    public static bool IsDecimal64 => BaseType == NumberBaseType.Decimal64;
+    public static bool IsSystemNumericsDecimal64 => m_type == typeof(System.Numerics.Decimal64);
 
     /// <summary>Indicates whether the type represents <see cref="System.Numerics.Decimal128"/>.</summary>
-    public static bool IsDecimal128 => BaseType == NumberBaseType.Decimal128;
+    public static bool IsSystemNumericsDecimal128 => m_type == typeof(System.Numerics.Decimal128);
 
     /// <summary>Indicates whether the type represents <see cref="double"/>.</summary>
-    public static bool IsDouble => BaseType == NumberBaseType.Double;
+    public static bool IsSystemDouble => m_type == typeof(System.Double);
 
     /// <summary>Indicates whether the type represents <see cref="System.Half"/>.</summary>
-    public static bool IsHalf => BaseType == NumberBaseType.Half;
+    public static bool IsSystemHalf => m_type == typeof(System.Half);
 
     /// <summary>Indicates whether the type represents <see cref="short"/>.</summary>
-    public static bool IsInt16 => BaseType == NumberBaseType.Int16;
+    public static bool IsSystemInt16 => m_type == typeof(System.Int16);
 
     /// <summary>Indicates whether the type represents <see cref="int"/>.</summary>
-    public static bool IsInt32 => BaseType == NumberBaseType.Int32;
+    public static bool IsSystemInt32 => m_type == typeof(System.Int32);
 
     /// <summary>Indicates whether the type represents <see cref="long"/>.</summary>
-    public static bool IsInt64 => BaseType == NumberBaseType.Int64;
+    public static bool IsSystemInt64 => m_type == typeof(System.Int64);
 
     /// <summary>Indicates whether the type represents <see cref="System.Int128"/>.</summary>
-    public static bool IsInt128 => BaseType == NumberBaseType.Int128;
+    public static bool IsSystemInt128 => m_type == typeof(System.Int128);
 
-    /// <summary>Indicates whether the type represents <see cref="System.UIntPtr"/>.</summary>
-    public static bool IsIntPtr => BaseType == NumberBaseType.IntPtr;
-
-    /// <summary>Indicates whether the type represents <see cref="System.IntPtr"/> with <see cref="System.IntPtr.Size"/> equal to 4.</summary>
-    public static bool IsIntPtr32 => IsIntPtr && System.IntPtr.Size == 4;
-
-    /// <summary>Indicates whether the type represents <see cref="System.IntPtr"/> with <see cref="System.IntPtr.Size"/> equal to 8.</summary>
-    public static bool IsIntPtr64 => IsIntPtr && System.IntPtr.Size == 8;
+    /// <summary>Indicates whether the type represents <see cref="System.IntPtr"/>.</summary>
+    public static bool IsSystemIntPtr => m_type == typeof(System.IntPtr);
 
     /// <summary>Indicates whether the type represents <see cref="System.Runtime.InteropServices.NFloat"/>.</summary>
-    public static bool IsNFloat => BaseType == NumberBaseType.NFloat;
-
-    /// <summary>Indicates whether the type represents <see cref="System.Runtime.InteropServices.NFloat"/> with <see cref="System.Runtime.InteropServices.NFloat.Size"/> equal to 4.</summary>
-    public static bool IsNFloat32 => IsNFloat && System.Runtime.InteropServices.NFloat.Size == 4;
-
-    /// <summary>Indicates whether the type represents <see cref="System.Runtime.InteropServices.NFloat"/> with <see cref="System.Runtime.InteropServices.NFloat.Size"/> equal to 8.</summary>
-    public static bool IsNFloat64 => IsNFloat && System.Runtime.InteropServices.NFloat.Size == 8;
+    public static bool IsSystemRuntimeInteropServicesNFloat => m_type == typeof(System.Runtime.InteropServices.NFloat);
 
     /// <summary>Indicates whether the type represents <see cref="System.SByte"/>.</summary>
-    public static bool IsSByte => BaseType == NumberBaseType.SByte;
+    public static bool IsSystemSByte => m_type == typeof(System.SByte);
 
     /// <summary>Indicates whether the type represents <see cref="float"/>.</summary>
-    public static bool IsSingle => BaseType == NumberBaseType.Single;
+    public static bool IsSystemSingle => m_type == typeof(System.Single);
 
     /// <summary>Indicates whether the type represents <see cref="ushort"/>.</summary>
-    public static bool IsUInt16 => BaseType == NumberBaseType.UInt16;
+    public static bool IsSystemUInt16 => m_type == typeof(System.UInt16);
 
     /// <summary>Indicates whether the type represents <see cref="uint"/>.</summary>
-    public static bool IsUInt32 => BaseType == NumberBaseType.UInt32;
+    public static bool IsSystemUInt32 => m_type == typeof(System.UInt32);
 
     /// <summary>Indicates whether the type represents <see cref="ulong"/>.</summary>
-    public static bool IsUInt64 => BaseType == NumberBaseType.UInt64;
+    public static bool IsSystemUInt64 => m_type == typeof(System.UInt64);
 
     /// <summary>Indicates whether the type represents <see cref="System.UInt128"/>.</summary>
-    public static bool IsUInt128 => BaseType == NumberBaseType.UInt128;
+    public static bool IsSystemUInt128 => m_type == typeof(System.UInt128);
 
     /// <summary>Indicates whether the type represents <see cref="System.UIntPtr"/>.</summary>
-    public static bool IsUIntPtr => BaseType == NumberBaseType.UIntPtr;
-
-    /// <summary>Indicates whether the type represents <see cref="System.UIntPtr"/> with <see cref="System.UIntPtr.Size"/> equal to 4.</summary>
-    public static bool IsUIntPtr32 => IsUIntPtr && System.UIntPtr.Size == 4;
-
-    /// <summary>Indicates whether the type represents <see cref="System.UIntPtr"/> with <see cref="System.UIntPtr.Size"/> equal to 8.</summary>
-    public static bool IsUIntPtr64 => IsUIntPtr && System.UIntPtr.Size == 8;
+    public static bool IsSystemUIntPtr => m_type == typeof(System.UIntPtr);
 
     #endregion
 
-    #region Is.. for Native Compares
+    #region IsFamily..
 
-    /// <summary>Indicates whether the type represents an IEEE binary32 floating-point, such as <see cref="System.Single"/> or <see cref="System.Runtime.InteropServices.NFloat"/> when <see cref="System.Runtime.InteropServices.NFloat.Size"/> is 4.</summary>
-    public static bool IsBinary32 => IsSingle || IsNFloat32;
+    /// <summary>
+    /// <para>Indicates wheter the type represents the family of 8-bit types.</para>
+    /// </summary>
+    public static bool IsFamilyComplex => IsSystemNumericsComplex || IsSystemNumericsComplexT;
 
-    /// <summary>Indicates whether the type represents an IEEE binary64 floating-point, such as <see cref="System.Double"/> or <see cref="System.Runtime.InteropServices.NFloat"/> when <see cref="System.Runtime.InteropServices.NFloat.Size"/> is 8.</summary>
-    public static bool IsBinary64 => IsDouble || IsNFloat64;
+    public static bool IsFamilyIeeeBinary => IsFamilyIeeeBinary32 || IsFamilyIeeeBinary64
+      || IsSystemHalf;
 
-    //public static bool IsNativeSized => IsIntPtr || IsUIntPtr || IsNFloat;
+    /// <summary>Indicates whether the type represents the family of IEEE binary32 floating-point types, such as <see cref="System.Single"/> or <see cref="System.Runtime.InteropServices.NFloat"/> when <see cref="System.Runtime.InteropServices.NFloat.Size"/> is 4.</summary>
+    /// <remarks>For easy identification of 32-bit IEEE binary floating point types in .NET.</remarks>
+    public static bool IsFamilyIeeeBinary32 => IsSystemSingle
+      || (IsSystemRuntimeInteropServicesNFloat && IsNativeBitWidth32);
 
-    //public static bool IsNative32 => IsNativeSized && NativeBitWidth == 32;
+    /// <summary>Indicates whether the type represents the family of IEEE binary64 floating-point types, such as <see cref="System.Double"/> or <see cref="System.Runtime.InteropServices.NFloat"/> when <see cref="System.Runtime.InteropServices.NFloat.Size"/> is 8.</summary>
+    /// <remarks>For easy identification of 32-bit IEEE decimal floating point types in .NET.</remarks>
+    public static bool IsFamilyIeeeBinary64 => IsSystemDouble
+      || (IsSystemRuntimeInteropServicesNFloat && IsNativeBitWidth64);
 
-    //public static bool IsNative64 => IsNativeSized && NativeBitWidth == 64;
+    public static bool IsFamilyIeeeDecimal => IsSystemNumericsDecimal32 || IsSystemNumericsDecimal64 || IsSystemNumericsDecimal128
+      || IsSystemDecimal;
+
+    public static bool IsFamilyInteger => IsFamilyInteger8 || IsFamilyInteger16 || IsFamilyInteger32 || IsFamilyInteger64 || IsFamilyInteger128
+      || IsSystemNumericsBigInteger;
+
+    /// <summary>
+    /// <para>Indicates whether the type is an 8-bit integer.</para>
+    /// </summary>
+    public static bool IsFamilyInteger8 => IsSystemByte || IsSystemSByte;
+
+    /// <summary>
+    /// <para>Indicates whether the type is a 16-bit integer.</para>
+    /// </summary>
+    public static bool IsFamilyInteger16 => IsSystemInt16 || IsSystemUInt16;
+
+    /// <summary>
+    /// <para>Indicates whether the type is a 32-bit integer.</para>
+    /// </summary>
+    public static bool IsFamilyInteger32 => IsSystemInt32 || IsSystemUInt32
+      || (IsNativeBitWidth32 && (IsSystemIntPtr || IsSystemUIntPtr));
+
+    /// <summary>
+    /// <para>Indicates whether the type is a 64-bit integer.</para>
+    /// </summary>
+    public static bool IsFamilyInteger64 => IsSystemInt64 || IsSystemUInt64
+      || (IsNativeBitWidth64 && (IsSystemIntPtr || IsSystemUIntPtr));
+
+    /// <summary>
+    /// <para>Indicates whether the type is a 128-bit integer.</para>
+    /// </summary>
+    public static bool IsFamilyInteger128 => IsSystemInt128 || IsSystemUInt128;
+
+    public static bool IsFamilyRational => IsFluxNumericsBigRational;
+
+    #endregion
+
+    #region IsRadix..
+
+    /// <summary>
+    /// <para>Indicates whether the radix of the type is 2.</para>
+    /// </summary>
+    public static bool IsRadix2 => Radix == 2;
+
+    /// <summary>
+    /// <para>Indicates whether the radix of the type is 10.</para>
+    /// </summary>
+    public static bool IsRadix10 => Radix == 10;
 
     #endregion
 
     #region Additional Information
 
     /// <summary>Indicates whether the type has an unbounded bit-width, such as <see cref="System.Numerics.BigInteger"/>.</summary>
-    public static bool IsArbitraryPrecision => IsBigInteger || IsBigRational;
+    public static bool IsArbitraryPrecision => IsSystemNumericsBigInteger || IsFluxNumericsBigRational;
 
     /// <summary>Indicates whether the type has a fixed bit-width, such as <see cref="System.Decimal"/>, <see cref="System.Decimal128"/>, <see cref="System.Int32"/>, or <see cref="System.Single"/>.</summary>
     public static bool IsFixedWidth => !IsArbitraryPrecision;
 
-    /// <summary>Indicates whether the type represents a signed integer, such as <see cref="System.Int128"/>, <see cref="System.Int16"/>, <see cref="System.Int32"/>, <see cref="System.Int64"/>, <see cref="System.SByte"/>, or <see cref="System.Numerics.BigInteger"/>.</summary>
+    /// <summary>
+    /// <para>Indicates whether this is a native type.</para>
+    /// </summary>
+    public static bool IsNative => IsSystemIntPtr || IsSystemRuntimeInteropServicesNFloat || IsSystemUIntPtr;
+
+    /// <summary>
+    /// <para>Indicates whether the native size is 32 bits wide.</para>
+    /// </summary>
+    public static bool IsNativeBitWidth32 => NativeSizeInBytes == 4;
+
+    /// <summary>
+    /// <para>Indicates whether the native size is 64 bits wide.</para>
+    /// </summary>
+    public static bool IsNativeBitWidth64 => NativeSizeInBytes == 8;
+
+    /// <summary>
+    /// <para>Indicates whether the type represents a signed integer, such as <see cref="System.Int128"/>, <see cref="System.Int16"/>, <see cref="System.Int32"/>, <see cref="System.Int64"/>, <see cref="System.SByte"/>, or <see cref="System.Numerics.BigInteger"/>.</para>
+    /// </summary>
     public static bool IsSignedInteger => ImplementsIBinaryInteger && ImplementsISignedNumber;
 
-    /// <summary>Indicates whether the type represents an unsigned integer , such as <see cref="System.Byte"/>, <see cref="System.UInt128"/>, <see cref="System.UInt16"/>, <see cref="System.UInt32"/>, or <see cref="System.UInt64"/>.</summary>
+    /// <summary>
+    /// <para>Indicates whether the type represents an unsigned integer , such as <see cref="System.Byte"/>, <see cref="System.UInt128"/>, <see cref="System.UInt16"/>, <see cref="System.UInt32"/>, or <see cref="System.UInt64"/>.</para>
+    /// </summary>
     public static bool IsUnsignedInteger => ImplementsIBinaryInteger && ImplementsIUnsignedNumber;
 
     /// <summary>
@@ -584,14 +571,16 @@ namespace Flux
     /// <summary>
     /// <para>The width of the type in bits.</para>
     /// </summary>
-    /// <remarks>For fixed-width types, this equals <see cref="NominalSizeInBytes"/> × 8. If <see cref="IsArbitraryPrecision"/> is <see langword="true"/>, this value is null, indicating an unbounded/not applicable bit-width.</remarks>
-    public static int? NominalBitWidth => NominalSizeInBytes * 8;
+    /// <remarks>For fixed-width types, this equals <see cref="TypeSizeInBytes"/> × 8. If <see cref="IsArbitraryPrecision"/> is <see langword="true"/>, this value is null, indicating an unbounded/not applicable bit-width.</remarks>
+    public static int? TypeBitWidth => TypeSizeInBytes * 8;
 
     /// <summary>
     /// <para>The number of bytes required to represent a value of the type.</para>
     /// </summary>
     /// <remarks>This does not include implementation-dependent padding, object headers, or additional heap allocations (for example, <see cref="System.Numerics.BigInteger"/>).</remarks>
-    public static int? NominalSizeInBytes => IsArbitraryPrecision ? null : System.Runtime.CompilerServices.Unsafe.SizeOf<TNumberBase>();
+    public static int? TypeSizeInBytes => System.Runtime.CompilerServices.Unsafe.SizeOf<TNumberBase>();
+
+    public static int Radix => TNumberBase.Radix;
 
     #endregion
 
@@ -601,54 +590,47 @@ namespace Flux
 
       sb.Append(m_type.FullName);
 
-      if (m_type.GetCsharpAlias() is var keyword && !string.IsNullOrEmpty(keyword))
-        sb.Append($" ({keyword})");
+      if (m_type.GetCsharpAlias() is string keyword)
+        sb.Append($"/{keyword}");
 
       if (NumberBase.GetNumericDomain<TNumberBase>() != NumericDomain.Unknown)
         sb.AppendJoined($"{NumberBase.GetNumericDomainSymbol<TNumberBase>()}");
 
+      if (IsRadix2) sb.AppendJoined($"{nameof(IsRadix2)}/{Radix}");
+      if (IsRadix10) sb.AppendJoined($"{nameof(IsRadix10)}/{Radix}");
+
       if (IsArbitraryPrecision) sb.AppendJoined(nameof(IsArbitraryPrecision));
-      else if (IsFixedWidth) sb.AppendJoined($"{nameof(IsFixedWidth)} {NominalBitWidth}-bit ({NominalSizeInBytes} byte{(Number.IsConsideredPlural(NominalSizeInBytes.HasValue ? NominalSizeInBytes.Value : 0) ? "s" : string.Empty)})");
+
+      if (IsFixedWidth) sb.AppendJoined($"{nameof(IsFixedWidth)} {TypeBitWidth}-bit ({TypeSizeInBytes} {Number.ToPlural("byte", TypeSizeInBytes ?? 0)})");
+
+      if (IsNative) sb.AppendJoined($"{nameof(IsNative)} {NativeBitWidth}-bit ({NativeSizeInBytes} {Number.ToPlural("byte", NativeSizeInBytes)})");
+
+      if (IsFluxNumericsBigRational) sb.AppendJoined(nameof(IsFluxNumericsBigRational));
+      else if (IsSystemNumericsBFloat16) sb.AppendJoined(nameof(IsSystemNumericsBFloat16));
+      else if (IsSystemNumericsBigInteger) sb.AppendJoined(nameof(IsSystemNumericsBigInteger));
+      else if (IsSystemByte) sb.AppendJoined(nameof(IsSystemByte));
+      else if (IsSystemNumericsComplex) sb.AppendJoined(nameof(IsSystemNumericsComplex));
+      else if (IsSystemDecimal) sb.AppendJoined(nameof(IsSystemDecimal));
+      else if (IsSystemNumericsDecimal32) sb.AppendJoined(nameof(IsSystemNumericsDecimal32));
+      else if (IsSystemNumericsDecimal64) sb.AppendJoined(nameof(IsSystemNumericsDecimal64));
+      else if (IsSystemNumericsDecimal128) sb.AppendJoined(nameof(IsSystemNumericsDecimal128));
+      else if (IsSystemDouble) sb.AppendJoined(nameof(IsSystemDouble));
+      else if (IsSystemInt16) sb.AppendJoined(nameof(IsSystemInt16));
+      else if (IsSystemInt32) sb.AppendJoined(nameof(IsSystemInt32));
+      else if (IsSystemInt64) sb.AppendJoined(nameof(IsSystemInt64));
+      else if (IsSystemInt128) sb.AppendJoined(nameof(IsSystemInt128));
+      else if (IsSystemIntPtr) sb.AppendJoined(nameof(IsSystemIntPtr));
+      else if (IsSystemRuntimeInteropServicesNFloat) sb.AppendJoined(nameof(IsSystemRuntimeInteropServicesNFloat));
+      else if (IsSystemSByte) sb.AppendJoined(nameof(IsSystemSByte));
+      else if (IsSystemSingle) sb.AppendJoined(nameof(IsSystemSingle));
+      else if (IsSystemUInt16) sb.AppendJoined(nameof(IsSystemUInt16));
+      else if (IsSystemUInt32) sb.AppendJoined(nameof(IsSystemUInt32));
+      else if (IsSystemUInt64) sb.AppendJoined(nameof(IsSystemUInt64));
+      else if (IsSystemUInt128) sb.AppendJoined(nameof(IsSystemUInt128));
+      else if (IsSystemUIntPtr) sb.AppendJoined(nameof(IsSystemUIntPtr));
+
       if (IsSignedInteger) sb.AppendJoined(nameof(IsSignedInteger));
-      else if (IsUnsignedInteger) sb.AppendJoined(nameof(IsUnsignedInteger));
-
-      // Represented CLR types
-      if (IsBFloat16) sb.AppendJoined(nameof(IsBFloat16));
-      else if (IsBigInteger) sb.AppendJoined(nameof(IsBigInteger));
-      else if (IsByte) sb.AppendJoined(nameof(IsByte));
-      else if (IsComplex) sb.AppendJoined(nameof(IsComplex));
-      else if (IsDecimal) sb.AppendJoined(nameof(IsDecimal));
-      else if (IsDecimal32) sb.AppendJoined(nameof(IsDecimal32));
-      else if (IsDecimal64) sb.AppendJoined(nameof(IsDecimal64));
-      else if (IsDecimal128) sb.AppendJoined(nameof(IsDecimal128));
-      else if (IsDouble) sb.AppendJoined(nameof(IsDouble));
-      else if (IsInt16) sb.AppendJoined(nameof(IsInt16));
-      else if (IsInt32) sb.AppendJoined(nameof(IsInt32));
-      else if (IsInt64) sb.AppendJoined(nameof(IsInt64));
-      else if (IsInt128) sb.AppendJoined(nameof(IsInt128));
-      else if (IsIntPtr) sb.AppendJoined(nameof(IsIntPtr));
-      else if (IsNFloat) sb.AppendJoined(nameof(IsNFloat));
-      else if (IsSByte) sb.AppendJoined(nameof(IsSByte));
-      else if (IsSingle) sb.AppendJoined(nameof(IsSingle));
-      else if (IsUInt16) sb.AppendJoined(nameof(IsUInt16));
-      else if (IsUInt32) sb.AppendJoined(nameof(IsUInt32));
-      else if (IsUInt64) sb.AppendJoined(nameof(IsUInt64));
-      else if (IsUInt128) sb.AppendJoined(nameof(IsUInt128));
-      else if (IsUIntPtr) sb.AppendJoined(nameof(IsUIntPtr));
-
-      if (IsIntPtr32) sb.AppendJoined(nameof(IsIntPtr32));
-      else if (IsIntPtr64) sb.AppendJoined(nameof(IsIntPtr64));
-
-      if (IsNFloat32) sb.AppendJoined(nameof(IsNFloat32));
-      else if (IsNFloat64) sb.AppendJoined(nameof(IsNFloat64));
-
-      if (IsUIntPtr32) sb.AppendJoined(nameof(IsUIntPtr32));
-      else if (IsUIntPtr64) sb.AppendJoined(nameof(IsUIntPtr64));
-
-      if (IsBigRational) sb.AppendJoined(nameof(IsBigRational));
-
-      if (IsBinary32) sb.AppendJoined(nameof(IsBinary32));
-      else if (IsBinary64) sb.AppendJoined(nameof(IsBinary64));
+      if (IsUnsignedInteger) sb.AppendJoined(nameof(IsUnsignedInteger));
 
       // Implemented capabilities
       sb.AppendJoined($"{Constants}");

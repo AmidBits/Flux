@@ -36,7 +36,7 @@ namespace Flux
     /// <para><see href="https://en.wikipedia.org/wiki/Complex_number"/></para>
     /// </summary>
     /// <remarks>"DOUBLE-STRUCK CAPITAL C"</remarks>
-    ComplexNumbers = '\u210C',
+    ComplexNumbers = '\u2102',
   }
 
   public static partial class NumberBase
@@ -45,13 +45,21 @@ namespace Flux
       where TNumberBase : System.Numerics.INumberBase<TNumberBase>
       => NumericTypeInfo<TNumberBase>.IsUnsignedInteger ? NumericDomain.NaturalNumbers
       : NumericTypeInfo<TNumberBase>.IsSignedInteger ? NumericDomain.Integers
-      : NumericTypeInfo<TNumberBase>.IsBigRational ? NumericDomain.RationalNumbers
+      : NumericTypeInfo<TNumberBase>.IsFluxNumericsBigRational ? NumericDomain.RationalNumbers
       : NumericTypeInfo<TNumberBase>.ImplementsIFloatingPoint ? NumericDomain.RealNumbers
-      : NumericTypeInfo<TNumberBase>.IsComplex ? NumericDomain.ComplexNumbers
+      : NumericTypeInfo<TNumberBase>.IsFamilyComplex ? NumericDomain.ComplexNumbers
       : NumericDomain.Unknown;
 
     public static System.Text.Rune GetNumericDomainSymbol<TNumberBase>()
       where TNumberBase : System.Numerics.INumberBase<TNumberBase>
-      => (System.Text.Rune)(char)GetNumericDomain<TNumberBase>();
+    {
+      var nd = GetNumericDomain<TNumberBase>();
+
+      var c = (char)nd;
+
+      var rune = (System.Text.Rune)c;
+
+      return rune;
+    }
   }
 }

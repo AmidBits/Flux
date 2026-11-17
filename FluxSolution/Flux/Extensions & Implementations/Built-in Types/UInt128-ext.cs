@@ -6,7 +6,7 @@ namespace Flux
     /// <summary>
     /// <para>Table of Pow10 values up to 10^38.</para>
     /// </summary>
-    internal static readonly System.UInt128[] Pow10 = [.. Number.GeometricSequence(System.UInt128.One, NumberBaseConstants<System.UInt128>.Ten).Where(n => n <= System.UInt128.MaxValue)];
+    internal static readonly System.UInt128[] Pow10 = [.. Number.GeometricSequence(System.UInt128.One, NumberBaseConstants<System.UInt128>.Ten).TakeWhile(n => n <= System.UInt128.MaxValue)];
 
     extension(System.UInt128)
     {

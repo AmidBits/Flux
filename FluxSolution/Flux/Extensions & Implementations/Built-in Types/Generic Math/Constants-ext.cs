@@ -91,53 +91,53 @@
 
     #region LargestInteger/SmallestInteger
 
-    public static readonly TNumberBase? LargestInteger
-      = NumericTypeInfo<TNumberBase>.IsByte
+    public static readonly TNumberBase LargestInteger
+      = NumericTypeInfo<TNumberBase>.IsSystemByte
       ? TNumberBase.CreateChecked(System.Byte.MaxValue)
-      : NumericTypeInfo<TNumberBase>.IsInt16
+      : NumericTypeInfo<TNumberBase>.IsSystemInt16
       ? TNumberBase.CreateChecked(System.Int16.MaxValue)
-      : NumericTypeInfo<TNumberBase>.IsInt32
+      : NumericTypeInfo<TNumberBase>.IsSystemInt32
       ? TNumberBase.CreateChecked(System.Int32.MaxValue)
-      : NumericTypeInfo<TNumberBase>.IsInt64
+      : NumericTypeInfo<TNumberBase>.IsSystemInt64
       ? TNumberBase.CreateChecked(System.Int64.MaxValue)
-      : NumericTypeInfo<TNumberBase>.IsInt128
+      : NumericTypeInfo<TNumberBase>.IsSystemInt128
       ? TNumberBase.CreateChecked(System.Int128.MaxValue)
-      : NumericTypeInfo<TNumberBase>.IsSByte
+      : NumericTypeInfo<TNumberBase>.IsSystemSByte
       ? TNumberBase.CreateChecked(System.SByte.MaxValue)
-      : NumericTypeInfo<TNumberBase>.IsUInt16
+      : NumericTypeInfo<TNumberBase>.IsSystemUInt16
       ? TNumberBase.CreateChecked(System.UInt16.MaxValue)
-      : NumericTypeInfo<TNumberBase>.IsUInt32
+      : NumericTypeInfo<TNumberBase>.IsSystemUInt32
       ? TNumberBase.CreateChecked(System.UInt32.MaxValue)
-      : NumericTypeInfo<TNumberBase>.IsUInt64
+      : NumericTypeInfo<TNumberBase>.IsSystemUInt64
       ? TNumberBase.CreateChecked(System.UInt64.MaxValue)
-      : NumericTypeInfo<TNumberBase>.IsUInt128
+      : NumericTypeInfo<TNumberBase>.IsSystemUInt128
       ? TNumberBase.CreateChecked(System.UInt128.MaxValue)
-      : NumericTypeInfo<TNumberBase>.IsHalf
+      : NumericTypeInfo<TNumberBase>.IsSystemHalf
       ? TNumberBase.CreateChecked(2048)
-      : NumericTypeInfo<TNumberBase>.IsBinary32
+      : NumericTypeInfo<TNumberBase>.IsFamilyIeeeBinary32
       ? TNumberBase.CreateChecked(16777216)
-      : NumericTypeInfo<TNumberBase>.IsBinary64
+      : NumericTypeInfo<TNumberBase>.IsFamilyIeeeBinary64
       ? TNumberBase.CreateChecked(9007199254740992)
-      : NumericTypeInfo<TNumberBase>.IsBFloat16
+      : NumericTypeInfo<TNumberBase>.IsSystemNumericsBFloat16
       ? TNumberBase.CreateChecked(128)
-      : NumericTypeInfo<TNumberBase>.IsDecimal
+      : NumericTypeInfo<TNumberBase>.IsSystemDecimal
       ? TNumberBase.CreateChecked(79228162514264337593543950335m)
-      : NumericTypeInfo<TNumberBase>.IsDecimal32
+      : NumericTypeInfo<TNumberBase>.IsSystemNumericsDecimal32
       ? TNumberBase.CreateChecked(System.Numerics.Decimal32.Parse("9999999"))
-      : NumericTypeInfo<TNumberBase>.IsDecimal64
+      : NumericTypeInfo<TNumberBase>.IsSystemNumericsDecimal64
       ? TNumberBase.CreateChecked(System.Numerics.Decimal64.Parse("9999999999999999"))
-      : NumericTypeInfo<TNumberBase>.IsDecimal128
+      : NumericTypeInfo<TNumberBase>.IsSystemNumericsDecimal128
       ? TNumberBase.CreateChecked(System.Numerics.Decimal128.Parse("9999999999999999999999999999999999"))
-      : default;
+      : throw new System.NotSupportedException(typeof(TNumberBase).FullName);
 
-    public static readonly TNumberBase? SmallestInteger
+    public static readonly TNumberBase SmallestInteger
       = NumericTypeInfo<TNumberBase>.IsUnsignedInteger
       ? TNumberBase.Zero
       : NumericTypeInfo<TNumberBase>.IsSignedInteger
       ? -LargestInteger! - TNumberBase.One
       : NumericTypeInfo<TNumberBase>.ImplementsIFloatingPoint
       ? -LargestInteger!
-      : default;
+      : throw new System.NotSupportedException(typeof(TNumberBase).FullName);
 
     #endregion
 
@@ -146,44 +146,44 @@
     /// <summary>
     /// <para>Gets the largest prime number exactly representable by <typeparamref name="TNumberBase"/></para>
     /// </summary>
-    public static readonly TNumberBase? LargestPrime
-      = NumericTypeInfo<TNumberBase>.IsByte
+    public static readonly TNumberBase LargestPrime
+      = NumericTypeInfo<TNumberBase>.IsSystemByte
       ? TNumberBase.CreateChecked(251)
-      : NumericTypeInfo<TNumberBase>.IsInt16
+      : NumericTypeInfo<TNumberBase>.IsSystemInt16
       ? TNumberBase.CreateChecked(32749)
-      : NumericTypeInfo<TNumberBase>.IsInt32
+      : NumericTypeInfo<TNumberBase>.IsSystemInt32
       ? TNumberBase.CreateChecked(System.Int32.MaxValue) // int.MaxValue is a prime
-      : NumericTypeInfo<TNumberBase>.IsInt64
+      : NumericTypeInfo<TNumberBase>.IsSystemInt64
       ? TNumberBase.CreateChecked(9223372036854775783)
-      : NumericTypeInfo<TNumberBase>.IsInt128
+      : NumericTypeInfo<TNumberBase>.IsSystemInt128
       ? TNumberBase.CreateChecked(System.Int128.MaxValue) // Int128.MaxValue is a prime
-      : NumericTypeInfo<TNumberBase>.IsSByte
+      : NumericTypeInfo<TNumberBase>.IsSystemSByte
       ? TNumberBase.CreateChecked(System.SByte.MaxValue) // SByte.MaxValue is a prime
-      : NumericTypeInfo<TNumberBase>.IsUInt16
+      : NumericTypeInfo<TNumberBase>.IsSystemUInt16
       ? TNumberBase.CreateChecked(65521)
-      : NumericTypeInfo<TNumberBase>.IsUInt32
+      : NumericTypeInfo<TNumberBase>.IsSystemUInt32
       ? TNumberBase.CreateChecked(4294967291u)
-      : NumericTypeInfo<TNumberBase>.IsUInt64
+      : NumericTypeInfo<TNumberBase>.IsSystemUInt64
       ? TNumberBase.CreateChecked(18446744073709551557ul)
-      : NumericTypeInfo<TNumberBase>.IsUInt128
+      : NumericTypeInfo<TNumberBase>.IsSystemUInt128
       ? TNumberBase.CreateChecked(System.UInt128.MaxValue - 158)
-      : NumericTypeInfo<TNumberBase>.IsHalf
+      : NumericTypeInfo<TNumberBase>.IsSystemHalf
       ? TNumberBase.CreateChecked(2039)
-      : NumericTypeInfo<TNumberBase>.IsBinary32
+      : NumericTypeInfo<TNumberBase>.IsFamilyIeeeBinary32
       ? TNumberBase.CreateChecked(16777213)
-      : NumericTypeInfo<TNumberBase>.IsBinary64
+      : NumericTypeInfo<TNumberBase>.IsFamilyIeeeBinary64
       ? TNumberBase.CreateChecked(9007199254740881ul)
-      : NumericTypeInfo<TNumberBase>.IsBFloat16
+      : NumericTypeInfo<TNumberBase>.IsSystemNumericsBFloat16
       ? TNumberBase.CreateChecked(127)
-      : NumericTypeInfo<TNumberBase>.IsDecimal
+      : NumericTypeInfo<TNumberBase>.IsSystemDecimal
       ? TNumberBase.CreateChecked(79228162514264337593543950319m)
-      : NumericTypeInfo<TNumberBase>.IsDecimal32
+      : NumericTypeInfo<TNumberBase>.IsSystemNumericsDecimal32
       ? TNumberBase.CreateChecked(System.Numerics.Decimal32.Parse("9999991"))
-      : NumericTypeInfo<TNumberBase>.IsDecimal64
+      : NumericTypeInfo<TNumberBase>.IsSystemNumericsDecimal64
       ? TNumberBase.CreateChecked(System.Numerics.Decimal64.Parse("9999999999999937"))
-      : NumericTypeInfo<TNumberBase>.IsDecimal128
+      : NumericTypeInfo<TNumberBase>.IsSystemNumericsDecimal128
       ? TNumberBase.CreateChecked(System.Numerics.Decimal128.Parse("9999999999999999999999999999999589"))
-      : default;
+      : throw new System.NotSupportedException(typeof(TNumberBase).FullName);
 
     /// <summary>
     /// <para>Gets the smallest prime number exactly representable by <typeparamref name="TNumberBase"/>, which is 2.</para>

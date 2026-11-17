@@ -62,9 +62,9 @@
       }
 
       public static (int SignWidth, int ExponentWidth, int FractionWidth) BinaryWidth()
-        => NumericTypeInfo<TFloat>.IsBinary64
+        => NumericTypeInfo<TFloat>.IsFamilyIeeeBinary64
         ? (1, 11, 52)
-        : NumericTypeInfo<TFloat>.IsBinary32
+        : NumericTypeInfo<TFloat>.IsFamilyIeeeBinary32
         ? (1, 8, 23)
         : typeof(TFloat) == typeof(System.Half)
         ? (1, 5, 10)
@@ -85,9 +85,9 @@
 
       [System.CLSCompliant(false)]
       public static TFloat FromBits(ulong bits)
-        => NumericTypeInfo<TFloat>.IsBinary64
+        => NumericTypeInfo<TFloat>.IsFamilyIeeeBinary64
         ? TFloat.CreateChecked(System.BitConverter.UInt64BitsToDouble(bits))
-        : NumericTypeInfo<TFloat>.IsBinary32
+        : NumericTypeInfo<TFloat>.IsFamilyIeeeBinary32
         ? TFloat.CreateChecked(System.BitConverter.UInt32BitsToSingle((uint)bits))
         : (typeof(TFloat) == typeof(System.Half))
         ? TFloat.CreateChecked(System.BitConverter.UInt16BitsToHalf((ushort)bits))
@@ -96,12 +96,12 @@
       [System.CLSCompliant(false)]
       public static TFloat FromOrdered(ulong ordered)
       {
-        if (NumericTypeInfo<TFloat>.IsBinary64)
+        if (NumericTypeInfo<TFloat>.IsFamilyIeeeBinary64)
         {
           var bits = ordered < DoubleSignMask ? ~ordered : ordered & DoubleValueMask;
           return TFloat.CreateChecked(System.BitConverter.UInt64BitsToDouble(bits));
         }
-        else if (NumericTypeInfo<TFloat>.IsBinary32)
+        else if (NumericTypeInfo<TFloat>.IsFamilyIeeeBinary32)
         {
           var bits = ordered < SingleSignMask ? ~(uint)ordered : (uint)(ordered & SingleValueMask);
           return TFloat.CreateChecked(System.BitConverter.UInt32BitsToSingle(bits));
@@ -130,9 +130,9 @@
 
       [System.CLSCompliant(false)]
       public static ulong ToBits(TFloat value)
-        => NumericTypeInfo<TFloat>.IsBinary64
+        => NumericTypeInfo<TFloat>.IsFamilyIeeeBinary64
         ? System.BitConverter.DoubleToUInt64Bits(double.CreateChecked(value))
-        : NumericTypeInfo<TFloat>.IsBinary32
+        : NumericTypeInfo<TFloat>.IsFamilyIeeeBinary32
         ? System.BitConverter.SingleToUInt32Bits(float.CreateChecked(value))
         : (typeof(TFloat) == typeof(System.Half))
         ? System.BitConverter.HalfToUInt16Bits(System.Half.CreateChecked(value))
@@ -143,9 +143,9 @@
       {
         var bits = ToBits(value);
 
-        if (NumericTypeInfo<TFloat>.IsBinary64)
+        if (NumericTypeInfo<TFloat>.IsFamilyIeeeBinary64)
           return (bits & DoubleSignMask) != 0 ? ~bits : bits | DoubleSignMask;
-        else if (NumericTypeInfo<TFloat>.IsBinary32)
+        else if (NumericTypeInfo<TFloat>.IsFamilyIeeeBinary32)
           return (bits & SingleSignMask) != 0 ? ~bits : bits | SingleSignMask;
         else if (typeof(TFloat) == typeof(System.Half))
           return (bits & HalfSignMask) != 0 ? ~bits : bits | HalfSignMask;
