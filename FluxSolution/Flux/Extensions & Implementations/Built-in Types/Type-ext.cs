@@ -144,7 +144,15 @@ namespace Flux
         if (m_cachedInterfaces.TryGetValue(type, out var interfaces))
           return interfaces;
 
-        interfaces = [.. type.GetInterfaces().Select(ti => ti.IsGenericType ? ti.GetGenericTypeDefinition() : ti)];
+        interfaces = type.GetInterfaces();
+
+        for (var i = 0; i < interfaces.Length; i++)
+        {
+          var ii = interfaces[i];
+
+          if (ii.IsGenericType)
+            interfaces[i] = ii.GetGenericTypeDefinition();
+        }
 
         if (!skipCaching && interfaces.Length > 0)
           m_cachedInterfaces[type] = interfaces;
@@ -263,6 +271,16 @@ namespace Flux
       }
 
       #endregion
+
+      public System.ReadOnlySpan<char> GetNameWithoutExtras()
+      {
+        var name = type.Name.AsSpan();
+
+        if (name.LastIndexOf('`') is var index && index >= 0)
+          return name[..index];
+
+        return name;
+      }
 
       #region IsAssignable..GenericAware
 

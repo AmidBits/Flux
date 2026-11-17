@@ -523,22 +523,26 @@ namespace ConsoleApp
       var t13 = Flux.NumericTypeInfo<short>.Type;
       var t14 = Flux.NumericTypeInfo<int>.Type;
       var t15 = Flux.NumericTypeInfo<long>.Type;
-      var t16 = Flux.NumericTypeInfo<System.Int128>.Type;
-      var t17 = Flux.NumericTypeInfo<System.IntPtr>.Type;
-      var t18 = Flux.NumericTypeInfo<System.Runtime.InteropServices.NFloat>.Type;
-      var t19 = Flux.NumericTypeInfo<System.SByte>.Type;
-      var t20 = Flux.NumericTypeInfo<float>.Type;
-      var t21 = Flux.NumericTypeInfo<ushort>.Type;
-      var t22 = Flux.NumericTypeInfo<uint>.Type;
-      var t23 = Flux.NumericTypeInfo<ulong>.Type;
-      var t24 = Flux.NumericTypeInfo<System.UInt128>.Type;
-      var t25 = Flux.NumericTypeInfo<System.UIntPtr>.Type;
+      var t16 = Flux.NumericTypeInfo<System.Int128>.Core;
+      var t17 = Flux.NumericTypeInfo<System.IntPtr>.Core;
+      var t18 = Flux.NumericTypeInfo<System.Runtime.InteropServices.NFloat>.Core;
+      var t19 = Flux.NumericTypeInfo<System.SByte>.Core;
+      var t20 = Flux.NumericTypeInfo<float>.Constants;
+      var t21 = Flux.NumericTypeInfo<ushort>.Constants;
+      var t22 = Flux.NumericTypeInfo<uint>.Core;
+      var t23 = Flux.NumericTypeInfo<ulong>.Core;
+      var t24 = Flux.NumericTypeInfo<System.UInt128>.Core;
+      var t25 = Flux.NumericTypeInfo<System.UIntPtr>.Core;
 
       //var test = System.Numerics.Decimal128.CreateChecked(System.Numerics.BigInteger.One);
+
+
 
       var a = Flux.Numerics.BigDecimal.CreateFromBinaryN((System.Half)3.5f);
       var b = Flux.Numerics.BigDecimal.CreateFromDecimal(2m);
       var c = a / b;
+
+      var cc = Flux.Numerics.BigDecimal.Pow(a, 60000);
 
       var d128 = System.Numerics.Decimal128.CreateChecked(1.2300m);
       var d = Flux.Numerics.BigDecimal.CreateFromDecimalN(d128);

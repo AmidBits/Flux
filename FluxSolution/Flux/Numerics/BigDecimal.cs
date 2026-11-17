@@ -509,6 +509,46 @@ namespace Flux
 
       #endregion
 
+      public static BigDecimal Pow(BigDecimal value, int exponent)
+      {
+        if (exponent == 0)
+          return One;
+
+        if (exponent < 0)
+          return One / Pow(value, -exponent);
+
+        return new(
+          System.Numerics.BigInteger.Pow(value.Coefficient, exponent),
+          checked(value.Scale * exponent)
+        );
+      }
+
+      /// <summary>
+      /// <para>Exponentiation by squaring integer exponent.</para>
+      /// </summary>
+      /// <param name="value"></param>
+      /// <param name="exponent"></param>
+      /// <returns></returns>
+      public static BigDecimal Pow(BigDecimal value, System.Numerics.BigInteger exponent)
+      {
+        if (exponent < 0)
+          return One / Pow(value, -exponent);
+
+        var result = One;
+        var factor = value;
+
+        while (exponent > 0)
+        {
+          if ((exponent & 1) != 0)
+            result *= factor;
+
+          factor *= factor;
+          exponent >>= 1;
+        }
+
+        return result;
+      }
+
       #region System.Numerics.ISubtractionOperators<>
 
       public static BigDecimal operator -(BigDecimal left, BigDecimal right)

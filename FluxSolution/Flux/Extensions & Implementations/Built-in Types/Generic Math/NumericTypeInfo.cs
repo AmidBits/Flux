@@ -1,7 +1,5 @@
 namespace Flux
 {
-  using System.Collections.Frozen;
-
   public static class NumericTypeInfo<TNumberBase>
     where TNumberBase : System.Numerics.INumberBase<TNumberBase>
   {
@@ -15,47 +13,23 @@ namespace Flux
       IFloatingPointConstants = 0x0000_0000_0000_0001,
     }
 
-    private static readonly FrozenDictionary<Type, NumericConstants> m_constantsMap
-      = new Dictionary<Type, NumericConstants>
-      {
-        [typeof(System.Numerics.IFloatingPointConstants<>)] = NumericConstants.IFloatingPointConstants,
-      }.ToFrozenDictionary();
-
     [System.Flags]
     public enum NumericCore
     {
       NoCore = 0,
 
-      ComplexT = 0x0000_0000_0000_0001,
-      IBinaryFloatingPointIeee754 = 0x0000_0000_0000_0002,
-      IBinaryInteger = 0x0000_0000_0000_0004,
-      IBinaryNumber = 0x0000_0000_0000_0008,
-      IDecimalFloatingPointIeee754 = 0x0000_0000_0000_0010,
-      IFloatingPoint = 0x0000_0000_0000_0020,
-      IFloatingPointIeee754 = 0x0000_0000_0000_0040,
-      IMinMaxValue = 0x0000_0000_0000_0080,
-      INumber = 0x0000_0000_0000_0100,
-      INumberBase = 0x0000_0000_0000_0200,
-      ISignedNumber = 0x0000_0000_0000_0400,
-      IUnsignedNumber = 0x0000_0000_0000_0800,
+      IBinaryFloatingPointIeee754 = 0x0000_0000_0000_0001,
+      IBinaryInteger = 0x0000_0000_0000_0002,
+      IBinaryNumber = 0x0000_0000_0000_0004,
+      IDecimalFloatingPointIeee754 = 0x0000_0000_0000_0008,
+      IFloatingPoint = 0x0000_0000_0000_0010,
+      IFloatingPointIeee754 = 0x0000_0000_0000_0020,
+      IMinMaxValue = 0x0000_0000_0000_0040,
+      INumber = 0x0000_0000_0000_0080,
+      INumberBase = 0x0000_0000_0000_0100,
+      ISignedNumber = 0x0000_0000_0000_0200,
+      IUnsignedNumber = 0x0000_0000_0000_0400,
     }
-
-    private static readonly FrozenDictionary<Type, NumericCore> m_coreMap
-      = new Dictionary<Type, NumericCore>
-      {
-        [typeof(System.Numerics.Complex<>)] = NumericCore.ComplexT,
-        [typeof(System.Numerics.IBinaryFloatingPointIeee754<>)] = NumericCore.IBinaryFloatingPointIeee754,
-        [typeof(System.Numerics.IBinaryInteger<>)] = NumericCore.IBinaryInteger,
-        [typeof(System.Numerics.IBinaryNumber<>)] = NumericCore.IBinaryNumber,
-        [typeof(System.Numerics.IDecimalFloatingPointIeee754<>)] = NumericCore.IDecimalFloatingPointIeee754,
-        [typeof(System.Numerics.IFloatingPoint<>)] = NumericCore.IFloatingPoint,
-        [typeof(System.Numerics.IFloatingPointIeee754<>)] = NumericCore.IFloatingPointIeee754,
-        [typeof(System.Numerics.IMinMaxValue<>)] = NumericCore.IMinMaxValue,
-        [typeof(System.Numerics.INumber<>)] = NumericCore.INumber,
-        [typeof(System.Numerics.INumberBase<>)] = NumericCore.INumberBase,
-        [typeof(System.Numerics.ISignedNumber<>)] = NumericCore.ISignedNumber,
-        [typeof(System.Numerics.IUnsignedNumber<>)] = NumericCore.IUnsignedNumber,
-      }.ToFrozenDictionary();
 
     [System.Flags]
     public enum NumericFormattable
@@ -66,14 +40,6 @@ namespace Flux
       ISpanFormattable = 0x0000_0000_0000_0002,
       IUtf8SpanFormattable = 0x0000_0000_0000_0004,
     }
-
-    private static readonly FrozenDictionary<Type, NumericFormattable> m_formattableMap
-      = new Dictionary<Type, NumericFormattable>
-      {
-        [typeof(System.IFormattable)] = NumericFormattable.IFormattable,
-        [typeof(System.ISpanFormattable)] = NumericFormattable.ISpanFormattable,
-        [typeof(System.IUtf8SpanFormattable)] = NumericFormattable.IUtf8SpanFormattable,
-      }.ToFrozenDictionary();
 
     [System.Flags]
     public enum NumericFunctions
@@ -88,17 +54,6 @@ namespace Flux
       ITrigonometricFunctions = 0x0000_0000_0000_0020,
     }
 
-    private static readonly FrozenDictionary<Type, NumericFunctions> m_functionsMap
-      = new Dictionary<Type, NumericFunctions>
-      {
-        [typeof(System.Numerics.IExponentialFunctions<>)] = NumericFunctions.IExponentialFunctions,
-        [typeof(System.Numerics.IHyperbolicFunctions<>)] = NumericFunctions.IHyperbolicFunctions,
-        [typeof(System.Numerics.ILogarithmicFunctions<>)] = NumericFunctions.ILogarithmicFunctions,
-        [typeof(System.Numerics.IPowerFunctions<>)] = NumericFunctions.IPowerFunctions,
-        [typeof(System.Numerics.IRootFunctions<>)] = NumericFunctions.IRootFunctions,
-        [typeof(System.Numerics.ITrigonometricFunctions<>)] = NumericFunctions.ITrigonometricFunctions,
-      }.ToFrozenDictionary();
-
     [System.Flags]
     public enum NumericIdentity
     {
@@ -107,13 +62,6 @@ namespace Flux
       IAdditiveIdentity = 0x0000_0000_0000_0001,
       IMultiplicativeIdentity = 0x0000_0000_0000_0002,
     }
-
-    private static readonly FrozenDictionary<Type, NumericIdentity> m_identityMap
-      = new Dictionary<Type, NumericIdentity>
-      {
-        [typeof(System.Numerics.IAdditiveIdentity<,>)] = NumericIdentity.IAdditiveIdentity,
-        [typeof(System.Numerics.IMultiplicativeIdentity<,>)] = NumericIdentity.IMultiplicativeIdentity,
-      }.ToFrozenDictionary();
 
     [System.Flags]
     public enum NumericOperators
@@ -135,24 +83,6 @@ namespace Flux
       IUnaryPlusOperators = 0x0000_0000_0000_1000,
     }
 
-    private static readonly FrozenDictionary<Type, NumericOperators> m_operatorsMap
-      = new Dictionary<Type, NumericOperators>
-      {
-        [typeof(System.Numerics.IAdditionOperators<,,>)] = NumericOperators.IAdditionOperators,
-        [typeof(System.Numerics.IBitwiseOperators<,,>)] = NumericOperators.IBitwiseOperators,
-        [typeof(System.Numerics.IComparisonOperators<,,>)] = NumericOperators.IComparisonOperators,
-        [typeof(System.Numerics.IDecrementOperators<>)] = NumericOperators.IDecrementOperators,
-        [typeof(System.Numerics.IDivisionOperators<,,>)] = NumericOperators.IDivisionOperators,
-        [typeof(System.Numerics.IEqualityOperators<,,>)] = NumericOperators.IEqualityOperators,
-        [typeof(System.Numerics.IIncrementOperators<>)] = NumericOperators.IIncrementOperators,
-        [typeof(System.Numerics.IModulusOperators<,,>)] = NumericOperators.IModulusOperators,
-        [typeof(System.Numerics.IMultiplyOperators<,,>)] = NumericOperators.IMultiplyOperators,
-        [typeof(System.Numerics.IShiftOperators<,,>)] = NumericOperators.IShiftOperators,
-        [typeof(System.Numerics.ISubtractionOperators<,,>)] = NumericOperators.ISubtractionOperators,
-        [typeof(System.Numerics.IUnaryNegationOperators<,>)] = NumericOperators.IUnaryNegationOperators,
-        [typeof(System.Numerics.IUnaryPlusOperators<,>)] = NumericOperators.IUnaryPlusOperators,
-      }.ToFrozenDictionary();
-
     [System.Flags]
     public enum NumericParsable
     {
@@ -163,39 +93,33 @@ namespace Flux
       IUtf8SpanParsable = 0x0000_0000_0000_0004,
     }
 
-    private static readonly System.Collections.Frozen.FrozenDictionary<Type, NumericParsable> m_parsableMap
-      = new Dictionary<Type, NumericParsable>
-      {
-        [typeof(System.IParsable<>)] = NumericParsable.IParsable,
-        [typeof(System.ISpanParsable<>)] = NumericParsable.ISpanParsable,
-        [typeof(System.IUtf8SpanParsable<>)] = NumericParsable.IUtf8SpanParsable,
-      }.ToFrozenDictionary();
-
     #endregion
 
     static NumericTypeInfo()
     {
-      foreach (var interfaceType in typeof(TNumberBase).GetCachedInterfaces()) // GetCachedInterfaces expands generic type descriptions.
+      foreach (var type in typeof(TNumberBase).GetCachedInterfaces()) // GetCachedInterfaces expands generic type descriptions.
       {
-        if (m_constantsMap.TryGetValue(interfaceType, out var constants))
-          Constants |= constants;
+        var name = type.GetNameWithoutExtras();
 
-        if (m_coreMap.TryGetValue(interfaceType, out var core))
+        if (System.Enum.TryParse<NumericConstants>(name, out var constant))
+          Constants |= constant;
+
+        if (System.Enum.TryParse<NumericCore>(name, false, out var core))
           Core |= core;
 
-        if (m_formattableMap.TryGetValue(interfaceType, out var formattable))
+        if (System.Enum.TryParse<NumericFormattable>(name, false, out var formattable))
           Formattable |= formattable;
 
-        if (m_functionsMap.TryGetValue(interfaceType, out var functions))
+        if (System.Enum.TryParse<NumericFunctions>(name, false, out var functions))
           Functions |= functions;
 
-        if (m_identityMap.TryGetValue(interfaceType, out var identity))
+        if (System.Enum.TryParse<NumericIdentity>(name, false, out var identity))
           Identity |= identity;
 
-        if (m_operatorsMap.TryGetValue(interfaceType, out var operators))
+        if (System.Enum.TryParse<NumericOperators>(name, false, out var operators))
           Operators |= operators;
 
-        if (m_parsableMap.TryGetValue(interfaceType, out var parsable))
+        if (System.Enum.TryParse<NumericParsable>(name, false, out var parsable))
           Parsable |= parsable;
       }
 
