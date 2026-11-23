@@ -47,6 +47,32 @@
 
       #endregion
 
+      public System.Collections.Generic.IEnumerable<System.ReadOnlyMemory<char>> EnumerateLines()
+      {
+        var start = 0;
+
+        for (var i = 0; i < source.Length; i++)
+        {
+          if (source[i] == '\r')
+          {
+            yield return source.AsMemory(start, i - start);
+
+            if (i + 1 < source.Length && source[i + 1] == '\n')
+              i++;
+
+            start = i + 1;
+          }
+          else if (source[i] == '\n')
+          {
+            yield return source.AsMemory(start, i - start);
+            start = i + 1;
+          }
+        }
+
+        if (start <= source.Length)
+          yield return source.AsMemory(start);
+      }
+
       #region GetTextElements
 
       /// <summary>
@@ -88,38 +114,6 @@
         return sb;
       }
 
-      //#region ToSpanMaker
-
-      ///// <summary>Creates a new <see cref="SpanMaker{T}"/> with the <paramref name="source"/> as content.</summary>
-      //public SpanMaker<char> ToSpanMaker()
-      //  => new(source);
-
-      //#endregion
-
-      //#region ToSpanMakerOfRune
-
-      ///// <summary>Creates a new <see cref="SpanMaker{T}"/> with the <paramref name="source"/> as content.</summary>
-      //public SpanMaker<System.Text.Rune> ToSpanMakerOfRune()
-      //{
-      //  var sm = new SpanMaker<System.Text.Rune>(source.Length);
-      //  if (!string.IsNullOrEmpty(source))
-      //    foreach (var rune in source.EnumerateRunes())
-      //      sm = sm.Append(rune);
-      //  return sm;
-      //}
-
-      //#endregion
-
-      #region To..
-
-      public System.IO.DirectoryInfo ToDirectoryInfo()
-        => new(source.TrimCommonPrefix(System.IO.Path.DirectorySeparatorCharacters).ToString());
-
-      public System.Uri ToUri(System.UriKind uriKind = System.UriKind.RelativeOrAbsolute)
-        => new(source, uriKind);
-
-      #endregion
-
       #region Wrapping
 
       /// <summary>Indicates whether the source is already wrapped in the specified characters. E.g. in SQL brackets, or parenthesis.</summary>
@@ -144,104 +138,5 @@
 
       #endregion
     }
-
-    public static System.IO.FileInfo ToFileInfo(this string source)
-      => new(source.AsSpan().TrimCommonPrefix(System.IO.Path.DirectorySeparatorCharacters).TrimCommonSuffix(System.IO.Path.DirectorySeparatorCharacters).ToString());
   }
 }
-
-//extension(System.String)
-//{
-//  public static string Subscripts =>
-//    "\u2080\u2081\u2082\u2083\u2084\u2085\u2086\u2087\u2088\u2089" + // ₀₁₂₃₄₅₆₇₈₉
-//    "\u208A\u208B\u208C\u208D\u208E" +                             // ₊₋₌₍₎
-//    "\u2090\u2091\u2092\u2093\u2094" +                             // ₐₑₒₓₔ
-//    "\u2095\u2096\u2097\u2098\u2099" +                             // ₕₖₗₘₙ
-//    "\u209A\u209B\u209C";                                          // ₚₛₜ
-
-//  public static string Superscripts =>
-//    "\u2070\u00B9\u00B2\u00B3\u2074\u2075\u2076\u2077\u2078\u2079" + // ⁰¹²³⁴⁵⁶⁷⁸⁹
-//    "\u00AA" + // ª  Feminine ordinal indicator (often used as superscript 'a')
-//    "\u00BA" + // º  Masculine ordinal indicator (often used as superscript 'o')
-//    "\u02B0" + // ʰ  Modifier letter small h
-//    "\u02B1" + // ʱ
-//    "\u02B2" + // ʲ
-//    "\u02B3" + // ʳ
-//    "\u02B4" + // ʴ
-//    "\u02B5" + // ʵ
-//    "\u02B6" + // ʶ
-//    "\u02B7" + // ʷ
-//    "\u02B8" + // ʸ
-//    "\u02E0" + // ˠ
-//    "\u02E1" + // ˡ
-//    "\u02E2" + // ˢ
-//    "\u02E3" + // ˣ
-//    "\u02E4" + // ˤ
-//    "\u1D2C" + // ᴬ
-//    "\u1D2D" + // ᴭ
-//    "\u1D2E" + // ᴮ
-//    "\u1D2F" + // ᴯ
-//    "\u1D30" + // ᴰ
-//    "\u1D31" + // ᴱ
-//    "\u1D32" + // ᴲ
-//    "\u1D33" + // ᴳ
-//    "\u1D34" + // ᴴ
-//    "\u1D35" + // ᴵ
-//    "\u1D36" + // ᴶ
-//    "\u1D37" + // ᴷ
-//    "\u1D38" + // ᴸ
-//    "\u1D39" + // ᴹ
-//    "\u1D3A" + // ᴺ
-//    "\u1D3B" + // ᴻ
-//    "\u1D3C" + // ᴼ
-//    "\u1D3D" + // ᴽ
-//    "\u1D3E" + // ᴾ
-//    "\u1D3F" + // ᴿ
-//    "\u1D40" + // ᵀ
-//    "\u1D41" + // ᵁ
-//    "\u1D42" + // ᵂ
-//    "\u1D43" + // ᵃ
-//    "\u1D44" + // ᵄ
-//    "\u1D45" + // ᵅ
-//    "\u1D46" + // ᵆ
-//    "\u1D47" + // ᵇ
-//    "\u1D48" + // ᵈ
-//    "\u1D49" + // ᵉ
-//    "\u1D4A" + // ᵊ
-//    "\u1D4B" + // ᵋ
-//    "\u1D4C" + // ᵌ
-//    "\u1D4D" + // ᵍ
-//    "\u1D4E" + // ᵎ
-//    "\u1D4F" + // ᵏ
-//    "\u1D50" + // ᵐ
-//    "\u1D51" + // ᵑ
-//    "\u1D52" + // ᵒ
-//    "\u1D53" + // ᵓ
-//    "\u1D54" + // ᵔ
-//    "\u1D55" + // ᵕ
-//    "\u1D56" + // ᵖ
-//    "\u1D57" + // ᵗ
-//    "\u1D58" + // ᵘ
-//    "\u1D59" + // ᵙ
-//    "\u1D5A" + // ᵚ
-//    "\u1D5B" + // ᵛ
-//    "\u1D5C" + // ᵜ
-//    "\u1D5D" + // ᵝ
-//    "\u1D5E" + // ᵞ
-//    "\u1D5F" + // ᵟ
-//    "\u1D60" + // ᵠ
-//    "\u1D61" + // ᵡ
-//    "\u2071" + // ⁱ
-//    "\u207A" + // ⁺
-//    "\u207B" + // ⁻
-//    "\u207C" + // ⁼
-//    "\u207D" + // ⁽
-//    "\u207E" + // ⁾
-//    "\u207F" + // ⁿ
-//    "\u2C7D" + // ⱽ
-//    "\uA770" + // ꝰ
-//    "\uAB5C" + // ꭜ
-//    "\uAB5D" + // ꭝ
-//    "\uAB5E" + // ꭞ
-//    "\uAB5F";  // ꭟ
-//}

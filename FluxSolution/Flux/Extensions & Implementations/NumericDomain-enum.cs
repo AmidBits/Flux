@@ -41,25 +41,8 @@ namespace Flux
 
   public static partial class NumberBase
   {
-    public static NumericDomain GetNumericDomain<TNumberBase>()
-      where TNumberBase : System.Numerics.INumberBase<TNumberBase>
-      => NumericTypeInfo<TNumberBase>.IsUnsignedInteger ? NumericDomain.NaturalNumbers
-      : NumericTypeInfo<TNumberBase>.IsSignedInteger ? NumericDomain.Integers
-      : NumericTypeInfo<TNumberBase>.IsFluxNumericsBigRational ? NumericDomain.RationalNumbers
-      : NumericTypeInfo<TNumberBase>.ImplementsIFloatingPoint ? NumericDomain.RealNumbers
-      : NumericTypeInfo<TNumberBase>.IsFamilyComplex ? NumericDomain.ComplexNumbers
-      : NumericDomain.Unknown;
-
     public static System.Text.Rune GetNumericDomainSymbol<TNumberBase>()
       where TNumberBase : System.Numerics.INumberBase<TNumberBase>
-    {
-      var nd = GetNumericDomain<TNumberBase>();
-
-      var c = (char)nd;
-
-      var rune = (System.Text.Rune)c;
-
-      return rune;
-    }
+      => (System.Text.Rune)(char)NumericTypeInfo<TNumberBase>.NumericDomain;
   }
 }

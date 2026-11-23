@@ -187,7 +187,7 @@ namespace Flux
       /// <param name="source"></param>
       /// <returns></returns>
       public string ToPrimeFactorString()
-        => string.Join('\u00d7', source.Order().GroupAdjacent(pf => pf).Select(g => $"{g.Key}{g.Count().ToSuperscriptString(10)}"));
+        => string.Join('\u00d7', source.Order().GroupAdjacent(pf => pf).Select(g => $"{g.Key}{BinaryInteger.ToSuperscriptString(g.Count(), 10)}"));
 
       #endregion
     }

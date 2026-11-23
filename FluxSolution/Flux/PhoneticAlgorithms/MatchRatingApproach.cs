@@ -17,7 +17,7 @@ namespace Flux.PhoneticAlgorithm
         index++;
 
         if (index > 0)
-          if (char.IsVowel(currentRune) && (!char.IsBasicLatinLetterY(currentRune) || currentRune == previousRune))
+          if (System.Text.Rune.IsVowel((System.Text.Rune)currentRune) && (!System.Text.Rune.IsAsciiLetterY((System.Text.Rune)currentRune) || currentRune == previousRune))
             continue;
 
         sb.Append(char.ToUpper(currentRune, System.Globalization.CultureInfo.InvariantCulture));

@@ -188,19 +188,19 @@ namespace Units
     [TestMethod]
     public void ToRadixString()
     {
-      Assert.AreEqual("1234567", 1234567.ToRadixString(10).ToString());
+      Assert.AreEqual("1234567", BinaryInteger.ToRadixString(1234567, 10).ToString());
     }
 
     [TestMethod]
     public void ToSubscriptString()
     {
-      Assert.AreEqual("₁₂₃₄₅₆₇", 1234567.ToSubscriptString(10).ToString());
+      Assert.AreEqual("₁₂₃₄₅₆₇", BinaryInteger.ToSubscriptString(1234567, 10).ToString());
     }
 
     [TestMethod]
     public void ToSuperscriptString()
     {
-      Assert.AreEqual("¹²³⁴⁵⁶⁷", 1234567.ToSuperscriptString(10).ToString());
+      Assert.AreEqual("¹²³⁴⁵⁶⁷", BinaryInteger.ToSuperscriptString(1234567, 10).ToString());
     }
   }
 }

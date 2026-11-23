@@ -1,4 +1,5 @@
-﻿namespace Flux
+﻿
+namespace Flux
 {
   public static partial class ReadOnlySpanExtensions
   {
@@ -9,49 +10,53 @@
     /// </summary>
     /// <returns></returns>
     [System.Text.RegularExpressions.GeneratedRegex(@"(?<Prefix>&#)(?<Number>[0-9]{1,7})(?<Suffix>;)", System.Text.RegularExpressions.RegexOptions.Compiled)]
-    public static partial System.Text.RegularExpressions.Regex RegexEnumerateMlDecimalNumericCharacterReference();
+    public static partial System.Text.RegularExpressions.Regex RegexMarkupDecimalNumericCharacterReference();
 
     /// <summary>
     /// <para>All hex &#x{x..}; numeric character references are enumerated.</para>
     /// </summary>
     /// <returns></returns>
     [System.Text.RegularExpressions.GeneratedRegex(@"(?<Prefix>&#x)(?<Number>[0-9A-Fa-f]{1,8})(?<Suffix>;)", System.Text.RegularExpressions.RegexOptions.Compiled)]
-    public static partial System.Text.RegularExpressions.Regex RegexEnumerateMlHexNumericCharacterReference();
+    public static partial System.Text.RegularExpressions.Regex RegexMarkupHexNumericCharacterReference();
 
     /// <summary>
     /// <para>All three of \uxxxx (UTF-16) C# Unicode literals are enumerated.</para>
     /// </summary>
     /// <returns></returns>
     [System.Text.RegularExpressions.GeneratedRegex(@"(?<Prefix>\\u)(?<Number>[0-9A-Fa-f]{4})", System.Text.RegularExpressions.RegexOptions.Compiled)]
-    public static partial System.Text.RegularExpressions.Regex RegexEnumerateCsUnicodeLiteralUtf16();
+    public static partial System.Text.RegularExpressions.Regex RegexCsUnicodeLiteralUtf16();
 
     /// <summary>
     /// <para>All \UXXXXXXXX (UTF-32) C# Unicode literals are enumerated.</para>
     /// </summary>
     /// <returns></returns>
     [System.Text.RegularExpressions.GeneratedRegex(@"(?<Prefix>\\U)(?<Number>[0-9A-Fa-f]{8})", System.Text.RegularExpressions.RegexOptions.Compiled)]
-    public static partial System.Text.RegularExpressions.Regex RegexEnumerateCsUnicodeLiteralUtf32();
+    public static partial System.Text.RegularExpressions.Regex RegexCsUnicodeLiteralUtf32();
 
     /// <summary>
     /// <para>All \x{xxxxxxx} (Variable Hex) C# Unicode literals are enumerated.</para>
     /// </summary>
     /// <returns></returns>
     [System.Text.RegularExpressions.GeneratedRegex(@"(?<Prefix>\\x)(?<Number>[0-9A-Fa-f]{1,8})", System.Text.RegularExpressions.RegexOptions.Compiled)]
-    public static partial System.Text.RegularExpressions.Regex RegexEnumerateCsUnicodeLiteralVariableHex();
+    public static partial System.Text.RegularExpressions.Regex RegexCsUnicodeLiteralVariableHex();
 
     /// <summary>
     /// <para>All U+xxxx{xx} (Unicode U-notation) are enumerated.</para>
     /// </summary>
     /// <returns></returns>
     [System.Text.RegularExpressions.GeneratedRegex(@"(?<Prefix>U\+)(?<Codepoint>[0-9A-Fa-f]{4,6})", System.Text.RegularExpressions.RegexOptions.Compiled)]
-    public static partial System.Text.RegularExpressions.Regex RegexEnumerateUnicodeUnotation();
+    public static partial System.Text.RegularExpressions.Regex RegexUnicodeUnotation();
 
     /// <summary>
-    /// <para>All %xx (URI percent encoding) are enumerated.</para>
+    /// <para>All %xx (URI percent encoding) are enumerated chunked from right-to-left.</para>
     /// </summary>
+    /// <remarks>
+    /// <para>URI percent encoded octets are based on ASCII bytes, but with Unicode and UTF8 there are lots of code points that use more than a single byte (unlike ASCII).</para>
+    /// <para>Decoding the URI in-place is therefor completed in reverse regex order.</para>
+    /// </remarks>
     /// <returns></returns>
-    [System.Text.RegularExpressions.GeneratedRegexAttribute(@"(?<Prefix>%)(?<Octet>[0-9A-Fa-f]{2})", System.Text.RegularExpressions.RegexOptions.Compiled)]
-    public static partial System.Text.RegularExpressions.Regex RegexEnumerateUriPercentEncoding();
+    [System.Text.RegularExpressions.GeneratedRegexAttribute(@"((?<Prefix>%)(?<Octet>[0-9A-Fa-f]{2}))+", System.Text.RegularExpressions.RegexOptions.Compiled | System.Text.RegularExpressions.RegexOptions.RightToLeft)]
+    public static partial System.Text.RegularExpressions.Regex RegexUriPercentEncodings();
 
     /// <summary>
     /// <para></para>
@@ -3397,6 +3402,38 @@
 
     extension(System.ReadOnlySpan<byte> source)
     {
+      public int EnumerateRunes(System.Span<System.Text.Rune> runes)
+      {
+        var index = 0;
+
+        while (!source.IsEmpty)
+        {
+          System.Text.Rune.DecodeFromUtf8(source, out var rune, out int consumed);
+
+          runes[index++] = rune;
+
+          source = source[consumed..];
+        }
+
+        return index;
+      }
+
+      public System.Collections.Generic.List<System.Text.Rune> EnumerateRunes()
+      {
+        var runes = new System.Collections.Generic.List<System.Text.Rune>();
+
+        while (!source.IsEmpty)
+        {
+          System.Text.Rune.DecodeFromUtf8(source, out System.Text.Rune rune, out int consumed);
+
+          runes.Add(rune);
+
+          source = source[consumed..];
+        }
+
+        return runes;
+      }
+
       #region ReadBits
 
       /// <summary>
@@ -3492,7 +3529,7 @@
       {
         var list = new System.Collections.Generic.List<(System.Range, System.Text.Rune)>();
 
-        var evm = new System.Text.RegularExpressions.Regex($"{RegexEnumerateCsUnicodeLiteralUtf16()}|{RegexEnumerateCsUnicodeLiteralUtf32()}|{RegexEnumerateCsUnicodeLiteralVariableHex()}").EnumerateMatches(source);
+        var evm = new System.Text.RegularExpressions.Regex($"{RegexCsUnicodeLiteralUtf16()}|{RegexCsUnicodeLiteralUtf32()}|{RegexCsUnicodeLiteralVariableHex()}").EnumerateMatches(source);
 
         foreach (var vm in evm)
         {
@@ -3515,7 +3552,7 @@
       {
         var list = new System.Collections.Generic.List<(System.Range, System.Text.Rune)>();
 
-        var evm = new System.Text.RegularExpressions.Regex($"{RegexEnumerateMlDecimalNumericCharacterReference()}|{RegexEnumerateMlHexNumericCharacterReference()}", System.Text.RegularExpressions.RegexOptions.Compiled).EnumerateMatches(source);
+        var evm = new System.Text.RegularExpressions.Regex($"{RegexMarkupDecimalNumericCharacterReference()}|{RegexMarkupHexNumericCharacterReference()}", System.Text.RegularExpressions.RegexOptions.Compiled).EnumerateMatches(source);
 
         foreach (var vm in evm)
         {
@@ -3544,7 +3581,7 @@
       {
         var list = new System.Collections.Generic.List<(System.Range, System.Text.Rune)>();
 
-        var evm = RegexEnumerateUnicodeUnotation().EnumerateMatches(source);
+        var evm = RegexUnicodeUnotation().EnumerateMatches(source);
 
         foreach (var vm in evm)
         {
@@ -3552,29 +3589,6 @@
           var length = vm.Length;
 
           list.Add((System.Range.FromOffsetAndLength(index, length), new System.Text.Rune(int.Parse(source.Slice(index + 2, length - 2), System.Globalization.NumberStyles.HexNumber))));
-        }
-
-        if (reverse) list.Reverse();
-
-        return list;
-      }
-
-      #endregion
-
-      #region EnumerateUriPercentEncoding
-
-      public System.Collections.Generic.List<(System.Range, System.Text.Rune)> EnumerateUriPercentEncoding(bool reverse)
-      {
-        var list = new System.Collections.Generic.List<(System.Range, System.Text.Rune)>();
-
-        var evm = RegexEnumerateUriPercentEncoding().EnumerateMatches(source);
-
-        foreach (var vm in evm)
-        {
-          var index = vm.Index;
-          var length = vm.Length;
-
-          list.Add((System.Range.FromOffsetAndLength(index, length), new System.Text.Rune(int.Parse(source.Slice(vm.Index + 1, vm.Length - 1), System.Globalization.NumberStyles.HexNumber))));
         }
 
         if (reverse) list.Reverse();
@@ -3898,36 +3912,6 @@
 
       #endregion
 
-      #region Regex
-
-      /// <summary>
-      /// <para>Creates a new list of ranges from matching <paramref name="regexPattern"/> in a <see cref="System.ReadOnlySpan{T}"/>.</para>
-      /// </summary>
-      /// <param name="regexPattern"></param>
-      /// <returns></returns>
-      public System.Collections.Generic.List<Range> RegexMatches(string regexPattern)
-      {
-        var ranges = new System.Collections.Generic.List<Range>();
-        foreach (var vm in new System.Text.RegularExpressions.Regex(regexPattern).EnumerateMatches(source))
-          ranges.Add(System.Range.FromOffsetAndLength(vm.Index, vm.Length));
-        return ranges;
-      }
-
-      /// <summary>
-      /// <para>Creates a new list of ranges from splitting by <paramref name="regexPattern"/> in a <see cref="System.ReadOnlySpan{T}"/>.</para>
-      /// </summary>
-      /// <param name="regexPattern"></param>
-      /// <returns></returns>
-      public System.Collections.Generic.List<Range> RegexSplits(string regexPattern)
-      {
-        var ranges = new System.Collections.Generic.List<Range>();
-        foreach (var range in new System.Text.RegularExpressions.Regex(regexPattern).EnumerateSplits(source))
-          ranges.Add(range);
-        return ranges;
-      }
-
-      #endregion
-
       #region To..
 
       /// <summary>
@@ -3967,7 +3951,7 @@
         var sb = new System.Text.StringBuilder();
 
         foreach (var r in source.EnumerateRunes())
-          sb.Append(System.Text.Rune.IsUriUnreserved(r) ? r.ToString() : System.Text.Rune.ToUriPercentEncoding(r));
+          sb.Append(System.Text.Rune.IsAsciiUriUnreserved(r) ? r.ToString() : System.Text.Rune.ToUriPercentEncoding(r));
 
         return sb.ToString();
       }
@@ -3981,18 +3965,78 @@
       {
         var sb = new System.Text.StringBuilder().Append(source);
 
-        foreach (var (range, rune) in EnumerateUriPercentEncoding(source, true))
-        {
-          var (offset, length) = range.GetOffsetAndLength(source.Length);
+        var byteSpan = (stackalloc byte[source.Length / 3]);
+        var runeSpan = (stackalloc System.Text.Rune[byteSpan.Length]);
 
-          sb.Remove(offset, length);
-          sb.Insert(offset, rune);
+        var evm = RegexUriPercentEncodings().EnumerateMatches(source); // Enumerated in REVERSE ORDER to avoid unnecessary allocations.
+
+        foreach (var vm in evm)
+        {
+          var (index, length) = (vm.Index, vm.Length);
+
+          var byteIndex = 0;
+          for (var offset = 0; offset < length; offset += 3)
+            byteSpan[byteIndex++] = (byte)int.Parse(source.Slice(index + offset + 1, 2), System.Globalization.NumberStyles.HexNumber);
+
+          var runeIndex = EnumerateRunes(byteSpan[..byteIndex], runeSpan);
+
+          var runes = runeSpan[..runeIndex];
+
+          var decodedString = string.Create(GetUtf16Length(runes), runes.ToArray(), static (dest, runes) => EncodeToUtf16(runes, dest));
+
+          sb.Remove(index, length);
+          sb.Insert(index, decodedString);
         }
 
         return sb.ToString();
       }
 
       #endregion
+    }
+
+    extension(System.ReadOnlySpan<string> source)
+    {
+      /// <summary>
+      /// <para>Returns a column name of the <paramref name="index"/>ed column from the array as if it were an array of column names, substituting if not enough column names are specified.</para>
+      /// </summary>
+      /// <param name="source"></param>
+      /// <param name="index"></param>
+      /// <returns></returns>
+      public string EnsureColumnName(int index)
+      {
+        System.ArgumentOutOfRangeException.ThrowIfNegative(index);
+
+        return index < source.Length && source[index] is var value && !string.IsNullOrWhiteSpace(value)
+          ? source[index]
+          : BinaryInteger.ToOrdinalFieldName(index);
+      }
+
+      /// <summary>
+      /// <para></para>
+      /// </summary>
+      /// <param name="source"></param>
+      /// <returns></returns>
+      public string ToUrgfString()
+        => string.Join((char)UnicodeInformationSeparator.UnitSeparator, source);
+    }
+
+    extension(System.ReadOnlySpan<System.Text.Rune> runes)
+    {
+      public int GetUtf16Length()
+      {
+        var length = 0;
+        foreach (var rune in runes)
+          length += rune.Utf16SequenceLength;
+        return length;
+      }
+
+      public int EncodeToUtf16(Span<char> destination)
+      {
+        var written = 0;
+        foreach (var rune in runes)
+          written += rune.EncodeToUtf16(destination[written..]);
+        return written;
+      }
     }
 
     extension<TComparable>(System.ReadOnlySpan<TComparable> source)
@@ -4208,32 +4252,6 @@
       }
 
       #endregion
-    }
-
-    extension(System.ReadOnlySpan<string> source)
-    {
-      /// <summary>
-      /// <para>Returns a column name of the <paramref name="index"/>ed column from the array as if it were an array of column names, substituting if not enough column names are specified.</para>
-      /// </summary>
-      /// <param name="source"></param>
-      /// <param name="index"></param>
-      /// <returns></returns>
-      public string EnsureColumnName(int index)
-      {
-        System.ArgumentOutOfRangeException.ThrowIfNegative(index);
-
-        return index < source.Length && source[index] is var value && !string.IsNullOrWhiteSpace(value)
-          ? source[index]
-          : BinaryInteger.ToOrdinalFieldName(index);
-      }
-
-      /// <summary>
-      /// <para></para>
-      /// </summary>
-      /// <param name="source"></param>
-      /// <returns></returns>
-      public string ToUrgfString()
-        => string.Join((char)UnicodeInformationSeparator.UnitSeparator, source);
     }
   }
 }

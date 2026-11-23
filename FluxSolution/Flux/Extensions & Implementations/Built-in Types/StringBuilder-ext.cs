@@ -1312,8 +1312,8 @@ namespace Flux
         System.ArgumentNullException.ThrowIfNull(source);
 
         for (var index = source.Length - 1; index >= 0; index--)
-          if (char.TryRemoveLatinStroke(source[index], out var replacement))
-            source[index] = replacement;
+          if (System.Text.Rune.TryFoldLatinLetterWithStroke(new(source[index]), out var replacement))
+            source[index] = (char)replacement.Value;
 
         return source;
       }

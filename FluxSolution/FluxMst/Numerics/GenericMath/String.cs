@@ -1,6 +1,5 @@
 ﻿#if NET7_0_OR_GREATER
 using Flux;
-using Flux.Globalization.En;
 
 namespace GenericMath
 {
@@ -16,15 +15,15 @@ namespace GenericMath
     [TestMethod]
     public void ToOrdinalIndicatorString()
     {
-      Assert.AreEqual("512th", 512.ToOrdinalIndicatorString().ToString());
+      Assert.AreEqual("512th", BinaryInteger.ToOrdinalIndicatorString(512).ToString());
     }
 
     [TestMethod]
     public void ToRadixString()
     {
-      Assert.AreEqual("1000000000", 512.ToRadixString(2).ToString());
-      Assert.AreEqual("512", 512.ToRadixString(10).ToString());
-      Assert.AreEqual("200", 512.ToRadixString(16).ToString());
+      Assert.AreEqual("1000000000", BinaryInteger.ToRadixString(512, 2).ToString());
+      Assert.AreEqual("512", BinaryInteger.ToRadixString(512, 10).ToString());
+      Assert.AreEqual("200", BinaryInteger.ToRadixString(512, 16).ToString());
     }
   }
 }

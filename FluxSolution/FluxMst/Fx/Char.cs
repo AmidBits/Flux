@@ -47,7 +47,7 @@ namespace SystemFx
     public void IsEnglishVowel()
     {
       Assert.IsFalse(System.Text.Rune.IsVowel((System.Text.Rune)'ñ', System.Globalization.CultureInfo.CurrentCulture));
-      Assert.IsFalse(!System.Text.Rune.IsBasicLatinLetterY((System.Text.Rune)'y') && System.Text.Rune.IsVowel((System.Text.Rune)'y', System.Globalization.CultureInfo.CurrentCulture));
+      Assert.IsFalse(!System.Text.Rune.IsAsciiLetterY((System.Text.Rune)'y') && System.Text.Rune.IsVowel((System.Text.Rune)'y', System.Globalization.CultureInfo.CurrentCulture));
       Assert.IsTrue(System.Text.Rune.IsVowel((System.Text.Rune)'y', System.Globalization.CultureInfo.CurrentCulture));
       Assert.IsTrue(System.Text.Rune.IsVowel((System.Text.Rune)'A', System.Globalization.CultureInfo.CurrentCulture));
     }

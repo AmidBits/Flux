@@ -4,6 +4,11 @@ namespace Flux
   {
     extension(System.Byte)
     {
+      /// <summary>
+      /// <para>The URI percent-encoded (%xx) octet length.</para>
+      /// </summary>
+      public static int UriPercentEncodedOctetLength => 3;
+
       #region ReverseBits..
 
       /// <summary>
@@ -33,8 +38,7 @@ namespace Flux
       /// </summary>
       /// <param name="value"></param>
       /// <returns></returns>
-      public static string ToUriPercentEncoding(byte value)
-        => $"%{value:X2}";
+      public static string ToUriPercentEncoding(byte value) => $"%{value:X2}";
 
       #endregion
     }

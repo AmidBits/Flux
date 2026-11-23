@@ -23,24 +23,55 @@ namespace Flux
         => new(@$"(?!(?s:.*){pattern})");
     }
 
+    extension(System.Text.RegularExpressions.Regex regex)
+    {
+      /// <summary>
+      /// <para>Creates a list of <see cref="System.Range"/>s of all matches of a <see cref="System.Text.RegularExpressions.Regex"/> in an <paramref name="input"/>. Optionally in <paramref name="reverse"/> order.</para>
+      /// </summary>
+      /// <param name="regexPattern"></param>
+      /// <returns></returns>
+      public System.Collections.Generic.List<Range> FindMatches(System.ReadOnlySpan<char> input, bool reverse = false)
+      {
+        var ranges = new System.Collections.Generic.List<Range>();
+        foreach (var vm in regex.EnumerateMatches(input))
+          ranges.Add(System.Range.FromOffsetAndLength(vm.Index, vm.Length));
+        if (reverse)
+          ranges.Reverse();
+        return ranges;
+      }
+
+      /// <summary>
+      /// <para>Creates a list of <see cref="System.Range"/>s of all splits of a <see cref="System.Text.RegularExpressions.Regex"/> in am <paramref name="input"/>. Optionally in <paramref name="reverse"/> order.</para>
+      /// </summary>
+      /// <param name="regexPattern"></param>
+      /// <returns></returns>
+      public System.Collections.Generic.List<Range> FindSplits(System.ReadOnlySpan<char> input, bool reverse = false)
+      {
+        var ranges = new System.Collections.Generic.List<Range>();
+        foreach (var range in regex.EnumerateSplits(input))
+          ranges.Add(range);
+        if (reverse)
+          ranges.Reverse();
+        return ranges;
+      }
+    }
+
     extension(System.Text.RegularExpressions.Match match)
     {
-      /// <summary>All expressions are unanchored (for now).</summary>
-      public System.Collections.Generic.IDictionary<string, string> GetNamedGroups()
+      /// <summary>
+      /// <para>Creates a <see cref="System.Collections.Generic.IDictionary{TKey, TValue}"/> with explicitly named groups in a <see cref="System.Text.RegularExpressions.Match"/>.</para>
+      /// </summary>
+      /// <remarks>A <see cref="System.Text.RegularExpressions.Regex"/> pattern cannot contain groups with names that consist entirely of digits. Numeric group names therefore represent unnamed groups and are excluded.</remarks>
+      /// <returns></returns>
+      public System.Collections.Generic.IDictionary<string, System.Text.RegularExpressions.Group> GetNamedGroups()
       {
         System.ArgumentNullException.ThrowIfNull(match);
 
-        var dictionary = new System.Collections.Generic.SortedDictionary<string, string>();
+        var dictionary = new System.Collections.Generic.OrderedDictionary<string, System.Text.RegularExpressions.Group>();
 
-        var groups = match.Groups;
-
-        for (var index = groups.Count - 1; index >= 0; index--)
-        {
-          var group = groups[index];
-
-          if (!group.Name.Equals(index.ToString(System.Globalization.CultureInfo.CurrentCulture), System.StringComparison.InvariantCulture))
-            dictionary.Add(group.Name, group.Value);
-        }
+        foreach (var group in match.Groups.Cast<System.Text.RegularExpressions.Group>().Skip(1))
+          if (!int.TryParse(group.Name, out _))
+            dictionary.Add(group.Name, group);
 
         return dictionary;
       }

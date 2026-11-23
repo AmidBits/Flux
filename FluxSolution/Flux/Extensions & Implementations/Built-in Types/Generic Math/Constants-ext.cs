@@ -114,9 +114,9 @@
       ? TNumberBase.CreateChecked(System.UInt128.MaxValue)
       : NumericTypeInfo<TNumberBase>.IsSystemHalf
       ? TNumberBase.CreateChecked(2048)
-      : NumericTypeInfo<TNumberBase>.IsFamilyIeeeBinary32
+      : NumericTypeInfo<TNumberBase>.IsIeeeBinary32
       ? TNumberBase.CreateChecked(16777216)
-      : NumericTypeInfo<TNumberBase>.IsFamilyIeeeBinary64
+      : NumericTypeInfo<TNumberBase>.IsIeeeBinary64
       ? TNumberBase.CreateChecked(9007199254740992)
       : NumericTypeInfo<TNumberBase>.IsSystemNumericsBFloat16
       ? TNumberBase.CreateChecked(128)
@@ -169,9 +169,9 @@
       ? TNumberBase.CreateChecked(System.UInt128.MaxValue - 158)
       : NumericTypeInfo<TNumberBase>.IsSystemHalf
       ? TNumberBase.CreateChecked(2039)
-      : NumericTypeInfo<TNumberBase>.IsFamilyIeeeBinary32
+      : NumericTypeInfo<TNumberBase>.IsIeeeBinary32
       ? TNumberBase.CreateChecked(16777213)
-      : NumericTypeInfo<TNumberBase>.IsFamilyIeeeBinary64
+      : NumericTypeInfo<TNumberBase>.IsIeeeBinary64
       ? TNumberBase.CreateChecked(9007199254740881ul)
       : NumericTypeInfo<TNumberBase>.IsSystemNumericsBFloat16
       ? TNumberBase.CreateChecked(127)

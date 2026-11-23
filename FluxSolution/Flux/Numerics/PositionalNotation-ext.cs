@@ -11,30 +11,20 @@ namespace Flux
     /// <param name="radix"></param>
     /// <param name="positionalNotationIndices"></param>
     /// <returns></returns>
-    public static bool TryConvertNumberToPositionalNotationIndices<TInteger, TRadix>(this TInteger value, TRadix radix, out System.Collections.Generic.List<int> positionalNotationIndices)
+    public static void ConvertNumberToPositionalNotationIndices<TInteger, TRadix>(this TInteger value, TRadix radix, out System.Collections.Generic.List<int> positionalNotationIndices)
       where TInteger : System.Numerics.IBinaryInteger<TInteger>
       where TRadix : System.Numerics.IBinaryInteger<TRadix>
     {
-      System.ArgumentOutOfRangeException.ThrowIfLessThanOrEqual(radix, TRadix.One);
+      BinaryInteger.AssertRadix(radix, out TInteger rdx);
 
-      positionalNotationIndices = [];
+      positionalNotationIndices = [with(BinaryInteger.MaxRepresentableDigitCount(TInteger.Abs(value).GetShortestBitLength(), radix, false))];
 
-      try
+      while (!TInteger.IsZero(value))
       {
-        var rdx = TInteger.CreateChecked(radix);
+        (value, var remainder) = TInteger.DivRem(value, rdx);
 
-        while (!TInteger.IsZero(value))
-        {
-          (value, var remainder) = TInteger.DivRem(value, rdx);
-
-          positionalNotationIndices.Insert(0, int.CreateChecked(remainder));
-        }
-
-        return true;
+        positionalNotationIndices.Insert(0, int.CreateChecked(remainder));
       }
-      catch { }
-
-      return false;
     }
 
     /// <summary>
@@ -46,30 +36,20 @@ namespace Flux
     /// <param name="radix"></param>
     /// <param name="value"></param>
     /// <returns></returns>
-    public static bool TryConvertPositionalNotationIndicesToNumber<TRadix, TInteger>(this System.Collections.Generic.List<int> positionalNotationIndices, TRadix radix, out TInteger value)
+    public static void ConvertPositionalNotationIndicesToNumber<TRadix, TInteger>(this System.Collections.Generic.List<int> positionalNotationIndices, TRadix radix, out TInteger value)
       where TRadix : System.Numerics.IBinaryInteger<TRadix>
       where TInteger : System.Numerics.IBinaryInteger<TInteger>
     {
-      System.ArgumentOutOfRangeException.ThrowIfLessThanOrEqual(radix, TRadix.One);
+      BinaryInteger.AssertRadix(radix, out TInteger rdx);
 
       value = TInteger.Zero;
 
-      try
+      for (var index = 0; index < positionalNotationIndices.Count; index++)
       {
-        var rdx = TInteger.CreateChecked(radix);
+        value *= rdx;
 
-        for (var index = 0; index < positionalNotationIndices.Count; index++)
-        {
-          value *= rdx;
-
-          value += TInteger.CreateChecked(positionalNotationIndices[index]);
-        }
-
-        return true;
+        value += TInteger.CreateChecked(positionalNotationIndices[index]);
       }
-      catch { }
-
-      return false;
     }
 
     /// <summary>
@@ -80,21 +60,12 @@ namespace Flux
     /// <param name="alphabet"></param>
     /// <param name="symbols"></param>
     /// <returns></returns>
-    public static bool TryTransposePositionalNotationIndicesToSymbols<TSymbol>(this System.Collections.Generic.List<int> positionalNotationIndices, System.ReadOnlySpan<TSymbol> alphabet, out System.Collections.Generic.List<TSymbol> symbols)
+    public static void TransposePositionalNotationIndicesToSymbols<TSymbol>(this System.Collections.Generic.List<int> positionalNotationIndices, System.ReadOnlySpan<TSymbol> alphabet, out System.Collections.Generic.List<TSymbol> symbols)
     {
-      try
-      {
-        symbols = [];
+      symbols = [];
 
-        for (var i = 0; i < positionalNotationIndices.Count; i++)
-          symbols.Add(alphabet[positionalNotationIndices[i]]);
-
-        return true;
-      }
-      catch { }
-
-      symbols = new();
-      return false;
+      for (var i = 0; i < positionalNotationIndices.Count; i++)
+        symbols.Add(alphabet[positionalNotationIndices[i]]);
     }
 
     /// <summary>
@@ -105,21 +76,12 @@ namespace Flux
     /// <param name="alphabet"></param>
     /// <param name="positionalNotationIndices"></param>
     /// <returns></returns>
-    public static bool TryTransposeSymbolsToPositionalNotationIndices<TSymbol>(this System.Collections.Generic.List<TSymbol> symbols, System.ReadOnlySpan<TSymbol> alphabet, out System.Collections.Generic.List<int> positionalNotationIndices)
+    public static void TransposeSymbolsToPositionalNotationIndices<TSymbol>(this System.Collections.Generic.List<TSymbol> symbols, System.ReadOnlySpan<TSymbol> alphabet, out System.Collections.Generic.List<int> positionalNotationIndices)
     {
-      try
-      {
-        positionalNotationIndices = new(symbols.Count);
+      positionalNotationIndices = [with(symbols.Count)];
 
-        for (var i = 0; i < symbols.Count; i++)
-          positionalNotationIndices[i] = alphabet.IndexOf(symbols[i]);
-
-        return true;
-      }
-      catch { }
-
-      positionalNotationIndices = new();
-      return false;
+      for (var i = 0; i < symbols.Count; i++)
+        positionalNotationIndices[i] = alphabet.IndexOf(symbols[i]);
     }
   }
 }

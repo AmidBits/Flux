@@ -8,7 +8,7 @@ namespace Flux.Net.Nmea
     private static partial System.Text.RegularExpressions.Regex SentenceRegex();
 
     protected readonly string m_raw;
-    protected readonly System.Collections.Generic.IDictionary<string, string> m_metaData;
+    protected readonly System.Collections.Generic.IDictionary<string, System.Text.RegularExpressions.Group> m_metaData;
     protected readonly string[] m_values;
 
     public NmeaSentence(string sentence)
@@ -22,22 +22,22 @@ namespace Flux.Net.Nmea
 
     public string Raw
       => m_raw;
-    public System.Collections.Generic.IReadOnlyDictionary<string, string> MetaData
-      => (System.Collections.Generic.IReadOnlyDictionary<string, string>)m_metaData;
+    public System.Collections.Generic.IReadOnlyDictionary<string, System.Text.RegularExpressions.Group> MetaData
+      => (System.Collections.Generic.IReadOnlyDictionary<string, System.Text.RegularExpressions.Group>)m_metaData;
     public System.Collections.Generic.IReadOnlyList<string> Values
       => m_values;
 
     public string StartOfSentence
-      => m_metaData[nameof(StartOfSentence)];
+      => m_metaData[nameof(StartOfSentence)].Value;
     public string SentenceContent
-      => m_metaData[nameof(SentenceContent)];
+      => m_metaData[nameof(SentenceContent)].Value;
     public string EndOfSentence
-      => m_metaData[nameof(EndOfSentence)];
+      => m_metaData[nameof(EndOfSentence)].Value;
     public string SentenceChecksum
-      => m_metaData[nameof(SentenceChecksum)];
+      => m_metaData[nameof(SentenceChecksum)].Value;
     public string SentenceChecksumComputed { get; }
     public string SentenceTermination
-      => m_metaData[nameof(SentenceTermination)];
+      => m_metaData[nameof(SentenceTermination)].Value;
 
     public string Code
       => m_values[0];

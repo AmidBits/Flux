@@ -133,8 +133,8 @@ namespace Numerics
       var actual = unchecked(Flux.BinaryInteger.CreateLsbMask((uint)templateBitMask, templateBitLength, expected.BitLength));
 
       // Debug:
-      var e = expected.ToBinaryString();
-      var a = actual.ToBinaryString();
+      var e = BinaryInteger.ToBinaryString(expected);
+      var a = BinaryInteger.ToBinaryString(actual);
 
       Assert.AreEqual(expected, actual);
     }
@@ -149,8 +149,8 @@ namespace Numerics
       var actual = unchecked(Flux.BinaryInteger.CreateMsbMask((uint)templateBitMask, templateBitLength, expected.BitLength));
 
       // Debug:
-      var e = expected.ToBinaryString();
-      var a = actual.ToBinaryString();
+      var e = BinaryInteger.ToBinaryString(expected);
+      var a = BinaryInteger.ToBinaryString(actual);
 
       Assert.AreEqual(expected, actual);
     }

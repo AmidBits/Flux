@@ -163,13 +163,13 @@
 
     #region Properties
 
-    public string BinaryString => m_uint128.ToBinaryString().ToString();
+    public string BinaryString => BinaryInteger.ToBinaryString(m_uint128).ToString();
     public int BinaryStringLength => BinaryString.Length;
-    public string DecimalString => m_uint128.ToDecimalString().ToString();
+    public string DecimalString => BinaryInteger.ToDecimalString(m_uint128).ToString();
     public int DecimalStringLength => DecimalString.Length;
-    public string HexadecimalString => m_uint128.ToHexadecimalString().ToString();
+    public string HexadecimalString => BinaryInteger.ToHexadecimalString(m_uint128).ToString();
     public int HexadecimalStringLength => HexadecimalString.Length;
-    public string OctalString => m_uint128.ToOctalString().ToString();
+    public string OctalString => BinaryInteger.ToOctalString(m_uint128).ToString();
     public int OctalStringLength => OctalString.Length;
 
     public byte Byte0 { readonly get => m_byte_0; set => m_byte_0 = value; }

@@ -507,7 +507,7 @@ namespace Flux
       {
         var removed = 0;
 
-        var ranges = source.AsReadOnlySpan().RegexMatches(pattern);
+        var ranges = new System.Text.RegularExpressions.Regex(pattern).FindMatches(source);
 
         for (var i = ranges.Count - 1; i >= 0; i--)
         {
@@ -536,7 +536,7 @@ namespace Flux
       {
         var removed = 0;
 
-        var ranges = source.AsReadOnlySpan().RegexMatches(pattern);
+        var ranges = new System.Text.RegularExpressions.Regex(pattern).FindMatches(source);
 
         for (var i = ranges.Count - 1; i >= 0; i--)
         {

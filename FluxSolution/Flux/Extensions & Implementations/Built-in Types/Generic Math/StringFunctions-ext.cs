@@ -2,7 +2,7 @@ namespace Flux
 {
   public static partial class BinaryInteger
   {
-    extension<TInteger>(TInteger value)
+    extension<TInteger>(TInteger)
       where TInteger : System.Numerics.IBinaryInteger<TInteger>
     {
       #region ToBinaryString
@@ -16,13 +16,14 @@ namespace Flux
       /// <param name="alphabet"></param>
       /// <returns></returns>
       /// <exception cref="System.ArgumentOutOfRangeException"></exception>
-      public string ToBinaryString(int minLength = 1, string? alphabet = null)
+      public static string ToBinaryString(TInteger value, int minLength = 1, string? alphabet = null)
       {
-        if (minLength <= 0) minLength = value.BitWidth;
+        if (minLength <= 0)
+          minLength = value.BitWidth;
 
         alphabet ??= System.Text.Encoding.Base62;
 
-        if (alphabet.Length < 2) throw new System.ArgumentOutOfRangeException(nameof(alphabet));
+        System.ArgumentOutOfRangeException.ThrowIfLessThan(alphabet.Length, 2);
 
         var indices = new System.Collections.Generic.List<int>();
 
@@ -34,7 +35,7 @@ namespace Flux
             indices.Add(bitValue);
         }
 
-        indices.TryTransposePositionalNotationIndicesToSymbols(alphabet, out System.Collections.Generic.List<char> symbols);
+        indices.TransposePositionalNotationIndicesToSymbols(alphabet, out System.Collections.Generic.List<char> symbols);
 
         return symbols.AsSpan().ToString();
       }
@@ -43,7 +44,7 @@ namespace Flux
 
       #region ToCardinalNumeralString
 
-      public string ToCardinalNumeralString() => NumeralComposition.ToCardinalNumeralString(value);
+      public static string ToCardinalNumeralString(TInteger value) => NumeralComposition.ToCardinalNumeralString(value);
 
       #endregion
 
@@ -57,22 +58,23 @@ namespace Flux
       /// <param name="alphabet">If <see langword="null"/> then <see cref="string.Base62"/>.</param>
       /// <returns></returns>
       /// <exception cref="System.ArgumentOutOfRangeException"></exception>
-      public string ToDecimalString(int minLength = 1, string? alphabet = null, char negativeSymbol = '\u002D')
+      public static string ToDecimalString(TInteger value, int minLength = 1, string? alphabet = null, char negativeSymbol = '\u002D')
       {
-        if (minLength <= 0) minLength = MaxRepresentableDigitCount(value.BitWidth, 10, NumericTypeInfo<TInteger>.ImplementsISignedNumber);
+        if (minLength <= 0)
+          minLength = MaxRepresentableDigitCount(value.BitWidth, 10, NumericTypeInfo<TInteger>.ImplementsISignedNumber);
 
         alphabet ??= System.Text.Encoding.Base62;
 
-        if (alphabet.Length < 10) throw new System.ArgumentOutOfRangeException(nameof(alphabet));
+        System.ArgumentOutOfRangeException.ThrowIfLessThan(alphabet.Length, 10);
 
         var abs = TInteger.Abs(value);
 
-        abs.TryConvertNumberToPositionalNotationIndices(10, out var indices);
+        abs.ConvertNumberToPositionalNotationIndices(10, out var indices);
 
         while (indices.Count < minLength)
           indices.Insert(0, 0); // Pad left with zeroth element.
 
-        indices.TryTransposePositionalNotationIndicesToSymbols(alphabet, out System.Collections.Generic.List<char> symbols);
+        indices.TransposePositionalNotationIndicesToSymbols(alphabet, out System.Collections.Generic.List<char> symbols);
 
         if (TInteger.IsNegative(value))
           symbols.Insert(0, negativeSymbol); // If the value is negative AND base-2 (radix) is 10 (decimal)...
@@ -91,13 +93,14 @@ namespace Flux
       /// <param name="alphabet">If <see langword="null"/> then <see cref="string.Base62"/>.</param>
       /// <returns></returns>
       /// <exception cref="System.ArgumentOutOfRangeException"></exception>
-      public string ToHexadecimalString(int minLength = 1, string? alphabet = null)
+      public static string ToHexadecimalString(TInteger value, int minLength = 1, string? alphabet = null)
       {
-        if (minLength <= 0) minLength = MaxRepresentableDigitCount(value.BitWidth, 16, NumericTypeInfo<TInteger>.ImplementsISignedNumber);
+        if (minLength <= 0)
+          minLength = MaxRepresentableDigitCount(value.BitWidth, 16, NumericTypeInfo<TInteger>.ImplementsISignedNumber);
 
         alphabet ??= System.Text.Encoding.Base62;
 
-        if (alphabet.Length < 16) throw new System.ArgumentOutOfRangeException(nameof(alphabet));
+        System.ArgumentOutOfRangeException.ThrowIfLessThan(alphabet.Length, 16);
 
         var indices = new System.Collections.Generic.List<int>();
 
@@ -109,7 +112,7 @@ namespace Flux
             indices.Add(nibbleValue);
         }
 
-        indices.TryTransposePositionalNotationIndicesToSymbols(alphabet, out System.Collections.Generic.List<char> symbols);
+        indices.TransposePositionalNotationIndicesToSymbols(alphabet, out System.Collections.Generic.List<char> symbols);
 
         return symbols.AsSpan().ToString();
       }
@@ -125,20 +128,21 @@ namespace Flux
       /// <param name="alphabet">If <see langword="null"/> then <see cref="string.Base62"/>.</param>
       /// <returns></returns>
       /// <exception cref="System.ArgumentOutOfRangeException"></exception>
-      public string ToOctalString(int minLength = 1, string? alphabet = null)
+      public static string ToOctalString(TInteger value, int minLength = 1, string? alphabet = null)
       {
-        if (minLength <= 0) minLength = MaxRepresentableDigitCount(value.BitWidth, 8, NumericTypeInfo<TInteger>.ImplementsISignedNumber);
+        if (minLength <= 0)
+          minLength = MaxRepresentableDigitCount(value.BitWidth, 8, NumericTypeInfo<TInteger>.ImplementsISignedNumber);
 
         alphabet ??= System.Text.Encoding.Base62;
 
-        if (alphabet.Length < 8) throw new System.ArgumentOutOfRangeException(nameof(alphabet));
+        System.ArgumentOutOfRangeException.ThrowIfLessThan(alphabet.Length, 8);
 
-        value.TryConvertNumberToPositionalNotationIndices(8, out var indices);
+        value.ConvertNumberToPositionalNotationIndices(8, out var indices);
 
         while (indices.Count < minLength)
           indices.Insert(0, 0); // Pad left with zeroth element.
 
-        indices.TryTransposePositionalNotationIndicesToSymbols(alphabet, out System.Collections.Generic.List<char> symbols);
+        indices.TransposePositionalNotationIndicesToSymbols(alphabet, out System.Collections.Generic.List<char> symbols);
 
         return symbols.AsSpan().ToString();
       }
@@ -153,14 +157,14 @@ namespace Flux
       /// <typeparam name="TInteger"></typeparam>
       /// <param name="value"></param>
       /// <returns></returns>
-      public string ToOrdinalIndicatorString()
+      public static string ToOrdinalIndicatorString(TInteger value)
         => value.ToString() + GetOrdinalIndicatorSuffix(value);
 
       #endregion
 
       #region ToOrdinalNumeralString
 
-      public string ToOrdinalNumeralString() => NumeralComposition.ToOrdinalNumeralString(value);
+      public static string ToOrdinalNumeralString(TInteger value) => NumeralComposition.ToOrdinalNumeralString(value);
 
       #endregion
 
@@ -175,7 +179,7 @@ namespace Flux
       /// <param name="alphabet">If <see langword="null"/> then <see cref="string.Base62"/>.</param>
       /// <returns></returns>
       /// <exception cref="System.ArgumentOutOfRangeException"></exception>
-      public string ToRadixString<TRadix>(TRadix radix, int minLength = 1, string? alphabet = null)
+      public static string ToRadixString<TRadix>(TInteger value, TRadix radix, int minLength = 1, string? alphabet = null)
         where TRadix : System.Numerics.IBinaryInteger<TRadix>
       {
         System.ArgumentOutOfRangeException.ThrowIfLessThanOrEqual(radix, TRadix.One);
@@ -183,27 +187,27 @@ namespace Flux
         var rdx = int.CreateChecked(radix);
 
         if (rdx == 2)
-          return value.ToBinaryString(minLength, alphabet);
+          return ToBinaryString(value, minLength, alphabet);
         else if (rdx == 8)
-          return value.ToOctalString(minLength, alphabet);
+          return ToOctalString(value, minLength, alphabet);
         else if (rdx == 10)
-          return value.ToDecimalString(minLength, alphabet);
+          return ToDecimalString(value, minLength, alphabet);
         else if (rdx == 16)
-          return value.ToHexadecimalString(minLength, alphabet);
+          return ToHexadecimalString(value, minLength, alphabet);
         else
         {
           if (minLength <= 0) minLength = MaxRepresentableDigitCount(value.BitWidth, rdx, NumericTypeInfo<TInteger>.ImplementsISignedNumber);
 
           alphabet ??= System.Text.Encoding.Base62;
 
-          if (alphabet.Length < rdx) throw new System.ArgumentOutOfRangeException(nameof(alphabet));
+          System.ArgumentOutOfRangeException.ThrowIfLessThan(alphabet.Length, rdx);
 
-          value.TryConvertNumberToPositionalNotationIndices(radix, out var indices);
+          value.ConvertNumberToPositionalNotationIndices(radix, out var indices);
 
           while (indices.Count < minLength)
             indices.Insert(0, 0); // Pad left with zeroth element.
 
-          indices.TryTransposePositionalNotationIndicesToSymbols(alphabet, out System.Collections.Generic.List<char> symbols);
+          indices.TransposePositionalNotationIndicesToSymbols(alphabet, out System.Collections.Generic.List<char> symbols);
 
           return symbols.AsSpan().ToString();
         }
@@ -221,7 +225,7 @@ namespace Flux
       /// <param name="radix"></param>
       /// <param name="minLength"></param>
       /// <returns></returns>
-      public string ToSubscriptString<TRadix>(TRadix radix, int minLength = 1)
+      public static string ToSubscriptString<TRadix>(TInteger value, TRadix radix, int minLength = 1)
         where TRadix : System.Numerics.IBinaryInteger<TRadix>
       {
         var alphabet = "\u2080\u2081\u2082\u2083\u2084\u2085\u2086\u2087\u2088\u2089";
@@ -242,7 +246,7 @@ namespace Flux
       /// <param name="minLength"></param>
       /// <param name="upperCase"></param>
       /// <returns></returns>
-      public string ToSuperscriptString<TRadix>(TRadix radix, int minLength = 1, bool upperCase = false)
+      public static string ToSuperscriptString<TRadix>(TInteger value, TRadix radix, int minLength = 1, bool upperCase = false)
         where TRadix : System.Numerics.IBinaryInteger<TRadix>
       {
         var alphabet = "\u2070\u00B9\u00B2\u00B3\u2074\u2075\u2076\u2077\u2078\u2079";
@@ -260,18 +264,18 @@ namespace Flux
 
   public static partial class FloatingPoint
   {
-    extension<TFloat>(TFloat value)
+    extension<TFloat>(TFloat)
       where TFloat : System.Numerics.IFloatingPoint<TFloat>
     {
       #region ToCardinalNumeralString
 
-      public string ToCardinalNumeralString() => NumeralComposition.ToCardinalNumeralString(value);
+      public static string ToCardinalNumeralString(TFloat value) => NumeralComposition.ToCardinalNumeralString(value);
 
       #endregion
 
       #region ToStringWithCustomDecimals
 
-      public string ToStringWithCustomDecimals(int numberOfDecimals = 339)
+      public static string ToStringWithCustomDecimals(TFloat value, int numberOfDecimals = 339)
         => value.ToString(BinaryInteger.CreateFormatStringWithCountDecimals(numberOfDecimals), null);
 
       #endregion
@@ -280,7 +284,7 @@ namespace Flux
 
   public static partial class Number
   {
-    extension<TNumber>(TNumber value)
+    extension<TNumber>(TNumber)
     where TNumber : System.Numerics.INumber<TNumber>
     {
       #region ToEngineeringNotationString
@@ -294,7 +298,7 @@ namespace Flux
       /// <param name="formatProvider"></param>
       /// <param name="restrictToTriplets"></param>
       /// <returns></returns>
-      public string ToEngineeringNotationString(string? unit = null, string? format = null, System.IFormatProvider? formatProvider = null, bool restrictToTriplets = true, UnicodeSpacing spacing = UnicodeSpacing.Space, System.Text.StringBuilder? stringBuilder = null)
+      public static string ToEngineeringNotationString(TNumber value, string? unit = null, string? format = null, System.IFormatProvider? formatProvider = null, bool restrictToTriplets = true, UnicodeSpacing spacing = UnicodeSpacing.Space, System.Text.StringBuilder? stringBuilder = null)
       {
         stringBuilder ??= new System.Text.StringBuilder();
 

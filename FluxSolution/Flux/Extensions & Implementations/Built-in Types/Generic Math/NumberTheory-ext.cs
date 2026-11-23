@@ -799,7 +799,7 @@
       /// <summary>Creates a new sequence of descending possible primes, less-than-or-equal-to a specified number.</summary>
       private static System.Collections.Generic.IEnumerable<TInteger> DescendingPrimeCandidates(TInteger n)
       {
-        var maxPrimeMultiple = TInteger.One.BitFoldToMsb();
+        var maxPrimeMultiple = TInteger.AllBitsSet;
 
         if (NumericTypeInfo<TInteger>.ImplementsISignedNumber)
           maxPrimeMultiple >>>= 1;

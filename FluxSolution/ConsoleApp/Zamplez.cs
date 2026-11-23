@@ -328,21 +328,21 @@ namespace ConsoleApp
       //n = -3;
       System.Console.WriteLine($"          Number = {n}");
 
-      var bibs = n.ToBinaryString();
+      var bibs = BinaryInteger.ToBinaryString(n);
       System.Console.WriteLine($"          Binary = {bibs}");
-      var bios = n.ToOctalString();
+      var bios = BinaryInteger.ToOctalString(n);
       System.Console.WriteLine($"           Octal = {bios}");
-      var bids = n.ToDecimalString();
+      var bids = BinaryInteger.ToDecimalString(n);
       System.Console.WriteLine($"         Decimal = {bids}");
-      var bihs = n.ToHexadecimalString();
+      var bihs = BinaryInteger.ToHexadecimalString(n);
       System.Console.WriteLine($"     Hexadecimal = {bihs}");
-      var bir2s = n.ToRadixString(2);
+      var bir2s = BinaryInteger.ToRadixString(n, 2);
       System.Console.WriteLine($"         Radix 2 = {bir2s}");
-      var bir8s = n.ToRadixString(8);
+      var bir8s = BinaryInteger.ToRadixString(n, 8);
       System.Console.WriteLine($"         Radix 8 = {bir8s}");
-      var bir10s = n.ToRadixString(10);
+      var bir10s = BinaryInteger.ToRadixString(n, 10);
       System.Console.WriteLine($"        Radix 10 = {bir10s}");
-      var bir16s = n.ToRadixString(16);
+      var bir16s = BinaryInteger.ToRadixString(n, 16);
       System.Console.WriteLine($"        Radix 16 = {bir16s}");
 
       //var rn = n.BinaryToGray();
@@ -356,27 +356,27 @@ namespace ConsoleApp
       System.Console.WriteLine($"Pow2AwayFromZero = {np2AwayFromZero}");
 
       var birbits = BinaryInteger.ReverseBits(n);
-      System.Console.WriteLine($"    Reverse Bits = {birbits.ToBinaryString()}");
+      System.Console.WriteLine($"    Reverse Bits = {BinaryInteger.ToBinaryString(birbits)}");
       var birbyts = BinaryInteger.ReverseBytes(n);
-      System.Console.WriteLine($"   Reverse Bytes = {birbyts.ToBinaryString()}");
+      System.Console.WriteLine($"   Reverse Bytes = {BinaryInteger.ToBinaryString(birbyts)}");
 
       var bfl = n.BitFoldToMsb();
       System.Console.WriteLine($"   Bit-Fold Left = {bfl}");
-      var bfls = bfl.ToBinaryString();
+      var bfls = BinaryInteger.ToBinaryString(bfl);
       System.Console.WriteLine($"       As Binary = {bfls}");
       var bfr = n.BitFoldToLsb();
       System.Console.WriteLine($"  Bit-Fold Right = {bfr}");
-      var bfrs = bfr.ToBinaryString();
+      var bfrs = BinaryInteger.ToBinaryString(bfr);
       System.Console.WriteLine($"       As Binary = {bfrs}");
       //var bsbl = n.GetShortestBitLength();
       var bln = n.BitLength;
       //var l2 = bi.IntegerLog2();
       var ms1b = n.MostSignificant1Bit;
       var bmr = BinaryInteger.CreateLsbMask(n.BitLength);
-      var bmrs = bmr.ToBinaryString();
+      var bmrs = BinaryInteger.ToBinaryString(bmr);
       var bmrsl = bmrs.Length;
       var bml = BinaryInteger.CreateMsbMask(n.BitLength);
-      var bmls = bml.ToBinaryString();
+      var bmls = BinaryInteger.ToBinaryString(bml);
       var bmlsl = bmls.Length;
     }
 

@@ -7,7 +7,7 @@
     {
       #region Try/First
 
-      public static TInteger First(TInteger lowerInclusive, TInteger upperExclusive, Func<TInteger, bool> predicate)
+      public static TInteger First(TInteger lowerInclusive, TInteger upperExclusive, System.Func<TInteger, bool> predicate)
       {
         while (lowerInclusive < upperExclusive)
         {
@@ -22,7 +22,7 @@
         return lowerInclusive;
       }
 
-      public static bool TryFirst(TInteger lowerInclusive, TInteger upperExclusive, Func<TInteger, bool> predicate, out TInteger result)
+      public static bool TryFirst(TInteger lowerInclusive, TInteger upperExclusive, System.Func<TInteger, bool> predicate, out TInteger result)
       {
         result = default!;
 
@@ -53,10 +53,10 @@
 
       #region Try/Last
 
-      public static TInteger Last(TInteger lowerInclusive, TInteger upperExclusive, Func<TInteger, bool> predicate)
+      public static TInteger Last(TInteger lowerInclusive, TInteger upperExclusive, System.Func<TInteger, bool> predicate)
         => First(lowerInclusive, upperExclusive, x => !predicate(x)) - TInteger.One;
 
-      public static bool TryLast(TInteger lowerInclusive, TInteger upperExclusive, Func<TInteger, bool> predicate, out TInteger result)
+      public static bool TryLast(TInteger lowerInclusive, TInteger upperExclusive, System.Func<TInteger, bool> predicate, out TInteger result)
       {
         result = default!;
 
@@ -95,7 +95,6 @@
     public static bool Contains<TComparable>(System.Collections.Generic.IReadOnlyList<TComparable> values, TComparable value)
       where TComparable : System.IComparable<TComparable>
       => IndexOf(values, value) >= 0;
-
 
     #endregion
 

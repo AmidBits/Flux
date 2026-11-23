@@ -1,5 +1,37 @@
 namespace Flux
 {
+  public static class NumericTypeInfo
+  {
+    public static void Preload()
+    {
+      var t1 = Flux.NumericTypeInfo<System.Numerics.BFloat16>.ToStringEx();
+      var t2 = Flux.NumericTypeInfo<Flux.Numerics.BigDecimal>.ToStringEx();
+      var t3 = Flux.NumericTypeInfo<System.Numerics.BigInteger>.ToStringEx();
+      var t4 = Flux.NumericTypeInfo<Flux.Numerics.BigRational>.ToStringEx();
+      var t5 = Flux.NumericTypeInfo<byte>.ToStringEx();
+      var t6 = Flux.NumericTypeInfo<System.Numerics.Complex>.ToStringEx();
+      var t7 = Flux.NumericTypeInfo<System.Numerics.Complex<System.Numerics.Decimal128>>.ToStringEx();
+      var t8 = Flux.NumericTypeInfo<decimal>.ToStringEx();
+      var t9 = Flux.NumericTypeInfo<System.Numerics.Decimal32>.ToStringEx();
+      var t10 = Flux.NumericTypeInfo<System.Numerics.Decimal64>.ToStringEx();
+      var t11 = Flux.NumericTypeInfo<System.Numerics.Decimal128>.ToStringEx();
+      var t12 = Flux.NumericTypeInfo<double>.ToStringEx();
+      var t13 = Flux.NumericTypeInfo<System.Half>.ToStringEx();
+      var t14 = Flux.NumericTypeInfo<short>.ToStringEx();
+      var t15 = Flux.NumericTypeInfo<int>.ToStringEx();
+      var t16 = Flux.NumericTypeInfo<long>.ToStringEx();
+      var t17 = Flux.NumericTypeInfo<System.Int128>.ToStringEx();
+      var t18 = Flux.NumericTypeInfo<System.IntPtr>.ToStringEx();
+      var t19 = Flux.NumericTypeInfo<System.Runtime.InteropServices.NFloat>.ToStringEx();
+      var t20 = Flux.NumericTypeInfo<System.SByte>.ToStringEx();
+      var t21 = Flux.NumericTypeInfo<float>.ToStringEx();
+      var t22 = Flux.NumericTypeInfo<ushort>.ToStringEx();
+      var t23 = Flux.NumericTypeInfo<uint>.ToStringEx();
+      var t24 = Flux.NumericTypeInfo<ulong>.ToStringEx();
+      var t25 = Flux.NumericTypeInfo<System.UInt128>.ToStringEx();
+      var t26 = Flux.NumericTypeInfo<System.UIntPtr>.ToStringEx();
+    }
+  }
   public static class NumericTypeInfo<TNumberBase>
     where TNumberBase : System.Numerics.INumberBase<TNumberBase>
   {
@@ -123,10 +155,18 @@ namespace Flux
           Parsable |= parsable;
       }
 
-      // Sanity checks.
+      NumericDomain // Depends on the flags above to be already set.
+        = IsUnsignedInteger ? NumericDomain.NaturalNumbers
+        : IsSignedInteger ? NumericDomain.Integers
+        : IsFluxNumericsBigDecimal || IsFluxNumericsBigRational ? NumericDomain.RationalNumbers
+        : IsIeeeBinary32 || IsIeeeBinary64 || IsIeeeDecimalN || IsSystemDecimal || IsSystemHalf || IsSystemNumericsBFloat16 ? NumericDomain.RealNumbers
+        : IsSystemNumericsComplex || IsSystemNumericsComplexT ? NumericDomain.ComplexNumbers
+        : NumericDomain.Unknown;
 
-      System.Diagnostics.Debug.Assert(IntPtr.Size == UIntPtr.Size);
-      System.Diagnostics.Debug.Assert(IntPtr.Size == System.Runtime.InteropServices.NFloat.Size);
+      // Ensure all native sizes are the same.
+      System.Diagnostics.Debug.Assert(System.IntPtr.Size == System.UIntPtr.Size);
+      System.Diagnostics.Debug.Assert(System.UIntPtr.Size == System.Runtime.InteropServices.NFloat.Size);
+      System.Diagnostics.Debug.Assert(System.Runtime.InteropServices.NFloat.Size == System.IntPtr.Size);
 
       System.Diagnostics.Debug.WriteLine(ToStringEx());
     }
@@ -185,6 +225,12 @@ namespace Flux
 
     /// <summary>Indicates whether the type implements <see cref="System.Numerics.IUnsignedNumber{TSelf}"/>.</summary>
     public static bool ImplementsIUnsignedNumber => (Core & NumericCore.IUnsignedNumber) != 0;
+
+    #endregion
+
+    #region NumericDomain
+
+    public static readonly NumericDomain NumericDomain;
 
     #endregion
 
@@ -301,14 +347,17 @@ namespace Flux
 
     #region Is[Namespace][Type]
 
+    /// <summary>Indicates whether the type represents <see cref="Flux.Numerics.BigDecimal"/>.</summary>
+    public static bool IsFluxNumericsBigDecimal => m_type == typeof(Flux.Numerics.BigDecimal);
+
+    /// <summary>Indicates whether the type represents <see cref="Flux.Numerics.BigRational"/>.</summary>
+    public static bool IsFluxNumericsBigRational => m_type == typeof(Flux.Numerics.BigRational);
+
     /// <summary>Indicates whether the type represents <see cref="System.Numerics.BFloat16"/>.</summary>
     public static bool IsSystemNumericsBFloat16 => m_type == typeof(System.Numerics.BFloat16);
 
     /// <summary>Indicates whether the type represents <see cref="System.Numerics.BigInteger"/>.</summary>
     public static bool IsSystemNumericsBigInteger => m_type == typeof(System.Numerics.BigInteger);
-
-    /// <summary>Indicates whether the type represents <see cref="Flux.Numerics.BigRational"/>.</summary>
-    public static bool IsFluxNumericsBigRational => m_type == typeof(Flux.Numerics.BigRational);
 
     /// <summary>Indicates whether the type represents <see cref="byte"/>.</summary>
     public static bool IsSystemByte => m_type == typeof(System.Byte);
@@ -378,99 +427,45 @@ namespace Flux
 
     #endregion
 
-    #region IsFamily..
-
-    /// <summary>
-    /// <para>Indicates wheter the type represents the family of 8-bit types.</para>
-    /// </summary>
-    public static bool IsFamilyComplex => IsSystemNumericsComplex || IsSystemNumericsComplexT;
-
-    public static bool IsFamilyIeeeBinary => IsFamilyIeeeBinary32 || IsFamilyIeeeBinary64
-      || IsSystemHalf;
-
-    /// <summary>Indicates whether the type represents the family of IEEE binary32 floating-point types, such as <see cref="System.Single"/> or <see cref="System.Runtime.InteropServices.NFloat"/> when <see cref="System.Runtime.InteropServices.NFloat.Size"/> is 4.</summary>
-    /// <remarks>For easy identification of 32-bit IEEE binary floating point types in .NET.</remarks>
-    public static bool IsFamilyIeeeBinary32 => IsSystemSingle
-      || (IsSystemRuntimeInteropServicesNFloat && IsNativeBitWidth32);
-
-    /// <summary>Indicates whether the type represents the family of IEEE binary64 floating-point types, such as <see cref="System.Double"/> or <see cref="System.Runtime.InteropServices.NFloat"/> when <see cref="System.Runtime.InteropServices.NFloat.Size"/> is 8.</summary>
-    /// <remarks>For easy identification of 32-bit IEEE decimal floating point types in .NET.</remarks>
-    public static bool IsFamilyIeeeBinary64 => IsSystemDouble
-      || (IsSystemRuntimeInteropServicesNFloat && IsNativeBitWidth64);
-
-    public static bool IsFamilyIeeeDecimal => IsSystemNumericsDecimal32 || IsSystemNumericsDecimal64 || IsSystemNumericsDecimal128
-      || IsSystemDecimal;
-
-    public static bool IsFamilyInteger => IsFamilyInteger8 || IsFamilyInteger16 || IsFamilyInteger32 || IsFamilyInteger64 || IsFamilyInteger128
-      || IsSystemNumericsBigInteger;
-
-    /// <summary>
-    /// <para>Indicates whether the type is an 8-bit integer.</para>
-    /// </summary>
-    public static bool IsFamilyInteger8 => IsSystemByte || IsSystemSByte;
-
-    /// <summary>
-    /// <para>Indicates whether the type is a 16-bit integer.</para>
-    /// </summary>
-    public static bool IsFamilyInteger16 => IsSystemInt16 || IsSystemUInt16;
-
-    /// <summary>
-    /// <para>Indicates whether the type is a 32-bit integer.</para>
-    /// </summary>
-    public static bool IsFamilyInteger32 => IsSystemInt32 || IsSystemUInt32
-      || (IsNativeBitWidth32 && (IsSystemIntPtr || IsSystemUIntPtr));
-
-    /// <summary>
-    /// <para>Indicates whether the type is a 64-bit integer.</para>
-    /// </summary>
-    public static bool IsFamilyInteger64 => IsSystemInt64 || IsSystemUInt64
-      || (IsNativeBitWidth64 && (IsSystemIntPtr || IsSystemUIntPtr));
-
-    /// <summary>
-    /// <para>Indicates whether the type is a 128-bit integer.</para>
-    /// </summary>
-    public static bool IsFamilyInteger128 => IsSystemInt128 || IsSystemUInt128;
-
-    public static bool IsFamilyRational => IsFluxNumericsBigRational;
-
-    #endregion
-
-    #region IsRadix..
-
-    /// <summary>
-    /// <para>Indicates whether the radix of the type is 2.</para>
-    /// </summary>
-    public static bool IsRadix2 => Radix == 2;
-
-    /// <summary>
-    /// <para>Indicates whether the radix of the type is 10.</para>
-    /// </summary>
-    public static bool IsRadix10 => Radix == 10;
-
-    #endregion
-
     #region Additional Information
 
-    /// <summary>Indicates whether the type has an unbounded bit-width, such as <see cref="System.Numerics.BigInteger"/>.</summary>
-    public static bool IsArbitraryPrecision => IsSystemNumericsBigInteger || IsFluxNumericsBigRational;
+    /// <summary>
+    /// <para>Indicates whether the type has an unbounded bit-width, such as <see cref="System.Numerics.BigInteger"/>.</para>
+    /// </summary>
+    public static bool IsArbitraryPrecision => IsSystemNumericsBigInteger || IsFluxNumericsBigDecimal || IsFluxNumericsBigRational;
 
-    /// <summary>Indicates whether the type has a fixed bit-width, such as <see cref="System.Decimal"/>, <see cref="System.Decimal128"/>, <see cref="System.Int32"/>, or <see cref="System.Single"/>.</summary>
+    ///// <summary>
+    ///// <para>Indicates wheter the type represents the numeric domain of complex numbers.</para>
+    ///// </summary>
+    //public static bool IsNumericDomainComplex => IsSystemNumericsComplex || IsSystemNumericsComplexT;
+
+    ///// <summary>
+    ///// <para>Indicates wheter the type represents the numeric domain of rational numbers.</para>
+    ///// </summary>
+    //public static bool IsNumericDomainRational => IsFluxNumericsBigDecimal || IsFluxNumericsBigRational;
+
+    ///// <summary>
+    ///// <para>Indicates wheter the type represents the numeric domain of real numbers.</para>
+    ///// </summary>
+    //public static bool IsNumericDomainReal => IsSystemHalf || IsIeeeBinary32 || IsIeeeBinary64;
+
+    /// <summary>
+    /// <para>Indicates whether the type has a fixed bit-width, such as <see cref="System.Decimal"/>, <see cref="System.Decimal128"/>, <see cref="System.Int32"/>, or <see cref="System.Single"/>.</para>
+    /// </summary>
     public static bool IsFixedWidth => !IsArbitraryPrecision;
 
-    /// <summary>
-    /// <para>Indicates whether this is a native type.</para>
-    /// </summary>
-    public static bool IsNative => IsSystemIntPtr || IsSystemRuntimeInteropServicesNFloat || IsSystemUIntPtr;
+    /// <summary>Indicates whether the type represents the family of IEEE binary32 floating-point types, such as <see cref="System.Single"/> or <see cref="System.Runtime.InteropServices.NFloat"/> when <see cref="System.Runtime.InteropServices.NFloat.Size"/> is 4.</summary>
+    /// <remarks>Needed to identify IEEE binary32 floating point types in .NET. NFloat is dependent on system hardware.</remarks>
+    public static bool IsIeeeBinary32 => IsSystemSingle || (IsSystemRuntimeInteropServicesNFloat && NativeByteCount == 4);
+
+    /// <summary>Indicates whether the type represents the family of IEEE binary64 floating-point types, such as <see cref="System.Double"/> or <see cref="System.Runtime.InteropServices.NFloat"/> when <see cref="System.Runtime.InteropServices.NFloat.Size"/> is 8.</summary>
+    /// <remarks>Needed to identify IEEE binary64 floating point types in .NET. NFloat is dependent on system hardware.</remarks>
+    public static bool IsIeeeBinary64 => IsSystemDouble || (IsSystemRuntimeInteropServicesNFloat && NativeByteCount == 8);
 
     /// <summary>
-    /// <para>Indicates whether the native size is 32 bits wide.</para>
+    /// <para>Indicates whether the type represents the family of IEEE decimal floating point types, such as <see cref="System.Numerics.Decimal32"/>, <see cref="System.Numerics.Decimal64"/> and <see cref="System.Numerics.Decimal128"/>.</para>
     /// </summary>
-    public static bool IsNativeBitWidth32 => NativeSizeInBytes == 4;
-
-    /// <summary>
-    /// <para>Indicates whether the native size is 64 bits wide.</para>
-    /// </summary>
-    public static bool IsNativeBitWidth64 => NativeSizeInBytes == 8;
+    public static bool IsIeeeDecimalN => IsSystemNumericsDecimal32 || IsSystemNumericsDecimal64 || IsSystemNumericsDecimal128;
 
     /// <summary>
     /// <para>Indicates whether the type represents a signed integer, such as <see cref="System.Int128"/>, <see cref="System.Int16"/>, <see cref="System.Int32"/>, <see cref="System.Int64"/>, <see cref="System.SByte"/>, or <see cref="System.Numerics.BigInteger"/>.</para>
@@ -485,24 +480,24 @@ namespace Flux
     /// <summary>
     /// <para>The width, in bits, of a native-sized value in the current process.</para>
     /// </summary>
-    public static int NativeBitWidth => System.IntPtr.Size * 8;
+    public static int NativeBitCount => System.IntPtr.Size * 8;
 
     /// <summary>
     /// <para>The size, in bytes, of a native-sized value in the current process.</para>
     /// </summary>
-    public static int NativeSizeInBytes => System.IntPtr.Size;
+    public static int NativeByteCount => System.IntPtr.Size;
 
     /// <summary>
     /// <para>The width of the type in bits.</para>
     /// </summary>
-    /// <remarks>For fixed-width types, this equals <see cref="TypeSizeInBytes"/> × 8. If <see cref="IsArbitraryPrecision"/> is <see langword="true"/>, this value is null, indicating an unbounded/not applicable bit-width.</remarks>
-    public static int? TypeBitWidth => TypeSizeInBytes * 8;
+    /// <remarks>For fixed-width types, this equals <see cref="ByteCount"/> × 8. If <see cref="IsArbitraryPrecision"/> is <see langword="true"/>, this value is null, indicating an unbounded/not applicable bit-width.</remarks>
+    public static int? BitCount => ByteCount * 8;
 
     /// <summary>
     /// <para>The number of bytes required to represent a value of the type.</para>
     /// </summary>
     /// <remarks>This does not include implementation-dependent padding, object headers, or additional heap allocations (for example, <see cref="System.Numerics.BigInteger"/>).</remarks>
-    public static int? TypeSizeInBytes => System.Runtime.CompilerServices.Unsafe.SizeOf<TNumberBase>();
+    public static int? ByteCount => IsArbitraryPrecision ? null : System.Runtime.CompilerServices.Unsafe.SizeOf<TNumberBase>();
 
     public static int Radix => TNumberBase.Radix;
 
@@ -515,25 +510,25 @@ namespace Flux
       sb.Append(m_type.FullName);
 
       if (m_type.GetCsharpAlias() is string keyword)
-        sb.Append($"/{keyword}");
+        sb.AppendSpaced($"({keyword})");
 
-      if (NumberBase.GetNumericDomain<TNumberBase>() != NumericDomain.Unknown)
+      if (NumericDomain != NumericDomain.Unknown)
         sb.AppendJoined($"{NumberBase.GetNumericDomainSymbol<TNumberBase>()}");
 
-      if (IsRadix2) sb.AppendJoined($"{nameof(IsRadix2)}/{Radix}");
-      if (IsRadix10) sb.AppendJoined($"{nameof(IsRadix10)}/{Radix}");
+      sb.Append(BinaryInteger.ToSubscriptString(Radix, 10));
+
+      //sb.AppendJoined($"{nameof(Radix)} {Radix}");
 
       if (IsArbitraryPrecision) sb.AppendJoined(nameof(IsArbitraryPrecision));
+      if (IsFixedWidth) sb.AppendJoined($"{ByteCount}-byte ({BitCount}-bit)");
 
-      if (IsFixedWidth) sb.AppendJoined($"{nameof(IsFixedWidth)} {TypeBitWidth}-bit ({TypeSizeInBytes} {Number.ToPlural("byte", TypeSizeInBytes ?? 0)})");
-
-      if (IsNative) sb.AppendJoined($"{nameof(IsNative)} {NativeBitWidth}-bit ({NativeSizeInBytes} {Number.ToPlural("byte", NativeSizeInBytes)})");
-
-      if (IsFluxNumericsBigRational) sb.AppendJoined(nameof(IsFluxNumericsBigRational));
+      if (IsFluxNumericsBigDecimal) sb.AppendJoined(nameof(IsFluxNumericsBigDecimal));
+      else if (IsFluxNumericsBigRational) sb.AppendJoined(nameof(IsFluxNumericsBigRational));
       else if (IsSystemNumericsBFloat16) sb.AppendJoined(nameof(IsSystemNumericsBFloat16));
       else if (IsSystemNumericsBigInteger) sb.AppendJoined(nameof(IsSystemNumericsBigInteger));
       else if (IsSystemByte) sb.AppendJoined(nameof(IsSystemByte));
       else if (IsSystemNumericsComplex) sb.AppendJoined(nameof(IsSystemNumericsComplex));
+      else if (IsSystemNumericsComplexT) sb.AppendJoined(nameof(IsSystemNumericsComplexT));
       else if (IsSystemDecimal) sb.AppendJoined(nameof(IsSystemDecimal));
       else if (IsSystemNumericsDecimal32) sb.AppendJoined(nameof(IsSystemNumericsDecimal32));
       else if (IsSystemNumericsDecimal64) sb.AppendJoined(nameof(IsSystemNumericsDecimal64));
