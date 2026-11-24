@@ -7,11 +7,11 @@ namespace Flux.Units
   public readonly record struct Power
     : System.IComparable, System.IComparable<Power>, System.IFormattable, ISiUnitValueQuantifiable<double, PowerUnit>
   {
-    private readonly double m_value;
+    private readonly double m_watt;
 
-    public Power(double value, PowerUnit unit = PowerUnit.Watt) => m_value = ConvertFromUnit(unit, value);
+    public Power(double value, PowerUnit unit = PowerUnit.Watt) => m_watt = ConvertFromUnit(unit, value);
 
-    public Power(MetricPrefix prefix, double watt) => m_value = prefix.ConvertPrefix(watt, MetricPrefix.Unprefixed);
+    public Power(MetricPrefix prefix, double watt) => m_watt = prefix.ConvertPrefix(watt, MetricPrefix.Unprefixed);
 
     /// <summary>Creates a new Power instance from the specified <paramref name="current"/> and <paramref name="voltage"/>.</summary>
     /// <param name="current"></param>
@@ -24,22 +24,25 @@ namespace Flux.Units
 
     #region Overloaded operators
 
+    public static explicit operator Power(double value) => new(value);
+    public static implicit operator double(Power value) => value.m_watt;
+
     public static bool operator <(Power a, Power b) => a.CompareTo(b) < 0;
     public static bool operator >(Power a, Power b) => a.CompareTo(b) > 0;
     public static bool operator <=(Power a, Power b) => a.CompareTo(b) <= 0;
     public static bool operator >=(Power a, Power b) => a.CompareTo(b) >= 0;
 
-    public static Power operator -(Power v) => new(-v.m_value);
-    public static Power operator *(Power a, Power b) => new(a.m_value * b.m_value);
-    public static Power operator /(Power a, Power b) => new(a.m_value / b.m_value);
-    public static Power operator %(Power a, Power b) => new(a.m_value % b.m_value);
-    public static Power operator +(Power a, Power b) => new(a.m_value + b.m_value);
-    public static Power operator -(Power a, Power b) => new(a.m_value - b.m_value);
-    public static Power operator *(Power a, double b) => new(a.m_value * b);
-    public static Power operator /(Power a, double b) => new(a.m_value / b);
-    public static Power operator %(Power a, double b) => new(a.m_value % b);
-    public static Power operator +(Power a, double b) => new(a.m_value + b);
-    public static Power operator -(Power a, double b) => new(a.m_value - b);
+    public static Power operator -(Power v) => new(-v.m_watt);
+    public static Power operator *(Power a, Power b) => new(a.m_watt * b.m_watt);
+    public static Power operator /(Power a, Power b) => new(a.m_watt / b.m_watt);
+    public static Power operator %(Power a, Power b) => new(a.m_watt % b.m_watt);
+    public static Power operator +(Power a, Power b) => new(a.m_watt + b.m_watt);
+    public static Power operator -(Power a, Power b) => new(a.m_watt - b.m_watt);
+    public static Power operator *(Power a, double b) => new(a.m_watt * b);
+    public static Power operator /(Power a, double b) => new(a.m_watt / b);
+    public static Power operator %(Power a, double b) => new(a.m_watt % b);
+    public static Power operator +(Power a, double b) => new(a.m_watt + b);
+    public static Power operator -(Power a, double b) => new(a.m_watt - b);
 
     #endregion Overloaded operators
 
@@ -49,14 +52,14 @@ namespace Flux.Units
     public int CompareTo(object? other) => other is not null && other is Power o ? CompareTo(o) : -1;
 
     // IComparable<>
-    public int CompareTo(Power other) => m_value.CompareTo(other.m_value);
+    public int CompareTo(Power other) => m_watt.CompareTo(other.m_watt);
 
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? formatProvider) => ToSiUnitString(MetricPrefix.Unprefixed);
 
     #region ISiUnitValueQuantifiable<>
 
-    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertPrefix(m_value, prefix);
+    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertPrefix(m_watt, prefix);
 
     public string ToSiUnitString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null)
       => GetSiUnitValue(prefix).ToSiFormattedString(format, formatProvider) + UnicodeSpacing.ThinSpace.ToSpacingString() + prefix.GetMetricPrefixSymbol() + PowerUnit.Watt.GetUnitSymbol();
@@ -83,7 +86,7 @@ namespace Flux.Units
 
     public static double ConvertUnit(double value, PowerUnit from, PowerUnit to) => ConvertToUnit(to, ConvertFromUnit(from, value));
 
-    public double GetUnitValue(PowerUnit unit) => ConvertToUnit(unit, m_value);
+    public double GetUnitValue(PowerUnit unit) => ConvertToUnit(unit, m_watt);
 
     public string ToUnitString(PowerUnit unit = PowerUnit.Watt, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing spacing = UnicodeSpacing.Space, bool fullName = false)
     {
@@ -101,7 +104,7 @@ namespace Flux.Units
     /// <summary>
     /// <para>The unit of the <see cref="Power.Value"/> property is in <see cref="PowerUnit.Watt"/>.</para>
     /// </summary>
-    public double Value => m_value;
+    public double Value => m_watt;
 
     #endregion // IValueQuantifiable<>
 

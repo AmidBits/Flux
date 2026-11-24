@@ -7,30 +7,33 @@ namespace Flux.Units
   public readonly record struct Inductance
     : System.IComparable, System.IComparable<Inductance>, System.IFormattable, ISiUnitValueQuantifiable<double, InductanceUnit>
   {
-    private readonly double m_value;
+    private readonly double m_henry;
 
-    public Inductance(double value, InductanceUnit unit = InductanceUnit.Henry) => m_value = ConvertFromUnit(unit, value);
+    public Inductance(double value, InductanceUnit unit = InductanceUnit.Henry) => m_henry = ConvertFromUnit(unit, value);
 
-    public Inductance(MetricPrefix prefix, double henry) => m_value = prefix.ConvertPrefix(henry, MetricPrefix.Unprefixed);
+    public Inductance(MetricPrefix prefix, double henry) => m_henry = prefix.ConvertPrefix(henry, MetricPrefix.Unprefixed);
 
     #region Overloaded operators
+
+    public static explicit operator Inductance(double value) => new(value);
+    public static implicit operator double(Inductance value) => value.m_henry;
 
     public static bool operator <(Inductance a, Inductance b) => a.CompareTo(b) < 0;
     public static bool operator >(Inductance a, Inductance b) => a.CompareTo(b) > 0;
     public static bool operator <=(Inductance a, Inductance b) => a.CompareTo(b) <= 0;
     public static bool operator >=(Inductance a, Inductance b) => a.CompareTo(b) >= 0;
 
-    public static Inductance operator -(Inductance v) => new(-v.m_value);
-    public static Inductance operator *(Inductance a, Inductance b) => new(a.m_value * b.m_value);
-    public static Inductance operator /(Inductance a, Inductance b) => new(a.m_value / b.m_value);
-    public static Inductance operator %(Inductance a, Inductance b) => new(a.m_value % b.m_value);
-    public static Inductance operator +(Inductance a, Inductance b) => new(a.m_value + b.m_value);
-    public static Inductance operator -(Inductance a, Inductance b) => new(a.m_value - b.m_value);
-    public static Inductance operator *(Inductance a, double b) => new(a.m_value * b);
-    public static Inductance operator /(Inductance a, double b) => new(a.m_value / b);
-    public static Inductance operator %(Inductance a, double b) => new(a.m_value % b);
-    public static Inductance operator +(Inductance a, double b) => new(a.m_value + b);
-    public static Inductance operator -(Inductance a, double b) => new(a.m_value - b);
+    public static Inductance operator -(Inductance v) => new(-v.m_henry);
+    public static Inductance operator *(Inductance a, Inductance b) => new(a.m_henry * b.m_henry);
+    public static Inductance operator /(Inductance a, Inductance b) => new(a.m_henry / b.m_henry);
+    public static Inductance operator %(Inductance a, Inductance b) => new(a.m_henry % b.m_henry);
+    public static Inductance operator +(Inductance a, Inductance b) => new(a.m_henry + b.m_henry);
+    public static Inductance operator -(Inductance a, Inductance b) => new(a.m_henry - b.m_henry);
+    public static Inductance operator *(Inductance a, double b) => new(a.m_henry * b);
+    public static Inductance operator /(Inductance a, double b) => new(a.m_henry / b);
+    public static Inductance operator %(Inductance a, double b) => new(a.m_henry % b);
+    public static Inductance operator +(Inductance a, double b) => new(a.m_henry + b);
+    public static Inductance operator -(Inductance a, double b) => new(a.m_henry - b);
 
     #endregion // Overloaded operators
 
@@ -40,14 +43,14 @@ namespace Flux.Units
     public int CompareTo(object? other) => other is not null && other is Inductance o ? CompareTo(o) : -1;
 
     // IComparable<>
-    public int CompareTo(Inductance other) => m_value.CompareTo(other.m_value);
+    public int CompareTo(Inductance other) => m_henry.CompareTo(other.m_henry);
 
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? formatProvider) => ToSiUnitString(MetricPrefix.Unprefixed);
 
     #region ISiPrefixValueQuantifiable<>
 
-    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertPrefix(m_value, prefix);
+    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertPrefix(m_henry, prefix);
 
     public string ToSiUnitString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null)
       => GetSiUnitValue(prefix).ToSiFormattedString(format, formatProvider) + UnicodeSpacing.ThinSpace.ToSpacingString() + prefix.GetMetricPrefixSymbol() + InductanceUnit.Henry.GetUnitSymbol();
@@ -74,7 +77,7 @@ namespace Flux.Units
 
     public static double ConvertUnit(double value, InductanceUnit from, InductanceUnit to) => ConvertToUnit(to, ConvertFromUnit(from, value));
 
-    public double GetUnitValue(InductanceUnit unit) => ConvertToUnit(unit, m_value);
+    public double GetUnitValue(InductanceUnit unit) => ConvertToUnit(unit, m_henry);
 
     public string ToUnitString(InductanceUnit unit = InductanceUnit.Henry, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing spacing = UnicodeSpacing.Space, bool fullName = false)
     {
@@ -92,7 +95,7 @@ namespace Flux.Units
     /// <summary>
     /// <para>The unit of the <see cref="Inductance.Value"/> property is in <see cref="InductanceUnit.Henry"/>.</para>
     /// </summary>
-    public double Value => m_value;
+    public double Value => m_henry;
 
     #endregion // IValueQuantifiable<>
 

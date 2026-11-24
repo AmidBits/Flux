@@ -7,11 +7,11 @@ namespace Flux.Units
   public readonly record struct MagneticFluxDensity
     : System.IComparable, System.IComparable<MagneticFluxDensity>, System.IFormattable, ISiUnitValueQuantifiable<double, MagneticFluxDensityUnit>
   {
-    private readonly double m_value;
+    private readonly double m_tesla;
 
-    public MagneticFluxDensity(double value, MagneticFluxDensityUnit unit = MagneticFluxDensityUnit.Tesla) => m_value = ConvertFromUnit(unit, value);
+    public MagneticFluxDensity(double value, MagneticFluxDensityUnit unit = MagneticFluxDensityUnit.Tesla) => m_tesla = ConvertFromUnit(unit, value);
 
-    public MagneticFluxDensity(MetricPrefix prefix, double tesla) => m_value = prefix.ConvertPrefix(tesla, MetricPrefix.Unprefixed);
+    public MagneticFluxDensity(MetricPrefix prefix, double tesla) => m_tesla = prefix.ConvertPrefix(tesla, MetricPrefix.Unprefixed);
 
     /// <summary>
     /// <para>Creates a new magnetic flux density from the length (magnitude) of <paramref name="vector"/> and <paramref name="unit"/>.</para>
@@ -29,22 +29,25 @@ namespace Flux.Units
 
     #region Overloaded operators
 
+    public static explicit operator MagneticFluxDensity(double value) => new(value);
+    public static implicit operator double(MagneticFluxDensity value) => value.m_tesla;
+
     public static bool operator <(MagneticFluxDensity a, MagneticFluxDensity b) => a.CompareTo(b) < 0;
     public static bool operator >(MagneticFluxDensity a, MagneticFluxDensity b) => a.CompareTo(b) > 0;
     public static bool operator <=(MagneticFluxDensity a, MagneticFluxDensity b) => a.CompareTo(b) <= 0;
     public static bool operator >=(MagneticFluxDensity a, MagneticFluxDensity b) => a.CompareTo(b) >= 0;
 
-    public static MagneticFluxDensity operator -(MagneticFluxDensity v) => new(-v.m_value);
-    public static MagneticFluxDensity operator *(MagneticFluxDensity a, MagneticFluxDensity b) => new(a.m_value * b.m_value);
-    public static MagneticFluxDensity operator /(MagneticFluxDensity a, MagneticFluxDensity b) => new(a.m_value / b.m_value);
-    public static MagneticFluxDensity operator %(MagneticFluxDensity a, MagneticFluxDensity b) => new(a.m_value % b.m_value);
-    public static MagneticFluxDensity operator +(MagneticFluxDensity a, MagneticFluxDensity b) => new(a.m_value + b.m_value);
-    public static MagneticFluxDensity operator -(MagneticFluxDensity a, MagneticFluxDensity b) => new(a.m_value - b.m_value);
-    public static MagneticFluxDensity operator *(MagneticFluxDensity a, double b) => new(a.m_value * b);
-    public static MagneticFluxDensity operator /(MagneticFluxDensity a, double b) => new(a.m_value / b);
-    public static MagneticFluxDensity operator %(MagneticFluxDensity a, double b) => new(a.m_value % b);
-    public static MagneticFluxDensity operator +(MagneticFluxDensity a, double b) => new(a.m_value + b);
-    public static MagneticFluxDensity operator -(MagneticFluxDensity a, double b) => new(a.m_value - b);
+    public static MagneticFluxDensity operator -(MagneticFluxDensity v) => new(-v.m_tesla);
+    public static MagneticFluxDensity operator *(MagneticFluxDensity a, MagneticFluxDensity b) => new(a.m_tesla * b.m_tesla);
+    public static MagneticFluxDensity operator /(MagneticFluxDensity a, MagneticFluxDensity b) => new(a.m_tesla / b.m_tesla);
+    public static MagneticFluxDensity operator %(MagneticFluxDensity a, MagneticFluxDensity b) => new(a.m_tesla % b.m_tesla);
+    public static MagneticFluxDensity operator +(MagneticFluxDensity a, MagneticFluxDensity b) => new(a.m_tesla + b.m_tesla);
+    public static MagneticFluxDensity operator -(MagneticFluxDensity a, MagneticFluxDensity b) => new(a.m_tesla - b.m_tesla);
+    public static MagneticFluxDensity operator *(MagneticFluxDensity a, double b) => new(a.m_tesla * b);
+    public static MagneticFluxDensity operator /(MagneticFluxDensity a, double b) => new(a.m_tesla / b);
+    public static MagneticFluxDensity operator %(MagneticFluxDensity a, double b) => new(a.m_tesla % b);
+    public static MagneticFluxDensity operator +(MagneticFluxDensity a, double b) => new(a.m_tesla + b);
+    public static MagneticFluxDensity operator -(MagneticFluxDensity a, double b) => new(a.m_tesla - b);
 
     #endregion Overloaded operators
 
@@ -54,14 +57,14 @@ namespace Flux.Units
     public int CompareTo(object? other) => other is not null && other is MagneticFluxDensity o ? CompareTo(o) : -1;
 
     // IComparable<>
-    public int CompareTo(MagneticFluxDensity other) => m_value.CompareTo(other.m_value);
+    public int CompareTo(MagneticFluxDensity other) => m_tesla.CompareTo(other.m_tesla);
 
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? formatProvider) => ToSiUnitString(MetricPrefix.Unprefixed);
 
     #region ISiPrefixValueQuantifiable<>
 
-    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertPrefix(m_value, prefix);
+    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertPrefix(m_tesla, prefix);
 
     public string ToSiUnitString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null)
       => GetSiUnitValue(prefix).ToSiFormattedString(format, formatProvider) + UnicodeSpacing.ThinSpace.ToSpacingString() + prefix.GetMetricPrefixSymbol() + MagneticFluxDensityUnit.Tesla.GetUnitSymbol();
@@ -88,7 +91,7 @@ namespace Flux.Units
 
     public static double ConvertUnit(double value, MagneticFluxDensityUnit from, MagneticFluxDensityUnit to) => ConvertToUnit(to, ConvertFromUnit(from, value));
 
-    public double GetUnitValue(MagneticFluxDensityUnit unit) => ConvertToUnit(unit, m_value);
+    public double GetUnitValue(MagneticFluxDensityUnit unit) => ConvertToUnit(unit, m_tesla);
 
     public string ToUnitString(MagneticFluxDensityUnit unit = MagneticFluxDensityUnit.Tesla, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing spacing = UnicodeSpacing.Space, bool fullName = false)
     {
@@ -106,7 +109,7 @@ namespace Flux.Units
     /// <summary>
     /// <para>The unit of the <see cref="MagneticFluxDensity.Value"/> property is in <see cref="MagneticFluxDensityUnit.Tesla"/>.</para>
     /// </summary>
-    public double Value => m_value;
+    public double Value => m_tesla;
 
     #endregion // IValueQuantifiable<>
 

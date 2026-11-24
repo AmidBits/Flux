@@ -7,30 +7,33 @@ namespace Flux.Units
   public readonly record struct EquivalentDose
     : System.IComparable, System.IComparable<EquivalentDose>, System.IFormattable, ISiUnitValueQuantifiable<double, EquivalentDoseUnit>
   {
-    private readonly double m_value;
+    private readonly double m_sievert;
 
-    public EquivalentDose(double value, EquivalentDoseUnit unit = EquivalentDoseUnit.Sievert) => m_value = ConvertFromUnit(unit, value);
+    public EquivalentDose(double value, EquivalentDoseUnit unit = EquivalentDoseUnit.Sievert) => m_sievert = ConvertFromUnit(unit, value);
 
-    public EquivalentDose(MetricPrefix prefix, double sievert) => m_value = prefix.ConvertPrefix(sievert, MetricPrefix.Unprefixed);
+    public EquivalentDose(MetricPrefix prefix, double sievert) => m_sievert = prefix.ConvertPrefix(sievert, MetricPrefix.Unprefixed);
 
     #region Overloaded operators
+
+    public static explicit operator EquivalentDose(double value) => new(value);
+    public static implicit operator double(EquivalentDose value) => value.m_sievert;
 
     public static bool operator <(EquivalentDose a, EquivalentDose b) => a.CompareTo(b) < 0;
     public static bool operator >(EquivalentDose a, EquivalentDose b) => a.CompareTo(b) > 0;
     public static bool operator <=(EquivalentDose a, EquivalentDose b) => a.CompareTo(b) <= 0;
     public static bool operator >=(EquivalentDose a, EquivalentDose b) => a.CompareTo(b) >= 0;
 
-    public static EquivalentDose operator -(EquivalentDose v) => new(-v.m_value);
-    public static EquivalentDose operator *(EquivalentDose a, EquivalentDose b) => new(a.m_value * b.m_value);
-    public static EquivalentDose operator /(EquivalentDose a, EquivalentDose b) => new(a.m_value / b.m_value);
-    public static EquivalentDose operator %(EquivalentDose a, EquivalentDose b) => new(a.m_value % b.m_value);
-    public static EquivalentDose operator +(EquivalentDose a, EquivalentDose b) => new(a.m_value + b.m_value);
-    public static EquivalentDose operator -(EquivalentDose a, EquivalentDose b) => new(a.m_value - b.m_value);
-    public static EquivalentDose operator *(EquivalentDose a, double b) => new(a.m_value * b);
-    public static EquivalentDose operator /(EquivalentDose a, double b) => new(a.m_value / b);
-    public static EquivalentDose operator %(EquivalentDose a, double b) => new(a.m_value % b);
-    public static EquivalentDose operator +(EquivalentDose a, double b) => new(a.m_value + b);
-    public static EquivalentDose operator -(EquivalentDose a, double b) => new(a.m_value - b);
+    public static EquivalentDose operator -(EquivalentDose v) => new(-v.m_sievert);
+    public static EquivalentDose operator *(EquivalentDose a, EquivalentDose b) => new(a.m_sievert * b.m_sievert);
+    public static EquivalentDose operator /(EquivalentDose a, EquivalentDose b) => new(a.m_sievert / b.m_sievert);
+    public static EquivalentDose operator %(EquivalentDose a, EquivalentDose b) => new(a.m_sievert % b.m_sievert);
+    public static EquivalentDose operator +(EquivalentDose a, EquivalentDose b) => new(a.m_sievert + b.m_sievert);
+    public static EquivalentDose operator -(EquivalentDose a, EquivalentDose b) => new(a.m_sievert - b.m_sievert);
+    public static EquivalentDose operator *(EquivalentDose a, double b) => new(a.m_sievert * b);
+    public static EquivalentDose operator /(EquivalentDose a, double b) => new(a.m_sievert / b);
+    public static EquivalentDose operator %(EquivalentDose a, double b) => new(a.m_sievert % b);
+    public static EquivalentDose operator +(EquivalentDose a, double b) => new(a.m_sievert + b);
+    public static EquivalentDose operator -(EquivalentDose a, double b) => new(a.m_sievert - b);
 
     #endregion Overloaded operators
 
@@ -40,14 +43,14 @@ namespace Flux.Units
     public int CompareTo(object? other) => other is not null && other is EquivalentDose o ? CompareTo(o) : -1;
 
     // IComparable<>
-    public int CompareTo(EquivalentDose other) => m_value.CompareTo(other.m_value);
+    public int CompareTo(EquivalentDose other) => m_sievert.CompareTo(other.m_sievert);
 
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? formatProvider) => ToSiUnitString(MetricPrefix.Unprefixed);
 
     #region ISiPrefixValueQuantifiable<>
 
-    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertPrefix(m_value, prefix);
+    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertPrefix(m_sievert, prefix);
 
     public string ToSiUnitString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null)
       => GetSiUnitValue(prefix).ToSiFormattedString(format, formatProvider) + UnicodeSpacing.ThinSpace.ToSpacingString() + prefix.GetMetricPrefixSymbol() + EquivalentDoseUnit.Sievert.GetUnitSymbol();
@@ -74,7 +77,7 @@ namespace Flux.Units
 
     public static double ConvertUnit(double value, EquivalentDoseUnit from, EquivalentDoseUnit to) => ConvertToUnit(to, ConvertFromUnit(from, value));
 
-    public double GetUnitValue(EquivalentDoseUnit unit) => ConvertToUnit(unit, m_value);
+    public double GetUnitValue(EquivalentDoseUnit unit) => ConvertToUnit(unit, m_sievert);
 
     public string ToUnitString(EquivalentDoseUnit unit = EquivalentDoseUnit.Sievert, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing spacing = UnicodeSpacing.Space, bool fullName = false)
     {
@@ -92,7 +95,7 @@ namespace Flux.Units
     /// <summary>
     /// <para>The unit of the <see cref="EquivalentDose.Value"/> property is in <see cref="EquivalentDoseUnit.Sievert"/>.</para>
     /// </summary>
-    public double Value => m_value;
+    public double Value => m_sievert;
 
     #endregion // IValueQuantifiable<>
 

@@ -26,6 +26,9 @@ namespace Flux.Units
 
     #region Overloaded operators
 
+    public static explicit operator UvIndex(double value) => new(value);
+    public static implicit operator double(UvIndex value) => value.m_value;
+
     public static bool operator <(UvIndex a, UvIndex b) => a.CompareTo(b) < 0;
     public static bool operator <=(UvIndex a, UvIndex b) => a.CompareTo(b) <= 0;
     public static bool operator >(UvIndex a, UvIndex b) => a.CompareTo(b) > 0;

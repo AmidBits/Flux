@@ -15,7 +15,7 @@ namespace Flux.Units
     /// <summary>MinValue is a closed (included) endpoint.</summary>
     public const double MinValue = 0;
 
-    private readonly double m_degrees;
+    private readonly double m_degree;
 
     private Azimuth(double degrees)
       : this(degrees, AngleUnit.Degree)
@@ -32,16 +32,16 @@ namespace Flux.Units
     /// <para>Creates a new <see cref="Azimuth"/> from the specified <paramref name="angle"/> and <paramref name="unit"/>.</para>
     /// </summary>
     public Azimuth(double angle, Units.AngleUnit unit = Units.AngleUnit.Degree)
-      => m_degrees = Number.WrapHalfOpenRight(Angle.ConvertUnit(angle, unit, AngleUnit.Degree), MinValue, MaxValue);
+      => m_degree = Number.WrapHalfOpenRight(Angle.ConvertUnit(angle, unit, AngleUnit.Degree), MinValue, MaxValue);
 
     /// <summary>
     /// <para>Gets the <see cref="Units.Angle"/> of the <see cref="Azimuth"/>.</para>
     /// </summary>
-    public Angle Angle { get => new(m_degrees, AngleUnit.Degree); }
+    public Angle Angle { get => new(m_degree, AngleUnit.Degree); }
 
-    public double Radians => double.DegreesToRadians(m_degrees);
+    public double Radians => double.DegreesToRadians(m_degree);
 
-    public PlanetaryScience.CompassRose32Wind CompassAbbreviation => CompassPoint(m_degrees, PlanetaryScience.PointsOfTheCompass.ThirtytwoWinds, MidpointRounding.ToZero, out double _);
+    public PlanetaryScience.CompassRose32Wind CompassAbbreviation => CompassPoint(m_degree, PlanetaryScience.PointsOfTheCompass.ThirtytwoWinds, MidpointRounding.ToZero, out double _);
 
     public string CompassWords => string.Join(' ', CompassAbbreviation.ToWords());
 
@@ -153,29 +153,32 @@ namespace Flux.Units
 
     #region Overloaded operators
 
+    public static explicit operator Azimuth(double value) => new(value);
+    public static implicit operator double(Azimuth value) => value.m_degree;
+
     public static bool operator <(Azimuth a, Azimuth b) => a.CompareTo(b) < 0;
     public static bool operator <=(Azimuth a, Azimuth b) => a.CompareTo(b) <= 0;
     public static bool operator >(Azimuth a, Azimuth b) => a.CompareTo(b) > 0;
     public static bool operator >=(Azimuth a, Azimuth b) => a.CompareTo(b) >= 0;
 
-    public static Azimuth operator -(Azimuth v) => new(-v.m_degrees);
-    public static Azimuth operator +(Azimuth a, double b) => new(a.m_degrees + b);
-    public static Azimuth operator +(Azimuth a, Azimuth b) => a + b.m_degrees;
-    public static Azimuth operator /(Azimuth a, double b) => new(a.m_degrees / b);
-    public static Azimuth operator /(Azimuth a, Azimuth b) => a / b.m_degrees;
-    public static Azimuth operator *(Azimuth a, double b) => new(a.m_degrees * b);
-    public static Azimuth operator *(Azimuth a, Azimuth b) => a * b.m_degrees;
-    public static Azimuth operator %(Azimuth a, double b) => new(a.m_degrees % b);
-    public static Azimuth operator %(Azimuth a, Azimuth b) => a % b.m_degrees;
-    public static Azimuth operator -(Azimuth a, double b) => new(a.m_degrees - b);
-    public static Azimuth operator -(Azimuth a, Azimuth b) => a - b.m_degrees;
+    public static Azimuth operator -(Azimuth v) => new(-v.m_degree);
+    public static Azimuth operator +(Azimuth a, double b) => new(a.m_degree + b);
+    public static Azimuth operator +(Azimuth a, Azimuth b) => a + b.m_degree;
+    public static Azimuth operator /(Azimuth a, double b) => new(a.m_degree / b);
+    public static Azimuth operator /(Azimuth a, Azimuth b) => a / b.m_degree;
+    public static Azimuth operator *(Azimuth a, double b) => new(a.m_degree * b);
+    public static Azimuth operator *(Azimuth a, Azimuth b) => a * b.m_degree;
+    public static Azimuth operator %(Azimuth a, double b) => new(a.m_degree % b);
+    public static Azimuth operator %(Azimuth a, Azimuth b) => a % b.m_degree;
+    public static Azimuth operator -(Azimuth a, double b) => new(a.m_degree - b);
+    public static Azimuth operator -(Azimuth a, Azimuth b) => a - b.m_degree;
 
     #endregion // Overloaded operators
 
     #region Implemented interfaces
 
     // IComparable<>
-    public int CompareTo(Azimuth other) => m_degrees.CompareTo(other.m_degrees);
+    public int CompareTo(Azimuth other) => m_degree.CompareTo(other.m_degree);
 
     // IComparable
     public int CompareTo(object? other) => other is not null && other is Azimuth o ? CompareTo(o) : -1;
@@ -188,7 +191,7 @@ namespace Flux.Units
     /// <summary>
     ///  <para>The unit of the <see cref="Azimuth.Value"/> property is in <see cref="AngleUnit.Degree"/>.</para>
     /// </summary>
-    public double Value => m_degrees;
+    public double Value => m_degree;
 
     #endregion // IValueQuantifiable<>
 

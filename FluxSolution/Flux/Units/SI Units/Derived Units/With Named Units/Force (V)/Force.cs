@@ -14,13 +14,13 @@ namespace Flux.Units
     /// </summary>
     public const double GravitationalConstant = 6.6743e-11;
 
-    private readonly double m_value;
+    private readonly double m_newton;
 
-    public Force(double value, ForceUnit unit = ForceUnit.Newton) => m_value = ConvertFromUnit(unit, value);
+    public Force(double value, ForceUnit unit = ForceUnit.Newton) => m_newton = ConvertFromUnit(unit, value);
 
-    public Force(MetricPrefix prefix, double newton) => m_value = prefix.ConvertPrefix(newton, MetricPrefix.Unprefixed);
+    public Force(MetricPrefix prefix, double newton) => m_newton = prefix.ConvertPrefix(newton, MetricPrefix.Unprefixed);
 
-    public Force(Mass mass, Acceleration acceleration) => m_value = mass.Value * acceleration.Value;
+    public Force(Mass mass, Acceleration acceleration) => m_newton = mass.Value * acceleration.Value;
 
     #region Static methods
 
@@ -28,22 +28,25 @@ namespace Flux.Units
 
     #region Overloaded operators
 
+    public static explicit operator Force(double value) => new(value);
+    public static implicit operator double(Force value) => value.m_newton;
+
     public static bool operator <(Force a, Force b) => a.CompareTo(b) < 0;
     public static bool operator >(Force a, Force b) => a.CompareTo(b) > 0;
     public static bool operator <=(Force a, Force b) => a.CompareTo(b) <= 0;
     public static bool operator >=(Force a, Force b) => a.CompareTo(b) >= 0;
 
-    public static Force operator -(Force v) => new(-v.m_value);
-    public static Force operator *(Force a, Force b) => new(a.m_value * b.m_value);
-    public static Force operator /(Force a, Force b) => new(a.m_value / b.m_value);
-    public static Force operator %(Force a, Force b) => new(a.m_value % b.m_value);
-    public static Force operator +(Force a, Force b) => new(a.m_value + b.m_value);
-    public static Force operator -(Force a, Force b) => new(a.m_value - b.m_value);
-    public static Force operator *(Force a, double b) => new(a.m_value * b);
-    public static Force operator /(Force a, double b) => new(a.m_value / b);
-    public static Force operator %(Force a, double b) => new(a.m_value % b);
-    public static Force operator +(Force a, double b) => new(a.m_value + b);
-    public static Force operator -(Force a, double b) => new(a.m_value - b);
+    public static Force operator -(Force v) => new(-v.m_newton);
+    public static Force operator *(Force a, Force b) => new(a.m_newton * b.m_newton);
+    public static Force operator /(Force a, Force b) => new(a.m_newton / b.m_newton);
+    public static Force operator %(Force a, Force b) => new(a.m_newton % b.m_newton);
+    public static Force operator +(Force a, Force b) => new(a.m_newton + b.m_newton);
+    public static Force operator -(Force a, Force b) => new(a.m_newton - b.m_newton);
+    public static Force operator *(Force a, double b) => new(a.m_newton * b);
+    public static Force operator /(Force a, double b) => new(a.m_newton / b);
+    public static Force operator %(Force a, double b) => new(a.m_newton % b);
+    public static Force operator +(Force a, double b) => new(a.m_newton + b);
+    public static Force operator -(Force a, double b) => new(a.m_newton - b);
 
     #endregion Overloaded operators
 
@@ -53,14 +56,14 @@ namespace Flux.Units
     public int CompareTo(object? other) => other is not null && other is Force o ? CompareTo(o) : -1;
 
     // IComparable<>
-    public int CompareTo(Force other) => m_value.CompareTo(other.m_value);
+    public int CompareTo(Force other) => m_newton.CompareTo(other.m_newton);
 
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? formatProvider) => ToSiUnitString(MetricPrefix.Unprefixed);
 
     #region ISiUnitValueQuantifiable<>
 
-    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertPrefix(m_value, prefix);
+    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertPrefix(m_newton, prefix);
 
     public string ToSiUnitString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null)
       => GetSiUnitValue(prefix).ToSiFormattedString(format, formatProvider) + UnicodeSpacing.ThinSpace.ToSpacingString() + prefix.GetMetricPrefixSymbol() + ForceUnit.Newton.GetUnitSymbol();
@@ -87,7 +90,7 @@ namespace Flux.Units
 
     public static double ConvertUnit(double value, ForceUnit from, ForceUnit to) => ConvertToUnit(to, ConvertFromUnit(from, value));
 
-    public double GetUnitValue(ForceUnit unit) => ConvertToUnit(unit, m_value);
+    public double GetUnitValue(ForceUnit unit) => ConvertToUnit(unit, m_newton);
 
     public string ToUnitString(ForceUnit unit = ForceUnit.Newton, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing spacing = UnicodeSpacing.Space, bool fullName = false)
     {
@@ -105,7 +108,7 @@ namespace Flux.Units
     /// <summary>
     /// <para>The unit of the <see cref="Force.Value"/> property is in <see cref="ForceUnit.Newton"/>.</para>
     /// </summary>
-    public double Value => m_value;
+    public double Value => m_newton;
 
     #endregion // IValueQuantifiable<>
 

@@ -20,7 +20,7 @@ namespace Flux.Units
     /// </summary>
     public const double UnifiedAtomicMassUnit = 1.66053906892e-27;
 
-    private readonly double m_value;
+    private readonly double m_kilogram;
 
     /// <summary>
     /// <para>Creates a new instance from the specified <paramref name="value"/> of <paramref name="unit"/>. The default <paramref name="unit"/> is <see cref="MassUnit.Kilogram"/></para>
@@ -28,7 +28,7 @@ namespace Flux.Units
     /// <param name="value"></param>
     /// <param name="unit"></param>
     /// <exception cref="System.ArgumentOutOfRangeException"></exception>
-    public Mass(double value, MassUnit unit = MassUnit.Kilogram) => m_value = ConvertFromUnit(unit, value);
+    public Mass(double value, MassUnit unit = MassUnit.Kilogram) => m_kilogram = ConvertFromUnit(unit, value);
 
     /// <summary>
     /// <para>Creates a new instance from the specified <see cref="MetricPrefix"/> (metric multiple) of <see cref="MassUnit.Gram"/>, e.g. <see cref="MetricPrefix.Kilo"/> for kilogram.</para>
@@ -36,31 +36,34 @@ namespace Flux.Units
     /// <remarks>Mass is the only </remarks>
     /// <param name="gram"></param>
     /// <param name="prefix"></param>
-    public Mass(MetricPrefix prefix, double gram) => m_value = prefix.ConvertPrefix(gram, MetricPrefix.Kilo);
+    public Mass(MetricPrefix prefix, double gram) => m_kilogram = prefix.ConvertPrefix(gram, MetricPrefix.Kilo);
 
-    public Mass(Force force, Acceleration acceleration) => m_value = force.Value / acceleration.Value;
+    public Mass(Force force, Acceleration acceleration) => m_kilogram = force.Value / acceleration.Value;
 
     #region Static methods
     #endregion // Static methods
 
     #region Overloaded operators
 
+    public static explicit operator Mass(double value) => new(value);
+    public static implicit operator double(Mass value) => value.m_kilogram;
+
     public static bool operator <(Mass a, Mass b) => a.CompareTo(b) < 0;
     public static bool operator >(Mass a, Mass b) => a.CompareTo(b) > 0;
     public static bool operator <=(Mass a, Mass b) => a.CompareTo(b) <= 0;
     public static bool operator >=(Mass a, Mass b) => a.CompareTo(b) >= 0;
 
-    public static Mass operator -(Mass v) => new(-v.m_value);
-    public static Mass operator *(Mass a, Mass b) => new(a.m_value * b.m_value);
-    public static Mass operator /(Mass a, Mass b) => new(a.m_value / b.m_value);
-    public static Mass operator %(Mass a, Mass b) => new(a.m_value % b.m_value);
-    public static Mass operator +(Mass a, Mass b) => new(a.m_value + b.m_value);
-    public static Mass operator -(Mass a, Mass b) => new(a.m_value - b.m_value);
-    public static Mass operator *(Mass a, double b) => new(a.m_value * b);
-    public static Mass operator /(Mass a, double b) => new(a.m_value / b);
-    public static Mass operator %(Mass a, double b) => new(a.m_value % b);
-    public static Mass operator +(Mass a, double b) => new(a.m_value + b);
-    public static Mass operator -(Mass a, double b) => new(a.m_value - b);
+    public static Mass operator -(Mass v) => new(-v.m_kilogram);
+    public static Mass operator *(Mass a, Mass b) => new(a.m_kilogram * b.m_kilogram);
+    public static Mass operator /(Mass a, Mass b) => new(a.m_kilogram / b.m_kilogram);
+    public static Mass operator %(Mass a, Mass b) => new(a.m_kilogram % b.m_kilogram);
+    public static Mass operator +(Mass a, Mass b) => new(a.m_kilogram + b.m_kilogram);
+    public static Mass operator -(Mass a, Mass b) => new(a.m_kilogram - b.m_kilogram);
+    public static Mass operator *(Mass a, double b) => new(a.m_kilogram * b);
+    public static Mass operator /(Mass a, double b) => new(a.m_kilogram / b);
+    public static Mass operator %(Mass a, double b) => new(a.m_kilogram % b);
+    public static Mass operator +(Mass a, double b) => new(a.m_kilogram + b);
+    public static Mass operator -(Mass a, double b) => new(a.m_kilogram - b);
 
     #endregion Overloaded operators
 
@@ -70,7 +73,7 @@ namespace Flux.Units
     public int CompareTo(object? other) => other is not null && other is Mass o ? CompareTo(o) : -1;
 
     // IComparable<T>
-    public int CompareTo(Mass other) => m_value.CompareTo(other.m_value);
+    public int CompareTo(Mass other) => m_kilogram.CompareTo(other.m_kilogram);
 
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? formatProvider)
@@ -79,7 +82,7 @@ namespace Flux.Units
     #region ISiUnitValueQuantifiable<>
 
     public double GetSiUnitValue(MetricPrefix prefix)
-      => MetricPrefix.Kilo.ConvertPrefix(m_value, prefix);
+      => MetricPrefix.Kilo.ConvertPrefix(m_kilogram, prefix);
 
     public string ToSiUnitString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null)
       => GetSiUnitValue(prefix).ToSiFormattedString(format, formatProvider) + UnicodeSpacing.ThinSpace.ToSpacingString() + prefix.GetMetricPrefixSymbol() + MassUnit.Gram.GetUnitSymbol();
@@ -108,7 +111,7 @@ namespace Flux.Units
       => ConvertToUnit(to, ConvertFromUnit(from, value));
 
     public double GetUnitValue(MassUnit unit)
-      => ConvertToUnit(unit, m_value);
+      => ConvertToUnit(unit, m_kilogram);
 
     public string ToUnitString(MassUnit unit = MassUnit.Kilogram, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing spacing = UnicodeSpacing.Space, bool fullName = false)
     {
@@ -126,7 +129,7 @@ namespace Flux.Units
     /// <summary>
     /// <para>The unit of the <see cref="Mass.Value"/> property is in <see cref="MassUnit.Kilogram"/>.</para>
     /// </summary>
-    public double Value => m_value;
+    public double Value => m_kilogram;
 
     #endregion // IValueQuantifiable<>
 

@@ -14,10 +14,10 @@ namespace Flux.Units
     /// </summary>
     public const double AvogadrosNumber = 6.02214076e23;
 
-    private readonly double m_value;
+    private readonly double m_mole;
 
     public AmountOfSubstance(double value, AmountOfSubstanceUnit unit = AmountOfSubstanceUnit.Mole)
-      => m_value = unit switch
+      => m_mole = unit switch
       {
         AmountOfSubstanceUnit.Mole => value,
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
@@ -28,31 +28,34 @@ namespace Flux.Units
     /// </summary>
     /// <param name="mole"></param>
     /// <param name="prefix"></param>
-    public AmountOfSubstance(MetricPrefix prefix, double mole) => m_value = prefix.ConvertPrefix(mole, MetricPrefix.Unprefixed);
+    public AmountOfSubstance(MetricPrefix prefix, double mole) => m_mole = prefix.ConvertPrefix(mole, MetricPrefix.Unprefixed);
 
-    public double NumberOfParticles => m_value * AvogadrosNumber;
+    public double NumberOfParticles => m_mole * AvogadrosNumber;
 
     #region Static methods
     #endregion // Static methods
 
     #region Overloaded operators
 
+    public static explicit operator AmountOfSubstance(double value) => new(value);
+    public static implicit operator double(AmountOfSubstance value) => value.m_mole;
+
     public static bool operator <(AmountOfSubstance a, AmountOfSubstance b) => a.CompareTo(b) < 0;
     public static bool operator >(AmountOfSubstance a, AmountOfSubstance b) => a.CompareTo(b) > 0;
     public static bool operator <=(AmountOfSubstance a, AmountOfSubstance b) => a.CompareTo(b) <= 0;
     public static bool operator >=(AmountOfSubstance a, AmountOfSubstance b) => a.CompareTo(b) >= 0;
 
-    public static AmountOfSubstance operator -(AmountOfSubstance v) => new(-v.m_value);
-    public static AmountOfSubstance operator *(AmountOfSubstance a, AmountOfSubstance b) => new(a.m_value * b.m_value);
-    public static AmountOfSubstance operator /(AmountOfSubstance a, AmountOfSubstance b) => new(a.m_value / b.m_value);
-    public static AmountOfSubstance operator %(AmountOfSubstance a, AmountOfSubstance b) => new(a.m_value % b.m_value);
-    public static AmountOfSubstance operator +(AmountOfSubstance a, AmountOfSubstance b) => new(a.m_value + b.m_value);
-    public static AmountOfSubstance operator -(AmountOfSubstance a, AmountOfSubstance b) => new(a.m_value - b.m_value);
-    public static AmountOfSubstance operator *(AmountOfSubstance a, double b) => new(a.m_value * b);
-    public static AmountOfSubstance operator /(AmountOfSubstance a, double b) => new(a.m_value / b);
-    public static AmountOfSubstance operator %(AmountOfSubstance a, double b) => new(a.m_value % b);
-    public static AmountOfSubstance operator +(AmountOfSubstance a, double b) => new(a.m_value + b);
-    public static AmountOfSubstance operator -(AmountOfSubstance a, double b) => new(a.m_value - b);
+    public static AmountOfSubstance operator -(AmountOfSubstance v) => new(-v.m_mole);
+    public static AmountOfSubstance operator *(AmountOfSubstance a, AmountOfSubstance b) => new(a.m_mole * b.m_mole);
+    public static AmountOfSubstance operator /(AmountOfSubstance a, AmountOfSubstance b) => new(a.m_mole / b.m_mole);
+    public static AmountOfSubstance operator %(AmountOfSubstance a, AmountOfSubstance b) => new(a.m_mole % b.m_mole);
+    public static AmountOfSubstance operator +(AmountOfSubstance a, AmountOfSubstance b) => new(a.m_mole + b.m_mole);
+    public static AmountOfSubstance operator -(AmountOfSubstance a, AmountOfSubstance b) => new(a.m_mole - b.m_mole);
+    public static AmountOfSubstance operator *(AmountOfSubstance a, double b) => new(a.m_mole * b);
+    public static AmountOfSubstance operator /(AmountOfSubstance a, double b) => new(a.m_mole / b);
+    public static AmountOfSubstance operator %(AmountOfSubstance a, double b) => new(a.m_mole % b);
+    public static AmountOfSubstance operator +(AmountOfSubstance a, double b) => new(a.m_mole + b);
+    public static AmountOfSubstance operator -(AmountOfSubstance a, double b) => new(a.m_mole - b);
 
     #endregion Overloaded operators
 
@@ -62,14 +65,14 @@ namespace Flux.Units
     public int CompareTo(object? other) => other is not null && other is AmountOfSubstance o ? CompareTo(o) : -1;
 
     // IComparable<>
-    public int CompareTo(AmountOfSubstance other) => m_value.CompareTo(other.m_value);
+    public int CompareTo(AmountOfSubstance other) => m_mole.CompareTo(other.m_mole);
 
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? formatProvider) => ToSiUnitString(MetricPrefix.Unprefixed);
 
     #region ISiUnitValueQuantifiable<>
 
-    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertPrefix(m_value, prefix);
+    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertPrefix(m_mole, prefix);
 
     public string ToSiUnitString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null)
       => GetSiUnitValue(prefix).ToSiFormattedString(format, formatProvider) + UnicodeSpacing.ThinSpace.ToSpacingString() + prefix.GetMetricPrefixSymbol() + AmountOfSubstanceUnit.Mole.GetUnitSymbol();
@@ -99,7 +102,7 @@ namespace Flux.Units
     public double GetUnitValue(AmountOfSubstanceUnit unit)
       => unit switch
       {
-        AmountOfSubstanceUnit.Mole => m_value,
+        AmountOfSubstanceUnit.Mole => m_mole,
         _ => throw new System.ArgumentOutOfRangeException(nameof(unit)),
       };
 
@@ -119,7 +122,7 @@ namespace Flux.Units
     /// <summary>
     /// <para>The unit of the <see cref="AmountOfSubstance.Value"/> property is in <see cref="AmountOfSubstanceUnit.Mole"/>.</para>
     /// </summary>
-    public double Value => m_value;
+    public double Value => m_mole;
 
     #endregion // IValueQuantifiable<>
 

@@ -2,16 +2,6 @@ namespace Flux
 {
   public static partial class NumberBase
   {
-    extension<TNumberBase>(TNumberBase)
-      where TNumberBase : System.Numerics.INumberBase<TNumberBase>
-    {
-      /// <summary>
-      /// <para>Gets the radix, or base, for the type.</para>
-      /// </summary>
-      /// <returns></returns>
-      public static int Radix => TNumberBase.Radix;
-    }
-
     extension<TNumberBase>(TNumberBase value)
       where TNumberBase : System.Numerics.INumberBase<TNumberBase>
     {

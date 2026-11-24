@@ -7,16 +7,16 @@ namespace Flux.Units
   public readonly record struct ElectricCurrent
     : System.IComparable, System.IComparable<ElectricCurrent>, System.IEquatable<ElectricCurrent>, System.IFormattable, ISiUnitValueQuantifiable<double, ElectricCurrentUnit>
   {
-    private readonly double m_value;
+    private readonly double m_ampere;
 
-    public ElectricCurrent(double value, ElectricCurrentUnit unit = ElectricCurrentUnit.Ampere) => m_value = ConvertFromUnit(unit, value);
+    public ElectricCurrent(double value, ElectricCurrentUnit unit = ElectricCurrentUnit.Ampere) => m_ampere = ConvertFromUnit(unit, value);
 
     /// <summary>
     /// <para>Creates a new instance from the specified <see cref="MetricPrefix"/> (metric multiple) of <see cref="ElectricCurrentUnit.Ampere"/>, e.g. <see cref="MetricPrefix.Milli"/> for milliamperes.</para>
     /// </summary>
     /// <param name="amperes"></param>
     /// <param name="prefix"></param>
-    public ElectricCurrent(MetricPrefix prefix, double ampere) => m_value = prefix.ConvertPrefix(ampere, MetricPrefix.Unprefixed);
+    public ElectricCurrent(MetricPrefix prefix, double ampere) => m_ampere = prefix.ConvertPrefix(ampere, MetricPrefix.Unprefixed);
 
     #region Static methods
 
@@ -34,22 +34,25 @@ namespace Flux.Units
 
     #region Overloaded operators
 
+    public static explicit operator ElectricCurrent(double value) => new(value);
+    public static implicit operator double(ElectricCurrent value) => value.m_ampere;
+
     public static bool operator <(ElectricCurrent a, ElectricCurrent b) => a.CompareTo(b) < 0;
     public static bool operator >(ElectricCurrent a, ElectricCurrent b) => a.CompareTo(b) > 0;
     public static bool operator <=(ElectricCurrent a, ElectricCurrent b) => a.CompareTo(b) <= 0;
     public static bool operator >=(ElectricCurrent a, ElectricCurrent b) => a.CompareTo(b) >= 0;
 
-    public static ElectricCurrent operator -(ElectricCurrent v) => new(-v.m_value);
-    public static ElectricCurrent operator *(ElectricCurrent a, ElectricCurrent b) => new(a.m_value * b.m_value);
-    public static ElectricCurrent operator /(ElectricCurrent a, ElectricCurrent b) => new(a.m_value / b.m_value);
-    public static ElectricCurrent operator %(ElectricCurrent a, ElectricCurrent b) => new(a.m_value % b.m_value);
-    public static ElectricCurrent operator +(ElectricCurrent a, ElectricCurrent b) => new(a.m_value + b.m_value);
-    public static ElectricCurrent operator -(ElectricCurrent a, ElectricCurrent b) => new(a.m_value - b.m_value);
-    public static ElectricCurrent operator *(ElectricCurrent a, double b) => new(a.m_value * b);
-    public static ElectricCurrent operator /(ElectricCurrent a, double b) => new(a.m_value / b);
-    public static ElectricCurrent operator %(ElectricCurrent a, double b) => new(a.m_value % b);
-    public static ElectricCurrent operator +(ElectricCurrent a, double b) => new(a.m_value + b);
-    public static ElectricCurrent operator -(ElectricCurrent a, double b) => new(a.m_value - b);
+    public static ElectricCurrent operator -(ElectricCurrent v) => new(-v.m_ampere);
+    public static ElectricCurrent operator *(ElectricCurrent a, ElectricCurrent b) => new(a.m_ampere * b.m_ampere);
+    public static ElectricCurrent operator /(ElectricCurrent a, ElectricCurrent b) => new(a.m_ampere / b.m_ampere);
+    public static ElectricCurrent operator %(ElectricCurrent a, ElectricCurrent b) => new(a.m_ampere % b.m_ampere);
+    public static ElectricCurrent operator +(ElectricCurrent a, ElectricCurrent b) => new(a.m_ampere + b.m_ampere);
+    public static ElectricCurrent operator -(ElectricCurrent a, ElectricCurrent b) => new(a.m_ampere - b.m_ampere);
+    public static ElectricCurrent operator *(ElectricCurrent a, double b) => new(a.m_ampere * b);
+    public static ElectricCurrent operator /(ElectricCurrent a, double b) => new(a.m_ampere / b);
+    public static ElectricCurrent operator %(ElectricCurrent a, double b) => new(a.m_ampere % b);
+    public static ElectricCurrent operator +(ElectricCurrent a, double b) => new(a.m_ampere + b);
+    public static ElectricCurrent operator -(ElectricCurrent a, double b) => new(a.m_ampere - b);
 
     #endregion Overloaded operators
 
@@ -59,14 +62,14 @@ namespace Flux.Units
     public int CompareTo(object? other) => other is not null && other is ElectricCurrent o ? CompareTo(o) : -1;
 
     // IComparable<>
-    public int CompareTo(ElectricCurrent other) => m_value.CompareTo(other.m_value);
+    public int CompareTo(ElectricCurrent other) => m_ampere.CompareTo(other.m_ampere);
 
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? formatProvider) => ToSiUnitString(MetricPrefix.Unprefixed);
 
     #region ISiPrefixValueQuantifiable<>
 
-    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertPrefix(m_value, prefix);
+    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertPrefix(m_ampere, prefix);
 
     public string ToSiUnitString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null)
       => GetSiUnitValue(prefix).ToSiFormattedString(format, formatProvider) + UnicodeSpacing.ThinSpace.ToSpacingString() + prefix.GetMetricPrefixSymbol() + ElectricCurrentUnit.Ampere.GetUnitSymbol();
@@ -93,7 +96,7 @@ namespace Flux.Units
 
     public static double ConvertUnit(double value, ElectricCurrentUnit from, ElectricCurrentUnit to) => ConvertToUnit(to, ConvertFromUnit(from, value));
 
-    public double GetUnitValue(ElectricCurrentUnit unit) => ConvertToUnit(unit, m_value);
+    public double GetUnitValue(ElectricCurrentUnit unit) => ConvertToUnit(unit, m_ampere);
 
     public string ToUnitString(ElectricCurrentUnit unit = ElectricCurrentUnit.Ampere, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing spacing = UnicodeSpacing.Space, bool fullName = false)
     {
@@ -111,7 +114,7 @@ namespace Flux.Units
     /// <summary>
     /// <para>The unit of the <see cref="ElectricCurrent.Value"/> property is in <see cref="ElectricCurrentUnit.Ampere"/>.</para>
     /// </summary>
-    public double Value => m_value;
+    public double Value => m_ampere;
 
     #endregion // IValueQuantifiable<>
 

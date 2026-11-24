@@ -7,30 +7,33 @@ namespace Flux.Units
   public readonly record struct SolidAngle
     : System.IComparable, System.IComparable<SolidAngle>, System.IFormattable, ISiUnitValueQuantifiable<double, SolidAngleUnit>
   {
-    private readonly double m_value;
+    private readonly double m_steradian;
 
-    public SolidAngle(double value, SolidAngleUnit unit = SolidAngleUnit.Steradian) => m_value = ConvertFromUnit(unit, value);
+    public SolidAngle(double value, SolidAngleUnit unit = SolidAngleUnit.Steradian) => m_steradian = ConvertFromUnit(unit, value);
 
-    public SolidAngle(MetricPrefix prefix, double steradian) => m_value = prefix.ConvertPrefix(steradian, MetricPrefix.Unprefixed);
+    public SolidAngle(MetricPrefix prefix, double steradian) => m_steradian = prefix.ConvertPrefix(steradian, MetricPrefix.Unprefixed);
 
     #region Overloaded operators
+
+    public static explicit operator SolidAngle(double value) => new(value);
+    public static implicit operator double(SolidAngle value) => value.m_steradian;
 
     public static bool operator <(SolidAngle a, SolidAngle b) => a.CompareTo(b) < 0;
     public static bool operator >(SolidAngle a, SolidAngle b) => a.CompareTo(b) > 0;
     public static bool operator <=(SolidAngle a, SolidAngle b) => a.CompareTo(b) <= 0;
     public static bool operator >=(SolidAngle a, SolidAngle b) => a.CompareTo(b) >= 0;
 
-    public static SolidAngle operator -(SolidAngle v) => new(-v.m_value);
-    public static SolidAngle operator *(SolidAngle a, SolidAngle b) => new(a.m_value * b.m_value);
-    public static SolidAngle operator /(SolidAngle a, SolidAngle b) => new(a.m_value / b.m_value);
-    public static SolidAngle operator %(SolidAngle a, SolidAngle b) => new(a.m_value % b.m_value);
-    public static SolidAngle operator +(SolidAngle a, SolidAngle b) => new(a.m_value + b.m_value);
-    public static SolidAngle operator -(SolidAngle a, SolidAngle b) => new(a.m_value - b.m_value);
-    public static SolidAngle operator *(SolidAngle a, double b) => new(a.m_value * b);
-    public static SolidAngle operator /(SolidAngle a, double b) => new(a.m_value / b);
-    public static SolidAngle operator %(SolidAngle a, double b) => new(a.m_value % b);
-    public static SolidAngle operator +(SolidAngle a, double b) => new(a.m_value + b);
-    public static SolidAngle operator -(SolidAngle a, double b) => new(a.m_value - b);
+    public static SolidAngle operator -(SolidAngle v) => new(-v.m_steradian);
+    public static SolidAngle operator *(SolidAngle a, SolidAngle b) => new(a.m_steradian * b.m_steradian);
+    public static SolidAngle operator /(SolidAngle a, SolidAngle b) => new(a.m_steradian / b.m_steradian);
+    public static SolidAngle operator %(SolidAngle a, SolidAngle b) => new(a.m_steradian % b.m_steradian);
+    public static SolidAngle operator +(SolidAngle a, SolidAngle b) => new(a.m_steradian + b.m_steradian);
+    public static SolidAngle operator -(SolidAngle a, SolidAngle b) => new(a.m_steradian - b.m_steradian);
+    public static SolidAngle operator *(SolidAngle a, double b) => new(a.m_steradian * b);
+    public static SolidAngle operator /(SolidAngle a, double b) => new(a.m_steradian / b);
+    public static SolidAngle operator %(SolidAngle a, double b) => new(a.m_steradian % b);
+    public static SolidAngle operator +(SolidAngle a, double b) => new(a.m_steradian + b);
+    public static SolidAngle operator -(SolidAngle a, double b) => new(a.m_steradian - b);
 
     #endregion Overloaded operators
 
@@ -40,7 +43,7 @@ namespace Flux.Units
     public int CompareTo(object? other) => other is not null && other is SolidAngle o ? CompareTo(o) : -1;
 
     // IComparable<>
-    public int CompareTo(SolidAngle other) => m_value.CompareTo(other.m_value);
+    public int CompareTo(SolidAngle other) => m_steradian.CompareTo(other.m_steradian);
 
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? formatProvider) => ToUnitString(SolidAngleUnit.Steradian, format, formatProvider);
@@ -51,7 +54,7 @@ namespace Flux.Units
 
     public static string GetSiUnitSymbol(MetricPrefix prefix, bool preferUnicode) => prefix.GetMetricPrefixSymbol(preferUnicode) + SolidAngleUnit.Steradian.GetUnitSymbol(preferUnicode);
 
-    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertPrefix(m_value, prefix);
+    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertPrefix(m_steradian, prefix);
 
     public string ToSiUnitString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null)
       => GetSiUnitValue(prefix).ToSiFormattedString(format, formatProvider) + UnicodeSpacing.ThinSpace.ToSpacingString() + prefix.GetMetricPrefixSymbol() + SolidAngleUnit.Steradian.GetUnitSymbol();
@@ -78,7 +81,7 @@ namespace Flux.Units
 
     public static double ConvertUnit(double value, SolidAngleUnit from, SolidAngleUnit to) => ConvertToUnit(to, ConvertFromUnit(from, value));
 
-    public double GetUnitValue(SolidAngleUnit unit) => ConvertToUnit(unit, m_value);
+    public double GetUnitValue(SolidAngleUnit unit) => ConvertToUnit(unit, m_steradian);
 
     public string ToUnitString(SolidAngleUnit unit = SolidAngleUnit.Steradian, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing spacing = UnicodeSpacing.Space, bool fullName = false)
     {
@@ -96,7 +99,7 @@ namespace Flux.Units
     /// <summary>
     /// <para>The unit of the <see cref="SolidAngle.Value"/> property is in <see cref="SolidAngleUnit.Steradian"/>.</para>
     /// </summary>
-    public double Value => m_value;
+    public double Value => m_steradian;
 
     #endregion // IValueQuantifiable<>
 

@@ -7,33 +7,36 @@ namespace Flux.Units
   public readonly record struct Pressure
     : System.IComparable, System.IComparable<Pressure>, System.IFormattable, ISiUnitValueQuantifiable<double, PressureUnit>
   {
-    private readonly double m_value;
+    private readonly double m_pascal;
 
-    public Pressure(double value, PressureUnit unit = PressureUnit.Pascal) => m_value = ConvertFromUnit(unit, value);
+    public Pressure(double value, PressureUnit unit = PressureUnit.Pascal) => m_pascal = ConvertFromUnit(unit, value);
 
-    public Pressure(MetricPrefix prefix, double pascal) => m_value = prefix.ConvertPrefix(pascal, MetricPrefix.Unprefixed);
+    public Pressure(MetricPrefix prefix, double pascal) => m_pascal = prefix.ConvertPrefix(pascal, MetricPrefix.Unprefixed);
 
     #region Static methods
     #endregion Static methods
 
     #region Overloaded operators
 
+    public static explicit operator Pressure(double value) => new(value);
+    public static implicit operator double(Pressure value) => value.m_pascal;
+
     public static bool operator <(Pressure a, Pressure b) => a.CompareTo(b) < 0;
     public static bool operator >(Pressure a, Pressure b) => a.CompareTo(b) > 0;
     public static bool operator <=(Pressure a, Pressure b) => a.CompareTo(b) <= 0;
     public static bool operator >=(Pressure a, Pressure b) => a.CompareTo(b) >= 0;
 
-    public static Pressure operator -(Pressure v) => new(-v.m_value);
-    public static Pressure operator *(Pressure a, Pressure b) => new(a.m_value * b.m_value);
-    public static Pressure operator /(Pressure a, Pressure b) => new(a.m_value / b.m_value);
-    public static Pressure operator %(Pressure a, Pressure b) => new(a.m_value % b.m_value);
-    public static Pressure operator +(Pressure a, Pressure b) => new(a.m_value + b.m_value);
-    public static Pressure operator -(Pressure a, Pressure b) => new(a.m_value - b.m_value);
-    public static Pressure operator *(Pressure a, double b) => new(a.m_value * b);
-    public static Pressure operator /(Pressure a, double b) => new(a.m_value / b);
-    public static Pressure operator %(Pressure a, double b) => new(a.m_value % b);
-    public static Pressure operator +(Pressure a, double b) => new(a.m_value + b);
-    public static Pressure operator -(Pressure a, double b) => new(a.m_value - b);
+    public static Pressure operator -(Pressure v) => new(-v.m_pascal);
+    public static Pressure operator *(Pressure a, Pressure b) => new(a.m_pascal * b.m_pascal);
+    public static Pressure operator /(Pressure a, Pressure b) => new(a.m_pascal / b.m_pascal);
+    public static Pressure operator %(Pressure a, Pressure b) => new(a.m_pascal % b.m_pascal);
+    public static Pressure operator +(Pressure a, Pressure b) => new(a.m_pascal + b.m_pascal);
+    public static Pressure operator -(Pressure a, Pressure b) => new(a.m_pascal - b.m_pascal);
+    public static Pressure operator *(Pressure a, double b) => new(a.m_pascal * b);
+    public static Pressure operator /(Pressure a, double b) => new(a.m_pascal / b);
+    public static Pressure operator %(Pressure a, double b) => new(a.m_pascal % b);
+    public static Pressure operator +(Pressure a, double b) => new(a.m_pascal + b);
+    public static Pressure operator -(Pressure a, double b) => new(a.m_pascal - b);
 
     #endregion Overloaded operators
 
@@ -43,14 +46,14 @@ namespace Flux.Units
     public int CompareTo(object? other) => other is not null && other is Pressure o ? CompareTo(o) : -1;
 
     // IComparable<>
-    public int CompareTo(Pressure other) => m_value.CompareTo(other.m_value);
+    public int CompareTo(Pressure other) => m_pascal.CompareTo(other.m_pascal);
 
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? formatProvider) => ToSiUnitString(MetricPrefix.Unprefixed);
 
     #region ISiUnitValueQuantifiable<>
 
-    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertPrefix(m_value, prefix);
+    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertPrefix(m_pascal, prefix);
 
     public string ToSiUnitString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null)
       => GetSiUnitValue(prefix).ToSiFormattedString(format, formatProvider) + UnicodeSpacing.ThinSpace.ToSpacingString() + prefix.GetMetricPrefixSymbol() + PressureUnit.Pascal.GetUnitSymbol();
@@ -77,7 +80,7 @@ namespace Flux.Units
 
     public static double ConvertUnit(double value, PressureUnit from, PressureUnit to) => ConvertToUnit(to, ConvertFromUnit(from, value));
 
-    public double GetUnitValue(PressureUnit unit) => ConvertToUnit(unit, m_value);
+    public double GetUnitValue(PressureUnit unit) => ConvertToUnit(unit, m_pascal);
 
     public string ToUnitString(PressureUnit unit = PressureUnit.Pascal, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing spacing = UnicodeSpacing.Space, bool fullName = false)
     {
@@ -95,7 +98,7 @@ namespace Flux.Units
     /// <summary>
     /// <para>The unit of the <see cref="Pressure.Value"/> property is in <see cref="PressureUnit.Pascal"/>.</para>
     /// </summary>
-    public double Value => m_value;
+    public double Value => m_pascal;
 
     #endregion // IValueQuantifiable<>
 

@@ -13,13 +13,13 @@ namespace Flux.Units
     /// </summary>
     public const double VonKlitzingConstant = 25812.80745;
 
-    private readonly double m_value;
+    private readonly double m_ohm;
 
-    public ElectricalResistance(double value, ElectricalResistanceUnit unit = ElectricalResistanceUnit.Ohm) => m_value = ConvertFromUnit(unit, value);
+    public ElectricalResistance(double value, ElectricalResistanceUnit unit = ElectricalResistanceUnit.Ohm) => m_ohm = ConvertFromUnit(unit, value);
 
-    public ElectricalResistance(MetricPrefix prefix, double ohm) => m_value = prefix.ConvertPrefix(ohm, MetricPrefix.Unprefixed);
+    public ElectricalResistance(MetricPrefix prefix, double ohm) => m_ohm = prefix.ConvertPrefix(ohm, MetricPrefix.Unprefixed);
 
-    public ElectricalConductance ToElectricalConductance() => new(1 / m_value);
+    public ElectricalConductance ToElectricalConductance() => new(1 / m_ohm);
 
     #region Static methods
     /// <summary>Creates a new ElectricResistance instance from the specified voltage and current.</summary>
@@ -48,22 +48,25 @@ namespace Flux.Units
 
     #region Overloaded operators
 
+    public static explicit operator ElectricalResistance(double value) => new(value);
+    public static implicit operator double(ElectricalResistance value) => value.m_ohm;
+
     public static bool operator <(ElectricalResistance a, ElectricalResistance b) => a.CompareTo(b) < 0;
     public static bool operator >(ElectricalResistance a, ElectricalResistance b) => a.CompareTo(b) > 0;
     public static bool operator <=(ElectricalResistance a, ElectricalResistance b) => a.CompareTo(b) <= 0;
     public static bool operator >=(ElectricalResistance a, ElectricalResistance b) => a.CompareTo(b) >= 0;
 
-    public static ElectricalResistance operator -(ElectricalResistance v) => new(-v.m_value);
-    public static ElectricalResistance operator *(ElectricalResistance a, ElectricalResistance b) => new(a.m_value * b.m_value);
-    public static ElectricalResistance operator /(ElectricalResistance a, ElectricalResistance b) => new(a.m_value / b.m_value);
-    public static ElectricalResistance operator %(ElectricalResistance a, ElectricalResistance b) => new(a.m_value % b.m_value);
-    public static ElectricalResistance operator +(ElectricalResistance a, ElectricalResistance b) => new(a.m_value + b.m_value);
-    public static ElectricalResistance operator -(ElectricalResistance a, ElectricalResistance b) => new(a.m_value - b.m_value);
-    public static ElectricalResistance operator *(ElectricalResistance a, double b) => new(a.m_value * b);
-    public static ElectricalResistance operator /(ElectricalResistance a, double b) => new(a.m_value / b);
-    public static ElectricalResistance operator %(ElectricalResistance a, double b) => new(a.m_value % b);
-    public static ElectricalResistance operator +(ElectricalResistance a, double b) => new(a.m_value + b);
-    public static ElectricalResistance operator -(ElectricalResistance a, double b) => new(a.m_value - b);
+    public static ElectricalResistance operator -(ElectricalResistance v) => new(-v.m_ohm);
+    public static ElectricalResistance operator *(ElectricalResistance a, ElectricalResistance b) => new(a.m_ohm * b.m_ohm);
+    public static ElectricalResistance operator /(ElectricalResistance a, ElectricalResistance b) => new(a.m_ohm / b.m_ohm);
+    public static ElectricalResistance operator %(ElectricalResistance a, ElectricalResistance b) => new(a.m_ohm % b.m_ohm);
+    public static ElectricalResistance operator +(ElectricalResistance a, ElectricalResistance b) => new(a.m_ohm + b.m_ohm);
+    public static ElectricalResistance operator -(ElectricalResistance a, ElectricalResistance b) => new(a.m_ohm - b.m_ohm);
+    public static ElectricalResistance operator *(ElectricalResistance a, double b) => new(a.m_ohm * b);
+    public static ElectricalResistance operator /(ElectricalResistance a, double b) => new(a.m_ohm / b);
+    public static ElectricalResistance operator %(ElectricalResistance a, double b) => new(a.m_ohm % b);
+    public static ElectricalResistance operator +(ElectricalResistance a, double b) => new(a.m_ohm + b);
+    public static ElectricalResistance operator -(ElectricalResistance a, double b) => new(a.m_ohm - b);
 
     #endregion Overloaded operators
 
@@ -73,7 +76,7 @@ namespace Flux.Units
     public int CompareTo(object? other) => other is not null && other is ElectricalResistance o ? CompareTo(o) : -1;
 
     // IComparable<>
-    public int CompareTo(ElectricalResistance other) => m_value.CompareTo(other.m_value);
+    public int CompareTo(ElectricalResistance other) => m_ohm.CompareTo(other.m_ohm);
 
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? formatProvider) => ToSiUnitString(MetricPrefix.Unprefixed);
@@ -84,7 +87,7 @@ namespace Flux.Units
 
     public static string GetSiUnitSymbol(MetricPrefix prefix, bool preferUnicode) => prefix.GetMetricPrefixSymbol(preferUnicode) + ElectricalResistanceUnit.Ohm.GetUnitSymbol(preferUnicode);
 
-    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertPrefix(m_value, prefix);
+    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertPrefix(m_ohm, prefix);
 
     public string ToSiUnitString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null)
       => GetSiUnitValue(prefix).ToSiFormattedString(format, formatProvider) + UnicodeSpacing.ThinSpace.ToSpacingString() + prefix.GetMetricPrefixSymbol() + ElectricalResistanceUnit.Ohm.GetUnitSymbol();
@@ -111,7 +114,7 @@ namespace Flux.Units
 
     public static double ConvertUnit(double value, ElectricalResistanceUnit from, ElectricalResistanceUnit to) => ConvertToUnit(to, ConvertFromUnit(from, value));
 
-    public double GetUnitValue(ElectricalResistanceUnit unit) => ConvertToUnit(unit, m_value);
+    public double GetUnitValue(ElectricalResistanceUnit unit) => ConvertToUnit(unit, m_ohm);
 
     public string ToUnitString(ElectricalResistanceUnit unit = ElectricalResistanceUnit.Ohm, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing spacing = UnicodeSpacing.Space, bool fullName = false)
     {
@@ -129,7 +132,7 @@ namespace Flux.Units
     /// <summary>
     /// <para>The unit of the <see cref="ElectricalResistance.Value"/> property is in <see cref="ElectricalResistanceUnit.Ohm"/>.</para>
     /// </summary>
-    public double Value => m_value;
+    public double Value => m_ohm;
 
     #endregion // IValueQuantifiable<>
 

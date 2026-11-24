@@ -10,11 +10,11 @@ namespace Flux.Units
   {
     public const double FrequencyRatio = 1.0594630943592952645618252949463;
 
-    private readonly int m_value;
+    private readonly int m_semitone;
 
-    public Semitone(int semitones) => m_value = semitones;
+    public Semitone(int semitones) => m_semitone = semitones;
 
-    public Cent ToCent() => new(ConvertSemitoneToCent(m_value));
+    public Cent ToCent() => new(ConvertSemitoneToCent(m_semitone));
 
     #region Static methods
 
@@ -46,22 +46,25 @@ namespace Flux.Units
 
     #region Overloaded operators
 
+    public static explicit operator Semitone(int value) => new(value);
+    public static implicit operator int(Semitone value) => value.m_semitone;
+
     public static bool operator <(Semitone a, Semitone b) => a.CompareTo(b) < 0;
     public static bool operator <=(Semitone a, Semitone b) => a.CompareTo(b) <= 0;
     public static bool operator >(Semitone a, Semitone b) => a.CompareTo(b) > 0;
     public static bool operator >=(Semitone a, Semitone b) => a.CompareTo(b) >= 0;
 
-    public static Semitone operator -(Semitone v) => new(-v.m_value);
-    public static Semitone operator +(Semitone a, int b) => new(a.m_value + b);
-    public static Semitone operator +(Semitone a, Semitone b) => a + b.m_value;
-    public static Semitone operator /(Semitone a, int b) => new(a.m_value / b);
-    public static Semitone operator /(Semitone a, Semitone b) => a / b.m_value;
-    public static Semitone operator *(Semitone a, int b) => new(a.m_value * b);
-    public static Semitone operator *(Semitone a, Semitone b) => a * b.m_value;
-    public static Semitone operator %(Semitone a, int b) => new(a.m_value % b);
-    public static Semitone operator %(Semitone a, Semitone b) => a % b.m_value;
-    public static Semitone operator -(Semitone a, int b) => new(a.m_value - b);
-    public static Semitone operator -(Semitone a, Semitone b) => a - b.m_value;
+    public static Semitone operator -(Semitone v) => new(-v.m_semitone);
+    public static Semitone operator +(Semitone a, int b) => new(a.m_semitone + b);
+    public static Semitone operator +(Semitone a, Semitone b) => a + b.m_semitone;
+    public static Semitone operator /(Semitone a, int b) => new(a.m_semitone / b);
+    public static Semitone operator /(Semitone a, Semitone b) => a / b.m_semitone;
+    public static Semitone operator *(Semitone a, int b) => new(a.m_semitone * b);
+    public static Semitone operator *(Semitone a, Semitone b) => a * b.m_semitone;
+    public static Semitone operator %(Semitone a, int b) => new(a.m_semitone % b);
+    public static Semitone operator %(Semitone a, Semitone b) => a % b.m_semitone;
+    public static Semitone operator -(Semitone a, int b) => new(a.m_semitone - b);
+    public static Semitone operator -(Semitone a, Semitone b) => a - b.m_semitone;
 
     #endregion Overloaded operators
 
@@ -71,17 +74,17 @@ namespace Flux.Units
     public int CompareTo(object? other) => other is not null && other is Semitone o ? CompareTo(o) : -1;
 
     // IComparable<>
-    public int CompareTo(Semitone other) => m_value.CompareTo(other.m_value);
+    public int CompareTo(Semitone other) => m_semitone.CompareTo(other.m_semitone);
 
     // IFormattable
-    public string ToString(string? format, System.IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider) + " semitone".ToPluralUnitName(m_value != 1);
+    public string ToString(string? format, System.IFormatProvider? formatProvider) => m_semitone.ToString(format, formatProvider) + " semitone".ToPluralUnitName(m_semitone != 1);
 
     #region IValueQuantifiable<>
 
     /// <summary>
     /// <para>The <see cref="Semitone.Value"/> property is a musical interval in semitones.</para>
     /// </summary>
-    public int Value => m_value;
+    public int Value => m_semitone;
 
     #endregion // IValueQuantifiable<>
 

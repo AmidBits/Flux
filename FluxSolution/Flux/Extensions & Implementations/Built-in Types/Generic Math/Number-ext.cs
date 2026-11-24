@@ -32,7 +32,7 @@ namespace Flux
       #region NormalizeZero
 
       /// <summary>
-      /// <para>Normalize any (including negative) zero to <see cref="TNumber.Zero"/>.</para>
+      /// <para>Normalize any (including negative) zero to <see cref="TNumber.Zero"/>, e.g. <c>-0.0 normalizes to 0.0</c>.</para>
       /// </summary>
       /// <param name="value"></param>
       /// <returns></returns>

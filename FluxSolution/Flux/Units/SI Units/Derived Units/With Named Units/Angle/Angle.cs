@@ -20,13 +20,13 @@
     public static readonly Angle Zero;
 
     /// <summary>Angle in radians.</summary>
-    private readonly double m_value;
+    private readonly double m_radian;
 
-    public Angle(double value, AngleUnit unit = AngleUnit.Radian) => m_value = ConvertFromUnit(unit, value);
+    public Angle(double value, AngleUnit unit = AngleUnit.Radian) => m_radian = ConvertFromUnit(unit, value);
 
-    public Angle(MetricPrefix prefix, double radian) => m_value = prefix.ConvertPrefix(radian, MetricPrefix.Unprefixed);
+    public Angle(MetricPrefix prefix, double radian) => m_radian = prefix.ConvertPrefix(radian, MetricPrefix.Unprefixed);
 
-    public double Degrees => double.RadiansToDegrees(m_value);
+    public double Degrees => double.RadiansToDegrees(m_radian);
 
     public AngleNames GetAngleNames()
     {
@@ -53,7 +53,7 @@
     {
       var noffset = offset.Value % double.Tau;
 
-      var reverse = (noffset - (m_value % double.Tau) + double.Tau) % double.Tau;
+      var reverse = (noffset - (m_radian % double.Tau) + double.Tau) % double.Tau;
 
       return new(reverse);
     }
@@ -63,7 +63,7 @@
     /// </summary>
     /// <returns></returns>
     /// <remarks>Values outside the interval [0, 360)) are wrapped, i.e. 370 = 10, -10 = 350, etc.</remarks>
-    public Azimuth ToAzimuth() => new(Number.WrapHalfOpenRight(m_value, 0, double.Tau), AngleUnit.Radian);
+    public Azimuth ToAzimuth() => new(Number.WrapHalfOpenRight(m_radian, 0, double.Tau), AngleUnit.Radian);
 
     /// <summary>
     /// <para>Creates a new latitude, i.e. a value in the interval [-90, +90].</para>
@@ -71,7 +71,7 @@
     /// <param name="angle"></param>
     /// <returns></returns>
     /// <remarks>Values outside the interval [-90, +90] are folded, i.e. +100 = +80, -100 = -80, etc.</remarks>
-    public Latitude ToLatitude() => new(Number.ReflectedFold(m_value, -FloatingPointConstants<double>.PiOver2, FloatingPointConstants<double>.PiOver2), AngleUnit.Radian);
+    public Latitude ToLatitude() => new(Number.ReflectedFold(m_radian, -FloatingPointConstants<double>.PiOver2, FloatingPointConstants<double>.PiOver2), AngleUnit.Radian);
 
     /// <summary>
     /// <para>Creates a new longitude, i.e. a value in the interval [-180, +180].</para>
@@ -79,7 +79,7 @@
     /// <param name="angle"></param>
     /// <returns></returns>
     /// <remarks>Values outside the interval [-180, +180] are wrapped, i.e. 190 = -170, -190 = +170, etc.</remarks>
-    public Longitude ToLongitude() => new(Number.WrapHalfOpenRight(m_value, -double.Pi, double.Pi), AngleUnit.Radian);
+    public Longitude ToLongitude() => new(Number.WrapHalfOpenRight(m_radian, -double.Pi, double.Pi), AngleUnit.Radian);
 
     #region Static methods
 
@@ -583,22 +583,25 @@
 
     #region Overloaded operators
 
+    public static explicit operator Angle(double value) => new(value);
+    public static implicit operator double(Angle value) => value.m_radian;
+
     public static bool operator <(Angle a, Angle b) => a.CompareTo(b) < 0;
     public static bool operator >(Angle a, Angle b) => a.CompareTo(b) > 0;
     public static bool operator <=(Angle a, Angle b) => a.CompareTo(b) <= 0;
     public static bool operator >=(Angle a, Angle b) => a.CompareTo(b) >= 0;
 
-    public static Angle operator -(Angle v) => new(-v.m_value);
-    public static Angle operator *(Angle a, Angle b) => new(a.m_value * b.m_value);
-    public static Angle operator /(Angle a, Angle b) => new(a.m_value / b.m_value);
-    public static Angle operator %(Angle a, Angle b) => new(a.m_value % b.m_value);
-    public static Angle operator +(Angle a, Angle b) => new(a.m_value + b.m_value);
-    public static Angle operator -(Angle a, Angle b) => new(a.m_value - b.m_value);
-    public static Angle operator *(Angle a, double b) => new(a.m_value * b);
-    public static Angle operator /(Angle a, double b) => new(a.m_value / b);
-    public static Angle operator %(Angle a, double b) => new(a.m_value % b);
-    public static Angle operator +(Angle a, double b) => new(a.m_value + b);
-    public static Angle operator -(Angle a, double b) => new(a.m_value - b);
+    public static Angle operator -(Angle v) => new(-v.m_radian);
+    public static Angle operator *(Angle a, Angle b) => new(a.m_radian * b.m_radian);
+    public static Angle operator /(Angle a, Angle b) => new(a.m_radian / b.m_radian);
+    public static Angle operator %(Angle a, Angle b) => new(a.m_radian % b.m_radian);
+    public static Angle operator +(Angle a, Angle b) => new(a.m_radian + b.m_radian);
+    public static Angle operator -(Angle a, Angle b) => new(a.m_radian - b.m_radian);
+    public static Angle operator *(Angle a, double b) => new(a.m_radian * b);
+    public static Angle operator /(Angle a, double b) => new(a.m_radian / b);
+    public static Angle operator %(Angle a, double b) => new(a.m_radian % b);
+    public static Angle operator +(Angle a, double b) => new(a.m_radian + b);
+    public static Angle operator -(Angle a, double b) => new(a.m_radian - b);
 
     #endregion Overloaded operators
 
@@ -608,14 +611,14 @@
     public int CompareTo(object? other) => other is not null && other is Angle o ? CompareTo(o) : -1;
 
     // IComparable<>
-    public int CompareTo(Angle other) => m_value.CompareTo(other.m_value);
+    public int CompareTo(Angle other) => m_radian.CompareTo(other.m_radian);
 
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? formatProvider) => ToSiUnitString(MetricPrefix.Unprefixed);
 
     #region ISiUnitValueQuantifiable<>
 
-    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertPrefix(m_value, prefix);
+    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertPrefix(m_radian, prefix);
 
     public string ToSiUnitString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null)
       => GetSiUnitValue(prefix).ToSiFormattedString(format, formatProvider) + UnicodeSpacing.ThinSpace.ToSpacingString() + prefix.GetMetricPrefixSymbol() + AngleUnit.Radian.GetUnitSymbol();
@@ -654,7 +657,7 @@
       => ConvertToUnit(to, ConvertFromUnit(from, value));
 
     public double GetUnitValue(AngleUnit unit)
-      => ConvertToUnit(unit, m_value);
+      => ConvertToUnit(unit, m_radian);
 
     public string ToUnitString(AngleUnit unit = AngleUnit.Radian, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing spacing = UnicodeSpacing.Space, bool fullName = false)
     {
@@ -674,7 +677,7 @@
     /// <summary>
     /// <para>The unit of the <see cref="Angle.Value"/> property is in <see cref="AngleUnit.Radian"/>.</para>
     /// </summary>
-    public double Value => m_value;
+    public double Value => m_radian;
 
     #endregion // IValueQuantifiable<>
 

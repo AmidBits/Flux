@@ -106,6 +106,37 @@ namespace Flux
 
       #endregion
 
+      #region IntegerDivRemDirected
+
+      public static (TNumber Quotient, TNumber Remainder) IntegerDivRemDirected(TNumber a, TNumber n, DirectedRoundingMode mode)
+      {
+        var q = a / n;
+
+        var qt = q - (q % TNumber.One);
+
+        var qa = TNumber.Sign(q) switch
+        {
+          < 0 => qt - TNumber.One,
+          > 0 => qt + TNumber.One,
+          _ => qt
+        };
+
+        var qd = mode switch
+        {
+          DirectedRoundingMode.TowardZero => qt,
+          DirectedRoundingMode.TowardPositiveInfinity => TNumber.CopySign(a, q) > TNumber.CopySign(qt * n, q) ? qt + TNumber.One : qt,
+          DirectedRoundingMode.TowardNegativeInfinity => TNumber.CopySign(a, q) < TNumber.CopySign(qt * n, q) ? qt - TNumber.One : qt,
+          DirectedRoundingMode.AwayFromZero => qt * n == a ? qt : TNumber.Sign(q) switch { < 0 => qt - TNumber.One, > 0 => qt + TNumber.One, _ => qt },
+          DirectedRoundingMode.Random => qt * n == a ? qt : Random.Shared.Next(2) == 0 ? qt : TNumber.Sign(q) switch { < 0 => qt - TNumber.One, > 0 => qt + TNumber.One, _ => qt },
+          DirectedRoundingMode.Stochastic => Random.Shared.NextDouble() < double.CreateChecked(TNumber.Abs(q - qt)) ? qa : qt,
+          _ => throw new NotImplementedException(nameof(mode))
+        };
+
+        return (qd, a - qd * n);
+      }
+
+      #endregion
+
       #region IntegerDivRemEuclidean
 
       public static (TNumber Quotient, TNumber Remainder) IntegerDivRemEuclidean(TNumber a, TNumber n)
@@ -137,37 +168,6 @@ namespace Flux
         var qf = condition ? qt - TNumber.One : qt;
 
         return (qf, a - qf * n);
-      }
-
-      #endregion
-
-      #region IntegerDivRemDirected
-
-      public static (TNumber Quotient, TNumber Remainder) IntegerDivRemDirected(TNumber a, TNumber n, DirectedRoundingMode mode)
-      {
-        var q = a / n;
-
-        var qt = q - (q % TNumber.One);
-
-        var qa = TNumber.Sign(q) switch
-        {
-          < 0 => qt - TNumber.One,
-          > 0 => qt + TNumber.One,
-          _ => qt
-        };
-
-        var qd = mode switch
-        {
-          DirectedRoundingMode.TowardZero => qt,
-          DirectedRoundingMode.TowardPositiveInfinity => TNumber.CopySign(a, q) > TNumber.CopySign(qt * n, q) ? qt + TNumber.One : qt,
-          DirectedRoundingMode.TowardNegativeInfinity => TNumber.CopySign(a, q) < TNumber.CopySign(qt * n, q) ? qt - TNumber.One : qt,
-          DirectedRoundingMode.AwayFromZero => qt * n == a ? qt : TNumber.Sign(q) switch { < 0 => qt - TNumber.One, > 0 => qt + TNumber.One, _ => qt },
-          DirectedRoundingMode.Random => qt * n == a ? qt : Random.Shared.Next(2) == 0 ? qt : TNumber.Sign(q) switch { < 0 => qt - TNumber.One, > 0 => qt + TNumber.One, _ => qt },
-          DirectedRoundingMode.Stochastic => Random.Shared.NextDouble() < double.CreateChecked(TNumber.Abs(q - qt)) ? qa : qt,
-          _ => throw new NotImplementedException(nameof(mode))
-        };
-
-        return (qd, a - qd * n);
       }
 
       #endregion

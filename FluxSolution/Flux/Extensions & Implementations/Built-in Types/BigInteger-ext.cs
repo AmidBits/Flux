@@ -24,7 +24,7 @@ namespace Flux
         var mantissa = top / (double)(1UL << 63);
         var log2n = (bl - 1) + System.Math.Log(mantissa, 2);
 
-        var logb = log2n / System.Math.Log(radix, 2);
+        var logb = log2n / double.Log(radix, 2);
         var digits = (int)logb + 1;
 
         // 2. Correct possible off-by-one.
@@ -54,6 +54,85 @@ namespace Flux
       }
 
       #endregion
+
+      public static System.Collections.Generic.List<System.Numerics.BigInteger> ContinuedFractionCoefficients(System.Numerics.Decimal128 value, int maxTerms = 101)
+      {
+        System.ArgumentOutOfRangeException.ThrowIfNegativeOrZero(maxTerms);
+
+        var coefficients = new System.Collections.Generic.List<System.Numerics.BigInteger>();
+
+        value = System.Numerics.Decimal128.Abs(value);
+
+        for (var i = 0; i < maxTerms; i++)
+        {
+          var floor = System.Numerics.Decimal128.Floor(value);
+
+          coefficients.Add(System.Numerics.BigInteger.CreateChecked(floor));
+
+          var fractional = value - floor;
+
+          if (fractional == System.Numerics.Decimal128.Zero)
+            break;
+
+          value = System.Numerics.Decimal128.One / fractional;
+        }
+
+        return coefficients;
+      }
+
+      public static System.Collections.Generic.List<(System.Numerics.BigInteger, System.Numerics.BigInteger)> ContinuedFractionConvergents(System.Collections.Generic.IEnumerable<System.Numerics.BigInteger> coefficients)
+      {
+        System.ArgumentNullException.ThrowIfNull(coefficients);
+
+        var fractions = new System.Collections.Generic.List<(System.Numerics.BigInteger, System.Numerics.BigInteger)>();
+
+        var (p0, q0) = (System.Numerics.BigInteger.Zero, System.Numerics.BigInteger.One);
+        var (p1, q1) = (System.Numerics.BigInteger.One, System.Numerics.BigInteger.Zero);
+
+        foreach (var a in coefficients)
+        {
+          var (p, q) = (a * p1 + p0, a * q1 + q0);
+
+          fractions.Add((p, q));
+
+          (p0, q0) = (p1, q1);
+          (p1, q1) = (p, q);
+        }
+
+        return fractions;
+      }
+
+      public static System.Collections.Generic.IEnumerable<(System.Numerics.BigInteger Coefficient, System.Numerics.BigInteger Numerator, System.Numerics.BigInteger Denominator)> ContinuedFractionSteps(System.Numerics.Decimal128 value, int maxIterations = 101)
+      {
+        System.ArgumentOutOfRangeException.ThrowIfNegativeOrZero(maxIterations);
+
+        if (!System.Numerics.Decimal128.IsFinite(value)) throw new System.NotFiniteNumberException();
+
+        var v = System.Numerics.Decimal128.Abs(value);
+
+        var (p0, q0) = (System.Numerics.BigInteger.Zero, System.Numerics.BigInteger.One);
+
+        var (p1, q1) = (System.Numerics.BigInteger.One, System.Numerics.BigInteger.Zero);
+
+        for (var i = 0; i < maxIterations; i++)
+        {
+          var coefficient = System.Numerics.BigInteger.CreateChecked(System.Numerics.Decimal128.Floor(v));
+
+          var (p, q) = (coefficient * p1 + p0, coefficient * q1 + q0);
+
+          yield return (coefficient, p, q);
+
+          (p0, q0) = (p1, q1);
+          (p1, q1) = (p, q);
+
+          var fractional = v - System.Numerics.Decimal128.CreateChecked(coefficient);
+
+          if (fractional == System.Numerics.Decimal128.Zero)
+            yield break;
+
+          v = System.Numerics.Decimal128.One / fractional;
+        }
+      }
     }
 
     extension(System.Numerics.BigInteger source)

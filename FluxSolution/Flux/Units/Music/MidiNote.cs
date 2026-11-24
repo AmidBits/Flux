@@ -26,28 +26,28 @@ namespace Flux.Units
 
     public static MidiNote MiddleC { get; } = new(60);
 
-    private readonly byte m_value;
+    private readonly byte m_midiNote;
 
     public MidiNote(int midiNoteNumber)
-      => m_value = midiNoteNumber is >= MinValue and <= MaxValue ? (byte)midiNoteNumber : throw new System.ArgumentOutOfRangeException(nameof(midiNoteNumber));
+      => m_midiNote = midiNoteNumber is >= MinValue and <= MaxValue ? (byte)midiNoteNumber : throw new System.ArgumentOutOfRangeException(nameof(midiNoteNumber));
 
     /// <summary>
     /// <para>In music, integer notation is the translation of pitch classes or interval classes into whole numbers.</para>
     /// <para><see href="https://en.wikipedia.org/wiki/Pitch_class#Integer_notation"/></para>
     /// </summary>
-    public int IntegerNotation => m_value % 12;
+    public int IntegerNotation => m_midiNote % 12;
 
     /// <summary>
     /// <para>Determines the octave of the MIDI note.</para>
     /// <para><see href="https://en.wikipedia.org/wiki/Octave"/></para>
     /// </summary>
-    public int Octave => (m_value / 12) - 1;
+    public int Octave => (m_midiNote / 12) - 1;
 
     /// <summary>
     /// <para>Convert the specified MIDI note to the corresponding frequency.</para>
     /// <para><see href="https://en.wikipedia.org/wiki/Scientific_pitch_notation#Table_of_note_frequencies"/></para>
     /// </summary>
-    public Units.Frequency ToFrequency() => new(ConvertNoteNumberToFrequency(m_value));
+    public Units.Frequency ToFrequency() => new(ConvertNoteNumberToFrequency(m_midiNote));
 
     /// <summary>
     /// <para>Creates a string representing the Scientific pitch notation (SPN), also known as American standard pitch notation (ASPN) and international pitch notation (IPN), a method of specifying musical pitch by combining a musical note name (with accidental if needed) and a number identifying the pitch's octave.</para>
@@ -157,29 +157,32 @@ namespace Flux.Units
 
     #region Overloaded operators
 
+    public static explicit operator MidiNote(int value) => new(value);
+    public static implicit operator int(MidiNote value) => value.m_midiNote;
+
     public static bool operator <(MidiNote a, MidiNote b) => a.CompareTo(b) < 0;
     public static bool operator <=(MidiNote a, MidiNote b) => a.CompareTo(b) <= 0;
     public static bool operator >(MidiNote a, MidiNote b) => a.CompareTo(b) > 0;
     public static bool operator >=(MidiNote a, MidiNote b) => a.CompareTo(b) >= 0;
 
-    public static MidiNote operator -(MidiNote v) => new(-v.m_value);
-    public static MidiNote operator +(MidiNote a, int b) => new(a.m_value + b);
-    public static MidiNote operator +(MidiNote a, MidiNote b) => a + b.m_value;
-    public static MidiNote operator /(MidiNote a, int b) => new(a.m_value / b);
-    public static MidiNote operator /(MidiNote a, MidiNote b) => a / b.m_value;
-    public static MidiNote operator *(MidiNote a, int b) => new(a.m_value * b);
-    public static MidiNote operator *(MidiNote a, MidiNote b) => a * b.m_value;
-    public static MidiNote operator %(MidiNote a, int b) => new(a.m_value % b);
-    public static MidiNote operator %(MidiNote a, MidiNote b) => a % b.m_value;
-    public static MidiNote operator -(MidiNote a, int b) => new(a.m_value - b);
-    public static MidiNote operator -(MidiNote a, MidiNote b) => a - b.m_value;
+    public static MidiNote operator -(MidiNote v) => new(-v.m_midiNote);
+    public static MidiNote operator +(MidiNote a, int b) => new(a.m_midiNote + b);
+    public static MidiNote operator +(MidiNote a, MidiNote b) => a + b.m_midiNote;
+    public static MidiNote operator /(MidiNote a, int b) => new(a.m_midiNote / b);
+    public static MidiNote operator /(MidiNote a, MidiNote b) => a / b.m_midiNote;
+    public static MidiNote operator *(MidiNote a, int b) => new(a.m_midiNote * b);
+    public static MidiNote operator *(MidiNote a, MidiNote b) => a * b.m_midiNote;
+    public static MidiNote operator %(MidiNote a, int b) => new(a.m_midiNote % b);
+    public static MidiNote operator %(MidiNote a, MidiNote b) => a % b.m_midiNote;
+    public static MidiNote operator -(MidiNote a, int b) => new(a.m_midiNote - b);
+    public static MidiNote operator -(MidiNote a, MidiNote b) => a - b.m_midiNote;
 
     #endregion Overloaded operators
 
     #region Implemented interfaces
 
     // IComparable<>
-    public int CompareTo(MidiNote other) => m_value.CompareTo(other.m_value);
+    public int CompareTo(MidiNote other) => m_midiNote.CompareTo(other.m_midiNote);
 
     // IComparable
     public int CompareTo(object? other) => other is not null && other is MidiNote o ? CompareTo(o) : -1;
@@ -193,7 +196,7 @@ namespace Flux.Units
     /// <summary>
     /// <para>The <see cref="MidiNote.Value"/> property is a MIDI note number of the closed interval [<see cref="MinValue"/>, <see cref="MaxValue"/>].</para>
     /// </summary>
-    public int Value => m_value;
+    public int Value => m_midiNote;
 
     #endregion Implemented interfaces
 

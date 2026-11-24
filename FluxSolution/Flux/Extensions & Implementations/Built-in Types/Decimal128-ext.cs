@@ -2,7 +2,7 @@
 {
   public static partial class Decimal128Extensions
   {
-    #region Pow10Reciprocal Table
+    #region Pow10Reciprocal table
 
     /// <summary>
     /// <para>Table of Pow10 reciprocals up to 10^33.</para>
@@ -49,40 +49,47 @@
 
     extension(System.Numerics.Decimal128)
     {
+      #region Try/FastPow10ReciprocalMagnitude
+
       /// <summary>
-      /// <para>Fast-path computation of power-of-10 reciprocals using precomputed values. Supported exponents are in the range [-28, 0], corresponding to powers from 10^-28 through 1.</para>
+      /// <para>Fast-path power-of-10 reciprocals from precomputed values. Supported exponent magnitudes are in the range [0, 28], corresponding to powers from 1 through 10^-28.</para>
       /// </summary>
-      /// <param name="negativeExponent">The power-of-10 exponent, in the range [-28, 0].</param>
-      /// <returns></returns>
-      public static System.Numerics.Decimal128 FastPow10ReciprocalMagnitude(int negativeExponent)
+      /// <param name="exponent">The exponent magnitude in the range [0, 28].</param>
+      /// <returns>10^-<paramref name="exponent"/></returns>
+      public static System.Numerics.Decimal128 FastPow10ReciprocalMagnitude(int exponent)
       {
         var values = Pow10Reciprocal;
 
-        System.ArgumentOutOfRangeException.ThrowIfLessThanOrEqual(negativeExponent, -values.Length);
-        System.ArgumentOutOfRangeException.ThrowIfGreaterThan(negativeExponent, 0);
+        var absExponent = int.Abs(exponent);
 
-        return values[int.Abs(negativeExponent)];
+        if (absExponent >= values.Length) throw new System.ArgumentOutOfRangeException(nameof(exponent));
+
+        return values[absExponent];
       }
 
       /// <summary>
-      /// <para>Attempts fast-path computation of power-of-10 reciprocals from precomputed values. Supported exponents are in the range [-28, 0], corresponding to powers from 10^-28 through 1.</para>
+      /// <para>Attempts fast-path power-of-10 reciprocals from precomputed values. Supported exponent magnitudes are in the range [0, 28], corresponding to powers from 1 through 10^-28.</para>
       /// </summary>
-      /// <param name="negativeExponent">The power-of-10 exponent, in the range [-28, 0].</param>
-      /// <param name="pow10Reciprocal"></param>
+      /// <param name="exponent">The exponent magnitude in the range [0, 28].</param>
+      /// <param name="reciprocal">10^-<paramref name="exponent"/></param>
       /// <returns>true if the value was computed successfully; otherwise, false.</returns>
-      public static bool TryFastPow10ReciprocalMagnitude(int negativeExponent, out System.Numerics.Decimal128 pow10Reciprocal)
+      public static bool TryFastPow10ReciprocalMagnitude(int exponent, out System.Numerics.Decimal128 reciprocal)
       {
         var values = Pow10Reciprocal;
 
-        if (negativeExponent <= -values.Length || negativeExponent > 0)
+        var absExponent = int.Abs(exponent);
+
+        if (absExponent >= values.Length)
         {
-          pow10Reciprocal = System.Numerics.Decimal128.Zero;
+          reciprocal = System.Numerics.Decimal128.Zero;
           return false;
         }
 
-        pow10Reciprocal = values[int.Abs(negativeExponent)];
+        reciprocal = values[absExponent];
         return true;
       }
+
+      #endregion
     }
   }
 }

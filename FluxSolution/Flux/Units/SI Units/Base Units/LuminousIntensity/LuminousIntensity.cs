@@ -7,38 +7,41 @@ namespace Flux.Units
   public readonly record struct LuminousIntensity
     : System.IComparable, System.IComparable<LuminousIntensity>, System.IEquatable<LuminousIntensity>, System.IFormattable, ISiUnitValueQuantifiable<double, LuminousIntensityUnit>
   {
-    private readonly double m_value;
+    private readonly double m_candela;
 
-    public LuminousIntensity(double value, LuminousIntensityUnit unit = LuminousIntensityUnit.Candela) => m_value = ConvertFromUnit(unit, value);
+    public LuminousIntensity(double value, LuminousIntensityUnit unit = LuminousIntensityUnit.Candela) => m_candela = ConvertFromUnit(unit, value);
 
     /// <summary>
     /// <para>Creates a new instance from the specified <see cref="MetricPrefix"/> (metric multiple) of <see cref="AmountOfSubstanceUnit.Mole"/>, e.g. <see cref="MetricPrefix.Mega"/> for megacandelas.</para>
     /// </summary>
     /// <param name="candela"></param>
     /// <param name="prefix"></param>
-    public LuminousIntensity(MetricPrefix prefix, double candela) => m_value = prefix.ConvertPrefix(candela, MetricPrefix.Unprefixed);
+    public LuminousIntensity(MetricPrefix prefix, double candela) => m_candela = prefix.ConvertPrefix(candela, MetricPrefix.Unprefixed);
 
     #region Static methods
     #endregion // Static methods
 
     #region Overloaded operators
 
+    public static explicit operator LuminousIntensity(double value) => new(value);
+    public static implicit operator double(LuminousIntensity value) => value.m_candela;
+
     public static bool operator <(LuminousIntensity a, LuminousIntensity b) => a.CompareTo(b) < 0;
     public static bool operator >(LuminousIntensity a, LuminousIntensity b) => a.CompareTo(b) > 0;
     public static bool operator <=(LuminousIntensity a, LuminousIntensity b) => a.CompareTo(b) <= 0;
     public static bool operator >=(LuminousIntensity a, LuminousIntensity b) => a.CompareTo(b) >= 0;
 
-    public static LuminousIntensity operator -(LuminousIntensity v) => new(-v.m_value);
-    public static LuminousIntensity operator *(LuminousIntensity a, LuminousIntensity b) => new(a.m_value * b.m_value);
-    public static LuminousIntensity operator /(LuminousIntensity a, LuminousIntensity b) => new(a.m_value / b.m_value);
-    public static LuminousIntensity operator %(LuminousIntensity a, LuminousIntensity b) => new(a.m_value % b.m_value);
-    public static LuminousIntensity operator +(LuminousIntensity a, LuminousIntensity b) => new(a.m_value + b.m_value);
-    public static LuminousIntensity operator -(LuminousIntensity a, LuminousIntensity b) => new(a.m_value - b.m_value);
-    public static LuminousIntensity operator *(LuminousIntensity a, double b) => new(a.m_value * b);
-    public static LuminousIntensity operator /(LuminousIntensity a, double b) => new(a.m_value / b);
-    public static LuminousIntensity operator %(LuminousIntensity a, double b) => new(a.m_value % b);
-    public static LuminousIntensity operator +(LuminousIntensity a, double b) => new(a.m_value + b);
-    public static LuminousIntensity operator -(LuminousIntensity a, double b) => new(a.m_value - b);
+    public static LuminousIntensity operator -(LuminousIntensity v) => new(-v.m_candela);
+    public static LuminousIntensity operator *(LuminousIntensity a, LuminousIntensity b) => new(a.m_candela * b.m_candela);
+    public static LuminousIntensity operator /(LuminousIntensity a, LuminousIntensity b) => new(a.m_candela / b.m_candela);
+    public static LuminousIntensity operator %(LuminousIntensity a, LuminousIntensity b) => new(a.m_candela % b.m_candela);
+    public static LuminousIntensity operator +(LuminousIntensity a, LuminousIntensity b) => new(a.m_candela + b.m_candela);
+    public static LuminousIntensity operator -(LuminousIntensity a, LuminousIntensity b) => new(a.m_candela - b.m_candela);
+    public static LuminousIntensity operator *(LuminousIntensity a, double b) => new(a.m_candela * b);
+    public static LuminousIntensity operator /(LuminousIntensity a, double b) => new(a.m_candela / b);
+    public static LuminousIntensity operator %(LuminousIntensity a, double b) => new(a.m_candela % b);
+    public static LuminousIntensity operator +(LuminousIntensity a, double b) => new(a.m_candela + b);
+    public static LuminousIntensity operator -(LuminousIntensity a, double b) => new(a.m_candela - b);
 
     #endregion Overloaded operators
 
@@ -48,14 +51,14 @@ namespace Flux.Units
     public int CompareTo(object? other) => other is not null && other is LuminousIntensity o ? CompareTo(o) : -1;
 
     // IComparable<>
-    public int CompareTo(LuminousIntensity other) => m_value.CompareTo(other.m_value);
+    public int CompareTo(LuminousIntensity other) => m_candela.CompareTo(other.m_candela);
 
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? formatProvider) => ToSiUnitString(MetricPrefix.Unprefixed);
 
     #region ISiUnitValueQuantifiable<>
 
-    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertPrefix(m_value, prefix);
+    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertPrefix(m_candela, prefix);
 
     public string ToSiUnitString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null)
       => GetSiUnitValue(prefix).ToSiFormattedString(format, formatProvider) + UnicodeSpacing.ThinSpace.ToSpacingString() + prefix.GetMetricPrefixSymbol() + LuminousIntensityUnit.Candela.GetUnitSymbol();
@@ -82,7 +85,7 @@ namespace Flux.Units
 
     public static double ConvertUnit(double value, LuminousIntensityUnit from, LuminousIntensityUnit to) => ConvertToUnit(to, ConvertFromUnit(from, value));
 
-    public double GetUnitValue(LuminousIntensityUnit unit) => ConvertToUnit(unit, m_value);
+    public double GetUnitValue(LuminousIntensityUnit unit) => ConvertToUnit(unit, m_candela);
 
     public string ToUnitString(LuminousIntensityUnit unit = LuminousIntensityUnit.Candela, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing spacing = UnicodeSpacing.Space, bool fullName = false)
     {
@@ -100,7 +103,7 @@ namespace Flux.Units
     /// <summary>
     /// <para>The unit of the <see cref="LuminousIntensity.Value"/> property is in <see cref="LuminousIntensityUnit.Candela"/>.</para>
     /// </summary>
-    public double Value => m_value;
+    public double Value => m_candela;
 
     #endregion // IValueQuantifiable<>
 

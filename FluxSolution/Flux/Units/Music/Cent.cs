@@ -10,9 +10,9 @@ namespace Flux.Units
   {
     public const double FrequencyRatio = 1.0005777895065548592967925757932;
 
-    private readonly int m_value;
+    private readonly int m_cent;
 
-    public Cent(int cents) => m_value = cents;
+    public Cent(int cents) => m_cent = cents;
 
     #region Static methods
 
@@ -38,42 +38,45 @@ namespace Flux.Units
 
     #region Overloaded operators
 
+    public static explicit operator Cent(int value) => new(value);
+    public static implicit operator int(Cent value) => value.m_cent;
+
     public static bool operator <(Cent a, Cent b) => a.CompareTo(b) < 0;
     public static bool operator <=(Cent a, Cent b) => a.CompareTo(b) <= 0;
     public static bool operator >(Cent a, Cent b) => a.CompareTo(b) > 0;
     public static bool operator >=(Cent a, Cent b) => a.CompareTo(b) >= 0;
 
-    public static Cent operator -(Cent v) => new(-v.m_value);
-    public static Cent operator +(Cent a, int b) => new(a.m_value + b);
-    public static Cent operator +(Cent a, Cent b) => a + b.m_value;
-    public static Cent operator /(Cent a, int b) => new(a.m_value / b);
-    public static Cent operator /(Cent a, Cent b) => a / b.m_value;
-    public static Cent operator *(Cent a, int b) => new(a.m_value * b);
-    public static Cent operator *(Cent a, Cent b) => a * b.m_value;
-    public static Cent operator %(Cent a, int b) => new(a.m_value % b);
-    public static Cent operator %(Cent a, Cent b) => a % b.m_value;
-    public static Cent operator -(Cent a, int b) => new(a.m_value - b);
-    public static Cent operator -(Cent a, Cent b) => a - b.m_value;
+    public static Cent operator -(Cent v) => new(-v.m_cent);
+    public static Cent operator +(Cent a, int b) => new(a.m_cent + b);
+    public static Cent operator +(Cent a, Cent b) => a + b.m_cent;
+    public static Cent operator /(Cent a, int b) => new(a.m_cent / b);
+    public static Cent operator /(Cent a, Cent b) => a / b.m_cent;
+    public static Cent operator *(Cent a, int b) => new(a.m_cent * b);
+    public static Cent operator *(Cent a, Cent b) => a * b.m_cent;
+    public static Cent operator %(Cent a, int b) => new(a.m_cent % b);
+    public static Cent operator %(Cent a, Cent b) => a % b.m_cent;
+    public static Cent operator -(Cent a, int b) => new(a.m_cent - b);
+    public static Cent operator -(Cent a, Cent b) => a - b.m_cent;
 
     #endregion Overloaded operators
 
     #region Implemented interfaces
 
     // IComparable<>
-    public int CompareTo(Cent other) => m_value.CompareTo(other.m_value);
+    public int CompareTo(Cent other) => m_cent.CompareTo(other.m_cent);
 
     // IComparable
     public int CompareTo(object? other) => other is not null && other is Cent o ? CompareTo(o) : -1;
 
     // IFormattable
-    public string ToString(string? format, System.IFormatProvider? formatProvider) => m_value.ToString(format, formatProvider) + " cent".ToPluralUnitName(m_value != 1);
+    public string ToString(string? format, System.IFormatProvider? formatProvider) => m_cent.ToString(format, formatProvider) + " cent".ToPluralUnitName(m_cent != 1);
 
     #region IValueQuantifiable<>
 
     /// <summary>
     /// <para>The <see cref="Cent.Value"/> property is a musical interval in cents.</para>
     /// </summary>
-    public int Value => m_value;
+    public int Value => m_cent;
 
     #endregion // IValueQuantifiable<>
 

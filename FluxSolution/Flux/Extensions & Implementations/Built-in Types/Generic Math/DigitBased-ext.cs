@@ -5,13 +5,20 @@
     extension<TInteger>(TInteger)
       where TInteger : System.Numerics.IBinaryInteger<TInteger>
     {
+      #region Assert/Is/Radix
       public static void AssertRadix<TRadix>(TRadix radix, out TInteger rdx)
         where TRadix : System.Numerics.IBinaryInteger<TRadix>
       {
-        System.ArgumentOutOfRangeException.ThrowIfLessThan(radix, TRadix.CreateChecked(2));
+        if (!IsRadix(radix))
+          throw new System.ArgumentOutOfRangeException(nameof(radix));
 
         rdx = TInteger.CreateChecked(radix);
       }
+
+      public static bool IsRadix(TInteger radix)
+        => radix > TInteger.One;
+
+      #endregion
 
       #region ConvertToFractionalPart
 

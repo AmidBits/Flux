@@ -7,30 +7,33 @@ namespace Flux.Units
   public readonly record struct AbsorbedDose
     : System.IComparable, System.IComparable<AbsorbedDose>, System.IFormattable, ISiUnitValueQuantifiable<double, AbsorbedDoseUnit>
   {
-    private readonly double m_value;
+    private readonly double m_gray;
 
-    public AbsorbedDose(double value, AbsorbedDoseUnit unit = AbsorbedDoseUnit.Gray) => m_value = ConvertFromUnit(unit, value);
+    public AbsorbedDose(double value, AbsorbedDoseUnit unit = AbsorbedDoseUnit.Gray) => m_gray = ConvertFromUnit(unit, value);
 
-    public AbsorbedDose(MetricPrefix prefix, double gray) => m_value = prefix.ConvertPrefix(gray, MetricPrefix.Unprefixed);
+    public AbsorbedDose(MetricPrefix prefix, double gray) => m_gray = prefix.ConvertPrefix(gray, MetricPrefix.Unprefixed);
 
     #region Overloaded operators
+
+    public static explicit operator AbsorbedDose(double value) => new(value);
+    public static implicit operator double(AbsorbedDose value) => value.m_gray;
 
     public static bool operator <(AbsorbedDose a, AbsorbedDose b) => a.CompareTo(b) < 0;
     public static bool operator >(AbsorbedDose a, AbsorbedDose b) => a.CompareTo(b) > 0;
     public static bool operator <=(AbsorbedDose a, AbsorbedDose b) => a.CompareTo(b) <= 0;
     public static bool operator >=(AbsorbedDose a, AbsorbedDose b) => a.CompareTo(b) >= 0;
 
-    public static AbsorbedDose operator -(AbsorbedDose v) => new(-v.m_value);
-    public static AbsorbedDose operator *(AbsorbedDose a, AbsorbedDose b) => new(a.m_value * b.m_value);
-    public static AbsorbedDose operator /(AbsorbedDose a, AbsorbedDose b) => new(a.m_value / b.m_value);
-    public static AbsorbedDose operator %(AbsorbedDose a, AbsorbedDose b) => new(a.m_value % b.m_value);
-    public static AbsorbedDose operator +(AbsorbedDose a, AbsorbedDose b) => new(a.m_value + b.m_value);
-    public static AbsorbedDose operator -(AbsorbedDose a, AbsorbedDose b) => new(a.m_value - b.m_value);
-    public static AbsorbedDose operator *(AbsorbedDose a, double b) => new(a.m_value * b);
-    public static AbsorbedDose operator /(AbsorbedDose a, double b) => new(a.m_value / b);
-    public static AbsorbedDose operator %(AbsorbedDose a, double b) => new(a.m_value % b);
-    public static AbsorbedDose operator +(AbsorbedDose a, double b) => new(a.m_value + b);
-    public static AbsorbedDose operator -(AbsorbedDose a, double b) => new(a.m_value - b);
+    public static AbsorbedDose operator -(AbsorbedDose v) => new(-v.m_gray);
+    public static AbsorbedDose operator *(AbsorbedDose a, AbsorbedDose b) => new(a.m_gray * b.m_gray);
+    public static AbsorbedDose operator /(AbsorbedDose a, AbsorbedDose b) => new(a.m_gray / b.m_gray);
+    public static AbsorbedDose operator %(AbsorbedDose a, AbsorbedDose b) => new(a.m_gray % b.m_gray);
+    public static AbsorbedDose operator +(AbsorbedDose a, AbsorbedDose b) => new(a.m_gray + b.m_gray);
+    public static AbsorbedDose operator -(AbsorbedDose a, AbsorbedDose b) => new(a.m_gray - b.m_gray);
+    public static AbsorbedDose operator *(AbsorbedDose a, double b) => new(a.m_gray * b);
+    public static AbsorbedDose operator /(AbsorbedDose a, double b) => new(a.m_gray / b);
+    public static AbsorbedDose operator %(AbsorbedDose a, double b) => new(a.m_gray % b);
+    public static AbsorbedDose operator +(AbsorbedDose a, double b) => new(a.m_gray + b);
+    public static AbsorbedDose operator -(AbsorbedDose a, double b) => new(a.m_gray - b);
 
     #endregion Overloaded operators
 
@@ -40,14 +43,14 @@ namespace Flux.Units
     public int CompareTo(object? other) => other is not null && other is AbsorbedDose o ? CompareTo(o) : -1;
 
     // IComparable<>
-    public int CompareTo(AbsorbedDose other) => m_value.CompareTo(other.m_value);
+    public int CompareTo(AbsorbedDose other) => m_gray.CompareTo(other.m_gray);
 
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? formatProvider) => ToSiUnitString(MetricPrefix.Unprefixed);
 
     #region ISiPrefixValueQuantifiable<>
 
-    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertPrefix(m_value, prefix);
+    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertPrefix(m_gray, prefix);
 
     public string ToSiUnitString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null)
       => GetSiUnitValue(prefix).ToSiFormattedString(format, formatProvider) + UnicodeSpacing.ThinSpace.ToSpacingString() + prefix.GetMetricPrefixSymbol() + AbsorbedDoseUnit.Gray.GetUnitSymbol();
@@ -74,7 +77,7 @@ namespace Flux.Units
 
     public static double ConvertUnit(double value, AbsorbedDoseUnit from, AbsorbedDoseUnit to) => ConvertToUnit(to, ConvertFromUnit(from, value));
 
-    public double GetUnitValue(AbsorbedDoseUnit unit) => ConvertToUnit(unit, m_value);
+    public double GetUnitValue(AbsorbedDoseUnit unit) => ConvertToUnit(unit, m_gray);
 
     public string ToUnitString(AbsorbedDoseUnit unit = AbsorbedDoseUnit.Gray, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing spacing = UnicodeSpacing.Space, bool fullName = false)
     {
@@ -92,7 +95,7 @@ namespace Flux.Units
     /// <summary>
     /// <para>The unit of the <see cref="AbsorbedDose.Value"/> property is in <see cref="AbsorbedDoseUnit.Gray"/>.</para>
     /// </summary>
-    public double Value => m_value;
+    public double Value => m_gray;
 
     #endregion // IValueQuantifiable<>
 

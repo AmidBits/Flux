@@ -13,16 +13,16 @@ namespace Flux.Units
     /// </summary>
     public const double OneParsec = 30856775814913672;
 
-    private readonly double m_value;
+    private readonly double m_meter;
 
-    public Length(double value, LengthUnit unit = LengthUnit.Meter) => m_value = ConvertFromUnit(unit, value);
+    public Length(double value, LengthUnit unit = LengthUnit.Meter) => m_meter = ConvertFromUnit(unit, value);
 
     /// <summary>
     /// <para>Creates a new instance from the specified <see cref="MetricPrefix"/> (i.e. metric multiple) of <see cref="TimeUnit.Meter"/>, e.g. <see cref="MetricPrefix.Milli"/> and <paramref name="meter"/> for millimeter.</para>
     /// </summary>
     /// <param name="meter"></param>
     /// <param name="prefix"></param>
-    public Length(MetricPrefix prefix, double meter) => m_value = prefix.ConvertPrefix(meter, MetricPrefix.Unprefixed);
+    public Length(MetricPrefix prefix, double meter) => m_meter = prefix.ConvertPrefix(meter, MetricPrefix.Unprefixed);
 
     /// <summary>
     /// <para>Computes the wavelength from the specified phase velocity and frequency. A wavelength is the spatial period of a periodic wave, i.e. the distance over which the wave's shape repeats. The default reference value for the speed of sound is 343.21 m/s. This determines the unit of measurement (i.e. meters per second) for the wavelength distance.</para>
@@ -147,22 +147,25 @@ namespace Flux.Units
 
     #region Overloaded operators
 
+    public static explicit operator Length(double value) => new(value);
+    public static implicit operator double(Length value) => value.m_meter;
+
     public static bool operator <(Length a, Length b) => a.CompareTo(b) < 0;
     public static bool operator >(Length a, Length b) => a.CompareTo(b) > 0;
     public static bool operator <=(Length a, Length b) => a.CompareTo(b) <= 0;
     public static bool operator >=(Length a, Length b) => a.CompareTo(b) >= 0;
 
-    public static Length operator -(Length v) => new(-v.m_value);
-    public static Length operator *(Length a, Length b) => new(a.m_value * b.m_value);
-    public static Length operator /(Length a, Length b) => new(a.m_value / b.m_value);
-    public static Length operator %(Length a, Length b) => new(a.m_value % b.m_value);
-    public static Length operator +(Length a, Length b) => new(a.m_value + b.m_value);
-    public static Length operator -(Length a, Length b) => new(a.m_value - b.m_value);
-    public static Length operator *(Length a, double b) => new(a.m_value * b);
-    public static Length operator /(Length a, double b) => new(a.m_value / b);
-    public static Length operator %(Length a, double b) => new(a.m_value % b);
-    public static Length operator +(Length a, double b) => new(a.m_value + b);
-    public static Length operator -(Length a, double b) => new(a.m_value - b);
+    public static Length operator -(Length v) => new(-v.m_meter);
+    public static Length operator *(Length a, Length b) => new(a.m_meter * b.m_meter);
+    public static Length operator /(Length a, Length b) => new(a.m_meter / b.m_meter);
+    public static Length operator %(Length a, Length b) => new(a.m_meter % b.m_meter);
+    public static Length operator +(Length a, Length b) => new(a.m_meter + b.m_meter);
+    public static Length operator -(Length a, Length b) => new(a.m_meter - b.m_meter);
+    public static Length operator *(Length a, double b) => new(a.m_meter * b);
+    public static Length operator /(Length a, double b) => new(a.m_meter / b);
+    public static Length operator %(Length a, double b) => new(a.m_meter % b);
+    public static Length operator +(Length a, double b) => new(a.m_meter + b);
+    public static Length operator -(Length a, double b) => new(a.m_meter - b);
 
     #endregion Overloaded operators
 
@@ -172,14 +175,14 @@ namespace Flux.Units
     public int CompareTo(object? other) => other is not null && other is Length o ? CompareTo(o) : -1;
 
     // IComparable<>
-    public int CompareTo(Length other) => m_value.CompareTo(other.m_value);
+    public int CompareTo(Length other) => m_meter.CompareTo(other.m_meter);
 
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? formatProvider) => ToSiUnitString(MetricPrefix.Unprefixed);
 
     #region ISiUnitValueQuantifiable<>
 
-    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertPrefix(m_value, prefix);
+    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertPrefix(m_meter, prefix);
 
     public string ToSiUnitString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null)
       => GetSiUnitValue(prefix).ToSiFormattedString(format, formatProvider) + UnicodeSpacing.ThinSpace.ToSpacingString() + prefix.GetMetricPrefixSymbol() + LengthUnit.Meter.GetUnitSymbol();
@@ -207,7 +210,7 @@ namespace Flux.Units
     public static double ConvertUnit(double value, LengthUnit from, LengthUnit to) => ConvertToUnit(to, ConvertFromUnit(from, value));
 
     public double GetUnitValue(LengthUnit unit)
-      => ConvertToUnit(unit, m_value);
+      => ConvertToUnit(unit, m_meter);
 
     public string ToUnitString(LengthUnit unit = LengthUnit.Meter, string? format = null, System.IFormatProvider? provider = null, UnicodeSpacing spacing = UnicodeSpacing.Space, bool fullName = false)
     {
@@ -225,7 +228,7 @@ namespace Flux.Units
     /// <summary>
     /// <para>The unit of the <see cref="Length.Value"/> property is in <see cref="LengthUnit.Meter"/>.</para>
     /// </summary>
-    public double Value => m_value;
+    public double Value => m_meter;
 
     #endregion // IValueQuantifiable<>
 

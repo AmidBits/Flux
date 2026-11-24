@@ -109,7 +109,7 @@ namespace Flux
       , System.Numerics.ISubtractionOperators<BigRational, BigRational, BigRational>, System.Numerics.ISubtractionOperators<BigRational, System.Numerics.BigInteger, BigRational>
       , System.Numerics.IUnaryNegationOperators<BigRational, BigRational>
       , System.Numerics.IUnaryPlusOperators<BigRational, BigRational>
-    //, Units.IValueQuantifiable<double>
+      , Units.IValueQuantifiable<System.Numerics.Decimal128>
     {
       public static readonly BigRational EpsilonLikeDouble = new(1, 1_000_000_000_000_000, false);
       public static readonly BigRational EpsilonLikeSingle = new(1, 1_000_000, false);
@@ -357,6 +357,48 @@ namespace Flux
         }
 
         return new(a, b, true);
+      }
+
+      public static BigRational ApproximateRational(System.Numerics.Decimal128 value, int maxIterations = 101)
+      {
+        System.ArgumentOutOfRangeException.ThrowIfNegativeOrZero(maxIterations);
+
+        if (!System.Numerics.Decimal128.IsFinite(value)) throw new System.NotFiniteNumberException();
+
+        if (value == System.Numerics.Decimal128.Zero)
+          return Zero;
+
+        var isNegative = System.Numerics.Decimal128.IsNegative(value);
+
+        var v = System.Numerics.Decimal128.Abs(value);
+
+        var (p, q) = (System.Numerics.BigInteger.Zero, System.Numerics.BigInteger.One);
+
+        var (p0, q0) = (System.Numerics.BigInteger.Zero, System.Numerics.BigInteger.One);
+
+        var (p1, q1) = (System.Numerics.BigInteger.One, System.Numerics.BigInteger.Zero);
+
+        for (var i = 0; i < maxIterations; i++)
+        {
+          var aiDecimal = System.Numerics.Decimal128.Floor(v);
+
+          var ai = System.Numerics.BigInteger.CreateChecked(aiDecimal);
+
+          (p, q) = (ai * p1 + p0, ai * q1 + q0);
+
+          (p0, q0) = (p1, q1);
+
+          (p1, q1) = (p, q);
+
+          var fractional = v - aiDecimal;
+
+          if (fractional == System.Numerics.Decimal128.Zero)
+            break;
+
+          v = System.Numerics.Decimal128.One / fractional;
+        }
+
+        return new BigRational(isNegative ? -p : p, q, true);
       }
 
       public static BigRational BitwiseAnd(BigRational a, BigRational b)
@@ -1192,7 +1234,7 @@ namespace Flux
 
       #region IValueQuantifiable<>
 
-      public double Value => double.CreateChecked(m_numerator) / double.CreateChecked(m_denominator);
+      public System.Numerics.Decimal128 Value => System.Numerics.Decimal128.CreateChecked(m_numerator) / System.Numerics.Decimal128.CreateChecked(m_denominator);
 
       #endregion // IValueQuantifiable<>
 

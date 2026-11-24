@@ -24,7 +24,7 @@ namespace Flux.Units
     /// <summary>Amount of time in one day.</summary>
     public static readonly Time Day = new(1, TimeUnit.Day);
 
-    private readonly double m_value;
+    private readonly double m_second;
 
     /// <summary>
     /// <para>Creates a new instance from the specified <paramref name="value"/> of <paramref name="unit"/>. The default <paramref name="unit"/> is <see cref="TimeUnit.Second"/></para>
@@ -32,19 +32,19 @@ namespace Flux.Units
     /// <param name="value"></param>
     /// <param name="unit"></param>
     /// <exception cref="System.ArgumentOutOfRangeException"></exception>
-    public Time(double value, TimeUnit unit = TimeUnit.Second) => m_value = ConvertFromUnit(unit, value);
+    public Time(double value, TimeUnit unit = TimeUnit.Second) => m_second = ConvertFromUnit(unit, value);
 
     /// <summary>
     /// <para>Creates a new instance from the specified <see cref="MetricPrefix"/> (metric multiple) of <see cref="TimeUnit.Second"/>, e.g. <see cref="MetricPrefix.Milli"/> for milliseconds.</para>
     /// </summary>
     /// <param name="seconds"></param>
     /// <param name="prefix"></param>
-    public Time(MetricPrefix prefix, double seconds) => m_value = prefix.ConvertPrefix(seconds, MetricPrefix.Unprefixed);
+    public Time(MetricPrefix prefix, double seconds) => m_second = prefix.ConvertPrefix(seconds, MetricPrefix.Unprefixed);
 
     /// <summary>Creates a new instance from the specified <paramref name="timeSpan"/>.</summary>
     public Time(System.TimeSpan timeSpan) : this(timeSpan.TotalSeconds, TimeUnit.Second) { }
 
-    public System.TimeSpan ToTimeSpan() => System.TimeSpan.FromSeconds(m_value);
+    public System.TimeSpan ToTimeSpan() => System.TimeSpan.FromSeconds(m_second);
 
     #region Static methods
 
@@ -137,22 +137,25 @@ namespace Flux.Units
 
     #region Overloaded operators
 
+    public static explicit operator Time(double value) => new(value);
+    public static implicit operator double(Time value) => value.m_second;
+
     public static bool operator <(Time a, Time b) => a.CompareTo(b) < 0;
     public static bool operator >(Time a, Time b) => a.CompareTo(b) > 0;
     public static bool operator <=(Time a, Time b) => a.CompareTo(b) <= 0;
     public static bool operator >=(Time a, Time b) => a.CompareTo(b) >= 0;
 
-    public static Time operator -(Time v) => new(-v.m_value);
-    public static Time operator *(Time a, Time b) => new(a.m_value * b.m_value);
-    public static Time operator /(Time a, Time b) => new(a.m_value / b.m_value);
-    public static Time operator %(Time a, Time b) => new(a.m_value % b.m_value);
-    public static Time operator +(Time a, Time b) => new(a.m_value + b.m_value);
-    public static Time operator -(Time a, Time b) => new(a.m_value - b.m_value);
-    public static Time operator *(Time a, double b) => new(a.m_value * b);
-    public static Time operator /(Time a, double b) => new(a.m_value / b);
-    public static Time operator %(Time a, double b) => new(a.m_value % b);
-    public static Time operator +(Time a, double b) => new(a.m_value + b);
-    public static Time operator -(Time a, double b) => new(a.m_value - b);
+    public static Time operator -(Time v) => new(-v.m_second);
+    public static Time operator *(Time a, Time b) => new(a.m_second * b.m_second);
+    public static Time operator /(Time a, Time b) => new(a.m_second / b.m_second);
+    public static Time operator %(Time a, Time b) => new(a.m_second % b.m_second);
+    public static Time operator +(Time a, Time b) => new(a.m_second + b.m_second);
+    public static Time operator -(Time a, Time b) => new(a.m_second - b.m_second);
+    public static Time operator *(Time a, double b) => new(a.m_second * b);
+    public static Time operator /(Time a, double b) => new(a.m_second / b);
+    public static Time operator %(Time a, double b) => new(a.m_second % b);
+    public static Time operator +(Time a, double b) => new(a.m_second + b);
+    public static Time operator -(Time a, double b) => new(a.m_second - b);
 
     #endregion Overloaded operators
 
@@ -162,14 +165,14 @@ namespace Flux.Units
     public int CompareTo(object? other) => other is not null && other is Time o ? CompareTo(o) : -1;
 
     // IComparable<T>
-    public int CompareTo(Time other) => m_value.CompareTo(other.m_value);
+    public int CompareTo(Time other) => m_second.CompareTo(other.m_second);
 
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? formatProvider) => ToSiUnitString(MetricPrefix.Unprefixed);
 
     #region ISiUnitValueQuantifiable<>
 
-    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertPrefix(m_value, prefix);
+    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertPrefix(m_second, prefix);
 
     public string ToSiUnitString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null)
       => GetSiUnitValue(prefix).ToSiFormattedString(format, formatProvider) + UnicodeSpacing.ThinSpace.ToSpacingString() + prefix.GetMetricPrefixSymbol() + TimeUnit.Second.GetUnitSymbol();
@@ -198,7 +201,7 @@ namespace Flux.Units
 
     public static double ConvertUnit(double value, TimeUnit from, TimeUnit to) => ConvertToUnit(to, ConvertFromUnit(from, value));
 
-    public double GetUnitValue(TimeUnit unit) => ConvertToUnit(unit, m_value);
+    public double GetUnitValue(TimeUnit unit) => ConvertToUnit(unit, m_second);
 
     public string ToUnitString(TimeUnit unit = TimeUnit.Second, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing spacing = UnicodeSpacing.Space, bool fullName = false)
     {
@@ -216,7 +219,7 @@ namespace Flux.Units
     /// <summary>
     /// <para>The unit of the <see cref="Time.Value"/> property is in <see cref="TimeUnit.Second"/>.</para>
     /// </summary>
-    public double Value => m_value;
+    public double Value => m_second;
 
     #endregion // IValueQuantifiable<>
 

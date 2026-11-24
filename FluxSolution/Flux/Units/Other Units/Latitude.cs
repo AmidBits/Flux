@@ -19,7 +19,7 @@ namespace Flux.Units
     public static Latitude TropicOfCancer { get; } = new(23.43648);
     public static Latitude TropicOfCapricorn { get; } = new(-23.43648);
 
-    private readonly double m_degrees;
+    private readonly double m_degree;
 
     private Latitude(double degrees)
       : this(degrees, AngleUnit.Degree)
@@ -32,12 +32,12 @@ namespace Flux.Units
 
     /// <summary>Creates a new <see cref="Latitude"/> from the specified <paramref name="angle"/> and <paramref name="unit"/>.</summary>
     public Latitude(double angle, Units.AngleUnit unit = Units.AngleUnit.Degree)
-      => m_degrees = Number.ReflectedFold(Angle.ConvertUnit(angle, unit, AngleUnit.Degree), MinValue, MaxValue);
+      => m_degree = Number.ReflectedFold(Angle.ConvertUnit(angle, unit, AngleUnit.Degree), MinValue, MaxValue);
 
     /// <summary>The <see cref="Units.Angle"/> of the latitude.</summary>
-    public Angle Angle { get => new(m_degrees); }
+    public Angle Angle { get => new(m_degree); }
 
-    public double Radians => double.DegreesToRadians(m_degrees);
+    public double Radians => double.DegreesToRadians(m_degree);
 
     /// <summary>Projects the latitude to a mercator Y value in the range [-PI, PI]. The Y value is logarithmic.</summary>
     /// https://en.wikipedia.org/wiki/Mercator_projection
@@ -45,7 +45,7 @@ namespace Flux.Units
     public double GetMercatorProjectedY()
       => double.Clamp(double.Log(double.Tan(double.Pi / 4 + Angle.Value / 2)), -double.Pi, double.Pi);
 
-    public string ToDecimalString() => m_degrees.ToString(BinaryInteger.CreateFormatStringWithCountDecimals(6));
+    public string ToDecimalString() => m_degree.ToString(BinaryInteger.CreateFormatStringWithCountDecimals(6));
 
     public string ToDmsNotationString()
     {
@@ -135,28 +135,31 @@ namespace Flux.Units
 
     #region Overloaded operators
 
+    public static explicit operator Latitude(double value) => new(value);
+    public static implicit operator double(Latitude value) => value.m_degree;
+
     public static bool operator <(Latitude a, Latitude b) => a.CompareTo(b) < 0;
     public static bool operator <=(Latitude a, Latitude b) => a.CompareTo(b) <= 0;
     public static bool operator >(Latitude a, Latitude b) => a.CompareTo(b) > 0;
     public static bool operator >=(Latitude a, Latitude b) => a.CompareTo(b) >= 0;
 
-    public static Latitude operator -(Latitude v) => new(-v.m_degrees);
-    public static Latitude operator +(Latitude a, double b) => new(a.m_degrees + b);
-    public static Latitude operator +(Latitude a, Latitude b) => a + b.m_degrees;
-    public static Latitude operator /(Latitude a, double b) => new(a.m_degrees / b);
-    public static Latitude operator /(Latitude a, Latitude b) => a / b.m_degrees;
-    public static Latitude operator *(Latitude a, double b) => new(a.m_degrees * b);
-    public static Latitude operator *(Latitude a, Latitude b) => a * b.m_degrees;
-    public static Latitude operator %(Latitude a, double b) => new(a.m_degrees % b);
-    public static Latitude operator %(Latitude a, Latitude b) => a % b.m_degrees;
-    public static Latitude operator -(Latitude a, double b) => new(a.m_degrees - b);
-    public static Latitude operator -(Latitude a, Latitude b) => a - b.m_degrees;
+    public static Latitude operator -(Latitude v) => new(-v.m_degree);
+    public static Latitude operator +(Latitude a, double b) => new(a.m_degree + b);
+    public static Latitude operator +(Latitude a, Latitude b) => a + b.m_degree;
+    public static Latitude operator /(Latitude a, double b) => new(a.m_degree / b);
+    public static Latitude operator /(Latitude a, Latitude b) => a / b.m_degree;
+    public static Latitude operator *(Latitude a, double b) => new(a.m_degree * b);
+    public static Latitude operator *(Latitude a, Latitude b) => a * b.m_degree;
+    public static Latitude operator %(Latitude a, double b) => new(a.m_degree % b);
+    public static Latitude operator %(Latitude a, Latitude b) => a % b.m_degree;
+    public static Latitude operator -(Latitude a, double b) => new(a.m_degree - b);
+    public static Latitude operator -(Latitude a, Latitude b) => a - b.m_degree;
     #endregion Overloaded operators
 
     #region Implemented interfaces
 
     // IComparable<>
-    public int CompareTo(Latitude other) => m_degrees.CompareTo(other.m_degrees);
+    public int CompareTo(Latitude other) => m_degree.CompareTo(other.m_degree);
 
     // IComparable
     public int CompareTo(object? other) => other is not null && other is Latitude o ? CompareTo(o) : -1;
@@ -170,7 +173,7 @@ namespace Flux.Units
     /// <summary>
     ///  <para>The unit of the <see cref="Latitude.Value"/> property is in <see cref="AngleUnit.Degree"/>.</para>
     /// </summary>
-    public double Value => m_degrees;
+    public double Value => m_degree;
 
     #endregion // IValueQuantifiable<>
 

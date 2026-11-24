@@ -501,6 +501,7 @@ namespace ConsoleApp
     private static void TimedMain(string[] _)
     {
 
+      var (sign, exponent, coefficient) = System.Numerics.Decimal128.AnalyzeDecimal(123.45m);
 
 
 

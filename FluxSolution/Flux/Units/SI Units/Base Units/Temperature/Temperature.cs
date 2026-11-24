@@ -15,11 +15,11 @@ namespace Flux.Units
     public static Temperature BoilingPointOfWater { get; } = new(373.15);
     public static Temperature FreezingPointOfWater { get; } = new(273.15);
 
-    private readonly double m_value;
+    private readonly double m_kelvin;
 
-    public Temperature(double value, TemperatureUnit unit = TemperatureUnit.Kelvin) => m_value = ConvertFromUnit(unit, value);
+    public Temperature(double value, TemperatureUnit unit = TemperatureUnit.Kelvin) => m_kelvin = ConvertFromUnit(unit, value);
 
-    public Temperature(MetricPrefix prefix, double kelvin) => m_value = prefix.ConvertPrefix(kelvin, MetricPrefix.Unprefixed);
+    public Temperature(MetricPrefix prefix, double kelvin) => m_kelvin = prefix.ConvertPrefix(kelvin, MetricPrefix.Unprefixed);
 
     #region Static methods
 
@@ -56,22 +56,25 @@ namespace Flux.Units
 
     #region Overloaded operators
 
+    public static explicit operator Temperature(double value) => new(value);
+    public static implicit operator double(Temperature value) => value.m_kelvin;
+
     public static bool operator <(Temperature a, Temperature b) => a.CompareTo(b) < 0;
     public static bool operator >(Temperature a, Temperature b) => a.CompareTo(b) > 0;
     public static bool operator <=(Temperature a, Temperature b) => a.CompareTo(b) <= 0;
     public static bool operator >=(Temperature a, Temperature b) => a.CompareTo(b) >= 0;
 
-    public static Temperature operator -(Temperature v) => new(-v.m_value);
-    public static Temperature operator *(Temperature a, Temperature b) => new(a.m_value * b.m_value);
-    public static Temperature operator /(Temperature a, Temperature b) => new(a.m_value / b.m_value);
-    public static Temperature operator %(Temperature a, Temperature b) => new(a.m_value % b.m_value);
-    public static Temperature operator +(Temperature a, Temperature b) => new(a.m_value + b.m_value);
-    public static Temperature operator -(Temperature a, Temperature b) => new(a.m_value - b.m_value);
-    public static Temperature operator *(Temperature a, double b) => new(a.m_value * b);
-    public static Temperature operator /(Temperature a, double b) => new(a.m_value / b);
-    public static Temperature operator %(Temperature a, double b) => new(a.m_value % b);
-    public static Temperature operator +(Temperature a, double b) => new(a.m_value + b);
-    public static Temperature operator -(Temperature a, double b) => new(a.m_value - b);
+    public static Temperature operator -(Temperature v) => new(-v.m_kelvin);
+    public static Temperature operator *(Temperature a, Temperature b) => new(a.m_kelvin * b.m_kelvin);
+    public static Temperature operator /(Temperature a, Temperature b) => new(a.m_kelvin / b.m_kelvin);
+    public static Temperature operator %(Temperature a, Temperature b) => new(a.m_kelvin % b.m_kelvin);
+    public static Temperature operator +(Temperature a, Temperature b) => new(a.m_kelvin + b.m_kelvin);
+    public static Temperature operator -(Temperature a, Temperature b) => new(a.m_kelvin - b.m_kelvin);
+    public static Temperature operator *(Temperature a, double b) => new(a.m_kelvin * b);
+    public static Temperature operator /(Temperature a, double b) => new(a.m_kelvin / b);
+    public static Temperature operator %(Temperature a, double b) => new(a.m_kelvin % b);
+    public static Temperature operator +(Temperature a, double b) => new(a.m_kelvin + b);
+    public static Temperature operator -(Temperature a, double b) => new(a.m_kelvin - b);
 
     #endregion Overloaded operators
 
@@ -81,14 +84,14 @@ namespace Flux.Units
     public int CompareTo(object? other) => other is not null && other is Temperature o ? CompareTo(o) : -1;
 
     // IComparable<>
-    public int CompareTo(Temperature other) => m_value.CompareTo(other.m_value);
+    public int CompareTo(Temperature other) => m_kelvin.CompareTo(other.m_kelvin);
 
     // IFormattable
     public string ToString(string? format, System.IFormatProvider? formatProvider) => ToSiUnitString(MetricPrefix.Unprefixed);
 
     #region ISiUnitValueQuantifiable<>
 
-    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertPrefix(m_value, prefix);
+    public double GetSiUnitValue(MetricPrefix prefix) => MetricPrefix.Unprefixed.ConvertPrefix(m_kelvin, prefix);
 
     public string ToSiUnitString(MetricPrefix prefix, string? format = null, System.IFormatProvider? formatProvider = null)
       => GetSiUnitValue(prefix).ToSiFormattedString(format, formatProvider) + UnicodeSpacing.ThinSpace.ToSpacingString() + prefix.GetMetricPrefixSymbol() + TemperatureUnit.Kelvin.GetUnitSymbol();
@@ -124,7 +127,7 @@ namespace Flux.Units
     public static double ConvertUnit(double value, TemperatureUnit from, TemperatureUnit to) => ConvertToUnit(to, ConvertFromUnit(from, value));
 
     public double GetUnitValue(TemperatureUnit unit)
-      => ConvertToUnit(unit, m_value);
+      => ConvertToUnit(unit, m_kelvin);
 
     public string ToUnitString(TemperatureUnit unit = TemperatureUnit.Kelvin, string? format = null, System.IFormatProvider? formatProvider = null, UnicodeSpacing spacing = UnicodeSpacing.Space, bool fullName = false)
     {
@@ -142,7 +145,7 @@ namespace Flux.Units
     /// <summary>
     /// <para>The unit of the <see cref="Temperature.Value"/> property is in <see cref="TemperatureUnit.Kelvin"/>.</para>
     /// </summary>
-    public double Value => m_value;
+    public double Value => m_kelvin;
 
     #endregion // IValueQuantifiable<>
 
