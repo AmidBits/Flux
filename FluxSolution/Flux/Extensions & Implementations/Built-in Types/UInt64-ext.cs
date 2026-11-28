@@ -42,6 +42,31 @@ namespace Flux
 
       #endregion
 
+      #region DigitCount
+
+      /// <summary>
+      /// <para></para>
+      /// </summary>
+      /// <param name="n"></param>
+      /// <param name="radix"></param>
+      /// <returns></returns>
+      public static int DigitCount(ulong n, ulong radix)
+      {
+        System.ArgumentOutOfRangeException.ThrowIfLessThan(radix, 2UL);
+
+        var digits = 1;
+
+        while (n >= radix)
+        {
+          n /= radix;
+          digits++;
+        }
+
+        return digits;
+      }
+
+      #endregion
+
       #region ReverseBits..
 
       /// <summary>

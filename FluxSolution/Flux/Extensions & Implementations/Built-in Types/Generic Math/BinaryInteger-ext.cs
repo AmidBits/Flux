@@ -5,10 +5,10 @@
     extension<TInteger>(TInteger)
       where TInteger : System.Numerics.IBinaryInteger<TInteger>
     {
-      public static TInteger GetBitSize()
-      {
-        return TInteger.PopCount(TInteger.AllBitsSet);
-      }
+      public static int? GetBitWidth()
+        => typeof(TInteger) == typeof(System.Numerics.BigInteger)
+        ? null
+        : int.CreateChecked(TInteger.PopCount(TInteger.AllBitsSet));
 
       #region CreateFormatStringWithCountDecimals
 

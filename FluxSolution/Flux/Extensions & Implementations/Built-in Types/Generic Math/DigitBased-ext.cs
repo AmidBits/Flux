@@ -45,26 +45,29 @@
 
       /// <summary>
       /// <para>Gets the count of all digits in a number using the specified <paramref name="radix"/>.</para>
+      /// <para>Algorithm: digit counting by repeated division.</para>
       /// </summary>
-      /// <remarks>DigitCount is log-floor + 1.</remarks>
+      /// <remarks>DigitCount is log-floor() + 1.</remarks>
       public static TInteger DigitCount<TRadix>(TInteger value, TRadix radix)
         where TRadix : System.Numerics.IBinaryInteger<TRadix>
       {
-        if (IsSingleDigit(value, radix))
+        AssertRadix(radix, out TInteger rdx);
+
+        if (IsSingleDigit(value, rdx))
           return TInteger.One;
 
-        return IntegerLog(value, radix).LogFloor + TInteger.One;
-      }
+        if (NumericTypeInfo<TInteger>.IsSystemNumericsBigInteger) // If TInteger is BigInteger use special BigInteger DigitCount().
+          return TInteger.CreateChecked(BigIntegerExtensions.DigitCount(System.Numerics.BigInteger.CreateChecked(value), int.CreateChecked(radix)));
 
-      public static TInteger DigitCount2(TInteger n, TInteger b)
-      {
-        n = TInteger.Abs(n);
+        // Otherwise resort to the the canonical implementation; digit counting by repeated division.
 
-        TInteger count = TInteger.One;
+        value = TInteger.Abs(value);
 
-        while (n >= b)
+        var count = TInteger.One;
+
+        while (value >= rdx)
         {
-          n /= b;
+          value /= rdx;
 
           count++;
         }
@@ -77,28 +80,36 @@
       #region DigitPlaceValues
 
       /// <summary>
-      /// <para>Creates a new list with the digit place value components of <paramref name="value"/> using base <paramref name="radix"/>. E.g. 1234 return [4 (for 4 * ones), 30 (for 3 * tens), 200 (for 2 * hundreds), 1000 (for 1 * thousands)].</para>
+      /// <para>Returns the place-value components of <paramref name="value"/> in the specified <paramref name="radix"/>.</para>
+      /// <para>Each element represents the contribution of a single digit to the overall value. For example, in base 10, the value 1234 produces: [4, 30, 200, 1000].</para>
       /// </summary>
       /// <typeparam name="TInteger"></typeparam>
       /// <typeparam name="TRadix"></typeparam>
-      /// <param name="value"></param>
-      /// <param name="radix"></param>
+      /// <param name="value"> The value whose digit place-value components are returned.</param>
+      /// <param name="radix">The numeric base. Must be greater than or equal to 2.</param>
       /// <returns></returns>
-      public static List<TInteger> DigitPlaceValues(TInteger n, TInteger b)
+      public static List<TInteger> DigitPlaceValues<TRadix>(TInteger value, TRadix radix)
+        where TRadix : System.Numerics.IBinaryInteger<TRadix>
       {
-        var result = new List<TInteger>();
+        AssertRadix(radix, out TInteger rdx);
+
+        var placeValues = new List<TInteger>();
 
         var place = TInteger.One;
-        while (n > TInteger.Zero)
-        {
-          var digit = n % b;
-          result.Add(digit * place);
 
-          n /= b;
-          place *= b;
+        while (value > TInteger.Zero)
+        {
+          (value, var digit) = TInteger.DivRem(value, rdx);
+
+          placeValues.Add(digit * place);
+
+          place *= rdx;
         }
 
-        return result;
+        if (placeValues.Count == 0)
+          placeValues.Add(TInteger.Zero);
+
+        return placeValues;
       }
 
       #endregion
@@ -119,14 +130,12 @@
 
         while (!TInteger.IsZero(value))
         {
-          var digit = value % rdx;
+          (value, var digit) = TInteger.DivRem(value, rdx);
 
           if (TInteger.IsZero(digit))
             return digit;
 
           product *= digit;
-
-          value /= rdx;
         }
 
         return product;
@@ -149,9 +158,9 @@
 
         while (!TInteger.IsZero(value))
         {
-          sum += value % rdx;
+          (value, var digit) = TInteger.DivRem(value, rdx);
 
-          value /= rdx;
+          sum += digit;
         }
 
         return sum;
@@ -217,19 +226,19 @@
 
         value = TInteger.Abs(value);
 
-        var list = new System.Collections.Generic.List<TInteger>();
+        var digits = new System.Collections.Generic.List<TInteger>();
 
         if (TInteger.IsZero(value))
-          list.Add(TInteger.Zero);
+          digits.Add(TInteger.Zero);
         else
           while (!TInteger.IsZero(value))
           {
-            list.Add(value % rdx);
+            (value, var digit) = TInteger.DivRem(value, rdx);
 
-            value /= rdx;
+            digits.Add(digit);
           }
 
-        return list;
+        return digits;
       }
 
       #endregion
@@ -304,13 +313,11 @@
 
         while (!TInteger.IsZero(value))
         {
-          var remainder = value % rdx;
-
-          value /= rdx;
+          (value, var digit) = TInteger.DivRem(value, rdx);
 
           if (TInteger.IsZero(value))
             break;
-          else if (TInteger.Abs((value % rdx) - remainder) > TInteger.One) // If the difference to the digit is greater than 1, then the number cannot jumbled.
+          else if (TInteger.Abs((value % rdx) - digit) > TInteger.One) // If the difference to the digit is greater than 1, then the number cannot jumbled.
             return false;
         }
 
@@ -445,16 +452,16 @@
       {
         AssertRadix(radix, out TInteger rdx);
 
-        var reversed = TInteger.Zero;
+        var reversedDigits = TInteger.Zero;
 
         while (!TInteger.IsZero(value))
         {
-          reversed = (reversed * rdx) + (value % rdx);
+          (value, var digit) = TInteger.DivRem(value, rdx);
 
-          value /= rdx;
+          reversedDigits = (reversedDigits * rdx) + digit;
         }
 
-        return reversed;
+        return reversedDigits;
       }
 
       #endregion
@@ -531,9 +538,9 @@
 
         for (var i = TInteger.Zero; i < count && value > TInteger.Zero; i++)
         {
-          sum += value % rdx;
+          (value, var digit) = TInteger.DivRem(value, rdx);
 
-          value /= rdx;
+          sum += digit;
         }
 
         return sum;
@@ -564,9 +571,9 @@
 
         while (value > TInteger.Zero)
         {
-          sum += value % rdx;
+          (value, var digit) = TInteger.DivRem(value, rdx);
 
-          value /= rdx;
+          sum += digit;
         }
 
         return sum;

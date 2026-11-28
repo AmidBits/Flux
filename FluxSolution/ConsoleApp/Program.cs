@@ -500,11 +500,17 @@ namespace ConsoleApp
 
     private static void TimedMain(string[] _)
     {
+      var bw = BinaryInteger.GetBitWidth<System.Numerics.BigInteger>();
 
       var (sign, exponent, coefficient) = System.Numerics.Decimal128.AnalyzeDecimal(123.45m);
 
+      NumericTypeInfo.Preload();
 
+      var api = NumericTypeInfo<int>.IsArbitraryPrecision;
+      var apbi = NumericTypeInfo<System.Numerics.BigInteger>.IsArbitraryPrecision;
 
+      var x = System.Numerics.BigInteger.CreateChecked(17);
+      var dc = BinaryInteger.DigitCount(x, 10);
     }
 
     private static void Main(string[] args)

@@ -6,30 +6,42 @@ namespace Flux
     {
       #region DigitCount
 
+      /// <summary>
+      /// <para>A fast <see cref="System.Numerics.BigInteger"/> DigitCount function that works for very large numbers.</para>
+      /// </summary>
+      /// <param name="number"></param>
+      /// <param name="radix"></param>
+      /// <returns></returns>
       public static int DigitCount(System.Numerics.BigInteger number, int radix)
       {
         System.ArgumentOutOfRangeException.ThrowIfLessThan(radix, 2);
 
-        if (number.Sign == 0)
+        if (number.IsZero)
           return 1;
 
-        if (number.Sign < 0)
-          number = System.Numerics.BigInteger.Abs(number);
+        number = System.Numerics.BigInteger.Abs(number);
 
-        // 1. Estimate digits using bit-length. (Full fractional bit‑length.)
+        var bitLength = number.GetBitLength();
 
-        var bl = number.GetBitLength();
-        var top = (bl <= 64) ? (ulong)number : (ulong)(number >> (int)(bl - 64));
+        var log2n = bitLength > 64
+          ? (bitLength - 1) + double.Log2((ulong)(number >> (int)(bitLength - 64)) / (double)(1UL << 63))
+          : double.Log2((ulong)number); // bitLength <= 64
 
-        var mantissa = top / (double)(1UL << 63);
-        var log2n = (bl - 1) + System.Math.Log(mantissa, 2);
+        var digits = (int)(log2n / double.Log2(radix)) + 1;
 
-        var logb = log2n / double.Log(radix, 2);
-        var digits = (int)logb + 1;
-
-        // 2. Correct possible off-by-one.
-        if (System.Numerics.BigInteger.Pow(radix, digits - 1) is var pow && pow > number)
+        var lower = System.Numerics.BigInteger.Pow(radix, digits - 1);
+        while (lower > number)
+        {
           digits--;
+          lower /= radix;
+        }
+
+        var upper = lower * radix;
+        while (upper <= number)
+        {
+          digits++;
+          upper *= radix;
+        }
 
         return digits;
       }

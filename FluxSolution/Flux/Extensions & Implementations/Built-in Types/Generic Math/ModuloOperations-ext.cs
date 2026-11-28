@@ -99,9 +99,9 @@ namespace Flux
 
         var qt = q - (q % TNumber.One);
 
-        var qe = qt * n == a ? qt : TNumber.Sign(q) switch { < 0 => qt - TNumber.One, > 0 => qt + TNumber.One, _ => qt }; // Ensure that the quotient is away from zero (enveloped).
+        var qafz = qt * n == a ? qt : TNumber.Sign(q) switch { < 0 => qt - TNumber.One, > 0 => qt + TNumber.One, _ => qt }; // Ensure that the quotient is away from zero (enveloped).
 
-        return (qe, a - qe * n);
+        return (qafz, a - qafz * n);
       }
 
       #endregion
@@ -281,15 +281,14 @@ namespace Flux
 
       /// <summary>
       /// <para>Remainder is the standard remainder.</para>
-      /// <para>RemainderNoZero is the same as standard except no zero, and instead returns the divisor with the sign of the dividend.</para>
-      /// <para>ReverseRemainder is the reverse order of the standard remainder, except for 0, which is still in same.</para>
-      /// <para>ReverseRemainderNoZero is the same as ReverseRemainder except no zero, and instead returns the divisor with the sign of dividend.</para>
+      /// <para>NonZeroRemainder is the same as remainder except no zero, and instead returns the <paramref name="modulus"/> with the sign of the <paramref name="value"/>.</para>
+      /// <para>Complement is the reverse order of the remainder, except for 0, which is still the same.</para>
+      /// <para>NonZeroComplement is the same as complement except no zero, and instead returns the <paramref name="modulus"/> with the sign of <paramref name="value"/>.</para>
       /// </summary>
-      /// <typeparam name="TNumber"></typeparam>
       /// <param name="value"></param>
       /// <param name="modulus"></param>
       /// <returns></returns>
-      public static (TNumber Remainder, TNumber RemainderNoZero, TNumber ReverseRemainder, TNumber ReverseRemainderNoZero) RemainderAnalysis(TNumber value, TNumber modulus)
+      public static (TNumber Remainder, TNumber NonZeroRemainder, TNumber Complement, TNumber NonZeroComplement) RemainderAnalysis(TNumber value, TNumber modulus)
       {
         System.ArgumentOutOfRangeException.ThrowIfNegativeOrZero(modulus);
 
@@ -300,9 +299,9 @@ namespace Flux
         if (TNumber.IsZero(remainder))
           return (remainder, copySign, remainder, copySign);
 
-        var minusRemainder = copySign - remainder;
+        var reverseRemainder = copySign - remainder;
 
-        return (remainder, remainder, minusRemainder, minusRemainder);
+        return (remainder, remainder, reverseRemainder, reverseRemainder);
       }
 
       #endregion

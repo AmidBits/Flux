@@ -234,13 +234,15 @@
           {
             var e = TInteger.Zero;
 
+            TInteger remainder;
+
             do
             {
               e++;
 
-              number /= i;
+              (number, remainder) = TInteger.DivRem(number, i);
             }
-            while (TInteger.IsZero(number % i));
+            while (TInteger.IsZero(remainder));
 
             count *= e + TInteger.One;
           }
@@ -273,13 +275,15 @@
           {
             var e = 0;
 
+            TInteger remainder;
+
             do
             {
               e++;
 
-              number /= i;
+              (number, remainder) = TInteger.DivRem(number, i);
             }
-            while (TInteger.IsZero(number % i));
+            while (TInteger.IsZero(remainder));
 
             var add = TInteger.Zero;
             var pow = TInteger.One;

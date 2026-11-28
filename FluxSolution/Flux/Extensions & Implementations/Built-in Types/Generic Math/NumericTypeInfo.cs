@@ -2,133 +2,79 @@ namespace Flux
 {
   public static class NumericTypeInfo
   {
+    public static int Count = 0;
+
+    /// <summary>
+    /// <para>The width, in bits, of a native-sized value in the current process.</para>
+    /// </summary>
+    public static int NativeBitCount => System.IntPtr.Size * 8;
+
+    /// <summary>
+    /// <para>The size, in bytes, of a native-sized value in the current process.</para>
+    /// </summary>
+    public static int NativeByteCount => System.IntPtr.Size;
+
     public static void Preload()
     {
-      var t1 = Flux.NumericTypeInfo<System.Numerics.BFloat16>.ToStringEx();
-      var t2 = Flux.NumericTypeInfo<Flux.Numerics.BigDecimal>.ToStringEx();
-      var t3 = Flux.NumericTypeInfo<System.Numerics.BigInteger>.ToStringEx();
-      var t4 = Flux.NumericTypeInfo<Flux.Numerics.BigRational>.ToStringEx();
-      var t5 = Flux.NumericTypeInfo<byte>.ToStringEx();
-      var t6 = Flux.NumericTypeInfo<System.Numerics.Complex>.ToStringEx();
-      var t7 = Flux.NumericTypeInfo<System.Numerics.Complex<System.Numerics.Decimal128>>.ToStringEx();
-      var t8 = Flux.NumericTypeInfo<decimal>.ToStringEx();
-      var t9 = Flux.NumericTypeInfo<System.Numerics.Decimal32>.ToStringEx();
-      var t10 = Flux.NumericTypeInfo<System.Numerics.Decimal64>.ToStringEx();
-      var t11 = Flux.NumericTypeInfo<System.Numerics.Decimal128>.ToStringEx();
-      var t12 = Flux.NumericTypeInfo<double>.ToStringEx();
-      var t13 = Flux.NumericTypeInfo<System.Half>.ToStringEx();
-      var t14 = Flux.NumericTypeInfo<short>.ToStringEx();
-      var t15 = Flux.NumericTypeInfo<int>.ToStringEx();
-      var t16 = Flux.NumericTypeInfo<long>.ToStringEx();
-      var t17 = Flux.NumericTypeInfo<System.Int128>.ToStringEx();
-      var t18 = Flux.NumericTypeInfo<System.IntPtr>.ToStringEx();
-      var t19 = Flux.NumericTypeInfo<System.Runtime.InteropServices.NFloat>.ToStringEx();
-      var t20 = Flux.NumericTypeInfo<System.SByte>.ToStringEx();
-      var t21 = Flux.NumericTypeInfo<float>.ToStringEx();
-      var t22 = Flux.NumericTypeInfo<ushort>.ToStringEx();
-      var t23 = Flux.NumericTypeInfo<uint>.ToStringEx();
-      var t24 = Flux.NumericTypeInfo<ulong>.ToStringEx();
-      var t25 = Flux.NumericTypeInfo<System.UInt128>.ToStringEx();
-      var t26 = Flux.NumericTypeInfo<System.UIntPtr>.ToStringEx();
+      var t1 = Flux.NumericTypeInfo<byte>.ToStringEx();
+      var t2 = Flux.NumericTypeInfo<char>.ToStringEx();
+      var t3 = Flux.NumericTypeInfo<decimal>.ToStringEx();
+      var t4 = Flux.NumericTypeInfo<double>.ToStringEx();
+      var t5 = Flux.NumericTypeInfo<System.Half>.ToStringEx();
+      var t6 = Flux.NumericTypeInfo<System.Int128>.ToStringEx();
+      var t7 = Flux.NumericTypeInfo<short>.ToStringEx();
+      var t8 = Flux.NumericTypeInfo<int>.ToStringEx();
+      var t9 = Flux.NumericTypeInfo<long>.ToStringEx();
+      var t10 = Flux.NumericTypeInfo<System.IntPtr>.ToStringEx();
+      var t11 = Flux.NumericTypeInfo<System.Numerics.BFloat16>.ToStringEx();
+      var t12 = Flux.NumericTypeInfo<System.Numerics.Decimal128>.ToStringEx();
+      var t13 = Flux.NumericTypeInfo<System.Numerics.Decimal32>.ToStringEx();
+      var t14 = Flux.NumericTypeInfo<System.Numerics.Decimal64>.ToStringEx();
+      var t15 = Flux.NumericTypeInfo<System.Runtime.InteropServices.NFloat>.ToStringEx();
+      var t16 = Flux.NumericTypeInfo<System.SByte>.ToStringEx();
+      var t17 = Flux.NumericTypeInfo<float>.ToStringEx();
+      var t18 = Flux.NumericTypeInfo<System.UInt128>.ToStringEx();
+      var t19 = Flux.NumericTypeInfo<ushort>.ToStringEx();
+      var t20 = Flux.NumericTypeInfo<uint>.ToStringEx();
+      var t21 = Flux.NumericTypeInfo<ulong>.ToStringEx();
+      var t22 = Flux.NumericTypeInfo<System.UIntPtr>.ToStringEx();
+
+      var t23 = Flux.NumericTypeInfo<System.Numerics.BigInteger>.ToStringEx();
+      var t24 = Flux.NumericTypeInfo<System.Numerics.Complex>.ToStringEx();
+      var t25 = Flux.NumericTypeInfo<System.Numerics.Complex<System.Numerics.Decimal128>>.ToStringEx();
+
+      var t26 = Flux.NumericTypeInfo<Flux.Numerics.BigDecimal>.ToStringEx();
+      var t27 = Flux.NumericTypeInfo<Flux.Numerics.BigRational>.ToStringEx();
     }
   }
+
   public static class NumericTypeInfo<TNumberBase>
     where TNumberBase : System.Numerics.INumberBase<TNumberBase>
   {
-    #region Lookup Tables
+    /// <summary>
+    /// <para>The generic type definition of TNumberBase, if there is one, otherwise <see langword="typeof"/>(TNumberBase).</para>
+    /// </summary>
+    private static readonly System.Type m_genericTypeDefinition = typeof(TNumberBase) is var t && t.IsGenericType ? t.GetGenericTypeDefinition() : t;
 
-    [System.Flags]
-    public enum NumericConstants
-    {
-      NoConstants = 0,
+    /// <summary>
+    /// <para>The storage size of TNumberBase.</para>
+    /// </summary>
+    private static readonly int m_sizeOf = System.Runtime.CompilerServices.Unsafe.SizeOf<TNumberBase>();
 
-      IFloatingPointConstants = 0x0000_0000_0000_0001,
-    }
+    /// <summary>
+    /// <para>The TNumberBase type.</para>
+    /// </summary>
+    private static readonly System.Type m_type = typeof(TNumberBase);
 
-    [System.Flags]
-    public enum NumericCore
-    {
-      NoCore = 0,
-
-      IBinaryFloatingPointIeee754 = 0x0000_0000_0000_0001,
-      IBinaryInteger = 0x0000_0000_0000_0002,
-      IBinaryNumber = 0x0000_0000_0000_0004,
-      IDecimalFloatingPointIeee754 = 0x0000_0000_0000_0008,
-      IFloatingPoint = 0x0000_0000_0000_0010,
-      IFloatingPointIeee754 = 0x0000_0000_0000_0020,
-      IMinMaxValue = 0x0000_0000_0000_0040,
-      INumber = 0x0000_0000_0000_0080,
-      INumberBase = 0x0000_0000_0000_0100,
-      ISignedNumber = 0x0000_0000_0000_0200,
-      IUnsignedNumber = 0x0000_0000_0000_0400,
-    }
-
-    [System.Flags]
-    public enum NumericFormattable
-    {
-      NotFormattable = 0,
-
-      IFormattable = 0x0000_0000_0000_0001,
-      ISpanFormattable = 0x0000_0000_0000_0002,
-      IUtf8SpanFormattable = 0x0000_0000_0000_0004,
-    }
-
-    [System.Flags]
-    public enum NumericFunctions
-    {
-      NoFunctions = 0,
-
-      IExponentialFunctions = 0x0000_0000_0000_0001,
-      IHyperbolicFunctions = 0x0000_0000_0000_0002,
-      ILogarithmicFunctions = 0x0000_0000_0000_0004,
-      IPowerFunctions = 0x0000_0000_0000_0008,
-      IRootFunctions = 0x0000_0000_0000_0010,
-      ITrigonometricFunctions = 0x0000_0000_0000_0020,
-    }
-
-    [System.Flags]
-    public enum NumericIdentity
-    {
-      NoIdentities = 0,
-
-      IAdditiveIdentity = 0x0000_0000_0000_0001,
-      IMultiplicativeIdentity = 0x0000_0000_0000_0002,
-    }
-
-    [System.Flags]
-    public enum NumericOperators
-    {
-      NoOperators = 0,
-
-      IAdditionOperators = 0x0000_0000_0000_0001,
-      IBitwiseOperators = 0x0000_0000_0000_0002,
-      IComparisonOperators = 0x0000_0000_0000_0004,
-      IDecrementOperators = 0x0000_0000_0000_0008,
-      IDivisionOperators = 0x0000_0000_0000_0010,
-      IEqualityOperators = 0x0000_0000_0000_0020,
-      IIncrementOperators = 0x0000_0000_0000_0040,
-      IModulusOperators = 0x0000_0000_0000_0080,
-      IMultiplyOperators = 0x0000_0000_0000_0100,
-      IShiftOperators = 0x0000_0000_0000_0200,
-      ISubtractionOperators = 0x0000_0000_0000_0400,
-      IUnaryNegationOperators = 0x0000_0000_0000_0800,
-      IUnaryPlusOperators = 0x0000_0000_0000_1000,
-    }
-
-    [System.Flags]
-    public enum NumericParsable
-    {
-      NotParsable = 0,
-
-      IParsable = 0x0000_0000_0000_0001,
-      ISpanParsable = 0x0000_0000_0000_0002,
-      IUtf8SpanParsable = 0x0000_0000_0000_0004,
-    }
-
-    #endregion
+    /// <summary>
+    /// <para>Depends on pre-initialization of <see cref="m_type"/>. Has to be before here.</para>
+    /// </summary>
+    private static readonly bool m_isArbitraryPrecision = IsSystemNumericsBigInteger || IsFluxNumericsBigDecimal || IsFluxNumericsBigRational; // Dependent on m_type being initialized!!!
 
     static NumericTypeInfo()
     {
+      NumericTypeInfo.Count++;
+
       foreach (var type in typeof(TNumberBase).GetCachedInterfaces()) // GetCachedInterfaces expands generic type descriptions.
       {
         var name = type.GetNameWithoutExtras();
@@ -155,14 +101,6 @@ namespace Flux
           Parsable |= parsable;
       }
 
-      NumericDomain // Depends on the flags above to be already set.
-        = IsUnsignedInteger ? NumericDomain.NaturalNumbers
-        : IsSignedInteger ? NumericDomain.Integers
-        : IsFluxNumericsBigDecimal || IsFluxNumericsBigRational ? NumericDomain.RationalNumbers
-        : IsIeeeBinary32 || IsIeeeBinary64 || IsIeeeDecimalN || IsSystemDecimal || IsSystemHalf || IsSystemNumericsBFloat16 ? NumericDomain.RealNumbers
-        : IsSystemNumericsComplex || IsSystemNumericsComplexT ? NumericDomain.ComplexNumbers
-        : NumericDomain.Unknown;
-
       // Ensure all native sizes are the same.
       System.Diagnostics.Debug.Assert(System.IntPtr.Size == System.UIntPtr.Size);
       System.Diagnostics.Debug.Assert(System.UIntPtr.Size == System.Runtime.InteropServices.NFloat.Size);
@@ -171,14 +109,7 @@ namespace Flux
       System.Diagnostics.Debug.WriteLine(ToStringEx());
     }
 
-    #region Type
-
-    private static readonly System.Type m_type = typeof(TNumberBase);
-    public static Type Type => m_type;
-
-    private static readonly System.Type m_genericTypeDefinition = m_type.IsGenericType ? m_type.GetGenericTypeDefinition() : m_type;
-
-    #endregion
+    public static System.Type Type => m_type;
 
     #region NumericConstants
 
@@ -225,12 +156,6 @@ namespace Flux
 
     /// <summary>Indicates whether the type implements <see cref="System.Numerics.IUnsignedNumber{TSelf}"/>.</summary>
     public static bool ImplementsIUnsignedNumber => (Core & NumericCore.IUnsignedNumber) != 0;
-
-    #endregion
-
-    #region NumericDomain
-
-    public static readonly NumericDomain NumericDomain;
 
     #endregion
 
@@ -432,7 +357,7 @@ namespace Flux
     /// <summary>
     /// <para>Indicates whether the type has an unbounded bit-width, such as <see cref="System.Numerics.BigInteger"/>.</para>
     /// </summary>
-    public static bool IsArbitraryPrecision => IsSystemNumericsBigInteger || IsFluxNumericsBigDecimal || IsFluxNumericsBigRational;
+    public static bool IsArbitraryPrecision => m_isArbitraryPrecision;
 
     ///// <summary>
     ///// <para>Indicates wheter the type represents the numeric domain of complex numbers.</para>
@@ -452,20 +377,19 @@ namespace Flux
     /// <summary>
     /// <para>Indicates whether the type has a fixed bit-width, such as <see cref="System.Decimal"/>, <see cref="System.Decimal128"/>, <see cref="System.Int32"/>, or <see cref="System.Single"/>.</para>
     /// </summary>
-    public static bool IsFixedWidth => !IsArbitraryPrecision;
+    public static bool IsFixedWidth => !m_isArbitraryPrecision;
 
     /// <summary>Indicates whether the type represents the family of IEEE binary32 floating-point types, such as <see cref="System.Single"/> or <see cref="System.Runtime.InteropServices.NFloat"/> when <see cref="System.Runtime.InteropServices.NFloat.Size"/> is 4.</summary>
-    /// <remarks>Needed to identify IEEE binary32 floating point types in .NET. NFloat is dependent on system hardware.</remarks>
-    public static bool IsIeeeBinary32 => IsSystemSingle || (IsSystemRuntimeInteropServicesNFloat && NativeByteCount == 4);
+    /// <remarks>Needed to identify IEEE binary32 floating point types in .NET, where NFloat is dependent on system hardware.</remarks>
+    public static bool IsIeeeBinary32 => IsSystemSingle || (IsSystemRuntimeInteropServicesNFloat && NumericTypeInfo.NativeByteCount == 4);
 
     /// <summary>Indicates whether the type represents the family of IEEE binary64 floating-point types, such as <see cref="System.Double"/> or <see cref="System.Runtime.InteropServices.NFloat"/> when <see cref="System.Runtime.InteropServices.NFloat.Size"/> is 8.</summary>
-    /// <remarks>Needed to identify IEEE binary64 floating point types in .NET. NFloat is dependent on system hardware.</remarks>
-    public static bool IsIeeeBinary64 => IsSystemDouble || (IsSystemRuntimeInteropServicesNFloat && NativeByteCount == 8);
+    /// <remarks>Needed to identify IEEE binary64 floating point types in .NET, where NFloat is dependent on system hardware.</remarks>
+    public static bool IsIeeeBinary64 => IsSystemDouble || (IsSystemRuntimeInteropServicesNFloat && NumericTypeInfo.NativeByteCount == 8);
 
-    /// <summary>
-    /// <para>Indicates whether the type represents the family of IEEE decimal floating point types, such as <see cref="System.Numerics.Decimal32"/>, <see cref="System.Numerics.Decimal64"/> and <see cref="System.Numerics.Decimal128"/>.</para>
-    /// </summary>
-    public static bool IsIeeeDecimalN => IsSystemNumericsDecimal32 || IsSystemNumericsDecimal64 || IsSystemNumericsDecimal128;
+    //public static bool IsRadix10 => TNumberBase.Radix == 10;
+
+    //public static bool IsRadix2 => TNumberBase.Radix == 2;
 
     /// <summary>
     /// <para>Indicates whether the type represents a signed integer, such as <see cref="System.Int128"/>, <see cref="System.Int16"/>, <see cref="System.Int32"/>, <see cref="System.Int64"/>, <see cref="System.SByte"/>, or <see cref="System.Numerics.BigInteger"/>.</para>
@@ -477,27 +401,31 @@ namespace Flux
     /// </summary>
     public static bool IsUnsignedInteger => ImplementsIBinaryInteger && ImplementsIUnsignedNumber;
 
-    /// <summary>
-    /// <para>The width, in bits, of a native-sized value in the current process.</para>
-    /// </summary>
-    public static int NativeBitCount => System.IntPtr.Size * 8;
-
-    /// <summary>
-    /// <para>The size, in bytes, of a native-sized value in the current process.</para>
-    /// </summary>
-    public static int NativeByteCount => System.IntPtr.Size;
+    //public static bool Is8Bit => !m_isArbitraryPrecision && m_sizeOf == 1;
+    //public static bool Is16Bit => !m_isArbitraryPrecision && m_sizeOf == 2;
+    //public static bool Is32Bit => !m_isArbitraryPrecision && m_sizeOf == 4;
+    //public static bool Is64Bit => !m_isArbitraryPrecision && m_sizeOf == 8;
+    //public static bool Is128Bit => !m_isArbitraryPrecision && m_sizeOf == 16;
 
     /// <summary>
     /// <para>The width of the type in bits.</para>
     /// </summary>
     /// <remarks>For fixed-width types, this equals <see cref="ByteCount"/> × 8. If <see cref="IsArbitraryPrecision"/> is <see langword="true"/>, this value is null, indicating an unbounded/not applicable bit-width.</remarks>
-    public static int? BitCount => ByteCount * 8;
+    public static int? BitCount => m_isArbitraryPrecision ? null : m_sizeOf * 8;
 
     /// <summary>
     /// <para>The number of bytes required to represent a value of the type.</para>
     /// </summary>
     /// <remarks>This does not include implementation-dependent padding, object headers, or additional heap allocations (for example, <see cref="System.Numerics.BigInteger"/>).</remarks>
-    public static int? ByteCount => IsArbitraryPrecision ? null : System.Runtime.CompilerServices.Unsafe.SizeOf<TNumberBase>();
+    public static int? ByteCount => m_isArbitraryPrecision ? null : m_sizeOf;
+
+    public static NumericDomain NumericDomain
+      => IsUnsignedInteger ? NumericDomain.NaturalNumbers
+      : IsSignedInteger ? NumericDomain.Integers
+      : IsFluxNumericsBigDecimal || IsFluxNumericsBigRational ? NumericDomain.RationalNumbers
+      : ImplementsIFloatingPoint ? NumericDomain.RealNumbers
+      : IsSystemNumericsComplex || IsSystemNumericsComplexT ? NumericDomain.ComplexNumbers
+      : NumericDomain.Unknown;
 
     public static int Radix => TNumberBase.Radix;
 
@@ -506,6 +434,8 @@ namespace Flux
     public static string ToStringEx()
     {
       var sb = new System.Text.StringBuilder();
+
+      sb.Append($"{NumericTypeInfo.Count} : ");
 
       sb.Append(m_type.FullName);
 
@@ -562,5 +492,97 @@ namespace Flux
 
       return sb.ToString();
     }
+
+    #region Lookup Tables
+
+    [System.Flags]
+    public enum NumericConstants
+    {
+      NoConstants = 0,
+
+      IFloatingPointConstants = 0x0000_0000_0000_0001,
+    }
+
+    [System.Flags]
+    public enum NumericCore
+    {
+      NoCore = 0,
+
+      IBinaryFloatingPointIeee754 = 0x0000_0000_0000_0001,
+      IBinaryInteger = 0x0000_0000_0000_0002,
+      IBinaryNumber = 0x0000_0000_0000_0004,
+      IDecimalFloatingPointIeee754 = 0x0000_0000_0000_0008,
+      IFloatingPoint = 0x0000_0000_0000_0010,
+      IFloatingPointIeee754 = 0x0000_0000_0000_0020,
+      IMinMaxValue = 0x0000_0000_0000_0040,
+      INumber = 0x0000_0000_0000_0080,
+      INumberBase = 0x0000_0000_0000_0100,
+      ISignedNumber = 0x0000_0000_0000_0200,
+      IUnsignedNumber = 0x0000_0000_0000_0400,
+    }
+
+    [System.Flags]
+    public enum NumericFormattable
+    {
+      NotFormattable = 0,
+
+      IFormattable = 0x0000_0000_0000_0001,
+      ISpanFormattable = 0x0000_0000_0000_0002,
+      IUtf8SpanFormattable = 0x0000_0000_0000_0004,
+    }
+
+    [System.Flags]
+    public enum NumericFunctions
+    {
+      NoFunctions = 0,
+
+      IExponentialFunctions = 0x0000_0000_0000_0001,
+      IHyperbolicFunctions = 0x0000_0000_0000_0002,
+      ILogarithmicFunctions = 0x0000_0000_0000_0004,
+      IPowerFunctions = 0x0000_0000_0000_0008,
+      IRootFunctions = 0x0000_0000_0000_0010,
+      ITrigonometricFunctions = 0x0000_0000_0000_0020,
+    }
+
+    [System.Flags]
+    public enum NumericIdentity
+    {
+      NoIdentities = 0,
+
+      IAdditiveIdentity = 0x0000_0000_0000_0001,
+      IMultiplicativeIdentity = 0x0000_0000_0000_0002,
+    }
+
+    [System.Flags]
+    public enum NumericOperators
+    {
+      NoOperators = 0,
+
+      IAdditionOperators = 0x0000_0000_0000_0001,
+      IBitwiseOperators = 0x0000_0000_0000_0002,
+      IComparisonOperators = 0x0000_0000_0000_0004,
+      IDecrementOperators = 0x0000_0000_0000_0008,
+      IDivisionOperators = 0x0000_0000_0000_0010,
+      IEqualityOperators = 0x0000_0000_0000_0020,
+      IIncrementOperators = 0x0000_0000_0000_0040,
+      IModulusOperators = 0x0000_0000_0000_0080,
+      IMultiplyOperators = 0x0000_0000_0000_0100,
+      IShiftOperators = 0x0000_0000_0000_0200,
+      ISubtractionOperators = 0x0000_0000_0000_0400,
+      IUnaryNegationOperators = 0x0000_0000_0000_0800,
+      IUnaryPlusOperators = 0x0000_0000_0000_1000,
+    }
+
+    [System.Flags]
+    public enum NumericParsable
+    {
+      NotParsable = 0,
+
+      IParsable = 0x0000_0000_0000_0001,
+      ISpanParsable = 0x0000_0000_0000_0002,
+      IUtf8SpanParsable = 0x0000_0000_0000_0004,
+    }
+
+    #endregion
   }
 }

@@ -459,10 +459,10 @@
           return value;
 
         if (exponent == TExponent.CreateChecked(2)) // (value^2 : value * value)
-          return NumberBase.Square(value);
+          return value * value;
 
         if (exponent == TExponent.CreateChecked(3)) // (value^3 : value * value * value)
-          return NumberBase.Cube(value);
+          return value * value * value;
 
         if (value == NumberBaseConstants<TInteger>.Two) // Pow2 (2^exponent : 1 << exponent) 
           return TInteger.CreateChecked(Pow2(exponent));
